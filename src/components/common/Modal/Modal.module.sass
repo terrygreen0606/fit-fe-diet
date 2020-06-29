@@ -1,0 +1,187 @@
+@import '../../../assets/sass/vars'
+
+
+$padding: 24px
+$borderRadius: 16px
+
+
+.dialogTitle
+  padding-right: 30px
+
+
+.dialogWrap
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+
+  display: flex
+  align-items: center
+  justify-content: center
+
+  width: 100%
+  height: 100%
+  padding: 50px
+
+  overflow-y: auto
+  z-index: 1005
+
+@media only screen and (max-width: 768px)
+  .dialogWrap
+    padding: 30px
+
+@media only screen and (max-width: 480px)
+  .dialogWrap
+    padding: 20px
+
+
+.dialogBackdrop
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 1007
+  width: 100%
+  height: 100%
+
+  background-color: rgba(32, 32, 32, 0.64)
+
+
+.dialogContainer
+  position: relative
+  z-index: 1009
+  width: 100%
+  max-width: 707px
+  max-height: 100%
+  background-color: white
+  border-radius: $borderRadius
+  overflow-y: auto
+  scroll-padding: 10px
+
+  &::-webkit-scrollbar
+    width: 7px
+
+  /* Track */
+  &::-webkit-scrollbar-track
+    background: $grey-bg
+    border-radius: $borderRadius
+    margin: 10px 0
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb
+    background: $yellow-accent
+    border-radius: $borderRadius
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover
+    background: darken($yellow-accent, 10%)
+
+
+.dialogFooter
+  padding: #{$padding / 3 * 2} $padding
+
+  background-color: rgb(246, 247, 251)
+  border-bottom-right-radius: $borderRadius
+  border-bottom-left-radius: $borderRadius
+
+
+.dialogFooterBtns
+  display: flex
+  justify-content: flex-end
+
+  button
+    margin-left: 16px
+
+
+.dialogMain
+  padding: $padding $padding #{$padding / 2}
+
+
+.dialogHeader
+  position: relative
+
+  padding: $padding $padding 0 $padding
+
+  font-size: 24px
+  line-height: 28px
+  font-weight: 500
+
+
+.dialogHeaderWrap
+  padding-bottom: $padding
+
+  border-bottom: 1px solid #BDBDBD
+
+
+.dialogHeaderClose
+  position: absolute
+  top: 8px
+  right: 14px
+
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 40px
+  height: 40px
+  padding: 0
+
+  background-color: transparent
+  border: none
+  outline: none
+
+  appearance: none
+  cursor: pointer
+
+  fill: #828282
+  svg
+    width: 19px
+    height: 19px
+
+  &:hover
+    fill: $orange-accent
+
+
+.modalBreadCrumbs
+  display: flex
+  flex-wrap: wrap
+  align-items: baseline
+  margin-top: 0
+  margin-bottom: 0
+  margin-left: 7px
+  padding-left: 0
+
+  font-size: 14px
+  color: #bdbdbd
+
+  list-style-type: none
+
+  li
+    display: flex
+    align-items: center
+    white-space: nowrap
+    margin-left: 4px
+
+    .item
+      cursor: pointer
+
+    &.current
+      .item
+        color: $yellow-accent
+        cursor: default
+        text-decoration: none
+
+  .item
+    margin-left: 2px
+    padding: 0
+
+    text-decoration: underline
+
+    font: inherit
+    color: inherit
+
+    background-color: transparent
+    border: none
+
+    appearance: none

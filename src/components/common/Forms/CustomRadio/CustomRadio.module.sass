@@ -1,0 +1,43 @@
+@import '../../../../assets/sass/vars'
+
+
+// Custom radio
+.customRadio
+	display: flex
+	align-items: center
+	position: relative
+	padding-left: 35px
+	text-align: left
+	line-height: 17px
+	cursor: pointer
+	user-select: none
+	&:not(:last-child)
+		margin-bottom: 15px
+	&:not(:last-child)
+		margin-right: 24px
+	&_is_invalid
+		color: $red
+		.radiomark
+			border-color: $red
+	input
+		display: none
+		&:checked ~ .radiomark
+			border-width: 6px
+
+.radioDisabled
+	opacity: .6
+	cursor: default
+
+.radioInline
+	display: inline-flex
+	margin-bottom: 0
+
+.radiomark
+	display: inline-block
+	position: absolute
+	top: -1px
+	left: 0
+	width: 20px
+	height: 20px
+	border: 1px solid $orange-accent
+	border-radius: 100%

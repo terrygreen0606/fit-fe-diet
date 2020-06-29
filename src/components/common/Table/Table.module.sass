@@ -1,0 +1,66 @@
+@import '../../../assets/sass/vars'
+
+
+// Table
+.tableCustomWrapper
+  position: relative
+  overflow: hidden
+
+table.tableCustom
+  min-width: 100%
+  vertical-align: top
+  border-collapse: collapse
+  &_Resizable
+    thead
+      th
+        &:not(:last-child)
+          border-right: 1px solid $grey-light
+    tbody
+      tr
+        td
+          &:not(:last-child)
+            border-right: 1px solid $grey-light
+  &_Striped
+    tbody
+      tr
+        &:nth-child(even)
+          background-color: lighten($grey-bg, 2%)
+  thead
+    th
+      padding: 8px 16px
+      text-align: left
+      font-size: 10px
+      line-height: 14px
+      font-weight: 400
+      text-transform: uppercase
+      color: $grey-medium
+      background-color: $grey-bg
+      border-bottom: 1px solid $grey-light
+      vertical-align: middle
+      overflow: hidden
+  td
+    padding: 8px 16px
+    font-size: 14px
+    line-height: 20px
+    color: $black
+    vertical-align: top
+    a
+      display: block
+      margin: -8px -16px
+      padding: 8px 16px
+  tbody
+    &.overlay
+      opacity: 0.7
+    tr
+      td
+        padding: 8px 16px !important
+
+      &:hover
+        background-color: lighten($grey-bg, 1%)
+
+    tr:first-child
+      td
+        padding-top: 15px !important
+        a
+          margin-top: -15px
+          padding-top: 15px

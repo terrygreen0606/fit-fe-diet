@@ -1,0 +1,80 @@
+@import '../../../../assets/sass/vars'
+
+
+.bttn
+	position: relative
+	display: -webkit-inline-flex
+	display:     -ms-inline-flexbox
+	display:         inline-flex
+	align-items: center
+	justify-content: center
+	padding: 12px 24px
+	color: $black
+	border: 1px solid #D3D3D3
+	font-size: 14px
+	line-height: 16px
+	font-family: 'FiraSans', sans-serif
+	font-weight: 400
+	white-space: nowrap
+	text-decoration: none
+	background-color: #fff
+	text-align: center
+	border-radius: 8px
+	cursor: pointer
+	text-decoration: none !important
+	+mt(.2s)
+	&:hover
+		box-shadow: 3px 4px 26px -9px $slate-grey
+	&:disabled
+		opacity: .6
+		cursor: default
+	&.bttnOutline
+		background-color: transparent
+		&:hover
+			color: #fff
+
+.bttn_sm
+	padding: 8px 21px
+	border-radius: 4px
+
+.bttnWeight_medium
+	font-weight: 500
+
+button.bttn
+	&:focus
+		outline: 0
+
+.bttnBlock
+	width: 100%
+
+.bttn_default
+	&.bttnOutline
+		&:hover
+			color: $black
+
+.bttn_primary
+	background-color: $orange-accent
+	border-color: $orange-accent
+	color: #fff
+	&:hover
+		color: #fff
+		background-color: $orange-accent
+		box-shadow: 3px 4px 26px -9px $orange-accent
+	&.bttnOutline
+		color: $orange-accent
+
+.bttn_secondary
+	background-color: $yellow-accent
+	border-color: $yellow-accent
+	color: #fff
+	&:hover
+		color: #fff
+		background-color: $yellow-accent
+		box-shadow: 3px 4px 26px -9px $yellow-accent
+	&.bttnOutline
+		color: $yellow-accent
+
+.bttn_raw
+	border-color: transparent
+	background-color: transparent
+	

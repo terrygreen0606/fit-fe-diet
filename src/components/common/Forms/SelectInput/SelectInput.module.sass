@@ -1,0 +1,63 @@
+@import '../../../../assets/sass/vars'
+
+
+.fgSelectControl
+	display: inline-block
+	color: $grey-medium
+	font-size: 14px
+	line-height: 16px
+	min-height: 41px !important
+	border-radius: 8px !important
+	box-shadow: none !important
+	+mt(.2s)
+	&:hover
+		&:not(.fgSelectControl_readonly):not(.fgSelectControl_disabled)
+			border-color: lighten($black, 30%)
+	&_is_invalid
+		border-color: $red !important
+		.fgSelectIndicatorsContainer
+			svg
+				fill: $red
+	&_focused
+		border-color: lighten($black, 30%)
+	&_block
+		width: 100% !important
+	&_readonly
+		background-color: #fff !important
+		cursor: not-allowed !important
+		&.fgSelectControl_has_value
+			color: $black !important
+			.fgSelectSingleValue
+				color: $black !important
+	&_disabled
+		&:not(.fgSelectControl_readonly)
+			border-color: $grey-light !important
+			background-color: $grey-bg !important
+	&_has_value
+		color: $black !important
+		border-color: lighten($black, 30%) !important
+
+.fgSelectIndicatorsContainer
+	svg
+		fill: $orange-accent
+
+.fgSelectMenu
+	&_block
+		width: 100% !important
+
+.fgSelectOption
+	background-color: #fff !important
+	+mt(.2s)
+	&:not(.fgSelectOption_disabled)
+		&:hover, &.fgSelectOption_selected
+			color: #fff
+			background-color: $orange-accent !important
+		&:hover
+			&:not(.fgSelectOption_selected)
+				background-color: lighten($orange-accent, 50%) !important
+				color: $orange-accent
+		&_selected
+			background-color: $orange-accent !important
+
+.fgSelectSeprator
+	display: none

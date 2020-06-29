@@ -1,0 +1,12 @@
+.loadingOverlay
+  position: relative
+  .loadingSpinner
+    display: none
+  &_is_loading
+    opacity: .7
+    .loadingSpinner
+      display: block
+      position: absolute
+      top: 50px
+      left: calc(50% - 18px)
+      z-index: 55

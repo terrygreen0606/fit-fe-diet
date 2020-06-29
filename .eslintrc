@@ -1,0 +1,121 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "sourceType": 'module',
+    "ecmaFeatures": {
+      "jsx": true
+    }
+    "plugins": ["jest"],
+    "ecmaVersion": 10,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    },
+    "useJSXTextNode": true,
+    "project": "tsconfig.json"
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "plugins": ["@typescript-eslint", "react-hooks"],
+  "settings": {
+    "react": {
+      "version": 'detect',
+      "flowVersion": '0.84.0'
+    }
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx",
+          ".d.ts"
+        ],
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    },
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": [2, { "args": "none" }],
+        "jsx-a11y/no-noninteractive-tabindex": 0
+      }
+    }
+  ],
+  "rules": {
+    // https://eslint.org/docs/rules/indent
+    indent: [2, 4, { SwitchCase: 1 }], // 4 spaces
+    'comma-dangle': [2, 'never'],
+    'operator-linebreak': [2, vars.AFTER, { overrides: { '?': 'before', ':': 'before' } }],
+    'global-require': [0],
+    'import/extensions': [0],
+    'import/no-extraneous-dependencies': [0],
+    'import/prefer-default-export': [0],
+    'import/no-named-as-default': [0],
+    'react/jsx-indent': [2, 4],
+    'react/jsx-indent-props': [2, 4],
+    'react/require-default-props': [0],
+    'react/jsx-filename-extension': [0],
+    'react/jsx-props-no-spreading': [0],
+    'react/destructuring-assignment': [0],
+    'react/state-in-constructor': [0],
+    'react/static-property-placement': [0],
+    'react/jsx-one-expression-per-line': [0],
+    'react/no-danger': [0],
+    'react/no-array-index-key': [0],
+    'react/prefer-stateless-function': [0],
+    'react/sort-comp': [0],
+    'react/jsx-no-bind': [0],
+    'react/no-unused-prop-types': [0],
+    'react/default-props-match-prop-types': [0],
+    'react/no-access-state-in-setstate': [0],
+    'react/prop-types': [0],
+    'arrow-body-style': [0],
+    'class-methods-use-this': [0],
+    'consistent-return': [0],
+    'no-restricted-globals': [0],
+    'arrow-parens': [0],
+    'implicit-arrow-linebreak': [0],
+    camelcase: [0],
+    'max-len': [2, {
+      code: 120,
+      ignoreComments: true,
+      tabWidth: 4
+    }],
+    'no-plusplus': [0],
+    'prefer-destructuring': [0],
+    'lines-between-class-members': [2, 'always', { exceptAfterSingleLine: true }],
+    'no-underscore-dangle': [0],
+    'no-param-reassign': [0],
+    'no-case-declarations': [0],
+    semi: [2, 'always'],
+    'no-prototype-builtins': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/label-has-associated-control': 0,
+    'no-mixed-operators': 0,
+    'object-curly-newline': 0,
+    'jsx-a11y/alt-text': 0
+    "indent": [2, 2, { "SwitchCase": 1 }],
+    "react/jsx-indent": [2, 2],
+    "react/jsx-indent-props": [2, 2],
+    "no-shadow": 0,
+    "no-array-constructor": 0,
+    "array-callback-return": 0,
+    "no-use-before-define": 0,
+    "react/no-unescaped-entities": 0,
+    "prefer-promise-reject-errors": 0,
+    "no-throw-literal": 0
+  }
+}
