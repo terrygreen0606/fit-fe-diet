@@ -11,8 +11,19 @@ export const authCheck = () => {
     dispatch(setAuthChecking(true));
 
     setTimeout(() => {
+      const token = localStorage.getItem('authToken');
+
       dispatch(setAuthChecking(false));
-      dispatch(userLogin('token777'));
+
+      if (token) {
+        dispatch(userLogin('token777'));
+      }
     }, 500);
   };
+};
+
+export const userLogout = () => {
+  localStorage.removeItem('authToken');
+
+  return { type: USER_LOGOUT };
 };
