@@ -1,0 +1,143 @@
+@import '../../../assets/sass/vars'
+
+
+.registerModal
+  &_steps_wrap
+    position: relative
+    width: 100%
+    margin-right: 62px
+    margin-top: -48px
+    margin-bottom: -35px
+    background-position: center center
+    background-repeat: no-repeat
+    overflow: hidden
+    z-index: 1
+    &::before
+      content: ''
+      position: absolute
+      top: 50%
+      left: -530px
+      transform: translateY(-50%)
+      z-index: -1
+      width: 900px
+      height: 130%
+      border-radius: 100%
+      background-color: $steel-blue
+      opacity: .76
+    &_step1
+      background-image: url('../../../assets/img/food-serving-img.png')
+      background-size: 85%
+      background-position: 90% center
+      .registerModal_step:nth-child(1)
+        margin-top: 280px
+        margin-bottom: 120px
+        margin-right: 12%
+      .registerModal_step:nth-child(2)
+        margin-bottom: 65px
+        margin-right: 20%
+        .registerModal_step_label
+          font-size: 24px
+          line-height: 29px
+          color: rgba(255,255,255,0.8)
+        .registerModal_step_mark
+          width: 62px
+          height: 62px
+          margin-left: 48px
+          border-width: 14px
+      .registerModal_step:nth-child(3)
+        margin-right: 34%
+        .registerModal_step_label
+          font-weight: normal
+          font-size: 18px
+          line-height: 22px
+          color: rgba(255, 255, 255, 0.5)
+        .registerModal_step_mark
+          width: 30px
+          height: 30px
+          margin-left: 45px
+          border-width: 7px
+    &_step2
+      background-image: url('../../../assets/img/smartphone-img.png')
+      background-size: 140%
+      background-position: 65% center
+      .registerModal_step:nth-child(1)
+        margin-bottom: 98px
+        margin-top: 135px
+        margin-right: 20%
+        .registerModal_step_label
+          font-size: 24px
+          line-height: 29px
+          color: rgba(255,255,255,0.8)
+        .registerModal_step_mark
+          width: 62px
+          height: 62px
+          margin-left: 22px
+          border-width: 14px
+      .registerModal_step:nth-child(2)
+        margin-bottom: 111px
+        margin-right: 13%
+      .registerModal_step:nth-child(3)
+        margin-right: 29%
+        .registerModal_step_label
+          font-size: 24px
+          line-height: 29px
+          color: rgba(255,255,255,0.8)
+        .registerModal_step_mark
+          width: 62px
+          height: 62px
+          margin-left: 22px
+          border-width: 14px
+    &_step3
+      background-image: url('../../../assets/img/vegetables-img.png')
+      background-size: 100%
+      .registerModal_step:nth-child(1)
+        margin-bottom: 72px
+        margin-right: 42%
+        margin-top: 41px
+        .registerModal_step_label
+          font-weight: normal
+          font-size: 18px
+          line-height: 22px
+          color: rgba(255, 255, 255, 0.5)
+        .registerModal_step_mark
+          width: 30px
+          height: 30px
+          margin-left: 45px
+          border-width: 7px
+      .registerModal_step:nth-child(2)
+        margin-bottom: 87px
+        margin-right: 25%
+        .registerModal_step_label
+          font-size: 24px
+          line-height: 29px
+          color: rgba(255,255,255,0.8)
+        .registerModal_step_mark
+          width: 62px
+          height: 62px
+          margin-left: 48px
+          border-width: 14px
+      .registerModal_step:nth-child(3)
+        margin-right: 13%
+  &_step
+    display: flex
+    align-items: center
+    justify-content: flex-end
+    +mt(.35s)
+    &_active
+      .registerModal_step_label
+        font-size: 32px
+        font-weight: bold
+        line-height: 39px
+      .registerModal_step_mark
+        width: 91px
+        height: 91px
+        margin-left: 15px
+        border-width: 20px
+    &_label
+      color: #fff
+    &_mark
+      border-radius: 100%
+      background-color: $steel-blue
+      border-color: #fff
+      border-style: solid
+      box-shadow: 0px 3px 5px #BAC2D2

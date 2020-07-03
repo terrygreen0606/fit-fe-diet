@@ -1,17 +1,13 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './Modal.module.sass';
 
-type Props = {
-  children: any
-}
-
-const Main = (props: Props) => {
-  const {
-    children
-  } = props;
+const Main = ({ children, className }: any) => {
   return (
-    <div className={styles.dialogMain}>
+    <div className={classNames(styles.dialogMain, {
+      [className]: className
+    })}>
       {children}
     </div>
   );

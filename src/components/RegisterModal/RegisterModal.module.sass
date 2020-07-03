@@ -1,0 +1,100 @@
+@import '../../assets/sass/vars'
+
+
+.registerModal
+  max-width: 1120px !important
+  &_main
+    display: flex
+    padding-right: 90px !important
+    padding-bottom: 35px !important
+    padding-left: 0 !important
+  &_steps_content
+    flex: 0 0 500px
+
+.register
+  &_title
+    font-weight: bold
+    font-size: 18px
+    line-height: 22px
+    color: $caribbean-green
+    text-align: center
+
+  &_goals_list
+    .register_goal_btn
+      &:not(:last-child)
+        margin-bottom: 29px
+  &_goal_btn
+    justify-content: space-between
+    font-size: 18px
+    line-height: 22px
+    font-weight: bold
+    span
+      display: inline-flex
+      align-items: center
+  &_goal_icon
+    margin-right: 7px
+    width: 26px
+
+  &_eating
+    &_list
+      display: flex
+      align-items: flex-start
+      justify-content: center
+      flex-wrap: wrap
+      .register_eating_item
+        margin-right: 19px
+        margin-bottom: 24px
+    &_item
+      display: inline-flex
+      align-items: center
+      justify-content: space-between
+      height: 42px
+      padding: 0 10px
+      border: 1px solid $caribbean-green
+      border-radius: 5px
+      font-size: 18px
+      line-height: 18px
+      font-weight: 400
+      color: #000
+      span
+        display: inline-flex
+        align-items: center
+      &_icon
+        margin-right: 10px
+        max-height: 90%
+      &_cross
+        width: 11px
+        height: 11px
+        margin-left: 11px
+        cursor: pointer
+        fill: #000
+        path
+          fill: #000
+
+  &_join
+    &_or
+      border-bottom: 1px dashed #106EE8
+      text-align: center
+      margin: 35px 0 55px
+      &_txt
+        position: relative
+        top: 20px
+        z-index: 1
+        display: inline-block
+        padding: 10px 36px
+        background-color: #fff
+  
+
+.registerSexIcon
+  fill: #000
+  margin-right: 8px
+  path
+    fill: #000
+  &_active
+    fill: $caribbean-green
+    path
+      fill: $caribbean-green
+
+.registerBtn
+  max-width: 357px
+  margin: 0 auto

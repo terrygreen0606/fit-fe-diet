@@ -16,7 +16,7 @@ export const authCheck = () => {
       dispatch(setAuthChecking(false));
 
       if (token) {
-        dispatch(userLogin('token777'));
+        dispatch(userLogin(token));
       }
     }, 500);
   };

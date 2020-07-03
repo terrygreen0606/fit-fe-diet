@@ -23,6 +23,9 @@
 		display: none
 		&:checked ~ .radiomark
 			border-width: 6px
+			box-shadow: 0 0 0 1px $grey-light
+			background-color: $caribbean-green
+			border: 6px solid #fff
 
 .radioDisabled
 	opacity: .6
@@ -30,14 +33,16 @@
 
 .radioInline
 	display: inline-flex
-	margin-bottom: 0
+	margin-bottom: 0 !important
 
 .radiomark
 	display: inline-block
 	position: absolute
 	top: -1px
 	left: 0
-	width: 20px
-	height: 20px
-	border: 1px solid $orange-accent
+	width: 25px
+	height: 25px
+	box-shadow: 0px 4px 4px rgba(197, 197, 197, 0.25)
+	background-color: $grey-bg
 	border-radius: 100%
+	

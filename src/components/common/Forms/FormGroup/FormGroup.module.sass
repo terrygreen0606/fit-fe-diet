@@ -1,7 +1,19 @@
 .formGroup
-	position: relative
-	min-width: 0
-	padding: 0
-	margin: 0
-	margin-bottom: 29px
-	border: 0
+  position: relative
+  min-width: 0
+  padding: 0
+  margin: 0
+  margin-bottom: 29px
+  border: 0
+  &_inline
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    label
+      margin-right: 25px
+      flex: 0 0 60px
+    input
+      flex: 0 0 calc(100% - 90px)
+    div
+      flex: 0 0 100%
+      padding-left: 90px

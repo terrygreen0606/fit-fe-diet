@@ -24,7 +24,7 @@ const LoginView = (props: any) => {
 
   const [loginErrors, setLoginErrors] = useState([]);
 
-  const [loginLoading, setLoaginLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -54,11 +54,15 @@ const LoginView = (props: any) => {
     setLoginErrors([...errors]);
 
     if (!hasError) {
-      setLoaginLoading(true);
+      setLoginLoading(true);
 
       setTimeout(() => {
-        setLoaginLoading(false);
-        props.userLogin('token777');
+        setLoginLoading(false);
+
+        const token = 'token777';
+        localStorage.setItem('authToken', token);
+        props.userLogin(token);
+        
         props.history.push('/');
       }, 400);
     }
@@ -96,7 +100,7 @@ const LoginView = (props: any) => {
           />
         </FormGroup>
 
-        <span className="link mt-5">Forgot your password? Remind me</span>
+        <span className="link link-bold mt-5">Forgot your password? Remind me</span>
 
         <Button 
           className={styles.loginScreen_btn} 
@@ -108,7 +112,7 @@ const LoginView = (props: any) => {
           Log in
         </Button>
 
-        <span className="link mt-3">Register</span>
+        <span className="link link-bold mt-3">Register</span>
       </form>
     </div>
   );

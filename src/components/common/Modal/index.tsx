@@ -6,8 +6,8 @@ import ModalView from './Modal';
 import ModalMain from './Main';
 import ModalFooter from './Footer';
 
-export const Main = ({ children }) => <ModalMain>{children}</ModalMain>;
-export const Footer = ({ children }) => <ModalFooter>{children}</ModalFooter>;
+export const Main = ({ children, className }: any) => <ModalMain className={className}>{children}</ModalMain>;
+export const Footer = ({ children, className }: any) => <ModalFooter className={className}>{children}</ModalFooter>;
 
 type Props = {
   isOpen: boolean,
@@ -18,8 +18,9 @@ type Props = {
 
   shouldCloseOnOverlayClick?: boolean,
 
-  title: string,
+  title?: string,
   children: any,
+  className?: string,
 
   onClose?: (e: SyntheticEvent) => void
 }
@@ -28,6 +29,7 @@ const Modal = (props: Props) => {
   const {
     isOpen,
     title,
+    className,
     bodyOpenClassName = 'ReactModal__Body--open',
     withCloseBtn = true,
     shouldCloseOnOverlayClick = true,
@@ -66,6 +68,7 @@ const Modal = (props: Props) => {
           title={title}
           onClose={onClose}
           withCloseBtn={withCloseBtn}
+          className={className}
           shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
         >
           {children}

@@ -1,16 +1,18 @@
 import React, { SyntheticEvent } from 'react';
+import classNames from 'classnames';
 
 import styles from './Modal.module.sass';
 
-import { ReactComponent as CrossIcon } from 'assets/img/icons/cross@20x20-icon.svg';
+import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon.svg';
 
 type Props = {
   withCloseBtn: boolean,
 
   shouldCloseOnOverlayClick: boolean,
 
-  title: string,
+  title?: string,
   children: any,
+  className?: string,
 
   onClose?: (e: SyntheticEvent) => void
 }
@@ -19,6 +21,7 @@ const Modal = (props: Props) => {
   const {
     title,
     withCloseBtn,
+    className,
     shouldCloseOnOverlayClick,
     children
   } = props;
@@ -38,11 +41,16 @@ const Modal = (props: Props) => {
   return (
     <div className={styles.dialogWrap}>
       <div className={styles.dialogBackdrop} onClick={onClickByBackdrop} />
-      <div className={styles.dialogContainer}>
+      <div className={classNames(styles.dialogContainer, {
+        [className]: className
+      })}>
         <header className={styles.dialogHeader}>
-          <div className={styles.dialogHeaderWrap}>
-            <p className={styles.dialogTitle}>{title}</p>
-          </div>
+          {title && (
+            <div className={styles.dialogHeaderWrap}>
+              <p className={styles.dialogTitle}>{title}</p>
+            </div>
+          )}
+
           {withCloseBtn ? (
             <button className={styles.dialogHeaderClose} type="button" onClick={onClose}>
               <CrossIcon />

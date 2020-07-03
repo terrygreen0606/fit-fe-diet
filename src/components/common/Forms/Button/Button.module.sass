@@ -13,13 +13,13 @@
 	border: 1px solid #D3D3D3
 	font-size: 24px
 	line-height: 29px
-	font-family: 'FiraSans', sans-serif
+	font-family: $base_font
 	font-weight: 400
 	white-space: nowrap
 	text-decoration: none
 	background-color: #fff
 	text-align: center
-	border-radius: 8px
+	border-radius: 5px
 	cursor: pointer
 	text-decoration: none !important
 	+mt(.2s)
@@ -32,6 +32,10 @@
 		background-color: transparent
 		&:hover
 			color: #fff
+			svg
+				fill: #fff
+				path
+					fill: #fff
 
 .bttn_sm
 	padding: 8px 21px
@@ -52,27 +56,58 @@ button.bttn
 		&:hover
 			color: $black
 
+
 .bttn_primary
 	background-color: $caribbean-green
 	border-color: $caribbean-green
 	color: #fff
+	svg
+		fill: #fff
+		path
+			fill: #fff
+
 	&:hover
 		color: #fff
 		background-color: $caribbean-green
 		box-shadow: 3px 4px 26px -9px $caribbean-green
+		svg
+			fill: #fff
+			path
+				fill: #fff
+
 	&.bttnOutline
 		color: $caribbean-green
+		svg
+			fill: $caribbean-green
+			path
+				fill: $caribbean-green
+
 
 .bttn_secondary
-	background-color: $yellow-accent
-	border-color: $yellow-accent
+	background-color: $steel-blue
+	border-color: $steel-blue
 	color: #fff
+	svg
+		fill: #fff
+		path
+			fill: #fff
+
 	&:hover
 		color: #fff
-		background-color: $yellow-accent
-		box-shadow: 3px 4px 26px -9px $yellow-accent
+		background-color: $steel-blue
+		box-shadow: 3px 4px 26px -9px $steel-blue
+		svg
+			fill: #fff
+			path
+				fill: #fff
+
 	&.bttnOutline
-		color: $yellow-accent
+		color: $steel-blue
+		svg
+			fill: $steel-blue
+			path
+				fill: $steel-blue
+
 
 .bttn_raw
 	border-color: transparent
