@@ -4,44 +4,44 @@ import validator from 'validator';
 const getErrorMsg = (code, param) => {
   switch (code) {
     case 'required':
-      return 'Поле обязательно для ввода';
+      return 'Field is required';
 
     case 'email':
-      return 'Неверно введён email';
+      return 'Incorrect email';
 
     case 'number':
-      return 'Значение поля должно быть число';
+      return 'Value should be a number';
 
     case 'integer':
-      return 'Значение поля должно быть целым числом';
+      return 'Value should be integer';
 
     case 'alphanum':
-      return 'Поле должно только содержать цифры и буквы';
+      return 'Value should be alphanumeric';
 
     case 'url':
-      return 'Неверно введён url';
+      return 'Incorrect url';
 
     case 'equalto':
-      return `Поле должно совпадать с ${param}`;
+      return `Value should be equal to ${param}`;
 
     case 'minlen':
-      return `Минимальная длина поля ${param}`;
+      return `Min length ${param}`;
 
     case 'maxlen':
-      return `Максимальная длина поля ${param}`;
+      return `Max length ${param}`;
 
     case 'len':
-      return `Длина поля должна быть равна ${param}`;
+      return `Length should be ${param}`;
 
     case 'min':
-      return `Значение поля должно быть не меньше ${param}`;
+      return `Value should be more than ${param}`;
 
     case 'max':
-      return `Значение поля должно быть не больше ${param}`;
+      return `Value should be less than ${param}`;
 
     case 'list':
-      return `${param} не входит в значение поля`;
-
+      return `Values doesn't contain ${param}`;
+    
     default:
       return '';
   }

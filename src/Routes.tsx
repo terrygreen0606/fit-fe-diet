@@ -4,6 +4,7 @@ import PrivateRoute from './components/common/PrivateRoute';
 import AuthRoute from './components/common/AuthRoute';
 
 // Views
+import BasePage from 'components/hoc/BasePage';
 import HomeView from './views/HomeView';
 import LoginView from './views/LoginView';
 import NotFound from './views/NotFound';
@@ -21,14 +22,12 @@ const Routes = () => (
       <AuthRoute 
         path="/login" 
         component={(props: any) => (
-          <LoginView {...props} />
+          <BasePage {...props}><LoginView {...props} /></BasePage>
         )}
         exact
       />
 
-      <Route path="/notfound" component={(props: any) => <NotFound {...props} />} exact />
-
-      <Redirect to="/notfound" />
+      <Route component={(props: any) => <NotFound {...props} />} />
     </Switch>
 );
 
