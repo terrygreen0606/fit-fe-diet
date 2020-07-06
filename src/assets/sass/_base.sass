@@ -404,20 +404,23 @@ a
 // Links
 .link
   display: inline-block
-  padding-bottom: 5px
   position: relative
   color: $caribbean-green
   font-size: 18px
   line-height: 19px
-  font-weight: bold
   text-decoration: none
-  border-bottom: 2px solid $caribbean-green
+  border-bottom: 1px solid $caribbean-green
   +mt(.1s)
   &:not(:disabled)
     cursor: pointer
   &:hover
     &:not(:disabled)
       border-bottom-color: transparent
+
+.link-bold
+  padding-bottom: 5px
+  font-weight: bold
+  border-width: 2px
 
 .link-dashed
   border-bottom-style: dashed
