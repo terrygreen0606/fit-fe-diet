@@ -15,34 +15,34 @@ const Footer = () => {
             
             <h6 className={styles.mainFooter_menuList_title}>Clients support</h6>
 
-            <nav className={styles.mainFooter_menuList}>
-              <a href="#" className={styles.mainFooter_menuList_item}>Contact</a>
-              <a href="#" className={styles.mainFooter_menuList_item}>FAQ</a>
-              <a href="#" className={styles.mainFooter_menuList_item}>Use cookies</a>
-              <a href="#" className={styles.mainFooter_menuList_item}>Terms of sale and use</a>
-              <a href="#" className={styles.mainFooter_menuList_item}>Privacy Policy</a>
-            </nav>
+            <ul className={styles.mainFooter_menuList}>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>Contact</a></li>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>FAQ</a></li>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>Use cookies</a></li>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>Terms of sale and use</a></li>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>Privacy Policy</a></li>
+            </ul>
 
           </div>
           <div className="col-3">
 
             <h6 className={styles.mainFooter_menuList_title}>Fitlap</h6>
 
-            <nav className={styles.mainFooter_menuList}>
-              <a href="#" className={styles.mainFooter_menuList_item}>Blog</a>
-              <a href="#" className={styles.mainFooter_menuList_item}>Contact</a>
-              <a href="mailto:info@fitlap.com" className={styles.mainFooter_menuList_item}>info@fitlap.com</a>
-            </nav>
+            <ul className={styles.mainFooter_menuList}>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>Blog</a></li>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>Contact</a></li>
+              <li><a href="mailto:info@fitlap.com" className={styles.mainFooter_menuList_item}>info@fitlap.com</a></li>
+            </ul>
           
           </div>
           <div className="col-3">
           
             <h6 className={styles.mainFooter_menuList_title}>Klienditugi</h6>
 
-            <nav className={styles.mainFooter_menuList}>
-              <a href="#" className={styles.mainFooter_menuList_item}>Kontakt</a>
-              <a href="#" className={styles.mainFooter_menuList_item}>Korduma kippuvad küsimused</a>
-            </nav>
+            <ul className={styles.mainFooter_menuList}>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>Kontakt</a></li>
+              <li><a href="#" className={styles.mainFooter_menuList_item}>Korduma kippuvad küsimused</a></li>
+            </ul>
           
           </div>
           <div className="col-3 text-right">

@@ -244,6 +244,104 @@ ul.list-group
       font-size: 20px
 
 
+// Ribbon
+.ribbon
+  width: 220px
+  height: 220px
+  overflow: hidden
+  position: absolute
+  &::before, &::after
+    position: absolute
+    z-index: -1
+    content: ''
+    display: block
+    border: 5px solid darken($rose-pink, 10%)
+  span
+    position: absolute
+    display: block
+    width: 310px
+    padding: 35px 0
+    background-color: $rose-pink
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1)
+    color: #fff
+    font: 900 30px/37px 'Montserrat', sans-serif
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2)
+    text-transform: uppercase
+    text-align: center
+
+/* top left */
+.ribbon-top-left
+  top: -10px
+  left: -10px
+  &::before, &::after
+    border-top-color: transparent
+    border-left-color: transparent
+  &::before
+    top: 0
+    right: 0
+  &::after
+    bottom: 0
+    left: 0
+  span
+    right: -25px
+    top: 30px
+    transform: rotate(-45deg)
+
+/* top right */
+.ribbon-top-right
+  top: -10px
+  right: -10px
+  &::before, &::after
+    border-top-color: transparent
+    border-right-color: transparent
+  &::before
+    top: 0
+    left: 1px
+  &::after
+    bottom: 0
+    right: -1px
+  span
+    left: -7px
+    top: 19px
+    transform: rotate(45deg)
+
+/* bottom left */
+.ribbon-bottom-left
+  bottom: -10px
+  left: -10px
+  &::before, &::after
+    border-bottom-color: transparent
+    border-left-color: transparent
+  &::before
+    bottom: 0
+    right: 0
+  &::after
+    top: 0
+    left: 0
+  span
+    right: -25px
+    bottom: 30px
+    transform: rotate(225deg)
+
+/* bottom right */
+.ribbon-bottom-right
+  bottom: -10px
+  right: -10px
+  &::before, &::after
+    border-bottom-color: transparent
+    border-right-color: transparent
+  &::before
+    bottom: 0
+    left: 0
+  &::after
+    top: 0
+    right: 0
+  span
+    left: -25px
+    bottom: 30px
+    transform: rotate(-225deg)
+
+
 // Socials
 .socials-list
   display: inline-flex
@@ -253,7 +351,7 @@ ul.list-group
   list-style-type: none
   li
     display: inline-block
-    margin: 12px
+    margin: 6px
 
 .social-link 
   position: relative
@@ -263,17 +361,9 @@ ul.list-group
   color: #fff
   text-align: center
   cursor: pointer
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    background-color: #000
-    opacity: 0
-    -webkit-transition: all .2s ease
-            transition: all .2s ease
+  +mt(.1)
+  &:hover
+    opacity: .8
 
 .social-icon
   width: 20px

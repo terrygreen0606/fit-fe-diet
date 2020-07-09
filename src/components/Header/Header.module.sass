@@ -2,29 +2,30 @@
 
 
 .mainHeader
-  max-width: 1550px
   margin: 0 auto
   overflow: hidden
-  padding: 50px 0 70px
+  padding: 25px 0
+  \:global(.row)
+    align-items: center
   &_logo
     position: relative
     display: inline-block
-    width: 210px
-    height: 210px
+    width: 155px
+    height: 145px
     background-size: contain
     background-repeat: no-repeat
     background-position: center center
-    background-image: url('../../assets/img/logo.png')
-    &::before
-      content: ''
-      position: absolute
-      top: -370px
-      left: -330px
-      width: 632px
-      height: 632px
-      border-radius: 100%
-      background-color: $steel-blue
-      z-index: -1
+    background-image: url('../../assets/img/logo-header.svg')
+    // &::before
+    //   content: ''
+    //   position: absolute
+    //   top: -370px
+    //   left: -330px
+    //   width: 632px
+    //   height: 632px
+    //   border-radius: 100%
+    //   background-color: $steel-blue
+    //   z-index: -1
   &_menuList
     display: inline-flex
     align-items: center
@@ -33,6 +34,7 @@
       font-size: 18px
       line-height: 22px
       font-weight: 400
+      cursor: pointer
       color: $black
       text-decoration: none
       border-bottom: 1px solid transparent

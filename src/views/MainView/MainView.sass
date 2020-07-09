@@ -1,47 +1,105 @@
 @import '../../assets/sass/vars'
 
 
-#main-header-sect-circle1
-  width: 420px
-  height: 420px
-  border-radius: 100%
-  background-color: $mint-green
+.main-header-sect-img-wrap
+  position: relative
 
-#main-header-sect-circle2
-  width: 126px
-  height: 126px
-  border-radius: 100%
-  background-color: $malachite-green
+#main-header-sect-dotted-rect
+  position: absolute
+  top: 250px
+  left: 20px
+  width: 250px
+  height: 375px
+  background-image: radial-gradient($light-grey 20%, transparent 20%)
+  background-position: 0 0
+  background-size: 21px 21px
+  z-index: -1
 
-#main-header-sect-circle1
-  width: 187px
-  height: 187px
-  border-radius: 100%
-  background-color: $caribbean-green
+#main-header-sect-rect
+  position: absolute
+  top: 0
+  right: -389px
+  width: 840px
+  height: 870px
+  background-color: $steel-blue
+  z-index: -1
 
+#main-header-sect-food-img1
+  position: relative
+  top: -30px
+  left: 90px
+  max-width: 670px
 
-#main-features-sect-circle
-  width: 900px
-  height: 900px
-  background-color: $mint-green
-  border-radius: 100%
+#main-header-sect-food-img2
+  position: relative
+  top: -80px
+  right: -450px
+  max-width: 640px
+  margin-bottom: -170px
+
+#main-header-sect-food-img1
+
+.main-features-sect-img-wrap
+  position: relative
+
+#main-features-sect
+  &-img
+    position: relative
+    top: 100px
+    left: -370px
+    max-width: 600px
+  &-rect
+    position: absolute
+    top: 40px
+    left: -389px
+    width: 590px
+    height: 850px
+    background-color: $mint-green
+  &-dotted-rect
+    position: absolute
+    display: block
+    top: -50px
+    right: 40px
+    width: 240px
+    height: 320px
+    background-image: radial-gradient($light-grey 20%, transparent 20%)
+    background-position: 0 0
+    background-size: 22px 22px
 
 .main-diet-plan-feature
   &-list
+    margin-top: 75px
     &-item
       display: flex
       &:not(:last-child)
-        margin-bottom: 40px
+        margin-bottom: 95px
   &-icon
+    position: relative
+    display: inline-block
     flex: 0 0 150px
     padding: 20px
-    background-color: $caribbean-green
+    width: 95px
+    height: 95px
     background-size: contain
     background-repeat: no-repeat
     background-position: center center
+    &::before
+      content: ''
+      position: absolute
+      top: -15px
+      left: -15px
+      width: 125px
+      height: 125px
+      border-radius: 100%
+      z-index: -1
+      background-color: $caribbean-green
   &-content
-    margin-left: 45px
+    margin-left: 25px
 
+
+#main-success-stories-sect-container
+  max-width: 2250px
+  padding-left: 17.5%
 
 .main-success-story-item
   &-img
@@ -72,19 +130,19 @@
     line-height: 22px
 
 
+.main-choose-plan-sect
+  .row
+    align-items: center
+
 #main-choose-plan-item-popular
   position: relative
   padding-top: 100px
   border: 2px solid $steel-blue
-  &-label
-    font-weight: 400
-    font-size: 35px
-    line-height: 59px
-    color: #fff
 
 .main-choose-plan-item
   padding: 30px 45px 40px
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08)
+  border-radius: 5px
   &-period
     margin-bottom: 95px
     font-weight: bold
@@ -93,13 +151,13 @@
   &-price
     &-text
       color: $caribbean-green
-      font-size: 72px
+      font-size: 65px
       line-height: 88px
       font-weight: bold
     &-paycycle
       display: inline-block
       position: relative
-      top: -35px
+      top: -25px
       margin-left: 10px
       font-size: 32px
       line-height: 39px
@@ -117,7 +175,7 @@
       font-size: 18px
       line-height: 36px
       &:not(:last-child)
-        margin-bottom: 60px
+        margin-bottom: 40px
       &::before
         content: ''
         position: absolute

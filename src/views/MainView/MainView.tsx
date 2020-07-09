@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Components
+import RegisterModal from 'components/RegisterModal';
 import Header from 'components/Header';
 import Button from 'components/common/Forms/Button';
 
@@ -9,8 +10,16 @@ import './MainView.sass';
 import { ReactComponent as LikeIcon } from 'assets/img/icons/like-icon.svg';
 
 const MainView = () => {
+  
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+
   return (
     <>
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setRegisterModalOpen(false)}
+      />
+      
       <section className="main-header-sect">
         <div className="container">
           <div className="row">
@@ -19,19 +28,17 @@ const MainView = () => {
               <h2 className="mb-3">Personal<br/>diet plan</h2>
               <p>sulle ja su perele sulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perele</p>
 
-              <Button className="mt-4" color="primary">Register</Button>
+              <Button className="mt-4" color="primary" onClick={() => setRegisterModalOpen(true)}>Register</Button>
 
             </div>
             <div className="col-6">
               
               <div className="main-header-sect-img-wrap">
-                <span id="main-header-sect-circle1"></span>
-                <span id="main-header-sect-circle2"></span>
-                <span id="main-header-sect-circle3"></span>
+                <span id="main-header-sect-rect"></span>
                 <span id="main-header-sect-dotted-rect"></span>
 
-                <img className="img-fluid" src={require('../../assets/img/food/food-serving-img-2.png')} alt="" id="main-header-sect-food-img1" />
-                <img className="img-fluid" src={require('../../assets/img/food/food-serving-img-1.png')} alt="" id="main-header-sect-food-img2" />
+                <img src={require('../../assets/img/food/food-serving-img-2.png')} alt="" id="main-header-sect-food-img1" />
+                <img src={require('../../assets/img/food/food-serving-img-1.png')} alt="" id="main-header-sect-food-img2" />
               </div>
 
             </div>
@@ -45,14 +52,14 @@ const MainView = () => {
             <div className="col-3">
               
               <div className="main-features-sect-img-wrap">
-                <span id="main-features-sect-circle"></span>
+                <span id="main-features-sect-rect"></span>
                 <span id="main-features-sect-dotted-rect"></span>
 
-                <img className="img-fluid" src={require('../../assets/img/sport-woman.png')} alt="" id="main-features-sect-img" />
+                <img src={require('../../assets/img/sport-woman.png')} alt="" id="main-features-sect-img" />
               </div>
 
             </div>
-            <div className="col-7">
+            <div className="col-9">
               
               <h4 className="sect-title">Lose weight with quick easy recipes</h4>
               <p>Eating is the most important thing to get in shape. When you eat healthily and are physically active, your weight is under control and your health improves. When you eat according to the simple and delicious recipes of Fitlap, you will feel healthy and fresh.</p>
@@ -155,10 +162,10 @@ const MainView = () => {
 
             </div>
           </div>
+        </div>
 
-          <div className="text-center mt-4">
-            <Button color="primary"><LikeIcon className="mr-2" /> Get started</Button>
-          </div>
+        <div className="text-center mt-4">
+          <Button color="primary"><LikeIcon className="mr-2" /> Get started</Button>
         </div>
       </section>
 
@@ -191,7 +198,9 @@ const MainView = () => {
             <div className="col-4">
               
               <div id="main-choose-plan-item-popular" className="main-choose-plan-item">
-                <span id="main-choose-plan-item-popular-label">Popular</span>
+                <span id="main-choose-plan-item-popular-label">                  
+                  <div className="ribbon ribbon-top-right"><span>Popular</span></div>
+                </span>
 
                 <h6 className="main-choose-plan-item-period">12 months</h6>
 

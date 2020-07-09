@@ -1,37 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { userLogout } from 'store/actions';
 
 // Components
+import RegisterModal from 'components/RegisterModal';
 import Button from 'components/common/Forms/Button';
 
 import styles from './Header.module.sass';
 
-const Header = () => {
+const Header = (props: any) => {
+
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+
   return (
-    <header className={styles.mainHeader}>
-      <div className="container">
-        <div className="row">
-          <div className="col-4">
-            
-            <span className={styles.mainHeader_logo}></span>
+    <>
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setRegisterModalOpen(false)}
+      />
+  
+      <header className={styles.mainHeader}>
+        <div className="container">
+          <div className="row">
+            <div className="col-2">
+              
+              <span className={styles.mainHeader_logo}></span>
 
-          </div>
-          <div className="col-8 text-right">
-            
-            <nav className={styles.mainHeader_menuList}>
-              <a href="#" className={styles.mainHeader_menuList_item}>Retseptid</a>
-              <a href="#" className={styles.mainHeader_menuList_item}>Edulood</a>
-              <a href="#" className={styles.mainHeader_menuList_item}>Blogi</a>
-              <a href="#" className={styles.mainHeader_menuList_item}>E-Pood</a>
-              <a href="#" className={styles.mainHeader_menuList_item}>Login</a>
-            </nav>
+            </div>
+            <div className="col-10 text-right">
+              
+              <nav className={styles.mainHeader_menuList}>
+                <a href="#" className={styles.mainHeader_menuList_item}>Retseptid</a>
+                <a href="#" className={styles.mainHeader_menuList_item}>Edulood</a>
+                <a href="#" className={styles.mainHeader_menuList_item}>E-Pood</a>
+                <span className={styles.mainHeader_menuList_item} onClick={e => props.userLogout()}>Logout</span>
+              </nav>
 
-            <Button className="ml-5" color="primary">Register</Button>
+              <Button className="ml-5" color="primary" onClick={() => setRegisterModalOpen(true)}>Register</Button>
 
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 };
 
-export default Header;
+export default connect(
+  null,
+  { userLogout }
+)(Header);

@@ -8,6 +8,7 @@ import {
 import { userLogin } from 'store/actions';
 
 // Components
+import RegisterModal from 'components/RegisterModal';
 import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
@@ -16,6 +17,8 @@ import FormValidator from 'components/common/Forms/FormValidator';
 import styles from './LoginView.module.sass';
 
 const LoginView = (props: any) => {
+
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -69,53 +72,60 @@ const LoginView = (props: any) => {
   };
 
   return (
-    <div className={styles.loginScreen}>
-      <h3 className={styles.loginScreen_title}>Login</h3>
+    <>
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setRegisterModalOpen(false)}
+      />
 
-      <form className={styles.loginScreen_form} onSubmit={e => loginSubmit(e)}>
-        <FormGroup>
-          <InputField
-            name="email"
-            data-validate='["required", "email"]'
-            errors={getFieldErrors('email')}
-            value={loginForm.email}
-            onChange={e => validateOnChange('email', e.target.value, e)}
-            placeholder="Email"
+      <div className={styles.loginScreen}>
+        <h3 className={styles.loginScreen_title}>Login</h3>
+
+        <form className={styles.loginScreen_form} onSubmit={e => loginSubmit(e)}>
+          <FormGroup>
+            <InputField
+              name="email"
+              data-validate='["required", "email"]'
+              errors={getFieldErrors('email')}
+              value={loginForm.email}
+              onChange={e => validateOnChange('email', e.target.value, e)}
+              placeholder="Email"
+              block
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <InputField
+              name="password"
+              className="mt-3"
+              type="password"
+              autocomplate="current-password"
+              data-validate='["required"]'
+              errors={getFieldErrors('password')}
+              value={loginForm.password}
+              onChange={e => validateOnChange('password', e.target.value, e)}
+              placeholder="Password"
+              block
+            />
+          </FormGroup>
+
+          <span className="link link-bold mt-5">Forgot your password? Remind me</span>
+
+          <Button 
+            className={styles.loginScreen_btn} 
+            type="submit" 
+            color="primary" 
+            size="lg"
+            isLoading={loginLoading}
             block
-          />
-        </FormGroup>
+          >
+            Log in
+          </Button>
 
-        <FormGroup>
-          <InputField
-            name="password"
-            className="mt-3"
-            type="password"
-            autocomplate="current-password"
-            data-validate='["required"]'
-            errors={getFieldErrors('password')}
-            value={loginForm.password}
-            onChange={e => validateOnChange('password', e.target.value, e)}
-            placeholder="Password"
-            block
-          />
-        </FormGroup>
-
-        <span className="link link-bold mt-5">Forgot your password? Remind me</span>
-
-        <Button 
-          className={styles.loginScreen_btn} 
-          type="submit" 
-          color="primary" 
-          size="lg"
-          isLoading={loginLoading}
-          block
-        >
-          Log in
-        </Button>
-
-        <span className="link link-bold mt-3">Register</span>
-      </form>
-    </div>
+          <span className="link link-bold mt-3" onClick={() => setRegisterModalOpen(true)}>Register</span>
+        </form>
+      </div>
+    </>
   );
 };
 

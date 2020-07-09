@@ -16,14 +16,6 @@ const Routes = () => (
       <PrivateRoute
         path="/"
         component={(props: any) => (
-          <HomeView {...props} />
-        )}
-        exact
-      />
-
-      <PrivateRoute
-        path="/main"
-        component={(props: any) => (
           <Layout {...props}><MainView {...props} /></Layout>
         )}
         exact

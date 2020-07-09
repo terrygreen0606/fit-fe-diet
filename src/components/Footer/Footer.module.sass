@@ -2,10 +2,13 @@
 
 
 .mainFooter
+  position: relative
   margin-top: 50px
-  padding: 50px 0
+  padding: 65px 0 30px
   color: #fff
   background-color: $caribbean-green
+  .mainFooter_logo
+    margin-top: 25px
   &_bottomLine
     margin-top: 100px
   &_logo
@@ -15,10 +18,17 @@
     height: 210px
     background-size: contain
     background-repeat: no-repeat
-    background-position: center center
-    background-image: url('../../assets/img/logo.png')
+    background-position: right center
+    background-image: url('../../assets/img/logo-footer.png')
   &_menuList
     display: block
+    margin: 0
+    padding: 0
+    list-style-type: none
+    li
+      display: block
+      &:not(:last-child)
+        margin-bottom: 5px
     &_title
       margin-bottom: 30px
       font-weight: bold
@@ -26,13 +36,13 @@
       line-height: 20px
       color: #fff
     &_item
-      display: block
+      display: inline-block
       font-size: 16px
       line-height: 30px
       text-decoration: none
       color: #fff
-      &:not(:last-child)
-        margin-bottom: 5px
+      &:hover
+        text-decoration: underline
   &_copyright
     font-size: 16px
     line-height: 20px
