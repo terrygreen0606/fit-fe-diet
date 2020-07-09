@@ -47,9 +47,9 @@ body
   font-family: $base_font
   font-weight: normal
   color: $black
-  background-color: $grey-bg
-  font-size: 16px
-  line-height: 22px
+  background-color: #fff
+  font-size: 18px
+  line-height: 24px
   font-weight: 400
   overflow-y: scroll
 
@@ -57,10 +57,26 @@ body
   height: 100%
 
 section
-  padding: 15px 0
-  .sect-title
-    margin-bottom: 20px
+  padding: 50px 0
+
+.sect-title
+  display: block
+  position: relative
+  margin-bottom: 105px
+  font-size: 32px
+  line-height: 39px
+  &.title-center
     text-align: center
+    &::before
+      left: 50%
+      transform: translateX(-50%)
+  &::before
+    content: ''
+    position: absolute
+    bottom: -22px
+    height: 6px
+    width: 186px
+    background-color: $steel-blue
 
 
 h1, h2, h3, h4, h5, h6
@@ -77,24 +93,25 @@ h1
   line-height: 80px
   font-weight: 500
 h2
-  font-size: 58px
-  line-height: 70px
-  font-weight: 500
+  font-size: 80px
+  line-height: 98px
+  font-weight: bold // styled
 h3
   font-size: 24px // !!
   line-height: 28px
   font-weight: 500
 h4
-  font-size: 20px
-  line-height: 16px
+  font-size: 32px
+  line-height: 39px
+  font-weight: bold // styled
 h5
   font-size: 16px
   line-height: 16px
   font-weight: 500
 h6
-  font-size: 14px
-  line-height: 16px
-  font-weight: 600
+  font-size: 16px
+  line-height: 20px
+  font-weight: bold // styled
 
 p
   margin: 10px 0
@@ -236,7 +253,7 @@ ul.list-group
   list-style-type: none
   li
     display: inline-block
-    margin: 10px
+    margin: 12px
 
 .social-link 
   position: relative
@@ -257,6 +274,13 @@ ul.list-group
     opacity: 0
     -webkit-transition: all .2s ease
             transition: all .2s ease
+
+.social-icon
+  width: 20px
+  fill: #fff
+  path
+    fill: #fff
+
   &:hover
     &::before
       opacity: .1

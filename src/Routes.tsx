@@ -5,8 +5,10 @@ import AuthRoute from './components/common/AuthRoute';
 
 // Views
 import BasePage from 'components/hoc/BasePage';
-import HomeView from './views/HomeView';
+import Layout from 'components/hoc/Layout';
 import LoginView from './views/LoginView';
+import HomeView from './views/HomeView';
+import MainView from './views/MainView';
 import NotFound from './views/NotFound';
 
 const Routes = () => (
@@ -15,6 +17,14 @@ const Routes = () => (
         path="/"
         component={(props: any) => (
           <HomeView {...props} />
+        )}
+        exact
+      />
+
+      <PrivateRoute
+        path="/main"
+        component={(props: any) => (
+          <Layout {...props}><MainView {...props} /></Layout>
         )}
         exact
       />

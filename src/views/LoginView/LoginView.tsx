@@ -106,6 +106,7 @@ const LoginView = (props: any) => {
           className={styles.loginScreen_btn} 
           type="submit" 
           color="primary" 
+          size="lg"
           isLoading={loginLoading}
           block
         >

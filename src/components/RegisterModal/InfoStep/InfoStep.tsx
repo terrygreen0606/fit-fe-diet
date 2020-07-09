@@ -173,6 +173,7 @@ const InfoStep = (props: any) => {
             style={{ width: '217px' }} 
             outline 
             color="secondary" 
+            size="lg"
             onClick={() => props.setRegisterStep('GOAL')}
           >
             Back
@@ -183,6 +184,7 @@ const InfoStep = (props: any) => {
             color="primary" 
             type="submit"
             className="ml-3"
+            size="lg"
             isLoading={registerInfoLoading}
           >
             Next

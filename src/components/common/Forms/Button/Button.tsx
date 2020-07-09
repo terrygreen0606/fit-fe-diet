@@ -8,7 +8,7 @@ import styles from './Button.module.sass';
 
 interface ButtonProps {
   type?: 'submit' | 'button' | 'reset',
-  size?: 'md' | 'sm',
+  size?: 'md' | 'sm' | 'lg',
   color?: 'primary' | 'default' | 'secondary' | 'raw',
   weight?: 'medium' | 'default',
   outline?: boolean,

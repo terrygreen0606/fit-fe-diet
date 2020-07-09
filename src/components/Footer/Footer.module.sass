@@ -1,0 +1,38 @@
+@import '../../assets/sass/vars'
+
+
+.mainFooter
+  margin-top: 50px
+  padding: 50px 0
+  color: #fff
+  background-color: $caribbean-green
+  &_bottomLine
+    margin-top: 100px
+  &_logo
+    position: relative
+    display: inline-block
+    width: 210px
+    height: 210px
+    background-size: contain
+    background-repeat: no-repeat
+    background-position: center center
+    background-image: url('../../assets/img/logo.png')
+  &_menuList
+    display: block
+    &_title
+      margin-bottom: 30px
+      font-weight: bold
+      font-size: 16px
+      line-height: 20px
+      color: #fff
+    &_item
+      display: block
+      font-size: 16px
+      line-height: 30px
+      text-decoration: none
+      color: #fff
+      &:not(:last-child)
+        margin-bottom: 5px
+  &_copyright
+    font-size: 16px
+    line-height: 20px

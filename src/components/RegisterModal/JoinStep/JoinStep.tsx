@@ -134,6 +134,7 @@ const JoinStep = (props: any) => {
             className={styles.registerBtn}
             type="submit" 
             block 
+            size="lg"
             color="primary"
             isLoading={registerJoinLoading}
           >
@@ -143,6 +144,7 @@ const JoinStep = (props: any) => {
           <Button 
             outline 
             color="secondary" 
+            size="lg"
             onClick={() => props.setRegisterStep('INFO')}
             className="mt-4"
             style={{ width: '217px' }}

@@ -8,7 +8,7 @@ import styles from '../RegisterModal.module.sass';
 import { ReactComponent as LoseIcon } from 'assets/img/icons/lose-icon.svg';
 import { ReactComponent as KeepIcon } from 'assets/img/icons/keep-icon.svg';
 import { ReactComponent as LiftIcon } from 'assets/img/icons/lift-icon.svg';
-import { ReactComponent as ArrowRightIcon } from 'assets/img/icons/arrow-right-icon.svg';
+import { ReactComponent as AngleRightIcon } from 'assets/img/icons/angle-right-icon.svg';
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon-black.svg';
 import { ReactComponent as MilkIcon } from 'assets/img/icons/milk-icon.svg';
 import { ReactComponent as MeatIcon } from 'assets/img/icons/meat-icon.svg';
@@ -37,7 +37,7 @@ const GoalStep = (props: any) => {
             <LoseIcon className={styles.register_goal_icon} />
             Lose weight
           </span>
-          <ArrowRightIcon />
+          <AngleRightIcon />
         </Button>
 
         <Button 
@@ -51,7 +51,7 @@ const GoalStep = (props: any) => {
             <KeepIcon className={styles.register_goal_icon} />
             Keep the weight
           </span>
-          <ArrowRightIcon />
+          <AngleRightIcon />
         </Button>
 
         <Button 
@@ -65,7 +65,7 @@ const GoalStep = (props: any) => {
             <LiftIcon className={styles.register_goal_icon} />
             Lift the weight
           </span>
-          <ArrowRightIcon />
+          <AngleRightIcon />
         </Button>
       </div>
 
@@ -126,6 +126,7 @@ const GoalStep = (props: any) => {
           className="mt-3" 
           style={{ width: '220px' }} 
           color="primary" 
+          size="lg"
           onClick={() => props.setRegisterStep('INFO')}
         >
           Next
