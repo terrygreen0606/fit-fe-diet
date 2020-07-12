@@ -2,10 +2,10 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-import styles from './FullPageLoader.module.sass';
+import './FullPageLoader.sass';
 
 const FullPageLoader = () => (
-  <div className={styles.pageLoader}>
+  <div className="pageLoader">
     <FontAwesomeIcon icon={faSpinner} spin size="4x" />
   </div>
 );

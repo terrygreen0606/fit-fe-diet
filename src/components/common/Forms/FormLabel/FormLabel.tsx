@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import styles from './FormLabel.module.sass';
+import './FormLabel.sass';
 
 const FormLabel = ({ invalid, ...props }: any) => (
   <label
     {...props}
-    className={classNames(styles.fgLabel, {
-      [styles.fgLabel_is_invalid]: invalid
+    className={classNames("fgLabel", {
+      "fgLabel_is_invalid": invalid
     })}
   />
 );

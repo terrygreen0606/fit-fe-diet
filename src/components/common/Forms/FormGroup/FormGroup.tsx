@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import styles from './FormGroup.module.sass';
+import './FormGroup.sass';
 
 const FormGroup = ({ children, className, inline }: any) => {
   return (
-    <div className={classNames(styles.formGroup, {
+    <div className={classNames("formGroup", {
       [className]: className,
-      [styles.formGroup_inline]: inline
+      "formGroup_inline": inline
     })}>
       {children}
     </div>

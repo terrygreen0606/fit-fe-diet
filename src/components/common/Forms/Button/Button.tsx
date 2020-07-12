@@ -4,7 +4,7 @@ import classNames from 'classnames';
 // Components
 import Spinner from 'components/common/Spinner';
 
-import styles from './Button.module.sass';
+import './Button.sass';
 
 interface ButtonProps {
   type?: 'submit' | 'button' | 'reset',
@@ -65,13 +65,13 @@ const Button = (props: ButtonProps) => {
       ref={innerRef}
       className={classNames(
         className,
-        styles.bttn,
-        styles[`bttn_${color}`],
-        styles[`bttn_${size}`],
-        styles[`bttnWeight_${weight}`],
+        'bttn',
+        `bttn_${color}`,
+        `bttn_${size}`,
+        `bttnWeight_${weight}`,
         {
-          [styles.bttnBlock]: block,
-          [styles.bttnOutline]: outline
+          'bttnBlock': block,
+          'bttnOutline': outline
         }
       )}
       onClick={onClick}

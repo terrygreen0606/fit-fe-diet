@@ -14,7 +14,7 @@ import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'components/common/Forms/FormValidator';
 
-import styles from '../RegisterModal.module.sass';
+import '../RegisterModal.sass';
 
 import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
 import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
@@ -70,12 +70,12 @@ const InfoStep = (props: any) => {
   };
 
   return (
-    <div className={styles.register_info}>
-      <h6 className={`${styles.register_title} mb-5`}>Please fill in your details to get an exact plan</h6>
+    <div className="register_info">
+      <h6 className="register_title mb-5">Please fill in your details to get an exact plan</h6>
 
       <div style={{ height: '50px' }}></div>
 
-      <form className={styles.register_info_form} onSubmit={e => registerInfoSubmit(e)}>
+      <form className="register_info_form" onSubmit={e => registerInfoSubmit(e)}>
         <FormGroup inline>
           <FormLabel>Sex</FormLabel>
 
@@ -84,8 +84,8 @@ const InfoStep = (props: any) => {
             label={
               <>
                 <MaleIcon 
-                  className={classNames(styles.registerSexIcon, {
-                    [styles.registerSexIcon_active]: registerInfoForm.sex === 'MALE'
+                  className={classNames("registerSexIcon", {
+                    "registerSexIcon_active": registerInfoForm.sex === 'MALE'
                   })}
                 />
 
@@ -107,8 +107,8 @@ const InfoStep = (props: any) => {
             label={
               <>
                 <FemaleIcon 
-                  className={classNames(styles.registerSexIcon, {
-                    [styles.registerSexIcon_active]: registerInfoForm.sex === 'FEMALE'
+                  className={classNames("registerSexIcon", {
+                    "registerSexIcon_active": registerInfoForm.sex === 'FEMALE'
                   })}
                 />
 

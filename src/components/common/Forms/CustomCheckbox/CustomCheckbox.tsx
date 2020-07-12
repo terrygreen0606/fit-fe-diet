@@ -1,7 +1,7 @@
 import React, { ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 
-import styles from './CustomCheckbox.module.sass';
+import  './CustomCheckbox.sass';
 
 interface CustomCheckboxProps {
   type?: 'checkbox',
@@ -50,10 +50,10 @@ const CustomCheckbox = (props: CustomCheckboxProps) => {
   return (
     <label
       htmlFor={htmlFor}
-      className={classNames(className, styles.customCheckbox, {
-        [styles.checkboxDisabled]: props.disabled,
-        [styles.checkboxInline]: inline,
-        [styles.customCheckbox_is_invalid]: invalid
+      className={classNames(className, "customCheckbox", {
+        "checkboxDisabled": props.disabled,
+        "checkboxInline": inline,
+        "customCheckbox_is_invalid": invalid
       })}
     >
       {label && label}
@@ -64,7 +64,7 @@ const CustomCheckbox = (props: CustomCheckboxProps) => {
         onChange={onChange}
       />
 
-      <span className={styles.checkmark} />
+      <span className="checkmark" />
     </label>
   );
 };

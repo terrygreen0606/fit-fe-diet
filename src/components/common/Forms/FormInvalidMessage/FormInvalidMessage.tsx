@@ -1,9 +1,9 @@
 import React from 'react';
 
-import styles from './FormInvalidMessage.module.sass';
+import './FormInvalidMessage.sass';
 
 const FormInvalidMessage = (props: any) => (
-  <div className={styles.fgInvalidMsg}>{props.children}</div>
+  <div className="fgInvalidMsg">{props.children}</div>
 );
 
 export default FormInvalidMessage;

@@ -37,8 +37,8 @@ const MainView = () => {
                 <span id="main-header-sect-rect"></span>
                 <span id="main-header-sect-dotted-rect"></span>
 
-                <img src={require('../../assets/img/food/food-serving-img-2.png')} alt="" id="main-header-sect-food-img1" />
-                <img src={require('../../assets/img/food/food-serving-img-1.png')} alt="" id="main-header-sect-food-img2" />
+                <img src="https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-2.png" alt="" id="main-header-sect-food-img1" />
+                <img src="https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-1.png" alt="" id="main-header-sect-food-img2" />
               </div>
 
             </div>
@@ -55,7 +55,7 @@ const MainView = () => {
                 <span id="main-features-sect-rect"></span>
                 <span id="main-features-sect-dotted-rect"></span>
 
-                <img src={require('../../assets/img/sport-woman.png')} alt="" id="main-features-sect-img" />
+                <img src="https://fitstg.s3.eu-central-1.amazonaws.com/sport-woman.png" alt="" id="main-features-sect-img" />
               </div>
 
             </div>
@@ -68,7 +68,7 @@ const MainView = () => {
 
               <div className="main-diet-plan-feature-list">
                 <div className="main-diet-plan-feature-list-item">
-                  <span className="main-diet-plan-feature-icon" style={{ backgroundImage: `url(${require('../../assets/img/features/nutrition-feature.png')})` }}></span>
+                  <span className="main-diet-plan-feature-icon" style={{ backgroundImage: `url('https://fitstg.s3.eu-central-1.amazonaws.com/nutrition-feature.png')` }}></span>
 
                   <div className="main-diet-plan-feature-content">
                     <h4 className="mb-3">Personal nutrition plan</h4>
@@ -77,7 +77,7 @@ const MainView = () => {
                 </div>
 
                 <div className="main-diet-plan-feature-list-item">
-                  <span className="main-diet-plan-feature-icon" style={{ backgroundImage: `url(${require('../../assets/img/features/list-feature.png')})` }}></span>
+                  <span className="main-diet-plan-feature-icon" style={{ backgroundImage: `url('https://fitstg.s3.eu-central-1.amazonaws.com/list-feature.png')` }}></span>
 
                   <div className="main-diet-plan-feature-content">
                     <h4 className="mb-3">Simple grocery list</h4>
@@ -86,7 +86,7 @@ const MainView = () => {
                 </div>
 
                 <div className="main-diet-plan-feature-list-item">
-                  <span className="main-diet-plan-feature-icon" style={{ backgroundImage: `url(${require('../../assets/img/features/graph-feature.png')})` }}></span>
+                  <span className="main-diet-plan-feature-icon" style={{ backgroundImage: `url('https://fitstg.s3.eu-central-1.amazonaws.com/graph-feature.png')` }}></span>
 
                   <div className="main-diet-plan-feature-content">
                     <h4 className="mb-3">Goal tracking toitumiskava</h4>
@@ -108,7 +108,7 @@ const MainView = () => {
             <div className="col-3">
               
               <div className="main-success-story-item">
-                <div className="main-success-story-item-img" style={{ backgroundImage: `url(${require('../../assets/img/sport-woman-gym.jpg')})` }}></div>
+                <div className="main-success-story-item-img" style={{ backgroundImage: `url('https://fitstg.s3.eu-central-1.amazonaws.com/sport-woman-gym.jpg')` }}></div>
                 
                 <h6 className="main-success-story-item-name">Jaanika Paimre, 47</h6>
                 
@@ -122,7 +122,7 @@ const MainView = () => {
             <div className="col-3">
               
               <div className="main-success-story-item">
-                <div className="main-success-story-item-img" style={{ backgroundImage: `url(${require('../../assets/img/sport-woman-gym.jpg')})` }}></div>
+                <div className="main-success-story-item-img" style={{ backgroundImage: `url('https://fitstg.s3.eu-central-1.amazonaws.com/sport-woman-gym.jpg')` }}></div>
                 
                 <h6 className="main-success-story-item-name">Jaanika Paimre, 47</h6>
                 
@@ -136,7 +136,7 @@ const MainView = () => {
             <div className="col-3">
               
               <div className="main-success-story-item">
-                <div className="main-success-story-item-img" style={{ backgroundImage: `url(${require('../../assets/img/sport-woman-gym.jpg')})` }}></div>
+                <div className="main-success-story-item-img" style={{ backgroundImage: `url('https://fitstg.s3.eu-central-1.amazonaws.com/sport-woman-gym.jpg')` }}></div>
                 
                 <h6 className="main-success-story-item-name">Jaanika Paimre, 47</h6>
                 
@@ -150,7 +150,7 @@ const MainView = () => {
             <div className="col-3">
               
               <div className="main-success-story-item">
-                <div className="main-success-story-item-img" style={{ backgroundImage: `url(${require('../../assets/img/sport-woman-gym.jpg')})` }}></div>
+                <div className="main-success-story-item-img" style={{ backgroundImage: `url(https://fitstg.s3.eu-central-1.amazonaws.com/sport-woman-gym.jpg)` }}></div>
                 
                 <h6 className="main-success-story-item-name">Jaanika Paimre, 47</h6>
                 

@@ -7,7 +7,7 @@ import InfoStep from './InfoStep';
 import JoinStep from './JoinStep';
 import Modal from 'components/common/Modal';
 
-import styles from './RegisterModal.module.sass';
+import './RegisterModal.sass';
 
 const RegisterModal = (props: any) => {
 
@@ -37,12 +37,12 @@ const RegisterModal = (props: any) => {
     <Modal
       isOpen={props.isOpen}
       onClose={props.onClose}
-      className={styles.registerModal}
+      className="registerModal"
     >
-      <Modal.Main className={styles.registerModal_main}>
+      <Modal.Main className="registerModal_main">
         <Steps step={registerStep} />
 
-        <div className={styles.registerModal_steps_content}>
+        <div className="registerModal_steps_content">
           {getRegisterStepView(registerStep)}
         </div>
       </Modal.Main>

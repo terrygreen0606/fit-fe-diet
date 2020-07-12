@@ -1,9 +1,9 @@
 import React from 'react';
 
-import styles from './MainContent.module.sass';
+import './MainContent.sass';
 
 const MainContent = ({ children }) => (
-  <main className={styles.mainContentWrapper}>
+  <main className="mainContentWrapper">
     {children}
   </main>
 );

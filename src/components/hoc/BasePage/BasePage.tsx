@@ -1,10 +1,10 @@
 import React from 'react';
 
-import styles from './BasePage.module.sass';
+import './BasePage.sass';
 
 const BasePage = ({ children }: any) => (
-  <section className={styles.basePageLayoutWrapper}>
-    <div className={styles.basePageMainContentWrapper}>
+  <section className="basePageLayoutWrapper">
+    <div className="basePageMainContentWrapper">
       {children}
     </div>
   </section>

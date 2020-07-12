@@ -7,7 +7,7 @@ import AsyncSelect from 'react-select/async';
 import FormLabel from '../FormLabel';
 import FormInvalidMessage from '../FormInvalidMessage';
 
-import styles from './SelectInput.module.sass';
+import './SelectInput.sass';
 
 // Select Props
 // https://react-select.com/props
@@ -53,26 +53,26 @@ const SelectInput = (props: SelectInputProps) => {
   const Control = controlProps => (
     <components.Control
       {...controlProps}
-      className={classNames(styles.fgSelectControl, {
-        [styles.fgSelectControl_block]: props.block,
-        [styles.fgSelectControl_focused]: controlProps.isFocused || controlProps.hasValue,
-        [styles.fgSelectControl_has_value]: controlProps.hasValue,
-        [styles.fgSelectControl_disabled]: controlProps.isDisabled,
-        [styles.fgSelectControl_readonly]: props.readOnly,
-        [styles.fgSelectControl_is_invalid]: props.invalid || (props.errors && props.errors.length > 0)
+      className={classNames("fgSelectControl", {
+        "fgSelectControl_block": props.block,
+        "fgSelectControl_focused": controlProps.isFocused || controlProps.hasValue,
+        "fgSelectControl_has_value": controlProps.hasValue,
+        "fgSelectControl_disabled": controlProps.isDisabled,
+        "fgSelectControl_readonly": props.readOnly,
+        "fgSelectControl_is_invalid": props.invalid || (props.errors && props.errors.length > 0)
       })}
     />
   );
 
   const SingleValue = ({ children, ...singleValueProps }) => (
-    <components.SingleValue {...singleValueProps} className={styles.fgSelectSingleValue}>{children}</components.SingleValue>
+    <components.SingleValue {...singleValueProps} className="fgSelectSingleValue">{children}</components.SingleValue>
   );
 
   const Menu = menuProps => (
     <components.Menu
       {...menuProps}
-      className={classNames(styles.fgSelectMenu, {
-        [styles.fgSelectMenu_block]: props.block
+      className={classNames("fgSelectMenu", {
+        "fgSelectMenu_block": props.block
       })}
     >
       {menuProps.children}
@@ -82,10 +82,10 @@ const SelectInput = (props: SelectInputProps) => {
   const Option = optionProps => (
     <components.Option
       {...optionProps}
-      className={classNames(styles.fgSelectOption, {
-        [styles.fgSelectOption_selected]: optionProps.isSelected,
-        [styles.fgSelectOption_focused]: optionProps.isFocused,
-        [styles.fgSelectOption_selected_disabled]: optionProps.isDisabled
+      className={classNames("fgSelectOption", {
+        "fgSelectOption_selected": optionProps.isSelected,
+        "fgSelectOption_focused": optionProps.isFocused,
+        "fgSelectOption_selected_disabled": optionProps.isDisabled
       })}
     />
   );
@@ -93,14 +93,14 @@ const SelectInput = (props: SelectInputProps) => {
   const IndicatorsContainer = indicatorsContainerProps => (
     <components.IndicatorsContainer
       {...indicatorsContainerProps}
-      className={styles.fgSelectIndicatorsContainer}
+      className="fgSelectIndicatorsContainer"
     />
   );
 
   const IndicatorSeparator = ({ indicatorSeparatorProps }) => (
     <span
       {...indicatorSeparatorProps}
-      className={styles.fgSelectSeprator}
+      className="fgSelectSeprator"
     />
   );
 

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // Components
 import Button from 'components/common/Forms/Button';
 
-import styles from '../RegisterModal.module.sass';
+import '../RegisterModal.sass';
 
 import { ReactComponent as LoseIcon } from 'assets/img/icons/lose-icon.svg';
 import { ReactComponent as KeepIcon } from 'assets/img/icons/keep-icon.svg';
@@ -22,102 +22,102 @@ const GoalStep = (props: any) => {
   const [registerGoal, setRegisterGoal] = useState('LIFT');
 
   return (
-    <div className={styles.register_goal}>
-      <h6 className={`${styles.register_title} mb-4`}>We will help you achieve the chosen goal</h6>
+    <div className="register_goal">
+      <h6 className="register_title mb-4">We will help you achieve the chosen goal</h6>
 
-      <div className={styles.register_goals_list}>
+      <div className="register_goals_list">
         <Button 
-          className={styles.register_goal_btn} 
+          className="register_goal_btn" 
           color="primary" 
           block
           onClick={e => setRegisterGoal('LOSE')}
           outline={registerGoal !== 'LOSE'}
         >
           <span>
-            <LoseIcon className={styles.register_goal_icon} />
+            <LoseIcon className="register_goal_icon" />
             Lose weight
           </span>
           <AngleRightIcon />
         </Button>
 
         <Button 
-          className={styles.register_goal_btn} 
+          className="register_goal_btn" 
           color="primary" 
           block
           onClick={e => setRegisterGoal('KEEP')}
           outline={registerGoal !== 'KEEP'}
         >
           <span>
-            <KeepIcon className={styles.register_goal_icon} />
+            <KeepIcon className="register_goal_icon" />
             Keep the weight
           </span>
           <AngleRightIcon />
         </Button>
 
         <Button 
-          className={styles.register_goal_btn} 
+          className="register_goal_btn" 
           color="primary" 
           block
           onClick={e => setRegisterGoal('LIFT')}
           outline={registerGoal !== 'LIFT'}
         >
           <span>
-            <LiftIcon className={styles.register_goal_icon} />
+            <LiftIcon className="register_goal_icon" />
             Lift the weight
           </span>
           <AngleRightIcon />
         </Button>
       </div>
 
-      <h6 className={`${styles.register_goal_title} mt-5 mb-3`}>I'm not eating:</h6>
+      <h6 className={`"register_goal_title" mt-5 mb-3`}>I'm not eating:</h6>
 
-      <div className={styles.register_eating_list}>
-        <div className={styles.register_eating_item}>
+      <div className="register_eating_list">
+        <div className="register_eating_item">
           <span>
-            <MilkIcon className={styles.register_eating_item_icon} />
-            <span className={styles.register_eating_item_label}>Milk</span>
+            <MilkIcon className="register_eating_item_icon" />
+            <span className="register_eating_item_label">Milk</span>
           </span>
-          <CrossIcon className={styles.register_eating_item_cross} />
+          <CrossIcon className="register_eating_item_cross" />
         </div>
 
-        <div className={styles.register_eating_item}>
+        <div className="register_eating_item">
           <span>
-            <MeatIcon className={styles.register_eating_item_icon} />
-            <span className={styles.register_eating_item_label}>Meat</span>
+            <MeatIcon className="register_eating_item_icon" />
+            <span className="register_eating_item_label">Meat</span>
           </span>
-          <CrossIcon className={styles.register_eating_item_cross} />
+          <CrossIcon className="register_eating_item_cross" />
         </div>
 
-        <div className={styles.register_eating_item}>
+        <div className="register_eating_item">
           <span>
-            <FishIcon className={styles.register_eating_item_icon} />
-            <span className={styles.register_eating_item_label}>Fish</span>
+            <FishIcon className="register_eating_item_icon" />
+            <span className="register_eating_item_label">Fish</span>
           </span>
-          <CrossIcon className={styles.register_eating_item_cross} />
+          <CrossIcon className="register_eating_item_cross" />
         </div>
 
-        <div className={styles.register_eating_item}>
+        <div className="register_eating_item">
           <span>
-            <CookIcon className={styles.register_eating_item_icon} />
-            <span className={styles.register_eating_item_label}>Chronic diseases</span>
+            <CookIcon className="register_eating_item_icon" />
+            <span className="register_eating_item_label">Chronic diseases</span>
           </span>
-          <CrossIcon className={styles.register_eating_item_cross} />
+          <CrossIcon className="register_eating_item_cross" />
         </div>
 
-        <div className={styles.register_eating_item}>
+        <div className="register_eating_item">
           <span>
-            <BreadIcon className={styles.register_eating_item_icon} />
-            <span className={styles.register_eating_item_label}>Gluten</span>
+            <BreadIcon className="register_eating_item_icon" />
+            <span className="register_eating_item_label">Gluten</span>
           </span>
-          <CrossIcon className={styles.register_eating_item_cross} />
+          <CrossIcon className="register_eating_item_cross" />
         </div>
 
-        <div className={styles.register_eating_item}>
+        <div className="register_eating_item">
           <span>
-            <CakeIcon className={styles.register_eating_item_icon} />
-            <span className={styles.register_eating_item_label}>Deabetes</span>
+            <CakeIcon className="register_eating_item_icon" />
+            <span className="register_eating_item_label">Deabetes</span>
           </span>
-          <CrossIcon className={styles.register_eating_item_cross} />
+          <CrossIcon className="register_eating_item_cross" />
         </div>
       </div>
 

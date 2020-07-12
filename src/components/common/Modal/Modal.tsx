@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from 'react';
 import classNames from 'classnames';
 
-import styles from './Modal.module.sass';
+import './Modal.sass';
 
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon.svg';
 
@@ -39,20 +39,20 @@ const Modal = (props: Props) => {
   };
 
   return (
-    <div className={styles.dialogWrap}>
-      <div className={styles.dialogBackdrop} onClick={onClickByBackdrop} />
-      <div className={classNames(styles.dialogContainer, {
+    <div className="dialogWrap">
+      <div className="dialogBackdrop" onClick={onClickByBackdrop} />
+      <div className={classNames("dialogContainer", {
         [className]: className
       })}>
-        <header className={styles.dialogHeader}>
+        <header className="dialogHeader">
           {title && (
-            <div className={styles.dialogHeaderWrap}>
-              <p className={styles.dialogTitle}>{title}</p>
+            <div className="dialogHeaderWrap">
+              <p className="dialogTitle">{title}</p>
             </div>
           )}
 
           {withCloseBtn ? (
-            <button className={styles.dialogHeaderClose} type="button" onClick={onClose}>
+            <button className="dialogHeaderClose" type="button" onClick={onClose}>
               <CrossIcon />
             </button>
           ) : null}

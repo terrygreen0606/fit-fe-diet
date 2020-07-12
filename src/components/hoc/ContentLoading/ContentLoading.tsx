@@ -41,10 +41,10 @@ const ContentLoading = (props: ContentLoadingProps) => {
   ) : (
     <>
       {loadingOverlay ? (
-        <div className={classNames(styles.loadingOverlay, {
-          [styles.loadingOverlay_is_loading]: isLoading
+        <div className={classNames("loadingOverlay", {
+          "loadingOverlay_is_loading": isLoading
         })}>
-          <Spinner className={styles.loadingSpinner} width={36} height={36} color="#00C5D1" />
+          <Spinner className="loadingSpinner" width={36} height={36} color="#00C5D1" />
           {children}
         </div>
       ) : (

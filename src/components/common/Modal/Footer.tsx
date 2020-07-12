@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import styles from './Modal.module.sass';
+import './Modal.sass';
 
 const Footer = ({ children, className }) => {
   return (
-    <footer className={classNames(styles.dialogFooter, {
+    <footer className={classNames("dialogFooter", {
       [className]: className
     })}>
-      <div className={styles.dialogFooterBtns}>
+      <div className="dialogFooterBtns">
         {children}
       </div>
     </footer>

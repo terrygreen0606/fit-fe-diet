@@ -78,10 +78,10 @@ const LoginView = (props: any) => {
         onClose={() => setRegisterModalOpen(false)}
       />
 
-      <div className={styles.loginScreen}>
-        <h3 className={styles.loginScreen_title}>Login</h3>
+      <div className="loginScreen">
+        <h3 className="loginScreen_title">Login</h3>
 
-        <form className={styles.loginScreen_form} onSubmit={e => loginSubmit(e)}>
+        <form className="loginScreen_form" onSubmit={e => loginSubmit(e)}>
           <FormGroup>
             <InputField
               name="email"
@@ -112,7 +112,7 @@ const LoginView = (props: any) => {
           <span className="link link-bold mt-5">Forgot your password? Remind me</span>
 
           <Button 
-            className={styles.loginScreen_btn} 
+            className="loginScreen_btn" 
             type="submit" 
             color="primary" 
             size="lg"

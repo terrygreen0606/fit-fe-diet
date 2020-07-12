@@ -66,16 +66,16 @@ const JoinStep = (props: any) => {
   };
 
   return (
-    <div className={styles.register_join}>
-      <h6 className={`${styles.register_title} mb-5`}>Your personal plan is ready. Choose how you want to join</h6>
+    <div className="register_join">
+      <h6 className="register_title mb-5">Your personal plan is ready. Choose how you want to join</h6>
 
       <CustomCheckbox label={<>I have read the <span className="link">private policy</span> and <span className="link">terms and conditions</span></>} />
 
-      <div className={styles.register_join_or}>
-        <span className={styles.register_join_or_txt}>or</span>
+      <div className="register_join_or">
+        <span className="register_join_or_txt">or</span>
       </div>
       
-      <form className={styles.register_join_form} onSubmit={e => registerJoinSubmit(e)}>
+      <form className="register_join_form" onSubmit={e => registerJoinSubmit(e)}>
         <FormGroup inline>
           <FormLabel>Name*</FormLabel>
           <InputField 
@@ -131,7 +131,7 @@ const JoinStep = (props: any) => {
 
         <div className="text-center mt-5">
           <Button 
-            className={styles.registerBtn}
+            className="registerBtn"
             type="submit" 
             block 
             size="lg"

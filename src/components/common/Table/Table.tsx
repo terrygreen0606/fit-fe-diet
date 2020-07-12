@@ -8,7 +8,7 @@ import { localStringToNumber } from 'utils/helpers';
 // Components
 import PageLoader from '../PageLoader';
 
-import styles from './Table.module.sass';
+import './Table.sass';
 
 type TableProps = {
   columns?: any,
@@ -93,10 +93,10 @@ const Table = (props: TableProps) => {
   }, [props.columns, props.rows, props.isFullscreen, props.loading]);
 
   return (
-    <div ref={tableWrapperRef} className={styles.tableCustomWrapper}>
-      <table ref={tableRef} className={classNames(styles.tableCustom, {
-        [styles.tableCustom_Resizable]: props.resizable,
-        [styles.tableCustom_Striped]: props.striped
+    <div ref={tableWrapperRef} className="tableCustomWrapper">
+      <table ref={tableRef} className={classNames("tableCustom", {
+        "tableCustom_Resizable": props.resizable,
+        "tableCustom_Striped": props.striped
       })}>
         {props.columns && (
           <thead>
@@ -110,7 +110,7 @@ const Table = (props: TableProps) => {
 
         <tbody
           className={
-            (props.loading && props.rows && props.rows.length >= 0)?styles.overlay:null
+            (props.loading && props.rows && props.rows.length >= 0) ? "overlay" : null
           }
         >
           {(props.loading && (!props.rows || props.rows.length === 0)) ? (

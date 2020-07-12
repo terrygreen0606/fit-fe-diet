@@ -1,7 +1,7 @@
 import React, { ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 
-import styles from './CustomRadio.module.sass';
+import './CustomRadio.sass';
 
 interface CustomRadioProps {
   type?: 'checkbox',
@@ -50,10 +50,10 @@ const CustomRadio = (props: CustomRadioProps) => {
   return (
     <label
       htmlFor={htmlFor}
-      className={classNames(className, styles.customRadio, {
-        [styles.radioDisabled]: props.disabled,
-        [styles.radioInline]: inline,
-        [styles.customRadio_is_invalid]: invalid
+      className={classNames(className, "customRadio", {
+        "radioDisabled": props.disabled,
+        "radioInline": inline,
+        "customRadio_is_invalid": invalid
       })}
     >
       {label && label}
@@ -64,7 +64,7 @@ const CustomRadio = (props: CustomRadioProps) => {
         onChange={onChange}
       />
 
-      <span className={styles.radiomark} />
+      <span className="radiomark" />
     </label>
   );
 };
