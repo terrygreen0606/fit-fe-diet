@@ -62,7 +62,7 @@ const NutritionPlanView = () => {
       <section className="nutrition-plan-card-list-sect">
         <div className="container">
           <div className="row">
-            <div className="nutrition-plan-card-list-col">
+            <div className="nutrition-plan-card-list-col nutrition-plan-list">
               <div className="row">
                 <div className="col-8 mb-5">
                   

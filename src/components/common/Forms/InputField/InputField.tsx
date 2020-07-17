@@ -27,6 +27,7 @@ interface InputFieldProps {
   minLength?: number,
   rows?: number,
   cols?: number,
+  searchBar?: boolean,
   maxLength?: number,
   min?: number,
   max?: number,
@@ -120,6 +121,7 @@ const InputField = (props: InputFieldProps) => {
     errors,
     value,
     disabled,
+    searchBar,
     readOnly,
     innerRef,
     ...attributes
@@ -139,6 +141,10 @@ const InputField = (props: InputFieldProps) => {
     attributes.type = 'text';
   }
 
+  if (searchBar && attributes.placeholder) {
+    attributes.placeholder = 'Search...';
+  }
+
   const finalAttributes = {
     ...attributes,
     disabled: disabled || readOnly,
@@ -147,7 +153,8 @@ const InputField = (props: InputFieldProps) => {
     mask,
     className: classNames(className, 'fg-input', {
       'input-block': block,
-      'is-invalid': invalid || (errors && errors.length > 0)
+      'is-invalid': invalid || (errors && errors.length > 0),
+      'is-searchbar': searchBar
     }),
     onChange,
     onBlur,
