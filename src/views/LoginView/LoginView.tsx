@@ -14,7 +14,7 @@ import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'components/common/Forms/FormValidator';
 
-import styles from './LoginView.module.sass';
+import styles from './LoginView.sass';
 
 const LoginView = (props: any) => {
 
