@@ -9,6 +9,7 @@ import Layout from 'components/hoc/Layout';
 import LoginView from './views/LoginView';
 import HomeView from './views/HomeView';
 import MainView from './views/MainView';
+import NutritionPlanView from './views/NutritionPlanView';
 import NotFound from './views/NotFound';
 
 const Routes = () => (
@@ -17,6 +18,14 @@ const Routes = () => (
         path="/"
         component={(props: any) => (
           <Layout {...props}><MainView {...props} /></Layout>
+        )}
+        exact
+      />
+
+      <PrivateRoute
+        path="/nutrition/plan"
+        component={(props: any) => (
+          <Layout {...props}><NutritionPlanView {...props} /></Layout>
         )}
         exact
       />

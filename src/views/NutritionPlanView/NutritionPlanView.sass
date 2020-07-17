@@ -1,0 +1,164 @@
+@import '../../assets/sass/vars'
+
+
+.how-nutrition-plan-works
+  &-sect
+    font-size: 16px
+    .container
+      padding: 40px 0 50px
+      background-color: $steel-blue
+      color: #fff
+      h5, h4
+        color: #fff
+      .row
+        padding: 0 55px
+        justify-content: space-between
+  &-col
+    flex: 0 0 20%
+    max-width: 20%
+  &-icon
+    width: 70px
+    fill: #fff
+    path
+      fill: #fff
+    &-wrap
+      display: flex
+      align-items: flex-end
+      justify-content: flex-start
+      height: 100px
+      padding-left: 35px
+
+.nutrition-plan
+  &-card-list
+    &-sect
+      .nutrition-plan-card
+        margin-bottom: 65px  
+    &-col
+      flex: 0 0 calc(62% - 82px)
+      max-width: calc(62% - 82px)
+  &-info-col
+    flex: 0 0 38%
+    max-width: 38%
+    margin-left: 82px
+
+.nutrition-plan
+  &-controls
+    margin-left: 25px
+    &-list
+      display: flex
+      justify-content: flex-end
+      align-items: center
+    &-item
+      &:not(:last-child)
+        margin-right: 10px
+    &-icon
+      width: 30px
+      cursor: pointer
+      fill: #000
+      path
+        fill: #000
+      &:hover
+        fill: $caribbean-green
+        path
+          fill: $caribbean-green
+
+.nutrition-plan-add-recipe-card
+  position: relative
+  padding: 24px 50px 0
+  cursor: pointer
+  &-img
+    position: relative
+    bottom: -6px
+    width: 70%
+  &-btn
+    position: absolute
+    bottom: -25px
+    right: 25px
+    display: inline-block
+    width: 84px
+    height: 84px
+    border: 19px solid #fff
+    border-radius: 100%
+    background-color: $caribbean-green
+    background-image: url('../../assets/img/icons/plus-icon.svg')
+    background-size: 40%
+    background-position: center center
+    background-repeat: no-repeat
+
+.nutrition-plan-activity
+  &-list
+    display: flex
+  &-card
+    flex: 0 0 calc(38% - 47px)
+    position: relative
+    padding: 39px 12px 25px
+    text-align: center
+    cursor: pointer
+    &:not(:last-child)
+      margin-right: 47px
+    &:hover, &.active
+      color: #fff
+      box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+      .nutrition-plan-activity-card
+        &-icon
+          fill: #fff
+          path
+            fill: #fff
+          &-wrap
+            border-color: $caribbean-green
+            background-color: $caribbean-green
+        &-title
+          color: $caribbean-green
+    &.active
+      .nutrition-plan-activity-card-checkmark
+        opacity: 1
+    &-title
+      margin-top: 23px
+      font-size: 
+      line-height: 22px
+      font-weight: 400
+    &-checkmark
+      position: absolute
+      top: -12px
+      right: -12px
+      display: inline-block
+      width: 43px
+      height: 43px
+      background-color: $caribbean-green
+      background-image: url('../../assets/img/icons/check-icon.svg')
+      background-repeat: no-repeat
+      background-position: center center
+      border-radius: 100%
+      box-shadow: 3px -3px 10px rgba(0, 0, 0, 0.08)
+      border: 8px solid #fff
+      opacity: 0
+    &-icon
+      width: 80%
+      fill: #000
+      path
+        fill: #000
+      &-wrap
+        display: inline-flex
+        justify-content: center
+        align-items: center
+        width: 73px
+        height: 76px
+        border: 1px solid #EDEDED
+        border-radius: 13px
+        +mt(.2s)
+
+.nutrition-plan
+  &-adherence-diet-card, &-usage-time-card, &-diet-settings-card
+    display: flex
+    flex-wrap: wrap
+    padding: 25px 22px
+    &-title
+      flex: 0 0 100%
+      margin-bottom: 30px
+    &-img
+      flex: 0 0 20%
+      text-align: center
+      img
+        max-width: 70%
+    &-content
+      flex: 0 0 80%

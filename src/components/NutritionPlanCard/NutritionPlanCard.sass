@@ -1,0 +1,128 @@
+@import '../../assets/sass/vars'
+
+
+.nutrition-plan-card
+  position: relative
+  padding: 13px 17px
+  cursor: pointer
+  &-image
+    display: block
+    position: relative
+    height: 160px
+    background-size: cover
+    background-position: center center
+    background-repeat: no-repeat
+    border-radius: 27px
+    &::before
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.71) 100%)
+      border-radius: 27px
+    &::after
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      background-image: url('../../assets/img/icons/cursor-touch-icon.svg')
+      background-repeat: no-repeat
+      background-position: center center
+      background-size: 35px
+  &-head
+    display: flex
+    margin-top: 19px
+  &-controls
+    &-list
+      width: 100%
+      display: flex
+      justify-content: flex-end
+      align-items: center
+    &-item
+      &:not(:last-child)
+        margin-right: 10px
+    &-icon
+      width: 30px
+      cursor: pointer
+  &-descr
+    position: relative
+    &::after
+      content: ''
+      position: absolute
+      bottom: -10px
+      left: 0
+      width: 80%
+      border-bottom: 1px solid $steel-blue
+  &-bottom
+    margin-top: 15px
+  &-time
+    font-size: 14px
+    line-height: 17px
+    color: #000
+  &-mark
+    display: inline-block
+    width: 8px
+    height: 8px
+    margin: 0 5px
+    border-radius: 100%
+    background-color: $mint-green
+  &-price
+    font-size: 14px
+    line-height: 17px
+    color: #000
+  &.active
+    .nutrition-plan-card-checkmark
+      background-color: $caribbean-green
+      background-image: url('../../assets/img/icons/check-icon.svg')
+  &.cross
+    opacity: .35
+    .nutrition-plan-card-checkmark
+      background-image: url('../../assets/img/icons/cross-icon-black.svg')
+      background-size: 38%
+      background-position: center center
+  &-checkmark
+    position: absolute
+    bottom: -20px
+    right: 26px
+    display: inline-block
+    width: 43px
+    height: 43px
+    border-radius: 100%
+    background-color: $ghost-white
+    border: 8px solid #fff
+    background-size: 60%
+    background-repeat: no-repeat
+    background-position: center center
+    box-shadow: 0px 3px 5px #BAC2D2
+    z-index: 1
+  &::before
+    content: ''
+    position: absolute
+    bottom: -34px
+    right: 14px
+    width: 68px
+    height: 68px
+    background-color: #fff
+    border-radius: 100%
+    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.08)
+    z-index: 0
+
+#nutrition-plan-reload-icon
+  opacity: .3
+  &:hover
+    opacity: 1
+
+#nutrition-plan-favorite-icon
+  display: inline-block
+  width: 25px
+  height: 25px
+  background-image: url('../../assets/img/icons/heart-outline-icon.svg')
+  background-size: contain
+  background-repeat: no-repeat
+  background-position: center center
+  &:hover, &.favorite
+    background-image: url('../../assets/img/icons/heart-filled-icon.svg')
