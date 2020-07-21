@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
-  hasFieldError
+  getFieldErrors as getFieldErrorsUtil
 } from 'utils';
+import { toast } from 'react-toastify';
+import axios from 'utils/axios';
+import { userLogin as userAuthLogin } from 'api';
 import { userLogin } from 'store/actions';
 
 // Components
@@ -12,7 +14,7 @@ import RegisterModal from 'components/RegisterModal';
 import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'components/common/Forms/FormValidator';
+import FormValidator from 'utils/FormValidator';
 
 import './LoginView.sass';
 
@@ -42,8 +44,6 @@ const LoginView = (props: any) => {
     );
   };
 
-  const hasError = (field: string, code?: string) => hasFieldError(loginErrors, field, code);
-
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, loginErrors);
 
   const loginSubmit = e => {
@@ -59,15 +59,23 @@ const LoginView = (props: any) => {
     if (!hasError) {
       setLoginLoading(true);
 
-      setTimeout(() => {
+      userAuthLogin(loginForm.email, loginForm.password).then(response => {
         setLoginLoading(false);
 
-        const token = 'token777';
-        localStorage.setItem('authToken', token);
-        props.userLogin(token);
-        
-        props.history.push('/');
-      }, 400);
+        const token = response.data && response.data.access_token ? response.data.access_token : null;
+
+        if (token) {
+          localStorage.setItem('authToken', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+          props.userLogin(token);
+          props.history.push('/');
+        } else {
+          toast.error('Error occurred when Sign In User');
+        }
+      }).catch(error => {
+        setLoginLoading(false);
+        toast.error('Error occurred when Sign In User');
+      });
     }
   };
 

@@ -21,7 +21,7 @@ export const deepObjectMerge = (destination, source) => {
 };
 
 export const getMonthName = (monthNum) => {
-  const monthsNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+  const monthsNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   let monthName = '';
 
   if (monthsNames[monthNum - 1]) {
@@ -32,7 +32,7 @@ export const getMonthName = (monthNum) => {
 };
 
 export const getDayEnding = (iNumber) => {
-  let sEnding, i, aEndings = ['день', 'дня', 'дней']; // 1 4 5
+  let sEnding, i, aEndings = ['day', 'days', 'days']; // 1 4 5
   
   iNumber = Number(iNumber) % 100;
 

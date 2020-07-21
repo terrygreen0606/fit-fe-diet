@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createBrowserHistory } from 'history';
 
 import { authCheck } from 'store/actions';
 
@@ -10,8 +9,6 @@ import Routes from './Routes';
 import FullPageLoader from './components/common/FullPageLoader';
 
 import './assets/sass/styles.sass';
-
-const history = createBrowserHistory();
 
 const App = (props: any) => {
   useEffect(() => {

@@ -103,7 +103,7 @@ const NutritionPlanView = () => {
               
               <div className="nutrition-plan-add-recipe-card card-bg">
                 <h4>Now you can add your own recipes to the diet plan</h4>
-                <img src={require('../../assets/img/recipe-preview-img.jpg')} className="nutrition-plan-add-recipe-card-img" />
+                <img src={require('../../assets/img/recipe-preview-img.jpg')} className="nutrition-plan-add-recipe-card-img" alt="" />
                 <span className="nutrition-plan-add-recipe-card-btn"></span>
               </div>
 
@@ -140,7 +140,7 @@ const NutritionPlanView = () => {
 
                 <div className="nutrition-plan-adherence-diet-card-content">
                   <p><b>0%</b> of the plan completed today</p>
-                  <a href="" className="link">See last week's report</a>
+                  <a href="/" className="link">See last week's report</a>
                 </div>
               </div>
 

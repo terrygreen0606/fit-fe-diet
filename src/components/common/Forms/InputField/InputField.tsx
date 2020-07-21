@@ -188,9 +188,9 @@ const InputField = (props: InputFieldProps) => {
 
       {input}
 
-      {errors && errors[0] && (
+      {errors && errors.length > 0 ? (
         <FormInvalidMessage>{errors[0].message}</FormInvalidMessage>
-      )}
+      ) : null}
     </>
   );
 };

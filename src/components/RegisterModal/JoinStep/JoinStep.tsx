@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
-  hasFieldError
+  getFieldErrors as getFieldErrorsUtil
 } from 'utils';
+import axios from 'utils/axios';
+import { toast } from 'react-toastify';
+import { userSignup } from 'api';
+import { userLogin } from 'store/actions';
 
 // Components
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
@@ -11,39 +15,31 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'components/common/Forms/FormValidator';
+import FormValidator from 'utils/FormValidator';
 
-import styles from '../RegisterModal.module.sass';
+import '../RegisterModal.sass';
 
 const JoinStep = (props: any) => {
 
-  const [registerJoinForm, setRegisterJoinForm] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    password: ''
-  });
-
-  const [loginErrors, setLoginErrors] = useState([]);
+  const [registerJoinErrors, setRegisterJoinErrors] = useState([]);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState(false);
+  const [appRulesAccepted, setAppRulesAccepted] = useState(null);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
       value,
       event,
-      registerJoinForm,
-      setRegisterJoinForm,
-      loginErrors,
-      setLoginErrors,
+      props.registerData,
+      props.setRegisterData,
+      registerJoinErrors,
+      setRegisterJoinErrors,
       element
     );
   };
 
-  const hasError = (field: string, code?: string) => hasFieldError(loginErrors, field, code);
-
-  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, loginErrors);
+  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, registerJoinErrors);
 
   const registerJoinSubmit = e => {
     e.preventDefault();
@@ -53,15 +49,37 @@ const JoinStep = (props: any) => {
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    setLoginErrors([...errors]);
+    setRegisterJoinErrors([...errors]);
 
-    if (!hasError) {
+    if (!appRulesAccepted) {
+      setAppRulesAccepted(false);
+    }
+
+    if (!hasError && appRulesAccepted) {
       setRegisterJoinLoading(true);
 
-      setTimeout(() => {
+      userSignup({
+        ...props.registerData,
+        weight: props.registerData.weight ? props.registerData.weight * 1000 : props.registerData.weight,
+        height: props.registerData.height ? props.registerData.height * 10 : props.registerData.height,
+        weight_goal: props.registerData.weight_goal ? props.registerData.weight_goal * 1000 : props.registerData.weight_goal,
+      }).then(response => {
         setRegisterJoinLoading(false);
-        alert('REGISTERED');
-      }, 400);
+
+        const token = response.data && response.data.access_token ? response.data.access_token : null;
+
+        if (token) {
+          localStorage.setItem('authToken', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+          props.userLogin(token);
+          props.modalClose();
+        } else {
+          toast.error('Error while registering user');
+        }
+      }).catch(error => {
+        setRegisterJoinLoading(false);
+        toast.error('Error while registering user');
+      });
     }
   };
 
@@ -69,7 +87,11 @@ const JoinStep = (props: any) => {
     <div className="register_join">
       <h6 className="register_title mb-5">Your personal plan is ready. Choose how you want to join</h6>
 
-      <CustomCheckbox label={<>I have read the <span className="link">private policy</span> and <span className="link">terms and conditions</span></>} />
+      <CustomCheckbox 
+        invalid={appRulesAccepted === false} 
+        label={<>I have read the <span className="link">private policy</span> and <span className="link">terms and conditions</span></>}
+        onChange={e => setAppRulesAccepted(e.target.checked)}
+      />
 
       <div className="register_join_or">
         <span className="register_join_or_txt">or</span>
@@ -81,10 +103,23 @@ const JoinStep = (props: any) => {
           <InputField 
             block 
             name="name"
-            value={registerJoinForm.name}
+            value={props.registerData.name}
             data-validate='["required"]'
             onChange={e => validateOnChange('name', e.target.value, e)}
             errors={getFieldErrors('name')}
+            placeholder=""
+          />
+        </FormGroup>
+
+        <FormGroup inline>
+          <FormLabel>Surname*</FormLabel>
+          <InputField 
+            block 
+            name="surname"
+            value={props.registerData.surname}
+            data-validate='["required"]'
+            onChange={e => validateOnChange('surname', e.target.value, e)}
+            errors={getFieldErrors('surname')}
             placeholder=""
           />
         </FormGroup>
@@ -94,7 +129,7 @@ const JoinStep = (props: any) => {
           <InputField 
             block 
             name="email"
-            value={registerJoinForm.email}
+            value={props.registerData.email}
             data-validate='["required", "email"]'
             onChange={e => validateOnChange('email', e.target.value, e)}
             errors={getFieldErrors('email')}
@@ -107,8 +142,8 @@ const JoinStep = (props: any) => {
           <InputField 
             block 
             name="phone"
-            value={registerJoinForm.phone}
-            data-validate='["required"]'
+            value={props.registerData.phone}
+            data-validate='["required", "number"]'
             onChange={e => validateOnChange('phone', e.target.value, e)}
             errors={getFieldErrors('phone')}
             placeholder=""
@@ -121,7 +156,7 @@ const JoinStep = (props: any) => {
             block 
             name="password"
             type="password"
-            value={registerJoinForm.password}
+            value={props.registerData.password}
             data-validate='["required"]'
             onChange={e => validateOnChange('password', e.target.value, e)}
             errors={getFieldErrors('password')}
@@ -157,4 +192,7 @@ const JoinStep = (props: any) => {
   );
 };
 
-export default JoinStep;
+export default connect(
+  null,
+  { userLogin }
+)(JoinStep);

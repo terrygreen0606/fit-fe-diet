@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 // Components
 import RegisterModal from 'components/RegisterModal';
-import Header from 'components/Header';
 import Button from 'components/common/Forms/Button';
 
 import './MainView.sass';

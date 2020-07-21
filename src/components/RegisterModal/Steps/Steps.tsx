@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import styles from './Steps.module.sass';
+import './Steps.sass';
 
 const Steps = (props: any) => {
   return (

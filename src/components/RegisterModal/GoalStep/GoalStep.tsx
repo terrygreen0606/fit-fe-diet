@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import uuid from 'react-uuid';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -19,7 +20,83 @@ import { ReactComponent as CakeIcon } from 'assets/img/icons/cake-icon.svg';
 
 const GoalStep = (props: any) => {
 
-  const [registerGoal, setRegisterGoal] = useState('LIFT');
+  const [ignoreCuisineIds, setIgnoreCuisineIds] = useState([]);
+
+  useEffect(() => {
+    if (props.registerData && props.registerData.ignore_cuisine_ids) {
+      setIgnoreCuisineIds(props.registerData.ignore_cuisine_ids.map(mealKey => ({
+        id: uuid(),
+        key: mealKey,
+        ...getMealItem(mealKey)
+      })));
+    }
+  }, [props.registerData]);
+
+  function getMealItem (mealId: string) {
+    let mealItem = {
+      title: '',
+      icon: null
+    };
+
+    switch (mealId) {
+      case 'milk':
+        mealItem = {
+          title: 'Milk',
+          icon: MilkIcon
+        };
+        break;
+
+      case 'meat':
+        mealItem = {
+          title: 'Meat',
+          icon: MeatIcon
+        };
+        break;
+
+      case 'fish':
+        mealItem = {
+          title: 'Fish',
+          icon: FishIcon
+        };
+        break;
+
+      case 'diseases':
+        mealItem = {
+          title: 'Diseases',
+          icon: CookIcon
+        };
+        break;
+
+      case 'gluten':
+        mealItem = {
+          title: 'Gluten',
+          icon: BreadIcon
+        };
+        break;
+
+      case 'deabetes':
+        mealItem = {
+          title: 'Deabetes',
+          icon: CakeIcon
+        };
+        break;
+    }
+
+    return mealItem;
+  }
+
+  const removeMealItem = (mealId: string) => {
+    const mealItem = ignoreCuisineIds.find(meal => meal.id === mealId);
+
+    if (mealItem) {
+      props.setRegisterData({
+        ...props.registerData,
+        ignore_cuisine_ids: props.registerData.ignore_cuisine_ids.filter(mealKey => mealKey !== mealItem.key)
+      });
+
+      setIgnoreCuisineIds(ignoreCuisineIds.filter(meal => meal.key !== mealItem.key));
+    }
+  };
 
   return (
     <div className="register_goal">
@@ -30,8 +107,11 @@ const GoalStep = (props: any) => {
           className="register_goal_btn" 
           color="primary" 
           block
-          onClick={e => setRegisterGoal('LOSE')}
-          outline={registerGoal !== 'LOSE'}
+          onClick={e => props.setRegisterData({
+            ...props.registerData,
+            goal: -1
+          })}
+          outline={props.registerData.goal !== -1}
         >
           <span>
             <LoseIcon className="register_goal_icon" />
@@ -44,8 +124,11 @@ const GoalStep = (props: any) => {
           className="register_goal_btn" 
           color="primary" 
           block
-          onClick={e => setRegisterGoal('KEEP')}
-          outline={registerGoal !== 'KEEP'}
+          onClick={e => props.setRegisterData({
+            ...props.registerData,
+            goal: 0
+          })}
+          outline={props.registerData.goal !== 0}
         >
           <span>
             <KeepIcon className="register_goal_icon" />
@@ -58,8 +141,11 @@ const GoalStep = (props: any) => {
           className="register_goal_btn" 
           color="primary" 
           block
-          onClick={e => setRegisterGoal('LIFT')}
-          outline={registerGoal !== 'LIFT'}
+          onClick={e => props.setRegisterData({
+            ...props.registerData,
+            goal: 1
+          })}
+          outline={props.registerData.goal !== 1}
         >
           <span>
             <LiftIcon className="register_goal_icon" />
@@ -69,56 +155,19 @@ const GoalStep = (props: any) => {
         </Button>
       </div>
 
-      <h6 className={`"register_goal_title" mt-5 mb-3`}>I'm not eating:</h6>
+      <h6 className="register_goal_title mt-5 mb-3">I'm not eating:</h6>
 
       <div className="register_eating_list">
-        <div className="register_eating_item">
-          <span>
-            <MilkIcon className="register_eating_item_icon" />
-            <span className="register_eating_item_label">Milk</span>
-          </span>
-          <CrossIcon className="register_eating_item_cross" />
-        </div>
+        {ignoreCuisineIds.map(({ id, title, icon: Icon }) => (
+          <div key={id} className="register_eating_item">
+            <span>
+              <Icon className="register_eating_item_icon" />
+              <span className="register_eating_item_label">{title}</span>
+            </span>
 
-        <div className="register_eating_item">
-          <span>
-            <MeatIcon className="register_eating_item_icon" />
-            <span className="register_eating_item_label">Meat</span>
-          </span>
-          <CrossIcon className="register_eating_item_cross" />
-        </div>
-
-        <div className="register_eating_item">
-          <span>
-            <FishIcon className="register_eating_item_icon" />
-            <span className="register_eating_item_label">Fish</span>
-          </span>
-          <CrossIcon className="register_eating_item_cross" />
-        </div>
-
-        <div className="register_eating_item">
-          <span>
-            <CookIcon className="register_eating_item_icon" />
-            <span className="register_eating_item_label">Chronic diseases</span>
-          </span>
-          <CrossIcon className="register_eating_item_cross" />
-        </div>
-
-        <div className="register_eating_item">
-          <span>
-            <BreadIcon className="register_eating_item_icon" />
-            <span className="register_eating_item_label">Gluten</span>
-          </span>
-          <CrossIcon className="register_eating_item_cross" />
-        </div>
-
-        <div className="register_eating_item">
-          <span>
-            <CakeIcon className="register_eating_item_icon" />
-            <span className="register_eating_item_label">Deabetes</span>
-          </span>
-          <CrossIcon className="register_eating_item_cross" />
-        </div>
+            <CrossIcon onClick={() => removeMealItem(id)} className="register_eating_item_cross" />
+          </div>  
+        ))}
       </div>
 
       <div className="text-center">

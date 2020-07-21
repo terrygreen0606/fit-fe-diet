@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
 import AuthRoute from './components/common/AuthRoute';
 
@@ -7,7 +7,6 @@ import AuthRoute from './components/common/AuthRoute';
 import BasePage from 'components/hoc/BasePage';
 import Layout from 'components/hoc/Layout';
 import LoginView from './views/LoginView';
-import HomeView from './views/HomeView';
 import MainView from './views/MainView';
 import NutritionPlanView from './views/NutritionPlanView';
 import RecipesView from './views/RecipesView';

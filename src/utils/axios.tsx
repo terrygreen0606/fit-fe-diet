@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = process.env.REACT_APP_API_URL || '';
+export const baseURL = 'https://stgby.fitlope.com/api';
 
 const instance = axios.create({
   baseURL

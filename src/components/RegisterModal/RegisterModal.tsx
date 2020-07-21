@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Components
 import Steps from './Steps';
@@ -9,24 +9,69 @@ import Modal from 'components/common/Modal';
 
 import './RegisterModal.sass';
 
+const registerDataDefault = {
+  email: '',
+  password: '',
+  name: '',
+  surname: '',
+  phone: '',
+  age: null,
+  gender: 'm',
+  measurement: 'si',
+  height: null,
+  weight: null,
+  weight_goal: null,
+  goal: -1,
+  ignore_cuisine_ids: ['milk', 'meat', 'fish', 'diseases', 'gluten', 'deabetes']
+};
+
 const RegisterModal = (props: any) => {
 
   const [registerStep, setRegisterStep] = useState('GOAL');
+
+  const [registerData, setRegisterData] = useState({...registerDataDefault});
+
+  useEffect(() => {
+    if (props.isOpen === false) {
+      setRegisterData({...registerDataDefault});
+    }
+  }, [props.isOpen]);
 
   const getRegisterStepView = (registerStepType: string) => {
     let registerStepView = null;
 
     switch (registerStepType) {
       case 'GOAL':
-        registerStepView = <GoalStep setRegisterStep={setRegisterStep} modalClose={props.onClose} />;
+        registerStepView = (
+          <GoalStep 
+            registerData={registerData} 
+            setRegisterData={setRegisterData}
+            setRegisterStep={setRegisterStep} 
+            modalClose={props.onClose}
+          />
+        );
         break;
       
       case 'JOIN':
-        registerStepView = <JoinStep setRegisterStep={setRegisterStep} modalClose={props.onClose} />;
+        registerStepView = (
+          <JoinStep 
+            registerData={registerData} 
+            setRegisterData={setRegisterData}
+            setRegisterStep={setRegisterStep} 
+            modalClose={props.onClose}
+          />
+        );
         break;
 
       case 'INFO':
-        registerStepView = <InfoStep setRegisterStep={setRegisterStep} modalClose={props.onClose} />;
+        registerStepView = (
+          <InfoStep 
+            registerData={registerData} 
+            setRegisterData={setRegisterData}
+            setRegisterStep={setRegisterStep} 
+            modalClose={props.onClose}
+          />
+        );
         break;
     }
 

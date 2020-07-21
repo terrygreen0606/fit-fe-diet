@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 
@@ -30,13 +31,19 @@ const Header = (props: any) => {
             <div className="col-10 text-right">
               
               <nav className="mainHeader_menuList">
-                <a href="#" className="mainHeader_menuList_item">Retseptid</a>
-                <a href="#" className="mainHeader_menuList_item">Edulood</a>
-                <a href="#" className="mainHeader_menuList_item">E-Pood</a>
-                <span className="mainHeader_menuList_item" onClick={e => props.userLogout()}>Logout</span>
+                <a href="/" className="mainHeader_menuList_item">Retseptid</a>
+                <a href="/" className="mainHeader_menuList_item">Edulood</a>
+                <a href="/" className="mainHeader_menuList_item">E-Pood</a>
+                {props.isAuthenticated ? (
+                  <span className="mainHeader_menuList_item" onClick={e => props.userLogout()}>Logout</span>
+                ) : (
+                  <Link to="/login" className="mainHeader_menuList_item">Login</Link>
+                )}
               </nav>
 
-              <Button className="ml-5" color="primary" onClick={() => setRegisterModalOpen(true)}>Register</Button>
+              {!props.isAuthenticated ? (
+                <Button className="ml-5" color="primary" onClick={() => setRegisterModalOpen(true)}>Register</Button>
+              ) : null}
 
             </div>
           </div>
@@ -47,6 +54,8 @@ const Header = (props: any) => {
 };
 
 export default connect(
-  null,
+  (state: any) => ({
+    isAuthenticated: state.auth.isAuthenticated
+  }),
   { userLogout }
 )(Header);

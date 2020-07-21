@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import {
   validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
-  hasFieldError
+  getFieldErrors as getFieldErrorsUtil
 } from 'utils';
 
 // Components 
@@ -12,7 +11,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'components/common/Forms/FormValidator';
+import FormValidator from 'utils/FormValidator';
 
 import '../RegisterModal.sass';
 
@@ -20,13 +19,6 @@ import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
 import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
 
 const InfoStep = (props: any) => {
-
-  const [registerInfoForm, setRegisterInfoForm] = useState({
-    weight: '',
-    height: '',
-    age: '',
-    sex: 'MALE'
-  });
 
   const [registerInfoErrors, setRegisterInfoErrors] = useState([]);
 
@@ -37,15 +29,13 @@ const InfoStep = (props: any) => {
       name,
       value,
       event,
-      registerInfoForm,
-      setRegisterInfoForm,
+      props.registerData,
+      props.setRegisterData,
       registerInfoErrors,
       setRegisterInfoErrors,
       element
     );
   };
-
-  const hasError = (field: string, code?: string) => hasFieldError(registerInfoErrors, field, code);
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, registerInfoErrors);
 
@@ -85,19 +75,19 @@ const InfoStep = (props: any) => {
               <>
                 <MaleIcon 
                   className={classNames("registerSexIcon", {
-                    "registerSexIcon_active": registerInfoForm.sex === 'MALE'
+                    "registerSexIcon_active": props.registerData.gender === 'm'
                   })}
                 />
 
                 Male
               </>
             }
-            value="MALE"
-            checked={registerInfoForm.sex === 'MALE'}
+            value="m"
+            checked={props.registerData.gender === 'm'}
             inline
-            onChange={e => setRegisterInfoForm({
-                ...registerInfoForm,
-                sex: e.target.value
+            onChange={e => props.setRegisterData({
+                ...props.registerData,
+                gender: e.target.value
               })
             }
           />
@@ -108,19 +98,19 @@ const InfoStep = (props: any) => {
               <>
                 <FemaleIcon 
                   className={classNames("registerSexIcon", {
-                    "registerSexIcon_active": registerInfoForm.sex === 'FEMALE'
+                    "registerSexIcon_active": props.registerData.gender === 'f'
                   })}
                 />
 
                 Female
               </>
             }
-            value="FEMALE"
-            checked={registerInfoForm.sex === 'FEMALE'}
+            value="f"
+            checked={props.registerData.gender === 'f'}
             inline
-            onChange={e => setRegisterInfoForm({
-                ...registerInfoForm,
-                sex: e.target.value
+            onChange={e => props.setRegisterData({
+                ...props.registerData,
+                gender: e.target.value
               })
             }
           />
@@ -131,8 +121,9 @@ const InfoStep = (props: any) => {
           <InputField
             block
             type="number"
+            min={1}
             name="age"
-            value={registerInfoForm.age}
+            value={props.registerData.age}
             data-validate='["required"]'
             onChange={e => validateOnChange('age', e.target.value, e)}
             errors={getFieldErrors('age')}
@@ -145,9 +136,10 @@ const InfoStep = (props: any) => {
           <InputField
             block
             type="number"
-            value={registerInfoForm.height}
+            value={props.registerData.height}
             name="height"
-            data-validate='["required"]'
+            data-param="50,250"
+            data-validate='["required", "min-max"]'
             onChange={e => validateOnChange('height', e.target.value, e)}
             errors={getFieldErrors('height')}
             placeholder=""
@@ -159,8 +151,9 @@ const InfoStep = (props: any) => {
           <InputField
             block
             type="number"
-            value={registerInfoForm.weight}
-            data-validate='["required"]'
+            value={props.registerData.weight}
+            data-param="30,400"
+            data-validate='["required", "min-max"]'
             name="weight"
             onChange={e => validateOnChange('weight', e.target.value, e)}
             errors={getFieldErrors('weight')}

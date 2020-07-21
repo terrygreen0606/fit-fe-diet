@@ -1,5 +1,5 @@
 import { InputError } from 'types';
-import FormValidator from 'components/common/Forms/FormValidator';
+import FormValidator from 'utils/FormValidator';
 
 export const validateFieldOnChange = (
   name: string,
