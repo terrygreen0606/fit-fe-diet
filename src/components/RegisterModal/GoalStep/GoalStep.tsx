@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getMealItem } from './getMealItem';
 import uuid from 'react-uuid';
 
 // Components
@@ -11,12 +12,6 @@ import { ReactComponent as KeepIcon } from 'assets/img/icons/keep-icon.svg';
 import { ReactComponent as LiftIcon } from 'assets/img/icons/lift-icon.svg';
 import { ReactComponent as AngleRightIcon } from 'assets/img/icons/angle-right-icon.svg';
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon-black.svg';
-import { ReactComponent as MilkIcon } from 'assets/img/icons/milk-icon.svg';
-import { ReactComponent as MeatIcon } from 'assets/img/icons/meat-icon.svg';
-import { ReactComponent as FishIcon } from 'assets/img/icons/fish-icon.svg';
-import { ReactComponent as CookIcon } from 'assets/img/icons/cook-icon.svg';
-import { ReactComponent as BreadIcon } from 'assets/img/icons/bread-icon.svg';
-import { ReactComponent as CakeIcon } from 'assets/img/icons/cake-icon.svg';
 
 const GoalStep = (props: any) => {
 
@@ -32,58 +27,7 @@ const GoalStep = (props: any) => {
     }
   }, [props.registerData]);
 
-  function getMealItem (mealId: string) {
-    let mealItem = {
-      title: '',
-      icon: null
-    };
-
-    switch (mealId) {
-      case 'milk':
-        mealItem = {
-          title: 'Milk',
-          icon: MilkIcon
-        };
-        break;
-
-      case 'meat':
-        mealItem = {
-          title: 'Meat',
-          icon: MeatIcon
-        };
-        break;
-
-      case 'fish':
-        mealItem = {
-          title: 'Fish',
-          icon: FishIcon
-        };
-        break;
-
-      case 'diseases':
-        mealItem = {
-          title: 'Diseases',
-          icon: CookIcon
-        };
-        break;
-
-      case 'gluten':
-        mealItem = {
-          title: 'Gluten',
-          icon: BreadIcon
-        };
-        break;
-
-      case 'deabetes':
-        mealItem = {
-          title: 'Deabetes',
-          icon: CakeIcon
-        };
-        break;
-    }
-
-    return mealItem;
-  }
+  
 
   const removeMealItem = (mealId: string) => {
     const mealItem = ignoreCuisineIds.find(meal => meal.id === mealId);
