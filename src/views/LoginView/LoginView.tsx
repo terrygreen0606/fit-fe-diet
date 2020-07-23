@@ -15,6 +15,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
+import Translate from 'components/hoc/Translate';
 
 import './LoginView.sass';
 
@@ -87,7 +88,7 @@ const LoginView = (props: any) => {
       />
 
       <div className="loginScreen">
-        <h3 className="loginScreen_title">Login</h3>
+        <h3 className="loginScreen_title"><Translate code="login.title" /></h3>
 
         <form className="loginScreen_form" onSubmit={e => loginSubmit(e)}>
           <FormGroup>
@@ -117,7 +118,7 @@ const LoginView = (props: any) => {
             />
           </FormGroup>
 
-          <span className="link link-bold mt-5">Forgot your password? Remind me</span>
+          <span className="link link-bold mt-5"><Translate code="login.forgot_pass" /></span>
 
           <Button 
             className="loginScreen_btn" 
@@ -127,7 +128,7 @@ const LoginView = (props: any) => {
             isLoading={loginLoading}
             block
           >
-            Log in
+            <Translate code="login.submit" />
           </Button>
 
           <span className="link link-bold mt-3" onClick={() => setRegisterModalOpen(true)}>Register</span>
