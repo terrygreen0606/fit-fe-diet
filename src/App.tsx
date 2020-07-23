@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import LocaleContext from 'utils/localeContext';
 
-import { authCheck } from 'store/actions';
+import { initApp } from 'store/actions';
 
 // Routes
 import Routes from './Routes';
@@ -11,26 +12,30 @@ import FullPageLoader from './components/common/FullPageLoader';
 import './assets/sass/styles.sass';
 
 const App = (props: any) => {
+
   useEffect(() => {
-    props.authCheck();
+    props.initApp();
   }, []);
 
   return (
     <BrowserRouter>
-      {props.isAuthChecking
-        ? (
-          <FullPageLoader />
-        )
-        : (
-          <Routes />
-        )}
+      <LocaleContext.Provider value={props.phrases}>
+        {props.isAuthChecking
+          ? (
+            <FullPageLoader />
+          )
+          : (
+            <Routes />
+          )}
+      </LocaleContext.Provider>
     </BrowserRouter>
   );
 };
 
 export default connect(
   (state: any) => ({
-    isAuthChecking: state.auth.isAuthChecking
+    isAuthChecking: state.auth.isAuthChecking,
+    phrases: state.locale.phrases
   }),
-  { authCheck }
+  { initApp }
 )(App);
