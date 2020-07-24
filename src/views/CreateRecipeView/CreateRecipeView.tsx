@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
-import './CreateRecipesView.sass';
+import './CreateRecipeView.sass';
 
 //Components
 import Button from 'components/common/Forms/Button';

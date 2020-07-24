@@ -10,7 +10,7 @@ import LoginView from './views/LoginView';
 import MainView from './views/MainView';
 import NutritionPlanView from './views/NutritionPlanView';
 import RecipesView from './views/RecipesView';
-import CreateRecipesView from './views/CreateRecipesView';
+import CreateRecipesView from './views/CreateRecipeView';
 import NotFound from './views/NotFound';
 
 const Routes = () => (
