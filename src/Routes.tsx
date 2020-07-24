@@ -9,6 +9,7 @@ import Layout from 'components/hoc/Layout';
 import LoginView from './views/LoginView';
 import MainView from './views/MainView';
 import NutritionPlanView from './views/NutritionPlanView';
+import RecipesView from './views/RecipesView';
 import CreateRecipesView from './views/CreateRecipesView';
 import NotFound from './views/NotFound';
 
@@ -38,13 +39,13 @@ const Routes = () => (
         exact
       />
 
-      {/* <PrivateRoute
+      <PrivateRoute
         path="/recipes"
         component={(props: any) => (
           <Layout {...props}><RecipesView {...props} /></Layout>
         )}
         exact
-      /> */}
+      />
 
       <AuthRoute 
         path="/login" 
