@@ -124,6 +124,8 @@ const InputField = (props: InputFieldProps) => {
     searchBar,
     readOnly,
     innerRef,
+    size,
+    labelSize,
     ...attributes
   } = props;
 
@@ -151,7 +153,7 @@ const InputField = (props: InputFieldProps) => {
     readOnly,
     id: inputFieldId,
     mask,
-    className: classNames(className, 'fg-input', {
+    className: classNames(className, 'fg-input', `size-${size}`, {
       'input-block': block,
       'is-invalid': invalid || (errors && errors.length > 0),
       'is-searchbar': searchBar
@@ -181,6 +183,7 @@ const InputField = (props: InputFieldProps) => {
         <FormLabel
           htmlFor={inputFieldId}
           invalid={invalid || (errors && errors.length > 0)}
+          size={labelSize}
         >
           {label}
         </FormLabel>
