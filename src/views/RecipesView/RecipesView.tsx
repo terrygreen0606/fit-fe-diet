@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import './RecipesView.sass';
 
+//Components
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
 
-// import Progress from './Progress';
-// import ProgressLine from './ProgressLine';
-
+// Icons
 import { ReactComponent as ClockIcon } from 'assets/img/icons/clock-icon.svg';
 import { ReactComponent as ArrowLeft } from 'assets/img/icons/arrow-left-gray-icon.svg';
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
