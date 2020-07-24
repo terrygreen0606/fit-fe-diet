@@ -6,6 +6,7 @@ import GoalStep from './GoalStep';
 import InfoStep from './InfoStep';
 import JoinStep from './JoinStep';
 import Modal from 'components/common/Modal';
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './RegisterModal.sass';
 
@@ -48,6 +49,7 @@ const RegisterModal = (props: any) => {
             setRegisterData={setRegisterData}
             setRegisterStep={setRegisterStep} 
             modalClose={props.onClose}
+            localPhrases={props.localPhrases}
           />
         );
         break;
@@ -59,6 +61,7 @@ const RegisterModal = (props: any) => {
             setRegisterData={setRegisterData}
             setRegisterStep={setRegisterStep} 
             modalClose={props.onClose}
+            localPhrases={props.localPhrases}
           />
         );
         break;
@@ -70,6 +73,7 @@ const RegisterModal = (props: any) => {
             setRegisterData={setRegisterData}
             setRegisterStep={setRegisterStep} 
             modalClose={props.onClose}
+            localPhrases={props.localPhrases}
           />
         );
         break;
@@ -85,7 +89,7 @@ const RegisterModal = (props: any) => {
       className="registerModal"
     >
       <Modal.Main className="registerModal_main">
-        <Steps step={registerStep} />
+        <Steps step={registerStep} localPhrases={props.localPhrases} />
 
         <div className="registerModal_steps_content">
           {getRegisterStepView(registerStep)}
@@ -95,4 +99,4 @@ const RegisterModal = (props: any) => {
   );
 };
 
-export default RegisterModal;
+export default WithTranslate(RegisterModal);

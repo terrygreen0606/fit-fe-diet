@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil
+  getFieldErrors as getFieldErrorsUtil,
+  getTranslate as getTranslateUtil
 } from 'utils';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
@@ -40,6 +41,8 @@ const JoinStep = (props: any) => {
   };
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, registerJoinErrors);
+
+  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
 
   const registerJoinSubmit = e => {
     e.preventDefault();
@@ -85,21 +88,21 @@ const JoinStep = (props: any) => {
 
   return (
     <div className="register_join">
-      <h6 className="register_title mb-5">Your personal plan is ready. Choose how you want to join</h6>
+      <h6 className="register_title mb-5">{getTranslate('register.plan_is_ready_text')}</h6>
 
       <CustomCheckbox 
         invalid={appRulesAccepted === false} 
-        label={<>I have read the <span className="link">private policy</span> and <span className="link">terms and conditions</span></>}
+        label={getTranslate('register.read_terms')}
         onChange={e => setAppRulesAccepted(e.target.checked)}
       />
 
       <div className="register_join_or">
-        <span className="register_join_or_txt">or</span>
+        <span className="register_join_or_txt">{getTranslate('register.form_or')}</span>
       </div>
       
       <form className="register_join_form" onSubmit={e => registerJoinSubmit(e)}>
         <FormGroup inline>
-          <FormLabel>Name*</FormLabel>
+          <FormLabel>{getTranslate('register.form_name')}*</FormLabel>
           <InputField 
             block 
             name="name"
@@ -112,7 +115,7 @@ const JoinStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>Surname*</FormLabel>
+          <FormLabel>{getTranslate('register.form_surname')}*</FormLabel>
           <InputField 
             block 
             name="surname"
@@ -125,7 +128,7 @@ const JoinStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>Email*</FormLabel>
+          <FormLabel>{getTranslate('register.form_email')}*</FormLabel>
           <InputField 
             block 
             name="email"
@@ -138,7 +141,7 @@ const JoinStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>Phone*</FormLabel>
+          <FormLabel>{getTranslate('register.form_phone')}*</FormLabel>
           <InputField 
             block 
             name="phone"
@@ -151,7 +154,7 @@ const JoinStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>Password</FormLabel>
+          <FormLabel>{getTranslate('register.form_password')}</FormLabel>
           <InputField 
             block 
             name="password"
@@ -173,7 +176,7 @@ const JoinStep = (props: any) => {
             color="primary"
             isLoading={registerJoinLoading}
           >
-            Register
+            {getTranslate('register.form_submit')}
           </Button>
 
           <Button 
@@ -184,7 +187,7 @@ const JoinStep = (props: any) => {
             className="mt-4"
             style={{ width: '217px' }}
           >
-            Back
+            {getTranslate('register.form_back')}
           </Button>
         </div>
       </form>

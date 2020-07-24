@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil
+  getFieldErrors as getFieldErrorsUtil,
+  getTranslate as getTranslateUtil
 } from 'utils';
 import { toast } from 'react-toastify';
 import axios from 'utils/axios';
@@ -15,7 +16,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
-import Translate from 'components/hoc/Translate';
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './LoginView.sass';
 
@@ -46,6 +47,8 @@ const LoginView = (props: any) => {
   };
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, loginErrors);
+
+  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
 
   const loginSubmit = e => {
     e.preventDefault();
@@ -88,7 +91,7 @@ const LoginView = (props: any) => {
       />
 
       <div className="loginScreen">
-        <h3 className="loginScreen_title"><Translate code="login.title" /></h3>
+        <h3 className="loginScreen_title">{getTranslate('login.title')}</h3>
 
         <form className="loginScreen_form" onSubmit={e => loginSubmit(e)}>
           <FormGroup>
@@ -98,7 +101,7 @@ const LoginView = (props: any) => {
               errors={getFieldErrors('email')}
               value={loginForm.email}
               onChange={e => validateOnChange('email', e.target.value, e)}
-              placeholder="Email"
+              placeholder={getTranslate('login.email_placeholder')}
               block
             />
           </FormGroup>
@@ -113,12 +116,12 @@ const LoginView = (props: any) => {
               errors={getFieldErrors('password')}
               value={loginForm.password}
               onChange={e => validateOnChange('password', e.target.value, e)}
-              placeholder="Password"
+              placeholder={getTranslate('login.password_placeholder')}
               block
             />
           </FormGroup>
 
-          <span className="link link-bold mt-5"><Translate code="login.forgot_pass" /></span>
+          <span className="link link-bold mt-5">{getTranslate('login.forgot_pass')}</span>
 
           <Button 
             className="loginScreen_btn" 
@@ -128,17 +131,17 @@ const LoginView = (props: any) => {
             isLoading={loginLoading}
             block
           >
-            <Translate code="login.submit" />
+            {getTranslate('login.submit')}
           </Button>
 
-          <span className="link link-bold mt-3" onClick={() => setRegisterModalOpen(true)}>Register</span>
+          <span className="link link-bold mt-3" onClick={() => setRegisterModalOpen(true)}>{getTranslate('login.register_link')}</span>
         </form>
       </div>
     </>
   );
 };
 
-export default connect(
+export default WithTranslate(connect(
   null,
   { userLogin }
-)(LoginView);
+)(LoginView));

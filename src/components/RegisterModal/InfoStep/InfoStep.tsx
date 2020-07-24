@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import {
   validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil
+  getFieldErrors as getFieldErrorsUtil,
+  getTranslate as getTranslateUtil
 } from 'utils';
 
 // Components 
@@ -39,6 +40,8 @@ const InfoStep = (props: any) => {
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, registerInfoErrors);
 
+  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
+
   const registerInfoSubmit = e => {
     e.preventDefault();
 
@@ -61,13 +64,13 @@ const InfoStep = (props: any) => {
 
   return (
     <div className="register_info">
-      <h6 className="register_title mb-5">Please fill in your details to get an exact plan</h6>
+      <h6 className="register_title mb-5">{getTranslate('register.fill_details_text')}</h6>
 
       <div style={{ height: '50px' }}></div>
 
       <form className="register_info_form" onSubmit={e => registerInfoSubmit(e)}>
         <FormGroup inline>
-          <FormLabel>Sex</FormLabel>
+          <FormLabel>{getTranslate('register.form_sex')}</FormLabel>
 
           <CustomRadio 
             name="register_sex" 
@@ -79,7 +82,7 @@ const InfoStep = (props: any) => {
                   })}
                 />
 
-                Male
+                {getTranslate('register.form_male')}
               </>
             }
             value="m"
@@ -102,7 +105,7 @@ const InfoStep = (props: any) => {
                   })}
                 />
 
-                Female
+                {getTranslate('register.form_female')}
               </>
             }
             value="f"
@@ -117,7 +120,7 @@ const InfoStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>Age</FormLabel>
+          <FormLabel>{getTranslate('register.form_age')}</FormLabel>
           <InputField
             block
             type="number"
@@ -132,7 +135,7 @@ const InfoStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>Height, cm</FormLabel>
+          <FormLabel>{getTranslate('register.form_height')}</FormLabel>
           <InputField
             block
             type="number"
@@ -147,7 +150,7 @@ const InfoStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>Weight, kg</FormLabel>
+          <FormLabel>{getTranslate('register.form_weight')}</FormLabel>
           <InputField
             block
             type="number"
@@ -169,7 +172,7 @@ const InfoStep = (props: any) => {
             size="lg"
             onClick={() => props.setRegisterStep('GOAL')}
           >
-            Back
+            {getTranslate('register.form_back')}
           </Button>
 
           <Button 
@@ -180,7 +183,7 @@ const InfoStep = (props: any) => {
             size="lg"
             isLoading={registerInfoLoading}
           >
-            Next
+            {getTranslate('register.form_next')}
           </Button>
         </div>
       </form>
