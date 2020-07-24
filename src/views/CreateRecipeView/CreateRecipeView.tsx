@@ -117,7 +117,6 @@ const CreateRecipeView = () => {
                     validateOnChange('name', e.target.value, e, recipeInfoForm, setRecipeInfoForm)
                   }
                   label='Recipe name'
-                  labelSize='l'
                 />
               </div>
             </div>
@@ -131,7 +130,6 @@ const CreateRecipeView = () => {
                     validateOnChange('money', e.target.value, e, recipeInfoForm, setRecipeInfoForm)
                   }
                   label='$$$'
-                  labelSize='l'
                 />
               </div>
             </div>
