@@ -20,7 +20,7 @@ import {
 
 import { ingredientsData } from './mockData';
 
-const CreateRecipesView = () => {
+const CreateRecipeView = () => {
   const [unit, setUnit] = useState('gr');
 
   const [isActiveInput, setActiveInput] = useState(false);
@@ -40,7 +40,7 @@ const CreateRecipesView = () => {
     value: '',
   });
 
-  const [recipesQuantityInfoForm, setRecipesQuantityInfoForm] = useState({
+  const [recipeQuantityInfoForm, setRecipeQuantityInfoForm] = useState({
     count: 5,
   });
 
@@ -73,42 +73,42 @@ const CreateRecipesView = () => {
   };
 
   return (
-      <div className='container-fluid recipes_container'>
-        <h1 className='recipes__title'>Create your recipe</h1>
-        <div className='recipes_wrap'>
-          <div className='row recipes_photo'>
+      <div className='container-fluid recipe_container'>
+        <h1 className='recipe__title'>Create your recipe</h1>
+        <div className='recipe_wrap'>
+          <div className='row recipe_photo'>
             <div className='col-3'>
-              <button className='recipes__add-photo'>
-                <span className='recipes__add-photo-description'>
+              <button className='recipe__add-photo'>
+                <span className='recipe__add-photo-description'>
                   Add photo
                 </span>
               </button>
             </div>
             <div className='col-3'>
-              <button className='recipes__add-photo'>
-                <span className='recipes__add-photo-description'>
+              <button className='recipe__add-photo'>
+                <span className='recipe__add-photo-description'>
                   Add photo
                 </span>
               </button>
             </div>
             <div className='col-3'>
-              <button className='recipes__add-photo'>
-                <span className='recipes__add-photo-description'>
+              <button className='recipe__add-photo'>
+                <span className='recipe__add-photo-description'>
                   Add photo
                 </span>
               </button>
             </div>
             <div className='col-3'>
-              <button className='recipes__add-photo'>
-                <span className='recipes__add-photo-description'>
+              <button className='recipe__add-photo'>
+                <span className='recipe__add-photo-description'>
                   Add photo
                 </span>
               </button>
             </div>
           </div>
-          <div className='row recipes__input-data'>
+          <div className='row recipe__input-data'>
             <div className='col-6'>
-              <div className='recipes__input-container'>
+              <div className='recipe__input-container'>
                 <InputField
                   block
                   type='text'
@@ -122,7 +122,7 @@ const CreateRecipesView = () => {
               </div>
             </div>
             <div className='col-3'>
-              <div className='recipes__input-container'>
+              <div className='recipe__input-container'>
                 <InputField
                   block
                   type='number'
@@ -136,8 +136,8 @@ const CreateRecipesView = () => {
               </div>
             </div>
             <div className='col-3'>
-              <label className='recipes__label'>
-                <span className='recipes__label-description'>
+              <label className='recipe__label'>
+                <span className='recipe__label-description'>
                   <ClockIcon />
                 </span>
                 <InputField
@@ -147,7 +147,7 @@ const CreateRecipesView = () => {
                   onChange={(e) =>
                     validateOnChange('startTime', e.target.value, e, recipeInfoForm, setRecipeInfoForm)
                   }
-                  className='recipes__label-input'
+                  className='recipe__label-input'
                 />
                 <InputField
                   block
@@ -156,32 +156,32 @@ const CreateRecipesView = () => {
                   onChange={(e) =>
                     validateOnChange('finishTime', e.target.value, e, recipeInfoForm, setRecipeInfoForm)
                   }
-                  className='recipes__label-input'
+                  className='recipe__label-input'
                 />
               </label>
             </div>
           </div>
-          <div className='recipes__switch'>
+          <div className='recipe__switch'>
             <button
               onClick={() => setUnit('gr')}
-              className={classnames('recipes__switch-button', {
-                'recipes__switch-button_active': unit === 'gr',
+              className={classnames('recipe__switch-button', {
+                'recipe__switch-button_active': unit === 'gr',
               })}
             >
               <span>gr</span>
             </button>
             <button
               onClick={() => setUnit('oz')}
-              className={classnames('recipes__switch-button', {
-                'recipes__switch-button_active': unit === 'oz',
+              className={classnames('recipe__switch-button', {
+                'recipe__switch-button_active': unit === 'oz',
               })}
             >
               <span>oz</span>
             </button>
           </div>
-          <div className='recipes__chart'>
-            <div className='recipes__chart-progress'>
-              <div className="recipes__chart-progress-item recipes__chart-progress-item_fat">
+          <div className='recipe__chart'>
+            <div className='recipe__chart-progress'>
+              <div className="recipe__chart-progress-item recipe__chart-progress-item_fat">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="155 155 310 310" style={{
                   "transform": "rotate(-90deg)",
                    "overflow": "visible;"
@@ -195,7 +195,7 @@ const CreateRecipesView = () => {
                     }}></circle>
                 </svg>
               </div>
-              <div className="recipes__chart-progress-item recipes__chart-progress-item_carbohydrate">
+              <div className="recipe__chart-progress-item recipe__chart-progress-item_carbohydrate">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="125 125 250 250" style={{
                   "transform": "rotate(-90deg)",
                   "overflow": "visible"
@@ -209,7 +209,7 @@ const CreateRecipesView = () => {
                     }}></circle>
                 </svg>
               </div>
-              <div className="recipes__chart-progress-item recipes__chart-progress-item_protein">
+              <div className="recipe__chart-progress-item recipe__chart-progress-item_protein">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="95 95 190 190" style={{
                   "transform": "rotate(-90deg)",
                   "overflow": "visible"
@@ -223,30 +223,30 @@ const CreateRecipesView = () => {
                     }}></circle>
                 </svg>
               </div>
-              <div className='recipes__chart-progress-value'>
+              <div className='recipe__chart-progress-value'>
                 0 kcal /444 kcal
               </div>
             </div>
-            <div className='recipes__chart-lines'>
+            <div className='recipe__chart-lines'>
               {ingredientsData.map(item => {
                   return (
-                    <div className="recipes__chart-lines-item">
-                      <div className="recipes__chart-lines-item-description">{item.name}</div>
-                        <div className="recipes__chart-lines-item-line">
-                          <div className="recipes__chart-lines-item-line-paint" style={{
+                    <div className="recipe__chart-lines-item">
+                      <div className="recipe__chart-lines-item-description">{item.name}</div>
+                        <div className="recipe__chart-lines-item-line">
+                          <div className="recipe__chart-lines-item-line-paint" style={{
                             'width': getPercent(item.value),
                             'backgroundColor': item.color,
                           }}>
                           </div>
                         </div>
-                      <div className="recipes__chart-lines-item-description">{`${item.value} ${unit}`}</div>
+                      <div className="recipe__chart-lines-item-description">{`${item.value} ${unit}`}</div>
                     </div>
                   )
                 })}
             </div>
           </div>
-          <div className='recipes__add-ingredients'>
-            <h2 className='recipes__add-ingredients__title'>Ingredient</h2>
+          <div className='recipe__add-ingredients'>
+            <h2 className='recipe__add-ingredients-title'>Ingredient</h2>
             <Button
               size='lg'
               color='secondary'
@@ -256,7 +256,7 @@ const CreateRecipesView = () => {
             </Button>
           </div>
           {isActiveInput && (
-            <div className='recipes__add-ingredients-field'>
+            <div className='recipe__add-ingredients-field'>
               <InputField
                 block
                 type='text'
@@ -266,39 +266,39 @@ const CreateRecipesView = () => {
                 }
                 placeholder='Garlic clove (optional) €€€'
               />
-              <button className='recipes__add-button'>
+              <button className='recipe__add-ingredients-field-button'>
                 <PlusIcon />
               </button>
             </div>
           )}
-          <div className='recipes__item'>
-            <div className='recipes__item-name'>
+          <div className='recipe__item'>
+            <div className='recipe__item-name'>
               Garlic clove (optional) €€€
             </div>
             <div>
               {ingredientsData[2].value} {unit}
             </div>
           </div>
-          <div className='recipes__item-full-info'>
-            <div className='recipes__item-full-info-name'>
+          <div className='recipe__item-full-info'>
+            <div className='recipe__item-full-info-name'>
               Garlic clove (optional) €€€
             </div>
-            <div className='recipes__item-full-info-counting'>
+            <div className='recipe__item-full-info-counting'>
               {ingredientsData.map((item) => (
                 <div key={item.id}>{`${item.name} ${item.value}`}</div>
               ))}
             </div>
-            <div className='recipes__item-full-info-quantity'>
-              <div className='recipes__item-full-info-quantity-counter'>
+            <div className='recipe__item-full-info-quantity'>
+              <div className='recipe__item-full-info-quantity-counter'>
                 <button
-                  className='recipes__item-full-info-quantity-counter-arrow'
+                  className='recipe__item-full-info-quantity-counter-arrow'
                   onClick={() =>
-                    setRecipesQuantityInfoForm(
-                      recipesQuantityInfoForm.count === 0
-                        ? { ...recipesQuantityInfoForm, count: 0 }
+                    setRecipeQuantityInfoForm(
+                      recipeQuantityInfoForm.count === 0
+                        ? { ...recipeQuantityInfoForm, count: 0 }
                         : {
-                            ...recipesQuantityInfoForm,
-                            count: recipesQuantityInfoForm.count - 1,
+                            ...recipeQuantityInfoForm,
+                            count: recipeQuantityInfoForm.count - 1,
                           }
                     )
                   }
@@ -308,31 +308,31 @@ const CreateRecipesView = () => {
                 <InputField
                   type='number'
                   min={0}
-                  value={`${recipesQuantityInfoForm.count}`}
+                  value={`${recipeQuantityInfoForm.count}`}
                   onChange={(e) =>
-                    validateOnChange('count', e.target.value, e, recipesQuantityInfoForm, setRecipesQuantityInfoForm)
+                    validateOnChange('count', e.target.value, e, recipeQuantityInfoForm, setRecipeQuantityInfoForm)
                   }
                   size='s'
-                  className='recipes__item-full-info-quantity-counter-input'
+                  className='recipe__item-full-info-quantity-counter-input'
                 />
                 <button
-                  className='recipes__item-full-info-quantity-counter-arrow'
+                  className='recipe__item-full-info-quantity-counter-arrow'
                   onClick={() =>
-                    setRecipesQuantityInfoForm({
-                      ...recipesQuantityInfoForm,
-                      count: recipesQuantityInfoForm.count + 1,
+                    setRecipeQuantityInfoForm({
+                      ...recipeQuantityInfoForm,
+                      count: recipeQuantityInfoForm.count + 1,
                     })
                   }
                 >
                   <ArrowRight />
                 </button>
               </div>
-              <div className='recipes__item-full-info-quantity-counter-total'>
+              <div className='recipe__item-full-info-quantity-counter-total'>
                 0 kcal
               </div>
             </div>
-            <button className='recipes__item-full-info-delete'>
-              <div className='recipes__item-full-info-delete-media'>
+            <button className='recipe__item-full-info-delete'>
+              <div className='recipe__item-full-info-delete-media'>
                 <TrashIcon />
               </div>
             </button>
@@ -363,4 +363,4 @@ const CreateRecipesView = () => {
   );
 };
 
-export default CreateRecipesView;
+export default CreateRecipeView;
