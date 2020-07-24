@@ -1,4 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). <br />
+[React App Rewired](https://github.com/timarney/react-app-rewired) used
+
+## Project tree
+
+- api
+- assets
+    - sass
+        - vendor
+    - img
+        - icons
+- components
+    - common
+    - hoc
+- store
+    - actions
+    - middlewars
+    - reducers
+- types
+- utils
+- constannts
+- views
 
 ## Available Scripts
 
