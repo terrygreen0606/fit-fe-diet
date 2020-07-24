@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
-import './CreateRecipeView.sass';
+
+import {
+  validateFieldOnChange,
+  getFieldErrors as getFieldErrorsUtil,
+} from 'utils';
 
 //Components
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
+
+import './CreateRecipeView.sass';
 
 // Icons
 import { ReactComponent as ClockIcon } from 'assets/img/icons/clock-icon.svg';
@@ -12,11 +18,6 @@ import { ReactComponent as ArrowLeft } from 'assets/img/icons/arrow-left-gray-ic
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue.svg';
-
-import {
-  validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
-} from 'utils';
 
 import { ingredientsData } from './mockData';
 
