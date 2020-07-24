@@ -10,7 +10,7 @@ import LoginView from './views/LoginView';
 import MainView from './views/MainView';
 import NutritionPlanView from './views/NutritionPlanView';
 import RecipesView from './views/RecipesView';
-import CreateRecipesView from './views/CreateRecipeView';
+import CreateRecipeView from './views/CreateRecipeView';
 import NotFound from './views/NotFound';
 
 const Routes = () => (
@@ -34,7 +34,7 @@ const Routes = () => (
       <PrivateRoute
         path="/recipes/create"
         component={(props: any) => (
-          <Layout {...props}><CreateRecipesView {...props} /></Layout>
+          <Layout {...props}><CreateRecipeView {...props} /></Layout>
         )}
         exact
       />
