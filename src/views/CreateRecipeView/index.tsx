@@ -1,3 +1,3 @@
-import RecipesView from './CreateRecipeView';
+import CreateRecipesView from './CreateRecipeView';
 
-export default RecipesView;
+export default CreateRecipesView;
