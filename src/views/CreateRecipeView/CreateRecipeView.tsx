@@ -296,7 +296,7 @@ const CreateRecipeView = () => {
                         ? { ...recipeQuantityInfoForm, count: 0 }
                         : {
                             ...recipeQuantityInfoForm,
-                            count: recipeQuantityInfoForm.count - 1,
+                            count: +recipeQuantityInfoForm.count - 1,
                           }
                     )
                   }
@@ -310,7 +310,7 @@ const CreateRecipeView = () => {
                   onChange={(e) =>
                     validateOnChange('count', e.target.value, e, recipeQuantityInfoForm, setRecipeQuantityInfoForm)
                   }
-                  size='s'
+                  height='xs'
                   className='recipe__item-full-info-quantity-counter-input'
                 />
                 <button
@@ -318,7 +318,7 @@ const CreateRecipeView = () => {
                   onClick={() =>
                     setRecipeQuantityInfoForm({
                       ...recipeQuantityInfoForm,
-                      count: recipeQuantityInfoForm.count + 1,
+                      count: +recipeQuantityInfoForm.count + 1,
                     })
                   }
                 >

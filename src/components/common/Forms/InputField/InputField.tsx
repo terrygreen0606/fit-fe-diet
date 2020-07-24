@@ -36,6 +36,7 @@ interface InputFieldProps {
   errors?: InputError[],
   openModalFiled?: boolean,
   openModalFiledProps?: any,
+  height?: string,
   [propName: string]: any
 }
 
@@ -124,8 +125,7 @@ const InputField = (props: InputFieldProps) => {
     searchBar,
     readOnly,
     innerRef,
-    size,
-    labelSize,
+    height,
     ...attributes
   } = props;
 
@@ -153,10 +153,10 @@ const InputField = (props: InputFieldProps) => {
     readOnly,
     id: inputFieldId,
     mask,
-    className: classNames(className, 'fg-input', `size-${size}`, {
+    className: classNames(className, 'fg-input', height && `height-${height}`, {
       'input-block': block,
       'is-invalid': invalid || (errors && errors.length > 0),
-      'is-searchbar': searchBar
+      'is-searchbar': searchBar,
     }),
     onChange,
     onBlur,
@@ -183,7 +183,6 @@ const InputField = (props: InputFieldProps) => {
         <FormLabel
           htmlFor={inputFieldId}
           invalid={invalid || (errors && errors.length > 0)}
-          size={labelSize}
         >
           {label}
         </FormLabel>
