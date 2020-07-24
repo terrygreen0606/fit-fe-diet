@@ -18,28 +18,9 @@ import {
   getFieldErrors as getFieldErrorsUtil,
 } from 'utils';
 
-const RecipesView = () => {
-  const ing = [
-    {
-      name: 'Fat',
-      value: 25,
-      id: 1,
-      color: '#279A40',
-    },
-    {
-      name: 'Protein',
-      value: 45,
-      id: 2,
-      color: '#FAEC45',
-    },
-    {
-      name: 'Carbohydrate',
-      value: 85,
-      id: 3,
-      color: '#3070F2',
-    },
-  ];
+import { ingredientsData } from './mockData';
 
+const RecipesView = () => {
   const [unit, setUnit] = useState('gr');
 
   const [isActiveInput, setActiveInput] = useState(false);
@@ -87,7 +68,7 @@ const RecipesView = () => {
 
   const getPercent = (val: number) => {
     let amount: number = 0;
-    ing.forEach((item) => (amount += item.value));
+    ingredientsData.forEach((item) => (amount += item.value));
     return (val / amount) * 100;
   };
 
@@ -209,7 +190,7 @@ const RecipesView = () => {
                     <stop offset="0" stop-color="#03792B"></stop>
                     <stop offset="100" stop-color="#D5FFBB"></stop>
                     </linearGradient><circle cx="310" cy="310" r="147.5" stroke="#F5F7FA" stroke-width="15" fill="none"></circle>
-                    <circle cx="310" cy="310" r="147.5" fill="none" stroke-width="15" stroke-dasharray={851 + getPercent(ing.find(item => item.name === 'Fat').value)} stroke-dashoffset="778.4866595595507" stroke-linecap="round" stroke="url(#grd_3wq389fe29iq)" style={{
+                    <circle cx="310" cy="310" r="147.5" fill="none" stroke-width="15" stroke-dasharray={851 + getPercent(ingredientsData.find(item => item.name === 'Fat').value)} stroke-dashoffset="778.4866595595507" stroke-linecap="round" stroke="url(#grd_3wq389fe29iq)" style={{
                       "transition": "stroke-dashoffset 400ms ease 0s"
                     }}></circle>
                 </svg>
@@ -223,7 +204,7 @@ const RecipesView = () => {
                     <stop offset="0" stop-color="#FF8F6F"></stop>
                     <stop offset="100" stop-color="#FAEC45"></stop>
                     </linearGradient><circle cx="250" cy="250" r="117.5" stroke="#F5F7FA" stroke-width="15" fill="none"></circle>
-                    <circle cx="250" cy="250" r="117.5" fill="none" stroke-width="15" stroke-dasharray={630 + getPercent(ing.find(item => item.name === 'Carbohydrate').value)} stroke-dashoffset="524.1747342514569" stroke-linecap="round" stroke="url(#grd_mokit9bj1f2p)" style={{
+                    <circle cx="250" cy="250" r="117.5" fill="none" stroke-width="15" stroke-dasharray={630 + getPercent(ingredientsData.find(item => item.name === 'Carbohydrate').value)} stroke-dashoffset="524.1747342514569" stroke-linecap="round" stroke="url(#grd_mokit9bj1f2p)" style={{
                       "transition": "stroke-dashoffset 400ms ease 0s"
                     }}></circle>
                 </svg>
@@ -237,7 +218,7 @@ const RecipesView = () => {
                     <stop offset="0" stop-color="#1F39FE"></stop>
                     <stop offset="100" stop-color="#EFD4FF"></stop>
                     </linearGradient><circle cx="190" cy="190" r="87.5" stroke="#F5F7FA" stroke-width="15" fill="none"></circle>
-                    <circle cx="190" cy="190" r="87.5" fill="none" stroke-width="15" stroke-dasharray={400 + getPercent(ing.find(item => item.name === 'Protein').value)} stroke-dashoffset="252.89820861397834" stroke-linecap="round" stroke="url(#grd_rd9tjx4dwdzq)" style={{
+                    <circle cx="190" cy="190" r="87.5" fill="none" stroke-width="15" stroke-dasharray={400 + getPercent(ingredientsData.find(item => item.name === 'Protein').value)} stroke-dashoffset="252.89820861397834" stroke-linecap="round" stroke="url(#grd_rd9tjx4dwdzq)" style={{
                       "transition": "stroke-dashoffset 400ms ease 0s"
                     }}></circle>
                 </svg>
@@ -247,7 +228,7 @@ const RecipesView = () => {
               </div>
             </div>
             <div className='recipes__chart-lines'>
-              {ing.map(item => {
+              {ingredientsData.map(item => {
                   return (
                     <div className="recipes__chart-lines-item">
                       <div className="recipes__chart-lines-item-description">{item.name}</div>
@@ -295,7 +276,7 @@ const RecipesView = () => {
               Garlic clove (optional) €€€
             </div>
             <div>
-              {ing[2].value} {unit}
+              {ingredientsData[2].value} {unit}
             </div>
           </div>
           <div className='recipes__item-full-info'>
@@ -303,7 +284,7 @@ const RecipesView = () => {
               Garlic clove (optional) €€€
             </div>
             <div className='recipes__item-full-info-counting'>
-              {ing.map((item) => (
+              {ingredientsData.map((item) => (
                 <div key={item.id}>{`${item.name} ${item.value}`}</div>
               ))}
             </div>
