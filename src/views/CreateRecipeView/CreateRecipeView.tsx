@@ -181,15 +181,13 @@ const CreateRecipeView = () => {
           </div>
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
-              <div className="recipe__chart-progress-item recipe__chart-progress-item_fat">
-                <Chart firstColor='#03792B' lastColor='#D5FFBB' percent="10" />
-              </div>
-              <div className="recipe__chart-progress-item recipe__chart-progress-item_carbohydrate">
-                <Chart firstColor='#FF8F6F' lastColor='#FAEC45' percent="30" />
-              </div>
-              <div className="recipe__chart-progress-item recipe__chart-progress-item_protein">
-                <Chart firstColor='#1F39FE' lastColor='#EFD4FF' percent="50" />
-              </div>
+              {ingredientsData.map(item => {
+                return (
+                  <div className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}>
+                    <Chart firstColor={item.firstColorGradient} lastColor={item.lastColorGradient} percent={getPercent(item.value)} />
+                  </div>
+                )
+              })}
               <div className='recipe__chart-progress-value'>
                 0 kcal /444 kcal
               </div>
@@ -198,7 +196,7 @@ const CreateRecipeView = () => {
               {ingredientsData.map(item => {
                   return (
                     <div className="recipe__chart-lines-item">
-                      <div className="recipe__chart-lines-item-description">{item.name}</div>
+                      <div className="recipe__chart-lines-item-description">{item.label}</div>
                         <div className="recipe__chart-lines-item-line">
                           <div className="recipe__chart-lines-item-line-paint" style={{
                             'width': getPercent(item.value),
@@ -252,7 +250,7 @@ const CreateRecipeView = () => {
             </div>
             <div className='recipe__item-full-info-counting'>
               {ingredientsData.map((item) => (
-                <div key={item.id}>{`${item.name} ${item.value}`}</div>
+                <div key={item.id}>{`${item.label} ${item.value}`}</div>
               ))}
             </div>
             <div className='recipe__item-full-info-quantity'>
