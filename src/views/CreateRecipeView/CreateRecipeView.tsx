@@ -9,6 +9,7 @@ import {
 //Components
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
+import Chart from 'components/common/Chart';
 
 import './CreateRecipeView.sass';
 
@@ -181,46 +182,13 @@ const CreateRecipeView = () => {
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
               <div className="recipe__chart-progress-item recipe__chart-progress-item_fat">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="155 155 310 310" style={{
-                  "transform": "rotate(-90deg)",
-                   "overflow": "visible;"
-                }}>
-                  <linearGradient id="grd_3wq389fe29iq" x1="0%" y1="0%" x2="0%" y2="100%" gradientTransform="rotate(90, .5, .5)">
-                    <stop offset="0" stop-color="#03792B"></stop>
-                    <stop offset="100" stop-color="#D5FFBB"></stop>
-                    </linearGradient><circle cx="310" cy="310" r="147.5" stroke="#F5F7FA" stroke-width="15" fill="none"></circle>
-                    <circle cx="310" cy="310" r="147.5" fill="none" stroke-width="15" stroke-dasharray={851 + getPercent(ingredientsData.find(item => item.name === 'Fat').value)} stroke-dashoffset="778.4866595595507" stroke-linecap="round" stroke="url(#grd_3wq389fe29iq)" style={{
-                      "transition": "stroke-dashoffset 400ms ease 0s"
-                    }}></circle>
-                </svg>
+                <Chart firstColor='#03792B' lastColor='#D5FFBB' percent="10" />
               </div>
               <div className="recipe__chart-progress-item recipe__chart-progress-item_carbohydrate">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="125 125 250 250" style={{
-                  "transform": "rotate(-90deg)",
-                  "overflow": "visible"
-                }}>
-                  <linearGradient id="grd_mokit9bj1f2p" x1="0%" y1="0%" x2="0%" y2="100%" gradientTransform="rotate(50, .5, .5)">
-                    <stop offset="0" stop-color="#FF8F6F"></stop>
-                    <stop offset="100" stop-color="#FAEC45"></stop>
-                    </linearGradient><circle cx="250" cy="250" r="117.5" stroke="#F5F7FA" stroke-width="15" fill="none"></circle>
-                    <circle cx="250" cy="250" r="117.5" fill="none" stroke-width="15" stroke-dasharray={630 + getPercent(ingredientsData.find(item => item.name === 'Carbohydrate').value)} stroke-dashoffset="524.1747342514569" stroke-linecap="round" stroke="url(#grd_mokit9bj1f2p)" style={{
-                      "transition": "stroke-dashoffset 400ms ease 0s"
-                    }}></circle>
-                </svg>
+                <Chart firstColor='#FF8F6F' lastColor='#FAEC45' percent="30" />
               </div>
               <div className="recipe__chart-progress-item recipe__chart-progress-item_protein">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="95 95 190 190" style={{
-                  "transform": "rotate(-90deg)",
-                  "overflow": "visible"
-                }}>
-                  <linearGradient id="grd_rd9tjx4dwdzq" x1="0%" y1="0%" x2="0%" y2="100%" gradientTransform="rotate(35, .5, .5)">
-                    <stop offset="0" stop-color="#1F39FE"></stop>
-                    <stop offset="100" stop-color="#EFD4FF"></stop>
-                    </linearGradient><circle cx="190" cy="190" r="87.5" stroke="#F5F7FA" stroke-width="15" fill="none"></circle>
-                    <circle cx="190" cy="190" r="87.5" fill="none" stroke-width="15" stroke-dasharray={400 + getPercent(ingredientsData.find(item => item.name === 'Protein').value)} stroke-dashoffset="252.89820861397834" stroke-linecap="round" stroke="url(#grd_rd9tjx4dwdzq)" style={{
-                      "transition": "stroke-dashoffset 400ms ease 0s"
-                    }}></circle>
-                </svg>
+                <Chart firstColor='#1F39FE' lastColor='#EFD4FF' percent="50" />
               </div>
               <div className='recipe__chart-progress-value'>
                 0 kcal /444 kcal
