@@ -1,7 +1,7 @@
 import React from 'react';
 import './Chart.sass';
 
-interface ChartProps {
+type ChartProps = {
   firstColor?: string,
   lastColor?: string,
   percent: number,
