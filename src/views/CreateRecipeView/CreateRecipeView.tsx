@@ -68,18 +68,6 @@ const CreateRecipeView = () => {
     );
   };
 
-  // const getPercent = (val: number) => {
-  //   let amount: number = 0;
-  //   receptData.ingredients.forEach((item) => (amount += item.value));
-  //   return (val / amount) * 100;
-  // };
-
-  // const [isActiveRecipeItem, setActiveRecipeItem] = useState(false);
-
-  // const toggleClass = () => {
-  //   setActiveRecipeItem(!isActiveRecipeItem);
-  // }
-
   return (
       <div className='container-fluid recipe_container'>
         <h1 className='recipe__title'>Create your recipe</h1>
