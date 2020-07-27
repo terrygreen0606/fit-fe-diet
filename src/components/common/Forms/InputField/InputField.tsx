@@ -36,6 +36,7 @@ interface InputFieldProps {
   errors?: InputError[],
   openModalFiled?: boolean,
   openModalFiledProps?: any,
+  height?: 'xs' | 'sm' | 'lg' | 'xl',
   [propName: string]: any
 }
 
@@ -124,6 +125,7 @@ const InputField = (props: InputFieldProps) => {
     searchBar,
     readOnly,
     innerRef,
+    height,
     ...attributes
   } = props;
 
@@ -152,9 +154,10 @@ const InputField = (props: InputFieldProps) => {
     id: inputFieldId,
     mask,
     className: classNames(className, 'fg-input', {
+      [`height-${height}`]: height,
       'input-block': block,
       'is-invalid': invalid || (errors && errors.length > 0),
-      'is-searchbar': searchBar
+      'is-searchbar': searchBar,
     }),
     onChange,
     onBlur,
