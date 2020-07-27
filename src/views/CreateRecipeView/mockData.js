@@ -1,4 +1,4 @@
-export const receptData = {
+export const recipeData = {
   title: 'Cheese cake',
   weight: 85,
   ingredients: [

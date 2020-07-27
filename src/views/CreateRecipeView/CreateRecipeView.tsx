@@ -20,7 +20,7 @@ import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue.svg';
 
-import { receptData } from './mockData';
+import { recipeData } from './mockData';
 
 const CreateRecipeView = () => {
   const [unit, setUnit] = useState('gr');
@@ -175,7 +175,7 @@ const CreateRecipeView = () => {
           </div>
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
-              {receptData.ingredients.map(item => {
+              {recipeData.ingredients.map(item => {
                 return (
                   <div className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}>
                     <Chart firstColor={item.firstColorGradient} lastColor={item.lastColorGradient} percent={1} id={item.id} />
@@ -187,7 +187,7 @@ const CreateRecipeView = () => {
               </div>
             </div>
             <div className='recipe__chart-lines'>
-              {receptData.ingredients.map(item => {
+              {recipeData.ingredients.map(item => {
                   return (
                     <div className="recipe__chart-lines-item">
                       <div className="recipe__chart-lines-item-description">{item.name}</div>
@@ -235,7 +235,7 @@ const CreateRecipeView = () => {
               Garlic clove (optional) €€€
             </div>
             <div className='recipe__item-counting'>
-              {receptData.ingredients.map((item) => (
+              {recipeData.ingredients.map((item) => (
                 <div key={item.id}>{`${item.name} ${item.value}`}</div>
               ))}
             </div>
@@ -288,7 +288,7 @@ const CreateRecipeView = () => {
               </div>
             </button>
             <div className='recipe__item-weight'>
-              {receptData.weight} {unit}
+              {recipeData.weight} {unit}
             </div>
           </div>
           <div className='recipe__item recipe__item_full-info'>
@@ -296,7 +296,7 @@ const CreateRecipeView = () => {
               Garlic clove (optional) €€€
             </div>
             <div className='recipe__item-counting'>
-              {receptData.ingredients.map((item) => (
+              {recipeData.ingredients.map((item) => (
                 <div key={item.id}>{`${item.name} ${item.value}`}</div>
               ))}
             </div>
@@ -349,7 +349,7 @@ const CreateRecipeView = () => {
               </div>
             </button>
             <div className='recipe__item-weight'>
-              {receptData.weight} {unit}
+              {recipeData.weight} {unit}
             </div>
           </div>
           <div className='instructions'>
