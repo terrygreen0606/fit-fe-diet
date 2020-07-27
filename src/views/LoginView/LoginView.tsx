@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
-  getTranslate as getTranslateUtil
+  getTranslate as getTranslateUtil,
+  initGoogleAuth as initGoogleAuthUtil
 } from 'utils';
 import { toast } from 'react-toastify';
 import axios from 'utils/axios';
-import { userLogin as userAuthLogin } from 'api';
+import { userLogin as userAuthLogin, userGoogleSignIn } from 'api';
+import {Helmet} from "react-helmet";
 import { userLogin } from 'store/actions';
 
 // Components
@@ -19,6 +21,8 @@ import FormValidator from 'utils/FormValidator';
 import WithTranslate from 'components/hoc/WithTranslate';
 
 import './LoginView.sass';
+
+import { ReactComponent as GoogleIcon } from 'assets/img/icons/google-icon.svg';
 
 const LoginView = (props: any) => {
 
@@ -32,6 +36,30 @@ const LoginView = (props: any) => {
   const [loginErrors, setLoginErrors] = useState([]);
 
   const [loginLoading, setLoginLoading] = useState(false);
+  const [loginGoogleLoading, setLoginGoogleLoading] = useState(true);
+  const [loginGoogleLoadingError, setLoginGoogleLoadingError] = useState(false);
+
+  useEffect(() => {
+    initGoogleAuth();
+  }, []);
+
+  function initGoogleAuth () {
+    const interval = setInterval(tryGoogleAuthInit, 100);
+    
+    function tryGoogleAuthInit () {
+      if (window['gapi']) {
+        clearInterval(interval);
+        
+        initGoogleAuthUtil(response => {
+          setLoginGoogleLoading(false);
+        }, error => {
+          setLoginGoogleLoadingError(true);
+        });
+      }
+    }
+
+    tryGoogleAuthInit();
+  }
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -83,8 +111,43 @@ const LoginView = (props: any) => {
     }
   };
 
+  const loginGoogle = () => {
+    const auth2 = window['gapi'].auth2.getAuthInstance();
+
+    setLoginGoogleLoading(true);
+
+    auth2.signIn().then(googleUser => {   
+      // token
+      const id_token = googleUser.getAuthResponse().id_token;
+
+      userGoogleSignIn(id_token).then(response => {
+        setLoginGoogleLoading(false);
+
+        const token = response.data && response.data.access_token ? response.data.access_token : null;
+
+        if (token) {
+          localStorage.setItem('authToken', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+          props.userLogin(token);
+          props.history.push('/');
+        } else {
+          toast.error('Error occurred when Sign In User');
+        }
+      }).catch(error => {
+        setLoginGoogleLoading(false);
+        toast.error('Error occurred when Sign In User');
+      });
+    }).catch(error => {
+      setLoginGoogleLoading(false);
+    });
+  };
+
   return (
     <>
+      <Helmet>
+        <script src="https://apis.google.com/js/platform.js" async  />
+      </Helmet>
+
       <RegisterModal
         isOpen={isRegisterModalOpen}
         onClose={() => setRegisterModalOpen(false)}
@@ -121,21 +184,35 @@ const LoginView = (props: any) => {
             />
           </FormGroup>
 
-          <span className="link link-bold mt-5">{getTranslate('login.forgot_pass')}</span>
+          <span className="link link-bold mt-3">{getTranslate('login.forgot_pass')}</span>
 
           <Button 
             className="loginScreen_btn" 
             type="submit" 
             color="primary" 
             size="lg"
+            disabled={loginGoogleLoading || loginLoading}
             isLoading={loginLoading}
             block
           >
             {getTranslate('login.submit')}
           </Button>
-
-          <span className="link link-bold mt-3" onClick={() => setRegisterModalOpen(true)}>{getTranslate('login.register_link')}</span>
         </form>
+
+        {!loginGoogleLoadingError && (
+          <div className="text-center mt-4">
+            <Button 
+              className="google-login-btn" 
+              onClick={e => loginGoogle()}
+              disabled={loginLoading || loginGoogleLoading}
+              isLoading={loginGoogleLoading}
+            >
+              <GoogleIcon className="mr-2" /> Login with Google
+            </Button>
+          </div>
+        )}
+
+        <span className="link link-bold mt-4" onClick={() => setRegisterModalOpen(true)}>{getTranslate('login.register_link')}</span>
       </div>
     </>
   );
