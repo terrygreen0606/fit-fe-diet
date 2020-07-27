@@ -20,12 +20,16 @@ import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue.svg';
 
-import { ingredientsData } from './mockData';
+import { receptData } from './mockData';
 
 const CreateRecipeView = () => {
   const [unit, setUnit] = useState('gr');
 
   const [isActiveInput, setActiveInput] = useState(false);
+
+  const [recipeQuantityInfoForm, setRecipeQuantityInfoForm] = useState({
+    count: 5,
+  });
 
   const [recipeInfoForm, setRecipeInfoForm] = useState({
     name: '',
@@ -40,10 +44,6 @@ const CreateRecipeView = () => {
 
   const [instructionsInfoForm, setInstructionsInfoForm] = useState({
     value: '',
-  });
-
-  const [recipeQuantityInfoForm, setRecipeQuantityInfoForm] = useState({
-    count: 5,
   });
 
   const [recipeInfoErrors, setRecipeInfoErrors] = useState([]);
@@ -68,11 +68,17 @@ const CreateRecipeView = () => {
     );
   };
 
-  const getPercent = (val: number) => {
-    let amount: number = 0;
-    ingredientsData.forEach((item) => (amount += item.value));
-    return (val / amount) * 100;
-  };
+  // const getPercent = (val: number) => {
+  //   let amount: number = 0;
+  //   receptData.ingredients.forEach((item) => (amount += item.value));
+  //   return (val / amount) * 100;
+  // };
+
+  // const [isActiveRecipeItem, setActiveRecipeItem] = useState(false);
+
+  // const toggleClass = () => {
+  //   setActiveRecipeItem(!isActiveRecipeItem);
+  // }
 
   return (
       <div className='container-fluid recipe_container'>
@@ -181,10 +187,10 @@ const CreateRecipeView = () => {
           </div>
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
-              {ingredientsData.map(item => {
+              {receptData.ingredients.map(item => {
                 return (
                   <div className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}>
-                    <Chart firstColor={item.firstColorGradient} lastColor={item.lastColorGradient} percent={getPercent(item.value)} />
+                    <Chart firstColor={item.firstColorGradient} lastColor={item.lastColorGradient} percent={1} id={item.id} />
                   </div>
                 )
               })}
@@ -193,14 +199,14 @@ const CreateRecipeView = () => {
               </div>
             </div>
             <div className='recipe__chart-lines'>
-              {ingredientsData.map(item => {
+              {receptData.ingredients.map(item => {
                   return (
                     <div className="recipe__chart-lines-item">
-                      <div className="recipe__chart-lines-item-description">{item.label}</div>
+                      <div className="recipe__chart-lines-item-description">{item.name}</div>
                         <div className="recipe__chart-lines-item-line">
                           <div className="recipe__chart-lines-item-line-paint" style={{
-                            'width': getPercent(item.value),
-                            'backgroundColor': item.color,
+                            'width': 1,
+                            'backgroundColor': item.backgroundColor,
                           }}>
                           </div>
                         </div>
@@ -240,23 +246,15 @@ const CreateRecipeView = () => {
             <div className='recipe__item-name'>
               Garlic clove (optional) €€€
             </div>
-            <div>
-              {ingredientsData[2].value} {unit}
-            </div>
-          </div>
-          <div className='recipe__item-full-info'>
-            <div className='recipe__item-full-info-name'>
-              Garlic clove (optional) €€€
-            </div>
-            <div className='recipe__item-full-info-counting'>
-              {ingredientsData.map((item) => (
-                <div key={item.id}>{`${item.label} ${item.value}`}</div>
+            <div className='recipe__item-counting'>
+              {receptData.ingredients.map((item) => (
+                <div key={item.id}>{`${item.name} ${item.value}`}</div>
               ))}
             </div>
-            <div className='recipe__item-full-info-quantity'>
-              <div className='recipe__item-full-info-quantity-counter'>
+            <div className='recipe__item-quantity'>
+              <div className='recipe__item-quantity-counter'>
                 <button
-                  className='recipe__item-full-info-quantity-counter-arrow'
+                  className='recipe__item-quantity-counter-arrow'
                   onClick={() =>
                     setRecipeQuantityInfoForm(
                       recipeQuantityInfoForm.count === 0
@@ -278,10 +276,10 @@ const CreateRecipeView = () => {
                     validateOnChange('count', e.target.value, e, recipeQuantityInfoForm, setRecipeQuantityInfoForm)
                   }
                   height='xs'
-                  className='recipe__item-full-info-quantity-counter-input'
+                  className='recipe__item-quantity-counter-input'
                 />
                 <button
-                  className='recipe__item-full-info-quantity-counter-arrow'
+                  className='recipe__item-quantity-counter-arrow'
                   onClick={() =>
                     setRecipeQuantityInfoForm({
                       ...recipeQuantityInfoForm,
@@ -292,15 +290,79 @@ const CreateRecipeView = () => {
                   <ArrowRight />
                 </button>
               </div>
-              <div className='recipe__item-full-info-quantity-counter-total'>
+              <div className='recipe__item-quantity-counter-total'>
                 0 kcal
               </div>
             </div>
-            <button className='recipe__item-full-info-delete'>
-              <div className='recipe__item-full-info-delete-media'>
+            <button className='recipe__item-delete'>
+              <div className='recipe__item-delete-media'>
                 <TrashIcon />
               </div>
             </button>
+            <div className='recipe__item-weight'>
+              {receptData.weight} {unit}
+            </div>
+          </div>
+          <div className='recipe__item recipe__item_full-info'>
+            <div className='recipe__item-name'>
+              Garlic clove (optional) €€€
+            </div>
+            <div className='recipe__item-counting'>
+              {receptData.ingredients.map((item) => (
+                <div key={item.id}>{`${item.name} ${item.value}`}</div>
+              ))}
+            </div>
+            <div className='recipe__item-quantity'>
+              <div className='recipe__item-quantity-counter'>
+                <button
+                  className='recipe__item-quantity-counter-arrow'
+                  onClick={() =>
+                    setRecipeQuantityInfoForm(
+                      recipeQuantityInfoForm.count === 0
+                        ? { ...recipeQuantityInfoForm, count: 0 }
+                        : {
+                            ...recipeQuantityInfoForm,
+                            count: +recipeQuantityInfoForm.count - 1,
+                          }
+                    )
+                  }
+                >
+                  <ArrowLeft />
+                </button>
+                <InputField
+                  type='number'
+                  min={0}
+                  value={`${recipeQuantityInfoForm.count}`}
+                  onChange={(e) =>
+                    validateOnChange('count', e.target.value, e, recipeQuantityInfoForm, setRecipeQuantityInfoForm)
+                  }
+                  height='xs'
+                  className='recipe__item-quantity-counter-input'
+                />
+                <button
+                  className='recipe__item-quantity-counter-arrow'
+                  onClick={() =>
+                    setRecipeQuantityInfoForm({
+                      ...recipeQuantityInfoForm,
+                      count: +recipeQuantityInfoForm.count + 1,
+                    })
+                  }
+                >
+                  <ArrowRight />
+                </button>
+              </div>
+              <div className='recipe__item-quantity-counter-total'>
+                0 kcal
+              </div>
+            </div>
+            <button className='recipe__item-delete'>
+              <div className='recipe__item-delete-media'>
+                <TrashIcon />
+              </div>
+            </button>
+            <div className='recipe__item-weight'>
+              {receptData.weight} {unit}
+            </div>
           </div>
           <div className='instructions'>
             <h2 className='instructions__title'>Preparation instructions</h2>
