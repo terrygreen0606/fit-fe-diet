@@ -1,7 +1,15 @@
 import React from 'react';
 import './Chart.sass';
 
-const Chart = ({firstColor, lastColor, percent, id}) => {
+interface ChartProps {
+  firstColor?: string,
+  lastColor?: string,
+  percent: number,
+  id?: number,
+}
+
+const Chart = ({firstColor, lastColor, percent, id}: ChartProps) => {
+
   return (
     <svg className="chart" width="34" height="34" viewBox="0 0 34 34">
       <linearGradient id={`gradient-${id}`} x1="0%" y1="0%" x2="0%" y2="100%">
