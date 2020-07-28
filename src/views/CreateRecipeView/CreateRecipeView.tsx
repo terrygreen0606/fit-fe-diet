@@ -27,7 +27,6 @@ import { ReactComponent as ArrowLeft } from 'assets/img/icons/arrow-left-gray-ic
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
-import { recipeData } from './mockData';
 import { priceCategory } from './priceCategory';
 import { colourStylesSelect } from './selectStyles';
 
@@ -62,7 +61,7 @@ const CreateRecipeView = () => {
       backgroundColor: '#279A40',
     },
     {
-      name: 'carbohydrate ',
+      name: 'carbohydrate',
       value: 0,
       id: 1,
       firstColorGradient: '#FF8F6F',
@@ -113,6 +112,8 @@ const CreateRecipeView = () => {
     ).then(response => {
       const dataRecipe = response.data.data;
       return dataRecipe;
+    }).catch(reject => {
+      console.log(reject);
     });
   };
 
@@ -122,25 +123,23 @@ const CreateRecipeView = () => {
         const data = response.data.data;
         setListOfIngredients([...listOfIngredients, data]);
         setCreateRecipeForm({...createRecipeForm, ingredients: [
+          ...createRecipeForm.ingredients,
           {
             ingredient_id: data._id,
             weight: 0,
-          },
-        ]});
-        setProteinFatCarbohydrate([...proteinFatCarbohydrate, ])
+          }
+        ]})
       });
   };
   
   const filterIngredients = async inputValue => {
     let filteredListOfIngredients = [];
     try {
-      await searchIngredients(token, inputValue)
-        .then(response => {
-          const listOfIngredients = response.data.data;
-          for (let prop in listOfIngredients) {
-            filteredListOfIngredients.push({ value: prop, label: listOfIngredients[prop], })
-          };
-        });
+      const response = await searchIngredients(token, inputValue);
+      const listOfIngredients = response.data.data;
+      for (let prop in listOfIngredients) {
+        filteredListOfIngredients.push({ value: prop, label: listOfIngredients[prop], })
+      };
       return filteredListOfIngredients;
     } catch {
       return filteredListOfIngredients;
@@ -154,6 +153,17 @@ const CreateRecipeView = () => {
   };
 
   const getPercent = (value: number) => value / maxCalories * 100;
+
+  const deleteIngredient = index => {
+    console.log('createRecipeForm', createRecipeForm.ingredients);
+    console.log('listOfIngredients', listOfIngredients);
+    const updatedRenderListOfIngredients = [...listOfIngredients];
+    updatedRenderListOfIngredients.splice(index, 1);
+    setListOfIngredients(updatedRenderListOfIngredients);
+    const updatedListOfIngredients = [...createRecipeForm.ingredients];
+    updatedListOfIngredients.splice(index, 1);
+    setCreateRecipeForm({...createRecipeForm, ingredients: updatedListOfIngredients});
+  };
 
   return (
     <div className='container-fluid recipe_container'>
@@ -290,7 +300,7 @@ const CreateRecipeView = () => {
                   <div
                     className='recipe__chart-lines-item-line-paint'
                     style={{
-                      width: 1,
+                      width: getPercent(item.value),
                       backgroundColor: item.backgroundColor,
                     }}
                   ></div>
@@ -325,7 +335,7 @@ const CreateRecipeView = () => {
           )}
         </div>
         <div className="recipe__list">
-          {listOfIngredients.map(item => {
+          {listOfIngredients.map((item, index) => {
             return (
               <div className='recipe__item recipe__item_full-info' key={item._id}>
               <div className='recipe__item-name'>{item.name_i18n}</div>
@@ -380,18 +390,17 @@ const CreateRecipeView = () => {
                 </div>
                 <div className='recipe__item-quantity-counter-total'>{item.calorie} kcal</div>
               </div>
-              <button type="button" className='recipe__item-delete'>
+              <button type="button" className='recipe__item-delete' onClick={() => deleteIngredient(index)}>
                 <div className='recipe__item-delete-media'>
                   <TrashIcon />
                 </div>
               </button>
               <div className='recipe__item-weight'>
-                {recipeData.weight} {unit}
+                0 {unit}
               </div>
           </div>
           )})}
         </div>
-        
         <div className='instructions'>
           <h2 className='instructions__title'>Preparation instructions</h2>
           <InputField
