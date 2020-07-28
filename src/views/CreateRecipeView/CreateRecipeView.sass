@@ -81,6 +81,10 @@
 
 	&-input + .recipe__label-input
 		margin-left: 12px
+	
+	&-select
+		flex: 1
+		min-width: 180px
 
 .recipe__switch
 	display: flex
@@ -202,38 +206,39 @@
 .recipe__chart-lines-item + .recipe__chart-lines-item
 	margin-top: 40px
 
-.recipe__add-ingredients 
-	display: flex
-	justify-content: space-between
-	align-items: center
+.recipe__add
 	margin-bottom: 40px
 
-	&-title
-		font-size: 24px
-		line-height: 1.2
-		font-weight: bold
+	&-ingredients 
+		display: flex
+		justify-content: space-between
+		align-items: center
+		margin-bottom: 50px
 
-	&-field 
-		position: relative
-		margin: 50px 0 40px
+		&-title
+			margin-bottom: 0
+			font-size: 24px
+			line-height: 1.2
+			font-weight: bold
 
-	&-field-button
-		position: absolute
-		top: 23px
-		right: 20px
-		border: none
-		background: transparent
-		line-height: 0
-		cursor: pointer
+		&-field 
+			position: relative
 
-		& > *
-			line-height: initial
+		&-field-button
+			position: absolute
+			top: 23px
+			right: 20px
+			border: none
+			background: transparent
+			line-height: 0
+			cursor: pointer
+
+			& > *
+				line-height: initial
 
 .recipe__item
 	display: flex
 	justify-content: space-between
-	align-items: center
-	margin-bottom: 35px
 	padding: 24px 55px 24px 35px
 	font-size: 24px
 	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
@@ -242,6 +247,9 @@
 
 	&-name
 		padding-right: 30px
+
+	& + .recipe__item
+		margin-top: 35px
 
 	&-quantity
 			flex-basis: 33.33%

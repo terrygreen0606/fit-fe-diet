@@ -16,7 +16,7 @@ interface InputFieldProps {
   type?: 'text' | 'number' | 'password' | 'money' | 'percent' | 'textarea',
   name?: string,
   label?: string,
-  value?: string,
+  value?: string | number,
   mask?: string, // https://github.com/insin/inputmask-core#pattern
   className?: string,
   invalid?: boolean,

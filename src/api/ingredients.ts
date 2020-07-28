@@ -7,3 +7,11 @@ export const searchIngredients = (token: string, name: string) => {
     }
   });
 };
+
+export const getIngredient = (token: string, id: string) => {
+  return axios.get(`/ingredient/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+};

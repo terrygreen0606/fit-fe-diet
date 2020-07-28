@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
@@ -7,7 +8,11 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
 } from 'utils';
-import { searchIngredients, createRecipe } from 'api';
+import { 
+  searchIngredients,
+  createRecipe,
+  getIngredient
+} from 'api';
 
 //Components
 import Button from 'components/common/Forms/Button';
@@ -23,6 +28,10 @@ import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
 import { recipeData } from './mockData';
+import { priceCategory } from './priceCategory';
+import { colourStylesSelect } from './selectStyles';
+
+const maxCalories = 500;
 
 const CreateRecipeView = () => {
   const token = localStorage.getItem('authToken');
@@ -33,16 +42,48 @@ const CreateRecipeView = () => {
 
   const [createRecipeForm, setCreateRecipeForm] = useState({
     recipeName: '',
-    recipeInstruction: '',
-    recipeCost: '',
-    startTime: '',
-    finishTime: '',
+    recipePreparation: '',
     ingredients: [],
-    ingredientName: '',
-    ingredientCount: '',
+    ingredientsWeight: [],
+    cuisine: [],
+    image_ids: [],
+    recipeCost: null,
+    minTime: null,
+    maxTime: null,
   });
 
+  const [proteinFatCarbohydrate, setProteinFatCarbohydrate] = useState([
+    {
+      name: 'fat',
+      value: 0,
+      id: 0,
+      firstColorGradient: '#03792B',
+      lastColorGradient: '#D5FFBB',
+      backgroundColor: '#279A40',
+    },
+    {
+      name: 'carbohydrate ',
+      value: 0,
+      id: 1,
+      firstColorGradient: '#FF8F6F',
+      lastColorGradient: '#FAEC45',
+      backgroundColor: '#FAEC45',
+    },
+    {
+      name: 'protein',
+      value: 0,
+      id: 2,
+      firstColorGradient: '#1F39FE',
+      lastColorGradient: '#EFD4FF',
+      backgroundColor: '#3070F2',
+    }
+  ]);
+
+  const [listOfIngredients, setListOfIngredients] = useState([]);
+
   const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
+
+  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -57,37 +98,62 @@ const CreateRecipeView = () => {
     );
   };
 
-  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
-
   const createRecipeSubmit = e => {
-    console.log('createRecipeForm', createRecipeForm);
     e.preventDefault();
-    // createRecipe(token);
+    createRecipe(
+      token,
+      createRecipeForm.recipeName,
+      createRecipeForm.recipePreparation,
+      createRecipeForm.ingredients,
+      createRecipeForm.cuisine,
+      createRecipeForm.image_ids,
+      createRecipeForm.recipeCost,
+      createRecipeForm.minTime,
+      createRecipeForm.maxTime,
+    ).then(response => {
+      const dataRecipe = response.data.data;
+      return dataRecipe;
+    });
+  };
+
+  const addIndgredient = e => {
+    getIngredient(token, e.value)
+      .then(response => {
+        const data = response.data.data;
+        setListOfIngredients([...listOfIngredients, data]);
+        setCreateRecipeForm({...createRecipeForm, ingredients: [
+          {
+            ingredient_id: data._id,
+            weight: 0,
+          },
+        ]});
+        setProteinFatCarbohydrate([...proteinFatCarbohydrate, ])
+      });
   };
   
-  const filterIngredients = async (inputValue) => {
-    let filteredListOfIngredients;
+  const filterIngredients = async inputValue => {
+    let filteredListOfIngredients = [];
     try {
       await searchIngredients(token, inputValue)
         .then(response => {
           const listOfIngredients = response.data.data;
-          filteredListOfIngredients = [];
           for (let prop in listOfIngredients) {
             filteredListOfIngredients.push({ value: prop, label: listOfIngredients[prop], })
           };
         });
       return filteredListOfIngredients;
     } catch {
-      filteredListOfIngredients = [];
       return filteredListOfIngredients;
     }
   };
   
-  const inputValueIngredient = (inputValue) => {
+  const inputValueIngredient = inputValue => {
     return new Promise(debounce(resolve => {
       resolve(filterIngredients(inputValue)); 
     }, 300));
   };
+
+  const getPercent = (value: number) => value / maxCalories * 100;
 
   return (
     <div className='container-fluid recipe_container'>
@@ -131,17 +197,16 @@ const CreateRecipeView = () => {
           </div>
           <div className='col-3'>
             <div className='recipe__input-container'>
-              <InputField
-                block
-                type='number'
-                name='recipeCost'
-                data-validate='["required"]'
-                errors={getFieldErrors('recipeCost')}
-                value={createRecipeForm.recipeCost}
-                onChange={e => validateOnChange('recipeCost', e.target.value, e)}
-                label='$$$'
-                min={0}
-              />
+              <div className="recipe__label">
+                <span className='recipe__label-description'>$$$</span>   
+                <div className="recipe__label-select">           
+                  <Select 
+                    styles={colourStylesSelect}
+                    options={priceCategory}
+                    onChange={e => setCreateRecipeForm({...createRecipeForm, recipeCost: e.value})}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className='col-3'>
@@ -152,24 +217,26 @@ const CreateRecipeView = () => {
               <InputField
                 block
                 type='number'
-                name='startTime'
-                data-validate='["required"]'
-                errors={getFieldErrors('startTime')}
-                value={createRecipeForm.startTime}
-                onChange={e => validateOnChange('startTime', e.target.value, e,)}
+                name='minTime'
+                data-param="0,4320"
+                data-validate='["min-max"]'
+                value={createRecipeForm.minTime}
+                onChange={e => validateOnChange('minTime', e.target.value, e,)}
                 className='recipe__label-input'
                 min={0}
+                max={4320}
               />
               <InputField
                 block
                 type='number'
-                name='finishTime'
-                data-validate='["required"]'
-                errors={getFieldErrors('finishTime')}
-                value={createRecipeForm.finishTime}
-                onChange={e => validateOnChange('finishTime', e.target.value, e)}
+                name='maxTime'
+                data-param="0,4320"
+                data-validate='["min-max"]'
+                value={createRecipeForm.maxTime}
+                onChange={e => validateOnChange('maxTime', e.target.value, e)}
                 className='recipe__label-input'
                 min={0}
+                max={4320}
               />
             </label>
           </div>
@@ -196,7 +263,7 @@ const CreateRecipeView = () => {
         </div>
         <div className='recipe__chart'>
           <div className='recipe__chart-progress'>
-            {recipeData.ingredients.map((item) => (
+            {proteinFatCarbohydrate.map(item => (
               <div
                 key={item.id}
                 className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}
@@ -204,15 +271,15 @@ const CreateRecipeView = () => {
                 <Chart
                   firstColor={item.firstColorGradient}
                   lastColor={item.lastColorGradient}
-                  percent={1}
+                  percent={getPercent(item.value)}
                   id={item.id}
                 />
               </div>
               ))}
-            <div className='recipe__chart-progress-value'>0 kcal /444 kcal</div>
+            <div className='recipe__chart-progress-value'>0 kcal /{maxCalories} kcal</div>
           </div>
           <div className='recipe__chart-lines'>
-            {recipeData.ingredients.map((item) => (
+            {proteinFatCarbohydrate.map(item => (
               <div
                 key={item.id}
                 className='recipe__chart-lines-item'>
@@ -233,164 +300,108 @@ const CreateRecipeView = () => {
               ))}
           </div>
         </div>
-        <div className='recipe__add-ingredients'>
-          <h2 className='recipe__add-ingredients-title'>Ingredient</h2>
-          <Button
-            size='lg'
-            color='secondary'
-            onClick={() => setActiveInput(!isActiveInput)}
-          >
-            Add ingredients
-          </Button>
-        </div>
-        {isActiveInput && (
-          <div className='recipe__add-ingredients-field'>
-          <AsyncSelect cacheOptions defaultOptions loadOptions={inputValueIngredient} />
+        <div className="recipe__add">
+          <div className='recipe__add-ingredients'>
+            <h2 className='recipe__add-ingredients-title'>Ingredient</h2>
+            <Button
+              size='lg'
+              color='secondary'
+              onClick={() => setActiveInput(!isActiveInput)}
+            >
+              Add ingredients
+            </Button>
           </div>
-        )}
-        <div className='recipe__item'>
-          <div className='recipe__item-name'>Garlic clove (optional) €€€</div>
-          <div className='recipe__item-counting'>
-            {recipeData.ingredients.map((item) => (
-              <div key={item.id}>{`${item.name} ${item.value}`}</div>
-            ))}
-          </div>
-          <div className='recipe__item-quantity'>
-            <div className='recipe__item-quantity-counter'>
-              <button
-                type="button"
-                className='recipe__item-quantity-counter-arrow'
-                onClick={() => {
-                  if (createRecipeForm.ingredientCount === '0' || !createRecipeForm.ingredientCount) {
-                    setCreateRecipeForm({
-                      ...createRecipeForm,
-                      ingredientCount: '0'
-                    })
-                  } else {
-                    const count = +createRecipeForm.ingredientCount - 1;
-                    setCreateRecipeForm({
-                      ...createRecipeForm,
-                      ingredientCount: count.toString(),
-                    })
-                  }
-                }}
-              >
-                <ArrowLeft />
-              </button>
-              <InputField
-                type='number'
-                name='ingredientCount'
-                data-validate='["required"]'
-                errors={getFieldErrors('ingredientCount')}
-                value={createRecipeForm.ingredientCount}
-                onChange={e => validateOnChange('ingredientCount', e.target.value, e)}
-                height='xs'
-                className='recipe__item-quantity-counter-input'
-                min={0}
+          {isActiveInput && (
+            <div className='recipe__add-ingredients-field'>
+              <AsyncSelect
+                cacheOptions
+                defaultOptions
+                loadOptions={inputValueIngredient}
+                placeholder='Enter the name of the recipe'
+                onChange={addIndgredient}
+                styles={colourStylesSelect}
               />
-              <button
-                type="button"
-                className='recipe__item-quantity-counter-arrow'
-                onClick={() => {
-                    const count = +createRecipeForm.ingredientCount + 1;
-                    setCreateRecipeForm({
-                      ...createRecipeForm,
-                      ingredientCount: count.toString(),
-                    })
-                  }
-                }
-              >
-                <ArrowRight />
-              </button>
             </div>
-            <div className='recipe__item-quantity-counter-total'>0 kcal</div>
-          </div>
-          <button type="button" className='recipe__item-delete'>
-            <div className='recipe__item-delete-media'>
-              <TrashIcon />
-            </div>
-          </button>
-          <div className='recipe__item-weight'>
-            {recipeData.weight} {unit}
-          </div>
+          )}
         </div>
-        <div className='recipe__item recipe__item_full-info'>
-          <div className='recipe__item-name'>Garlic clove (optional) €€€</div>
-          <div className='recipe__item-counting'>
-            {recipeData.ingredients.map((item) => (
-              <div key={item.id}>{`${item.name} ${item.value}`}</div>
-            ))}
-          </div>
-          <div className='recipe__item-quantity'>
-            <div className='recipe__item-quantity-counter'>
-              <button
-                type="button"
-                className='recipe__item-quantity-counter-arrow'
-                onClick={() => {
-                  if (createRecipeForm.ingredientCount === '0' || !createRecipeForm.ingredientCount) {
-                    setCreateRecipeForm({
-                      ...createRecipeForm,
-                      ingredientCount: '0'
-                    })
-                  } else {
-                    const count = +createRecipeForm.ingredientCount - 1;
-                    setCreateRecipeForm({
-                      ...createRecipeForm,
-                      ingredientCount: count.toString(),
-                    })
-                  }
-                }}
-              >
-                <ArrowLeft />
+        <div className="recipe__list">
+          {listOfIngredients.map(item => {
+            return (
+              <div className='recipe__item recipe__item_full-info' key={item._id}>
+              <div className='recipe__item-name'>{item.name_i18n}</div>
+              <div className='recipe__item-counting'>
+                <div>Carbohydrates: {item.carbohydrate}</div>
+                <div>Protein: {item.protein}</div>
+                <div>Fats: {item.fat}</div>
+              </div>
+              <div className='recipe__item-quantity'>
+                <div className='recipe__item-quantity-counter'>
+                  <button
+                    type="button"
+                    className='recipe__item-quantity-counter-arrow'
+                    // onClick={() => {
+                    //   if (createRecipeForm.ingredientCount === '0' || !createRecipeForm.ingredientCount) {
+                    //     setCreateRecipeForm({
+                    //       ...createRecipeForm,
+                    //       ingredientCount: '0'
+                    //     })
+                    //   } else {
+                    //     const count = +createRecipeForm.ingredientCount - 1;
+                    //     setCreateRecipeForm({
+                    //       ...createRecipeForm,
+                    //       ingredientCount: count.toString(),
+                    //     })
+                    //   }
+                    // }}
+                  >
+                    <ArrowLeft />
+                  </button>
+                  <InputField
+                    type='number'
+                    value='0'
+                    height='xs'
+                    className='recipe__item-quantity-counter-input'
+                    min={0}
+                  />
+                  <button
+                    type="button"
+                    className='recipe__item-quantity-counter-arrow'
+                    // onClick={() => {
+                    //     const count = +createRecipeForm.ingredientCount + 1;
+                    //     setCreateRecipeForm({
+                    //       ...createRecipeForm,
+                    //       ingredientCount: count.toString(),
+                    //     })
+                    //   }
+                    // }
+                  >
+                    <ArrowRight />
+                  </button>
+                </div>
+                <div className='recipe__item-quantity-counter-total'>{item.calorie} kcal</div>
+              </div>
+              <button type="button" className='recipe__item-delete'>
+                <div className='recipe__item-delete-media'>
+                  <TrashIcon />
+                </div>
               </button>
-              <InputField
-                type='number'
-                name='ingredientCount'
-                data-param="0"
-                data-validate='["required"]'
-                errors={getFieldErrors('ingredientCount')}
-                value={createRecipeForm.ingredientCount}
-                onChange={e => validateOnChange('ingredientCount', e.target.value, e)}
-                height='xs'
-                className='recipe__item-quantity-counter-input'
-                min={0}
-              />
-              <button
-                type="button"
-                className='recipe__item-quantity-counter-arrow'
-                onClick={() => {
-                    const count = +createRecipeForm.ingredientCount + 1;
-                    setCreateRecipeForm({
-                      ...createRecipeForm,
-                      ingredientCount: count.toString(),
-                    })
-                  }
-                }
-              >
-                <ArrowRight />
-              </button>
-            </div>
-            <div className='recipe__item-quantity-counter-total'>0 kcal</div>
+              <div className='recipe__item-weight'>
+                {recipeData.weight} {unit}
+              </div>
           </div>
-          <button type="button" className='recipe__item-delete'>
-            <div className='recipe__item-delete-media'>
-              <TrashIcon />
-            </div>
-          </button>
-          <div className='recipe__item-weight'>
-            {recipeData.weight} {unit}
-          </div>
+          )})}
         </div>
+        
         <div className='instructions'>
           <h2 className='instructions__title'>Preparation instructions</h2>
           <InputField
             block
             type='textarea'
-            name='recipeInstruction'
+            name='recipePreparation'
             data-validate='["required"]'
-            errors={getFieldErrors('recipeInstruction')}
-            value={createRecipeForm.recipeInstruction}
-            onChange={e => validateOnChange('recipeInstruction', e.target.value, e)}
+            errors={getFieldErrors('recipePreparation')}
+            value={createRecipeForm.recipePreparation}
+            onChange={e => validateOnChange('recipePreparation', e.target.value, e)}
             rows={16}
             className='instructions__field'
           />
