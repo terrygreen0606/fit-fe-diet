@@ -4,11 +4,17 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate as getTranslateUtil,
-  initGoogleAuth as initGoogleAuthUtil
+  initGoogleAuth as initGoogleAuthUtil,
+  initFacebookAuth as initFacebookAuthUtil,
+  wait
 } from 'utils';
 import { toast } from 'react-toastify';
 import axios from 'utils/axios';
-import { userLogin as userAuthLogin, userGoogleSignIn } from 'api';
+import { 
+  userLogin as userAuthLogin, 
+  userGoogleSignIn, 
+  userFacebookSignIn 
+} from 'api';
 import {Helmet} from "react-helmet";
 import { userLogin } from 'store/actions';
 
@@ -23,6 +29,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import './LoginView.sass';
 
 import { ReactComponent as GoogleIcon } from 'assets/img/icons/google-icon.svg';
+import { ReactComponent as FacebookIcon } from 'assets/img/icons/facebook-letter-icon.svg';
 
 const LoginView = (props: any) => {
 
@@ -36,14 +43,20 @@ const LoginView = (props: any) => {
   const [loginErrors, setLoginErrors] = useState([]);
 
   const [loginLoading, setLoginLoading] = useState(false);
-  const [loginGoogleLoading, setLoginGoogleLoading] = useState(true);
+  const [loginGoogleLoading, setLoginGoogleLoading] = useState(false);
+  const [loginGoogleInitLoading, setLoginGoogleInitLoading] = useState(false);
+  const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
   const [loginGoogleLoadingError, setLoginGoogleLoadingError] = useState(false);
+  const [loginFacebookLoadingError, setLoginFacebookLoadingError] = useState(false);
 
   useEffect(() => {
     initGoogleAuth();
+    initFacebookAuth();
   }, []);
 
   function initGoogleAuth () {
+    setLoginGoogleInitLoading(true);
+
     const interval = setInterval(tryGoogleAuthInit, 100);
     
     function tryGoogleAuthInit () {
@@ -51,14 +64,16 @@ const LoginView = (props: any) => {
         clearInterval(interval);
         
         initGoogleAuthUtil(response => {
-          setLoginGoogleLoading(false);
+          setLoginGoogleInitLoading(false);
         }, error => {
-          setLoginGoogleLoadingError(true);
+          setLoginGoogleInitLoading(true);
         });
       }
     }
+  }
 
-    tryGoogleAuthInit();
+  function initFacebookAuth () {
+    window['fbAsyncInit'] = initFacebookAuth;
   }
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -142,10 +157,38 @@ const LoginView = (props: any) => {
     });
   };
 
+  const facebookLogin = () => {
+    setLoginFacebookLoading(false);
+
+    window['FB'].login(response => {
+      if (response.authResponse && response.authResponse.accessToken) {
+        userFacebookSignIn(response.authResponse.accessToken).then(response => {
+          const token = response.data && response.data.access_token ? response.data.access_token : null;
+
+          if (token) {
+            localStorage.setItem('authToken', token);
+            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            props.userLogin(token);
+            props.history.push('/');
+          } else {
+            toast.error('Error occurred when Sign In User');
+          }
+        }).catch(error => {
+          setLoginFacebookLoading(true);
+          toast.error('Error occurred when Sign In User');
+        });
+      } else {
+        setLoginFacebookLoading(true);
+        toast.error('Error occurred when Sign In User');
+      }
+    });
+  };
+
   return (
     <>
       <Helmet>
-        <script src="https://apis.google.com/js/platform.js" async  />
+        <script src="https://apis.google.com/js/platform.js" async />
+        <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js?version=v2.7" />
       </Helmet>
 
       <RegisterModal
@@ -191,7 +234,7 @@ const LoginView = (props: any) => {
             type="submit" 
             color="primary" 
             size="lg"
-            disabled={loginGoogleLoading || loginLoading}
+            disabled={loginLoading || loginGoogleLoading || loginFacebookLoading}
             isLoading={loginLoading}
             block
           >
@@ -199,18 +242,31 @@ const LoginView = (props: any) => {
           </Button>
         </form>
 
-        {!loginGoogleLoadingError && (
-          <div className="text-center mt-4">
-            <Button 
-              className="google-login-btn" 
-              onClick={e => loginGoogle()}
-              disabled={loginLoading || loginGoogleLoading}
-              isLoading={loginGoogleLoading}
-            >
-              <GoogleIcon className="mr-2" /> Login with Google
-            </Button>
+        {!loginGoogleLoadingError || !loginFacebookLoadingError ? (
+          <div className="d-flex text-center mt-4">
+            {!loginFacebookLoadingError && (
+              <Button 
+                className="facebook-login-btn mr-3" 
+                onClick={e => facebookLogin()}
+                disabled={loginLoading || loginGoogleLoading || loginFacebookLoading}
+                isLoading={loginFacebookLoading}
+              >
+                <FacebookIcon className="mr-2" /> Login with facebook
+              </Button>
+            )}
+
+            {!loginGoogleLoadingError && (
+              <Button 
+                className="google-login-btn" 
+                onClick={e => loginGoogle()}
+                disabled={loginLoading || loginGoogleLoading || loginFacebookLoading || loginGoogleInitLoading}
+                isLoading={loginGoogleLoading || loginGoogleInitLoading}
+              >
+                <GoogleIcon className="mr-2" /> Login with Google
+              </Button>
+            )}
           </div>
-        )}
+        ) : null}
 
         <span className="link link-bold mt-4" onClick={() => setRegisterModalOpen(true)}>{getTranslate('login.register_link')}</span>
       </div>

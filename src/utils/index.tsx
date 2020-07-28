@@ -5,3 +5,5 @@ export * from './hasFieldError';
 export * from './getFieldErrors';
 export * from './getTranslate';
 export * from './googleAuth';
+export * from './facebookAuth';
+export * from './wait';
