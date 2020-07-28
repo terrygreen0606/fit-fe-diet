@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import AsyncSelect from 'react-select/async';
 import classnames from 'classnames';
+import { debounce } from 'lodash';
 
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
 } from 'utils';
+import { searchIngredients, createRecipe } from 'api';
 
 //Components
 import Button from 'components/common/Forms/Button';
@@ -18,18 +21,15 @@ import { ReactComponent as ClockIcon } from 'assets/img/icons/clock-icon.svg';
 import { ReactComponent as ArrowLeft } from 'assets/img/icons/arrow-left-gray-icon.svg';
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
-import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue.svg';
 
 import { recipeData } from './mockData';
 
 const CreateRecipeView = () => {
+  const token = localStorage.getItem('authToken');
+
   const [unit, setUnit] = useState('gr');
 
-  const [isActiveInput, setActiveInput] = useState(false);
-
-  const [recipeQuantityInfoForm, setRecipeQuantityInfoForm] = useState({
-    count: 5,
-  });
+  const [isActiveInput, setActiveInput] = useState(true);
 
   const [createRecipeForm, setCreateRecipeForm] = useState({
     recipeName: '',
@@ -60,9 +60,34 @@ const CreateRecipeView = () => {
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
 
   const createRecipeSubmit = e => {
+    console.log('createRecipeForm', createRecipeForm);
     e.preventDefault();
-    console.log(e.target)
-  }
+    // createRecipe(token);
+  };
+  
+  const filterIngredients = async (inputValue) => {
+    let filteredListOfIngredients;
+    try {
+      await searchIngredients(token, inputValue)
+        .then(response => {
+          const listOfIngredients = response.data.data;
+          filteredListOfIngredients = [];
+          for (let prop in listOfIngredients) {
+            filteredListOfIngredients.push({ value: prop, label: listOfIngredients[prop], })
+          };
+        });
+      return filteredListOfIngredients;
+    } catch {
+      filteredListOfIngredients = [];
+      return filteredListOfIngredients;
+    }
+  };
+  
+  const inputValueIngredient = (inputValue) => {
+    return new Promise(debounce(resolve => {
+      resolve(filterIngredients(inputValue)); 
+    }, 300));
+  };
 
   return (
     <div className='container-fluid recipe_container'>
@@ -220,18 +245,7 @@ const CreateRecipeView = () => {
         </div>
         {isActiveInput && (
           <div className='recipe__add-ingredients-field'>
-            <InputField
-              block
-              name='ingredientName'
-              data-validate='["required"]'
-              errors={getFieldErrors('ingredientName')}
-              value={createRecipeForm.ingredientName}
-              onChange={e => validateOnChange('ingredientName', e.target.value, e)}
-              placeholder='Garlic clove (optional) €€€'
-            />
-            <button type="button" className='recipe__add-ingredients-field-button'>
-              <PlusIcon />
-            </button>
+          <AsyncSelect cacheOptions defaultOptions loadOptions={inputValueIngredient} />
           </div>
         )}
         <div className='recipe__item'>
