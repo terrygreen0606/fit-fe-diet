@@ -78,8 +78,6 @@ const CreateRecipeView = () => {
     }
   ]);
 
-  const [listOfIngredients, setListOfIngredients] = useState([]);
-
   const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
@@ -98,6 +96,7 @@ const CreateRecipeView = () => {
   };
 
   const createRecipeSubmit = e => {
+    console.log('createRecipeForm', createRecipeForm)
     e.preventDefault();
     createRecipe(
       token,
@@ -121,13 +120,14 @@ const CreateRecipeView = () => {
     getIngredient(token, e.value)
       .then(response => {
         const data = response.data.data;
-        setListOfIngredients([...listOfIngredients, data]);
+        const filteredData = {
+          ingredient_id: data._id,
+          name_i18n: data.name_i18n,
+          weight: 0,
+        };
         setCreateRecipeForm({...createRecipeForm, ingredients: [
           ...createRecipeForm.ingredients,
-          {
-            ingredient_id: data._id,
-            weight: 0,
-          }
+          filteredData
         ]})
       });
   };
@@ -155,11 +155,6 @@ const CreateRecipeView = () => {
   const getPercent = (value: number) => value / maxCalories * 100;
 
   const deleteIngredient = index => {
-    console.log('createRecipeForm', createRecipeForm.ingredients);
-    console.log('listOfIngredients', listOfIngredients);
-    const updatedRenderListOfIngredients = [...listOfIngredients];
-    updatedRenderListOfIngredients.splice(index, 1);
-    setListOfIngredients(updatedRenderListOfIngredients);
     const updatedListOfIngredients = [...createRecipeForm.ingredients];
     updatedListOfIngredients.splice(index, 1);
     setCreateRecipeForm({...createRecipeForm, ingredients: updatedListOfIngredients});
@@ -335,7 +330,7 @@ const CreateRecipeView = () => {
           )}
         </div>
         <div className="recipe__list">
-          {listOfIngredients.map((item, index) => {
+          {createRecipeForm.ingredients.map((item, index) => {
             return (
               <div className='recipe__item recipe__item_full-info' key={item._id}>
               <div className='recipe__item-name'>{item.name_i18n}</div>
