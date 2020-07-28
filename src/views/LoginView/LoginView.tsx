@@ -48,6 +48,7 @@ const LoginView = (props: any) => {
   const [loginGoogleLoading, setLoginGoogleLoading] = useState(false);
   const [loginGoogleLoadingError, setLoginGoogleLoadingError] = useState(false);
   
+  const [loginFacebookInitLoading, setLoginFacebookInitLoading] = useState(false);
   const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
 
   useEffect(() => {
@@ -74,7 +75,7 @@ const LoginView = (props: any) => {
   }
 
   function initFacebookAuth () {
-    setLoginFacebookLoading(true);
+    setLoginFacebookInitLoading(true);
 
     window['fbAsyncInit'] = () => {
       const interval = setInterval(checkFacebookInitSuccess, 100);
@@ -82,7 +83,7 @@ const LoginView = (props: any) => {
       function checkFacebookInitSuccess () {
         if (window['FB']) {
           clearInterval(interval);        
-          setLoginFacebookLoading(false);
+          setLoginFacebookInitLoading(false);
         }
       }
 
@@ -261,8 +262,8 @@ const LoginView = (props: any) => {
           <Button 
             className="facebook-login-btn mr-3" 
             onClick={e => facebookLogin()}
-            disabled={loginLoading || loginGoogleLoading || loginFacebookLoading}
-            isLoading={loginFacebookLoading}
+            disabled={loginLoading || loginGoogleLoading || loginFacebookLoading || loginFacebookInitLoading}
+            isLoading={loginFacebookLoading || loginFacebookInitLoading}
           >
             <FacebookIcon className="mr-2" /> Login with facebook
           </Button>
