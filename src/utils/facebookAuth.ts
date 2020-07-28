@@ -5,6 +5,6 @@ export const initFacebookAuth = () => {
     appId            : FACEBOOK_APP_ID,
     autoLogAppEvents : true,
     xfbml            : true,
-    version          : 'v2.7'
+    version          : 'v7.0'
   });
 };
