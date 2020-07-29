@@ -197,6 +197,8 @@ const LoginView = (props: any) => {
       } else {
         setLoginFacebookLoading(false);
       }
+    }, {
+      scope: 'email'
     });
   };
 
