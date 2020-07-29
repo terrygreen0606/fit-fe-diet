@@ -7,7 +7,7 @@ export const createRecipe = (
   ingredients: Array<object>,
   cuisine?: Array<string>,
   image_ids?: Array<string>,
-  cost_level?: number,
+  servings_cnt?: number,
   time_min?: number,
   time_max?: number,
   ) => {
@@ -17,7 +17,7 @@ export const createRecipe = (
     ingredients: ingredients,
     cuisine_ids: cuisine,
     image_ids: image_ids,
-    cost_level: cost_level,
+    servings_cnt: servings_cnt,
     time_min: time_min,
     time_max: time_max,
   }, {
