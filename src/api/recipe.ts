@@ -10,6 +10,7 @@ export const createRecipe = (
   servings_cnt?: number,
   time_min?: number,
   time_max?: number,
+  total_weight?: string,
   ) => {
   return axios.post(`/recipe/create`, {
     name_i18n: name,
@@ -20,6 +21,7 @@ export const createRecipe = (
     servings_cnt: servings_cnt,
     time_min: time_min,
     time_max: time_max,
+    weight: total_weight,
   }, {
     headers: {
       'Authorization': `Bearer ${token}`

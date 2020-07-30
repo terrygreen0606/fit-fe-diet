@@ -19,6 +19,7 @@ import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
 import Chart from 'components/common/Chart';
 import InputFile from 'components/common/Forms/InputFile';
+import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 
 import './CreateRecipeView.sass';
 
@@ -35,7 +36,7 @@ const CreateRecipeView = () => {
 
   const [unit, setUnit] = useState('gr');
 
-  const [isActiveInput, setActiveInput] = useState(true);
+  const [isActiveInput, setActiveInput] = useState(false);
 
   const [createRecipeForm, setCreateRecipeForm] = useState({
     recipeName: '',
@@ -46,25 +47,61 @@ const CreateRecipeView = () => {
     servings_cnt: null,
     minTime: null,
     maxTime: null,
+    totalWeight: '0',
   });
 
-  const [proteinFatCarbohydrateValues] = useState({
-    fat: 0,
-    protein: 0,
-    carbohydrate: 0,
-    fatId: 0,
-    proteinId: 1,
-    carbohydrateId:2,
-  });
+  const [proteinFatCarbohydrate] = useState([
+    {
+      name: 'fat',
+      value: 0,
+      id: 0,
+      firstColorGradient: '#03792B',
+      lastColorGradient: '#D5FFBB',
+      background: '#279A40',
+    },
+    {
+      name: 'carbohydrate',
+      value: 0,
+      id: 1,
+      firstColorGradient: '#FF8F6F',
+      lastColorGradient: '#FAEC45',
+      background: '#FFB56E',
+    },
+    {
+      name: 'protein',
+      value: 0,
+      id: 2,
+      firstColorGradient: '#1F39FE',
+      lastColorGradient: '#EFD4FF',
+      background: '#3070F2',
+    },
+  ]);
+
+  const calcProteinFatCarbohydrate = ingredientsList => {
+    proteinFatCarbohydrate.map(item => {
+      item.value = 0;
+      if (item.name === 'fat') {
+        ingredientsList.map(indgredientItem => {
+          item.value += Math.round(indgredientItem.fat) * indgredientItem.weight;
+        });
+      }
+      else if (item.name === 'carbohydrate') {
+        ingredientsList.map(indgredientItem => {
+          item.value += Math.round(indgredientItem.carbohydrate) * indgredientItem.weight;
+        });
+      }
+      else if (item.name === 'protein') {
+        ingredientsList.map(indgredientItem => {
+          item.value += Math.round(indgredientItem.protein) * indgredientItem.weight;
+        });
+      }; 
+    });
+  }
 
   const [calories, setCalories] = useState({
     value: 0,
     maxCalories: 500,
   });
-
-  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
-
-  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -79,25 +116,9 @@ const CreateRecipeView = () => {
     );
   };
 
-  const createRecipeSubmit = e => {
-    e.preventDefault();
-    createRecipe(
-      token,
-      createRecipeForm.recipeName,
-      createRecipeForm.recipePreparation,
-      createRecipeForm.ingredients,
-      createRecipeForm.cuisine,
-      createRecipeForm.image_ids,
-      createRecipeForm.servings_cnt,
-      createRecipeForm.minTime,
-      createRecipeForm.maxTime,
-    ).then(response => {
-      const dataRecipe = response.data.data;
-      return dataRecipe;
-    }).catch(reject => {
-      console.log('reject', reject);
-    });
-  };
+  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
+
+  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
 
   const addIndgredient = e => {
     getIngredient(token, e.value)
@@ -119,22 +140,25 @@ const CreateRecipeView = () => {
           ...createRecipeForm.ingredients,
           filteredData
         ]});
-
       });
   };
 
   const deleteIngredient = index => {
     const updatedListOfIngredients = [...createRecipeForm.ingredients];
+    let countTotalWeight = +createRecipeForm.totalWeight;
 
     setCalories({...calories, value: calories.value - updatedListOfIngredients[index].calorie * updatedListOfIngredients[index].weight});
 
-    proteinFatCarbohydrateValues.fat -= Math.round(updatedListOfIngredients[index].fat) * updatedListOfIngredients[index].weight;
-    proteinFatCarbohydrateValues.protein -= Math.round(updatedListOfIngredients[index].protein) * updatedListOfIngredients[index].weight;
-    proteinFatCarbohydrateValues.carbohydrate -= Math.round(updatedListOfIngredients[index].carbohydrate) * updatedListOfIngredients[index].weight;
-
     updatedListOfIngredients.splice(index, 1);
 
-    setCreateRecipeForm({...createRecipeForm, ingredients: updatedListOfIngredients});
+    calcProteinFatCarbohydrate(updatedListOfIngredients);
+
+    countTotalWeight -= createRecipeForm.ingredients[index].weight;
+
+    setCreateRecipeForm({ ...createRecipeForm,
+      ingredients: updatedListOfIngredients,
+      totalWeight: `${countTotalWeight}`
+    });
   };
   
   const filterIngredients = async inputValue => {
@@ -155,6 +179,25 @@ const CreateRecipeView = () => {
     return new Promise(debounce(resolve => {
       resolve(filterIngredients(inputValue)); 
     }, 300));
+  };
+  
+  const createRecipeSubmit = e => {
+    e.preventDefault();
+    createRecipe(
+      token,
+      createRecipeForm.recipeName,
+      createRecipeForm.recipePreparation,
+      createRecipeForm.ingredients,
+      createRecipeForm.cuisine,
+      createRecipeForm.image_ids,
+      createRecipeForm.servings_cnt,
+      createRecipeForm.minTime,
+      createRecipeForm.maxTime,
+      createRecipeForm.totalWeight,
+    ).then(response => {
+      const dataRecipe = response.data.data;
+      return dataRecipe;
+    });
   };
 
   const getPercent = (value: number) => value / calories.maxCalories * 100;
@@ -231,7 +274,7 @@ const CreateRecipeView = () => {
                 value={createRecipeForm.maxTime}
                 onChange={e => validateOnChange('maxTime', e.target.value, e)}
                 className='recipe__label-input'
-                min={0}
+                min={+createRecipeForm.minTime + 1}
                 max={4320}
               />
             </label>
@@ -259,89 +302,47 @@ const CreateRecipeView = () => {
         </div>
         <div className='recipe__chart'>
           <div className='recipe__chart-progress'>
+            {proteinFatCarbohydrate.map(item => (
               <div
-                className='recipe__chart-progress-item recipe__chart-progress-item_fat'
+                className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}
+                key={item.id}
               >
                 <Chart
-                  firstColor='#03792B'
-                  lastColor='#D5FFBB'
-                  percent={getPercent(proteinFatCarbohydrateValues.fat)}
-                  id={proteinFatCarbohydrateValues.fatId}
+                  firstColor={item.firstColorGradient}
+                  lastColor={item.lastColorGradient}
+                  percent={getPercent(item.value)}
+                  id={item.id}
                 />
               </div>
-              <div
-                className='recipe__chart-progress-item recipe__chart-progress-item_carbohydrate'
-              >
-                <Chart
-                  firstColor='#FF8F6F'
-                  lastColor='#FAEC45'
-                  percent={getPercent(proteinFatCarbohydrateValues.carbohydrate)}
-                  id={proteinFatCarbohydrateValues.carbohydrateId}
-                />
-              </div>
-              <div
-                className='recipe__chart-progress-item recipe__chart-progress-item_protein'
-              >
-                <Chart
-                  firstColor='#1F39FE'
-                  lastColor='#EFD4FF'
-                  percent={getPercent(proteinFatCarbohydrateValues.protein)}
-                  id={proteinFatCarbohydrateValues.proteinId}
-                />
-              </div>
+            ))}
             <div className='recipe__chart-progress-value'>{calories.value} kcal / {calories.maxCalories} kcal</div>
           </div>
           <div className='recipe__chart-lines'>
-            <div className='recipe__chart-lines-item'>
-              <div className='recipe__chart-lines-item-description'>
-                Fats
+            {proteinFatCarbohydrate.map(item => (
+              <div 
+                className='recipe__chart-lines-item'
+                key={item.id}
+              >
+                <div className='recipe__chart-lines-item-description'>
+                  {item.name}
+                </div>
+                <div className='recipe__chart-lines-item-line'>
+                  <div
+                    className='recipe__chart-lines-item-line-paint'
+                    style={{
+                      width: `${getPercent(item.value)}%`,
+                      backgroundColor: item.background,
+                    }}
+                  ></div>
+                </div>
+                <div className='recipe__chart-lines-item-description'>{item.value} {unit}</div>
               </div>
-              <div className='recipe__chart-lines-item-line'>
-                <div
-                  className='recipe__chart-lines-item-line-paint'
-                  style={{
-                    width: `${getPercent(proteinFatCarbohydrateValues.fat)}%`,
-                    backgroundColor: '#279A40',
-                  }}
-                ></div>
-              </div>
-              <div className='recipe__chart-lines-item-description'>{proteinFatCarbohydrateValues.fat} {unit}</div>
-            </div>
-            <div className='recipe__chart-lines-item'>
-              <div className='recipe__chart-lines-item-description'>
-                Carbohydrate
-              </div>
-              <div className='recipe__chart-lines-item-line'>
-                <div
-                  className='recipe__chart-lines-item-line-paint'
-                  style={{
-                    width: `${getPercent(proteinFatCarbohydrateValues.carbohydrate)}%`,
-                    backgroundColor: '#FAEC45',
-                  }}
-                ></div>
-              </div>
-              <div className='recipe__chart-lines-item-description'>{proteinFatCarbohydrateValues.carbohydrate} {unit}</div>
-            </div>
-            <div className='recipe__chart-lines-item'>
-              <div className='recipe__chart-lines-item-description'>
-                Protein
-              </div>
-              <div className='recipe__chart-lines-item-line'>
-                <div
-                  className='recipe__chart-lines-item-line-paint'
-                  style={{
-                    width: `${getPercent(proteinFatCarbohydrateValues.protein)}%`,
-                    backgroundColor: '#3070F2',
-                  }}
-                ></div>
-              </div>
-              <div className='recipe__chart-lines-item-description'>{proteinFatCarbohydrateValues.protein} {unit}</div>
-            </div>
+            ))}
           </div>
         </div>
-        <div className="recipe__add">
-          <div className='recipe__add-ingredients'>
-            <h2 className='recipe__add-ingredients-title'>Ingredient</h2>
+        <div className="recipe__add-ingredients">
+          <div className='recipe__add-ingredients-description'>
+            <h2 className='recipe__add-ingredients-description-title'>Ingredient</h2>
             <Button
               size='lg'
               color='secondary'
@@ -354,7 +355,6 @@ const CreateRecipeView = () => {
             <div className='recipe__add-ingredients-field'>
               <AsyncSelect
                 cacheOptions
-                defaultOptions
                 loadOptions={inputValueIngredient}
                 placeholder='Enter the name of the recipe'
                 onChange={addIndgredient}
@@ -370,108 +370,159 @@ const CreateRecipeView = () => {
                 'recipe__item_full-info': ingredientItem.isFullBlock
                 })}
                 key={ingredientItem.ingredient_id}>
-              <div className='recipe__item-name'>{ingredientItem.name}</div>
-              <div className='recipe__item-counting'>
-                <div>Fats: {Math.round(ingredientItem.fat) * +createRecipeForm.ingredients[ingredientIndex].weight}</div>
-                <div>Carbohydrates: {Math.round(ingredientItem.carbohydrate) * +createRecipeForm.ingredients[ingredientIndex].weight}</div>
-                <div>Proteins: {Math.round(ingredientItem.protein) * +createRecipeForm.ingredients[ingredientIndex].weight}</div>
-              </div>
-              <div className='recipe__item-quantity'>
-                <div className='recipe__item-quantity-counter'>
-                  <button
-                    className='recipe__item-quantity-counter-arrow'
-                    type="button"
-                    onClick={() => {
-                      const updatedIngredients = [...createRecipeForm.ingredients];
-                      const updatedWeight = +updatedIngredients[ingredientIndex].weight;
-                      
-                      if (updatedWeight <= 1) {
-                        updatedIngredients[ingredientIndex] = {
-                          ...updatedIngredients[ingredientIndex],
-                          weight: '0'
-                        };
-                      } else {
-                        updatedIngredients[ingredientIndex] = {
-                          ...updatedIngredients[ingredientIndex],
-                          weight: updatedWeight - 1
-                        };
-                      }
 
-                      if (proteinFatCarbohydrateValues.fat > 0) {
-                        proteinFatCarbohydrateValues.fat -= Math.round(createRecipeForm.ingredients[ingredientIndex].fat);
-                        proteinFatCarbohydrateValues.protein -= Math.round(createRecipeForm.ingredients[ingredientIndex].protein);
-                        proteinFatCarbohydrateValues.carbohydrate -= Math.round(createRecipeForm.ingredients[ingredientIndex].carbohydrate);
-                        setCalories({...calories, value: calories.value -= createRecipeForm.ingredients[ingredientIndex].calorie });
-                      }
+                <div className="recipe__item-content">
+                  <div className="recipe__item-bg" onClick={() => {
+                    const updatedlist = [...createRecipeForm.ingredients];
+                    updatedlist[ingredientIndex].isFullBlock = !updatedlist[ingredientIndex].isFullBlock;
+                    setCreateRecipeForm({...createRecipeForm, ingredients: updatedlist});
+                  }}></div>
 
-                      setCreateRecipeForm({...createRecipeForm, ingredients: updatedIngredients});
-                    }}
-                  >
-                    <ArrowLeft />
+                  <div className='recipe__item-name'>
+                    <span>{ingredientItem.name}</span>
+                  </div>
+
+                  <div className='recipe__item-counting'>
+                    <div>Fats: {Math.round(ingredientItem.fat) * Math.round(createRecipeForm.ingredients[ingredientIndex].weight)}</div>
+                    <div>Carbohydrates: {Math.round(ingredientItem.carbohydrate * Math.round(createRecipeForm.ingredients[ingredientIndex].weight))}</div>
+                    <div>Proteins: {Math.round(ingredientItem.protein * Math.round(createRecipeForm.ingredients[ingredientIndex].weight))}</div>
+                  </div>
+
+                  <div className='recipe__item-quantity'>
+                    <div className='recipe__item-quantity-counter'>
+                      <button
+                        className='recipe__item-quantity-counter-arrow'
+                        type="button"
+                        onClick={() => {
+                          const updatedIngredients = [...createRecipeForm.ingredients];
+                          const updatedWeight = +updatedIngredients[ingredientIndex].weight;
+                          let countTotalWeight = 0;
+                          
+                          if (updatedWeight <= 1) {
+                            updatedIngredients[ingredientIndex] = {
+                              ...updatedIngredients[ingredientIndex],
+                              weight: '0'
+                            };
+                          } else {
+                            updatedIngredients[ingredientIndex] = {
+                              ...updatedIngredients[ingredientIndex],
+                              weight: updatedWeight - 1
+                            };
+                          }
+
+                          calcProteinFatCarbohydrate(updatedIngredients);
+                          setCalories({...calories, value: calories.value -= createRecipeForm.ingredients[ingredientIndex].calorie });
+
+                          updatedIngredients.map(item => {
+                            countTotalWeight += +item.weight;
+                          });
+
+                          setCreateRecipeForm({ ...createRecipeForm,
+                            ingredients: updatedIngredients,
+                            totalWeight: `${countTotalWeight}`,
+                          });
+                        }}
+                      >
+                        <ArrowLeft />
+                      </button>
+
+                      <InputField
+                        type='number'
+                        name={`indredients[${ingredientIndex}].weight`}
+                        value={createRecipeForm.ingredients[ingredientIndex].weight}
+                        onChange={e => {
+                          const updatedIngredients = [...createRecipeForm.ingredients];
+                          const prevIngredient = updatedIngredients[ingredientIndex];
+                          let countTotalWeight = 0;
+
+                          updatedIngredients[ingredientIndex] = {
+                            ...updatedIngredients[ingredientIndex],
+                            weight: e.target.value
+                          };
+                          
+                          calcProteinFatCarbohydrate(updatedIngredients);
+
+                          setCalories({...calories, value: calories.value += Math.round((updatedIngredients[ingredientIndex].calorie * updatedIngredients[ingredientIndex].weight) - (prevIngredient.weight * updatedIngredients[ingredientIndex].calorie))});
+
+                          validateOnChange('ingredients', updatedIngredients, e);
+
+                          updatedIngredients.map(item => {
+                            countTotalWeight += +item.weight;
+                          });
+
+                          setCreateRecipeForm({ ...createRecipeForm,
+                            ingredients: updatedIngredients,
+                            totalWeight: `${countTotalWeight}`
+                          });
+                        }}
+                        height='xs'
+                        className='recipe__item-quantity-counter-input'
+                        min={0}
+                      />
+
+                      <button
+                        type="button"
+                        className='recipe__item-quantity-counter-arrow'
+                        onClick={() => {
+                          const updatedIngredients = [...createRecipeForm.ingredients];
+                          const updatedWeight = +updatedIngredients[ingredientIndex].weight;
+                          let countTotalWeight = 0;
+
+                          updatedIngredients[ingredientIndex] = {
+                            ...updatedIngredients[ingredientIndex],
+                            weight: updatedWeight + 1
+                          }
+                          
+                          calcProteinFatCarbohydrate(updatedIngredients);
+                          setCalories({...calories, value: calories.value += Math.round(createRecipeForm.ingredients[ingredientIndex].calorie )});
+
+                          updatedIngredients.map(item => {
+                            countTotalWeight += +item.weight;
+                          });
+
+                          setCreateRecipeForm({ ...createRecipeForm,
+                            ingredients: updatedIngredients,
+                            totalWeight: `${countTotalWeight}`
+                          });
+                        }}
+                      >
+                        <ArrowRight />
+                      </button>
+                    </div>
+                    <div className='recipe__item-quantity-counter-total'>
+                      <span>{Math.round(ingredientItem.calorie * +createRecipeForm.ingredients[ingredientIndex].weight)} kcal</span>
+                    </div>
+                  </div>
+                  <button type="button" className='recipe__item-delete' onClick={() => deleteIngredient(ingredientIndex)}>
+                    <div className='recipe__item-delete-media'>
+                      <TrashIcon />
+                    </div>
                   </button>
-                  <InputField
-                    type='number'
-                    name={`indredients[${ingredientIndex}].weight`}
-                    value={createRecipeForm.ingredients[ingredientIndex].weight}
-                    onChange={e => {
-                      const updatedIngredients = [...createRecipeForm.ingredients];
-
-                      const prevIngredient = updatedIngredients[ingredientIndex];
-
-                      updatedIngredients[ingredientIndex] = {
-                        ...updatedIngredients[ingredientIndex],
-                        weight: e.target.value
-                      };
-
-                      proteinFatCarbohydrateValues.fat += Math.round((updatedIngredients[ingredientIndex].fat * updatedIngredients[ingredientIndex].weight) - (prevIngredient.weight * updatedIngredients[ingredientIndex].fat));
-                      proteinFatCarbohydrateValues.protein += Math.round((updatedIngredients[ingredientIndex].protein * updatedIngredients[ingredientIndex].weight) - (prevIngredient.weight * updatedIngredients[ingredientIndex].fat));
-                      proteinFatCarbohydrateValues.carbohydrate += Math.round((updatedIngredients[ingredientIndex].carbohydrate * updatedIngredients[ingredientIndex].weight) - (prevIngredient.weight * updatedIngredients[ingredientIndex].fat));
-                      setCalories({...calories, value: calories.value += (updatedIngredients[ingredientIndex].calorie * updatedIngredients[ingredientIndex].weight) - (prevIngredient.calorie * updatedIngredients[ingredientIndex].calorie)});
-
-                      validateOnChange('ingredients', updatedIngredients, e);
-                    }}
-                    height='xs'
-                    className='recipe__item-quantity-counter-input'
-                    min={0}
+                  <div className='recipe__item-weight'>
+                    {ingredientItem.weight} {unit}
+                  </div>
+              </div>
+                <div className="recipe__item-opt">
+                  <CustomCheckbox
+                    label='Optional'
+                    className="recipe__item-opt-checkbox" 
+                    onChange={e => createRecipeForm.ingredients[ingredientIndex].is_opt = e.target.checked}
                   />
-                  <button
-                    type="button"
-                    className='recipe__item-quantity-counter-arrow'
-                    onClick={() => {
-                      const updatedIngredients = [...createRecipeForm.ingredients];
-                      const updatedWeight = +updatedIngredients[ingredientIndex].weight;
-
-                      updatedIngredients[ingredientIndex] = {
-                        ...updatedIngredients[ingredientIndex],
-                        weight: updatedWeight + 1
-                      }
-                      
-                      proteinFatCarbohydrateValues.fat += +Math.round(createRecipeForm.ingredients[ingredientIndex].fat);
-                      proteinFatCarbohydrateValues.protein += +Math.round(createRecipeForm.ingredients[ingredientIndex].protein);
-                      proteinFatCarbohydrateValues.carbohydrate += +Math.round(createRecipeForm.ingredients[ingredientIndex].carbohydrate);
-                      setCalories({...calories, value: calories.value += createRecipeForm.ingredients[ingredientIndex].calorie });
-                      
-                      setCreateRecipeForm({...createRecipeForm, ingredients: updatedIngredients});
-                    }}
-                  >
-                    <ArrowRight />
-                  </button>
                 </div>
-                <div className='recipe__item-quantity-counter-total'>{Math.round(ingredientItem.calorie* +createRecipeForm.ingredients[ingredientIndex].weight)} kcal</div>
-              </div>
-              <button type="button" className='recipe__item-delete' onClick={() => deleteIngredient(ingredientIndex)}>
-                <div className='recipe__item-delete-media'>
-                  <TrashIcon />
-                </div>
-              </button>
-              <div className='recipe__item-weight'>
-                {ingredientItem.weight} {unit}
-              </div>
-          </div>
+            </div>
           ))}
         </div>
         <div className="recipe__total-weight">
-
+          <InputField
+            block
+            type='number'
+            name='totalWeight'
+            value={createRecipeForm.totalWeight}
+            onChange={e => validateOnChange('totalWeight', e.target.value, e)}
+            min={0}
+            height='xl'
+            label='Total weight'
+          />
         </div>
         <div className='instructions'>
           <h2 className='instructions__title'>Preparation instructions</h2>
