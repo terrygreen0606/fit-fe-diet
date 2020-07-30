@@ -3,43 +3,61 @@
 
 .fgSelectControl
 	display: inline-block
-	color: $grey-medium
-	font-size: 14px
-	line-height: 16px
-	min-height: 41px !important
-	border-radius: 8px !important
+	padding: 0 7px
+	padding-right: 15px
+	color: #A0A0A0
+	font-family: $base-font !important
+	font-size: 16px
+	cursor: pointer !important
+	font-weight: bold
+	line-height: 20px
+	min-height: 58px !important
+	border-radius: 5px !important
+	border-width: 2px !important
+	border-style: solid !important
 	box-shadow: none !important
 	+mt(.2s)
 	&:hover
 		&:not(.fgSelectControl_readonly):not(.fgSelectControl_disabled)
-			border-color: lighten($black, 30%)
+			border-color: #A0A0A0
 	&_is_invalid
 		border-color: $red !important
 		.fgSelectIndicatorsContainer
 			svg
 				fill: $red
 	&_focused
-		border-color: lighten($black, 30%)
+		border-color: #A0A0A0
 	&_block
 		width: 100% !important
+	.fgSelectSingleValue
+		color: #A0A0A0 !important
 	&_readonly
 		background-color: #fff !important
 		cursor: not-allowed !important
 		&.fgSelectControl_has_value
-			color: $black !important
+			color: #A0A0A0 !important
 			.fgSelectSingleValue
-				color: $black !important
+				color: #A0A0A0 !important
 	&_disabled
 		&:not(.fgSelectControl_readonly)
 			border-color: $grey-light !important
 			background-color: $grey-bg !important
 	&_has_value
-		color: $black !important
-		border-color: lighten($black, 30%) !important
+		color: #A0A0A0 !important
+		border-color: #A0A0A0 !important
 
 .fgSelectIndicatorsContainer
 	svg
-		fill: $orange-accent
+		fill: #919BB3
+	> div
+		display: flex
+		align-items: center
+		justify-content: center
+		padding: 0
+		width: 30px
+		height: 30px
+		border-radius: 100%
+		background-color: #F0F0F0
 
 .fgSelectMenu
 	&_block
@@ -47,17 +65,18 @@
 
 .fgSelectOption
 	background-color: #fff !important
+	cursor: pointer !important
 	+mt(.2s)
 	&:not(.fgSelectOption_disabled)
 		&:hover, &.fgSelectOption_selected
 			color: #fff
-			background-color: $orange-accent !important
+			background-color: $malachite-green !important
 		&:hover
 			&:not(.fgSelectOption_selected)
-				background-color: lighten($orange-accent, 50%) !important
-				color: $orange-accent
+				background-color: $mint-green !important
+				color: $caribbean-green
 		&_selected
-			background-color: $orange-accent !important
+			background-color: $malachite-green !important
 
 .fgSelectSeprator
 	display: none
