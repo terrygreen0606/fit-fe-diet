@@ -22,7 +22,7 @@ export const chartConfig = {
       titleFontStyle: 'bold',
       titleSpacing: 4,
       titleFontSize: 14,
-      titleFontFamily: "' Montserrat', sans-serif",
+      titleFontFamily: "'Montserrat', sans-serif",
     },
     scales: {
       xAxes: [
@@ -35,9 +35,10 @@ export const chartConfig = {
           },
           ticks: {
             fontColor: "#000",
-            fontSize: 12,
+            fontSize: 14,
             zeroLineBorderDashOffset: 20,
-            padding: 10
+            padding: 10,
+            fontFamily: "'Montserrat', sans-serif",
           }
         }
       ],
@@ -52,17 +53,17 @@ export const chartConfig = {
             zeroLineWidth: 1,
             borderDash: [6,6],
             drawTicks: false,
-
           },
           ticks: {
             beginAtZero: false,
             suggestedMin: 0,
             suggestedMax: 100,
             fontColor: "#000",
-            fontSize: 12,
+            fontSize: 14,
             stepSize: 25,
             zeroLineBorderDashOffset: 20,
-            padding: 10
+            padding: 10,
+            fontFamily: "'Montserrat', sans-serif",
           }
         }
       ]

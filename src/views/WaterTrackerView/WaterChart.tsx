@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, createRef } from 'react';
+import React, { useEffect, useState, createRef } from 'react';
 
 import Chart from "chart.js";
 import { chartConfig as chartConfig } from "./chartConfig";
