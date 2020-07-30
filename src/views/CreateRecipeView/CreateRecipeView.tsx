@@ -18,7 +18,6 @@ import {
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
 import Chart from 'components/common/Chart';
-import InputFile from 'components/common/Forms/InputFile';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 
 import './CreateRecipeView.sass';
@@ -77,7 +76,14 @@ const CreateRecipeView = () => {
     },
   ]);
 
-  const calcProteinFatCarbohydrate = ingredientsList => {
+  const [calories, setCalories] = useState({
+    value: 0,
+    maxCalories: 500,
+  });
+
+  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
+
+  const calcProteinFatCarbohydrate = (ingredientsList: Array<any>) => {
     proteinFatCarbohydrate.map(item => {
       item.value = 0;
       if (item.name === 'fat') {
@@ -98,11 +104,6 @@ const CreateRecipeView = () => {
     });
   }
 
-  const [calories, setCalories] = useState({
-    value: 0,
-    maxCalories: 500,
-  });
-
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -115,8 +116,6 @@ const CreateRecipeView = () => {
       element
     );
   };
-
-  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
 
@@ -143,9 +142,9 @@ const CreateRecipeView = () => {
       });
   };
 
-  const deleteIngredient = index => {
-    const updatedListOfIngredients = [...createRecipeForm.ingredients];
-    let countTotalWeight = +createRecipeForm.totalWeight;
+  const deleteIngredient = (index: number) => {
+    const updatedListOfIngredients: Array<any> = [...createRecipeForm.ingredients];
+    let countTotalWeight: number = +createRecipeForm.totalWeight;
 
     setCalories({...calories, value: calories.value - updatedListOfIngredients[index].calorie * updatedListOfIngredients[index].weight});
 
@@ -161,8 +160,8 @@ const CreateRecipeView = () => {
     });
   };
   
-  const filterIngredients = async inputValue => {
-    let filteredListOfIngredients = [];
+  const filterIngredients = async (inputValue: string) => {
+    let filteredListOfIngredients: Array<any> = [];
     try {
       const response = await searchIngredients(token, inputValue);
       const listOfIngredients = response.data.data;
@@ -175,7 +174,7 @@ const CreateRecipeView = () => {
     }
   };
   
-  const inputValueIngredient = inputValue => {
+  const inputValueIngredient = (inputValue: string) => {
     return new Promise(debounce(resolve => {
       resolve(filterIngredients(inputValue)); 
     }, 300));
@@ -207,17 +206,33 @@ const CreateRecipeView = () => {
       <h1 className='recipe__title'>Create your recipe</h1>
       <form className='recipe_wrap' onSubmit={e => createRecipeSubmit(e)}>
         <div className='row recipe__photo'>
-          <div className='col-3 recipe__photo-layout'>
-            <InputFile />
+          <div className='col-3'>
+            <button className='recipe__add-photo'>
+              <span className='recipe__add-photo-description'>
+                Add photo
+              </span>
+            </button>
           </div>
-          <div className='col-3 recipe__photo-layout'>
-            <InputFile />
+          <div className='col-3'>
+            <button className='recipe__add-photo'>
+              <span className='recipe__add-photo-description'>
+                Add photo
+              </span>
+            </button>
           </div>
-          <div className='col-3 recipe__photo-layout'>
-            <InputFile />
+          <div className='col-3'>
+            <button className='recipe__add-photo'>
+              <span className='recipe__add-photo-description'>
+                Add photo
+              </span>
+            </button>
           </div>
-          <div className='col-3 recipe__photo-layout'>
-            <InputFile />
+          <div className='col-3'>
+            <button className='recipe__add-photo'>
+              <span className='recipe__add-photo-description'>
+                Add photo
+              </span>
+            </button>
           </div>
         </div>
         <div className='row recipe__input-data'>
@@ -231,6 +246,7 @@ const CreateRecipeView = () => {
                 value={createRecipeForm.recipeName}
                 onChange={e => validateOnChange('recipeName', e.target.value, e)}
                 label='Recipe name'
+                border='light'
               />
             </div>
           </div>
@@ -264,6 +280,7 @@ const CreateRecipeView = () => {
                 className='recipe__label-input'
                 min={0}
                 max={4320}
+                border='light'
               />
               <InputField
                 block
@@ -276,6 +293,7 @@ const CreateRecipeView = () => {
                 className='recipe__label-input'
                 min={+createRecipeForm.minTime + 1}
                 max={4320}
+                border='light'
               />
             </label>
           </div>
@@ -458,6 +476,7 @@ const CreateRecipeView = () => {
                         height='xs'
                         className='recipe__item-quantity-counter-input'
                         min={0}
+                        border='light'
                       />
 
                       <button
@@ -522,6 +541,7 @@ const CreateRecipeView = () => {
             min={0}
             height='xl'
             label='Total weight'
+            border='light'
           />
         </div>
         <div className='instructions'>
@@ -536,6 +556,7 @@ const CreateRecipeView = () => {
             onChange={e => validateOnChange('recipePreparation', e.target.value, e)}
             rows={16}
             className='instructions__field'
+            border='light'
           />
           <div className='instructions__button'>
             <Button

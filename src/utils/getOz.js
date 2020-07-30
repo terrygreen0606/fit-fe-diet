@@ -1,1 +1,0 @@
-export const getOz = gram => gram / 28.35;
