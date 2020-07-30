@@ -5,6 +5,7 @@ import DoughnutSingleChart from 'components/common/charts/DoughnutSingleChart';
 import LineChart from 'components/common/charts/LineChart';
 import Button from 'components/common/Forms/Button';
 import CustomRadio from 'components/common/Forms/CustomRadio';
+import SelectInput from 'components/common/Forms/SelectInput';
 
 import './WeightGraphicsPage.sass';
 
@@ -13,6 +14,13 @@ import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-icon.svg';
 import { ReactComponent as WeighScaleIcon } from 'assets/img/icons/weigh-scale-icon.svg';
 import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon.svg';
 import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
+
+const periodOptions = [
+  { value: 'all', label: 'Whole period' },
+  { value: 'year', label: 'Last year' },
+  { value: 'month', label: 'Last month' },
+  { value: 'week', label: 'Last week' }
+];
 
 const chartData = {
   labels: ["19.06.20", "19.06.20", "19.06.20", "19.06.20", "19.06.20"],
@@ -69,7 +77,23 @@ const WeightGraphicsPage = () => {
           <div className="weight-change-history-table-cell">Weight day</div>
           <div className="weight-change-history-table-cell">Change</div>
         </div>
+
+        <div className="weight-change-history-table-row">
+          <div className="weight-change-history-table-cell">60kg</div>
+          <div className="weight-change-history-table-cell">June 19, 2020</div>
+          <div className="weight-change-history-table-cell">Weight day</div>
+          <div className="weight-change-history-table-cell">Change</div>
+        </div>
+
+        <div className="weight-change-history-table-row">
+          <div className="weight-change-history-table-cell">60kg</div>
+          <div className="weight-change-history-table-cell">June 19, 2020</div>
+          <div className="weight-change-history-table-cell">Weight day</div>
+          <div className="weight-change-history-table-cell">Change</div>
+        </div>
       </div>
+
+      <div style={{ padding: '100px' }}><SelectInput value={periodOptions[0]} options={periodOptions} /></div>
 
       <div className="card-bg">
         <DoughnutSingleChart percent={50} />
