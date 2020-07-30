@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-
-
 import { getTranslate as getTranslateUtil } from 'utils';
+
 import WithTranslate from 'components/hoc/WithTranslate';
 import WaterChart from './WaterChart'
 
-import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue-thin.svg';
-import { ReactComponent as TickIcon } from 'assets/img/icons/tick-icon-big.svg';
-
 import './WaterTrackerView.sass';
 
-
+import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue-thin.svg';
+import { ReactComponent as TickIcon } from 'assets/img/icons/tick-icon-big.svg';
 
 const WaterTrackerView = (props: any) => {
 
@@ -21,7 +17,7 @@ const WaterTrackerView = (props: any) => {
   const [totalCompleteWater, setTotalCompleteWater] = useState(55);
   const [totalCompleteWaterML, setTotalCompleteWaterML] = useState(1000);
 
-  let chartLabels = []
+  let chartLabels
   if (trackerPeriod == 'week') {
     chartLabels = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat']
   } else if (trackerPeriod == 'month') {
@@ -56,19 +52,19 @@ const WaterTrackerView = (props: any) => {
                 onClick={()=> setTrackerPeriod('week')}
                 className={activePeriod('week')}
               >
-                {getTranslate('watertracker.week')}
+                {getTranslate('common.week')}
               </li>
               <li
                 onClick={()=> setTrackerPeriod('month')}
                 className={activePeriod('month')}
               >
-                {getTranslate('watertracker.month')}
+                {getTranslate('common.month')}
               </li>
               <li
                 onClick={()=> setTrackerPeriod('year')}
                 className={activePeriod('year')}
               >
-                {getTranslate('watertracker.year')}
+                {getTranslate('common.year')}
               </li>
             </ul>
           </div>
@@ -81,7 +77,7 @@ const WaterTrackerView = (props: any) => {
             </div>
 
             <div className="col-7">
-              <div className="col-8">
+              <div className="col-9">
                 <ul className="waterTracker_daynorm">
                   <li className="daynorm-item filled">
                     <TickIcon />
@@ -99,7 +95,7 @@ const WaterTrackerView = (props: any) => {
                     <TickIcon />
                   </li>
                   <li className="daynorm-item">
-                    <PlusIcon fill='#3283EB' />
+                    <PlusIcon />
                   </li>
                   <li className="daynorm-item">
                   </li>
@@ -118,7 +114,7 @@ const WaterTrackerView = (props: any) => {
 
               <div className="water-drop">
                 <h3>{totalCompleteWater}%</h3>
-                <h5>{totalCompleteWaterML}{getTranslate('watertracker.ml')}</h5>
+                <h5>{totalCompleteWaterML}{getTranslate('common.ml')}</h5>
               </div>
             </div>
           </div>
@@ -129,15 +125,15 @@ const WaterTrackerView = (props: any) => {
             <div className="col-5">
               <div className="waterTracker_info">
                 <div>
-                  <p>{getTranslate('watertracker.day_average')}</p>
+                  <p>{getTranslate('common.day_average')}</p>
                   <p>
-                    <span>2000</span> {getTranslate('watertracker.milliliters_short')}/{getTranslate('watertracker.day')}
+                    <span>2000</span> {getTranslate('common.ml')}/{getTranslate('common.day')}
                   </p>
                 </div>
                 <div>
                   <p>{getTranslate('watertracker.drink_frequency')}</p>
                   <p>
-                    <span>8</span> {getTranslate('watertracker.time')}(s)/{getTranslate('watertracker.day')}
+                    <span>8</span> {getTranslate('common.time')}(s)/{getTranslate('common.day')}
                   </p>
                 </div>
               </div>
@@ -145,19 +141,19 @@ const WaterTrackerView = (props: any) => {
 
             <div className="col-7">
               <div className="waterTracker_stats">
-                <p>{getTranslate('watertracker.complite')}</p>
-                <span>1000{getTranslate('watertracker.ml')}</span>
+                <p>{getTranslate('common.complite')}</p>
+                <span>1000{getTranslate('common.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{getTranslate('watertracker.daily_goal')}</p>
-                <span>2000{getTranslate('watertracker.ml')}</span>
+                <p>{getTranslate('common.daily_goal')}</p>
+                <span>2000{getTranslate('common.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{getTranslate('watertracker.average')}</p>
-                <span>1300{getTranslate('watertracker.ml')}</span>
+                <p>{getTranslate('common.average')}</p>
+                <span>1300{getTranslate('common.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{getTranslate('watertracker.status')}</p>
+                <p>{getTranslate('common.status')}</p>
                 <span>{getTranslate('watertracker.normal')}</span>
               </div>
             </div>

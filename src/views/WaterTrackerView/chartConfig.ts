@@ -1,25 +1,4 @@
 export const chartConfig = {
-  type: 'line',
-  data: {
-    labels: ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat'],
-    datasets: [
-      {
-        steppedLine: false,
-        data: [20,55,15,80,60,70,35],
-        backgroundColor: [
-          "rgba(255, 255, 255, 0)"
-        ],
-        borderColor: [
-          "rgba(188, 213, 247, 0.4)"
-        ],
-        borderWidth: 3,
-        pointBackgroundColor: "#3283EB",
-        pointBorderWidth: 4,
-        pointBorderColor: '#fff',
-        pointHoverRadius: 10,
-      }
-    ]
-  },
   options: {
     title: {
       display: false,
@@ -37,6 +16,14 @@ export const chartConfig = {
         radius: 10
       }
     },
+    tooltips: {
+      backgroundColor: '#3283EB',
+      titleFontColor: '#fff',
+      titleFontStyle: 'bold',
+      titleSpacing: 4,
+      titleFontSize: 14,
+      titleFontFamily: "'Montserrat', sans-serif",
+    },
     scales: {
       xAxes: [
         {
@@ -48,9 +35,10 @@ export const chartConfig = {
           },
           ticks: {
             fontColor: "#000",
-            fontSize: 12,
+            fontSize: 14,
             zeroLineBorderDashOffset: 20,
-            padding: 10
+            padding: 10,
+            fontFamily: "'Montserrat', sans-serif",
           }
         }
       ],
@@ -65,17 +53,17 @@ export const chartConfig = {
             zeroLineWidth: 1,
             borderDash: [6,6],
             drawTicks: false,
-
           },
           ticks: {
             beginAtZero: false,
             suggestedMin: 0,
             suggestedMax: 100,
             fontColor: "#000",
-            fontSize: 12,
+            fontSize: 14,
             stepSize: 25,
             zeroLineBorderDashOffset: 20,
-            padding: 10
+            padding: 10,
+            fontFamily: "'Montserrat', sans-serif",
           }
         }
       ]

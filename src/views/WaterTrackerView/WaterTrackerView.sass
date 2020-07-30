@@ -34,7 +34,7 @@
   &_info 
     display: inline-block;
     
-    padding: 10px 20px;
+    padding: 20px 25px;
     margin-bottom: 15px;
     width: 100%;
 
@@ -46,37 +46,35 @@
       align-items: center;
       justify-content: space-between;
 
-      padding: 10px;
+      padding: 15px 10px 15px 15px;
 
       &:not(:first-child)
         border-top: 1px solid #F2ECE3;
       p 
         margin: 0
-        font-family: Montserrat;
         font-style: normal;
-        font-size: 14px;
-        line-height: 18px;
+        font-size: 16px;
+        line-height: 1.52;
         &:first-child
           font-weight: bold;
 
       span 
-        font-size: 16px;
-        line-height: 18px;
         font-weight: bold;
         color: #106EE8;
 
   &_stats
     display: inline-block;
-    padding: 20px;
-    margin-left: 15px;
+    padding: 35px 25px;
+    margin-left: 30px;
     margin-bottom: 15px;
+    min-width: 155px;
 
     background: #FFFFFF;
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08);
     border-radius: 20px;
 
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 1.52;
     p 
       margin: 0px;
@@ -84,7 +82,7 @@
       color: #000;
     span 
       font-weight: bold;
-      font-size: 20px;
+      font-size: 22px;
       
   &_title
     padding-right: 15px;
@@ -109,19 +107,18 @@
     margin: 0px;
 
     list-style: none;
-
     & .daynorm-item 
       display: inline-flex;
       align-items: center;
       justify-content: center;
 
-      height: 84px;
-      width: 84px;
-
-      margin: 10px 15px 15px 5px;
+      height: 94px;
+      width: 94px;
+      margin: 15px;
 
       background-color: rgba(188, 213, 247, 0.2);
       border-radius: 50%;
+
       cursor: pointer;
       &.filled
         background-color: #3283EB;
@@ -131,17 +128,17 @@
 
   &_period
     display: inline;
-    list-style: none;
+    
     padding: 0;
     margin: 30px 40px 0px;
+
+    list-style: none;
     li 
       display: inline-block;
 
       padding: 5px 5px;
       margin: 0 30px;
 
-      font-family: Montserrat;
-      font-style: normal;
       font-size: 15px;
       line-height: 20px;
       color: #C4C4C4;
@@ -158,11 +155,11 @@
         font-weight: bold;
         color: #000;
     
-
 .row-wrap 
   justify-content: space-between
   .col-5 + .col-7
-    display: inline-flex
+    display: inline-flex;
+    align-items: flex-start;
 
 @media (max-width:996px)
   .waterTracker_daynorm 
@@ -177,7 +174,7 @@
     & .col-5 
       flex: unset;
       max-width: unset;
-    & .col-7, & .col-8
+    & .col-7, & .col-9
       max-width: 100%;
       flex: 0 0 100%;
 
@@ -185,7 +182,7 @@
       justify-content: center;
       
     & .water-drop
-        margin-left: unset;
+      margin-left: unset;
     
   
 
