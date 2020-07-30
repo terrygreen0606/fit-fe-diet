@@ -49,7 +49,7 @@ const RegisterModal = (props: any) => {
             setRegisterData={setRegisterData}
             setRegisterStep={setRegisterStep} 
             modalClose={props.onClose}
-            localPhrases={props.localPhrases}
+            localePhrases={props.localePhrases || {}}
           />
         );
         break;
@@ -61,7 +61,7 @@ const RegisterModal = (props: any) => {
             setRegisterData={setRegisterData}
             setRegisterStep={setRegisterStep} 
             modalClose={props.onClose}
-            localPhrases={props.localPhrases}
+            localePhrases={props.localePhrases || {}}
           />
         );
         break;
@@ -73,7 +73,7 @@ const RegisterModal = (props: any) => {
             setRegisterData={setRegisterData}
             setRegisterStep={setRegisterStep} 
             modalClose={props.onClose}
-            localPhrases={props.localPhrases}
+            localePhrases={props.localePhrases || {}}
           />
         );
         break;
@@ -89,7 +89,7 @@ const RegisterModal = (props: any) => {
       className="registerModal"
     >
       <Modal.Main className="registerModal_main">
-        <Steps step={registerStep} localPhrases={props.localPhrases} />
+        <Steps step={registerStep} localePhrases={props.localePhrases || {}} />
 
         <div className="registerModal_steps_content">
           {getRegisterStepView(registerStep)}
