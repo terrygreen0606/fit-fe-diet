@@ -22,9 +22,5 @@ export const createRecipe = (
     time_min: time_min,
     time_max: time_max,
     weight: total_weight,
-  }, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    },
-  });
+  }, {});
 };

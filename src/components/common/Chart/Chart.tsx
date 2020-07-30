@@ -15,7 +15,7 @@ const Chart = ({firstColor, lastColor, percent, id}: ChartProps) => (
          <stop offset="100" stopColor={lastColor}></stop>
        </linearGradient>
       <circle className="chart__circle" cx="17" cy="17" r="16"></circle>
-      <circle className="chart__circle-paint" cx="17" cy="17" r="16" stroke={percent > 0 ? `url(#gradient-${id})` : '#F5F7FA'} strokeDasharray={`${percent} 100`}></circle>
+      <circle className="chart__circle-paint" cx="17" cy="17" r="16" stroke={percent > 0 ? `url(#gradient-${id})` : null} strokeDasharray={`${percent} 100`}></circle>
     </svg>
   );
 
