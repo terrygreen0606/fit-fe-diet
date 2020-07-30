@@ -36,7 +36,6 @@ export const chartConfig = {
           ticks: {
             fontColor: "#000",
             fontSize: 14,
-            zeroLineBorderDashOffset: 20,
             padding: 10,
             fontFamily: "'Montserrat', sans-serif",
           }
@@ -61,7 +60,6 @@ export const chartConfig = {
             fontColor: "#000",
             fontSize: 14,
             stepSize: 25,
-            zeroLineBorderDashOffset: 20,
             padding: 10,
             fontFamily: "'Montserrat', sans-serif",
           }

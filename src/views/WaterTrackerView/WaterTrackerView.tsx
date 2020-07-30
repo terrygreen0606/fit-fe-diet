@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { getTranslate as getTranslateUtil } from 'utils';
@@ -17,16 +17,23 @@ const WaterTrackerView = (props: any) => {
   const [totalCompleteWater, setTotalCompleteWater] = useState(55);
   const [totalCompleteWaterML, setTotalCompleteWaterML] = useState(1000);
 
-  let chartLabels
-  if (trackerPeriod == 'week') {
-    chartLabels = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat']
-  } else if (trackerPeriod == 'month') {
-    chartLabels = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug']
-  } else {
-    chartLabels = ['2021', '2022', '2023', '2024', '2025', '2026', '2027']
+  const weekList = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat'];
+  const monthList = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug'];
+  const yearList = ['2021', '2022', '2023', '2024', '2025', '2026', '2027']
+  let chartData: Array<number> = [50,50,50,50,60]
+  let chartLabels: Array<string> = []
+
+  function getChartLabels( period ) {
+    if (period == 'week') {
+      chartLabels = weekList
+    } else if (period == 'month') {
+      chartLabels = monthList
+    } else {
+      chartLabels = yearList
+    }
   }
 
-  let chartData = [50,50,50,50,60]
+  getChartLabels(trackerPeriod);
 
   let activePeriod = (period) => classnames({
     'active-period': trackerPeriod == period,
@@ -34,13 +41,27 @@ const WaterTrackerView = (props: any) => {
 
   const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
 
+  let data = {
+    labels: chartLabels,
+    datasets: [
+      {
+        data: chartData,
+        backgroundColor: ["rgba(255, 255, 255, 0)"],
+        borderWidth: 2,
+        pointBackgroundColor: "#3283EB",
+        pointBorderColor: '#fff',
+        pointHoverRadius: 10,
+      }
+    ]
+  }
+
   return (
     <>
       <div className="waterTracker">
         <div className="container">
           <div className="row">
             <h4 className="waterTracker_title">
-              {getTranslate('watertracker.water_tracker')}
+              {getTranslate('wt.head_title')}
             </h4>
           </div>
         </div>
@@ -72,7 +93,7 @@ const WaterTrackerView = (props: any) => {
           <div className="row row-wrap" >
             <div className="col-5">
               <div className='waterTracker_chartwrap'>
-                <WaterChart labels={chartLabels} data={chartData} />
+                <WaterChart data={data} />
               </div>
             </div>
 
@@ -131,7 +152,7 @@ const WaterTrackerView = (props: any) => {
                   </p>
                 </div>
                 <div>
-                  <p>{getTranslate('watertracker.drink_frequency')}</p>
+                  <p>{getTranslate('wt.drink_frequency')}</p>
                   <p>
                     <span>8</span> {getTranslate('common.time')}(s)/{getTranslate('common.day')}
                   </p>
@@ -141,7 +162,7 @@ const WaterTrackerView = (props: any) => {
 
             <div className="col-7">
               <div className="waterTracker_stats">
-                <p>{getTranslate('common.complite')}</p>
+                <p>{getTranslate('wt.complete')}</p>
                 <span>1000{getTranslate('common.ml')}</span>
               </div>
               <div className="waterTracker_stats">
@@ -153,8 +174,8 @@ const WaterTrackerView = (props: any) => {
                 <span>1300{getTranslate('common.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{getTranslate('common.status')}</p>
-                <span>{getTranslate('watertracker.normal')}</span>
+                <p>{getTranslate('wt.status')}</p>
+                <span>{getTranslate('wt.normal')}</span>
               </div>
             </div>
 
