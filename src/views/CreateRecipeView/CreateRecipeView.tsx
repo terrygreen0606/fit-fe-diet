@@ -120,7 +120,7 @@ const CreateRecipeView = () => {
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
 
   const addIndgredient = e => {
-    getIngredient(token, e.value)
+    getIngredient(e.value)
       .then(response => {
         const data = response.data.data;
         const filteredData = {
@@ -163,7 +163,7 @@ const CreateRecipeView = () => {
   const filterIngredients = async (inputValue: string) => {
     let filteredListOfIngredients: Array<any> = [];
     try {
-      const response = await searchIngredients(token, inputValue);
+      const response = await searchIngredients(inputValue);
       const listOfIngredients = response.data.data;
       for (let prop in listOfIngredients) {
         filteredListOfIngredients.push({ value: prop, label: listOfIngredients[prop], })
