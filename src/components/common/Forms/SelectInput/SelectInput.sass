@@ -1,6 +1,11 @@
 @import '../../../../assets/sass/vars'
 
 
+.fgSelectContainer
+	display: inline-block
+	&_block
+		width: 100% !important
+		
 .fgSelectControl
 	display: inline-block
 	padding: 0 7px
@@ -66,6 +71,7 @@
 .fgSelectOption
 	background-color: #fff !important
 	cursor: pointer !important
+	text-align: center
 	+mt(.2s)
 	&:not(.fgSelectOption_disabled)
 		&:hover, &.fgSelectOption_selected

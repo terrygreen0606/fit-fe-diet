@@ -41,7 +41,7 @@ const LineChart = ({ options = optionsDefault, data }: LineChartProps) => {
       data,
       options
     });
-  }, []);
+  }, [data]);
 
   return (
     <canvas ref={chartRef} />

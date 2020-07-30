@@ -46,6 +46,17 @@ const SelectInput = (props: SelectInputProps) => {
 
   const [dummyErrorSelectInputRef] = useState(React.createRef<HTMLInputElement>());
 
+  const SelectContainer = ({ children, ...selectContainerProps }) => (
+    <components.SelectContainer 
+      {...selectContainerProps}
+      className={classNames("fgSelectContainer", {
+        "fgSelectContainer_block": props.block,
+      })}
+    >
+      {children}
+    </components.SelectContainer>
+  );
+
   const Input = inputProps => (
     <components.Input {...inputProps} />
   );
@@ -144,6 +155,7 @@ const SelectInput = (props: SelectInputProps) => {
       Option,
       IndicatorsContainer,
       IndicatorSeparator,
+      SelectContainer,
       Input
     },
     value: value ? value : '', // eslint-disable-line

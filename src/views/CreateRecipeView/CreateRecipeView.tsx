@@ -9,7 +9,7 @@ import {
 //Components
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
-import DoughnutSingleChart from 'components/common/charts/DoughnutSingleChart';
+import DonutChart from 'components/common/charts/DonutChart';
 
 import './CreateRecipeView.sass';
 
@@ -178,7 +178,7 @@ const CreateRecipeView = () => {
               {recipeData.ingredients.map(item => {
                 return (
                   <div className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}>
-                    <DoughnutSingleChart firstColor={item.firstColorGradient} lastColor={item.lastColorGradient} percent={1} />
+                    <DonutChart firstColor={item.firstColorGradient} lastColor={item.lastColorGradient} percent={1} />
                   </div>
                 )
               })}

@@ -1,10 +1,59 @@
 @import '../../assets/sass/vars'
 
 
+.weight-graphics-page
+  &-graph-col, &-stat-col
+    position: relative
+    min-height: 1px
+    padding-right: 15px
+    padding-left: 15px
+  &-graph-col
+    flex: 0 0 58%
+    max-width: 58%
+  &-stat-col
+    margin-left: 35px
+    flex: 0 0 calc(42% - 35px)
+    max-width: calc(42% - 35px)
+
+.weight-graphics-graph
+  &-container
+    position: relative
+  &-weigh-icon
+    position: absolute
+    top: -35px
+    left: 25px
+    width: 35px
+    fill: #CDCDCD
+    path
+      fill: #CDCDCD
+  &-calendar-icon
+    position: absolute
+    bottom: 30px
+    right: -20px
+    width: 35px
+    fill: #CDCDCD
+    path
+      fill: #CDCDCD
+
 .weight-change-history-table
   &-row
     display: grid
     grid-template-columns: repeat(auto-fill, 25%)
     border-bottom: 1px dashed #CDCDCD
   &-cell
-    padding: 40px
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 40px 15px
+
+.weight-graph-card
+  padding: 40px 122px 79px
+
+.weight-graphics-plus-icon
+  display: inline-block
+  width: 25px
+  height: 25px
+  padding: 7px
+  border-radius: 100%
+  background-color: $steel-blue
+  cursor: pointer

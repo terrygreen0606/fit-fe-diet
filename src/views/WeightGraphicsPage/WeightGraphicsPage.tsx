@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // Components
-import DoughnutSingleChart from 'components/common/charts/DoughnutSingleChart';
+import DonutChart from 'components/common/charts/DonutChart';
 import LineChart from 'components/common/charts/LineChart';
 import Button from 'components/common/Forms/Button';
 import CustomRadio from 'components/common/Forms/CustomRadio';
@@ -31,7 +31,7 @@ const chartData = {
       lineTension: 0.5,
       pointRadius: 7,
       backgroundColor: "#106EE8",
-      borderColor: "#D8E6FB",
+      borderColor: "#5B9DFF",
       borderWidth: 2,
       data: [55, 57, 80, 81, 56],
     },
@@ -51,64 +51,99 @@ const chartData = {
 const WeightGraphicsPage = () => {
 
   const [dietStatisticsType, setDietStatisticsType] = useState('weight');
+  const [dietStatisticsPeriod, setDietStatisticsPeriod] = useState(periodOptions[0]);
 
   return (
     <>
-      <CustomRadio 
-        label="Weight" 
-        value="weight" 
-        inline 
-        checked={dietStatisticsType === 'weight'} 
-        onChange={e => setDietStatisticsType(e.target.value)}
-      />
+      <section className="weight-graphics-page">
+        <div className="container">
+          <div className="row">
+            <div className="weight-graphics-page-graph-col">
+              
+              <div className="text-center">
+                <CustomRadio 
+                  label="Weight" 
+                  value="weight" 
+                  inline 
+                  checked={dietStatisticsType === 'weight'} 
+                  onChange={e => setDietStatisticsType(e.target.value)}
+                />
 
-      <CustomRadio 
-        label="Dimensions" 
-        value="dimensions" 
-        inline 
-        checked={dietStatisticsType === 'dimensions'} 
-        onChange={e => setDietStatisticsType(e.target.value)}
-      />
+                <CustomRadio 
+                  label="Dimensions" 
+                  value="dimensions" 
+                  inline 
+                  checked={dietStatisticsType === 'dimensions'} 
+                  onChange={e => setDietStatisticsType(e.target.value)}
+                />
+              </div>
 
-      <div className="weight-change-history-table">
-        <div className="weight-change-history-table-row">
-          <div className="weight-change-history-table-cell">60kg</div>
-          <div className="weight-change-history-table-cell">June 19, 2020</div>
-          <div className="weight-change-history-table-cell">Weight day</div>
-          <div className="weight-change-history-table-cell">Change</div>
+              <div className="mt-3 text-right">
+                <SelectInput 
+                  value={dietStatisticsPeriod} 
+                  options={periodOptions}
+                  onChange={setDietStatisticsPeriod}
+                />           
+              </div>
+
+              <div className="weight-graphics-graph-container mt-4">
+                <WeighScaleIcon className="weight-graphics-graph-weigh-icon" />
+                <CalendarIcon className="weight-graphics-graph-calendar-icon" />
+
+                <LineChart data={chartData} />
+              </div>
+
+              <div className="weight-change-history-table mt-5">
+                <div className="weight-change-history-table-row">
+                  <div className="weight-change-history-table-cell">60kg</div>
+                  <div className="weight-change-history-table-cell">June 19, 2020</div>
+                  <div className="weight-change-history-table-cell"><span className="link link-blue">Weight day</span></div>
+                  <div className="weight-change-history-table-cell">Change</div>
+                </div>
+
+                <div className="weight-change-history-table-row">
+                  <div className="weight-change-history-table-cell">60kg</div>
+                  <div className="weight-change-history-table-cell">June 19, 2020</div>
+                  <div className="weight-change-history-table-cell"><span className="link link-blue">Weight day</span></div>
+                  <div className="weight-change-history-table-cell">Change</div>
+                </div>
+
+                <div className="weight-change-history-table-row">
+                  <div className="weight-change-history-table-cell">60kg</div>
+                  <div className="weight-change-history-table-cell">June 19, 2020</div>
+                  <div className="weight-change-history-table-cell">Weight day <PlusIcon className="weight-graphics-plus-icon ml-2" /></div>
+                  <div className="weight-change-history-table-cell">Change</div>
+                </div>
+              </div>
+
+              <div className="mt-5 text-right">
+                <Button color="secondary">Delete scales</Button>
+              </div>
+
+            </div>
+            <div className="weight-graphics-page-stat-col">
+              
+              <div className="weight-graph-card card-bg">
+                <DonutChart 
+                  className="mx-4"
+                  percent={50} 
+                  content={
+                    <div className="text-center">
+                      <h5>5 kg</h5>
+                      <p>lost</p>
+                    </div>
+                  }
+                />
+
+                <Button className="mt-5 px-2" block color="secondary">Add today's weight</Button>
+                <Button className="mt-4 px-2" block color="secondary" outline><ImagePlusIcon className="mr-2" /> Add selfie</Button>
+                <Button className="mt-4 px-2" block color="secondary" outline><RewardIcon className="mr-2" /> Change the goal</Button>
+              </div>
+
+            </div>
+          </div>
         </div>
-
-        <div className="weight-change-history-table-row">
-          <div className="weight-change-history-table-cell">60kg</div>
-          <div className="weight-change-history-table-cell">June 19, 2020</div>
-          <div className="weight-change-history-table-cell">Weight day</div>
-          <div className="weight-change-history-table-cell">Change</div>
-        </div>
-
-        <div className="weight-change-history-table-row">
-          <div className="weight-change-history-table-cell">60kg</div>
-          <div className="weight-change-history-table-cell">June 19, 2020</div>
-          <div className="weight-change-history-table-cell">Weight day</div>
-          <div className="weight-change-history-table-cell">Change</div>
-        </div>
-      </div>
-
-      <div style={{ padding: '100px' }}><SelectInput value={periodOptions[0]} options={periodOptions} /></div>
-
-      <div className="card-bg">
-        <DoughnutSingleChart percent={50} />
-
-        <Button className="mt-5" color="primary">Add today's weight</Button>
-        <Button className="mt-3" color="primary" outline><ImagePlusIcon className="mr-2" /> Add selfie</Button>
-        <Button className="mt-3" color="primary" outline><RewardIcon className="mr-2" /> Change the goal</Button>
-      </div>
-
-      <WeighScaleIcon />
-      <CalendarIcon />
-
-      <LineChart data={chartData} />
-
-      <Button color="primary">Delete scales</Button>
+      </section>
     </>
   );
 };
