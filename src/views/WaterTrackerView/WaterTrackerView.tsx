@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-
-
 import { getTranslate as getTranslateUtil } from 'utils';
+
 import WithTranslate from 'components/hoc/WithTranslate';
 import WaterChart from './WaterChart'
 
-import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue-thin.svg';
-import { ReactComponent as TickIcon } from 'assets/img/icons/tick-icon-big.svg';
-
 import './WaterTrackerView.sass';
 
-
+import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue-thin.svg';
+import { ReactComponent as TickIcon } from 'assets/img/icons/tick-icon-big.svg';
 
 const WaterTrackerView = (props: any) => {
 
@@ -21,7 +17,7 @@ const WaterTrackerView = (props: any) => {
   const [totalCompleteWater, setTotalCompleteWater] = useState(55);
   const [totalCompleteWaterML, setTotalCompleteWaterML] = useState(1000);
 
-  let chartLabels = []
+  let chartLabels
   if (trackerPeriod == 'week') {
     chartLabels = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat']
   } else if (trackerPeriod == 'month') {
@@ -81,7 +77,7 @@ const WaterTrackerView = (props: any) => {
             </div>
 
             <div className="col-7">
-              <div className="col-8">
+              <div className="col-9">
                 <ul className="waterTracker_daynorm">
                   <li className="daynorm-item filled">
                     <TickIcon />
