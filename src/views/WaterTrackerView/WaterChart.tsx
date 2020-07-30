@@ -1,111 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Chart from "chart.js";
+import { chartConfig as chartConfig } from "./chartConfig";
 
-const WaterChart = ( labels ) => {
-
- useEffect(() => {
-
-    const data = labels.labels
-
-    const ctx = document.getElementById("myChart");
+const WaterChart = ( props ) => {
+  // const data = props.data
+  // const labels = props.labels
+  const chartContainer = useRef(null);
+  const [chartInstance, setChartInstance] = useState(null);
   
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: data,
-        datasets: [
-          {
-            steppedLine: false,
-            data: [20,55,15,80,60,70,35],
-            backgroundColor: [
-              "rgba(255, 255, 255, 0)"
-            ],
-            borderColor: [
-              "rgba(188, 213, 247, 0.4)"
-            ],
-            borderWidth: 3,
-            pointBackgroundColor: "#3283EB",
-            // pointHoverBackgroundColor: "#3283EB",
-            pointBorderWidth: 4,
-            pointBorderColor: '#fff',
-            // pointHoverBorderColor: "#3283EB",
-            // pointHoverBorderWidth: 0,
-            pointHoverRadius: 10,
-            // hoverBorderColor: '#000'
-          }
-        ]
-      },
+  useEffect(() => {
+    if (chartContainer && chartContainer.current) {
+      const newChartInstance = new Chart(chartContainer.current, chartConfig);
+      setChartInstance(newChartInstance);
+    }
+  }, [chartContainer]);
 
-      options: {
-        title: {
-          display: false,
-        },
-        aspectRatio: 1.5,
-        responsive: true,
-        legend: {
-          display: false
-        },
-        elements: {
-          line: {
-            tension: 0.6
-          },
-          point: {
-            radius: 10
-          }
-        },
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: true,
-                tickMarkLength: 10,
-                borderDash: [6,6],
-                drawTicks: false,
-              },
-              ticks: {
-                fontColor: "#000",
-                fontSize: 12,
-                zeroLineBorderDashOffset: 20,
-                padding: 10
-              }
-            }
-          ],
-          yAxes: [
-            {
-              gridLines: {
-                display: true,
-                drawBorder: false,
-                color: "#bbcbdb",
-                lineWidth: 1,
-                tickMarkLength: 20,
-                zeroLineWidth: 1,
-                borderDash: [6,6],
-                drawTicks: false,
-
-              },
-              ticks: {
-                beginAtZero: false,
-                suggestedMin: 0,
-                suggestedMax: 100,
-                fontColor: "#000",
-                fontSize: 12,
-                stepSize: 25,
-                zeroLineBorderDashOffset: 20,
-                padding: 10
-              }
-            }
-          ]
-        }
-      }
-    });
-  })
-
+  // useEffect(() => {
+  //   const updateDataset = (datasetIndex, newData) => {
+  //     chartInstance.data.datasets[datasetIndex].data = newData;
+  //     chartInstance.update();
+  //   };
+  //   updateDataset(0,[10,10,10,10])
+  // },[])
 
   return (
-    <div>
-      <canvas id="myChart"></canvas>
-    </div>
+    <canvas ref={chartContainer}></canvas>
   )
 }
 

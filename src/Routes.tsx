@@ -51,7 +51,7 @@ const Routes = () => (
       />
 
       <PrivateRoute
-        path="/water_tracker"
+        path="/water-tracker"
         component={(props: any) => (
           <Layout {...props}><WaterTrackerView {...props} /></Layout>
         )}

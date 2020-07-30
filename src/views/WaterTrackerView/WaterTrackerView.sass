@@ -1,4 +1,6 @@
 .waterTracker
+  >.container:nth-child(2)
+    margin-bottom: 25px;
 
   .water-drop
     display: flex;
@@ -83,8 +85,6 @@
     span 
       font-weight: bold;
       font-size: 20px;
-
-
       
   &_title
     padding-right: 15px;
@@ -126,11 +126,14 @@
       &.filled
         background-color: #3283EB;
 
+  &_chartwrap 
+      padding-top: 30px;
+
   &_period
     display: inline;
     list-style: none;
     padding: 0;
-    margin: 30px 40px;
+    margin: 30px 40px 0px;
     li 
       display: inline-block;
 
@@ -154,6 +157,7 @@
         border-bottom-color: #106EE8;
         font-weight: bold;
         color: #000;
+    
 
 .row-wrap 
   justify-content: space-between

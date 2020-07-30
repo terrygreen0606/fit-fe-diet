@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import WaterChart from './WaterChart'
-// import {loadPhrases} from 'api/loadPhrases';
-import axios from 'utils/axios';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
+
+
+import { getTranslate as getTranslateUtil } from 'utils';
+import WithTranslate from 'components/hoc/WithTranslate';
+import WaterChart from './WaterChart'
 
 import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue-thin.svg';
 import { ReactComponent as TickIcon } from 'assets/img/icons/tick-icon-big.svg';
@@ -18,68 +21,63 @@ const WaterTrackerView = (props: any) => {
   const [totalCompleteWater, setTotalCompleteWater] = useState(55);
   const [totalCompleteWaterML, setTotalCompleteWaterML] = useState(1000);
 
-  const [t, setTranslate] = useState([])
-
-  useEffect(() => {
-    axios.get('/i18n/load')
-    .then(function (response) {
-      const data = response.data.data
-      setTranslate(data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }, [])
-
-  let labels = []
+  let chartLabels = []
   if (trackerPeriod == 'week') {
-    labels = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat']
+    chartLabels = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat']
   } else if (trackerPeriod == 'month') {
-    labels = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug']
+    chartLabels = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug']
   } else {
-    labels = ['2021', '2022', '2023', '2024', '2025', '2026', '2027']
+    chartLabels = ['2021', '2022', '2023', '2024', '2025', '2026', '2027']
   }
+
+  let chartData = [50,50,50,50,60]
 
   let activePeriod = (period) => classnames({
     'active-period': trackerPeriod == period,
   })
+
+  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
 
   return (
     <>
       <div className="waterTracker">
         <div className="container">
           <div className="row">
-            <h4 className="waterTracker_title">{t['watertracker.water_tracker']}</h4>
+            <h4 className="waterTracker_title">
+              {getTranslate('watertracker.water_tracker')}
+            </h4>
           </div>
         </div>
 
-        <div className="container" style={{marginBottom: 25}}>
+        <div className="container">
           <div className="row">
             <ul className="waterTracker_period">
               <li
                 onClick={()=> setTrackerPeriod('week')}
                 className={activePeriod('week')}
               >
-                {t['watertracker.week']}
+                {getTranslate('watertracker.week')}
               </li>
               <li
                 onClick={()=> setTrackerPeriod('month')}
                 className={activePeriod('month')}
               >
-                {t['watertracker.month']}
+                {getTranslate('watertracker.month')}
               </li>
               <li
                 onClick={()=> setTrackerPeriod('year')}
                 className={activePeriod('year')}
               >
-                {t['watertracker.year']}
+                {getTranslate('watertracker.year')}
               </li>
             </ul>
           </div>
 
           <div className="row row-wrap" >
             <div className="col-5">
-              <WaterChart labels={labels} />
+              <div className='waterTracker_chartwrap'>
+                <WaterChart labels={chartLabels} data={chartData} />
+              </div>
             </div>
 
             <div className="col-7">
@@ -120,7 +118,7 @@ const WaterTrackerView = (props: any) => {
 
               <div className="water-drop">
                 <h3>{totalCompleteWater}%</h3>
-                <h5>{totalCompleteWaterML}{t['watertracker.ml']}</h5>
+                <h5>{totalCompleteWaterML}{getTranslate('watertracker.ml')}</h5>
               </div>
             </div>
           </div>
@@ -131,15 +129,15 @@ const WaterTrackerView = (props: any) => {
             <div className="col-5">
               <div className="waterTracker_info">
                 <div>
-                  <p>{t['watertracker.day_average']}</p>
+                  <p>{getTranslate('watertracker.day_average')}</p>
                   <p>
-                    <span>2000</span> {t['watertracker.ml']}/{t['watertracker.day']}
+                    <span>2000</span> {getTranslate('watertracker.milliliters_short')}/{getTranslate('watertracker.day')}
                   </p>
                 </div>
                 <div>
-                  <p>{t['watertracker.drink_frequency']}</p>
+                  <p>{getTranslate('watertracker.drink_frequency')}</p>
                   <p>
-                    <span>8</span> {t['watertracker.time']}(s)/{t['watertracker.day']}
+                    <span>8</span> {getTranslate('watertracker.time')}(s)/{getTranslate('watertracker.day')}
                   </p>
                 </div>
               </div>
@@ -147,20 +145,20 @@ const WaterTrackerView = (props: any) => {
 
             <div className="col-7">
               <div className="waterTracker_stats">
-                <p>{t['watertracker.complite']}</p>
-                <span>1000{t['watertracker.ml']}</span>
+                <p>{getTranslate('watertracker.complite')}</p>
+                <span>1000{getTranslate('watertracker.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{t['watertracker.daily_goal']}</p>
-                <span>2000{t['watertracker.ml']}</span>
+                <p>{getTranslate('watertracker.daily_goal')}</p>
+                <span>2000{getTranslate('watertracker.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{t['watertracker.average']}</p>
-                <span>1300{t['watertracker.ml']}</span>
+                <p>{getTranslate('watertracker.average')}</p>
+                <span>1300{getTranslate('watertracker.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{t['watertracker.status']}</p>
-                <span>{t['watertracker.normal']}</span>
+                <p>{getTranslate('watertracker.status')}</p>
+                <span>{getTranslate('watertracker.normal')}</span>
               </div>
             </div>
 
@@ -172,4 +170,6 @@ const WaterTrackerView = (props: any) => {
   );
 };
 
-export default WaterTrackerView;
+export default WithTranslate(connect(
+  null,
+)(WaterTrackerView));
