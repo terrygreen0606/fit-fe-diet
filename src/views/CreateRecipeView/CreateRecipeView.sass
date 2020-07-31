@@ -5,7 +5,7 @@
 
 .recipe_wrap
 	margin-bottom: 290px
-	padding: 50px 75px
+	padding: 40px 75px 60px
 	background-color: $white
 	border-radius: 20px
 	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
@@ -28,8 +28,11 @@
 		height: 6px
 		background-color: $steel-blue
 
-.recipe_photo 
+.recipe__photo 
 	margin-bottom: 84px
+
+	&-layout
+		display: flex
 	
 .recipe__add-photo
 	width: 100%
@@ -53,8 +56,6 @@
 		border-radius: 10px
 
 .recipe__input-data
-	margin-bottom: 100px
-
 	.fgLabel
 		max-width: 100px
 		font-size: 26px
@@ -65,15 +66,17 @@
 		display: flex
 		align-items: center
 
+		.fgInvalidMsg
+			margin-left: 20px
+
 .recipe__label
 	display: flex
 	align-items: center
 
 	&-description
-		max-width: 100px
-		margin-left: 40px
-		padding-right: 20px
+		margin-right: 20px
 		font-size: 26px
+		font-weight: 500
 
 	&-input
 		padding: 22px 10px
@@ -81,11 +84,15 @@
 
 	&-input + .recipe__label-input
 		margin-left: 12px
+	
+	&-select
+		flex: 1
+		min-width: 180px
 
 .recipe__switch
 	display: flex
 	justify-content: flex-end
-	margin-bottom: 20px
+	margin-bottom: 64px
 
 	&-button
 		position: relative
@@ -161,7 +168,7 @@
 				width: 210px
 
 	&-progress-value 
-		max-width: 85px
+		max-width: 90px
 		text-align: center
 		font-size: 18px
 		line-height: 1.66
@@ -177,9 +184,12 @@
 			align-items: center
 
 			&-description
-				text-transform: capitalize
+				min-width: 96px
 				font-size: 26px
 				color: #000
+
+				&:first-child
+					text-transform: capitalize
 
 			&-line
 				position: relative
@@ -188,6 +198,7 @@
 				flex: 1
 				background-color: #F3F5F8
 				border-radius: 10px
+				overflow: hidden
 
 				&-paint
 					position: absolute
@@ -200,47 +211,60 @@
 .recipe__chart-lines-item + .recipe__chart-lines-item
 	margin-top: 40px
 
-.recipe__add-ingredients 
-	display: flex
-	justify-content: space-between
-	align-items: center
+.recipe__add-ingredients
 	margin-bottom: 40px
 
-	&-title
-		font-size: 24px
-		line-height: 1.2
-		font-weight: bold
+	&-description 
+		display: flex
+		justify-content: space-between
+		align-items: center
+		margin-bottom: 50px
+
+		&-title
+			margin-bottom: 0
+			font-size: 24px
+			line-height: 1.2
+			font-weight: bold
 
 	&-field 
 		position: relative
-		margin: 50px 0 40px
-
-	&-field-button
-		position: absolute
-		top: 50%
-		transform: translateY(-50%)
-		right: 20px
-		border: none
-		background: transparent
-		line-height: 0
-		cursor: pointer
-
-		& > *
-			line-height: initial
+		margin-bottom: 20px
 
 .recipe__item
 	display: flex
-	justify-content: space-between
 	align-items: center
-	margin-bottom: 35px
-	padding: 24px 55px 24px 35px
-	font-size: 24px
-	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
-	color: #000
-	border-radius: 5px
+
+	&-content
+		position: relative
+		display: flex
+		justify-content: space-between
+		flex: 1
+		padding: 24px 55px 24px 35px
+		font-size: 24px
+		box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+		color: #000
+		border-radius: 5px
+		
+	&-bg
+		position: absolute
+		top: 0
+		right: 0
+		bottom: 0
+		left: 0
+		cursor: pointer
 
 	&-name
 		padding-right: 30px
+
+		span
+			position: relative
+
+	& + .recipe__item
+		margin-top: 35px
+
+	&-counting
+		div
+			position: relative
 
 	&-quantity
 			flex-basis: 33.33%
@@ -252,11 +276,20 @@
 				margin-bottom: 34px
 
 				&-input
+					position: relative
 					margin: 0 10px
 					max-width: 110px
 					font-size: 24px
+					text-align: center
+					-moz-appearance: textfield
+
+					&::-webkit-outer-spin-button,
+					&::-webkit-inner-spin-button 
+							-webkit-appearance: none
+					
 
 				&-arrow
+					position: relative
 					display: flex
 					align-items: center
 					justify-content: center
@@ -275,15 +308,27 @@
 		
 				&-total 
 					text-align: right
+					margin-bottom: 20px
+
+					span
+						position: relative
+
+				&-cost
+					display: flex
+					align-items: center
+					justify-content: space-between
+					max-width: 160px
+					margin: 0 0 0 auto
 
 	&-delete
 			position: absolute
 			right: 60px
-			bottom: 8px
+			bottom: 0px
 			padding: 0
 			background: transparent
 			border: none
 			cursor: pointer
+			z-index: 2
 
 			&::before
 				content: ''
@@ -325,10 +370,26 @@
 				border-radius: 50%
 				z-index: 2
 
-	&_full-info
+	&-opt
+		&-checkbox
+			display: flex
+			flex-direction: column
+			align-items: center
+			font-size: 18px
+
+			.checkmark
+				position: relative
+				margin-top: 10px
+				border: 1px solid #dfdfdf
+
+	&-weight
 		position: relative
-		padding: 40px 50px 60px 35px
-		border-radius: 20px
+
+	&_full-info
+
+		.recipe__item-content
+			padding: 40px 50px 40px 35px
+			border-radius: 20px
 
 		.recipe__item-name 
 			flex-basis: 33.33%
@@ -337,10 +398,7 @@
 		.recipe__item-counting
 			flex-basis: 33.33%
 			padding-right: 30px
-			padding-left: 100px
-
-			div
-				text-transform: capitalize
+			padding-left: 20px
 
 			div + div
 				margin-top: 35px
@@ -349,6 +407,9 @@
 			flex-basis: 33.33%
 
 		.recipe__item-weight 
+			display: none
+		
+		.recipe__item-opt
 			display: none
 
 	&:not(&_full-info)
@@ -361,17 +422,105 @@
 		.recipe__item-delete
 			display: none
 		
+.recipe__total-weight
+	display: flex
+	align-items: center
+	justify-content: flex-end
+	margin-top: 66px
+
+	.fgLabel
+		margin-right: 12px
+		font-size: 26px
+		font-weight: 500
+
+	.fg-input
+		max-width: 150px
+		font-size: 26px
+		text-align: center
+		-moz-appearance: textfield
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button 
+				-webkit-appearance: none
+
 
 .instructions
 	margin-top: 60px
 
 	&__title
+		margin-bottom: 25px
 		font-size: 26px
 		line-height: 1.5
 
-	&__field
-		margin-bottom: 40px
-
 	&__button
+		margin-top: 40px
 		text-align: center
 	
+
+@media only screen and (max-width: 1200px)
+	.recipe__input-data
+		margin-bottom: 40px
+
+		> div + div
+			margin-top: 20px
+
+
+
+@media only screen and (max-width: 992px)
+	.recipe__chart
+		justify-content: center
+		flex-wrap: wrap
+		padding: 0
+
+		&-progress
+			margin-bottom: 30px
+
+		&-lines
+			padding-left: 0
+
+			&-item-description
+				min-width: initial
+				font-size: 18px
+
+
+@media only screen and (max-width: 576px)
+	.recipe_wrap
+		padding: 40px 25px 60px
+
+	.recipe__add-ingredients-description
+		flex-wrap: wrap
+
+
+@media only screen and (max-width: 400px)
+	.recipe__input-container
+		flex-wrap: wrap
+
+		.fgInvalidMsg
+			margin-left: 0
+
+	.recipe__label
+		flex-wrap: wrap
+
+		&-description
+			margin-bottom: 6px
+
+		&-select
+			width: 100%
+
+		&-input + .recipe__label-input
+			margin-left: 0
+			margin-top: 10px
+
+	.recipe__chart-progress
+		flex-basis: 250px
+		height: 250px
+
+		&-item
+			&_fat
+				width: 250px
+
+			&_carbohydrate
+				width: 210px
+
+			&_protein
+				width: 170px

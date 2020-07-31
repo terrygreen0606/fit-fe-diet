@@ -35,7 +35,7 @@ const Routes = () => (
       />
 
       <PrivateRoute
-        path="/recipes/create"
+        path="/recipe/create"
         component={(props: any) => (
           <Layout {...props}><CreateRecipeView {...props} /></Layout>
         )}
