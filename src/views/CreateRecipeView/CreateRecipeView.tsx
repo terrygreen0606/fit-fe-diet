@@ -270,13 +270,13 @@ const CreateRecipeView = (props: any) => {
           <div className='col-xl-3'>
             <div className='recipe__input-container'>
               <div className="recipe__label">
-                <span className='recipe__label-description'>{getTranslate('serving')}</span>   
+                <span className='recipe__label-description'>{getTranslate('recipe.serving')}</span>   
                 <div className="recipe__label-select">
                   <Select 
                     styles={colourStylesSelect}
                     options={servingOptions}
                     onChange={e => setCreateRecipeForm({...createRecipeForm, servings_cnt: e.value})}
-                    placeholder={getTranslate('serving')}
+                    placeholder={getTranslate('recipe.serving')}
                   />
                 </div>
               </div>
@@ -378,7 +378,7 @@ const CreateRecipeView = (props: any) => {
         </div>
         <div className="recipe__add-ingredients">
           <div className='recipe__add-ingredients-description'>
-            <h2 className='recipe__add-ingredients-description-title'>{getTranslate('ingr')}</h2>
+            <h2 className='recipe__add-ingredients-description-title'>{getTranslate('ingr.label')}</h2>
             <Button
               size='lg'
               color='secondary'
@@ -392,7 +392,7 @@ const CreateRecipeView = (props: any) => {
               <AsyncSelect
                 cacheOptions
                 loadOptions={inputValueIngredient}
-                placeholder={getTranslate('recipe.create.enter_recipe')}
+                placeholder={getTranslate('recipe.create.name')}
                 onChange={addIndgredient}
                 styles={colourStylesSelect}
               />
@@ -567,7 +567,7 @@ const CreateRecipeView = (props: any) => {
           />
         </div>
         <div className='instructions'>
-          <h2 className='instructions__title'>{getTranslate('instruct.preparation')}</h2>
+          <h2 className='instructions__title'>{getTranslate('recipe.preparation')}</h2>
           <InputField
             block
             type='textarea'
