@@ -215,9 +215,6 @@ const CreateRecipeView = (props: any) => {
 
   const getPercent = (value: number) => value / calories.maxCalories * 100;
 
-  console.log(proteinFatCarbohydrate);
-  
-
   return (
     <div className='container-fluid recipe_container'>
       <h1 className='recipe__title'>{getTranslate('recipe.create.title')}</h1>
