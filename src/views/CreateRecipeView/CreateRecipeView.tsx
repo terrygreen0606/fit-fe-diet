@@ -21,9 +21,9 @@ import { getOz } from 'utils/getOz';
 //Components
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
-import Chart from 'components/common/Chart';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import WithTranslate from 'components/hoc/WithTranslate';
+import DonutChart from 'components/common/charts/DonutChart';
 
 import './CreateRecipeView.sass';
 
@@ -343,11 +343,10 @@ const CreateRecipeView = (props: any) => {
                 className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}
                 key={item.id}
               >
-                <Chart
+                <DonutChart
                   firstColor={item.firstColorGradient}
                   lastColor={item.lastColorGradient}
                   percent={getPercent(item.value)}
-                  id={item.id}
                 />
               </div>
             ))}
