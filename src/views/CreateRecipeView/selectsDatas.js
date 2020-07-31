@@ -1,38 +1,38 @@
 export const costCategoryOptions = [
   {
     value: 1,
-    label: 'Cheap',
+    label: '$',
   },
   {
     value: 2,
-    label: 'Average',
+    label: '$$',
   },
   {
     value: 3,
-    label: 'High',
+    label: '$$$',
   },
 ]
 
 export const servingOptions = [
   {
     value: 1,
-    label: '1 serving',
+    label: 1,
   },
   {
     value: 2,
-    label: '2 servings',
+    label: 2,
   },
   {
     value: 3,
-    label: '3 servings',
+    label: 3,
   },
   {
     value: 4,
-    label: '4 servings',
+    label: 4,
   },
   {
     value: 5,
-    label: '5 servings',
+    label: 5,
   },
 ];
 
