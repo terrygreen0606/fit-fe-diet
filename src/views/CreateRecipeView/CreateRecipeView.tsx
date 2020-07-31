@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 import classnames from 'classnames';
@@ -14,12 +15,14 @@ import {
   getIngredient
 } from 'api';
 import FormValidator from 'utils/FormValidator';
+import { getTranslate as getTranslateUtil } from 'utils'
 
 //Components
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
 import Chart from 'components/common/Chart';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './CreateRecipeView.sass';
 
@@ -31,8 +34,10 @@ import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
 import { colourStylesSelect, serving } from './selectsDatas';
 
-const CreateRecipeView = () => {
-  const [unit, setUnit] = useState('gr');
+const CreateRecipeView = (props: any) => {
+  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
+
+  const [unit, setUnit] = useState(getTranslate('common.gr'));
 
   const [isActiveInput, setActiveInput] = useState(false);
 
@@ -50,7 +55,7 @@ const CreateRecipeView = () => {
 
   const [proteinFatCarbohydrate] = useState([
     {
-      name: 'fat',
+      name: getTranslate('common.fat'),
       value: 0,
       id: 0,
       firstColorGradient: '#03792B',
@@ -58,7 +63,7 @@ const CreateRecipeView = () => {
       background: '#279A40',
     },
     {
-      name: 'carbohydrate',
+      name: getTranslate('common.carbohydrate'),
       value: 0,
       id: 1,
       firstColorGradient: '#FF8F6F',
@@ -66,7 +71,7 @@ const CreateRecipeView = () => {
       background: '#FFB56E',
     },
     {
-      name: 'protein',
+      name: getTranslate('common.protein'),
       value: 0,
       id: 2,
       firstColorGradient: '#1F39FE',
@@ -206,36 +211,39 @@ const CreateRecipeView = () => {
 
   const getPercent = (value: number) => value / calories.maxCalories * 100;
 
+  console.log(proteinFatCarbohydrate);
+  
+
   return (
     <div className='container-fluid recipe_container'>
-      <h1 className='recipe__title'>Create your recipe</h1>
+      <h1 className='recipe__title'>{getTranslate('recipe.create.title')}</h1>
       <form className='recipe_wrap' onSubmit={e => createRecipeSubmit(e)}>
         <div className='row recipe__photo'>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
-                Add photo
+                {getTranslate('recipe.create.add_photo')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
-                Add photo
+                {getTranslate('recipe.create.add_photo')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
-                Add photo
+                {getTranslate('recipe.create.add_photo')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
-                Add photo
+                {getTranslate('recipe.create.add_photo')}
               </span>
             </button>
           </div>
@@ -250,7 +258,7 @@ const CreateRecipeView = () => {
                 errors={getFieldErrors('recipeName')}
                 value={createRecipeForm.recipeName}
                 onChange={e => validateOnChange('recipeName', e.target.value, e)}
-                label='Recipe name'
+                label={getTranslate('recipe.create.recipe_name')}
                 border='light'
               />
             </div>
@@ -258,12 +266,13 @@ const CreateRecipeView = () => {
           <div className='col-xl-3'>
             <div className='recipe__input-container'>
               <div className="recipe__label">
-                <span className='recipe__label-description'>Serving</span>   
+                <span className='recipe__label-description'>{getTranslate('recipe.create.serving')}</span>   
                 <div className="recipe__label-select">
                   <Select 
                     styles={colourStylesSelect}
                     options={serving}
                     onChange={e => setCreateRecipeForm({...createRecipeForm, servings_cnt: e.value})}
+                    placeholder={getTranslate('recipe.create.serving')}
                   />
                 </div>
               </div>
@@ -311,7 +320,7 @@ const CreateRecipeView = () => {
               'recipe__switch-button_active': unit === 'gr',
             })}
           >
-            <span>gr</span>
+            <span>{getTranslate('common.gr')}</span>
           </button>
           <button
             type="button"
@@ -320,7 +329,7 @@ const CreateRecipeView = () => {
               'recipe__switch-button_active': unit === 'oz',
             })}
           >
-            <span>oz</span>
+            <span>{getTranslate('common.oz')}</span>
           </button>
         </div>
         <div className='recipe__chart'>
@@ -338,7 +347,7 @@ const CreateRecipeView = () => {
                 />
               </div>
             ))}
-            <div className='recipe__chart-progress-value'>{calories.value} kcal / {calories.maxCalories} kcal</div>
+            <div className='recipe__chart-progress-value'>{calories.value} {getTranslate('common.kcal')} / {calories.maxCalories} {getTranslate('common.kcal')}</div>
           </div>
           <div className='recipe__chart-lines'>
             {proteinFatCarbohydrate.map(item => (
@@ -365,13 +374,13 @@ const CreateRecipeView = () => {
         </div>
         <div className="recipe__add-ingredients">
           <div className='recipe__add-ingredients-description'>
-            <h2 className='recipe__add-ingredients-description-title'>Ingredient</h2>
+            <h2 className='recipe__add-ingredients-description-title'>{getTranslate('recipe.create.ingredient')}</h2>
             <Button
               size='lg'
               color='secondary'
               onClick={() => setActiveInput(!isActiveInput)}
             >
-              Add ingredients
+              {getTranslate('recipe.create.add_ingredient')}
             </Button>
           </div>
           {isActiveInput && (
@@ -379,7 +388,7 @@ const CreateRecipeView = () => {
               <AsyncSelect
                 cacheOptions
                 loadOptions={inputValueIngredient}
-                placeholder='Enter the name of the recipe'
+                placeholder={getTranslate('recipe.create.enter_the_recipe')}
                 onChange={addIndgredient}
                 styles={colourStylesSelect}
               />
@@ -406,9 +415,9 @@ const CreateRecipeView = () => {
                   </div>
 
                   <div className='recipe__item-counting'>
-                    <div>Fats: {Math.round(ingredientItem.fat) * Math.round(createRecipeForm.ingredients[ingredientIndex].weight)}</div>
-                    <div>Carbohydrates: {Math.round(ingredientItem.carbohydrate * Math.round(createRecipeForm.ingredients[ingredientIndex].weight))}</div>
-                    <div>Proteins: {Math.round(ingredientItem.protein * Math.round(createRecipeForm.ingredients[ingredientIndex].weight))}</div>
+                    <div>{getTranslate('common.fats')}: {Math.round(ingredientItem.fat) * Math.round(createRecipeForm.ingredients[ingredientIndex].weight)}</div>
+                    <div>{getTranslate('common.carbohydrate')}: {Math.round(ingredientItem.carbohydrate * Math.round(createRecipeForm.ingredients[ingredientIndex].weight))}</div>
+                    <div>{getTranslate('common.proteins')}: {Math.round(ingredientItem.protein * Math.round(createRecipeForm.ingredients[ingredientIndex].weight))}</div>
                   </div>
 
                   <div className='recipe__item-quantity'>
@@ -514,7 +523,7 @@ const CreateRecipeView = () => {
                       </button>
                     </div>
                     <div className='recipe__item-quantity-counter-total'>
-                      <span>{Math.round(ingredientItem.calorie * +createRecipeForm.ingredients[ingredientIndex].weight)} kcal</span>
+                      <span>{Math.round(ingredientItem.calorie * +createRecipeForm.ingredients[ingredientIndex].weight)} {getTranslate('common.kcal')}</span>
                     </div>
                   </div>
                   <button type="button" className='recipe__item-delete' onClick={() => deleteIngredient(ingredientIndex)}>
@@ -545,12 +554,12 @@ const CreateRecipeView = () => {
             onChange={e => validateOnChange('totalWeight', e.target.value, e)}
             min={0}
             height='xl'
-            label='Total weight'
+            label={getTranslate('recipe.create.total_weight')}
             border='light'
           />
         </div>
         <div className='instructions'>
-          <h2 className='instructions__title'>Preparation instructions</h2>
+          <h2 className='instructions__title'>{getTranslate('recipe.create.instructions_title')}</h2>
           <InputField
             block
             type='textarea'
@@ -568,7 +577,7 @@ const CreateRecipeView = () => {
               type="submit"
               color='primary'
             > 
-              Add recipe
+              {getTranslate('recipe.create.add_recipe')}
             </Button>
           </div>
         </div>
@@ -577,4 +586,6 @@ const CreateRecipeView = () => {
   );
 };
 
-export default CreateRecipeView;
+export default WithTranslate(connect(
+  null,
+)(CreateRecipeView));
