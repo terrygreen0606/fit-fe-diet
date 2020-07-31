@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 // Components
-import RegisterModal from 'components/RegisterModal';
 import Button from 'components/common/Forms/Button';
 
 import './MainView.sass';
@@ -9,16 +8,8 @@ import './MainView.sass';
 import { ReactComponent as LikeIcon } from 'assets/img/icons/like-icon.svg';
 
 const MainView = () => {
-  
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
-
   return (
     <>
-      <RegisterModal
-        isOpen={isRegisterModalOpen}
-        onClose={() => setRegisterModalOpen(false)}
-      />
-      
       <section className="main-header-sect">
         <div className="container">
           <div className="row">
@@ -27,7 +18,7 @@ const MainView = () => {
               <h2 className="mb-3">Personal<br/>diet plan</h2>
               <p>sulle ja su perele sulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perelesulle ja su perele</p>
 
-              <Button className="mt-4" color="primary" onClick={() => setRegisterModalOpen(true)}>Register</Button>
+              <Button className="mt-4" color="primary">Register</Button>
 
             </div>
             <div className="col-6">

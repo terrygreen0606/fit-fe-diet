@@ -13,7 +13,8 @@ import axios from 'utils/axios';
 import { 
   userLogin as userAuthLogin, 
   userGoogleSignIn, 
-  userFacebookSignIn 
+  userFacebookSignIn,
+  getTplSignup
 } from 'api';
 import {Helmet} from "react-helmet";
 import { userLogin } from 'store/actions';
@@ -51,9 +52,14 @@ const LoginView = (props: any) => {
   const [loginFacebookInitLoading, setLoginFacebookInitLoading] = useState(false);
   const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
 
+  const [registerTpl, setRegisterTpl] = useState(null);
+  const [registerTplLoading, setRegisterTplLoading] = useState(false);
+  const [registerTplLoadingError, setRegisterTplLoadingError] = useState(false);
+
   useEffect(() => {
     initGoogleAuth();
     initFacebookAuth();
+    loadRegisterTpl();
   }, []);
 
   function initGoogleAuth () {
@@ -89,6 +95,22 @@ const LoginView = (props: any) => {
 
       initFacebookAuthUtil();
     };
+  }
+
+  function loadRegisterTpl () {
+    setRegisterTplLoading(true);
+    setRegisterTplLoadingError(false);
+
+    getTplSignup().then(response => {
+      setRegisterTplLoading(false);
+
+      if (response.data.data && response.data.data.tpl) {
+        setRegisterTpl(response.data.data.tpl);
+      }
+    }).catch(error => {
+      setRegisterTplLoading(false);
+      setRegisterTplLoadingError(true);
+    });
   }
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -212,6 +234,10 @@ const LoginView = (props: any) => {
       <RegisterModal
         isOpen={isRegisterModalOpen}
         onClose={() => setRegisterModalOpen(false)}
+        tpl={registerTpl}
+        tplLoading={registerTplLoading}
+        tplLoadingError={registerTplLoadingError}
+        fetchTpl={getTplSignup}
       />
 
       <div className="loginScreen">
@@ -260,7 +286,7 @@ const LoginView = (props: any) => {
           </Button>
         </form>
 
-        <div className="d-flex text-center mt-4">
+        <div className="loginScreen_socialBtns mt-4">
           <Button 
             className="facebook-login-btn mr-3" 
             onClick={e => facebookLogin()}
