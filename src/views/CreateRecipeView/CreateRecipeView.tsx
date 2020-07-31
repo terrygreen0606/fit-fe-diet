@@ -206,28 +206,28 @@ const CreateRecipeView = () => {
       <h1 className='recipe__title'>Create your recipe</h1>
       <form className='recipe_wrap' onSubmit={e => createRecipeSubmit(e)}>
         <div className='row recipe__photo'>
-          <div className='col-3'>
+          <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 Add photo
               </span>
             </button>
           </div>
-          <div className='col-3'>
+          <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 Add photo
               </span>
             </button>
           </div>
-          <div className='col-3'>
+          <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 Add photo
               </span>
             </button>
           </div>
-          <div className='col-3'>
+          <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 Add photo
@@ -236,7 +236,7 @@ const CreateRecipeView = () => {
           </div>
         </div>
         <div className='row recipe__input-data'>
-          <div className='col-12 mb-5'>
+          <div className='col-12 mb-xl-5'>
             <div className='recipe__input-container'>
               <InputField
                 block
@@ -250,7 +250,7 @@ const CreateRecipeView = () => {
               />
             </div>
           </div>
-          <div className='col-3'>
+          <div className='col-xl-3'>
             <div className='recipe__input-container'>
               <div className="recipe__label">
                 <span className='recipe__label-description'>Serving</span>   
@@ -264,7 +264,7 @@ const CreateRecipeView = () => {
               </div>
             </div>
           </div>
-          <div className='col-3 ml-5'>
+          <div className='col-xl-3 ml-xl-5'>
             <label className='recipe__label'>
               <span className='recipe__label-description'>
                 <ClockIcon />

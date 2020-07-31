@@ -453,3 +453,55 @@
 	&__button
 		text-align: center
 	
+
+@media only screen and (max-width: 1200px)
+	.recipe__input-data
+		margin-bottom: 40px
+
+		> div + div
+			margin-top: 20px
+
+
+
+@media only screen and (max-width: 992px)
+	.recipe__chart
+		justify-content: center
+		flex-wrap: wrap
+		padding: 0
+
+		&-progress
+			margin-bottom: 30px
+
+		&-lines
+			padding-left: 0
+
+			&-item-description
+				min-width: initial
+				font-size: 18px
+
+
+@media only screen and (max-width: 576px)
+	.recipe_wrap
+		padding: 40px 25px 60px
+
+	.recipe__add-ingredients-description
+		flex-wrap: wrap
+
+
+@media only screen and (max-width: 400px)
+	.recipe__chart-progress
+		flex-basis: 250px
+		height: 250px
+
+		&-item
+			&_fat
+				width: 250px
+
+			&_carbohydrate
+				width: 210px
+
+			&_protein
+				width: 170px
+
+	.recipe__label-select
+		min-width: initial
