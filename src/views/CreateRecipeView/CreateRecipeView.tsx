@@ -224,28 +224,28 @@ const CreateRecipeView = (props: any) => {
       <form className='recipe_wrap' onSubmit={e => createRecipeSubmit(e)}>
         <div className='row recipe__photo'>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
-            <button className='recipe__add-photo'>
+            <button type='button' className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
-            <button className='recipe__add-photo'>
+            <button type='button' className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
-            <button className='recipe__add-photo'>
+            <button type='button' className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
-            <button className='recipe__add-photo'>
+            <button type='button' className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 {getTranslate('photo.add')}
               </span>
