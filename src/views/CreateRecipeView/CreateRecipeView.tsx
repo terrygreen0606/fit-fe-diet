@@ -33,7 +33,7 @@ import { ReactComponent as ArrowLeft } from 'assets/img/icons/arrow-left-gray-ic
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
-import { colourStylesSelect, serving } from './selectsDatas';
+import { colourStylesSelect, servingOptions } from './selectsDatas';
 
 const CreateRecipeView = (props: any) => {
   const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
@@ -226,28 +226,28 @@ const CreateRecipeView = (props: any) => {
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
-                {getTranslate('recipe.create.add_photo')}
+                {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
-                {getTranslate('recipe.create.add_photo')}
+                {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
-                {getTranslate('recipe.create.add_photo')}
+                {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
             <button className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
-                {getTranslate('recipe.create.add_photo')}
+                {getTranslate('photo.add')}
               </span>
             </button>
           </div>
@@ -262,7 +262,7 @@ const CreateRecipeView = (props: any) => {
                 errors={getFieldErrors('recipeName')}
                 value={createRecipeForm.recipeName}
                 onChange={e => validateOnChange('recipeName', e.target.value, e)}
-                label={getTranslate('recipe.create.recipe_name')}
+                label={getTranslate(' ')}
                 border='light'
               />
             </div>
@@ -270,13 +270,13 @@ const CreateRecipeView = (props: any) => {
           <div className='col-xl-3'>
             <div className='recipe__input-container'>
               <div className="recipe__label">
-                <span className='recipe__label-description'>{getTranslate('recipe.create.serving')}</span>   
+                <span className='recipe__label-description'>{getTranslate('serving')}</span>   
                 <div className="recipe__label-select">
                   <Select 
                     styles={colourStylesSelect}
-                    options={serving}
+                    options={servingOptions}
                     onChange={e => setCreateRecipeForm({...createRecipeForm, servings_cnt: e.value})}
-                    placeholder={getTranslate('recipe.create.serving')}
+                    placeholder={getTranslate('serving')}
                   />
                 </div>
               </div>
@@ -378,13 +378,13 @@ const CreateRecipeView = (props: any) => {
         </div>
         <div className="recipe__add-ingredients">
           <div className='recipe__add-ingredients-description'>
-            <h2 className='recipe__add-ingredients-description-title'>{getTranslate('recipe.create.ingredient')}</h2>
+            <h2 className='recipe__add-ingredients-description-title'>{getTranslate('ingr')}</h2>
             <Button
               size='lg'
               color='secondary'
               onClick={() => setActiveInput(!isActiveInput)}
             >
-              {getTranslate('recipe.create.add_ingredient')}
+              {getTranslate('ingr.add')}
             </Button>
           </div>
           {isActiveInput && (
@@ -392,7 +392,7 @@ const CreateRecipeView = (props: any) => {
               <AsyncSelect
                 cacheOptions
                 loadOptions={inputValueIngredient}
-                placeholder={getTranslate('recipe.create.enter_the_recipe')}
+                placeholder={getTranslate('recipe.create.enter_recipe')}
                 onChange={addIndgredient}
                 styles={colourStylesSelect}
               />
@@ -567,7 +567,7 @@ const CreateRecipeView = (props: any) => {
           />
         </div>
         <div className='instructions'>
-          <h2 className='instructions__title'>{getTranslate('recipe.create.instructions_title')}</h2>
+          <h2 className='instructions__title'>{getTranslate('instruct.preparation')}</h2>
           <InputField
             block
             type='textarea'
@@ -585,7 +585,7 @@ const CreateRecipeView = (props: any) => {
               type="submit"
               color='primary'
             > 
-              {getTranslate('recipe.create.add_recipe')}
+              {getTranslate('recipe.add')}
             </Button>
           </div>
         </div>
