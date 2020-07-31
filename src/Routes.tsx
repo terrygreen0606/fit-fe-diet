@@ -11,7 +11,10 @@ import MainView from './views/MainView';
 import NutritionPlanView from './views/NutritionPlanView';
 import RecipesView from './views/RecipesView';
 import CreateRecipeView from './views/CreateRecipeView';
+import WaterTrackerView from './views/WaterTrackerView';
 import NotFound from './views/NotFound';
+
+
 
 const Routes = () => (
     <Switch>
@@ -43,6 +46,14 @@ const Routes = () => (
         path="/recipes"
         component={(props: any) => (
           <Layout {...props}><RecipesView {...props} /></Layout>
+        )}
+        exact
+      />
+
+      <PrivateRoute
+        path="/water-tracker"
+        component={(props: any) => (
+          <Layout {...props}><WaterTrackerView {...props} /></Layout>
         )}
         exact
       />
