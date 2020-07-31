@@ -5,10 +5,11 @@ import { chartConfig as chartConfig } from "./chartConfig";
 
 type LineChartProps = {
   options?: any,
+  labels: any,
   data: any
 };
 
-const WaterChart = ({ options = chartConfig.options, data }: LineChartProps) => {
+const WaterChart = ({ options = chartConfig.options, data, labels }: LineChartProps) => {
 
   const [chartContainer] = useState(createRef<HTMLCanvasElement>());
 
@@ -16,11 +17,23 @@ const WaterChart = ({ options = chartConfig.options, data }: LineChartProps) => 
     new Chart(chartContainer.current.getContext('2d'),
       {
         type: 'line',
-        data: data,
+        data: {
+          labels,
+          datasets: [
+            {
+              data: data,
+              backgroundColor: ["rgba(255, 255, 255, 0)"],
+              borderWidth: 2,
+              pointBackgroundColor: "#3283EB",
+              pointBorderColor: '#fff',
+              pointHoverRadius: 10,
+            }
+          ]
+        },
         options
       }
     );
-  }, [data]);
+  }, [data,labels]);
 
   return (
     <canvas ref={chartContainer} />

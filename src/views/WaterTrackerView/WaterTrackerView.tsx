@@ -16,14 +16,14 @@ const WaterTrackerView = (props: any) => {
   const [trackerPeriod, setTrackerPeriod] = useState('week');
   const [totalCompleteWater, setTotalCompleteWater] = useState(55);
   const [totalCompleteWaterML, setTotalCompleteWaterML] = useState(1000);
+  const [chartData, setChartData] = useState([50,50,50,50,60]);
 
-  const weekList = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat'];
-  const monthList = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug'];
-  const yearList = ['2021', '2022', '2023', '2024', '2025', '2026', '2027']
-  let chartData: Array<number> = [50,50,50,50,60]
-  let chartLabels: Array<string> = []
+  let chartLabels
 
   function getChartLabels( period ) {
+    const weekList = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat'];
+    const monthList = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug'];
+    const yearList = ['2021', '2022', '2023', '2024', '2025', '2026', '2027']
     if (period == 'week') {
       chartLabels = weekList
     } else if (period == 'month') {
@@ -32,7 +32,7 @@ const WaterTrackerView = (props: any) => {
       chartLabels = yearList
     }
   }
-
+  
   getChartLabels(trackerPeriod);
 
   let activePeriod = (period) => classnames({
@@ -40,20 +40,6 @@ const WaterTrackerView = (props: any) => {
   })
 
   const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
-
-  let data = {
-    labels: chartLabels,
-    datasets: [
-      {
-        data: chartData,
-        backgroundColor: ["rgba(255, 255, 255, 0)"],
-        borderWidth: 2,
-        pointBackgroundColor: "#3283EB",
-        pointBorderColor: '#fff',
-        pointHoverRadius: 10,
-      }
-    ]
-  }
 
   return (
     <>
@@ -93,7 +79,7 @@ const WaterTrackerView = (props: any) => {
           <div className="row row-wrap" >
             <div className="col-5">
               <div className='waterTracker_chartwrap'>
-                <WaterChart data={data} />
+                <WaterChart labels={chartLabels} data={chartData}/>
               </div>
             </div>
 
