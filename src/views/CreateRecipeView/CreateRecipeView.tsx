@@ -16,6 +16,7 @@ import {
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 import { getTranslate as getTranslateUtil } from 'utils'
+import { getOz } from 'utils/getOz';
 
 //Components
 import Button from 'components/common/Forms/Button';
@@ -56,6 +57,7 @@ const CreateRecipeView = (props: any) => {
   const [proteinFatCarbohydrate] = useState([
     {
       name: getTranslate('common.fat'),
+      namePlural: getTranslate('common.fats'),
       value: 0,
       id: 0,
       firstColorGradient: '#03792B',
@@ -64,6 +66,7 @@ const CreateRecipeView = (props: any) => {
     },
     {
       name: getTranslate('common.carbohydrate'),
+      namePlural: getTranslate('common.carbohydrates'),
       value: 0,
       id: 1,
       firstColorGradient: '#FF8F6F',
@@ -72,6 +75,7 @@ const CreateRecipeView = (props: any) => {
     },
     {
       name: getTranslate('common.protein'),
+      namePlural: getTranslate('common.proteins'),
       value: 0,
       id: 2,
       firstColorGradient: '#1F39FE',
@@ -315,18 +319,18 @@ const CreateRecipeView = (props: any) => {
         <div className='recipe__switch'>
           <button
             type="button"
-            onClick={() => setUnit('gr')}
+            onClick={() => setUnit(getTranslate('common.gr'))}
             className={classnames('recipe__switch-button', {
-              'recipe__switch-button_active': unit === 'gr',
+              'recipe__switch-button_active': unit === getTranslate('common.gr'),
             })}
           >
             <span>{getTranslate('common.gr')}</span>
           </button>
           <button
             type="button"
-            onClick={() => setUnit('oz')}
+            onClick={() => setUnit(getTranslate('common.oz'))}
             className={classnames('recipe__switch-button', {
-              'recipe__switch-button_active': unit === 'oz',
+              'recipe__switch-button_active': unit === getTranslate('common.oz'),
             })}
           >
             <span>{getTranslate('common.oz')}</span>
@@ -367,7 +371,7 @@ const CreateRecipeView = (props: any) => {
                     }}
                   ></div>
                 </div>
-                <div className='recipe__chart-lines-item-description'>{item.value} {unit}</div>
+                <div className='recipe__chart-lines-item-description'>{unit === getTranslate('common.gr') ? item.value : getOz(item.value)} {unit}</div>
               </div>
             ))}
           </div>
@@ -415,9 +419,11 @@ const CreateRecipeView = (props: any) => {
                   </div>
 
                   <div className='recipe__item-counting'>
-                    <div>{getTranslate('common.fats')}: {Math.round(ingredientItem.fat) * Math.round(createRecipeForm.ingredients[ingredientIndex].weight)}</div>
-                    <div>{getTranslate('common.carbohydrate')}: {Math.round(ingredientItem.carbohydrate * Math.round(createRecipeForm.ingredients[ingredientIndex].weight))}</div>
-                    <div>{getTranslate('common.proteins')}: {Math.round(ingredientItem.protein * Math.round(createRecipeForm.ingredients[ingredientIndex].weight))}</div>
+                    {proteinFatCarbohydrate.map(item => (
+                      <div>
+                        {item.namePlural} : {unit === getTranslate('common.gr') ? item.value : getOz(item.value)} {unit}
+                      </div>
+                    ))}
                   </div>
 
                   <div className='recipe__item-quantity'>
@@ -461,7 +467,8 @@ const CreateRecipeView = (props: any) => {
                       <InputField
                         type='number'
                         name={`indredients[${ingredientIndex}].weight`}
-                        value={createRecipeForm.ingredients[ingredientIndex].weight}
+                        value={unit === getTranslate('common.gr') ? createRecipeForm.ingredients[ingredientIndex].weight : getOz(createRecipeForm.ingredients[ingredientIndex].weight)}
+                        step={0.1}
                         onChange={e => {
                           const updatedIngredients = [...createRecipeForm.ingredients];
                           const prevIngredient = updatedIngredients[ingredientIndex];
@@ -550,7 +557,8 @@ const CreateRecipeView = (props: any) => {
             block
             type='number'
             name='totalWeight'
-            value={createRecipeForm.totalWeight}
+            step={0.1}
+            value={unit === getTranslate('common.gr') ? createRecipeForm.totalWeight : getOz(+createRecipeForm.totalWeight)}
             onChange={e => validateOnChange('totalWeight', e.target.value, e)}
             min={0}
             height='xl'

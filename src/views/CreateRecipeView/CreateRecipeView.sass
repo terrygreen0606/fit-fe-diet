@@ -398,10 +398,7 @@
 		.recipe__item-counting
 			flex-basis: 33.33%
 			padding-right: 30px
-			padding-left: 100px
-
-			div
-				text-transform: capitalize
+			padding-left: 20px
 
 			div + div
 				margin-top: 35px
@@ -440,6 +437,11 @@
 		max-width: 150px
 		font-size: 26px
 		text-align: center
+		-moz-appearance: textfield
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button 
+				-webkit-appearance: none
 
 
 .instructions
