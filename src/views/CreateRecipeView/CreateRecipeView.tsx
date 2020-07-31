@@ -13,6 +13,7 @@ import {
   createRecipe,
   getIngredient
 } from 'api';
+import FormValidator from 'utils/FormValidator';
 
 //Components
 import Button from 'components/common/Forms/Button';
@@ -31,8 +32,6 @@ import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { colourStylesSelect, serving } from './selectsDatas';
 
 const CreateRecipeView = () => {
-  const token = localStorage.getItem('authToken');
-
   const [unit, setUnit] = useState('gr');
 
   const [isActiveInput, setActiveInput] = useState(false);
@@ -182,21 +181,27 @@ const CreateRecipeView = () => {
   
   const createRecipeSubmit = e => {
     e.preventDefault();
-    createRecipe(
-      token,
-      createRecipeForm.recipeName,
-      createRecipeForm.recipePreparation,
-      createRecipeForm.ingredients,
-      createRecipeForm.cuisine,
-      createRecipeForm.image_ids,
-      createRecipeForm.servings_cnt,
-      createRecipeForm.minTime,
-      createRecipeForm.maxTime,
-      createRecipeForm.totalWeight,
-    ).then(response => {
-      const dataRecipe = response.data.data;
-      return dataRecipe;
-    });
+
+    const form = e.target;
+    const inputs = [...form.elements].filter(i => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+
+    const { errors, hasError } = FormValidator.bulkValidate(inputs);
+
+    setCreateRecipeErrors([...errors]);
+
+    if (!hasError) {
+      createRecipe(
+        createRecipeForm.recipeName,
+        createRecipeForm.recipePreparation,
+        createRecipeForm.ingredients,
+        createRecipeForm.cuisine,
+        createRecipeForm.image_ids,
+        createRecipeForm.servings_cnt,
+        createRecipeForm.minTime,
+        createRecipeForm.maxTime,
+        createRecipeForm.totalWeight,
+      ).then(response => response.data.data);
+    }
   };
 
   const getPercent = (value: number) => value / calories.maxCalories * 100;

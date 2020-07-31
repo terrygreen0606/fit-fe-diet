@@ -66,6 +66,9 @@
 		display: flex
 		align-items: center
 
+		.fgInvalidMsg
+			margin-left: 20px
+
 .recipe__label
 	display: flex
 	align-items: center
@@ -447,10 +450,8 @@
 		font-size: 26px
 		line-height: 1.5
 
-	&__field
-		margin-bottom: 40px
-
 	&__button
+		margin-top: 40px
 		text-align: center
 	
 
@@ -489,6 +490,25 @@
 
 
 @media only screen and (max-width: 400px)
+	.recipe__input-container
+		flex-wrap: wrap
+
+		.fgInvalidMsg
+			margin-left: 0
+
+	.recipe__label
+		flex-wrap: wrap
+
+		&-description
+			margin-bottom: 6px
+
+		&-select
+			width: 100%
+
+		&-input + .recipe__label-input
+			margin-left: 0
+			margin-top: 10px
+
 	.recipe__chart-progress
 		flex-basis: 250px
 		height: 250px
@@ -502,6 +522,3 @@
 
 			&_protein
 				width: 170px
-
-	.recipe__label-select
-		min-width: initial

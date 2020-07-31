@@ -1,7 +1,6 @@
 import axios from 'utils/axios';
 
 export const createRecipe = (
-  token: string,
   name: string,
   preparation: string,
   ingredients: Array<object>,
