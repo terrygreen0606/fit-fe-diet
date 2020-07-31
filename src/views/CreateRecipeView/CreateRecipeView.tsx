@@ -21,9 +21,9 @@ import { getOz } from 'utils/getOz';
 //Components
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
-import Chart from 'components/common/Chart';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import WithTranslate from 'components/hoc/WithTranslate';
+import DonutChart from 'components/common/charts/DonutChart';
 
 import './CreateRecipeView.sass';
 
@@ -215,37 +215,34 @@ const CreateRecipeView = (props: any) => {
 
   const getPercent = (value: number) => value / calories.maxCalories * 100;
 
-  console.log(proteinFatCarbohydrate);
-  
-
   return (
     <div className='container-fluid recipe_container'>
       <h1 className='recipe__title'>{getTranslate('recipe.create.title')}</h1>
       <form className='recipe_wrap' onSubmit={e => createRecipeSubmit(e)}>
         <div className='row recipe__photo'>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
-            <button className='recipe__add-photo'>
+            <button type='button' className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
-            <button className='recipe__add-photo'>
+            <button type='button' className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
-            <button className='recipe__add-photo'>
+            <button type='button' className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 {getTranslate('photo.add')}
               </span>
             </button>
           </div>
           <div className='col-lg-3 col-md-6 mb-lg-0 mb-3'>
-            <button className='recipe__add-photo'>
+            <button type='button' className='recipe__add-photo'>
               <span className='recipe__add-photo-description'>
                 {getTranslate('photo.add')}
               </span>
@@ -343,11 +340,10 @@ const CreateRecipeView = (props: any) => {
                 className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}
                 key={item.id}
               >
-                <Chart
+                <DonutChart
                   firstColor={item.firstColorGradient}
                   lastColor={item.lastColorGradient}
                   percent={getPercent(item.value)}
-                  id={item.id}
                 />
               </div>
             ))}
