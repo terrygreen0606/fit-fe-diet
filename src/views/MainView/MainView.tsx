@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -8,6 +9,25 @@ import './MainView.sass';
 import { ReactComponent as LikeIcon } from 'assets/img/icons/like-icon.svg';
 
 const MainView = () => {
+
+  const setFile = e => {
+    axios.post('https://fitdev.s3.amazonaws.com', {
+      "X-Amz-Credential": "AKIAVC4WRCO73AU6DZGV/20200716/us-east-1/s3/aws4_request",
+      "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+      "Policy": "eyJleHB...",
+      "X-Amz-Signature": "a65d7778...",
+      "X-Amz-Date": "20200716T140303Z",
+      "Content-Type": "image/jpeg",
+      "key": `images/test/${e.target.files[0].name}`,
+      "acl": "private",
+      "file": e.target.files[0]
+    }).then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.log(error)
+    })
+  };
+
   return (
     <>
       <section className="main-header-sect">
@@ -30,6 +50,18 @@ const MainView = () => {
                 <img src="https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-2.png" alt="" id="main-header-sect-food-img1" />
                 <img src="https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-1.png" alt="" id="main-header-sect-food-img2" />
               </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              
+              <input type="file" onChange={e => setFile(e)} />
 
             </div>
           </div>
