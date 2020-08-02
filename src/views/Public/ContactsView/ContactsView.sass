@@ -1,0 +1,162 @@
+.contacts
+
+  &__welcome
+    position: relative
+
+    &-description
+      font-size: 20px
+      line-height: 1.5
+
+    &-media-wrap
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        right: -390px
+        width: calc(100% + 200px)
+        height: calc(100% - 40px)
+        background-color: #106EE8
+
+      &::after
+        content: ''
+        position: absolute
+        top: 130px
+        left: 85px
+        width: 280px
+        height: 400px
+        background-image: radial-gradient(#e0e0e0 20%, transparent 20%)
+        background-position: 0 0
+        background-size: 22px 22px
+
+    &-media
+      position: relative
+      width: calc(100% +  240px)
+      z-index: 2
+
+  &__counseling
+    margin-top: -150px
+    margin-bottom: 60px
+
+    &-title
+      position: relative
+      margin-bottom: 58px
+      padding-bottom: 26px
+      font-size: 34px
+      font-weight: bold
+
+      &::before
+        content: ''
+        position: absolute
+        left: 0
+        bottom: 0
+        width: 184px
+        height: 6px
+        background-color:#106EE8
+    
+    &-description
+      margin: 0
+      margin-bottom: 5px
+      font-size: 20px
+
+    &-link
+      font-weight: bold
+      color: #0FC1A1
+      border-bottom: 1px solid
+      text-decoration: none
+      transition: 0.2s all ease
+
+      &:hover
+        border-bottom: 1px solid transparent
+
+  &__map
+    margin-bottom: 120px
+
+  &__team
+
+    &-title
+      position: relative
+      margin-bottom: 90px
+      padding-bottom: 26px
+      font-size: 34px
+      font-weight: bold
+
+      &::before
+        content: ''
+        position: absolute
+        left: 0
+        bottom: 0
+        width: 184px
+        height: 6px
+        background-color:#106EE8
+
+    &-list
+      position: relative
+
+      &::before
+        content: ''
+        position: absolute
+        top: -40px
+        left: 0
+        transform: translateX(-50%)
+        width: 212px
+        height: 287px
+        background-image: radial-gradient(rgba(232, 232, 232, 0.4) 20%, transparent 20%)
+        background-position: 0 0
+        background-size: 22px 22px
+
+      &-item
+        position: relative
+        margin-bottom: 150px
+
+        &:nth-last-child(-n + 2)
+          margin-bottom: 0
+
+        &-media
+          line-height: 0
+
+          & > *
+            line-height: initial
+          
+          &-img
+            max-width: 100%
+
+          &-name
+            padding: 39px 10px
+            text-align: center
+            font-size: 24px
+            font-weight: bold
+            color: #fff
+            background: #106EE8
+
+        &-description
+          font-size: 20px
+
+          p + p
+            margin-top: 20px
+
+@media only screen and (max-width: 1199px)
+  .contacts
+    &__welcome
+
+      &-media-wrap
+        display: none
+
+    &__counseling
+      margin-top: 0
+
+@media only screen and (max-width: 767px)
+  .contacts
+    &__team
+      &-list
+        &-item
+          margin-bottom: 30px
+
+          &:nth-last-child(-n + 2)
+            margin-bottom: 30px
+
+@media only screen and (max-width: 575px)
+  .contacts
+    &__team
+      &-list
+        &-item
+          text-align: center
