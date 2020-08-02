@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
-  getTranslate as getTranslateUtil
+  getTranslate
 } from 'utils';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
@@ -42,7 +42,13 @@ const JoinStep = (props: any) => {
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, registerJoinErrors);
 
-  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
+  const userClientLogin = (authToken: string) => {
+    localStorage.setItem('authToken', authToken);
+    axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
+    props.userLogin(authToken);
+  };
 
   const registerJoinSubmit = e => {
     e.preventDefault();
@@ -72,9 +78,7 @@ const JoinStep = (props: any) => {
         const token = response.data && response.data.access_token ? response.data.access_token : null;
 
         if (token) {
-          localStorage.setItem('authToken', token);
-          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-          props.userLogin(token);
+          userClientLogin(token);
           props.modalClose();
         } else {
           toast.error('Error while registering user');
@@ -88,21 +92,21 @@ const JoinStep = (props: any) => {
 
   return (
     <div className="register_join">
-      <h6 className="register_title mb-5">{getTranslate('register.plan_is_ready_text')}</h6>
+      <h6 className="register_title mb-5">{t('register.plan_is_ready_text')}</h6>
 
       <CustomCheckbox 
         invalid={appRulesAccepted === false} 
-        label={getTranslate('register.read_terms')}
+        label={t('register.read_terms')}
         onChange={e => setAppRulesAccepted(e.target.checked)}
       />
 
       <div className="register_join_or">
-        <span className="register_join_or_txt">{getTranslate('register.form_or')}</span>
+        <span className="register_join_or_txt">{t('register.form_or')}</span>
       </div>
       
       <form className="register_join_form" onSubmit={e => registerJoinSubmit(e)}>
         <FormGroup inline>
-          <FormLabel>{getTranslate('register.form_name')}*</FormLabel>
+          <FormLabel>{t('register.form_name')}*</FormLabel>
           <InputField 
             block 
             name="name"
@@ -115,7 +119,7 @@ const JoinStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>{getTranslate('register.form_surname')}*</FormLabel>
+          <FormLabel>{t('register.form_surname')}*</FormLabel>
           <InputField 
             block 
             name="surname"
@@ -128,7 +132,7 @@ const JoinStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>{getTranslate('register.form_email')}*</FormLabel>
+          <FormLabel>{t('register.form_email')}*</FormLabel>
           <InputField 
             block 
             name="email"
@@ -141,7 +145,7 @@ const JoinStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>{getTranslate('register.form_phone')}*</FormLabel>
+          <FormLabel>{t('register.form_phone')}*</FormLabel>
           <InputField 
             block 
             name="phone"
@@ -154,7 +158,7 @@ const JoinStep = (props: any) => {
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>{getTranslate('register.form_password')}</FormLabel>
+          <FormLabel>{t('register.form_password')}</FormLabel>
           <InputField 
             block 
             name="password"
@@ -176,7 +180,7 @@ const JoinStep = (props: any) => {
             color="primary"
             isLoading={registerJoinLoading}
           >
-            {getTranslate('register.form_submit')}
+            {t('register.form_submit')}
           </Button>
 
           <Button 
@@ -187,7 +191,7 @@ const JoinStep = (props: any) => {
             className="mt-4"
             style={{ width: '217px' }}
           >
-            {getTranslate('register.form_back')}
+            {t('register.form_back')}
           </Button>
         </div>
       </form>

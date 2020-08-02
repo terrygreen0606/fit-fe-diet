@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
-  getTranslate as getTranslateUtil,
+  getTranslate,
   initGoogleAuth as initGoogleAuthUtil,
   initFacebookAuth as initFacebookAuthUtil,
   wait
@@ -128,7 +128,13 @@ const LoginView = (props: any) => {
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, loginErrors);
 
-  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
+  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
+
+  const userClientLogin = (authToken: string) => {
+    localStorage.setItem('authToken', authToken);
+    axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
+    props.userLogin(authToken);
+  };
 
   const loginSubmit = e => {
     e.preventDefault();
@@ -149,10 +155,7 @@ const LoginView = (props: any) => {
         const token = response.data && response.data.access_token ? response.data.access_token : null;
 
         if (token) {
-          localStorage.setItem('authToken', token);
-          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-          props.userLogin(token);
-          props.history.push('/');
+          userClientLogin(token);
         } else {
           toast.error('Error occurred when Sign In User');
         }
@@ -178,10 +181,7 @@ const LoginView = (props: any) => {
         const token = response.data && response.data.access_token ? response.data.access_token : null;
 
         if (token) {
-          localStorage.setItem('authToken', token);
-          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-          props.userLogin(token);
-          props.history.push('/');
+          userClientLogin(token);
         } else {
           toast.error('Error occurred when Sign In User');
         }
@@ -205,10 +205,7 @@ const LoginView = (props: any) => {
           const token = response.data && response.data.access_token ? response.data.access_token : null;
 
           if (token) {
-            localStorage.setItem('authToken', token);
-            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-            props.userLogin(token);
-            props.history.push('/');
+            userClientLogin(token);
           } else {
             toast.error('Error occurred when Sign In User');
           }
@@ -241,7 +238,7 @@ const LoginView = (props: any) => {
       />
 
       <div className="loginScreen">
-        <h3 className="loginScreen_title">{getTranslate('login.title')}</h3>
+        <h3 className="loginScreen_title">{t('login.title', { product: 'TEST' })}</h3>
 
         <form className="loginScreen_form" onSubmit={e => loginSubmit(e)}>
           <FormGroup>
@@ -251,7 +248,7 @@ const LoginView = (props: any) => {
               errors={getFieldErrors('email')}
               value={loginForm.email}
               onChange={e => validateOnChange('email', e.target.value, e)}
-              placeholder={getTranslate('login.email_placeholder')}
+              placeholder={t('login.email_placeholder')}
               block
             />
           </FormGroup>
@@ -266,12 +263,12 @@ const LoginView = (props: any) => {
               errors={getFieldErrors('password')}
               value={loginForm.password}
               onChange={e => validateOnChange('password', e.target.value, e)}
-              placeholder={getTranslate('login.password_placeholder')}
+              placeholder={t('login.password_placeholder')}
               block
             />
           </FormGroup>
 
-          <span className="link link-bold mt-3">{getTranslate('login.forgot_pass')}</span>
+          <span className="link link-bold mt-3">{t('login.forgot_pass')}</span>
 
           <Button 
             className="loginScreen_btn" 
@@ -282,7 +279,7 @@ const LoginView = (props: any) => {
             isLoading={loginLoading}
             block
           >
-            {getTranslate('login.submit')}
+            {t('login.submit')}
           </Button>
         </form>
 
@@ -308,7 +305,7 @@ const LoginView = (props: any) => {
           )}
         </div>
 
-        <span className="link link-bold mt-4" onClick={() => setRegisterModalOpen(true)}>{getTranslate('login.register_link')}</span>
+        <span className="link link-bold mt-4" onClick={() => setRegisterModalOpen(true)}>{t('login.register_link')}</span>
       </div>
     </>
   );
