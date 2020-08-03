@@ -7,13 +7,13 @@ import AuthRoute from './components/common/AuthRoute';
 import BasePage from 'components/hoc/BasePage';
 import Layout from 'components/hoc/Layout';
 import LoginView from './views/LoginView';
-import MainView from './views/Public/MainView';
+import MainView from 'views/Public/MainView';
 import NutritionPlanView from './views/NutritionPlanView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
 import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
-import ContactsView from './views/Public/ContactsView';
+import ContactsView from 'views/Public/ContactsView';
 import NotFound from './views/NotFound';
 
 const Routes = () => (
