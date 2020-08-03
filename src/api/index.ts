@@ -6,3 +6,4 @@ export * from './auth/userFacebookSignIn';
 export * from './loadPhrases';
 export * from './ingredients';
 export * from './recipe';
+export * from './auth/getTplSignup';

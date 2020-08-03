@@ -4,22 +4,13 @@ import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 
 // Components
-import RegisterModal from 'components/RegisterModal';
 import Button from 'components/common/Forms/Button';
 
 import './Header.sass';
 
 const Header = (props: any) => {
-
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
-
   return (
-    <>
-      <RegisterModal
-        isOpen={isRegisterModalOpen}
-        onClose={() => setRegisterModalOpen(false)}
-      />
-  
+    <>  
       <header className="mainHeader">
         <div className="container">
           <div className="row">
@@ -42,7 +33,7 @@ const Header = (props: any) => {
               </nav>
 
               {!props.isAuthenticated ? (
-                <Button className="ml-5" color="primary" onClick={() => setRegisterModalOpen(true)}>Register</Button>
+                <Button className="ml-5" color="primary">Register</Button>
               ) : null}
 
             </div>

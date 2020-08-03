@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getTranslate as getTranslateUtil } from 'utils';
+import { getTranslate } from 'utils';
 import { getMealItem } from './getMealItem';
 import uuid from 'react-uuid';
 
@@ -28,7 +28,7 @@ const GoalStep = (props: any) => {
     }
   }, [props.registerData]);
 
-  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
+  const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const removeMealItem = (mealId: string) => {
     const mealItem = ignoreCuisineIds.find(meal => meal.id === mealId);
@@ -45,7 +45,7 @@ const GoalStep = (props: any) => {
 
   return (
     <div className="register_goal">
-      <h6 className="register_title mb-4">{getTranslate('register.help_achieve_goal')}</h6>
+      <h6 className="register_title mb-4">{t('register.help_achieve_goal')}</h6>
 
       <div className="register_goals_list">
         <Button 
@@ -60,7 +60,7 @@ const GoalStep = (props: any) => {
         >
           <span>
             <LoseIcon className="register_goal_icon" />
-            {getTranslate('register.lose_weight')}
+            {t('register.lose_weight')}
           </span>
           <AngleRightIcon />
         </Button>
@@ -77,7 +77,7 @@ const GoalStep = (props: any) => {
         >
           <span>
             <KeepIcon className="register_goal_icon" />
-            {getTranslate('register.keep_weight')}
+            {t('register.keep_weight')}
           </span>
           <AngleRightIcon />
         </Button>
@@ -94,13 +94,13 @@ const GoalStep = (props: any) => {
         >
           <span>
             <LiftIcon className="register_goal_icon" />
-            {getTranslate('register.lift_weight')}
+            {t('register.lift_weight')}
           </span>
           <AngleRightIcon />
         </Button>
       </div>
 
-      <h6 className="register_goal_title mt-5 mb-3">{getTranslate('register.not_eating')}:</h6>
+      <h6 className="register_goal_title mt-5 mb-3">{t('register.not_eating')}:</h6>
 
       <div className="register_eating_list">
         {ignoreCuisineIds.map(({ id, title, icon: Icon }) => (
@@ -123,7 +123,7 @@ const GoalStep = (props: any) => {
           size="lg"
           onClick={() => props.setRegisterStep('INFO')}
         >
-          {getTranslate('register.form_next')}
+          {t('register.form_next')}
         </Button>
       </div>
     </div>

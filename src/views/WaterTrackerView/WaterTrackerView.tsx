@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { getTranslate as getTranslateUtil } from 'utils';
+import { getTranslate } from 'utils';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import WaterChart from './WaterChart'
@@ -39,7 +39,7 @@ const WaterTrackerView = (props: any) => {
     'active-period': trackerPeriod == period,
   })
 
-  const getTranslate = (code: string) => getTranslateUtil(props.localePhrases, code);
+  const t = (code: string) => getTranslate(props.localePhrases, code);
 
   return (
     <>
@@ -47,7 +47,7 @@ const WaterTrackerView = (props: any) => {
         <div className="container">
           <div className="row">
             <h4 className="waterTracker_title">
-              {getTranslate('wt.head_title')}
+              {t('wt.head_title')}
             </h4>
           </div>
         </div>
@@ -59,19 +59,19 @@ const WaterTrackerView = (props: any) => {
                 onClick={()=> setTrackerPeriod('week')}
                 className={activePeriod('week')}
               >
-                {getTranslate('common.week')}
+                {t('common.week')}
               </li>
               <li
                 onClick={()=> setTrackerPeriod('month')}
                 className={activePeriod('month')}
               >
-                {getTranslate('common.month')}
+                {t('common.month')}
               </li>
               <li
                 onClick={()=> setTrackerPeriod('year')}
                 className={activePeriod('year')}
               >
-                {getTranslate('common.year')}
+                {t('common.year')}
               </li>
             </ul>
           </div>
@@ -121,7 +121,7 @@ const WaterTrackerView = (props: any) => {
 
               <div className="water-drop">
                 <h3>{totalCompleteWater}%</h3>
-                <h5>{totalCompleteWaterML}{getTranslate('common.ml')}</h5>
+                <h5>{totalCompleteWaterML}{t('common.ml')}</h5>
               </div>
             </div>
           </div>
@@ -132,15 +132,15 @@ const WaterTrackerView = (props: any) => {
             <div className="col-5">
               <div className="waterTracker_info">
                 <div>
-                  <p>{getTranslate('common.day_average')}</p>
+                  <p>{t('common.day_average')}</p>
                   <p>
-                    <span>2000</span> {getTranslate('common.ml')}/{getTranslate('common.day')}
+                    <span>2000</span> {t('common.ml')}/{t('common.day')}
                   </p>
                 </div>
                 <div>
-                  <p>{getTranslate('wt.drink_frequency')}</p>
+                  <p>{t('wt.drink_frequency')}</p>
                   <p>
-                    <span>8</span> {getTranslate('common.time')}(s)/{getTranslate('common.day')}
+                    <span>8</span> {t('common.time')}(s)/{t('common.day')}
                   </p>
                 </div>
               </div>
@@ -148,20 +148,20 @@ const WaterTrackerView = (props: any) => {
 
             <div className="col-7">
               <div className="waterTracker_stats">
-                <p>{getTranslate('wt.complete')}</p>
-                <span>1000{getTranslate('common.ml')}</span>
+                <p>{t('wt.complete')}</p>
+                <span>1000{t('common.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{getTranslate('common.daily_goal')}</p>
-                <span>2000{getTranslate('common.ml')}</span>
+                <p>{t('common.daily_goal')}</p>
+                <span>2000{t('common.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{getTranslate('common.average')}</p>
-                <span>1300{getTranslate('common.ml')}</span>
+                <p>{t('common.average')}</p>
+                <span>1300{t('common.ml')}</span>
               </div>
               <div className="waterTracker_stats">
-                <p>{getTranslate('wt.status')}</p>
-                <span>{getTranslate('wt.normal')}</span>
+                <p>{t('wt.status')}</p>
+                <span>{t('wt.normal')}</span>
               </div>
             </div>
 

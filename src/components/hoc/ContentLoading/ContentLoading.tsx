@@ -6,7 +6,7 @@ import Button from 'components/common/Forms/Button';
 import PageLoader from 'components/common/PageLoader';
 import Spinner from 'components/common/Spinner';
 
-import styles from './ContentLoading.module.sass';
+import './ContentLoading.sass';
 
 type ContentLoadingProps = {
   isLoading: boolean,
@@ -49,7 +49,7 @@ const ContentLoading = (props: ContentLoadingProps) => {
         </div>
       ) : (
         <>
-          {isLoading ? <div className="text-center"><Spinner width={25} height={25} color="#00C5D1" /></div> : children}
+          {isLoading ? <div className="loadingSpinner_wrap"><Spinner width={25} height={25} color="#00C5D1" /></div> : children}
         </>
       )}
     </>
