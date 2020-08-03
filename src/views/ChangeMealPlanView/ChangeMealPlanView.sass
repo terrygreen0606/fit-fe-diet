@@ -1,211 +1,233 @@
+@import '../../assets/sass/vars'
+
 .change-meal
 
-  .container:nth-child(2)
-    margin-top: 70px;
+  .container-mb70
+    margin-bottom: 70px
 
   &_title
-    font-weight: bold;
-    padding: 0 15px;
+    font-weight: bold
+    padding: 0 15px
     &::after
-      display: block;
+      display: block
 
-      height: 6px;
-      width: 100%;
-      margin-top: 15px;
-      content: '';
+      height: 6px
+      width: 100%
+      margin-top: 15px
+      content: ''
 
-      background-color: #106EE8;
+      background-color: #106EE8
   &_info
-    width: 100%;
-    padding: 60px 80px 25px 100px;
-
-    margin: 0 15px;
-
-    background: #FFFFFF;
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08);
-    border-radius: 20px;
+    width: 100%
+    padding: 60px 80px 25px 100px
+    margin: 0 15px
   &_green-text
-      font-weight: bold;
-      font-size: 16px;
-      line-height: 20px;
-      color: #0FC1A1;
+      font-weight: bold
+      font-size: 16px
+      line-height: 20px
+      color: #0FC1A1
   &_info-row 
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    flex-wrap: wrap
 
     .bttn_wide
-      padding: 14px 75px;
+      padding: 14px 75px
 
   &_info-row + &_info-row 
-    align-items: center;
-    margin-top: 50px;
+    align-items: center
+    margin-top: 50px
     
   &_not-eating
-    display: flex;
-    align-items: flex-start;
+    display: flex
+    align-items: flex-start
     .change-meal_green-text
-      margin: 25px 30px;
+      margin: 25px 30px
   
   &_stats 
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+    display: flex
+    align-items: center
+    flex-wrap: wrap
 
     .change-meal_stats-item
-      display: inline-flex;
-      align-items: center;
+      display: inline-flex
+      align-items: center
 
-      margin: 0 25px;
-      padding: 10px 0;
+      margin: 0 25px
+      padding: 10px 0
 
-      font-size: 16px;
-      line-height: 28px;
-      div 
-        margin-left: 20px;
-        display: flex;
-        flex-direction: column;
-        label.radioInline
-          margin-bottom: 5px!important;
+      font-size: 16px
+      line-height: 28px
+      .change-meal_stats_radio 
+        margin-left: 20px
+        display: flex
+        flex-direction: column
+        label.radioInline:first-child
+          margin-bottom: 8px!important
 
       &:first-child 
-        margin-left: 0px;
-      p
-        margin: 0 15px 0 20px;
+        margin-left: 0px
+      .change-meal_stats-item_text
+        margin: 0 15px 0 20px
 
-        white-space: nowrap;
-        font-weight: bold;
+        white-space: nowrap
+        font-weight: bold
       input 
-        max-width: 80px;
-        margin: 0 15px 0 20px;
-        padding: 2px 15px;
+        max-width: 80px
+        margin: 0 15px 0 20px
+        padding: 2px 15px
 
-        text-align: center;
+        text-align: center
   
   &_food-list 
-    display: grid;
-    grid-template-columns: repeat(3,minmax(180px, 1fr));
-    grid-gap: 30px 30px;
+    display: grid
+    grid-template-columns: repeat(3,minmax(180px, 1fr))
+    grid-gap: 30px 30px
     &_item
-      display: flex;
+      display: flex
       align-items: center
-      justify-content: center;
+      justify-content: center
 
-      // min-width: 180px;
-      padding: 16px 35px;
+      // min-width: 180px
+      padding: 14px 35px
+
+      position: relative
       
-      border: 1px solid #0FC1A1;
-      border-radius: 5px;
+      border: 1px solid #0FC1A1
+      border-radius: 5px
 
-      color: #000;
-      font-size: 16px;
-      line-height: 20px;
+      color: #000
+      font-size: 16px
+      line-height: 20px
       & svg 
-        margin-right: 15px;
-        min-height: 35px;
-        min-width: 25px;
+        margin-right: 15px
+        min-height: 35px
+        min-width: 25px
+        width: auto
+        height: auto
+      .change-meal_cross-icon
+        width: 15px
+        height: 15px
+        margin: 5px
+        min-height: unset
+        min-width: unset
+
+        position: absolute
+        right: 0
+        top: 0
+
+        cursor: pointer
+
+
   &_green-btn, &_green-btn:hover
     & svg 
-      margin-right: 10px;
+      margin-right: 10px
     & .lift-icon-plus
-      fill: #0FC1A1;
+      fill: #0FC1A1
 
   .meal-row
-    justify-content: center;
-    >div
-      min-width: 300px;
+    justify-content: center
+    .meal-row_col
+      min-width: 300px
     
   
   .meal-block 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: space-between
 
-    min-height: 480px;
-    padding: 50px 40px 20px;
-    margin-top: 80px;
+    min-height: 480px
+    padding: 50px 50px 20px
+    margin-top: 110px
 
-    position: relative;
+    position: relative
 
-    background: #FFFFFF;
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08);
-    border-radius: 20px;
-    border: 1px solid transparent;
+    background: #FFFFFF
+    border: 1px solid transparent
     
     &:hover 
-      border: 1px solid #0FC1A1;
-      transition: .2s all ease-in-out;
+      border: 1px solid #0FC1A1
+      transition: .2s all ease-in-out
       & .meal-block_head-count
-        background-color: #0FC1A1;
-        transition: .2s all ease-in-out;
+        background-color: #0FC1A1
+        transition: .2s all ease-in-out
 
     &_head
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex
+      align-items: center
+      justify-content: center
 
-      color: #000;
-      font-size: 14px;
-      line-height: 17px;
+      color: #000
+      font-size: 14px
+      line-height: 17px
 
     &_head-count
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex
+      align-items: center
+      justify-content: center
 
-      height: 100px;
-      width: 100px;
+      height: 100px
+      width: 100px
       
-      position: absolute;
-      top: -50px;
+      position: absolute
+      top: -50px
 
-      border-radius: 50%;
-      background-color: #90E0AB;
+      border-radius: 50%
+      background-color: #90E0AB
 
       h3
-        font-size: 46px;
-        line-height: 56px; 
-        font-weight: bold;
-        color: #fff;
+        font-size: 46px
+        line-height: 56px 
+        font-weight: bold
+        color: #fff
 
     .row 
-      align-items: flex-end;
-      // justify-content: center;
+      align-items: flex-end
+      // justify-content: center
     
     .meal-block_row-item
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      display: flex
+      flex-direction: column
+      align-items: center
 
-      margin-bottom: 10px;
+      margin-bottom: 10px
 
       p
-        margin-top: 15px;
+        margin-top: 15px
 
-        font-size: 16px;
-        line-height: 20px;
-        color: #000;  
+        font-size: 16px
+        line-height: 20px
+        color: #000
+  .change-meal_sex-icon
+    fill: #000
+    margin-right: 8px
+    path
+      fill: #000
+    &_active
+      fill: $caribbean-green
+      path
+        fill: $caribbean-green
     
 
 @media (max-width: 1200px)
   .change-meal_food-list
-    grid-template-columns: minmax(130px, 180px) minmax(130px, 180px);
+    grid-template-columns: minmax(130px, 180px) minmax(130px, 180px)
   .change-meal_not-eating
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column
+    align-items: center
 
 
 @media (max-width: 992px)
   .change-meal_info 
-    padding: 60px 40px 25px;
+    padding: 60px 40px 25px
   .change-meal_info-row
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column
+    align-items: center
   .change-meal_stats
-    justify-content: center;
+    justify-content: center
     .change-meal_stats-item 
-      margin: 0 20px;
+      margin: 0 20px
       &:first-child
-        margin-left: 20px;
+        margin-left: 20px

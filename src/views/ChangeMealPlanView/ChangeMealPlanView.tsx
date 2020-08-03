@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { getTranslate } from 'utils';
-import { getMealItem } from './getMealItem';
+import {
+  getTranslate,
+// getFoodItem - shpuld be removed after back ingtegration?
+} from 'utils';
 import classNames from 'classnames';
 
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -18,36 +20,46 @@ import { ReactComponent as DinnerIcon } from 'assets/img/icons/dinner-icon.svg';
 import { ReactComponent as SnackIcon } from 'assets/img/icons/snack-icon.svg';
 import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
 import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
+import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon-black.svg';
+
+//remove after backend integration
+import { ReactComponent as MilkIcon } from 'assets/img/icons/milk-icon.svg';
+import { ReactComponent as MeatIcon } from 'assets/img/icons/meat-icon.svg';
+import { ReactComponent as FishIcon } from 'assets/img/icons/fish-icon.svg';
 
 const ChangeMealPlanView = (props: any) => {
 
-  const [ignoreCuisineIds, setIgnoreCuisineIds] = useState([]);
+//refactor after backend integration
+  const [ignoreCuisineIds, setIgnoreCuisineIds] = useState([
+    {title:'milk',icon: MilkIcon},
+    {title:'meat',icon: MeatIcon},
+    {title:'fish',icon: FishIcon}
+  ]);
   const [isEditing, setIsEditing] = useState(false);
-  const food = [
-    {title:'milk',icon:'milk'},
-    {title:'meat',icon:'meat'},
-    {title:'fish',icon:'fish'},
-  ]
-
-  useEffect(() => {
-    setIgnoreCuisineIds(food.map(mealKey => (
-      getMealItem(mealKey.title)
-    )));
-  }, []);
-
   const changeInfo = () => {
     setIsEditing(true)
   }
   const saveChanges = () => {
     setIsEditing(false)
   }
+//add after backend integration
+// const removeMealItem = (mealId: string) => {
+//   const mealItem = ignoreCuisineIds.find(meal => meal.id === mealId);
+//   if (mealItem) {
+//     props.setRegisterData({
+//       ...props.registerData,
+//       ignore_cuisine_ids: props.registerData.ignore_cuisine_ids.filter(mealKey => mealKey !== mealItem.key)
+//     });
+//     setIgnoreCuisineIds(ignoreCuisineIds.filter(meal => meal.key !== mealItem.key));
+//   }
+// };
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   return (
     <>
       <div className="change-meal">
-        <div className="container">
+        <div className="container container-mb70">
           <div className="row">
             <h4 className="change-meal_title">
               {t('mp.change.title')}
@@ -57,7 +69,7 @@ const ChangeMealPlanView = (props: any) => {
 
         <div className="container">
           <div className="row">
-            <div className="change-meal_info">
+            <div className="change-meal_info card-bg">
 
               <div className='change-meal_info-row'>
                 <Button
@@ -70,15 +82,22 @@ const ChangeMealPlanView = (props: any) => {
 
                 <div className='change-meal_not-eating'>
                   <span className='change-meal_green-text'>
-                    {t('register.not_eating')}
+                    {t('register.not_eating')}:
                   </span>
-
+                  
+  {/*refactor translation after backend integration*/}
                   <div className='change-meal_food-list'>
                     {ignoreCuisineIds.map(({ title, icon: Icon }) => (
                       <div className='change-meal_food-list_item' key={title}>
                         <Icon />
-{/*need to be translated {t(`food.${title}`)} */}
-                        {title}
+                        {t(`food.${title.toLowerCase()}`)}
+
+                        {isEditing &&
+                          <CrossIcon
+                            // onClick={() => removeMealItem(id)}
+                            className="change-meal_cross-icon"
+                          />
+                        }
                       </div>  
                     ))}
                   </div>
@@ -87,18 +106,18 @@ const ChangeMealPlanView = (props: any) => {
 
               <div className='change-meal_info-row'>
                 <div className="change-meal_stats">
-                  <p className="change-meal_stats-item">
+                  <div className="change-meal_stats-item">
                     {t('register.form_sex')}
 
                     {isEditing ?
-                      <div>
+                      <div className='change-meal_stats_radio'>
                         <CustomRadio 
-                          name="register_sex" 
+                          name="change-meal_sex" 
                           label={
                             <>
                               <MaleIcon 
-                                className={classNames("registerSexIcon", {
-                                  "registerSexIcon_active": true
+                                className={classNames("change-meal_sex-icon", {
+                                  "change-meal_sex-icon_active": true
                                 })}
                               />
                               {t('register.form_male')}
@@ -118,8 +137,8 @@ const ChangeMealPlanView = (props: any) => {
                           label={
                             <>
                               <FemaleIcon 
-                                className={classNames("registerSexIcon", {
-                                  "registerSexIcon_active": false
+                                className={classNames("change-meal_sex-icon", {
+                                  "change-meal_sex-icon_active": false
                                 })}
                               />
                               {t('register.form_female')}
@@ -136,16 +155,17 @@ const ChangeMealPlanView = (props: any) => {
                         />
                       </div>
                       :
-                      <p>
+                      <span className='change-meal_stats-item_text'>
                         {t('register.form_male')}
-                      </p>
+                      </span>
                     }
-                  </p>
-                  <p className="change-meal_stats-item">
+                  </div>
+                  <div className="change-meal_stats-item">
                     {t('register.form_age')}
                     {isEditing
                       ? <InputField
                           type="number"
+                          border='light'
                           min={1}
                           name="age"
                           value={30}
@@ -153,17 +173,19 @@ const ChangeMealPlanView = (props: any) => {
                           // onChange={e => validateOnChange('age', e.target.value, e)}
                           height='xs'
                         />
-                      : <p>
-                          30
-                        </p>
+                      : 
+                      <span className='change-meal_stats-item_text'>
+                        30
+                      </span>
                     }
-                  </p>
+                  </div>
 
-                  <p className="change-meal_stats-item">
+                  <div className="change-meal_stats-item">
                     {t('common.height')}
                     {isEditing
                       ? <InputField
                           type="number"
+                          border='light'
                           value={180}
                           name="height"
                           data-param="50,250"
@@ -171,17 +193,19 @@ const ChangeMealPlanView = (props: any) => {
                           // onChange={e => validateOnChange('height', e.target.value, e)}
                           height='xs'
                         />
-                      : <p>
+                      :
+                        <span className='change-meal_stats-item_text'>
                           180 {t('common.cm')}
-                        </p>
+                        </span>
                     }
-                  </p>
-                  <p className="change-meal_stats-item">
+                  </div>
+                  <div className="change-meal_stats-item">
                     {t('common.weight')}
                     {isEditing
                       ? <InputField
                           block
                           type="number"
+                          border='light'
                           value={66}
                           data-param="30,400"
                           data-validate='["required", "min-max"]'
@@ -189,11 +213,12 @@ const ChangeMealPlanView = (props: any) => {
                           // onChange={e => validateOnChange('weight', e.target.value, e)}
                           height='xs'
                         />
-                      : <p>
+                      : 
+                        <span className='change-meal_stats-item_text'>
                           66 {t('common.kg')}
-                        </p>
+                        </span>
                     }
-                  </p>
+                  </div>
                 </div>
                 {isEditing ?
                   <Button
@@ -227,8 +252,8 @@ const ChangeMealPlanView = (props: any) => {
 
           {[1,2,3,4].map((item, i) => {
               return (
-                <div className="col-3" key={i}>
-                  <div className='meal-block'>
+                <div className="col-3 meal-row_col" key={i}>
+                  <div className='meal-block card-bg'>
                     <div className='meal-block_head'>
                       <div className='meal-block_head-count'>
                         <h3>{i + 3}</h3>
