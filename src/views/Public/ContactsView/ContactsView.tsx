@@ -1,22 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
-import RegisterModal from 'components/RegisterModal';
 import Map from 'components/common/Map';
 
 import './ContactsView.sass';
 
 const ContactsView = (props: any) => {
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
-
   return (
     <>
-      <RegisterModal
-        isOpen={isRegisterModalOpen}
-        onClose={() => setRegisterModalOpen(false)}
-      />
       <div className='contacts'>
         <section className='contacts__welcome'>
           <div className='container'>
@@ -31,10 +24,7 @@ const ContactsView = (props: any) => {
                   su perelesulle ja su perelesulle ja su perelesulle ja su
                   perelesulle ja su perele
                 </p>
-                <Button
-                  color='primary'
-                  onClick={() => setRegisterModalOpen(!isRegisterModalOpen)}
-                >
+                <Button color='primary' onClick={() => {}}>
                   Register
                 </Button>
               </div>
