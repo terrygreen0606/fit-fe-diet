@@ -1,0 +1,19 @@
+{
+  "workbench.startupEditor": "newUntitledFile",
+  "extensions.ignoreRecommendations": false,
+  "workbench.activityBar.visible": true,
+  "window.zoomLevel": -1,
+  "workbench.colorTheme": "Monokai",
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.hover.enabled": false,
+  "editor.colorDecorators": false,
+  "editor.mouseWheelZoom": true,
+  "explorer.confirmDelete": false,
+  "emmet.showSuggestionsAsSnippets": true,
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.excludeLanguages": [
+  
+    "markdown"
+  ]
+}
