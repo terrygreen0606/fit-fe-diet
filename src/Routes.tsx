@@ -13,6 +13,7 @@ import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
 import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
+import ChangeMealPlanView from './views/ChangeMealPlanView';
 import NotFound from './views/NotFound';
 
 
@@ -67,6 +68,14 @@ const Routes = () => (
         exact
       />
 
+      <PrivateRoute
+        path="/plan/change-meal"
+        component={(props: any) => (
+          <Layout {...props}><ChangeMealPlanView {...props} /></Layout>
+        )}
+        exact
+      />
+      
       <AuthRoute 
         path="/login" 
         component={(props: any) => (
