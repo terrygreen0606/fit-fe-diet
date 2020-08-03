@@ -6,6 +6,7 @@ import { getTranslate as getTranslateUtil } from "utils";
 import WithTranslate from "components/hoc/WithTranslate";
 import Button from "components/common/Forms/Button";
 import RegisterModal from "components/RegisterModal";
+import Map from "components/common/Map";
 
 import "./ContactsView.sass";
 
@@ -97,7 +98,15 @@ const ContactsView = (props: any) => {
           </div>
         </section>
         <section className="contacts__map">
-          <div className="container"></div>
+          <div className="container">
+            <div id="map">
+              <Map
+                weight="100%"
+                height="480px"
+                place="belarus, homel, sovetskaya 144"
+              />
+            </div>
+          </div>
         </section>
         <section className="contacts__team">
           <div className="container">
