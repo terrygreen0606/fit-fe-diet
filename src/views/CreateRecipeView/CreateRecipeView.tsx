@@ -11,7 +11,7 @@ import {
 } from "utils";
 import { searchIngredients, createRecipe, getIngredient } from "api";
 import FormValidator from "utils/FormValidator";
-import { getTranslate as getTranslateUtil } from "utils";
+import { getTranslate } from "utils";
 import { getOz } from "utils/getOz";
 
 //Components
@@ -32,10 +32,9 @@ import { ReactComponent as TrashIcon } from "assets/img/icons/trash-icon.svg";
 import { colourStylesSelect, servingOptions } from "./selectsDatas";
 
 const CreateRecipeView = (props: any) => {
-  const getTranslate = (code: string) =>
-    getTranslateUtil(props.localePhrases, code);
+  const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const [unit, setUnit] = useState(getTranslate("common.gr"));
+  const [unit, setUnit] = useState(t("common.gr"));
 
   const [isActiveInput, setActiveInput] = useState(false);
 
@@ -53,8 +52,8 @@ const CreateRecipeView = (props: any) => {
 
   const [proteinFatCarbohydrate] = useState([
     {
-      name: getTranslate("common.fat"),
-      namePlural: getTranslate("common.fats"),
+      name: t("common.fat"),
+      namePlural: t("common.fats"),
       value: 0,
       id: 0,
       firstColorGradient: "#03792B",
@@ -62,8 +61,8 @@ const CreateRecipeView = (props: any) => {
       background: "#279A40",
     },
     {
-      name: getTranslate("common.carbohydrate"),
-      namePlural: getTranslate("common.carbohydrates"),
+      name: t("common.carbohydrate"),
+      namePlural: t("common.carbohydrates"),
       value: 0,
       id: 1,
       firstColorGradient: "#FF8F6F",
@@ -71,8 +70,8 @@ const CreateRecipeView = (props: any) => {
       background: "#FFB56E",
     },
     {
-      name: getTranslate("common.protein"),
-      namePlural: getTranslate("common.proteins"),
+      name: t("common.protein"),
+      namePlural: t("common.proteins"),
       value: 0,
       id: 2,
       firstColorGradient: "#1F39FE",
@@ -231,34 +230,34 @@ const CreateRecipeView = (props: any) => {
 
   return (
     <div className="container-fluid recipe_container">
-      <h1 className="recipe__title">{getTranslate("recipe.create.title")}</h1>
+      <h1 className="recipe__title">{t("recipe.create.title")}</h1>
       <form className="recipe_wrap" onSubmit={(e) => createRecipeSubmit(e)}>
         <div className="row recipe__photo">
           <div className="col-lg-3 col-md-6 mb-lg-0 mb-3">
             <button type="button" className="recipe__add-photo">
               <span className="recipe__add-photo-description">
-                {getTranslate("photo.add")}
+                {t("photo.add")}
               </span>
             </button>
           </div>
           <div className="col-lg-3 col-md-6 mb-lg-0 mb-3">
             <button type="button" className="recipe__add-photo">
               <span className="recipe__add-photo-description">
-                {getTranslate("photo.add")}
+                {t("photo.add")}
               </span>
             </button>
           </div>
           <div className="col-lg-3 col-md-6 mb-lg-0 mb-3">
             <button type="button" className="recipe__add-photo">
               <span className="recipe__add-photo-description">
-                {getTranslate("photo.add")}
+                {t("photo.add")}
               </span>
             </button>
           </div>
           <div className="col-lg-3 col-md-6 mb-lg-0 mb-3">
             <button type="button" className="recipe__add-photo">
               <span className="recipe__add-photo-description">
-                {getTranslate("photo.add")}
+                {t("photo.add")}
               </span>
             </button>
           </div>
@@ -275,7 +274,7 @@ const CreateRecipeView = (props: any) => {
                 onChange={(e) =>
                   validateOnChange("recipeName", e.target.value, e)
                 }
-                label={getTranslate("recipe.name")}
+                label={t("recipe.name")}
                 border="light"
               />
             </div>
@@ -284,7 +283,7 @@ const CreateRecipeView = (props: any) => {
             <div className="recipe__input-container">
               <div className="recipe__label">
                 <span className="recipe__label-description">
-                  {getTranslate("recipe.serving")}
+                  {t("recipe.serving")}
                 </span>
                 <div className="recipe__label-select">
                   <Select
@@ -296,7 +295,7 @@ const CreateRecipeView = (props: any) => {
                         servings_cnt: e.value,
                       })
                     }
-                    placeholder={getTranslate("recipe.serving")}
+                    placeholder={t("recipe.serving")}
                   />
                 </div>
               </div>
@@ -339,23 +338,23 @@ const CreateRecipeView = (props: any) => {
         <div className="recipe__switch">
           <button
             type="button"
-            onClick={() => setUnit(getTranslate("common.gr"))}
+            onClick={() => setUnit(t("common.gr"))}
             className={classnames("recipe__switch-button", {
               "recipe__switch-button_active":
-                unit === getTranslate("common.gr"),
+                unit === t("common.gr"),
             })}
           >
-            <span>{getTranslate("common.gr")}</span>
+            <span>{t("common.gr")}</span>
           </button>
           <button
             type="button"
-            onClick={() => setUnit(getTranslate("common.oz"))}
+            onClick={() => setUnit(t("common.oz"))}
             className={classnames("recipe__switch-button", {
               "recipe__switch-button_active":
-                unit === getTranslate("common.oz"),
+                unit === t("common.oz"),
             })}
           >
-            <span>{getTranslate("common.oz")}</span>
+            <span>{t("common.oz")}</span>
           </button>
         </div>
         <div className="recipe__chart">
@@ -373,8 +372,8 @@ const CreateRecipeView = (props: any) => {
               </div>
             ))}
             <div className="recipe__chart-progress-value">
-              {calories.value} {getTranslate("common.kcal")} /{" "}
-              {calories.maxCalories} {getTranslate("common.kcal")}
+              {calories.value} {t("common.kcal")} /{" "}
+              {calories.maxCalories} {t("common.kcal")}
             </div>
           </div>
           <div className="recipe__chart-lines">
@@ -393,7 +392,7 @@ const CreateRecipeView = (props: any) => {
                   ></div>
                 </div>
                 <div className="recipe__chart-lines-item-description">
-                  {unit === getTranslate("common.gr")
+                  {unit === t("common.gr")
                     ? item.value
                     : getOz(item.value)}{" "}
                   {unit}
@@ -405,14 +404,14 @@ const CreateRecipeView = (props: any) => {
         <div className="recipe__add-ingredients">
           <div className="recipe__add-ingredients-description">
             <h2 className="recipe__add-ingredients-description-title">
-              {getTranslate("ingr.label")}
+              {t("ingr.label")}
             </h2>
             <Button
               size="lg"
               color="secondary"
               onClick={() => setActiveInput(!isActiveInput)}
             >
-              {getTranslate("ingr.add")}
+              {t("ingr.add")}
             </Button>
           </div>
           {isActiveInput && (
@@ -420,7 +419,7 @@ const CreateRecipeView = (props: any) => {
               <AsyncSelect
                 cacheOptions
                 loadOptions={inputValueIngredient}
-                placeholder={getTranslate("recipe.create.name")}
+                placeholder={t("recipe.create.name")}
                 onChange={addIndgredient}
                 styles={colourStylesSelect}
               />
@@ -459,7 +458,7 @@ const CreateRecipeView = (props: any) => {
                     {proteinFatCarbohydrate.map((item) => (
                       <div>
                         {item.namePlural} :{" "}
-                        {unit === getTranslate("common.gr")
+                        {unit === t("common.gr")
                           ? item.value
                           : getOz(item.value)}{" "}
                         {unit}
@@ -520,7 +519,7 @@ const CreateRecipeView = (props: any) => {
                         type="number"
                         name={`indredients[${ingredientIndex}].weight`}
                         value={
-                          unit === getTranslate("common.gr")
+                          unit === t("common.gr")
                             ? createRecipeForm.ingredients[ingredientIndex]
                                 .weight
                             : getOz(
@@ -623,7 +622,7 @@ const CreateRecipeView = (props: any) => {
                             +createRecipeForm.ingredients[ingredientIndex]
                               .weight
                         )}{" "}
-                        {getTranslate("common.kcal")}
+                        {t("common.kcal")}
                       </span>
                     </div>
                   </div>
@@ -661,20 +660,20 @@ const CreateRecipeView = (props: any) => {
             name="totalWeight"
             step={0.1}
             value={
-              unit === getTranslate("common.gr")
+              unit === t("common.gr")
                 ? createRecipeForm.totalWeight
                 : getOz(+createRecipeForm.totalWeight)
             }
             onChange={(e) => validateOnChange("totalWeight", e.target.value, e)}
             min={0}
             height="xl"
-            label={getTranslate("recipe.create.total_weight")}
+            label={t("recipe.create.total_weight")}
             border="light"
           />
         </div>
         <div className="instructions">
           <h2 className="instructions__title">
-            {getTranslate("recipe.preparation")}
+            {t("recipe.preparation")}
           </h2>
           <InputField
             block
@@ -692,7 +691,7 @@ const CreateRecipeView = (props: any) => {
           />
           <div className="instructions__button">
             <Button type="submit" color="primary">
-              {getTranslate("recipe.add")}
+              {t("recipe.add")}
             </Button>
           </div>
         </div>
