@@ -241,7 +241,6 @@ const ChangeMealPlanView = (props: any) => {
                     {t('mp.change.change_info')}
                   </Button>
                 }
-                
               </div>
             </div>
           </div>
@@ -260,7 +259,11 @@ const ChangeMealPlanView = (props: any) => {
                       </div>
                       <p>{t('mp.change.meals_per_day')}</p>
                     </div>
-                    <div className='row' style={{marginBottom: i == 1 ? '79px':'0px'}}>
+                    <div 
+                      className={classNames("row", {
+                        "row-mb79": i == 1
+                      })}
+                    >
                       {i == 0 ?
                         <>
                           <div className="col-4">
@@ -288,7 +291,7 @@ const ChangeMealPlanView = (props: any) => {
                           <div className="col-6">
                             <div className='meal-block_row-item'>
                               <BreakfastIcon />
-                              <p>Breakfast</p>
+                              <p>{t('meal.breakfast')}</p>
                             </div>
                           </div>
                           {i > 1 &&
@@ -302,7 +305,7 @@ const ChangeMealPlanView = (props: any) => {
                           <div className="col-6">
                             <div className='meal-block_row-item'>
                               <LunchIcon />
-                              <p>Lunch</p>
+                              <p>{t('meal.lunch')}</p>
                             </div>
                           </div>
                           <div className="col-6">
@@ -314,7 +317,7 @@ const ChangeMealPlanView = (props: any) => {
                           <div className="col-6">
                             <div className='meal-block_row-item'>
                               <DinnerIcon />
-                              <p>Dinner</p>
+                              <p>{t('meal.dinner')}</p>
                             </div>
                           </div>
                           {i == 3 &&
