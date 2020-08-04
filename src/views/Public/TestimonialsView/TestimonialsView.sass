@@ -1,0 +1,494 @@
+@import '../../../assets/sass/_vars';
+
+.testimonials
+  margin-top: 30px
+
+  img
+    max-width: 100%
+    height: auto
+  
+  &__welcome
+    position: relative
+    margin-bottom: 140px
+
+    &::before
+      content: ''
+      position: absolute
+      bottom: 0
+      right: -155px
+      transform: translateY(50%)
+      width: 587px
+      height: 570px
+      background-image: url(https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-2.png)
+      background-repeat: no-repeat
+      background-size: cover
+      z-index: 2
+    
+    &-description
+      position: relative
+      padding: 50px 0 60px 90px
+
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 30px
+        width: 300%
+        height: 100%
+        background: #106EE8
+
+      &::after
+        content: ''
+        position: absolute
+        bottom: -120px
+        left: -210px
+        width: 280px
+        height: 400px
+        background-image: radial-gradient(#e0e0e0 20%, transparent 20%)
+        background-position: 0 0
+        background-size: 22px 22px
+
+      &-title
+        position: relative
+        margin-bottom: 30px
+        font-size: 60px
+        font-weight: 900
+        color: #fff
+        z-index: 2
+
+      &-list
+        margin: 0
+        max-width: 510px
+        padding-left: 0
+        list-style-type: none
+        color: #fff
+
+        &-item
+          position: relative
+          margin-bottom: 50px
+          padding-left: 50px
+          font-size: 32px
+          line-height: 1.4
+          z-index: 2
+
+          &::before
+            content: ''
+            position: absolute
+            top: 8px
+            left: 0
+            width: 30px
+            height: 30px
+            border-radius: 50%
+            background-color: #CBFFCE
+            background-image: url(https://fitstg.s3.eu-central-1.amazonaws.com/arrow-right-icon.svg)
+            background-repeat: no-repeat
+            background-position: center center
+
+          span
+            font-weight: bold
+
+      &-button-wrap
+        padding-left: 50px
+
+      &-button
+        position: relative
+        color: #000
+        background-color: #CBFFCE
+        border-color: #CBFFCE
+        z-index: 2
+
+        &:hover
+          border-color: #0FC1A1
+
+  &__slider
+    position: relative
+    display: flex
+    z-index: 2
+
+    &-description
+      position: absolute
+      bottom: 0
+      left: 0
+      width: 80%
+      padding: 40px 120px 50px 30px
+      background: #fff
+
+      &-title
+        margin-bottom: 20px
+
+      &-button-wrap
+        display: flex
+        justify-content: flex-end
+
+      &-link
+        color: #0FC1A1
+        font-size: 18px
+        font-weight: bold
+        text-decoration: none
+        border-bottom: 2px solid
+        transition: 0.2s border-bottom ease
+
+        &:hover
+          border-bottom: 2px solid transparent
+
+    &-controls
+      position: absolute
+      top: 0
+      right: 0
+      display: flex
+      align-items: center
+
+      &-button
+        display: flex
+        align-items: center
+        justify-content: center
+        padding: 16px 25px
+        border: none
+        background-color: transparent
+        transition: 0.2s background-color ease
+        cursor: pointer
+
+        &-icon
+          width: 13px
+          height: 26px
+
+          path
+            fill: #106EE8
+            transition: 0.2s fill path
+
+        &:hover
+          background-color: #106EE8
+
+          .testimonials__slider-controls-button-icon
+            path 
+              fill: #fff
+
+  &__examples
+    &-title
+      margin-bottom: 40px
+      font-size: 34px
+      font-weight: bold
+
+    &-tabs
+      display: flex
+      align-items: center
+      margin: 0
+      margin-bottom: 160px
+      padding-left: 0
+      list-style-type: none
+
+      &-item
+        position: relative
+        margin-left: 30px
+        padding: 5px 0 5px 30px
+        font-size: 32px
+        font-weight: bold
+        border-left: 1px solid #000
+        cursor: pointer
+
+        &::before
+          content: ''
+          position: absolute
+          bottom: -22px
+          left: 30px
+          width: calc(100% - 30px)
+          height: 6px
+          background: #106EE8
+          opacity: 0
+          visibility: hidden
+          transition: 0.2s opacity ease
+
+        &:first-child
+          border-left: none
+          margin-left: 0
+          padding-left: 0
+
+          &::before
+            width: 100%
+            left: 0
+        
+        &.active,
+        &:hover
+          &::before
+            opacity: 1
+            visibility: visible
+
+    &-list
+      position: relative
+      display: flex
+      flex-wrap: wrap
+      justify-content: space-between
+
+      &::before
+        content: ''
+        position: absolute
+        top: -90px
+        left: 160px
+        width: 202px
+        height: 272px
+        background-image: radial-gradient(#e0e0e0 20%, transparent 20%)
+        background-position: 0 0
+        background-size: 22px 22px
+      
+      &-item
+        position: relative
+        margin-bottom: 80px
+        width: calc(50% - 45px)
+
+        &-media
+          &-img
+            display: block
+            margin: 0 0 0 auto
+
+          &-data
+            display: inline-block
+            padding: 30px 20px 40px
+            transform: translateY(-50%)
+            text-align: left
+            background: #fff
+
+          &-name
+            margin-bottom: 45px
+            font-size: 34px
+            font-weight: bold
+
+          &-parameters
+            display: flex
+            align-items: center
+
+            &-item
+              display: flex
+              align-items: center
+              margin-right: 15px
+              font-size: 20px
+
+              &::before
+                content: ''
+                margin-right: 15px
+                width: 12px
+                height: 12px
+                border-radius: 50%
+                background-color: #CBFFCE
+              
+              &:first-child::before
+                display: none
+
+        &-description
+          margin-top: -60px
+          font-size: 20px
+
+  &__all-stories
+    margin-bottom: 70px
+
+    &-btn
+      width: 100%
+      font-size: 24px
+      color: #FFFFFF
+      background-color: #106EE8
+      border-color: #106EE8
+
+      &:hover
+        background-color: darken(#106EE8, 15%)
+        border-color: darken(#106EE8, 15%)
+
+  &__pagination
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    justify-content: center
+    margin-bottom: 210px
+
+    &-arrow
+      display: flex
+      align-items: center
+      justify-content: center
+      margin: 0 10px
+      width: 30px
+      height: 30px
+      border: none
+      border-radius: 50%
+      background-color: transparent
+      cursor: pointer
+      transition: 0.2s background-color ease
+      
+      path
+        fill:  #E1E1E1
+        transition: 0.2s fill ease
+
+      &:hover
+        background-color: #F0F0F0
+
+        path
+          fill: #919BB3
+    
+    &-count
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 33px
+      height: 33px
+      font-size: 18px
+      border: none
+      border-radius: 50%
+      background-color: transparent
+      cursor: pointer
+      transition: 0.2s background-color ease
+
+      &:hover
+        background-color: #CBFFCE
+
+  &__tariff
+    &-title
+      position: relative
+      margin-bottom: 130px
+      text-align: center
+      font-size: 34px
+      font-weight: bold
+
+      &::before
+        content: ''
+        position: absolute
+        bottom: -30px
+        left: 50%
+        transform: translateX(-50%)
+        width: 184px
+        height: 6px
+        background-color: #106EE8
+
+@media only screen and (max-width: 1440px)
+  .testimonials
+    &__welcome
+      &::before
+            right: 0
+            bottom: -90px
+            transform: translate(50%, 0%)
+            width: 330px
+            height: 320px
+      
+      &-description
+        &-title
+          font-size: 40px
+        
+        &-list
+          &-item
+            font-size: 20px
+
+            &::before
+              top: 0
+
+@media only screen and (max-width: 991px)
+  .testimonials
+    &__welcome
+      &-description
+        padding: 50px 0 90px
+
+        &-title
+          font-size: 24px
+
+        &::before
+          left: -300px
+          z-index: 1
+
+        &::after
+          top: -120px
+          right: -120px
+          bottom: initial
+          left: initial
+
+        &-list
+          &-item
+            font-size: 16px
+
+    &__slider
+      &-description
+        &-title
+          font-size: 16px
+
+        &-link
+          font-size: 16px
+
+    &__examples
+      &-title
+        display: none
+
+      &-tabs
+        &-item
+          font-size: 20px
+
+      &-list
+        &::before
+          display: none
+
+        &-item
+          margin-bottom: 40px
+          width: calc(50% - 15px)
+
+          &-media
+            &-name
+              font-size: 20px
+
+            &-parameters
+              &-item
+                font-size: 14px
+
+          &-description
+            font-size: 16px
+
+    &__tariff
+      &-title
+        margin-bottom: 70px
+        text-align: left
+        font-size: 24px
+
+        &::before
+          left: 0
+          transform: none
+          
+@media only screen and (max-width: 768px)
+  .testimonials
+    &__slider
+      &-description
+        &-title
+          font-size: 14px
+
+        &-link
+          font-size: 12px
+
+    &__welcome
+      &-description
+        &-list
+          &-item
+            font-size: 14px
+
+            &::before
+              top: -8px
+
+    &__examples
+      &-tabs
+        margin-bottom: 80px
+
+        &-item
+          margin-left: 10px
+          padding-left: 10px
+          font-size: 16px
+
+      &-list
+        &-item
+          margin-bottom: 50px
+          width: 100%
+
+          &-media
+            &-data
+              padding: 25px 20px
+              transform: translate(-25px, -50%)
+
+            &-name
+              margin-bottom: 20px
+              font-size: 18px
+
+          &-description
+            font-size: 12px
+
+    &__tariff
+      &-title
+        font-size: 18px

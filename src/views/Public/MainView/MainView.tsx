@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // Components
 import RegisterModal from 'components/RegisterModal';
 import Button from 'components/common/Forms/Button';
+import PricePlans from 'components/PricePlans';
 
 import './MainView.sass';
 
@@ -260,114 +261,7 @@ const MainView = () => {
       <section className='main-choose-plan-sect'>
         <div id='main-choose-plan-sect-container' className='container'>
           <h4 className='sect-title title-center'>Choose a period and join</h4>
-
-          <div className='row'>
-            <div className='col-4'>
-              <div className='main-choose-plan-item'>
-                <h6 className='main-choose-plan-item-period'>6 months</h6>
-
-                <div className='main-choose-plan-item-price'>
-                  <span className='main-choose-plan-item-price-text'>
-                    6.33€
-                  </span>
-                  <span className='main-choose-plan-item-price-paycycle'>
-                    / mon
-                  </span>
-                </div>
-
-                <h6 className='main-choose-plan-item-price-total'>
-                  Together 75.99€
-                </h6>
-
-                <div className='main-choose-plan-item-features-list'>
-                  <div className='main-choose-plan-item-features-list-item'>
-                    Your <b>personal nutrition program,</b> based on your
-                    warnings
-                  </div>
-                  <div className='main-choose-plan-item-features-list-item'>
-                    List of products to save time and money
-                  </div>
-                </div>
-
-                <Button className='mt-5' color='secondary' outline block>
-                  Subscribe
-                </Button>
-              </div>
-            </div>
-            <div className='col-4'>
-              <div
-                id='main-choose-plan-item-popular'
-                className='main-choose-plan-item'
-              >
-                <span id='main-choose-plan-item-popular-label'>
-                  <div className='ribbon ribbon-top-right'>
-                    <span>Popular</span>
-                  </div>
-                </span>
-
-                <h6 className='main-choose-plan-item-period'>12 months</h6>
-
-                <div className='main-choose-plan-item-price'>
-                  <span className='main-choose-plan-item-price-text'>
-                    6.33€
-                  </span>
-                  <span className='main-choose-plan-item-price-paycycle'>
-                    / mon
-                  </span>
-                </div>
-
-                <h6 className='main-choose-plan-item-price-total'>
-                  Together 75.99€
-                </h6>
-
-                <div className='main-choose-plan-item-features-list'>
-                  <div className='main-choose-plan-item-features-list-item'>
-                    Your <b>personal nutrition program,</b> based on your
-                    warnings
-                  </div>
-                  <div className='main-choose-plan-item-features-list-item'>
-                    List of products to save time and money
-                  </div>
-                  <div className='main-choose-plan-item-features-list-item'>
-                    Over <b>200 recipes</b> just for you
-                  </div>
-                </div>
-
-                <Button className='mt-5' color='secondary' block>
-                  Subscribe
-                </Button>
-              </div>
-            </div>
-            <div className='col-4'>
-              <div className='main-choose-plan-item'>
-                <h6 className='main-choose-plan-item-period'>3 months</h6>
-
-                <div className='main-choose-plan-item-price'>
-                  <span className='main-choose-plan-item-price-text'>
-                    6.33€
-                  </span>
-                  <span className='main-choose-plan-item-price-paycycle'>
-                    / mon
-                  </span>
-                </div>
-
-                <h6 className='main-choose-plan-item-price-total'>
-                  Together 75.99€
-                </h6>
-
-                <div className='main-choose-plan-item-features-list'>
-                  <div className='main-choose-plan-item-features-list-item'>
-                    Your <b>personal nutrition program,</b> based on your
-                    warnings
-                  </div>
-                </div>
-
-                <Button className='mt-5' color='secondary' outline block>
-                  Subscribe
-                </Button>
-              </div>
-            </div>
-          </div>
+          <PricePlans />
         </div>
       </section>
     </>
