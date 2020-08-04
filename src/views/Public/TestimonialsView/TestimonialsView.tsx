@@ -16,7 +16,7 @@ const TestimonialsView = () => {
           <div className='row align-items-center'>
             <div className='mb-3 mb-lg-0 col-lg-6'>
               <div className='testimonials__slider'>
-                <div className='testimonials__slider-slide'>
+                <div className='testimonials__slider-slide active'>
                   <img
                     src={require('../../../assets/img/maasikas.png')}
                     alt=''
