@@ -106,10 +106,15 @@
     z-index: 2
 
     &-slide
-      display: none
+      position: absolute
+      opacity: 0
+      visibility: hidden
+      transition: 0.2s opacity ease
 
       &.active
-        display: block
+        position: initial
+        opacity: 1
+        visibility: visible
 
     &-description
       position: absolute
@@ -221,13 +226,18 @@
             visibility: visible
 
     &-list
-      position: relative
+      position: absolute
+      display: flex
       flex-wrap: wrap
       justify-content: space-between
-      display: none
+      opacity: 0
+      visibility: hidden
+      transition: 0.2s opacity ease
 
       &.active
-        display: flex
+        position: relative
+        opacity: 1
+        visibility: visible
 
       &::before
         content: ''
