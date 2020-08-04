@@ -7,7 +7,6 @@ import AuthRoute from './components/common/AuthRoute';
 import BasePage from 'components/hoc/BasePage';
 import Layout from 'components/hoc/Layout';
 import LoginView from './views/LoginView';
-import MainView from './views/MainView';
 import NutritionPlanView from './views/NutritionPlanView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
@@ -20,11 +19,7 @@ const Routes = () => (
   <Switch>
     <PrivateRoute
       path='/'
-      component={(props: any) => (
-        <Layout {...props}>
-          <MainView {...props} />
-        </Layout>
-      )}
+      component={(props: any) => <Layout {...props}></Layout>}
       exact
     />
 
