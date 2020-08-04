@@ -15,6 +15,7 @@ import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
 import ContactsView from 'views/Public/ContactsView';
 import NotFound from './views/NotFound';
+import PrivacyView from 'views/Public/PrivacyView';
 
 const Routes = () => (
   <Switch>
@@ -83,6 +84,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <ContactsView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/privacy'
+      component={(props: any) => (
+        <Layout {...props}>
+          <PrivacyView {...props} />
         </Layout>
       )}
       exact
