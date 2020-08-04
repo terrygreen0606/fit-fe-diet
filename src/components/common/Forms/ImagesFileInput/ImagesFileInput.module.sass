@@ -1,0 +1,119 @@
+@import '../../../../assets/sass/vars'
+
+
+.inputFileContainerDragndrop
+  display: flex
+  justify-content: center
+  align-items: center
+  padding: 20px
+  background-color: $grey-bg
+  cursor: pointer
+  border-radius: 20px
+  border: 1px dashed $grey-medium
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease
+  &:hover, &_drag_over
+    &:not(.inputFileContainerDragndrop_has_files):not(.inputFileContainerDragndrop_is_disabled)
+      background-color: darken($grey-bg, 1%)
+      border-color: $caribbean-green
+      color: $caribbean-green
+  &_has_files
+    padding: 10px 20px
+    border-color: transparent !important
+    cursor: default
+  &_is_disabled
+    cursor: not-allowed
+
+
+.inputFile
+  display: none
+
+.returnFilesList
+  display: grid
+  grid-template-columns: repeat(auto-fill, calc(25% - 50px))
+  grid-gap: 50px
+  width: 100%
+  padding: 30px 10px
+  margin-right: -50px
+
+.fileToUpload
+  position: relative
+  height: 260px
+  background-size: cover
+  background-position: top center
+  background-repeat: no-repeat
+  & > div
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+  & > .fileIcon
+    text-align: left
+    width: calc(100% - 40px)
+  & > .fileRemoveIcon
+    margin-left: 12px
+    cursor: pointer
+    &:hover
+      > div
+        svg
+          path
+            fill: $caribbean-green
+
+.fileRemoveIconWrap
+  position: absolute
+  top: 10px
+  right: 10px
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  background-color: $caribbean-green
+  padding: 5px
+  border-radius: 100%
+  width: 22px
+  height: 22px
+  cursor: pointer
+  +mt(.2s)
+  &:hover
+    background-color: $luminous-red
+
+.fileRemoveIcon
+  width: 9px
+  path
+    fill: #fff
+
+
+.fileName
+  font-size: 14px
+  line-height: 16px
+  color: #0047B1
+  text-align: left
+  width: 70%
+  padding-left: 12px
+  margin: 0
+
+.container
+  width: 100%
+
+.spinner
+  background: rgba(255, 255, 255, 0.3)
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  display: flex
+  align-items: center
+  justify-content: center
+
+.inputFileContainerDragndrop
+  position: relative
+  min-height: 260px
+
+
+@media only screen and (max-width : 1200px)
+  .returnFilesList
+    .fileToUpload
+      width: calc(50% - 20px)
+
+@media only screen and (max-width : 576px)
+  .returnFilesList
+    .fileToUpload
+      width: 100%
