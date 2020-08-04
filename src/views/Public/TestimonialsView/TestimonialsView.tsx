@@ -16,27 +16,32 @@ const TestimonialsView = () => {
           <div className='row align-items-center'>
             <div className='mb-3 mb-lg-0 col-lg-6'>
               <div className='testimonials__slider'>
-                <img src={require('../../../assets/img/maasikas.png')} alt='' />
-                <div className='testimonials__slider-description'>
-                  <h3 className='testimonials__slider-description-title'>
-                    Maris Maasikas results
-                  </h3>
-                  <div className='testimonials__slider-description-button-wrap'>
-                    <a
-                      href=''
-                      className='testimonials__slider-description-link'
-                    >
-                      See more
-                    </a>
+                <div className='testimonials__slider-slide'>
+                  <img
+                    src={require('../../../assets/img/maasikas.png')}
+                    alt=''
+                  />
+                  <div className='testimonials__slider-description'>
+                    <h3 className='testimonials__slider-description-title'>
+                      Maris Maasikas results
+                    </h3>
+                    <div className='testimonials__slider-description-button-wrap'>
+                      <a
+                        href=''
+                        className='testimonials__slider-description-link'
+                      >
+                        See more
+                      </a>
+                    </div>
                   </div>
-                  <div className='testimonials__slider-controls'>
-                    <button className='testimonials__slider-controls-button'>
-                      <ArrowLeft className='testimonials__slider-controls-button-icon' />
-                    </button>
-                    <button className='testimonials__slider-controls-button'>
-                      <ArrowRight className='testimonials__slider-controls-button-icon' />
-                    </button>
-                  </div>
+                </div>
+                <div className='testimonials__slider-controls'>
+                  <button className='testimonials__slider-controls-button'>
+                    <ArrowLeft className='testimonials__slider-controls-button-icon' />
+                  </button>
+                  <button className='testimonials__slider-controls-button'>
+                    <ArrowRight className='testimonials__slider-controls-button-icon' />
+                  </button>
                 </div>
               </div>
             </div>
@@ -83,7 +88,7 @@ const TestimonialsView = () => {
             <li className='testimonials__examples-tabs-item'>10 - 20 kg</li>
             <li className='testimonials__examples-tabs-item'>more 20 kg</li>
           </ul>
-          <div className='testimonials__examples-list'>
+          <div className='testimonials__examples-list active'>
             <div className='testimonials__examples-list-item'>
               <div className='testimonials__examples-list-item-media'>
                 <img
