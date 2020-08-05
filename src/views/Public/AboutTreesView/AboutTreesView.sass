@@ -1,4 +1,4 @@
-.tree
+.trees
   &__goal
     position: relative
 
@@ -18,8 +18,6 @@
       font-size: 20px
       line-height: 1.5
       z-index: 3
-    
-    &-limited-text
       max-width: 650px
 
     &-list
@@ -28,10 +26,13 @@
       padding-left: 0
       counter-reset: num
 
-      &-item
+      li
         list-style-type: none
         font-size: 20px
         line-height: 1.5
+
+        &:nth-child(-n + 4)
+          max-width: 650px
         
         &::before
           content: counter(num) '. '
@@ -99,7 +100,7 @@
       margin: 0 auto 80px
       max-width: 100%
     
-    &-title
+    h4
       margin-top: 30px
       margin-bottom: 30px
       font-size: 18px
@@ -117,7 +118,7 @@
       margin: 0
       padding-left: 0
 
-      &-item
+      li
         list-style-type: none
         font-size: 20px
         line-height: 1.5
@@ -127,13 +128,13 @@
           margin-right: 6px
 
 @media only screen and (max-width: 1600px)
-  .tree
+  .trees
     &__goal
       &-media
         width: calc(((100vw - 1280px) / 2) + (1280px - 810px))
 
 @media only screen and (max-width: 1300px)
-  .tree
+  .trees
     &__goal
       &-media
         width: 300px
@@ -160,11 +161,11 @@
           &-sub-title
             font-size: 24px
 
-      &-limited-text
+      &-list li:nth-child(-n + 4), p
         max-width: calc(100% - 480px)
 
 @media only screen and (max-width: 1024px)
-  .tree
+  .trees
     &__goal
       &-title
         max-width: 360px
@@ -176,15 +177,15 @@
         &-img
           top: 50px
 
-      &-limited-text
+      p
         max-width: 360px
       
       &-list
-        &-item.tree__goal-limited-text
+        li:nth-child(-n + 4)
           max-width: 100%
         
 @media only screen and (max-width: 767px)
-  .tree
+  .trees
     &__goal
       &-title
         margin-bottom: 30px
@@ -192,6 +193,7 @@
         font-size: 22px
       
       p
+        max-width: calc(100% - 180px)
         font-size: 12px
 
       &-media
@@ -220,18 +222,15 @@
             font-size: 14px
             line-height: 1.4
       
-      &-limited-text
-        max-width: calc(100% - 180px)
-      
       &-list
         margin-top: 120px
         margin-bottom: 40px
 
-        &-item
+        li
           font-size: 12px
     
     &__description
-      &-title
+      h4
         font-size: 12px
         margin-top: 15px
         margin-bottom: 15px
@@ -243,11 +242,11 @@
         font-size: 12px
       
       &-list
-        &-item
+        li
           font-size: 12px
 
 @media only screen and (max-width: 500px)
-  .tree
+  .trees
     &__goal
       &-list
         margin-top: 70px

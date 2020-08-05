@@ -2,76 +2,76 @@ import React from 'react';
 import './AboutTreesView.sass';
 
 const AboutTreesView = () => (
-  <div className='tree'>
-    <div className='tree__goal'>
+  <div className='trees'>
+    <div className='trees__goal'>
       <div className='container'>
-        <h3 className='tree__goal-title'>
+        <h3 className='trees__goal-title'>
           To reforest the world. We look forward to planting trees with you and
           contribute together to a better planet.
         </h3>
-        <p className='tree__goal-limited-text'>
+        <p>
           OÜ Fitlap registrikood 12780210, aadress Narva mnt 9, Tartu 51009,
           Eesti Vabariik; kontakttelefon +372 5559 8075, e-mail
           klienditugi@fitlap.ee; edaspidi teenusepakkuja) teenuseid on võimalik
-          osta registreerudes www.fitlap.ee veebikeskkonnas kasutajaks.
+          osta registreesrudes www.fitlap.ee veebikeskkonnas kasutajaks.
         </p>
-        <ol className='tree__goal-list'>
-          <li className='tree__goal-list-item tree__goal-limited-text'>
+        <ol className='trees__goal-list'>
+          <li>
             Kasutaja käesolevate tingimuste tähenduses on isik, kes on oma
-            andmed registreerinud fitlap.ee keskkonnas ning saanud enda kasutada
-            parooliga kaitstud kasutajakonto.
+            andmed registreesrinud fitlap.ee keskkonnas ning saanud enda
+            kasutada parooliga kaitstud kasutajakonto.
           </li>
-          <li className='tree__goal-list-item tree__goal-limited-text'>
+          <li>
             Informatsioon käesolevate tingimuste tähenduses on fitlap.ee
-            veebikeskkonnas kättesaadavad treeningu- ja toitumisjuhised,
-            personaalsed treeningu- ja toitumiskavad, teenusepakkuja poolt
+            veebikeskkonnas kättesaadavad treesningu- ja toitumisjuhised,
+            personaalsed treesningu- ja toitumiskavad, teenusepakkuja poolt
             avaldatud artiklid ja muud teosed, millele tekib Eesti Vabariigi
             autoriõiguse seaduse § 4 tähenduses autoriõigus.
           </li>
-          <li className='tree__goal-list-item tree__goal-limited-text'>
+          <li>
             Teenusepakkuja ei paku teenuseid alla 18-aastastele isikutele.
-            Kasutajaks registreerides kinnitab isik, et ta on vähemalt
+            Kasutajaks registreesrides kinnitab isik, et ta on vähemalt
             18-aastane.
           </li>
-          <li className='tree__goal-list-item tree__goal-limited-text'>
-            Teenusepakkuja jagab kasutajale treeningu- ja toitumissoovitusi
+          <li>
+            Teenusepakkuja jagab kasutajale treesningu- ja toitumissoovitusi
             lähtudes kasutaja profiilil olevatest andmetest. Kasutaja vastutab
             enda loodud profiilil kajastuvate andmete õigsuse eest.
           </li>
-          <li className='tree__goal-list-item'>
-            Kasutaja teadvustab endale, et treeningu- ja toitumisjuhiste
+          <li>
+            Kasutaja teadvustab endale, et treesningu- ja toitumisjuhiste
             järgimine ei ole kohustuslik, vaid nende eesmärk on anda kasutajale
             soovituslikku teavet.
           </li>
-          <li className='tree__goal-list-item'>
-            Kasutaja teeb lõplikud treeningu- ja toitumisalased otsused ise,
+          <li>
+            Kasutaja teeb lõplikud treesningu- ja toitumisalased otsused ise,
             kasutades selleks oma parimat äranägemist ning lähtudes oma
             tervislikust seisundist.
           </li>
         </ol>
       </div>
-      <div className='tree__goal-media'>
+      <div className='trees__goal-media'>
         <img
           src='https://fitstg.s3.eu-central-1.amazonaws.com/tree.png'
           alt=''
-          className='tree__goal-media-img'
+          className='trees__goal-media-img'
         />
-        <div className='tree__goal-media-text'>
-          <div className='tree__goal-media-text-title'>1 Month = 1TREE</div>
-          <div className='tree__goal-media-text-sub-title'>
+        <div className='trees__goal-media-text'>
+          <div className='trees__goal-media-text-title'>1 Month = 1TREEs</div>
+          <div className='trees__goal-media-text-sub-title'>
             More than 2500 have join edus in our mission
           </div>
         </div>
       </div>
     </div>
     <div className='container'>
-      <div className='tree__description'>
+      <div className='trees__description'>
         <img
           src='https://fitstg.s3.eu-central-1.amazonaws.com/sprout.png'
           alt=''
-          className='tree__description-media'
+          className='trees__description-media'
         />
-        <h4 className='tree__description-title'>
+        <h4>
           Teenusepakkuja määratletud isikuandmete kogumine on kasutajakonto
           loomise ning teenuste kasutamise eelduseks.
         </h4>
@@ -107,32 +107,26 @@ const AboutTreesView = () => (
         <p>
           Teenusepakkuja töötleb kasutaja isikuandmeid järgmistel eesmärkidel:
         </p>
-        <ul className='tree__description-list'>
-          <li className='tree__description-list-item'>
+        <ul className='trees__description-list'>
+          <li>
             täita kasutaja ees võetud kohustusi teenuse osutamisel, koostades
             kasutaja soovidest ja näitajatest lähtuvaid toitumis- ja
-            treeningsoovitusi sisaldavaid kavasid;
+            treesningsoovitusi sisaldavaid kavasid;
           </li>
-          <li className='tree__description-list-item'>
+          <li>
             muuta kasutaja jaoks veebikeskkonna kasutamine isikupärasemaks ning
             vajadustele vastavaks;
           </li>
-          <li className='tree__description-list-item'>
+          <li>
             pakkuda turundustegevuse kaudu kasutajale teenusepakkuja poolt
             osutatavaid teenuseid;
           </li>
-          <li className='tree__description-list-item'>
-            kasutada andmeid turundustegevuse jaoks statistika tegemisel;
-          </li>
-          <li className='tree__description-list-item'>
+          <li>kasutada andmeid turundustegevuse jaoks statistika tegemisel;</li>
+          <li>
             kasutada kasutaja mittepersonaalseid andmeid turundustegevuses;
           </li>
-          <li className='tree__description-list-item'>
-            edastada kasutajale teavet;
-          </li>
-          <li className='tree__description-list-item'>
-            täita oma õiguslikke kohustusi.
-          </li>
+          <li>edastada kasutajale teavet;</li>
+          <li>täita oma õiguslikke kohustusi.</li>
         </ul>
         <p>
           Teenusepakkuja töötleb kasutaja isikuandmeid üksnes kasutaja
@@ -177,42 +171,40 @@ const AboutTreesView = () => (
           Kui teenusepakkuja eksib isikuandmete töötlemise nõuete vastu, on
           kasutajal õigus pöörduda kaebusega Andmekaitseinspektsiooni poole.
         </p>
-        <h4 className='tree__description-title'>AUTORIÕIGUSED</h4>
-        <ul className='tree__description-list'>
-          <li className='tree__description-list-item'>
+        <h4>AUTORIÕIGUSED</h4>
+        <ul className='trees__description-list'>
+          <li>
             Kogu fitlap.ee veebikeskkonnas olev informatsioon on kaitstud
             autoriõigustega.
           </li>
-          <li className='tree__description-list-item'>
+          <li>
             Kasutajad võivad informatsiooni kasutada autoriõiguse seadusega
             lubatud piirides.
           </li>
-          <li className='tree__description-list-item'>
+          <li>
             Teenusepakkuja annab Kasutajatele õiguse muuta ja täiendada
             fitlap.ee veebikeskkonnas olevaid retsepte ning avaldada neid
             fitlap.ee kodulehel.
           </li>
-          <li className='tree__description-list-item'>
+          <li>
             Teenusepakkujal on õigus kasutada kogu Kasutajate poolt fitlap.ee
             veebikeskkonda sisestatud ja seal avaldatud informatsiooni,
             kasutajate poolt fitlap.ee veebikeskkonda üles laetud fotosid,
             retsepte, artikleid jmt alates nende avaldamisest fitlap.ee
             veebikeskkonnas Kasutajate poolt.
           </li>
-          <li className='tree__description-list-item'>
+          <li>
             Kasutajad annavad nende poolt fitlap.ee veebikeskkonnas avaldatud
             informatsiooni kasutamiseks teenusepakkujale lihtlitsentsi
             võlaõigusseaduse § 370 lg 1 mõttes.
           </li>
-          <li className='tree__description-list-item'>
+          <li>
             Teenusepakkujal on õigus teostada kõiki Kasutajate poolt fitlap.ee
             veebikeskkonnas avaldatud teoste varalisi autoriõigusi autoriõiguse
             seaduse § 13 mõttes ülemaailmselt.
           </li>
-          <li className='tree__description-list-item'>
-            Teenusepakkujal on all-litsentsi andmise õigus.
-          </li>
-          <li className='tree__description-list-item'>
+          <li>Teenusepakkujal on all-litsentsi andmise õigus.</li>
+          <li>
             Teenusepakkujal on õigus teostada Kasutajate poolt fitlap.ee
             veebikeskkonnas avaldatud informatsiooni suhtes varalisi
             autoriõigusi tasuta ning tähtajatult.
