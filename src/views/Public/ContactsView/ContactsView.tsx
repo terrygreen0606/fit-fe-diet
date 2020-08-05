@@ -31,7 +31,7 @@ const ContactsView = (props: any) => {
               <div className='col-6'>
                 <div className='contacts__welcome-media-wrap'>
                   <img
-                    src='https://fitdev.s3.amazonaws.com/assets/pub/images/team.png'
+                    src='https://fitstg.s3.eu-central-1.amazonaws.com/team.png'
                     alt=''
                     className='contacts__welcome-media'
                   />
@@ -99,7 +99,7 @@ const ContactsView = (props: any) => {
                 <div className='row'>
                   <div className='col-6 mb-4 mb-sm-0 contacts__team-list-item-media'>
                     <img
-                      src='https://fitdev.s3.amazonaws.com/assets/pub/images/vihhoreva-face.png'
+                      src='https://fitstg.s3.eu-central-1.amazonaws.com/vihhoreva-face.png'
                       alt=''
                       className='contacts__team-list-item-media-img'
                     />
@@ -128,7 +128,7 @@ const ContactsView = (props: any) => {
                 <div className='row'>
                   <div className='col-6 mb-4 mb-sm-0 contacts__team-list-item-media'>
                     <img
-                      src='https://fitdev.s3.amazonaws.com/assets/pub/images/vihhoreva-face.png'
+                      src='https://fitstg.s3.eu-central-1.amazonaws.com/vihhoreva-face.png'
                       alt=''
                       className='contacts__team-list-item-media-img'
                     />
@@ -157,7 +157,7 @@ const ContactsView = (props: any) => {
                 <div className='row'>
                   <div className='col-6 mb-4 mb-sm-0 contacts__team-list-item-media'>
                     <img
-                      src='https://fitdev.s3.amazonaws.com/assets/pub/images/vihhoreva-face.png'
+                      src='https://fitstg.s3.eu-central-1.amazonaws.com/vihhoreva-face.png'
                       alt=''
                       className='contacts__team-list-item-media-img'
                     />
@@ -186,7 +186,7 @@ const ContactsView = (props: any) => {
                 <div className='row'>
                   <div className='col-6 mb-4 mb-sm-0 contacts__team-list-item-media'>
                     <img
-                      src='https://fitdev.s3.amazonaws.com/assets/pub/images/vihhoreva-face.png'
+                      src='https://fitstg.s3.eu-central-1.amazonaws.com/vihhoreva-face.png'
                       alt=''
                       className='contacts__team-list-item-media-img'
                     />

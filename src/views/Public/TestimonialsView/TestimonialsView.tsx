@@ -18,7 +18,7 @@ const TestimonialsView = () => {
               <div className='testimonials__slider'>
                 <div className='testimonials__slider-slide active'>
                   <img
-                    src='https://fitdev.s3.amazonaws.com/assets/pub/images/maasikas.png'
+                    src='https://fitstg.s3.eu-central-1.amazonaws.com/maasikas.png'
                     alt=''
                   />
                   <div className='testimonials__slider-description'>
@@ -92,7 +92,7 @@ const TestimonialsView = () => {
             <div className='testimonials__examples-list-item'>
               <div className='testimonials__examples-list-item-media'>
                 <img
-                  src='https://fitdev.s3.amazonaws.com/assets/pub/images/kaidi_laan.png'
+                  src='https://fitstg.s3.eu-central-1.amazonaws.com/kaidi_laan.png'
                   alt=''
                   className='testimonials__examples-list-item-media-img'
                 />
@@ -122,7 +122,7 @@ const TestimonialsView = () => {
             <div className='testimonials__examples-list-item'>
               <div className='testimonials__examples-list-item-media'>
                 <img
-                  src='https://fitdev.s3.amazonaws.com/assets/pub/images/kaidi_laan.png'
+                  src='https://fitstg.s3.eu-central-1.amazonaws.com/kaidi_laan.png'
                   alt=''
                   className='testimonials__examples-list-item-media-img'
                 />
@@ -152,7 +152,7 @@ const TestimonialsView = () => {
             <div className='testimonials__examples-list-item'>
               <div className='testimonials__examples-list-item-media'>
                 <img
-                  src='https://fitdev.s3.amazonaws.com/assets/pub/images/kaidi_laan.png'
+                  src='https://fitstg.s3.eu-central-1.amazonaws.com/kaidi_laan.png'
                   alt=''
                   className='testimonials__examples-list-item-media-img'
                 />
@@ -182,7 +182,7 @@ const TestimonialsView = () => {
             <div className='testimonials__examples-list-item'>
               <div className='testimonials__examples-list-item-media'>
                 <img
-                  src='https://fitdev.s3.amazonaws.com/assets/pub/images/kaidi_laan.png'
+                  src='https://fitstg.s3.eu-central-1.amazonaws.com/kaidi_laan.png'
                   alt=''
                   className='testimonials__examples-list-item-media-img'
                 />
