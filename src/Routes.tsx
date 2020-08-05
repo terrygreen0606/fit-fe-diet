@@ -17,8 +17,8 @@ import ContactsView from 'views/Public/ContactsView';
 import ChangeMealPlanView from 'views/ChangeMealPlanView';
 import TestimonialsView from 'views/Public/TestimonialsView';
 import NotFound from './views/NotFound';
-import PrivacyView from 'views/Public/PrivacyView';
 import AboutTreesView from 'views/Public/AboutTreesView';
+import TextPageView from 'views/Public/TextPageView';
 
 const Routes = () => (
   <Switch>
@@ -103,10 +103,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path='/privacy'
+      path='/text-page'
       component={(props: any) => (
         <Layout {...props}>
-          <PrivacyView {...props} />
+          <TextPageView {...props} />
         </Layout>
       )}
       exact

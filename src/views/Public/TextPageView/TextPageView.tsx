@@ -1,21 +1,21 @@
 import React from 'react';
-import Image from '../../../assets/img/privacy-header-img.png'
-import './PrivacyView.sass';
+import HeaderImage from '../../../assets/img/text-page-header-img.png'
+import './TextPageView.sass';
 
-const PrivacyView = () => {
+const TextPageView = () => {
 
   return (
     <>
-      <section className='privacy-page'>
+      <section className='text-page'>
         <div className='container container__mb'>
           <div className='row'>
             <div className='col-12'>
-              <div className='privacy-page_header'>
+              <div className='text-page_header'>
                 <h3>Privacy Policy</h3>
                 <img
-                  src={Image}
+                  src={HeaderImage}
                   alt=''
-                  className='privacy-page_header-img'
+                  className='text-page_header-img'
                 />
               </div>
             </div>
@@ -177,4 +177,4 @@ const PrivacyView = () => {
   );
 };
 
-export default PrivacyView;
+export default TextPageView;
