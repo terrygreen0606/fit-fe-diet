@@ -92,16 +92,6 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path='/plan/change-meal'
-      component={(props: any) => (
-        <Layout {...props}>
-          <ChangeMealPlanView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
       path='/testimonials'
       component={(props: any) => (
         <Layout {...props}>
@@ -116,6 +106,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <PrivacyView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/plan/change-meal'
+      component={(props: any) => (
+        <Layout {...props}>
+          <ChangeMealPlanView {...props} />
         </Layout>
       )}
       exact
