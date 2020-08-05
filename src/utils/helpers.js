@@ -1,3 +1,5 @@
+import { monthNames } from 'constants/monthNames';
+
 export const localStringToNumber = (s) => {
   return Number(String(s).replace(/[^0-9.]+/g, ''));
 };
@@ -20,19 +22,18 @@ export const deepObjectMerge = (destination, source) => {
   return newDestination;
 };
 
-export const getMonthName = (monthNum) => {
-  const monthsNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+export const getMonthName = (monthNum, months = monthNames.en) => {
   let monthName = '';
 
-  if (monthsNames[monthNum - 1]) {
-    monthName = monthsNames[monthNum - 1];
+  if (months[monthNum - 1]) {
+    monthName = months[monthNum - 1];
   }
 
   return monthName;
 };
 
-export const getDayEnding = (iNumber) => {
-  let sEnding, i, aEndings = ['day', 'days', 'days']; // 1 4 5
+export const getWordNumEnding = (iNumber, aEndings = ['day', 'days', 'days']) => {
+  let sEnding, i; // 1 day 4 days 5 days
   
   iNumber = Number(iNumber) % 100;
 

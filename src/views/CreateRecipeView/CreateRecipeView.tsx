@@ -20,6 +20,7 @@ import InputField from "components/common/Forms/InputField";
 import CustomCheckbox from "components/common/Forms/CustomCheckbox";
 import WithTranslate from "components/hoc/WithTranslate";
 import DonutChart from "components/common/charts/DonutChart";
+import ImagesFileInput from 'components/common/Forms/ImagesFileInput';
 
 import "./CreateRecipeView.sass";
 
@@ -228,11 +229,39 @@ const CreateRecipeView = (props: any) => {
 
   const getPercent = (value: number) => (value / calories.maxCalories) * 100;
 
+  const [files, setFiles] = React.useState([]);
+
+  const handleChangeFiles = React.useCallback(
+    (ids: any[]) => {
+      console.log(ids)
+      setFiles(ids);
+    },
+    []
+  );
+
   return (
     <div className="container-fluid recipe_container">
       <h1 className="recipe__title">{t("recipe.create.title")}</h1>
       <form className="recipe_wrap" onSubmit={(e) => createRecipeSubmit(e)}>
-        <div className="row recipe__photo">
+        <ImagesFileInput
+          dropElement={document.querySelector('#root')}
+          filesOut={files}
+          onLoadFiles={handleChangeFiles}
+          initFiles={[]}
+          additionalFiles={[]}
+        >
+          {({ open, isDisabled }) => {
+            if (isDisabled) {
+              return null;
+            }
+
+            return (
+              <Button className="mt-4" onClick={open}>Add file</Button>
+            );
+          }}
+        </ImagesFileInput>
+
+        {/*<div className="row recipe__photo">
           <div className="col-lg-3 col-md-6 mb-lg-0 mb-3">
             <button type="button" className="recipe__add-photo">
               <span className="recipe__add-photo-description">
@@ -261,7 +290,10 @@ const CreateRecipeView = (props: any) => {
               </span>
             </button>
           </div>
-        </div>
+        </div>*/}
+
+        <div className="mt-4"></div>
+
         <div className="row recipe__input-data">
           <div className="col-12 mb-xl-5">
             <div className="recipe__input-container">

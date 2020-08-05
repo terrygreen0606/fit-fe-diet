@@ -14,7 +14,8 @@ import RecipesView from './views/RecipesView';
 import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
 import ContactsView from 'views/Public/ContactsView';
-import ChangeMealPlanView from './views/ChangeMealPlanView';
+import ChangeMealPlanView from 'views/ChangeMealPlanView';
+import TestimonialsView from 'views/Public/TestimonialsView';
 import NotFound from './views/NotFound';
 import PrivacyView from 'views/Public/PrivacyView';
 
@@ -85,6 +86,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <ContactsView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/testimonials'
+      component={(props: any) => (
+        <Layout {...props}>
+          <TestimonialsView {...props} />
         </Layout>
       )}
       exact
