@@ -123,7 +123,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path='/about-trees'
+      path='/trees'
       component={(props: any) => (
         <Layout {...props}>
           <AboutTreesView {...props} />
