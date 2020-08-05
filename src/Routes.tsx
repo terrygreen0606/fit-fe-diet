@@ -18,6 +18,7 @@ import ChangeMealPlanView from 'views/ChangeMealPlanView';
 import TestimonialsView from 'views/Public/TestimonialsView';
 import NotFound from './views/NotFound';
 import PrivacyView from 'views/Public/PrivacyView';
+import AboutTreesView from 'views/Public/AboutTreesView';
 
 const Routes = () => (
   <Switch>
@@ -116,6 +117,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <ChangeMealPlanView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/about-trees'
+      component={(props: any) => (
+        <Layout {...props}>
+          <AboutTreesView {...props} />
         </Layout>
       )}
       exact
