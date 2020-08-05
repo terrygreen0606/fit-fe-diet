@@ -62,7 +62,7 @@ const LoginView = (props: any) => {
     loadRegisterTpl();
   }, []);
 
-  function initGoogleAuth () {
+  const initGoogleAuth = () => {
     setLoginGoogleInitLoading(true);
 
     const interval = setInterval(tryGoogleAuthInit, 100);
@@ -80,7 +80,7 @@ const LoginView = (props: any) => {
     }
   }
 
-  function initFacebookAuth () {
+  const initFacebookAuth = () => {
     setLoginFacebookInitLoading(true);
 
     window['fbAsyncInit'] = () => {
@@ -97,7 +97,7 @@ const LoginView = (props: any) => {
     };
   }
 
-  function loadRegisterTpl () {
+  const loadRegisterTpl = () => {
     setRegisterTplLoading(true);
     setRegisterTplLoadingError(false);
 
