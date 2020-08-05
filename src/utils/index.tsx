@@ -7,3 +7,5 @@ export * from './getTranslate';
 export * from './googleAuth';
 export * from './facebookAuth';
 export * from './wait';
+export * from './getImagePath';
+export * from './getImageAWSFormData';

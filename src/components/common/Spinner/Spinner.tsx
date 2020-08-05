@@ -17,7 +17,7 @@ const Spinner = (props: SpinnerProps) => (
 		className={classNames('spinnerLoader', {
       [props.className]: props.className
     })} 
-    style={{ width: `${props.width && props.width}px`, height: `${props.height && props.height}px` }}
+    style={{ width: props.width && `${props.width}px`, height: props.height && `${props.height}px` }}
     color={props.color && props.color}
 		icon={faCircleNotch} 
 		spin
