@@ -17,6 +17,7 @@ import ContactsView from 'views/Public/ContactsView';
 import ChangeMealPlanView from 'views/ChangeMealPlanView';
 import TestimonialsView from 'views/Public/TestimonialsView';
 import NotFound from './views/NotFound';
+import AboutTreesView from 'views/Public/AboutTreesView';
 import TextPageView from 'views/Public/TextPageView';
 import StoryPostView from 'views/Public/StoryPostView';
 
@@ -127,6 +128,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <ChangeMealPlanView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/trees'
+      component={(props: any) => (
+        <Layout {...props}>
+          <AboutTreesView {...props} />
         </Layout>
       )}
       exact
