@@ -1,4 +1,4 @@
-.register-widget
+.trial-banner
   position: relative
   padding: 50px 0 60px 90px
   &::before
@@ -25,16 +25,17 @@
     position: relative;
     margin-bottom: 30px;
     font-size: 60px;
+    line-height: 1.4
     font-weight: 900;
     color: #fff;
     z-index: 2;
   &_list
-    margin: 0;
+    margin: 0 0 30px;
     max-width: 510px;
     padding-left: 0;
     list-style-type: none;
     color: #fff;
-    &-item
+    li
       position: relative;
       margin-bottom: 50px;
       padding-left: 50px;
@@ -57,6 +58,8 @@
         background-position: center center;
   &_button-wrap
     padding-left: 50px
+    position: relative
+    z-index: 2
   &_button
     position: relative;
     color: #000;
@@ -65,14 +68,16 @@
     z-index: 2;
 
 @media only screen and (max-width: 1440px)
-  .register-widget
+  .trial-banner
     &_title
       font-size: 40px;
-    &_list-item 
-      font-size: 20px;
+    .register-widget_list
+      li 
+        margin-bottom: 30px;
+        font-size: 20px;
 
 @media only screen and (max-width: 991px)
-  .register-widget
+  .trial-banner
     padding: 50px 0 90px
     &::before
       left: -300px

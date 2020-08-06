@@ -8,7 +8,7 @@
       font-size: 24px
       line-height: 29px
       color: #000000
-    &-img
+    img
       display: block
 
       max-width: 550px
@@ -25,7 +25,9 @@
         align-items: center
 
         margin-right: 15px
+
         font-size: 20px
+        line-height: 1.4
         &::before
           content: ''
           margin-right: 15px
@@ -50,7 +52,7 @@
     &_user-name
       flex-wrap: wrap
 
-  .register-widget
+  .trial-banner
     &::after
       content: ''
       position: absolute
@@ -64,13 +66,28 @@
       background-size: cover
       z-index: 1
     &_list
-      margin: 20px 0
+      margin: 20px 0 70px
     &_button-wrap
       padding: 0
+  &_tariff-title
+    position: relative;
+    margin-bottom: 130px;
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+    &::before
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 184px;
+      height: 6px;
+      background-color: #106EE8;
 
 @media only screen and (max-width: 1600px)
   .story-post-page
-    .register-widget
+    .trial-banner
       margin-bottom: 100px
       &::after
         right: 0;
@@ -83,7 +100,7 @@
     .suggested-people-slider_controls
       right: 0
 
-@media only screen and (max-width: 992px)
+@media only screen and (max-width: 991px)
   .story-post-page
     .weight-loss-filter_tabs
       margin-bottom: 50px
@@ -98,6 +115,7 @@
       padding-right: 25px
       h4
         font-size: 18px
+        line-height: 1.4
         margin-bottom: 0
       &_stats-item
         font-size: 14px;
@@ -109,6 +127,13 @@
         line-height: 22px;
     .suggested-people-slider_controls
       right: -64px
+    &_tariff-title
+      margin-bottom: 70px;
+      text-align: left;
+      font-size: 24px;
+      &::before
+        left: 0;
+        transform: none;
       
 @media only screen and (max-width: 768px)
   .story-post-page
@@ -125,6 +150,8 @@
           margin-bottom: 0
       &_controls
         right: -30px
+    &_tariff-title
+      font-size: 18px
 
 
           

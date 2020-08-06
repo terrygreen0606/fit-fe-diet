@@ -5,14 +5,14 @@ import '../TestimonialsView/TestimonialsView.sass';
 import PricePlans from 'components/PricePlans';
 import WeightLossFilters from 'components/WeightLossFilters';
 import SuggestedPeopleSlider from 'components/SuggestedPeopleSlider';
-import RegisterWidget from 'components/RegisterWidget';
+import TrialBanner from 'components/TrialBanner';
 
 
 const StoryPostView = () => {
 
   return (
     <>
-      <section className='story-post-page testimonials'>
+      <section className='story-post-page'>
         
         <div className='container'>
           <WeightLossFilters />
@@ -79,7 +79,7 @@ const StoryPostView = () => {
 
             <div className="col-5">
               <SuggestedPeopleSlider />
-              <RegisterWidget />
+              <TrialBanner />
             </div>
           </div>
         </div>
@@ -87,8 +87,8 @@ const StoryPostView = () => {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <div className='testimonials__tariff'>
-                <h3 className='testimonials__tariff-title'>
+              <div>
+                <h3 className='story-post-page_tariff-title'>
                   Choose a period and join
                 </h3>
                 <PricePlans />
