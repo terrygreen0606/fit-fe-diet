@@ -2,17 +2,31 @@ import React from 'react';
 
 import './TrainingCard.sass';
 
+type TrainingCardProps = {
+  image: string,
+  text: string,
+  time: string,
+};
 
-const TrainingCard = () => (
-  <div className="training-card card-bg">
-    <div className="training-card-image" />
+const TrainingCard = ({ image, text, time }: TrainingCardProps) => {
+  return  (
+    <div className="training-card">
+      <div
+        className="training-card-image"
+        style={{ backgroundImage: image }}
+      />
 
-    <div className="training-card-description">Intermediate level 1</div>
+      <div className="training-card-description">
+        {text}
+      </div>
 
-    <div className="training-card-bottom">
-      <span className="training-card-time">16 minutit</span>
+      <div className="training-card-bottom">
+        <span className="training-card-time">
+          {time}
+        </span>
+      </div>
     </div>
-  </div>
-);
+  )
+};
 
 export default TrainingCard;

@@ -2,52 +2,55 @@ import React from 'react';
 
 import './TodayActivities.sass';
 
-import {ReactComponent as DumbbellIcon} from "../../assets/img/icons/dumbbell-icon.svg";
-import {ReactComponent as WeighScaleIcon} from "../../assets/img/icons/weigh-scale-icon.svg";
 
+const TodayActivities = ({ items, todayActivities, setTodayActivities}) => {
+  const onInputChange = e => {
+    e.persist();
+    e.target.checked
+      ? setTodayActivities(prev => [...prev, e.target.value])
+      : setTodayActivities(prev =>
+        prev.indexOf(e.target.value) === prev.length - 1
+          ? [...prev.slice(0, prev.indexOf(e.target.value))]
+          : [...prev.slice(0, prev.indexOf(e.target.value)), ...prev.slice(prev.indexOf(e.target.value + 1))]
+      )
+  };
 
-const TodayActivities = () => (
-  <div>
-    <h4 className="mt-5 mb-4">Today's activities</h4>
+  return (
+    <div>
+      <h4 className="mt-5 mb-4">Today's activities</h4>
 
-    <div className="today-activities-activity-list">
-      <input
-        type="checkbox"
-        id="activity1"
-        value="activity1"
-        name="activities"
-        hidden
-        defaultChecked
-      />
-      <label htmlFor="activity1" className="today-activities-activity-card card-bg">
-        <span className="today-activities-activity-card-checkmark"/>
+      <div className="today-activities-activity-list">
 
-        <span className="today-activities-activity-card-icon-wrap">
-          <DumbbellIcon className="today-activities-activity-card-icon" />
-        </span>
+        {
+          items.map(item => (
+            <React.Fragment key={item.text}>
+              <input
+                type="checkbox"
+                id={item.text}
+                value={item.text}
+                name="activities"
+                onChange={e => onInputChange(e)}
+                hidden
+                defaultChecked={todayActivities.includes(item.text)}
+              />
+              <label htmlFor={item.text} className="today-activities-activity-card card-bg">
+                <span className="today-activities-activity-card-checkmark"/>
 
-        <h6 className="today-activities-activity-card-title">Add a workout</h6>
-      </label>
+                <span className="today-activities-activity-card-icon-wrap">
+                <item.Icon className="today-activities-activity-card-icon" />
+              </span>
 
-      <input
-        type="checkbox"
-        id="activity2"
-        value="activity2"
-        name="activities"
-        hidden
-      />
-      <label htmlFor="activity2" className="today-activities-activity-card card-bg">
-        <span className="today-activities-activity-card-checkmark"/>
+                <h6 className="today-activities-activity-card-title">
+                  {item.text}
+                </h6>
+              </label>
+            </React.Fragment>
+          ))
+        }
+      </div>
 
-        <span className="today-activities-activity-card-icon-wrap">
-          <WeighScaleIcon className="today-activities-activity-card-icon" />
-        </span>
-
-        <h6 className="today-activities-activity-card-title">Add today's weight</h6>
-      </label>
     </div>
-
-  </div>
-);
+  )
+};
 
 export default TodayActivities;

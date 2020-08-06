@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
@@ -10,18 +10,19 @@ import './Header.sass';
 
 const Header = (props: any) => {
   return (
-    <>  
+    <>
       <header className="mainHeader">
         <div className="container">
           <div className="row">
             <div className="col-2">
-              
-              <span className="mainHeader_logo"></span>
+
+              <span className="mainHeader_logo" />
 
             </div>
             <div className="col-10 text-right">
-              
+
               <nav className="mainHeader_menuList">
+                <a href="/trainings" className="mainHeader_menuList_item">Trainings</a>
                 <a href="/" className="mainHeader_menuList_item">Retseptid</a>
                 <a href="/" className="mainHeader_menuList_item">Edulood</a>
                 <a href="/" className="mainHeader_menuList_item">E-Pood</a>
