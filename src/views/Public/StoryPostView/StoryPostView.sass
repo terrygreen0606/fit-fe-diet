@@ -42,20 +42,6 @@
     margin-bottom: 100px
 
   .trial-banner
-    &::after
-      width: 530px
-      height: 510px
-
-      content: ''
-      position: absolute
-      bottom: 0
-      right: 0
-
-      transform: translate(100%,50%)
-      background-image: url(https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-2.png)
-      background-repeat: no-repeat
-      background-size: cover
-      z-index: 1
     &_list
       margin: 20px 0 70px
     &_button-wrap
@@ -81,6 +67,20 @@
       background-color: #106EE8
 
 .story-post-slider
+  display: flex
+
+  position: relative
+  z-index: 2
+  &-slide
+    position: absolute
+    opacity: 0
+    visibility: hidden
+    transition: 0.2s opacity ease
+    &.active 
+      position: initial
+      opacity: 1
+      visibility: visible
+
   &_img
     display: block
     max-width: 100%
@@ -90,7 +90,8 @@
     display: inline-block
     padding: 30px 20px 40px
     transform: translateY(-50%)
-    max-width: 85%
+    width: 85%
+    height: 164px
 
     background: #fff
 
@@ -151,8 +152,8 @@
     align-items: center
 
     position: absolute
-    top: 0
-    right: -60px
+    bottom: 210px
+    left: calc(80% - 42px)
     &-button
       display: flex
       align-items: center
@@ -188,17 +189,6 @@
   .story-post-page
     .trial-banner
       margin-bottom: 100px
-      &::after
-        transform: translate(75%, 0%)
-        width: 330px
-        height: 320px
-
-        right: 0
-        bottom: -90px
-@media only screen and (max-width: 1200px)
-  .story-post-page
-    .suggested-people-slider_controls
-      right: 0
 
 @media only screen and (max-width: 991px)
   .story-post-page
@@ -239,13 +229,18 @@
       font-size: 20px
   .story-post-slider_user-info_item
     font-size: 14px
+  .story-post-slider_controls
+    left: calc(80% - 90px)
       
 @media only screen and (max-width: 768px)
   .story-post-page
     &_tariff-title
       font-size: 18px
+    &_post img
+      max-width: 100%
   .story-post-slider
     margin-bottom: 60px
+    margin-top: 50px
     &_user
       padding: 10px 30px 10px 0px
       &-name
@@ -254,9 +249,13 @@
       &-name_rate, &-place
         display: none
     &_controls
-      right: -50px
+      left: calc(80% - 20px)
       &-button
         margin: 5px 10px
       &-icon
         width 6px
         height 12px
+  @media only screen and (max-width: 400px)
+    .story-post-slider_controls
+      left: unset
+      right: 5px

@@ -78,7 +78,7 @@ const StoryPostView = () => {
 
             <div className="col-5">
               <StoryPostSlider />
-              <TrialBanner />
+              <TrialBanner positionImage='right' />
             </div>
           </div>
         </div>

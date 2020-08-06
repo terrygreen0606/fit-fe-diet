@@ -1,6 +1,19 @@
 .suggest-info-slider
-  position: relative
+  display: flex
+
   margin-bottom: 20px
+
+  position: relative
+  z-index: 2
+  &-slide
+    position: absolute
+    opacity: 0
+    visibility: hidden
+    transition: 0.2s opacity ease
+    &.active
+      position: initial
+      opacity: 1
+      visibility: visible
   &_img
     max-width: 100%
     height: auto
@@ -53,7 +66,7 @@
     &-icon
       width: 13px
       height: 26px
-      
+
       transition: 0.2s
       path
         fill: #106ee8

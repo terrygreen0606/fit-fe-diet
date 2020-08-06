@@ -9,18 +9,16 @@
     width: 300%
     height: 100%
     background: #106EE8
-  &::after
-    content: ''
+  &-img
     position: absolute
     bottom: 0
     right: -155px
     transform: translateY(50%)
     width: 587px
     height: 570px
-    background-image: url(https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-2.png)
-    background-repeat: no-repeat
-    background-size: cover
     z-index: 1
+    &.position-right
+      right: -385px
   &_title
     position: relative
     margin-bottom: 30px
@@ -85,3 +83,9 @@
     &_title
       font-size: 24px
       line-height: 29px
+    &-img
+      width: 250px
+      height: 250px
+      right: 0
+      &.position-right
+        right: -80px
