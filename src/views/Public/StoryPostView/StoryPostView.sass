@@ -41,25 +41,16 @@
   .weight-loss-filter_tabs
     margin-bottom: 100px
 
-  .suggested-people-slider
-    &_img
-      padding-left: 50px
-    &_controls
-      top: 0
-      right: -68px
-      bottom: unset
-      left: unset
-    &_user-name
-      flex-wrap: wrap
-
   .trial-banner
     &::after
-      content: ''
-      position: absolute
       width: 530px
       height: 510px
+
+      content: ''
+      position: absolute
       bottom: 0
       right: 0
+
       transform: translate(100%,50%)
       background-image: url(https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-2.png)
       background-repeat: no-repeat
@@ -70,31 +61,140 @@
     &_button-wrap
       padding: 0
   &_tariff-title
-    position: relative;
-    margin-bottom: 130px;
-    text-align: center;
-    font-size: 34px;
-    font-weight: bold;
+    margin-bottom: 130px
+
+    position: relative
+
+    text-align: center
+    font-size: 34px
+    font-weight: bold
     &::before
-      content: '';
-      position: absolute;
-      bottom: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 184px;
-      height: 6px;
-      background-color: #106EE8;
+      transform: translateX(-50%)
+      width: 184px
+      height: 6px
+
+      position: absolute
+      bottom: -30px
+      left: 50%
+
+      content: ''
+      background-color: #106EE8
+
+.story-post-slider
+  &_img
+    display: block
+    max-width: 100%
+    height: auto
+    padding-left: 50px
+  &_user
+    display: inline-block
+    padding: 30px 20px 40px
+    transform: translateY(-50%)
+    max-width: 85%
+
+    background: #fff
+
+    text-align: left
+    &-name
+      display: flex
+      align-items: center
+      flex-wrap: wrap
+      h4
+        margin-bottom: 10px
+        margin-right: 25px
+      &_rate
+        display: flex
+
+        padding: 0 10px
+        margin-bottom: 10px
+        svg
+          margin-right: 5px
+    &-place
+      display: flex
+      align-items: center
+      margin: 10px 0px 20px
+      svg
+        margin-right: 5px
+        min-height: 20px
+        min-width: 15px
+        height: auto
+        width: auto
+      p
+        margin: 0
+
+        font-weight: bold
+        font-size: 14px
+        line-height: 17px
+        color: #000000
+    &-info
+      display: flex
+      align-items: center
+      &_item
+        display: flex
+        align-items: center
+
+        margin-right: 15px
+
+        font-size: 20px
+        &::before
+          content: ''
+          margin-right: 15px
+          width: 12px
+          height: 12px
+
+          border-radius: 50%
+          background-color: #cbffce
+        &:first-child::before
+            display: none
+  &_controls
+    display: flex
+    align-items: center
+
+    position: absolute
+    top: 0
+    right: -60px
+    &-button
+      display: flex
+      align-items: center
+      justify-content: center
+
+      margin: 5px 15px
+      padding: 0
+      width: 30px
+      height: 30px
+
+      border-radius: 50%
+      border: none
+      background-color: #fff
+
+      transition: 0.2s background-color ease
+      cursor: pointer
+      &:hover
+        background-color: #F0F0F0
+        svg
+          path
+            fill: #919BB3
+    &-icon
+      min-width: 7px
+      min-height: 14px
+      height: auto
+      width: auto
+
+      transition: 0.2s
+      path
+        fill: #E1E1E1
 
 @media only screen and (max-width: 1600px)
   .story-post-page
     .trial-banner
       margin-bottom: 100px
       &::after
-        right: 0;
-        bottom: -90px;
-        transform: translate(75%, 0%);
-        width: 330px;
-        height: 320px;
+        transform: translate(75%, 0%)
+        width: 330px
+        height: 320px
+
+        right: 0
+        bottom: -90px
 @media only screen and (max-width: 1200px)
   .story-post-page
     .suggested-people-slider_controls
@@ -110,49 +210,53 @@
         flex-direction: column-reverse
       .col-7, .col-5
         flex: unset
-        max-width: 100%;
+        max-width: 100%
     &_user-info
       padding-right: 25px
       h4
+        margin-bottom: 5px
+
         font-size: 18px
         line-height: 1.4
-        margin-bottom: 0
       &_stats-item
-        font-size: 14px;
+        font-size: 14px
     &_post
       margin-bottom: 50px
       margin-top: 30px
       h5,p
-        font-size: 18px;
-        line-height: 22px;
-    .suggested-people-slider_controls
-      right: -64px
+        font-size: 18px
+        line-height: 22px
     &_tariff-title
-      margin-bottom: 70px;
-      text-align: left;
-      font-size: 24px;
+      margin-bottom: 70px
+
+      text-align: left
+      font-size: 24px
       &::before
-        left: 0;
-        transform: none;
+        left: 0
+        transform: none
+  .story-post-slider_user-name
+    h4
+      font-size: 20px
+  .story-post-slider_user-info_item
+    font-size: 14px
       
 @media only screen and (max-width: 768px)
   .story-post-page
-    .suggested-people-slider
-      margin-bottom: 0px
-      &_img
-       padding-right: 25px
-      &_user
-        height: 84px;
-        transform: translateY(-50%);
-        padding: 10px 10px 10px 0px;
-        
-        &-name
-          margin-bottom: 0
-      &_controls
-        right: -30px
     &_tariff-title
       font-size: 18px
-
-
-          
-  
+  .story-post-slider
+    margin-bottom: 60px
+    &_user
+      padding: 10px 30px 10px 0px
+      &-name
+        margin-bottom: 20px
+        font-size: 18px
+      &-name_rate, &-place
+        display: none
+    &_controls
+      right: -50px
+      &-button
+        margin: 5px 10px
+      &-icon
+        width 6px
+        height 12px

@@ -1,12 +1,11 @@
 import React from 'react';
-import './StoryPostView.sass';
-import '../TestimonialsView/TestimonialsView.sass';
 
 import PricePlans from 'components/PricePlans';
 import WeightLossFilters from 'components/WeightLossFilters';
-import SuggestedPeopleSlider from 'components/SuggestedPeopleSlider';
+import StoryPostSlider from './StoryPostSlider';
 import TrialBanner from 'components/TrialBanner';
 
+import './StoryPostView.sass';
 
 const StoryPostView = () => {
 
@@ -78,7 +77,7 @@ const StoryPostView = () => {
             </div>
 
             <div className="col-5">
-              <SuggestedPeopleSlider />
+              <StoryPostSlider />
               <TrialBanner />
             </div>
           </div>
