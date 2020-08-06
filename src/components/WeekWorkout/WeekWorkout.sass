@@ -1,0 +1,33 @@
+@import '../../assets/sass/vars'
+
+.week-workout
+  display: flex
+  flex-wrap: wrap
+
+  input:checked + .week-workout-item
+    background: #69D9C4
+    color: #ffffff
+    font-weight: bold
+
+  &-item
+    flex: 0 0 82px
+    cursor: pointer
+    background: #ffffff
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+    border-radius: 5px
+    padding: 20px 0
+    margin-bottom: 15px
+    text-align: center
+
+    &:hover
+      background: #69D9C4
+      color: #ffffff
+      font-weight: bold
+
+    &:not(:last-child)
+      margin-right: 30px
+
+    &-number
+      margin-bottom: 12px
+      font-weight: bold
+      font-size: 26px

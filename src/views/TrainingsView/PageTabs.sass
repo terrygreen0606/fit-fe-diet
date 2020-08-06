@@ -1,0 +1,36 @@
+@import '../../assets/sass/vars'
+
+.page-tabs-layout
+  padding-bottom: 35px
+  font-size: 32px
+  line-height: 39px
+  font-weight: bold
+  color: #000
+
+  .page-tabs-item:not(:last-child)
+    margin-right: 56px
+    &::after
+      content: ''
+      position: absolute
+      top: 0
+      right: -28px
+      height: calc(100% - 20px)
+      border-right: 1px solid #000
+
+  .page-tabs-item
+    padding: 10px 0 25px
+    border-bottom: 6px solid transparent
+    cursor: pointer
+    position: relative
+    &:hover
+      border-bottom-color: $steel-blue
+
+    & > input:checked
+      .page-tabs-item
+        border-bottom-color: $steel-blue
+
+  .radiomark
+    display: none
+
+
+
