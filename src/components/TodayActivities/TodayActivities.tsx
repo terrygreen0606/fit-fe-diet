@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { FunctionComponent, SVGProps } from 'react';
 
 import './TodayActivities.sass';
 
+type TodayActivitiesProps = {
+  items: {
+    Icon: FunctionComponent<SVGProps<SVGSVGElement>>,
+    text: string,
+  }[],
+  todayActivities: Array<string>,
+  setTodayActivities: React.Dispatch<React.SetStateAction<Array<string>>>,
+};
 
-const TodayActivities = ({ items, todayActivities, setTodayActivities}) => {
+const TodayActivities = ({ items, todayActivities, setTodayActivities}: TodayActivitiesProps) => {
   const onInputChange = e => {
     e.persist();
     e.target.checked
@@ -16,7 +24,7 @@ const TodayActivities = ({ items, todayActivities, setTodayActivities}) => {
   };
 
   return (
-    <div>
+    <>
       <h4 className="mt-5 mb-4">Today's activities</h4>
 
       <div className="today-activities-activity-list">
@@ -48,8 +56,7 @@ const TodayActivities = ({ items, todayActivities, setTodayActivities}) => {
           ))
         }
       </div>
-
-    </div>
+    </>
   )
 };
 

@@ -15,6 +15,9 @@
   border-radius: 20px
   &:nth-child(odd)
     margin-right: 40px
+  @media (max-width: 768px)
+    flex: 0 0 100%
+    max-width: 100%
   &-image
     display: block
     position: relative
@@ -43,9 +46,15 @@
       background-repeat: no-repeat
       background-position: center center
       background-size: 35px
+      @media (max-width: 768px)
+        content: none
+
   &-description
     position: relative
     margin-top: 20px
+    @media (max-width: 768px)
+      font-size: 12px
+      line-height: 15px
     &::after
       content: ''
       position: absolute
@@ -59,4 +68,6 @@
     font-size: 14px
     line-height: 17px
     color: #000
-
+    @media (max-width: 768px)
+      font-size: 11px
+      line-height: 13px

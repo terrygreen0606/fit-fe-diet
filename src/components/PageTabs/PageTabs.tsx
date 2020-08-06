@@ -4,7 +4,13 @@ import React from "react";
 import "./PageTabs.sass";
 
 
-const PageTabs = ({ levels, defaultChecked, setLevel }) => {
+type PageTabsProps = {
+  levels: Array<string>,
+  defaultChecked: string,
+  setLevel: React.Dispatch<React.SetStateAction<string>>,
+};
+
+const PageTabs = ({ levels, defaultChecked, setLevel }: PageTabsProps) => {
 
   return (
     <div className="col-12 page-tabs-layout">

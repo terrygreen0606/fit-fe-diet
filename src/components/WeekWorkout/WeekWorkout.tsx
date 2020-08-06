@@ -1,10 +1,19 @@
 import React from 'react';
 
-import Button from "../common/Forms/Button";
+import Button from "components/common/Forms/Button";
 
 import './WeekWorkout.sass';
 
-const WeekWorkout = ({ items, setWeekWorkout, weekWorkout }) => {
+type WeekWorkoutProps = {
+  items: {
+    day: string,
+    number: number,
+  }[],
+  setWeekWorkout: React.Dispatch<React.SetStateAction<string>>,
+  weekWorkout: string,
+};
+
+const WeekWorkout = ({ items, setWeekWorkout, weekWorkout }: WeekWorkoutProps) => {
   const onClickHandler = () => {
     alert(`Your workout day is ${weekWorkout}`)
   };

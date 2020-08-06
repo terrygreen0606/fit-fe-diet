@@ -1,18 +1,20 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 // Components
-import WeekWorkout from "../../components/WeekWorkout";
-import TrainingCard from "../../components/TrainingCard";
-import TodayActivities from "../../components/TodayActivities";
-import Advantages from "../../components/Advantages";
-import PageTabs from "../../components/PageTabs/PageTabs";
+import WeekWorkout from "components/WeekWorkout";
+import TrainingCard from "components/TrainingCard";
+import TodayActivities from "components/TodayActivities";
+import Advantages from "components/Advantages";
+import PageTabs from "components/PageTabs/PageTabs";
 
-import {ReactComponent as RewardIcon} from "../../assets/img/icons/reward-icon-white.svg";
-import {ReactComponent as ClockIcon} from "../../assets/img/icons/15-min-clock-icon.svg";
-import {ReactComponent as CalendarIcon} from "../../assets/img/icons/calendar-icon.svg";
-import {ReactComponent as RewardImage} from "../../assets/img/reward-img.svg";
-import {ReactComponent as DumbbellIcon} from "../../assets/img/icons/dumbbell-icon.svg";
-import {ReactComponent as WeighScaleIcon} from "../../assets/img/icons/weigh-scale-icon.svg";
+import {ReactComponent as RewardIcon} from "assets/img/icons/reward-icon-white.svg";
+import {ReactComponent as ClockIcon} from "assets/img/icons/15-min-clock-icon.svg";
+import {ReactComponent as CalendarIcon} from "assets/img/icons/calendar-icon.svg";
+import {ReactComponent as RewardImage} from "assets/img/reward-img.svg";
+import {ReactComponent as DumbbellIcon} from "assets/img/icons/dumbbell-icon.svg";
+import {ReactComponent as WeighScaleIcon} from "assets/img/icons/weigh-scale-icon.svg";
+
+import useWindowSize from "components/hooks/useWindowSize";
 
 import './TrainingsView.sass';
 
@@ -58,10 +60,11 @@ const dataForTodayActivities = [
   },
 ];
 
-const TrainingsView = () => {
+const TrainingsView: React.FC = () => {
   const [level, setLevel] = useState("Elementary level");
   const [weekWorkout, setWeekWorkout] = useState("wed");
   const [todayActivities, setTodayActivities] = useState(["Add a workout"]);
+  const { width } = useWindowSize();
 
   return (
     <>
@@ -127,6 +130,6 @@ const TrainingsView = () => {
       </section>
     </>
   );
-}
+};
 
 export default TrainingsView;

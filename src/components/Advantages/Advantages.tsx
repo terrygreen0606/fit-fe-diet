@@ -1,8 +1,21 @@
-import React from "react";
+import React, { FunctionComponent, SVGProps } from "react";
 
 import './Advantages.sass';
 
-const Advantages = (props) => {
+type AdvantagesProps = {
+  FirstIcon: FunctionComponent<SVGProps<SVGSVGElement>>,
+  SecondIcon: FunctionComponent<SVGProps<SVGSVGElement>>,
+  ThirdIcon: FunctionComponent<SVGProps<SVGSVGElement>>,
+  titleInBlueZone: string,
+  titleForFirstIcon: string,
+  textForFirstIcon: string,
+  titleForSecondIcon: string,
+  textForSecondIcon: string,
+  titleForThirdIcon: string,
+  textForThirdIcon: string,
+};
+
+const Advantages = (props: AdvantagesProps) => {
   const { FirstIcon, SecondIcon, ThirdIcon } = props;
   return (
     <section className="how-exercise-plan-works-sect">
