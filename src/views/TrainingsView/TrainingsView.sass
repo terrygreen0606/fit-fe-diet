@@ -6,10 +6,18 @@
     &-col
       flex: 0 0 calc(62% - 70px)
       max-width: calc(62% - 70px)
+      @media (max-width: 768px)
+        flex: 0 0 100%
+        max-width: 100%
+      .row
+        margin: unset
   &-info-col
     flex: 0 0 38%
     max-width: 38%
     margin-left: 70px
+    @media (max-width: 768px)
+      flex: 0 0 100%
+      max-width: 100%
 
 .training-plan
   &-controls

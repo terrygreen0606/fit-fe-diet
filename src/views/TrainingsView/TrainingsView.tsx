@@ -88,13 +88,11 @@ const TrainingsView = () => {
                   defaultChecked={level}
                   setLevel={setLevel}
                 />
-
                 <WeekWorkout
                   items={dataForWeekWorkout}
                   setWeekWorkout={setWeekWorkout}
                   weekWorkout={weekWorkout}
                 />
-
                 <div className="col-12">
                   {Array.from({length:8}, (_, index) =>
                     <TrainingCard
@@ -105,32 +103,25 @@ const TrainingsView = () => {
                     />
                   )}
                 </div>
-
-
               </div>
             </div>
-
             <div className="training-plan-info-col">
               <TodayActivities
                 items={dataForTodayActivities}
                 todayActivities={todayActivities}
                 setTodayActivities={setTodayActivities}
               />
-
               <div className="training-plan-adherence-diet-card card-bg mt-5">
                 <h4 className="training-plan-adherence-diet-card-title">Adherence to a diet plan</h4>
-
                 <div className="training-plan-adherence-diet-card-img">
                   <RewardImage />
                 </div>
-
                 <div className="training-plan-adherence-diet-card-content">
                   <p><b>0%</b> of the plan completed today</p>
                   <a href="/" className="link">See last week's report</a>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>

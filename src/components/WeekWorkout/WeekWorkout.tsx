@@ -40,7 +40,7 @@ const WeekWorkout = ({ items, setWeekWorkout, weekWorkout }) => {
       </div>
 
       <Button
-        className="mt-5 px-5"
+        className="mt-5 px-5 week-workout-start-btn"
         size="lg"
         color="secondary"
         onClick={onClickHandler}

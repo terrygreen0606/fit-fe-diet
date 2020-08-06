@@ -19,8 +19,10 @@ const Advantages = (props) => {
               <FirstIcon className="how-exercise-plan-works-icon" />
             </div>
 
-            <h5 className="mt-4 mb-4">{props.titleForFirstIcon}</h5>
-            <p>{props.textForFirstIcon}</p>
+            <div className="how-exercise-plan-works-text">
+              <h5 className="mt-4 mb-4">{props.titleForFirstIcon}</h5>
+              <p>{props.textForFirstIcon}</p>
+            </div>
 
           </div>
           <div className="how-exercise-plan-works-col">
@@ -29,8 +31,10 @@ const Advantages = (props) => {
               <SecondIcon className="how-exercise-plan-works-icon" />
             </div>
 
-            <h5 className="mt-4 mb-4">{props.titleForSecondIcon}</h5>
-            <p>{props.textForSecondIcon}</p>
+            <div className="how-exercise-plan-works-text">
+              <h5 className="mt-4 mb-4">{props.titleForSecondIcon}</h5>
+              <p>{props.textForSecondIcon}</p>
+            </div>
 
           </div>
           <div className="how-exercise-plan-works-col">
@@ -39,8 +43,10 @@ const Advantages = (props) => {
               <ThirdIcon className="how-exercise-plan-works-icon" />
             </div>
 
-            <h5 className="mt-4 mb-4">{props.titleForThirdIcon}</h5>
-            <p>{props.textForThirdIcon}</p>
+            <div className="how-exercise-plan-works-text">
+              <h5 className="mt-4 mb-4">{props.titleForThirdIcon}</h5>
+              <p>{props.textForThirdIcon}</p>
+            </div>
 
           </div>
         </div>
