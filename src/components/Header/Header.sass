@@ -43,3 +43,33 @@
         border-bottom-color: $caribbean-green
       &:not(:last-child)
         margin-right: 60px
+
+.menu-toggle-icon
+  width: 29px
+  fill: $caribbean-green
+  cursor: pointer
+
+.mobile-auth-btn
+  padding: 6.5px 20px
+  font-size: 12px
+  line-height: 15px
+  font-weight: bold
+  border-width: 1px
+
+.header-controls
+  display: none
+  justify-content: flex-end
+  align-items: center
+
+
+@media only screen and (max-width : 992px)
+  .mainHeader
+    height: 100px
+    padding: 35px 0
+    &_logo
+      display: none
+    &_menuList
+      display: none
+
+  .header-controls
+    display: flex
