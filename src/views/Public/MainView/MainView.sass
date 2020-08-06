@@ -1,13 +1,19 @@
 @import '../../../assets/sass/vars'
 
 
+.main-header-sect
+  padding: 70px 0
+  margin: -20px 0
+  overflow: hidden
+
 .main-header-sect-img-wrap
   position: relative
+  height: 90%
 
 #main-header-sect-dotted-rect
   position: absolute
-  top: 250px
-  left: 20px
+  top: 340px
+  left: 60px
   width: 250px
   height: 375px
   background-image: radial-gradient($light-grey 20%, transparent 20%)
@@ -46,7 +52,7 @@
   &-img
     position: relative
     top: 100px
-    left: -370px
+    right: 100%
     max-width: 600px
   &-rect
     position: absolute
@@ -102,6 +108,7 @@
   padding-left: 17.5%
 
 .main-success-story-item
+  margin-bottom: 25px
   &-img
     width: 100%
     height: 352px
@@ -134,7 +141,94 @@
   .row
     align-items: center
 
-#main-choose-plan-item-popular
-  position: relative
-  padding-top: 100px
-  border: 2px solid $steel-blue
+
+@media only screen and (max-width : 1500px)
+  #main-success-stories-sect-container
+    max-width: 1280px
+    padding-left: 0
+    padding-left: 15px
+    padding-right: 15px
+
+  #main-features-sect
+    &-img
+      right: 10%
+
+@media only screen and (max-width : 1200px)
+  #main-features-sect
+    &-img
+      right: 40%
+
+@media only screen and (max-width : 992px)
+  #main-header-sect-rect
+    right: -389px
+    height: 750px
+    width: 600px
+
+  #main-header-sect-dotted-rect
+    top: 30%
+    left: 0%
+
+  #main-header-sect-food-img1
+    top: -37px
+    max-width: 500px
+
+  #main-header-sect-food-img2
+    max-width: 500px
+    top: -75px
+    right: -250px
+
+  .main-diet-plan-feature
+    &-content
+      margin-left: 0
+
+
+@media only screen and (max-width : 768px)
+  #main-header-sect-rect
+    right: -400px
+    height: 100%
+    width: 600px
+
+  #main-header-sect-food-img1
+    max-width: 230px
+    left: 0%
+
+  #main-header-sect-food-img2
+    max-width: 250px
+    top: unset
+    bottom: 35px
+    right: unset
+    left: 60%
+
+  #main-header-sect-dotted-rect
+    height: 220px
+    width: 150px
+
+  .main-diet-plan-feature
+    &-icon
+      width: 55px
+      height: 55px
+      flex: 0 0 90px
+      &::before
+        width: 75px
+        height: 75px
+
+  .main-success-story-item
+    &-img
+      height: 212px
+    &-name
+      padding: 51px 20px
+
+@media only screen and (max-width : 480px)
+  #main-header-sect-rect
+    right: -450px
+
+  #main-header-sect-food-img1
+    left: -10%
+
+  #main-header-sect-food-img2
+    left: 45%
+
+
+@media only screen and (max-width : 350px)
+  #main-header-sect-rect
+    right: -490px

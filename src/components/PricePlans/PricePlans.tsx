@@ -7,16 +7,19 @@ import './PricePlans.sass';
 const PricePlans = () => {
   return (
     <div className='row'>
-      <div className='mb-5 mb-lg-0 col-lg-4'>
+      <div className='mb-5 mb-xl-0 col-xl-4'>
         <div className='price-plans-item'>
-          <h6 className='price-plans-item-period'>6 months</h6>
 
-          <div className='price-plans-item-price'>
-            <span className='price-plans-item-price-text'>6.33€</span>
-            <span className='price-plans-item-price-paycycle'>/ mon</span>
+          <div className="price-plans-item_priceWrap">
+            <h6 className='price-plans-item-period'>6 months</h6>
+
+            <div className='price-plans-item-price'>
+              <span className='price-plans-item-price-text'>6.33€</span>
+              <span className='price-plans-item-price-paycycle'>/ mon</span>
+            </div>
+
+            <h6 className='price-plans-item-price-total'>Together 75.99€</h6>
           </div>
-
-          <h6 className='price-plans-item-price-total'>Together 75.99€</h6>
 
           <div className='price-plans-item-features-list'>
             <div className='price-plans-item-features-list-item'>
@@ -27,27 +30,29 @@ const PricePlans = () => {
             </div>
           </div>
 
-          <Button className='mt-5' color='secondary' outline block>
+          <Button className='price-plans-item-btn' color='secondary' outline block>
             Subscribe
           </Button>
         </div>
       </div>
-      <div className='mb-5 mb-lg-0 col-lg-4'>
-        <div id='price-plans-item-popular' className='price-plans-item'>
-          <span id='price-plans-item-popular-label'>
+      <div className='mb-5 mb-xl-0 col-xl-4'>
+        <div className='price-plans-item price-plans-item-popular'>
+          <span className='price-plans-item-popular-label'>
             <div className='ribbon ribbon-top-right'>
               <span>Popular</span>
             </div>
           </span>
 
-          <h6 className='price-plans-item-period'>12 months</h6>
+          <div className="price-plans-item_priceWrap">
+            <h6 className='price-plans-item-period'>6 months</h6>
 
-          <div className='price-plans-item-price'>
-            <span className='price-plans-item-price-text'>6.33€</span>
-            <span className='price-plans-item-price-paycycle'>/ mon</span>
+            <div className='price-plans-item-price'>
+              <span className='price-plans-item-price-text'>6.33€</span>
+              <span className='price-plans-item-price-paycycle'>/ mon</span>
+            </div>
+
+            <h6 className='price-plans-item-price-total'>Together 75.99€</h6>
           </div>
-
-          <h6 className='price-plans-item-price-total'>Together 75.99€</h6>
 
           <div className='price-plans-item-features-list'>
             <div className='price-plans-item-features-list-item'>
@@ -61,21 +66,23 @@ const PricePlans = () => {
             </div>
           </div>
 
-          <Button className='mt-5' color='secondary' block>
+          <Button className='price-plans-item-btn' color='secondary' block>
             Subscribe
           </Button>
         </div>
       </div>
-      <div className='mb-5 mb-lg-0 col-lg-4'>
+      <div className='mb-5 mb-xl-0 col-xl-4'>
         <div className='price-plans-item'>
-          <h6 className='price-plans-item-period'>3 months</h6>
+          <div className="price-plans-item_priceWrap">
+            <h6 className='price-plans-item-period'>6 months</h6>
 
-          <div className='price-plans-item-price'>
-            <span className='price-plans-item-price-text'>6.33€</span>
-            <span className='price-plans-item-price-paycycle'>/ mon</span>
+            <div className='price-plans-item-price'>
+              <span className='price-plans-item-price-text'>6.33€</span>
+              <span className='price-plans-item-price-paycycle'>/ mon</span>
+            </div>
+
+            <h6 className='price-plans-item-price-total'>Together 75.99€</h6>
           </div>
-
-          <h6 className='price-plans-item-price-total'>Together 75.99€</h6>
 
           <div className='price-plans-item-features-list'>
             <div className='price-plans-item-features-list-item'>
@@ -83,7 +90,7 @@ const PricePlans = () => {
             </div>
           </div>
 
-          <Button className='mt-5' color='secondary' outline block>
+          <Button className='price-plans-item-btn' color='secondary' outline block>
             Subscribe
           </Button>
         </div>

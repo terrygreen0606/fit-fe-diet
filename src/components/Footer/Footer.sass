@@ -7,19 +7,21 @@
   padding: 65px 0 30px
   color: #fff
   background-color: $caribbean-green
-  .mainFooter_logo
-    margin-top: 25px
+  .socials-list
+    display: flex
+    justify-content: flex-end
   &_bottomLine
-    margin-top: 100px
+    margin-top: 60px
   &_logo
     position: relative
     display: inline-block
-    width: 210px
-    height: 210px
+    width: 100%
+    max-width: 253px
+    height: 99px
     background-size: contain
     background-repeat: no-repeat
-    background-position: right center
-    background-image: url('https://fitstg.s3.eu-central-1.amazonaws.com/logo-footer.svg')
+    background-position: center center
+    background-image: url('../../assets/img/logo-footer.svg')
   &_menuList
     display: block
     margin: 0
@@ -43,6 +45,22 @@
       color: #fff
       &:hover
         text-decoration: underline
+  &_company
+    font-weight: bold
+    font-size: 20px
+    line-height: 24px
   &_copyright
     font-size: 16px
     line-height: 20px
+
+
+@media only screen and (max-width : 768px)
+  .mainFooter
+    padding: 33px 0 12px
+    &_menuList, &_logo_wrap
+      margin-bottom: 40px
+
+@media only screen and (max-width : 768px)
+  .mainFooter_logo
+    max-width: 120px
+    height: 50px

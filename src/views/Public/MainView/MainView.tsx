@@ -66,7 +66,7 @@ const MainView = () => {
       <section className='main-features-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-3'>
+            <div className='col-6 col-xxl-3 d-none d-lg-block'>
               <div className='main-features-sect-img-wrap'>
                 <span id='main-features-sect-rect'></span>
                 <span id='main-features-sect-dotted-rect'></span>
@@ -78,7 +78,7 @@ const MainView = () => {
                 />
               </div>
             </div>
-            <div className='col-9'>
+            <div className='col-lg-6 col-xxl-9'>
               <h4 className='sect-title'>
                 Lose weight with quick easy recipes
               </h4>
@@ -148,7 +148,7 @@ const MainView = () => {
           <h4 className='sect-title'>Success stories</h4>
 
           <div className='row'>
-            <div className='col-3'>
+            <div className='col-sm-6 col-xl-3'>
               <div className='main-success-story-item'>
                 <div
                   className='main-success-story-item-img'
@@ -173,7 +173,7 @@ const MainView = () => {
                 </div>
               </div>
             </div>
-            <div className='col-3'>
+            <div className='col-sm-6 col-xl-3'>
               <div className='main-success-story-item'>
                 <div
                   className='main-success-story-item-img'
@@ -198,7 +198,7 @@ const MainView = () => {
                 </div>
               </div>
             </div>
-            <div className='col-3'>
+            <div className='col-sm-6 col-xl-3'>
               <div className='main-success-story-item'>
                 <div
                   className='main-success-story-item-img'
@@ -223,7 +223,7 @@ const MainView = () => {
                 </div>
               </div>
             </div>
-            <div className='col-3'>
+            <div className='col-sm-6 col-xl-3'>
               <div className='main-success-story-item'>
                 <div
                   className='main-success-story-item-img'
@@ -251,7 +251,7 @@ const MainView = () => {
           </div>
         </div>
 
-        <div className='text-center mt-4'>
+        <div className='text-center'>
           <Button color='primary'>
             <LikeIcon className='mr-2' /> Get started
           </Button>
