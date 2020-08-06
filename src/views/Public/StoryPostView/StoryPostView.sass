@@ -1,0 +1,131 @@
+.story-post-page
+  &_post
+    margin-bottom: 70px
+    margin-top: 50px
+    h5,p
+      margin-bottom: 0
+
+      font-size: 24px
+      line-height: 29px
+      color: #000000
+    &-img
+      display: block
+
+      max-width: 550px
+      max-height: 550px
+      margin: auto
+  &_user-info
+    display: inline-block
+    padding: 15px 70px 20px 25px
+    &_stats
+      display: flex
+      align-items: center
+      &-item
+        display: flex
+        align-items: center
+
+        margin-right: 15px
+        font-size: 20px
+        &::before
+          content: ''
+          margin-right: 15px
+          width: 12px
+          height: 12px
+          border-radius: 50%
+          background-color: #cbffce
+        &:first-child::before
+            display: none
+
+  .weight-loss-filter_tabs
+    margin-bottom: 100px
+
+  .suggested-people-slider
+    &_img
+      padding-left: 50px
+    &_controls
+      top: 0
+      right: -68px
+      bottom: unset
+      left: unset
+    &_user-name
+      flex-wrap: wrap
+
+  .register-widget
+    &::after
+      content: ''
+      position: absolute
+      width: 530px
+      height: 510px
+      bottom: 0
+      right: 0
+      transform: translate(100%,50%)
+      background-image: url(https://fitstg.s3.eu-central-1.amazonaws.com/food-serving-img-2.png)
+      background-repeat: no-repeat
+      background-size: cover
+      z-index: 1
+    &_list
+      margin: 20px 0
+    &_button-wrap
+      padding: 0
+
+@media only screen and (max-width: 1600px)
+  .story-post-page
+    .register-widget
+      margin-bottom: 100px
+      &::after
+        right: 0;
+        bottom: -90px;
+        transform: translate(75%, 0%);
+        width: 330px;
+        height: 320px;
+@media only screen and (max-width: 1200px)
+  .story-post-page
+    .suggested-people-slider_controls
+      right: 0
+
+@media only screen and (max-width: 992px)
+  .story-post-page
+    .weight-loss-filter_tabs
+      margin-bottom: 50px
+    .container__wrap 
+      .col-7 + .col-5
+        display: flex
+        flex-direction: column-reverse
+      .col-7, .col-5
+        flex: unset
+        max-width: 100%;
+    &_user-info
+      padding-right: 25px
+      h4
+        font-size: 18px
+        margin-bottom: 0
+      &_stats-item
+        font-size: 14px;
+    &_post
+      margin-bottom: 50px
+      margin-top: 30px
+      h5,p
+        font-size: 18px;
+        line-height: 22px;
+    .suggested-people-slider_controls
+      right: -64px
+      
+@media only screen and (max-width: 768px)
+  .story-post-page
+    .suggested-people-slider
+      margin-bottom: 0px
+      &_img
+       padding-right: 25px
+      &_user
+        height: 84px;
+        transform: translateY(-50%);
+        padding: 10px 10px 10px 0px;
+        
+        &-name
+          margin-bottom: 0
+      &_controls
+        right: -30px
+
+
+          
+  
