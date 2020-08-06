@@ -1,7 +1,7 @@
 import React from 'react';
-import './AboutTreesView.sass';
+import './TreesView.sass';
 
-const AboutTreesView = () => (
+const TreesView = () => (
   <div className='trees'>
     <div className='trees__goal'>
       <div className='container'>
@@ -107,7 +107,7 @@ const AboutTreesView = () => (
         <p>
           Teenusepakkuja töötleb kasutaja isikuandmeid järgmistel eesmärkidel:
         </p>
-        <ul className='trees__description-list'>
+        <ul>
           <li>
             täita kasutaja ees võetud kohustusi teenuse osutamisel, koostades
             kasutaja soovidest ja näitajatest lähtuvaid toitumis- ja
@@ -172,7 +172,7 @@ const AboutTreesView = () => (
           kasutajal õigus pöörduda kaebusega Andmekaitseinspektsiooni poole.
         </p>
         <h4>AUTORIÕIGUSED</h4>
-        <ul className='trees__description-list'>
+        <ul>
           <li>
             Kogu fitlap.ee veebikeskkonnas olev informatsioon on kaitstud
             autoriõigustega.
@@ -215,4 +215,4 @@ const AboutTreesView = () => (
   </div>
 );
 
-export default AboutTreesView;
+export default TreesView;
