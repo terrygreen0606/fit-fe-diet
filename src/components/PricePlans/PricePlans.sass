@@ -1,15 +1,29 @@
 @import '../../assets/sass/_vars'
 
+
 .price-plans-item
+  display: flex
+  flex-wrap: wrap
   padding: 30px 45px 40px
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08)
   border-radius: 5px
+
+  &-popular
+    position: relative
+    padding-top: 100px
+    border: 2px solid $steel-blue
+
+  &_priceWrap
+    flex: 0 0 100%
 
   &-period
     margin-bottom: 95px
     font-weight: bold
     font-size: 32px
     line-height: 39px
+  
+  &-btn
+    margin-top: 45px
 
   &-price
     &-text
@@ -35,6 +49,7 @@
 
   &-features-list
     margin-top: 72px
+    flex: 0 0 100%
     
     &-item
       position: relative
@@ -59,40 +74,66 @@
         background-position: center center
         background-size: 50%
 
-@media only screen and (max-width: 768px)
-  .price
-    &-plans
-      &-item
-        padding: 30px 20px
 
-        &-period
-          margin-bottom: 20px
-          font-size: 20px
+@media only screen and (max-width: 1200px)
+  .price-plans-item
+    max-width: 500px
+    margin: 0 auto
+    padding: 30px 20px
+
+    &-popular
+      padding-top: 70px
+      .price-plans-item-features-list
+        padding-right: 70px
+
+    .ribbon
+      &-top-right
+        right: -11px
+  
+      &::before
+        left: 42px
+
+      &::after
+        bottom: 41px
+
+      span
+        padding: 20px 0
+        font: 900 25px/32px 'Montserrat', sans-serif
+
+    &_priceWrap
+      order: 2
+      text-align: center
+
+    &-period
+      margin-bottom: 0px
+      font-size: 20px
+    
+    &-price
+      &-text
+        font-size: 40px
+        line-height: 1.5
+      
+      &-paycycle
+        top: 0
+      
+      &-total
+        font-size: 24px
+        line-height: 1.5
+      
+    &-features-list
+      margin-top: 0
+      margin-bottom: 30px
+      order: 1
+
+      &-item 
+        font-size: 16px
+
+        &::before
+          top: 3px
         
-        &-price
-          display: flex
-          align-items: center
+        &:not(:last-child)
+          margin-bottom: 20px
 
-          &-text
-            font-size: 40px
-            line-height: 1.5
-          
-          &-paycycle
-            top: 0
-          
-          &-total
-            font-size: 24px
-            line-height: 1.5
-          
-        &-features
-          &-list
-            margin-top: 30px
-
-            &-item 
-              font-size: 16px
-
-              &::before
-                top: 3px
-              
-              &:not(:last-child)
-                margin-bottom: 20px
+    &-btn
+      order: 3
+      margin-top: 12px
