@@ -1,0 +1,70 @@
+@import '../../assets/sass/vars'
+
+
+body
+  &.mobile-menu-opened
+    max-height: 100%
+    overflow: hidden
+    padding-right: 17px
+    .mobile-side-menu
+      left: 0
+      &-backdrop
+        display: block
+    .mainContentWrapper
+      transform: translateX(350px)
+    .mobile-auth-btn  
+      display: none
+
+.mobile-side-menu
+  position: absolute
+  top: 100px
+  left: -350px
+  width: 350px
+  height: calc(100% - 100px)
+  z-index: 999
+  padding: 100px 80px
+  background-color: $caribbean-green
+  color: #fff
+  transition: left .35s ease
+  &-close-icon
+    position: absolute
+    top: 20px
+    right: 20px
+    width: 25px
+    height: 25px
+    padding: 5px
+    cursor: pointer
+    fill: #fff
+    &:hover
+      fill: $luminous-red
+  &-backdrop
+    display: none
+    position: fixed
+    top: 100px
+    left: 0
+    right: 0
+    width: 100%
+    height: calc(100% - 100px)
+    background-color: rgba(0, 0, 0, 0.3)
+    cursor: pointer
+    z-index: 998
+    transition: left .35s ease
+  .mobile-menu-list
+    margin-bottom: 80px
+
+.mobile-menu-list
+  margin: 0
+  padding: 0
+  list-style-type: none
+  &-item
+    padding: 5px 0
+    font-size: 24px
+    line-height: 50px
+    color: #fff
+    border-bottom: 2px solid transparent
+    cursor: pointer
+    &:hover, &-active
+      border-bottom-color: #fff
+  li
+    &:not(:last-child)
+      margin-bottom: 35px

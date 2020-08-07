@@ -1,11 +1,16 @@
 import React from 'react';
 
+// Components
+import Footer from 'components/Footer';
+
 import './MainContent.sass';
 
 const MainContent = ({ children }) => (
-  <main className="mainContentWrapper">
+  <div className="mainContentWrapper">
     {children}
-  </main>
+
+    <Footer />
+  </div>
 );
 
 export default MainContent;
