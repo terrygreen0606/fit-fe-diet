@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-// Components
 import WeekWorkout from "components/WeekWorkout";
 import TrainingCard from "components/TrainingCard";
 import TodayActivities from "components/TodayActivities";
@@ -13,8 +12,6 @@ import {ReactComponent as CalendarIcon} from "assets/img/icons/calendar-icon.svg
 import {ReactComponent as RewardImage} from "assets/img/reward-img.svg";
 import {ReactComponent as DumbbellIcon} from "assets/img/icons/dumbbell-icon.svg";
 import {ReactComponent as WeighScaleIcon} from "assets/img/icons/weigh-scale-icon.svg";
-
-import useWindowSize from "components/hooks/useWindowSize";
 
 import './TrainingsView.sass';
 
@@ -64,7 +61,6 @@ const TrainingsView: React.FC = () => {
   const [level, setLevel] = useState("Elementary level");
   const [weekWorkout, setWeekWorkout] = useState("wed");
   const [todayActivities, setTodayActivities] = useState(["Add a workout"]);
-  const { width } = useWindowSize();
 
   return (
     <>
