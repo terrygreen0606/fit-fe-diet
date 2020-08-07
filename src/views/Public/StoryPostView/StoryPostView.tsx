@@ -1,7 +1,6 @@
 import React from 'react';
 
 import PricePlans from 'components/PricePlans';
-import WeightLossFilters from 'components/WeightLossFilters';
 import StoryPostSlider from './StoryPostSlider';
 import TrialBanner from 'components/TrialBanner';
 
@@ -14,7 +13,19 @@ const StoryPostView = () => {
       <section className='story-post-page'>
         
         <div className='container'>
-          <WeightLossFilters />
+          <div>
+            <h3 className='weight-loss-filter_title'>
+              Successful weight loss
+            </h3>
+            <ul className='weight-loss-filter_tabs'>
+              <li className='weight-loss-filter_tabs-item active'>
+                Everything
+              </li>
+              <li className='weight-loss-filter_tabs-item'>Up to 10 kg</li>
+              <li className='weight-loss-filter_tabs-item'>10 - 20 kg</li>
+              <li className='weight-loss-filter_tabs-item'>more 20 kg</li>
+            </ul>
+          </div>
         </div>
 
         <div className='container container__wrap'>
