@@ -1,0 +1,389 @@
+.story-post-page
+  &_post
+    margin-bottom: 70px
+    margin-top: 50px
+    h5,p
+      margin-bottom: 0
+
+      font-size: 24px
+      line-height: 29px
+      color: #000000
+    img
+      display: block
+
+      max-width: 550px
+      max-height: 550px
+      margin: auto
+  &_user-info
+    display: inline-block
+    padding: 15px 70px 20px 25px
+    &_stats
+      display: flex
+      align-items: center
+      &-item
+        display: flex
+        align-items: center
+
+        margin-right: 15px
+
+        font-size: 20px
+        line-height: 1.4
+        &::before
+          content: ''
+          margin-right: 15px
+          width: 12px
+          height: 12px
+          border-radius: 50%
+          background-color: #cbffce
+        &:first-child::before
+            display: none
+
+  .weight-loss-filter_tabs
+    margin-bottom: 100px
+
+  .trial-banner
+    &_list
+      margin: 20px 0 70px
+    &_button-wrap
+      padding: 0
+  &_tariff-title
+    margin-bottom: 130px
+
+    position: relative
+
+    text-align: center
+    font-size: 34px
+    font-weight: bold
+    &::before
+      transform: translateX(-50%)
+      width: 184px
+      height: 6px
+
+      position: absolute
+      bottom: -30px
+      left: 50%
+
+      content: ''
+      background-color: #106EE8
+
+.story-post-slider
+  display: flex
+
+  position: relative
+  z-index: 2
+  &-slide
+    position: absolute
+    opacity: 0
+    visibility: hidden
+    transition: 0.2s opacity ease
+    &.active 
+      position: initial
+      opacity: 1
+      visibility: visible
+
+  &_img
+    display: block
+    max-width: 100%
+    height: auto
+    padding-left: 50px
+  &_user
+    display: inline-block
+    padding: 30px 20px 40px
+    transform: translateY(-50%)
+    width: 85%
+    height: 164px
+
+    background: #fff
+
+    text-align: left
+    &-name
+      display: flex
+      align-items: center
+      flex-wrap: wrap
+      h4
+        margin-bottom: 10px
+        margin-right: 25px
+      &_rate
+        display: flex
+
+        padding: 0 10px
+        margin-bottom: 10px
+        svg
+          margin-right: 5px
+    &-place
+      display: flex
+      align-items: center
+      margin: 10px 0px 20px
+      svg
+        margin-right: 5px
+        min-height: 20px
+        min-width: 15px
+        height: auto
+        width: auto
+      p
+        margin: 0
+
+        font-weight: bold
+        font-size: 14px
+        line-height: 17px
+        color: #000000
+    &-info
+      display: flex
+      align-items: center
+      &_item
+        display: flex
+        align-items: center
+
+        margin-right: 15px
+
+        font-size: 20px
+        &::before
+          content: ''
+          margin-right: 15px
+          width: 12px
+          height: 12px
+
+          border-radius: 50%
+          background-color: #cbffce
+        &:first-child::before
+            display: none
+  &_controls
+    display: flex
+    align-items: center
+
+    position: absolute
+    bottom: 210px
+    left: calc(80% - 42px)
+    &-button
+      display: flex
+      align-items: center
+      justify-content: center
+
+      margin: 5px 15px
+      padding: 0
+      width: 30px
+      height: 30px
+
+      border-radius: 50%
+      border: none
+      background-color: #fff
+
+      transition: 0.2s background-color ease
+      cursor: pointer
+      &:hover
+        background-color: #F0F0F0
+        svg
+          path
+            fill: #919BB3
+    &-icon
+      min-width: 7px
+      min-height: 14px
+      height: auto
+      width: auto
+
+      transition: 0.2s
+      path
+        fill: #E1E1E1
+
+.weight-loss-filter
+  &_title
+    margin-bottom: 40px
+    
+    font-size: 34px
+    font-weight: bold
+  &_tabs 
+    display: flex
+    align-items: center
+
+    margin: 0
+    margin-bottom: 160px
+    padding-left: 0
+
+    list-style-type: none
+    &-item 
+      margin-left: 30px
+      padding: 5px 0 5px 30px
+
+      position: relative
+
+      border-left: 1px solid #000
+
+      font-size: 32px
+      font-weight: bold
+      cursor: pointer
+      &:first-child 
+        margin-left: 0
+        padding-left: 0
+        
+        border-left: none
+        &::before 
+          width: 100%
+          left: 0
+
+      &::before 
+        width: calc(100% - 30px)
+        height: 6px
+
+        position: absolute
+        bottom: -22px
+        left: 30px
+
+        
+        background: #106EE8
+        opacity: 0
+
+        content: ''
+        visibility: hidden
+        transition: 0.2s opacity ease
+
+      &.active::before,
+      &:hover::before 
+        opacity: 1
+        visibility: visible
+
+.weight-loss-filter
+  &_title
+    margin-bottom: 40px
+    
+    font-size: 34px
+    font-weight: bold
+  &_tabs 
+    display: flex
+    align-items: center
+
+    margin: 0
+    margin-bottom: 160px
+    padding-left: 0
+
+    list-style-type: none
+    &-item 
+      margin-left: 30px
+      padding: 5px 0 5px 30px
+
+      position: relative
+
+      border-left: 1px solid #000
+
+      font-size: 32px
+      font-weight: bold
+      cursor: pointer
+      &:first-child 
+        margin-left: 0
+        padding-left: 0
+        
+        border-left: none
+        &::before 
+          width: 100%
+          left: 0
+
+      &::before 
+        width: calc(100% - 30px)
+        height: 6px
+
+        position: absolute
+        bottom: -22px
+        left: 30px
+
+        
+        background: #106EE8
+        opacity: 0
+
+        content: ''
+        visibility: hidden
+        transition: 0.2s opacity ease
+
+      &.active::before,
+      &:hover::before 
+        opacity: 1
+        visibility: visible
+
+@media only screen and (max-width: 1600px)
+  .story-post-page
+    .trial-banner
+      margin-bottom: 100px
+
+@media only screen and (max-width: 991px)
+  .story-post-page
+    .container__wrap 
+      .col-7 + .col-5
+        display: flex
+        flex-direction: column-reverse
+      .col-7, .col-5
+        flex: unset
+        max-width: 100%
+    &_user-info
+      padding-right: 25px
+      h4
+        margin-bottom: 5px
+
+        font-size: 18px
+        line-height: 1.4
+      &_stats-item
+        font-size: 14px
+    &_post
+      margin-bottom: 50px
+      margin-top: 30px
+      h5,p
+        font-size: 18px
+        line-height: 22px
+    &_tariff-title
+      margin-bottom: 70px
+
+      text-align: left
+      font-size: 24px
+      &::before
+        left: 0
+        transform: none
+  .story-post-slider_user-name
+    h4
+      font-size: 20px
+  .story-post-slider_user-info_item
+    font-size: 14px
+  .story-post-slider_controls
+    left: calc(80% - 90px)
+
+.weight-loss-filter_tabs
+  margin-bottom: 50px
+  &-item 
+    font-size: 20px
+
+
+@media only screen and (max-width: 768px)
+  .story-post-page
+    &_tariff-title
+      font-size: 18px
+    &_post img
+      max-width: 100%
+  .story-post-slider
+    margin-bottom: 60px
+    margin-top: 50px
+    &_user
+      padding: 10px 30px 10px 0px
+      &-name
+        margin-bottom: 20px
+        font-size: 18px
+      &-name_rate, &-place
+        display: none
+    &_controls
+      left: calc(80% - 20px)
+      &-button
+        margin: 5px 10px
+      &-icon
+        width 6px
+        height 12px
+  .weight-loss-filter
+    &_title
+      margin-bottom: 20px
+
+      font-size: 18px
+      line-height: 22px
+    &_tabs-item  
+      margin-left: 10px
+      padding-left: 10px
+
+      font-size: 16px
+      
+  @media only screen and (max-width: 400px)
+    .story-post-slider_controls
+      left: unset
+      right: 5px

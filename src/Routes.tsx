@@ -19,6 +19,7 @@ import TestimonialsView from 'views/Public/TestimonialsView';
 import NotFound from './views/NotFound';
 import TreesView from 'views/Public/TreesView';
 import TextPageView from 'views/Public/TextPageView';
+import StoryPostView from 'views/Public/StoryPostView';
 
 const Routes = () => (
   <Switch>
@@ -107,6 +108,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <TextPageView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/story-post'
+      component={(props: any) => (
+        <Layout {...props}>
+          <StoryPostView {...props} />
         </Layout>
       )}
       exact

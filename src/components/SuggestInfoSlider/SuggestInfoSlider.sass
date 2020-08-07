@@ -1,0 +1,100 @@
+.suggest-info-slider
+  display: flex
+
+  margin-bottom: 20px
+
+  position: relative
+  z-index: 2
+  &-slide
+    position: absolute
+    opacity: 0
+    visibility: hidden
+    transition: 0.2s opacity ease
+    &.active
+      position: initial
+      opacity: 1
+      visibility: visible
+  &_img
+    max-width: 100%
+    height: auto
+  &_description
+    width: 80%
+    height: 164px
+    padding: 40px 120px 50px 30px
+
+    position: absolute
+    bottom: 0
+    left: 0
+
+    background: #fff
+    &-title
+      margin-bottom: 20px
+    &-wrap-button
+      display: flex
+      justify-content: flex-end
+    &-button
+      color: #0fc1a1
+      font-size: 18px
+      font-weight: bold
+      text-decoration: none
+      border-bottom: 2px solid
+      transition: 0.2s border-bottom ease
+    
+  &_controls
+    display: flex
+    align-items: center
+
+    position: absolute
+    bottom: 106px
+    left: calc(80% - 126px)
+    &-button
+      display: flex
+      align-items: center
+      justify-content: center
+
+      padding: 16px 25px
+
+      border: none
+      background-color: transparent
+      transition: 0.2s background-color ease
+      cursor: pointer
+      &:hover
+        background-color: #106ee8
+        svg
+          path
+            fill: #fff
+    &-icon
+      width: 13px
+      height: 26px
+
+      transition: 0.2s
+      path
+        fill: #106ee8
+
+@media only screen and (max-width: 991px)
+  .suggest-info-slider_user-name
+    h4
+      font-size: 20px
+  .suggest-info-slider_user-info_item
+    font-size: 14px
+
+@media only screen and (max-width: 768px)
+  .suggest-info-slider
+    margin-bottom: 60px
+    &_user
+      height: 84px
+      transform: translateY(50%)
+      padding: 10px 60px 10px 0px
+      &-name
+        margin-bottom: 20px
+        font-size: 18px
+      &-name_rate, &-place
+        display: none
+    &_controls
+      bottom: 12px
+      left: calc(80% - 60px)
+      &-button
+        padding: 9px 12px
+      &-icon
+        width: 6px
+        height: 12px
