@@ -5,7 +5,7 @@ import './TrainingCard.sass';
 type TrainingCardProps = {
   image: string,
   text: string,
-  time: string,
+  time: number,
 };
 
 const TrainingCard = ({ image, text, time }: TrainingCardProps) => {
@@ -13,7 +13,7 @@ const TrainingCard = ({ image, text, time }: TrainingCardProps) => {
     <div className="training-card">
       <div
         className="training-card-image"
-        style={{ backgroundImage: image }}
+        style={{ backgroundImage: `url(${image})` }}
       />
 
       <div className="training-card-description">
@@ -22,7 +22,7 @@ const TrainingCard = ({ image, text, time }: TrainingCardProps) => {
 
       <div className="training-card-bottom">
         <span className="training-card-time">
-          {time}
+          {time} minutit
         </span>
       </div>
     </div>

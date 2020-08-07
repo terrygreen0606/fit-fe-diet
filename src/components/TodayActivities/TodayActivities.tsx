@@ -8,7 +8,7 @@ type TodayActivitiesProps = {
     text: string,
   }[],
   todayActivities: Array<string>,
-  setTodayActivities: React.Dispatch<React.SetStateAction<Array<string>>>,
+  setTodayActivities: Function,
 };
 
 const TodayActivities = ({ items, todayActivities, setTodayActivities}: TodayActivitiesProps) => {

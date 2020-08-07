@@ -1,11 +1,5 @@
 @import '../../assets/sass/vars'
 
-.week-workout-start-btn
-  @media (max-width: 768px)
-    width: calc(100% - 30px)
-    font-size: 16px
-    line-height: 20px
-
 .week-workout
   display: flex
   flex-wrap: wrap
@@ -13,27 +7,25 @@
     flex-wrap: nowrap
     overflow-x: scroll
 
-  input:checked + .week-workout-item
-    background: #69D9C4
-    color: #ffffff
-    font-weight: bold
-    @media (max-width: 768px)
-      font-weight: normal
-
   &-item
+    display: flex
+    flex-direction: column
     flex: 0 0 82px
     cursor: pointer
     background: #ffffff
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
     border-radius: 5px
     padding: 20px 0
-    margin-bottom: 15px
+    margin-bottom: 15px !important
     text-align: center
     @media (max-width: 768px)
       padding: 12px 0
       flex: 0 0 64px
 
-    &:hover
+    .radiomark
+      display: none
+
+    &:hover, &.active
       background: #69D9C4
       color: #ffffff
       font-weight: bold
