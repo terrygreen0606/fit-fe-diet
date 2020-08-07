@@ -8,8 +8,8 @@ const PricePlans = () => {
   return (
     <div className='row'>
       <div className='mb-5 mb-xl-0 col-xl-4'>
-        <div className='price-plans-item'>
 
+        <div className='price-plans-item'>
           <div className="price-plans-item_priceWrap">
             <h6 className='price-plans-item-period'>6 months</h6>
 
@@ -34,8 +34,10 @@ const PricePlans = () => {
             Subscribe
           </Button>
         </div>
+
       </div>
       <div className='mb-5 mb-xl-0 col-xl-4'>
+
         <div className='price-plans-item price-plans-item-popular'>
           <span className='price-plans-item-popular-label'>
             <div className='ribbon ribbon-top-right'>
@@ -70,8 +72,10 @@ const PricePlans = () => {
             Subscribe
           </Button>
         </div>
+
       </div>
       <div className='mb-5 mb-xl-0 col-xl-4'>
+
         <div className='price-plans-item'>
           <div className="price-plans-item_priceWrap">
             <h6 className='price-plans-item-period'>6 months</h6>
@@ -94,6 +98,7 @@ const PricePlans = () => {
             Subscribe
           </Button>
         </div>
+
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ const Header = (props: any) => {
               <span className="mainHeader_logo"></span>
 
             </div>
-            <div className="col-10">
+            <div className="col-10 text-right">
 
               <span className="header-controls">
                 <Button className="mobile-auth-btn" color="primary" outline>Log in</Button>
