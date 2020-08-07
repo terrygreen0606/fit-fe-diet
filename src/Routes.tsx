@@ -7,28 +7,20 @@ import AuthRoute from './components/common/AuthRoute';
 import BasePage from 'components/hoc/BasePage';
 import Layout from 'components/hoc/Layout';
 import LoginView from './views/LoginView';
-import MainView from 'views/Public/MainView';
 import NutritionPlanView from './views/NutritionPlanView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
 import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
-import ContactsView from 'views/Public/ContactsView';
 import ChangeMealPlanView from 'views/ChangeMealPlanView';
-import TestimonialsView from 'views/Public/TestimonialsView';
 import NotFound from './views/NotFound';
-import TreesView from 'views/Public/TreesView';
-import TextPageView from 'views/Public/TextPageView';
-import StoryPostView from 'views/Public/StoryPostView';
 
 const Routes = () => (
   <Switch>
     <PrivateRoute
       path='/'
       component={(props: any) => (
-        <Layout {...props}>
-          <MainView {...props} />
-        </Layout>
+        <Layout {...props}></Layout>
       )}
       exact
     />
@@ -84,60 +76,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path='/contacts'
-      component={(props: any) => (
-        <Layout {...props}>
-          <ContactsView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
-      path='/testimonials'
-      component={(props: any) => (
-        <Layout {...props}>
-          <TestimonialsView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
-      path='/text-page'
-      component={(props: any) => (
-        <Layout {...props}>
-          <TextPageView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
-      path='/story-post'
-      component={(props: any) => (
-        <Layout {...props}>
-          <StoryPostView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
       path='/plan/change-meal'
       component={(props: any) => (
         <Layout {...props}>
           <ChangeMealPlanView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
-      path='/trees'
-      component={(props: any) => (
-        <Layout {...props}>
-          <TreesView {...props} />
         </Layout>
       )}
       exact
