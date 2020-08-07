@@ -13,14 +13,16 @@ import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
 import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
-import ChangeMealPlanView from './views/ChangeMealPlanView';
+import ChangeMealPlanView from 'views/ChangeMealPlanView';
 import NotFound from './views/NotFound';
 
 const Routes = () => (
   <Switch>
     <PrivateRoute
       path='/'
-      component={(props: any) => <Layout {...props} />}
+      component={(props: any) => (
+        <Layout {...props}></Layout>
+      )}
       exact
     />
 

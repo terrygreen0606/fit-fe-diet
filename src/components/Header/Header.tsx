@@ -8,7 +8,14 @@ import Button from 'components/common/Forms/Button';
 
 import './Header.sass';
 
+import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon.svg';
+
 const Header = (props: any) => {
+
+  const toggleSideMenu = () => {
+    document.body.classList.toggle('mobile-menu-opened');
+  };
+
   return (
     <>
       <header className="mainHeader">
@@ -21,6 +28,13 @@ const Header = (props: any) => {
             </div>
             <div className="col-10 text-right">
 
+              <span className="header-controls">
+                <Button className="mobile-auth-btn" color="primary" outline>Log in</Button>
+                <Button className="mobile-auth-btn ml-2 mr-4" color="primary">Sign up</Button>
+
+                <BurgerIcon className="menu-toggle-icon" onClick={e => toggleSideMenu()} />
+              </span>
+
               <nav className="mainHeader_menuList">
                 <a href="/trainings" className="mainHeader_menuList_item">Trainings</a>
                 <a href="/" className="mainHeader_menuList_item">Retseptid</a>
@@ -32,10 +46,6 @@ const Header = (props: any) => {
                   <Link to="/login" className="mainHeader_menuList_item">Login</Link>
                 )}
               </nav>
-
-              {!props.isAuthenticated ? (
-                <Button className="ml-5" color="primary">Register</Button>
-              ) : null}
 
             </div>
           </div>
