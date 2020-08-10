@@ -8,6 +8,7 @@ import BasePage from 'components/hoc/BasePage';
 import Layout from 'components/hoc/Layout';
 import LoginView from './views/LoginView';
 import NutritionPlanView from './views/NutritionPlanView';
+import TrainingsView from './views/TrainingsView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
 import CreateRecipeView from './views/CreateRecipeView';
@@ -21,6 +22,16 @@ const Routes = () => (
       path='/'
       component={(props: any) => (
         <Layout {...props}></Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/trainings'
+      component={(props: any) => (
+        <Layout {...props}>
+          <TrainingsView {...props} />
+        </Layout>
       )}
       exact
     />

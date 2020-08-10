@@ -1,0 +1,48 @@
+@import '../../assets/sass/vars'
+
+.week-workout
+  display: flex
+  flex-wrap: wrap
+  @media (max-width: 768px)
+    flex-wrap: nowrap
+    overflow-x: scroll
+
+  input
+    display: none
+
+  &-item
+    display: flex
+    flex-direction: column
+    flex: 0 0 82px
+    min-width: 82px
+    cursor: pointer
+    background: #ffffff
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+    border-radius: 5px
+    padding: 20px 0
+    margin-bottom: 15px !important
+    margin-right: 30px
+    text-align: center
+    @media (max-width: 768px)
+      padding: 12px 0
+      flex: 0 0 64px
+      min-width: 64px
+
+    &:hover, &.active
+      background: #69D9C4
+      color: #ffffff
+      font-weight: bold
+      @media (max-width: 768px)
+        font-weight: normal
+
+    &.disabled
+      opacity: .6
+      cursor: default
+
+    &-number
+      margin-bottom: 12px
+      font-weight: bold
+      font-size: 26px
+      @media (max-width: 768px)
+        font-weight: normal
+        font-size: 18px
