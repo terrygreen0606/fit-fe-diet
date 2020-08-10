@@ -9,3 +9,5 @@ export * from './ingredients';
 export * from './recipe';
 export * from './imageCreate';
 export * from './uploadImageAWS';
+export * from './userUpdateProfile';
+export * from './fetchUserProfile';
