@@ -27,6 +27,7 @@ const TodayActivities = ({ items, todayActivities, onChange, type, name }: Today
                 value={item.value}
                 onChange={onChange}
                 checked={todayActivities.includes(item.value)}
+                disabled={item.disabled}
               />
               <TodayActivityItem
                 active={todayActivities.includes(item.value)}

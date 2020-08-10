@@ -24,11 +24,13 @@ const WeekDays = ({ days, onChange, dayWorkout, type }: WeekDaysProps) => {
                 value={day.value}
                 onChange={onChange}
                 checked={day.value === dayWorkout}
+                disabled={day.disabled}
               />
               <WeekDayItem
                 number={day.number}
                 value={day.value}
                 active={day.value === dayWorkout}
+                disabled={day.disabled}
               />
             </label>
           )

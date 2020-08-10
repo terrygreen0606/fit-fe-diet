@@ -17,6 +17,7 @@ const TodayActivityItem = (props: ItemProps) => {
     <div
       className={classnames("today-activities-activity-card", {
         active: props.active,
+        disabled: props.disabled,
       })}
     >
       <span className="today-activities-activity-card-checkmark"/>

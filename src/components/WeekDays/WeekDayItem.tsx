@@ -14,6 +14,7 @@ const WeekDayItem = (props: ItemProps) => {
     <div
       className={classnames("week-workout-item", {
         active: props.active,
+        disabled: props.disabled,
       })}
     >
       <div className="week-workout-item-number">
