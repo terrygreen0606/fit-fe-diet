@@ -95,7 +95,7 @@ const TrainingsView: React.FC = (props: any) => {
                       key={index}
                       image={WomanGymImage}
                       text="Intermediate level 1"
-                      time={16}
+                      time={t("common.minutes", { number: 16 })}
                     />
                   )}
                 </div>

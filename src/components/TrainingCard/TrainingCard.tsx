@@ -22,7 +22,7 @@ const TrainingCard = ({ image, text, time }: TrainingCardProps) => {
 
       <div className="training-card-bottom">
         <span className="training-card-time">
-          {time} minutit
+          {time}
         </span>
       </div>
     </div>
