@@ -1,58 +1,42 @@
-import React, { FunctionComponent, SVGProps } from 'react';
+import React from 'react';
+
+import TodayActivityItem, { ItemProps } from "./TodayActivityItem";
 
 import './TodayActivities.sass';
 
-type TodayActivitiesProps = {
-  items: {
-    Icon: FunctionComponent<SVGProps<SVGSVGElement>>,
-    text: string,
-  }[],
-  todayActivities: Array<string>,
-  setTodayActivities: Function,
-};
+type TodayActivityType = "radio" | "checkbox";
 
-const TodayActivities = ({ items, todayActivities, setTodayActivities}: TodayActivitiesProps) => {
+interface TodayActivitiesProps {
+  items: Array<ItemProps>,
+  todayActivities: Array<string>,
+  onChange: (any) => void,
+  type?: TodayActivityType,
+}
+
+const TodayActivities = ({ items, todayActivities, onChange, type }: TodayActivitiesProps) => {
   const onInputChange = e => {
     e.persist();
     e.target.checked
-      ? setTodayActivities(prev => [...prev, e.target.value])
-      : setTodayActivities(prev =>
-        prev.indexOf(e.target.value) === prev.length - 1
-          ? [...prev.slice(0, prev.indexOf(e.target.value))]
-          : [...prev.slice(0, prev.indexOf(e.target.value)), ...prev.slice(prev.indexOf(e.target.value + 1))]
-      )
+      ? onChange(prev => [...prev, e.target.value])
+      : onChange(prev =>
+        [...prev.slice(0, prev.indexOf(e.target.value)), ...prev.slice(prev.indexOf(e.target.value) + 1)])
   };
 
   return (
     <>
       <h4 className="mt-5 mb-4">Today's activities</h4>
-
       <div className="today-activities-activity-list">
-
         {
           items.map(item => (
-            <React.Fragment key={item.text}>
+            <label key={item.text}>
               <input
-                type="checkbox"
-                id={item.text}
+                type={type}
                 value={item.text}
-                name="activities"
-                onChange={e => onInputChange(e)}
-                hidden
-                defaultChecked={todayActivities.includes(item.text)}
+                onChange={onInputChange}
+                checked={todayActivities.includes(item.text)}
               />
-              <label htmlFor={item.text} className="today-activities-activity-card card-bg">
-                <span className="today-activities-activity-card-checkmark"/>
-
-                <span className="today-activities-activity-card-icon-wrap">
-                <item.Icon className="today-activities-activity-card-icon" />
-              </span>
-
-                <h6 className="today-activities-activity-card-title">
-                  {item.text}
-                </h6>
-              </label>
-            </React.Fragment>
+              <TodayActivityItem icon={item.icon} text={item.text} todayActivities={todayActivities} />
+            </label>
           ))
         }
       </div>

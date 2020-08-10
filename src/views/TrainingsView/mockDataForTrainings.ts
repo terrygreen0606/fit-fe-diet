@@ -3,56 +3,42 @@ import { ReactComponent as WeighScaleIcon } from "assets/img/icons/weigh-scale-i
 
 export const dataForWeekWorkout = [
   {
-    number: 27,
+    number: "27",
     dayOfWeek: "mon",
-    type: "radio",
-    defaultChecked: false,
   },
   {
-    number: 28,
+    number: "28",
     dayOfWeek: "tus",
-    type: "radio",
-    defaultChecked: false,
   },
   {
-    number: 29,
+    number: "29",
     dayOfWeek: "wed",
-    type: "radio",
-    defaultChecked: true,
   },
   {
-    number: 30,
+    number: "30",
     dayOfWeek: "thu",
-    type: "radio",
-    defaultChecked: false,
   },
   {
-    number: 31,
+    number: "31",
     dayOfWeek: "fri",
-    type: "radio",
-    defaultChecked: false,
   },
   {
-    number: 0o1,
+    number: "01",
     dayOfWeek: "sat",
-    type: "radio",
-    defaultChecked: false,
   },
   {
-    number: 0o2,
+    number: "02",
     dayOfWeek: "sun",
-    type: "radio",
-    defaultChecked: false,
   },
 ];
 
 export const dataForTodayActivities = [
   {
-    Icon: DumbbellIcon,
+    icon: DumbbellIcon,
     text: "Add a workout",
   },
   {
-    Icon: WeighScaleIcon,
+    icon: WeighScaleIcon,
     text: "Add today's weight",
   },
 ];

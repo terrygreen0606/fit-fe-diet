@@ -26,7 +26,7 @@
 @import "text"
 
 
-*, *::before, *::after 
+*, *::before, *::after
   box-sizing: border-box
 
 *::-webkit-input-placeholder
@@ -235,6 +235,15 @@ b
         border-right: 1px solid #000
     &:hover, &.active
       border-bottom-color: $steel-blue
+    @media (max-width: 768px)
+      font-size: 18px
+      line-height: 22px
+      padding-bottom: 5px
+      &:not(:last-child)
+        margin-right: 30px
+        &::after
+          right: -15px
+          height: calc(100% - 5px)
 
 
 fieldset
@@ -426,7 +435,7 @@ ul.list-group
     display: inline-block
     margin: 6px
 
-.social-link 
+.social-link
   position: relative
   display: flex
   align-items: center

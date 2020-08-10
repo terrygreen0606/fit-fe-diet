@@ -44,7 +44,7 @@ const TrainingsView: React.FC = () => {
             <div className="training-plan-card-list-col training-plan-list">
               <div className="row">
 
-                <ol className="page-tabs">
+                <ol className="page-tabs mx-4 mx-md-0">
                   {
                     tabs.map(tab => (
                       <li
@@ -63,8 +63,9 @@ const TrainingsView: React.FC = () => {
 
                 <WeekDays
                   days={dataForWeekWorkout}
-                  setWeekWorkout={setWeekWorkout}
-                  weekWorkout={weekWorkout}
+                  dayWorkout={weekWorkout}
+                  onChange={setWeekWorkout}
+                  type="radio"
                 />
 
                 <Button
@@ -91,7 +92,8 @@ const TrainingsView: React.FC = () => {
               <TodayActivities
                 items={dataForTodayActivities}
                 todayActivities={todayActivities}
-                setTodayActivities={setTodayActivities}
+                onChange={setTodayActivities}
+                type="checkbox"
               />
               <div className="training-plan-adherence-diet-card card-bg mt-5">
                 <h4 className="training-plan-adherence-diet-card-title">Adherence to a diet plan</h4>

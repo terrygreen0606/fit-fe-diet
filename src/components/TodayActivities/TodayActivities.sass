@@ -4,13 +4,37 @@
 .today-activities-activity
   &-list
     display: flex
+    overflow-x: scroll
+    padding: 15px 3px
+
+    input
+      display: none
 
     input:checked + .today-activities-activity-card .today-activities-activity-card-checkmark
       opacity: 1
 
-    label:hover, input:checked + .today-activities-activity-card
+  &-card
+    flex: 0 0 calc(38% - 47px)
+    min-width: calc(38% - 47px)
+    min-height: 100%
+    position: relative
+    padding: 21px 28px
+    text-align: center
+    cursor: pointer
+    margin-right: 46px
+    @media (max-width: 768px)
+      display: flex
+      flex: 0 0 calc(50% - 47px)
+      min-width: calc(50% - 47px)
+      padding: 14px 18px
+      justify-content: center
+      align-items: center
+      margin-right: 26px
+
+    &:hover, &.active
       color: #fff
       box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+      border-radius: 20px
       .today-activities-activity-card
         &-icon
           fill: #fff
@@ -21,25 +45,9 @@
             background-color: $caribbean-green
         &-title
           color: $caribbean-green
+          font-weight: bold
           @media (max-width: 768px)
             font-weight: bold
-
-  &-card
-    flex: 0 0 calc(38% - 47px)
-    position: relative
-    padding: 39px 12px 25px
-    text-align: center
-    cursor: pointer
-    @media (max-width: 768px)
-      display: flex
-      flex: 0 0 calc(50% - 47px)
-      padding: 14px 18px
-      justify-content: center
-      align-items: center
-    &:not(:last-child)
-      margin-right: 47px
-      @media (max-width: 768px)
-        margin-right: 26px
 
     &-title
       margin-top: 23px
@@ -67,6 +75,7 @@
       opacity: 0
       @media (max-width: 768px)
         right: 0
+        //top: -7px
     &-icon
       width: 80%
       fill: #000
@@ -80,7 +89,9 @@
         height: 76px
         border: 1px solid #EDEDED
         border-radius: 13px
+        margin: 16px 16px 0
         +mt(.2s)
         @media (max-width: 768px)
           border-radius: 5px
           height: 50px
+          margin: 0

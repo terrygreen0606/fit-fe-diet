@@ -1,32 +1,27 @@
 import React from 'react';
-import CustomRadio from "../common/Forms/CustomRadio";
+import classnames from 'classnames';
 
-export type WeekDayItemProps ={
-  number: number,
+export type ItemProps = {
+  number: string,
   dayOfWeek: string,
-  type?: string,
-  onChange?: () => void,
-  checked?: boolean,
-  defaultChecked: boolean
+  dayWorkout?: string,
 };
 
-const WeekDayItemDefaultProps = {
-  type: 'radio'
-};
-
-const WeekDayItem = (props: WeekDayItemProps) => {
+const WeekDayItem = (props: ItemProps) => {
   return (
-    <>
+    <div
+      className={classnames("week-workout-item", {
+        active: props.dayOfWeek === props.dayWorkout,
+      })}
+    >
       <div className="week-workout-item-number">
         {props.number}
       </div>
       <div className="week-workout-item-of_week">
         {props.dayOfWeek}
       </div>
-    </>
+    </div>
   );
 };
-
-CustomRadio.defaultProps = WeekDayItemDefaultProps;
 
 export default WeekDayItem;

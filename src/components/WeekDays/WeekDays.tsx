@@ -1,44 +1,42 @@
 import React from 'react';
-import classnames from 'classnames';
 
-import CustomRadio from "components/common/Forms/CustomRadio";
-import WeekDayItem, { WeekDayItemProps } from "./WeekDayItem";
+import WeekDayItem, { ItemProps } from "./WeekDayItem";
 
 import './WeekDays.sass';
 
-type WeekWorkoutProps = {
-  days: Array<WeekDayItemProps>,
-  setWeekWorkout: Function,
-  weekWorkout: string,
-};
+type WeekDaysType = "radio" | "checkbox";
 
-const WeekDays = ({ days, setWeekWorkout, weekWorkout }: WeekWorkoutProps) => {
+interface WeekDaysProps {
+  days: Array<ItemProps>,
+  onChange: (any) => void,
+  dayWorkout: string,
+  type?: WeekDaysType,
+}
+
+const WeekDays = ({ days, onChange, dayWorkout, type }: WeekDaysProps) => {
   return (
     <section className="col-12 d-flex flex-column align-items-center">
       <div className="week-workout col-12 align-self-baseline">
         {
-          days.map(day => (
-            <CustomRadio
-              key={`${day.number} ${day.dayOfWeek}`}
-              value={day.dayOfWeek}
-              inline
-              checked={weekWorkout === day.dayOfWeek}
-              onChange={e => setWeekWorkout(e.target.value)}
-              className={classnames("week-workout-item", {
-                active: weekWorkout === day.dayOfWeek,
-              })}
-              label={
-                <WeekDayItem {...day} />
-              }
-            />
-          ))
+          days.map(day =>
+            <label key={`${day.number} ${day.dayOfWeek}`}>
+              <input
+                type={type}
+                value={day.dayOfWeek}
+                onChange={e => onChange(e.target.value)}
+                checked={day.dayOfWeek === dayWorkout}
+              />
+              <WeekDayItem
+                number={day.number}
+                dayOfWeek={day.dayOfWeek}
+                dayWorkout={dayWorkout}
+              />
+            </label>
+          )
         }
       </div>
-
-
-
     </section>
   );
-}
+};
 
 export default WeekDays;
