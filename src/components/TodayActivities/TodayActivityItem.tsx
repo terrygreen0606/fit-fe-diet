@@ -2,21 +2,26 @@ import React, { FunctionComponent, SVGProps } from 'react';
 import classnames from 'classnames';
 
 export type ItemProps = {
+  value: string,
   icon: FunctionComponent<SVGProps<SVGSVGElement>>,
   text: string,
-  todayActivities?: Array<string>,
+  checked?: boolean,
+  disabled?: boolean,
+  active?: boolean,
 };
 
 const TodayActivityItem = (props: ItemProps) => {
+  const Icon = props.icon;
+
   return (
     <div
       className={classnames("today-activities-activity-card", {
-        active: props.todayActivities.includes(props.text),
+        active: props.active,
       })}
     >
       <span className="today-activities-activity-card-checkmark"/>
       <span className="today-activities-activity-card-icon-wrap">
-        <props.icon className="today-activities-activity-card-icon" />
+        <Icon className="today-activities-activity-card-icon" />
       </span>
       <h6 className="today-activities-activity-card-title">
         {props.text}

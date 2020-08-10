@@ -4,14 +4,13 @@ import WeekDayItem, { ItemProps } from "./WeekDayItem";
 
 import './WeekDays.sass';
 
-type WeekDaysType = "radio" | "checkbox";
-
-interface WeekDaysProps {
-  days: Array<ItemProps>,
+type WeekDaysProps = {
+  days: ItemProps[],
   onChange: (any) => void,
   dayWorkout: string,
-  type?: WeekDaysType,
-}
+  type?: "radio" | "checkbox",
+  name?: string,
+};
 
 const WeekDays = ({ days, onChange, dayWorkout, type }: WeekDaysProps) => {
   return (
@@ -19,17 +18,17 @@ const WeekDays = ({ days, onChange, dayWorkout, type }: WeekDaysProps) => {
       <div className="week-workout col-12 align-self-baseline">
         {
           days.map(day =>
-            <label key={`${day.number} ${day.dayOfWeek}`}>
+            <label key={`${day.number} ${day.value}`}>
               <input
                 type={type}
-                value={day.dayOfWeek}
-                onChange={e => onChange(e.target.value)}
-                checked={day.dayOfWeek === dayWorkout}
+                value={day.value}
+                onChange={onChange}
+                checked={day.value === dayWorkout}
               />
               <WeekDayItem
                 number={day.number}
-                dayOfWeek={day.dayOfWeek}
-                dayWorkout={dayWorkout}
+                value={day.value}
+                active={day.value === dayWorkout}
               />
             </label>
           )

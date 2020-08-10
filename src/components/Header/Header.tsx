@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
+import { getTranslate } from "utils";
 
 // Components
+import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 
 import './Header.sass';
@@ -11,6 +13,7 @@ import './Header.sass';
 import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon.svg';
 
 const Header = (props: any) => {
+  const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const toggleSideMenu = () => {
     document.body.classList.toggle('mobile-menu-opened');
@@ -36,7 +39,7 @@ const Header = (props: any) => {
               </span>
 
               <nav className="mainHeader_menuList">
-                <a href="/trainings" className="mainHeader_menuList_item">Trainings</a>
+                <Link to="/trainings" className="mainHeader_menuList_item">{t("header.menu_trainings")}</Link>
                 <a href="/" className="mainHeader_menuList_item">Retseptid</a>
                 <a href="/" className="mainHeader_menuList_item">Edulood</a>
                 <a href="/" className="mainHeader_menuList_item">E-Pood</a>
@@ -55,9 +58,9 @@ const Header = (props: any) => {
   );
 };
 
-export default connect(
+export default WithTranslate(connect(
   (state: any) => ({
     isAuthenticated: state.auth.isAuthenticated
   }),
   { userLogout }
-)(Header);
+)(Header));

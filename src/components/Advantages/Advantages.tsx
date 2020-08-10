@@ -18,7 +18,7 @@ type AdvantagesProps = {
 const Advantages = (props: AdvantagesProps) => {
   const Icon1 = props.icon1;
   const Icon2 = props.icon2;
-  const Icon3 = props.icon2;
+  const Icon3 = props.icon3;
 
   return (
     <section className="how-exercise-plan-works-sect">

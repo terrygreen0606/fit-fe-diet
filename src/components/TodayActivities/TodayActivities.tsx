@@ -4,38 +4,34 @@ import TodayActivityItem, { ItemProps } from "./TodayActivityItem";
 
 import './TodayActivities.sass';
 
-type TodayActivityType = "radio" | "checkbox";
-
-interface TodayActivitiesProps {
-  items: Array<ItemProps>,
-  todayActivities: Array<string>,
+type TodayActivitiesProps = {
+  items: ItemProps[],
+  todayActivities: string[],
   onChange: (any) => void,
-  type?: TodayActivityType,
-}
+  type: "radio" | "checkbox",
+  name?: string,
+};
 
-const TodayActivities = ({ items, todayActivities, onChange, type }: TodayActivitiesProps) => {
-  const onInputChange = e => {
-    e.persist();
-    e.target.checked
-      ? onChange(prev => [...prev, e.target.value])
-      : onChange(prev =>
-        [...prev.slice(0, prev.indexOf(e.target.value)), ...prev.slice(prev.indexOf(e.target.value) + 1)])
-  };
-
+const TodayActivities = ({ items, todayActivities, onChange, type, name }: TodayActivitiesProps) => {
   return (
     <>
-      <h4 className="mt-5 mb-4">Today's activities</h4>
+      <h4 className="mt-5 mb-4">
+        {name}
+      </h4>
       <div className="today-activities-activity-list">
         {
           items.map(item => (
             <label key={item.text}>
               <input
                 type={type}
-                value={item.text}
-                onChange={onInputChange}
-                checked={todayActivities.includes(item.text)}
+                value={item.value}
+                onChange={onChange}
+                checked={todayActivities.includes(item.value)}
               />
-              <TodayActivityItem icon={item.icon} text={item.text} todayActivities={todayActivities} />
+              <TodayActivityItem
+                active={todayActivities.includes(item.value)}
+                {...item}
+              />
             </label>
           ))
         }

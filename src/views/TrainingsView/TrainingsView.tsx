@@ -6,6 +6,8 @@ import TrainingCard from "components/TrainingCard";
 import TodayActivities from "components/TodayActivities";
 import Advantages from "components/Advantages";
 import Button from "components/common/Forms/Button";
+import WithTranslate from 'components/hoc/WithTranslate';
+import { getTranslate } from "utils";
 
 import { ReactComponent as RewardIcon } from "assets/img/icons/reward-icon-white.svg";
 import { ReactComponent as ClockIcon } from "assets/img/icons/15-min-clock-icon.svg";
@@ -13,29 +15,40 @@ import { ReactComponent as CalendarIcon } from "assets/img/icons/calendar-icon.s
 import { ReactComponent as RewardImage } from "assets/img/reward-img.svg";
 import WomanGymImage from "assets/img/woman_ball_gym.png";
 
-import { dataForWeekWorkout, dataForTodayActivities } from "./mockDataForTrainings";
+import { dataForWeekWorkout, dataForTodayActivities, tabs } from "./mockDataForTrainings";
 
 import './TrainingsView.sass';
 
-const TrainingsView: React.FC = () => {
+const TrainingsView: React.FC = (props: any) => {
   const [level, setLevel] = useState(0);
   const [weekWorkout, setWeekWorkout] = useState("wed");
-  const [todayActivities, setTodayActivities] = useState(["Add a workout"]);
-  const tabs = ["Elementary level", "Intermediate", "Advanced"];
+  const [todayActivities, setTodayActivities] = useState(["workout_add"]);
+
+  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
+
+  const onWorkoutChange = e => setWeekWorkout(e.target.value);
+
+  const onActivitiesChange = e => {
+    e.persist();
+    e.target.checked
+      ? setTodayActivities(prev => [...prev, e.target.value])
+      : setTodayActivities(prev =>
+        [...prev.slice(0, prev.indexOf(e.target.value)), ...prev.slice(prev.indexOf(e.target.value) + 1)])
+  };
 
   return (
     <>
       <Advantages
-        mainTitle="How does the exercise plan work?"
+        mainTitle={t("trainings.plan.main_title")}
         icon1={RewardIcon}
-        advantage1Title="Strengthen your body"
-        advantage1Desc="If you want to exercise in addition to a healthy diet, here you will find plans that will help make your body stronger and more resilient."
+        advantage1Title={t("trainings.plan.feat1_title")}
+        advantage1Desc={t("trainings.plan.feat1_desc")}
         icon2={ClockIcon}
-        advantage2Title="Workouts last 15 minutes"
-        advantage2Desc="You can do the exercises at home, because no aids are needed."
+        advantage2Title={t("trainings.plan.feat2_title")}
+        advantage2Desc={t("trainings.plan.feat2_desc")}
         icon3={CalendarIcon}
-        advantage3Title="Train 3-4 times a week"
-        advantage3Desc="To achieve the best effect, we recommend going through the training plan 3-4 times a week and choosing the level of difficulty of the plan according to your abilities."
+        advantage3Title={t("trainings.plan.feat3_title")}
+        advantage3Desc={t("trainings.plan.feat3_desc")}
       />
 
       <section className="training-plan-card-list-sect">
@@ -64,7 +77,7 @@ const TrainingsView: React.FC = () => {
                 <WeekDays
                   days={dataForWeekWorkout}
                   dayWorkout={weekWorkout}
-                  onChange={setWeekWorkout}
+                  onChange={onWorkoutChange}
                   type="radio"
                 />
 
@@ -73,7 +86,7 @@ const TrainingsView: React.FC = () => {
                   size="lg"
                   color="secondary"
                 >
-                  Start today's Workout
+                  {t("trainings.start_workout")}
                 </Button>
 
                 <div className="col-12">
@@ -90,19 +103,26 @@ const TrainingsView: React.FC = () => {
             </div>
             <div className="training-plan-info-col">
               <TodayActivities
+                name={t("trainings.today_activities")}
                 items={dataForTodayActivities}
                 todayActivities={todayActivities}
-                onChange={setTodayActivities}
+                onChange={onActivitiesChange}
                 type="checkbox"
               />
               <div className="training-plan-adherence-diet-card card-bg mt-5">
-                <h4 className="training-plan-adherence-diet-card-title">Adherence to a diet plan</h4>
+                <h4 className="training-plan-adherence-diet-card-title">
+                  {t("trainings.diet_plan")}
+                </h4>
                 <div className="training-plan-adherence-diet-card-img">
                   <RewardImage />
                 </div>
                 <div className="training-plan-adherence-diet-card-content">
-                  <p><b>0%</b> of the plan completed today</p>
-                  <a href="/" className="link">See last week's report</a>
+                  <p>
+                    {t("trainings.plan.completed", { number: 0 })}
+                  </p>
+                  <a href="/" className="link">
+                    {t("trainings.report.week")}
+                  </a>
                 </div>
               </div>
             </div>
@@ -113,4 +133,4 @@ const TrainingsView: React.FC = () => {
   );
 };
 
-export default TrainingsView;
+export default WithTranslate(TrainingsView);

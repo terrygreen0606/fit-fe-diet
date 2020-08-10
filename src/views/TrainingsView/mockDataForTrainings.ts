@@ -1,34 +1,36 @@
 import { ReactComponent as DumbbellIcon } from "assets/img/icons/dumbbell-icon.svg";
 import { ReactComponent as WeighScaleIcon } from "assets/img/icons/weigh-scale-icon.svg";
 
+export const tabs = ["Elementary level", "Intermediate", "Advanced"];
+
 export const dataForWeekWorkout = [
   {
     number: "27",
-    dayOfWeek: "mon",
+    value: "mon",
   },
   {
     number: "28",
-    dayOfWeek: "tus",
+    value: "tus",
   },
   {
     number: "29",
-    dayOfWeek: "wed",
+    value: "wed",
   },
   {
     number: "30",
-    dayOfWeek: "thu",
+    value: "thu",
   },
   {
     number: "31",
-    dayOfWeek: "fri",
+    value: "fri",
   },
   {
     number: "01",
-    dayOfWeek: "sat",
+    value: "sat",
   },
   {
     number: "02",
-    dayOfWeek: "sun",
+    value: "sun",
   },
 ];
 
@@ -36,9 +38,11 @@ export const dataForTodayActivities = [
   {
     icon: DumbbellIcon,
     text: "Add a workout",
+    value: "workout_add",
   },
   {
     icon: WeighScaleIcon,
     text: "Add today's weight",
+    value: "weight_add",
   },
 ];
