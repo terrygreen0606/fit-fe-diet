@@ -7,9 +7,11 @@ import { ReactComponent as GraphIcon } from 'assets/img/icons/graph-icon.svg';
 import { ReactComponent as PurchaseIcon } from 'assets/img/icons/purchase-icon.svg';
 import { ReactComponent as CutleryIcon } from 'assets/img/icons/cutlery-icon.svg';
 
+import './MobileFooter.sass';
+
 const MobileFooter = () => (
   <footer className="mobileFooter">
-    <ol className="mobileFooter_list">
+    <ul className="mobileFooter_list">
       <li className="mobileFooter_list_item active">
         <Link to="/">
           <CutleryIcon />
@@ -35,7 +37,7 @@ const MobileFooter = () => (
           <BurgerIcon />
         </Link>
       </li>
-    </ol>
+    </ul>
   </footer>
 );
 
