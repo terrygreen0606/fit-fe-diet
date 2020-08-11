@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import './ProfileSidebar.sass';
 
@@ -18,10 +19,49 @@ const ProfileSidebar = (props: any) => {
         <h5 className="profile-menu-title">Settings</h5>
 
         <ul className="profile-menu-list">
-          <li><a href="#" className="profile-menu-list-item active"><UserEditIcon className="profile-menu-list-icon" />Personal data</a></li>
-          <li><a href="#" className="profile-menu-list-item"><SettingsIcon className="profile-menu-list-icon" />Diet plan settings</a></li>
-          <li><a href="#" className="profile-menu-list-item"><CutleryIcon className="profile-menu-list-icon" />Change your meal plan</a></li>
-          <li><a href="#" className="profile-menu-list-item"><UsersIcon className="profile-menu-list-icon" />Family members</a></li>
+          <li>
+            <NavLink 
+              to="/settings/personal"
+              activeClassName="active" 
+              exact
+              className="profile-menu-list-item"
+            >
+              <UserEditIcon className="profile-menu-list-icon" />Personal data
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink 
+              to="/settings"
+              activeClassName="active" 
+              exact
+              className="profile-menu-list-item"
+            >
+              <SettingsIcon className="profile-menu-list-icon" />Diet plan settings
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink 
+              to="/settings"
+              activeClassName="active" 
+              exact
+              className="profile-menu-list-item"
+            >
+              <CutleryIcon className="profile-menu-list-icon" />Change your meal plan
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink 
+              to="/settings"
+              activeClassName="active" 
+              exact
+              className="profile-menu-list-item"
+            >
+              <UsersIcon className="profile-menu-list-icon" />Family members
+            </NavLink>
+          </li>
         </ul>
       </div>
 
@@ -29,8 +69,27 @@ const ProfileSidebar = (props: any) => {
         <h5 className="profile-menu-title">Payments</h5>
 
         <ul className="profile-menu-list">
-          <li><a href="#" className="profile-menu-list-item active"><WalletIcon className="profile-menu-list-icon" />Extend your service life</a></li>
-          <li><a href="#" className="profile-menu-list-item"><ClockIcon className="profile-menu-list-icon" />Payment history</a></li>
+          <li>
+            <NavLink 
+              to="/settings"
+              activeClassName="active" 
+              exact
+              className="profile-menu-list-item"
+            >
+              <WalletIcon className="profile-menu-list-icon" />Extend your service life
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink 
+              to="/settings"
+              activeClassName="active" 
+              exact
+              className="profile-menu-list-item"
+            >
+              <ClockIcon className="profile-menu-list-icon" />Payment history
+            </NavLink>
+          </li>
         </ul>
       </div>
 
@@ -38,8 +97,27 @@ const ProfileSidebar = (props: any) => {
         <h5 className="profile-menu-title">Help and customer support</h5>
 
         <ul className="profile-menu-list">
-          <li><a href="#" className="profile-menu-list-item active"><QuestionIcon className="profile-menu-list-icon" />FAQ</a></li>
-          <li><a href="#" className="profile-menu-list-item"><LeafIcon className="profile-menu-list-icon" />Freeware</a></li>
+          <li>
+            <NavLink 
+              to="/settings"
+              activeClassName="active" 
+              exact
+              className="profile-menu-list-item"
+            >
+              <QuestionIcon className="profile-menu-list-icon" />FAQ
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink 
+              to="/settings"
+              activeClassName="active" 
+              exact
+              className="profile-menu-list-item"
+            >
+              <LeafIcon className="profile-menu-list-icon" />Freeware
+            </NavLink>
+          </li>
         </ul>
       </div>
     </div>

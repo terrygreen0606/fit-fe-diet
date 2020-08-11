@@ -5,26 +5,42 @@
 	display: inline-block
 	&_block
 		width: 100% !important
+	&_style_custom
+		.fgSelectControl
+			color: #A0A0A0
+			font-weight: bold
+			border-width: 2px !important
+			&:hover
+				&:not(.fgSelectControl_readonly):not(.fgSelectControl_disabled)
+					border-color: #A0A0A0
+			&_has_value
+				border-color: #A0A0A0 !important
+		.fgSelectSingleValue
+			color: #A0A0A0 !important
+		.fgSelectIndicatorsContainer
+			svg
+				fill: #919BB3
+			> div
+				background-color: #F0F0F0
 		
 .fgSelectControl
 	display: inline-block
 	padding: 0 7px
 	padding-right: 15px
-	color: #A0A0A0
+	color: $black
 	font-family: $base-font !important
 	font-size: 16px
 	cursor: pointer !important
-	font-weight: bold
 	line-height: 20px
-	min-height: 58px !important
+	min-height: 59px !important
 	border-radius: 5px !important
-	border-width: 2px !important
+	border-width: 1px !important
 	border-style: solid !important
 	box-shadow: none !important
 	+mt(.2s)
 	&:hover
 		&:not(.fgSelectControl_readonly):not(.fgSelectControl_disabled)
-			border-color: #A0A0A0
+			border-color: $grey-light
 	&_is_invalid
 		border-color: $red !important
 		.fgSelectIndicatorsContainer
@@ -35,7 +51,7 @@
 	&_block
 		width: 100% !important
 	.fgSelectSingleValue
-		color: #A0A0A0 !important
+		color: $black !important
 	&_readonly
 		background-color: #fff !important
 		cursor: not-allowed !important
@@ -49,11 +65,11 @@
 			background-color: $grey-bg !important
 	&_has_value
 		color: #A0A0A0 !important
-		border-color: #A0A0A0 !important
+		border-color: lighten($black, 30%) !important
 
 .fgSelectIndicatorsContainer
 	svg
-		fill: #919BB3
+		fill: $black
 	> div
 		display: flex
 		align-items: center
@@ -62,7 +78,6 @@
 		width: 30px
 		height: 30px
 		border-radius: 100%
-		background-color: #F0F0F0
 
 .fgSelectMenu
 	&_block

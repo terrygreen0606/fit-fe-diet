@@ -21,6 +21,7 @@ import CustomRadio from 'components/common/Forms/CustomRadio';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import FormValidator from 'utils/FormValidator';
 import Button from 'components/common/Forms/Button';
+import DatePicker from 'components/common/Forms/DatePicker';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
 
@@ -29,7 +30,14 @@ import './SettingsPersonalView.sass';
 import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
 import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
 
-const purposeOptions: { value: -1 | 0 | 1, label: string }[] = [
+type goalType = -1 | 0 | 1; // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight
+
+type goalOptionsType = {
+  value: goalType,
+  label: string
+};
+
+const goalOptions: goalOptionsType[] = [
   { value: 1, label: 'Lift weight' },
   { value: 0, label: 'Keep weight' },
   { value: -1, label: 'Lose weight' }
@@ -46,9 +54,12 @@ type userUpdateProfileParams = {
   surname: string,
   phone: string,
   birthdate: number, // timestamp
-  gender: 'm' | 'f',
   height: number, // millimeters
-  goal: -1 | 0 | 1 // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight
+  is_mailing: boolean,
+  password: string,
+  image: string,
+  gender: 'm' | 'f',
+  goal: goalType
 };
 
 const SettingsPersonalView = (props: any) => {
@@ -60,19 +71,17 @@ const SettingsPersonalView = (props: any) => {
     birthdate: null,
     height: null,
     is_mailing: false,
-    age: '',
     password: '',
     image: null,
     gender: 'm',
-    goal: purposeOptions[2].value,
-    calorie: calorieOptions[0].value
+    goal: goalOptions[2].value
   });
 
   const [personalDataFormErrors, setPersonalDataFormErrors] = useState([]);
 
   const [personalDataLoading, setPersonalDataLoading] = useState(false);
   const [personalDataLoadingError, setPersonalDataLoadingError] = useState(false);
-  const [savePersonalDataLoading, setSavePersonalDataLoading] = useState(false);
+  const [updatePersonalDataLoading, setUpdatePersonalDataLoading] = useState(false);
 
   useEffect(() => {
     fetchUserPersonalData();
@@ -98,7 +107,7 @@ const SettingsPersonalView = (props: any) => {
           is_mailing: profileResponse.is_mailing,
           goal: profileResponse.goal,
           image: profileResponse.image,
-          birthdate: profileResponse.birthdate
+          birthdate: new Date(new Date().setTime(profileResponse.birthdate))
         });
       }
     }).catch(error => {
@@ -129,9 +138,9 @@ const SettingsPersonalView = (props: any) => {
       name: personalDataForm.name,
       surname: personalDataForm.surname,
       phone: personalDataForm.phone,
-      birthdate: personalDataForm.birthdate,
+      birthdate: new Date(personalDataForm.birthdate).getTime(),
       gender: personalDataForm.gender,
-      height: personalDataForm.height,
+      height: personalDataForm.height * 100,
       goal: personalDataForm.goal,
     };
   };
@@ -147,12 +156,14 @@ const SettingsPersonalView = (props: any) => {
     setPersonalDataFormErrors([...errors]);
 
     if (!hasError) {
-      setSavePersonalDataLoading(true);
+      setUpdatePersonalDataLoading(true);
 
       userUpdateProfile(getPersonalDataUpdatePayload()).then(response => {
-
+        setUpdatePersonalDataLoading(false);
+        toast.success('Personal data was successfully updated');
       }).catch(error => {
-
+        setUpdatePersonalDataLoading(false);
+        toast.error('Error while updating personal data');
       });
     }
   };
@@ -160,15 +171,15 @@ const SettingsPersonalView = (props: any) => {
   return (
     <ProfileLayout>
       <div className="profile-settings-personal-card card-bg">
-        <h5 className="mb-5">Personal Data</h5>
+        <h5 className="mb-4 mb-xs-5">Personal Data</h5>
 
         <ContentLoading
           fetchData={() => fetchUserPersonalData()}
           isLoading={personalDataLoading}
-          isError={false}
+          isError={personalDataLoadingError}
         >
-          <form onSubmit={e => personalDataFormSubmit(e)}>
-            <FormGroup inline>
+          <form className="profile-settings-personal-form" onSubmit={e => personalDataFormSubmit(e)}>
+            <FormGroup inline className="mb-5">
               <FormLabel>Sex</FormLabel>
 
               <CustomRadio 
@@ -227,6 +238,7 @@ const SettingsPersonalView = (props: any) => {
                 value={personalDataForm.surname}
                 onChange={e => validateOnChange('surname', e.target.value, e)}
                 block
+                height="md"
                 placeholder=""
               />
             </FormGroup>
@@ -240,6 +252,7 @@ const SettingsPersonalView = (props: any) => {
                 value={personalDataForm.name}
                 onChange={e => validateOnChange('name', e.target.value, e)}
                 block
+                height="md"
                 placeholder=""
               />
             </FormGroup>
@@ -253,27 +266,28 @@ const SettingsPersonalView = (props: any) => {
                 value={personalDataForm.phone}
                 onChange={e => validateOnChange('phone', e.target.value, e)}
                 block
+                height="md"
                 placeholder=""
               />
             </FormGroup>
 
             <FormGroup inline>
-              <FormLabel>Age</FormLabel>
-              <InputField
-                name="age"
-                type="number"
-                min={1}
-                data-validate='["required"]'
-                errors={getFieldErrors('age')}
-                value={personalDataForm.age}
-                onChange={e => validateOnChange('age', e.target.value, e)}
-                block
-                placeholder=""
+              <FormLabel>Birthdate</FormLabel>
+              <DatePicker
+                value={personalDataForm.birthdate}
+                onChange={date => validateOnChange('birthdate', date)}
+                inputProps={{
+                  name: 'age',
+                  block: true,
+                  'data-validate': '["required"]',
+                  errors: getFieldErrors('age'),
+                  height: "md"
+                }}
               />
             </FormGroup>
 
             <FormGroup inline>
-              <FormLabel>Length (cm)</FormLabel>
+              <FormLabel>Height</FormLabel>
               <InputField
                 name="height"
                 errors={getFieldErrors('height')}
@@ -282,6 +296,7 @@ const SettingsPersonalView = (props: any) => {
                 data-validate='["required", "min-max"]'
                 onChange={e => validateOnChange('height', e.target.value, e)}
                 block
+                height="md"
                 placeholder=""
               />
             </FormGroup>
@@ -289,13 +304,17 @@ const SettingsPersonalView = (props: any) => {
             <FormGroup inline>
               <FormLabel>Purpose</FormLabel>
               <SelectInput 
-                value={purposeOptions.find(option => option.value === personalDataForm.goal)} 
-                options={purposeOptions}
-                onChange={(option, e) => validateOnChange('goal', option, e)}
+                name="goal"
+                data-validate='["required"]'
+                errors={getFieldErrors('goal')}
+                value={goalOptions.find(option => option.value === personalDataForm.goal)} 
+                options={goalOptions}
+                onChange={(option, e) => validateOnChange('goal', option.value, e)}
+                block
               />  
             </FormGroup>
 
-            <FormGroup inline>
+            {/*<FormGroup inline>
               <FormLabel>Password</FormLabel>
               <InputField
                 name="password"
@@ -305,33 +324,26 @@ const SettingsPersonalView = (props: any) => {
                 value={personalDataForm.password}
                 onChange={e => validateOnChange('password', e.target.value, e)}
                 block
+                height="md"
                 placeholder=""
               />
-            </FormGroup>
+            </FormGroup>*/}
 
-            <FormGroup inline>
-              <FormLabel>Calorie</FormLabel>
-              <SelectInput
-                name="calorie"
-                value={calorieOptions.find(option => option.value === personalDataForm.calorie)}
-                data-validate='["required"]'
-                errors={getFieldErrors('calorie')}
-                options={calorieOptions}
-                onChange={(option, e) => validateOnChange('calorie', option.value, e)}
-                placeholder="Select..."
-              />
-            </FormGroup>
+            <div className="pl-xs-5">
+              <FormGroup className="mt-5">
+                <CustomCheckbox 
+                  label="I want to receive newsletters" 
+                  inline
+                  checked={personalDataForm.is_mailing}
+                  onChange={e => setPersonalDataForm({
+                    ...personalDataForm,
+                    is_mailing: e.target.checked
+                  })}
+                />
+              </FormGroup>
 
-            <CustomCheckbox 
-              label="I want to receive newsletters" 
-              checked={personalDataForm.is_mailing}
-              onChange={e => setPersonalDataForm({
-                ...personalDataForm,
-                is_mailing: e.target.checked
-              })}
-            />
-
-            <Button type="submit" color="secondary" isLoading={savePersonalDataLoading}>Save</Button>
+              <Button className="mt-2 mt-xs-3 profile-settings-personal-form-btn" type="submit" color="secondary" isLoading={updatePersonalDataLoading}>Save</Button>
+            </div>
           </form>          
         </ContentLoading>
       </div>      

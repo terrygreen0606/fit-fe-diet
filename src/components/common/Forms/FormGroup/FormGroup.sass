@@ -9,8 +9,23 @@
     display: flex
     align-items: center
     flex-wrap: wrap
-    label
+    .fgLabel
       margin-right: 25px
       flex: 0 0 70px
-    .fg-input, .fgSelectContainer
+    .fg-input, .fgSelectContainer, .DayPickerInput
       flex: 0 0 calc(100% - 95px)
+    > .fgInvalidMsg
+      padding-left: 95px
+
+
+@media only screen and (max-width : 480px)
+  .formGroup
+    &_inline
+      .fgLabel
+        margin-right: 0
+        margin-bottom: 10px
+        flex: 0 0 100%
+      .fg-input, .fgSelectContainer, .DayPickerInput
+        flex: 0 0 100%
+      > .fgInvalidMsg
+        padding-left: 0
