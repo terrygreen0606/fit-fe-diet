@@ -1,7 +1,7 @@
 import { TOGGLE_SETTING, CHANGE_SETTING } from '../actions';
 
 const initialSettings = {
-  isFullscreen: false
+  isFullscreen: false,
 };
 
 const storageReducer = (state = initialSettings, action) => {
@@ -9,15 +9,15 @@ const storageReducer = (state = initialSettings, action) => {
     case TOGGLE_SETTING:
       return {
         ...state,
-        [action.name]: !state[action.name]
+        [action.name]: !state[action.name],
       };
 
     case CHANGE_SETTING:
       return {
         ...state,
-        [action.name]: action.value
+        [action.name]: action.value,
       };
-      
+
     default:
       return state;
   }

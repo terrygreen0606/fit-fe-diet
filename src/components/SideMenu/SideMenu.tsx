@@ -8,18 +8,21 @@ import './SideMenu.sass';
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon.svg';
 
 const SideMenu = () => {
-
   const closeSideMenu = () => {
     document.body.classList.remove('mobile-menu-opened');
   };
 
   return (
     <>
-      <div className="mobile-side-menu-backdrop" onClick={e => closeSideMenu()}></div>
+      <div
+        role="presentation"
+        className="mobile-side-menu-backdrop"
+        onClick={(e) => closeSideMenu()}
+      />
 
       <div id="mobileSideMenu" className="mobile-side-menu">
         <CrossIcon
-          onClick={e => closeSideMenu()}
+          onClick={(e) => closeSideMenu()}
           className="mobile-side-menu-close-icon"
         />
 

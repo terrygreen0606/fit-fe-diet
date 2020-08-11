@@ -5,54 +5,56 @@ import { ReactComponent as CookIcon } from 'assets/img/icons/cook-icon.svg';
 import { ReactComponent as BreadIcon } from 'assets/img/icons/bread-icon.svg';
 import { ReactComponent as CakeIcon } from 'assets/img/icons/cake-icon.svg';
 
-export const getFoodItem = (foodId: string) => {
+export default (foodId: string) => {
   let foodItem = {
     title: '',
-    icon: null
+    icon: null,
   };
 
   switch (foodId) {
     case 'milk':
       foodItem = {
         title: 'Milk',
-        icon: MilkIcon
+        icon: MilkIcon,
       };
       break;
 
     case 'meat':
       foodItem = {
         title: 'Meat',
-        icon: MeatIcon
+        icon: MeatIcon,
       };
       break;
 
     case 'fish':
       foodItem = {
         title: 'Fish',
-        icon: FishIcon
+        icon: FishIcon,
       };
       break;
 
     case 'diseases':
       foodItem = {
         title: 'Diseases',
-        icon: CookIcon
+        icon: CookIcon,
       };
       break;
 
     case 'gluten':
       foodItem = {
         title: 'Gluten',
-        icon: BreadIcon
+        icon: BreadIcon,
       };
       break;
 
     case 'deabetes':
       foodItem = {
         title: 'Deabetes',
-        icon: CakeIcon
+        icon: CakeIcon,
       };
       break;
+
+    default: break;
   }
 
   return foodItem;

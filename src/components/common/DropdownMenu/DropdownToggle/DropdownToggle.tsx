@@ -3,10 +3,13 @@ import classNames from 'classnames';
 
 import styles from './DropdownToggle.module.sass';
 
-const DropdownToggle = (props: any) => (
-	<div {...props} className={classNames("dropdownToggle", {
-    [props.className]: props.className
-  })} />
+const DropdownToggle = ({ className, ...props }: any) => (
+  <div
+    {...props}
+    className={classNames('dropdownToggle', {
+      [className]: className,
+    })}
+  />
 );
 
 export default DropdownToggle;

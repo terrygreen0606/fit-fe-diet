@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
-  getTranslate
+  getTranslate,
 } from 'utils';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
@@ -21,7 +21,7 @@ import FormValidator from 'utils/FormValidator';
 import '../RegisterModal.sass';
 
 const JoinStep = (props: any) => {
-
+  const { registerData } = props;
   const [registerJoinErrors, setRegisterJoinErrors] = useState([]);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState(false);
@@ -32,11 +32,11 @@ const JoinStep = (props: any) => {
       name,
       value,
       event,
-      props.registerData,
+      registerData,
       props.setRegisterData,
       registerJoinErrors,
       setRegisterJoinErrors,
-      element
+      element,
     );
   };
 
@@ -50,11 +50,11 @@ const JoinStep = (props: any) => {
     props.userLogin(authToken);
   };
 
-  const registerJoinSubmit = e => {
+  const registerJoinSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter(i => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -68,14 +68,23 @@ const JoinStep = (props: any) => {
       setRegisterJoinLoading(true);
 
       userSignup({
-        ...props.registerData,
-        weight: props.registerData.weight ? props.registerData.weight * 1000 : props.registerData.weight,
-        height: props.registerData.height ? props.registerData.height * 10 : props.registerData.height,
-        weight_goal: props.registerData.weight_goal ? props.registerData.weight_goal * 1000 : props.registerData.weight_goal,
-      }).then(response => {
+        ...registerData,
+        weight: registerData.weight
+          ? registerData.weight * 1000
+          : registerData.weight,
+        height: registerData.height
+          ? registerData.height * 10
+          : registerData.height,
+        weight_goal: registerData.weight_goal
+          ? registerData.weight_goal * 1000
+          : registerData.weight_goal,
+      }).then((response) => {
         setRegisterJoinLoading(false);
 
-        const token = response.data && response.data.access_token ? response.data.access_token : null;
+        const token = response.data
+        && response.data.access_token
+          ? response.data.access_token
+          : null;
 
         if (token) {
           userClientLogin(token);
@@ -83,7 +92,7 @@ const JoinStep = (props: any) => {
         } else {
           toast.error('Error while registering user');
         }
-      }).catch(error => {
+      }).catch((error) => {
         setRegisterJoinLoading(false);
         toast.error('Error while registering user');
       });
@@ -94,64 +103,76 @@ const JoinStep = (props: any) => {
     <div className="register_join">
       <h6 className="register_title mb-5">{t('register.plan_is_ready_text')}</h6>
 
-      <CustomCheckbox 
-        invalid={appRulesAccepted === false} 
+      <CustomCheckbox
+        invalid={appRulesAccepted === false}
         label={t('register.read_terms')}
-        onChange={e => setAppRulesAccepted(e.target.checked)}
+        onChange={(e) => setAppRulesAccepted(e.target.checked)}
       />
 
       <div className="register_join_or">
         <span className="register_join_or_txt">{t('register.form_or')}</span>
       </div>
-      
-      <form className="register_join_form" onSubmit={e => registerJoinSubmit(e)}>
+
+      <form className="register_join_form" onSubmit={(e) => registerJoinSubmit(e)}>
         <FormGroup inline>
-          <FormLabel>{t('register.form_name')}*</FormLabel>
-          <InputField 
-            block 
+          <FormLabel>
+            {t('register.form_name')}
+            *
+          </FormLabel>
+          <InputField
+            block
             name="name"
-            value={props.registerData.name}
+            value={registerData.name}
             data-validate='["required"]'
-            onChange={e => validateOnChange('name', e.target.value, e)}
+            onChange={(e) => validateOnChange('name', e.target.value, e)}
             errors={getFieldErrors('name')}
             placeholder=""
           />
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>{t('register.form_surname')}*</FormLabel>
-          <InputField 
-            block 
+          <FormLabel>
+            {t('register.form_surname')}
+            *
+          </FormLabel>
+          <InputField
+            block
             name="surname"
-            value={props.registerData.surname}
+            value={registerData.surname}
             data-validate='["required"]'
-            onChange={e => validateOnChange('surname', e.target.value, e)}
+            onChange={(e) => validateOnChange('surname', e.target.value, e)}
             errors={getFieldErrors('surname')}
             placeholder=""
           />
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>{t('register.form_email')}*</FormLabel>
-          <InputField 
-            block 
+          <FormLabel>
+            {t('register.form_email')}
+            *
+          </FormLabel>
+          <InputField
+            block
             name="email"
-            value={props.registerData.email}
+            value={registerData.email}
             data-validate='["required", "email"]'
-            onChange={e => validateOnChange('email', e.target.value, e)}
+            onChange={(e) => validateOnChange('email', e.target.value, e)}
             errors={getFieldErrors('email')}
             placeholder=""
           />
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>{t('register.form_phone')}*</FormLabel>
-          <InputField 
-            block 
+          <FormLabel>
+            {t('register.form_phone')}
+            *
+          </FormLabel>
+          <InputField
+            block
             name="phone"
-            value={props.registerData.phone}
+            value={registerData.phone}
             data-validate='["required", "number"]'
-            onChange={e => validateOnChange('phone', e.target.value, e)}
+            onChange={(e) => validateOnChange('phone', e.target.value, e)}
             errors={getFieldErrors('phone')}
             placeholder=""
           />
@@ -159,23 +180,23 @@ const JoinStep = (props: any) => {
 
         <FormGroup inline>
           <FormLabel>{t('register.form_password')}</FormLabel>
-          <InputField 
-            block 
+          <InputField
+            block
             name="password"
             type="password"
-            value={props.registerData.password}
+            value={registerData.password}
             data-validate='["required"]'
-            onChange={e => validateOnChange('password', e.target.value, e)}
+            onChange={(e) => validateOnChange('password', e.target.value, e)}
             errors={getFieldErrors('password')}
             placeholder=""
           />
         </FormGroup>
 
         <div className="text-center mt-5">
-          <Button 
+          <Button
             className="registerBtn"
-            type="submit" 
-            block 
+            type="submit"
+            block
             size="lg"
             color="primary"
             isLoading={registerJoinLoading}
@@ -183,9 +204,9 @@ const JoinStep = (props: any) => {
             {t('register.form_submit')}
           </Button>
 
-          <Button 
-            outline 
-            color="secondary" 
+          <Button
+            outline
+            color="secondary"
             size="lg"
             onClick={() => props.setRegisterStep('INFO')}
             className="mt-4"
@@ -201,5 +222,5 @@ const JoinStep = (props: any) => {
 
 export default connect(
   null,
-  { userLogin }
+  { userLogin },
 )(JoinStep);

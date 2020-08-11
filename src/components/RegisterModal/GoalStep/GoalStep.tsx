@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { getTranslate } from 'utils';
-import { getMealItem } from './getMealItem';
 import uuid from 'react-uuid';
 
 // Components
@@ -13,33 +12,36 @@ import { ReactComponent as KeepIcon } from 'assets/img/icons/keep-icon.svg';
 import { ReactComponent as LiftIcon } from 'assets/img/icons/lift-icon.svg';
 import { ReactComponent as AngleRightIcon } from 'assets/img/icons/angle-right-icon.svg';
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon-black.svg';
+import { getMealItem } from './getMealItem';
 
 const GoalStep = (props: any) => {
-
+  const { registerData } = props;
   const [ignoreCuisineIds, setIgnoreCuisineIds] = useState([]);
 
   useEffect(() => {
-    if (props.registerData && props.registerData.ignore_cuisine_ids) {
-      setIgnoreCuisineIds(props.registerData.ignore_cuisine_ids.map(mealKey => ({
+    if (registerData && registerData.ignore_cuisine_ids) {
+      setIgnoreCuisineIds(registerData.ignore_cuisine_ids.map((mealKey) => ({
         id: uuid(),
         key: mealKey,
-        ...getMealItem(mealKey)
+        ...getMealItem(mealKey),
       })));
     }
-  }, [props.registerData]);
+  }, [registerData]);
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const removeMealItem = (mealId: string) => {
-    const mealItem = ignoreCuisineIds.find(meal => meal.id === mealId);
+    const mealItem = ignoreCuisineIds.find((meal) => meal.id === mealId);
 
     if (mealItem) {
       props.setRegisterData({
-        ...props.registerData,
-        ignore_cuisine_ids: props.registerData.ignore_cuisine_ids.filter(mealKey => mealKey !== mealItem.key)
+        ...registerData,
+        ignore_cuisine_ids: registerData.ignore_cuisine_ids.filter(
+          (mealKey) => mealKey !== mealItem.key,
+        ),
       });
 
-      setIgnoreCuisineIds(ignoreCuisineIds.filter(meal => meal.key !== mealItem.key));
+      setIgnoreCuisineIds(ignoreCuisineIds.filter((meal) => meal.key !== mealItem.key));
     }
   };
 
@@ -48,15 +50,15 @@ const GoalStep = (props: any) => {
       <h6 className="register_title mb-4">{t('register.help_achieve_goal')}</h6>
 
       <div className="register_goals_list">
-        <Button 
-          className="register_goal_btn" 
-          color="primary" 
+        <Button
+          className="register_goal_btn"
+          color="primary"
           block
-          onClick={e => props.setRegisterData({
-            ...props.registerData,
-            goal: -1
+          onClick={(e) => props.setRegisterData({
+            ...registerData,
+            goal: -1,
           })}
-          outline={props.registerData.goal !== -1}
+          outline={registerData.goal !== -1}
         >
           <span>
             <LoseIcon className="register_goal_icon" />
@@ -65,15 +67,15 @@ const GoalStep = (props: any) => {
           <AngleRightIcon />
         </Button>
 
-        <Button 
-          className="register_goal_btn" 
-          color="primary" 
+        <Button
+          className="register_goal_btn"
+          color="primary"
           block
-          onClick={e => props.setRegisterData({
-            ...props.registerData,
-            goal: 0
+          onClick={(e) => props.setRegisterData({
+            ...registerData,
+            goal: 0,
           })}
-          outline={props.registerData.goal !== 0}
+          outline={registerData.goal !== 0}
         >
           <span>
             <KeepIcon className="register_goal_icon" />
@@ -82,15 +84,15 @@ const GoalStep = (props: any) => {
           <AngleRightIcon />
         </Button>
 
-        <Button 
-          className="register_goal_btn" 
-          color="primary" 
+        <Button
+          className="register_goal_btn"
+          color="primary"
           block
-          onClick={e => props.setRegisterData({
-            ...props.registerData,
-            goal: 1
+          onClick={(e) => props.setRegisterData({
+            ...registerData,
+            goal: 1,
           })}
-          outline={props.registerData.goal !== 1}
+          outline={registerData.goal !== 1}
         >
           <span>
             <LiftIcon className="register_goal_icon" />
@@ -100,7 +102,10 @@ const GoalStep = (props: any) => {
         </Button>
       </div>
 
-      <h6 className="register_goal_title mt-5 mb-3">{t('register.not_eating')}:</h6>
+      <h6 className="register_goal_title mt-5 mb-3">
+        {t('register.not_eating')}
+        :
+      </h6>
 
       <div className="register_eating_list">
         {ignoreCuisineIds.map(({ id, title, icon: Icon }) => (
@@ -111,15 +116,15 @@ const GoalStep = (props: any) => {
             </span>
 
             <CrossIcon onClick={() => removeMealItem(id)} className="register_eating_item_cross" />
-          </div>  
+          </div>
         ))}
       </div>
 
       <div className="text-center">
-        <Button 
-          className="mt-3" 
-          style={{ width: '220px' }} 
-          color="primary" 
+        <Button
+          className="mt-3"
+          style={{ width: '220px' }}
+          color="primary"
           size="lg"
           onClick={() => props.setRegisterStep('INFO')}
         >

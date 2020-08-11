@@ -7,7 +7,7 @@ import localeReducer from './locale.reducer';
 const rootReducer = combineReducers({
   auth: authReducer,
   storage: storageReducer,
-  locale: localeReducer
+  locale: localeReducer,
 });
 
 export default rootReducer;

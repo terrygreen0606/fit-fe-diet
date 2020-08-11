@@ -23,7 +23,7 @@ type Props = {
   className?: string,
 
   onClose?: (e: SyntheticEvent) => void
-}
+};
 
 const Modal = (props: Props) => {
   const {
@@ -33,7 +33,7 @@ const Modal = (props: Props) => {
     bodyOpenClassName = 'ReactModal__Body--open',
     withCloseBtn = true,
     shouldCloseOnOverlayClick = true,
-    children
+    children,
   } = props;
 
   const onClose = (e: SyntheticEvent) => {
@@ -56,10 +56,9 @@ const Modal = (props: Props) => {
         props.onAfterOpen();
       }
     } else {
-      document.querySelector('body').classList.remove(bodyOpenClassName);      
+      document.querySelector('body').classList.remove(bodyOpenClassName);
     }
   }, [isOpen]);
-
 
   if (isOpen) {
     return (
@@ -73,7 +72,7 @@ const Modal = (props: Props) => {
         >
           {children}
         </ModalView>,
-        document.getElementById('modal')
+        document.getElementById('modal'),
       )
     );
   }

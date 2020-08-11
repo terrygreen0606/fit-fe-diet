@@ -7,23 +7,23 @@ const optionsDefault = {
   scales: {
     xAxes: [{
       gridLines: {
-        borderDash: [8, 4]
+        borderDash: [8, 4],
       },
       ticks: {
         stepSize: 15,
-        fontSize: 14
-      }
+        fontSize: 14,
+      },
     }],
     yAxes: [{
       gridLines: {
-        borderDash: [8, 4]
+        borderDash: [8, 4],
       },
       ticks: {
         stepSize: 55,
-        fontSize: 14
-      }
-    }]
-  }
+        fontSize: 14,
+      },
+    }],
+  },
 };
 
 type LineChartProps = {
@@ -32,14 +32,13 @@ type LineChartProps = {
 };
 
 const LineChart = ({ options = optionsDefault, data }: LineChartProps) => {
-
   const [chartRef] = useState(createRef<HTMLCanvasElement>());
 
   useEffect(() => {
     new Chart(chartRef.current.getContext('2d'), {
       type: 'line',
       data,
-      options
+      options,
     });
   }, [data]);
 

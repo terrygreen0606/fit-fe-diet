@@ -9,22 +9,25 @@ export type ItemProps = {
   active?: boolean,
 };
 
-const WeekDayItem = (props: ItemProps) => {
-  return (
-    <div
-      className={classnames("week-workout-item", {
-        active: props.active,
-        disabled: props.disabled,
-      })}
-    >
-      <div className="week-workout-item-number">
-        {props.number}
-      </div>
-      <div className="week-workout-item-of_week">
-        {props.value}
-      </div>
+const WeekDayItem = ({
+  active,
+  disabled,
+  number,
+  value,
+}: ItemProps) => (
+  <div
+    className={classnames('week-workout-item', {
+      active,
+      disabled,
+    })}
+  >
+    <div className="week-workout-item-number">
+      {number}
     </div>
-  );
-};
+    <div className="week-workout-item-of_week">
+      {value}
+    </div>
+  </div>
+);
 
 export default WeekDayItem;

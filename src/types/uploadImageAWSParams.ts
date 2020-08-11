@@ -1,4 +1,4 @@
-export type uploadImageAWSParams = {
+export type UploadImageAWSParams = {
   'acl': string,
   'key': string,
   'Content-Type': string,

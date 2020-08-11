@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 // Components
+import Modal from 'components/common/Modal';
+import ContentLoading from 'components/hoc/ContentLoading';
+import WithTranslate from 'components/hoc/WithTranslate';
 import Steps from './Steps';
 import GoalStep from './GoalStep';
 import InfoStep from './InfoStep';
 import JoinStep from './JoinStep';
-import Modal from 'components/common/Modal';
-import ContentLoading from 'components/hoc/ContentLoading';
-import WithTranslate from 'components/hoc/WithTranslate';
 
 import './RegisterModal.sass';
 
@@ -25,7 +25,7 @@ const registerDataDefault = {
   weight_goal: null,
   tpl_signup: null,
   goal: -1,
-  ignore_cuisine_ids: ['milk', 'meat', 'fish', 'diseases', 'gluten', 'deabetes']
+  ignore_cuisine_ids: ['milk', 'meat', 'fish', 'diseases', 'gluten', 'deabetes'],
 };
 
 type RegisterModalProps = {
@@ -38,27 +38,34 @@ type RegisterModalProps = {
   localePhrases: any
 };
 
-const RegisterModal = (props: RegisterModalProps) => {
-
+const RegisterModal = ({
+  isOpen,
+  tpl,
+  onClose,
+  localePhrases,
+  tplLoading,
+  tplLoadingError,
+  fetchTpl,
+}: RegisterModalProps) => {
   const [registerStep, setRegisterStep] = useState('GOAL');
 
-  const [registerData, setRegisterData] = useState({...registerDataDefault});
+  const [registerData, setRegisterData] = useState({ ...registerDataDefault });
 
   useEffect(() => {
-    if (props.isOpen === false) {
-      setRegisterData({...registerDataDefault});
+    if (isOpen === false) {
+      setRegisterData({ ...registerDataDefault });
       setRegisterStep('GOAL');
     }
-  }, [props.isOpen]);
+  }, [isOpen]);
 
   useEffect(() => {
-    if (props.tpl) {
+    if (tpl) {
       setRegisterData({
         ...registerData,
-        tpl_signup: props.tpl
+        tpl_signup: tpl,
       });
     }
-  }, [props.tpl]);
+  }, [tpl]);
 
   const getRegisterStepView = (registerStepType: string) => {
     let registerStepView = null;
@@ -66,39 +73,41 @@ const RegisterModal = (props: RegisterModalProps) => {
     switch (registerStepType) {
       case 'GOAL':
         registerStepView = (
-          <GoalStep 
-            registerData={registerData} 
+          <GoalStep
+            registerData={registerData}
             setRegisterData={setRegisterData}
-            setRegisterStep={setRegisterStep} 
-            modalClose={props.onClose}
-            localePhrases={props.localePhrases || {}}
+            setRegisterStep={setRegisterStep}
+            modalClose={onClose}
+            localePhrases={localePhrases || {}}
           />
         );
         break;
-      
+
       case 'JOIN':
         registerStepView = (
-          <JoinStep 
-            registerData={registerData} 
+          <JoinStep
+            registerData={registerData}
             setRegisterData={setRegisterData}
-            setRegisterStep={setRegisterStep} 
-            modalClose={props.onClose}
-            localePhrases={props.localePhrases || {}}
+            setRegisterStep={setRegisterStep}
+            modalClose={onClose}
+            localePhrases={localePhrases || {}}
           />
         );
         break;
 
       case 'INFO':
         registerStepView = (
-          <InfoStep 
-            registerData={registerData} 
+          <InfoStep
+            registerData={registerData}
             setRegisterData={setRegisterData}
-            setRegisterStep={setRegisterStep} 
-            modalClose={props.onClose}
-            localePhrases={props.localePhrases || {}}
+            setRegisterStep={setRegisterStep}
+            modalClose={onClose}
+            localePhrases={localePhrases || {}}
           />
         );
         break;
+
+      default: break;
     }
 
     return registerStepView;
@@ -106,21 +115,21 @@ const RegisterModal = (props: RegisterModalProps) => {
 
   return (
     <Modal
-      isOpen={props.isOpen}
-      onClose={props.onClose}
+      isOpen={isOpen}
+      onClose={onClose}
       className="registerModal"
     >
       <Modal.Main className="registerModal_main">
         <ContentLoading
-          isLoading={props.tplLoading}
-          isError={props.tplLoadingError}
-          fetchData={props.fetchTpl}
+          isLoading={tplLoading}
+          isError={tplLoadingError}
+          fetchData={fetchTpl}
         >
-          <Steps step={registerStep} localePhrases={props.localePhrases || {}} />
+          <Steps step={registerStep} localePhrases={localePhrases || {}} />
 
           <div className="registerModal_steps_content">
             {getRegisterStepView(registerStep)}
-          </div>          
+          </div>
         </ContentLoading>
       </Modal.Main>
     </Modal>

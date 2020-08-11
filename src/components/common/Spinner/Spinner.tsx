@@ -12,16 +12,21 @@ type SpinnerProps = {
   className?: string;
 };
 
-const Spinner = (props: SpinnerProps) => (
-	<FontAwesomeIcon 
-		className={classNames('spinnerLoader', {
-      [props.className]: props.className
-    })} 
-    style={{ width: props.width && `${props.width}px`, height: props.height && `${props.height}px` }}
-    color={props.color && props.color}
-		icon={faCircleNotch} 
-		spin
-	/>
+const Spinner = ({
+  width,
+  height,
+  color,
+  className,
+}: SpinnerProps) => (
+  <FontAwesomeIcon
+    className={classNames('spinnerLoader', {
+      [className]: className,
+    })}
+    style={{ width: width && `${width}px`, height: height && `${height}px` }}
+    color={color && color}
+    icon={faCircleNotch}
+    spin
+  />
 );
 
 export default Spinner;

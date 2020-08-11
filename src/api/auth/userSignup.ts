@@ -1,6 +1,6 @@
 import axios from 'utils/axios';
 
-type userSignupParams = {
+type UserSignupParams = {
   email: string,
   password: string,
   name: string,
@@ -16,8 +16,6 @@ type userSignupParams = {
   ignore_cusine_ids?: string[]
 };
 
-export const userSignup = (params: userSignupParams) => {
-  return axios.post('/user/signup', {
-    ...params
-  });
-};
+export const userSignup = (params: UserSignupParams) => axios.post('/user/signup', {
+  ...params,
+});

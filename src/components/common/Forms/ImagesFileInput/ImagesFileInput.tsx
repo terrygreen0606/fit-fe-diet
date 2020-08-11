@@ -9,15 +9,14 @@ import Spinner from 'components/common/Spinner';
 import useFileUploader, { FileType } from 'components/hooks/useFileUploader';
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import styles from './ImagesFileInput.module.sass';
-
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon.svg';
+import styles from './ImagesFileInput.module.sass';
 
 type ChildrenProps = {
   open: () => void;
   addFile: (file: Partial<FileType>) => void;
   isDisabled: boolean;
-}
+};
 
 type Props = {
   onLoadFiles: (ids: any[]) => void;
@@ -31,7 +30,7 @@ type Props = {
   rawStyle?: boolean,
   filesOut?: FileDataType[];
   dropElement?: HTMLDivElement | null;
-}
+};
 
 const ImagesFileInput = ({
   onLoadFiles,
@@ -44,7 +43,7 @@ const ImagesFileInput = ({
   localePhrases,
   filesOut = [],
   usePasteEvent = false,
-  dropElement
+  dropElement,
 }: Props) => {
   const isDisabled = disabled || readOnly;
 
@@ -54,7 +53,7 @@ const ImagesFileInput = ({
     (fileName: string) => {
       toast.error(t('common.failed_load_file', { fileName }));
     },
-    [null]
+    [null],
   );
 
   const {
@@ -65,7 +64,7 @@ const ImagesFileInput = ({
     isDragActive,
     removeFile,
     open,
-    addFile
+    addFile,
   } = useFileUploader({
     dropElement,
     usePasteEvent,
@@ -74,12 +73,12 @@ const ImagesFileInput = ({
     additionalFiles,
     disabled: isDisabled,
     multiple: true,
-    accept: '.jpg, .jpeg, .png'
+    accept: '.jpg, .jpeg, .png',
   });
 
   const loadedFiles = React.useMemo(
-    () => files.filter(file => file.isLoaded),
-    [files]
+    () => files.filter((file) => file.isLoaded),
+    [files],
   );
 
   React.useEffect(() => {
@@ -94,10 +93,10 @@ const ImagesFileInput = ({
 
       window.open(url);
     },
-    [loadedFiles]
+    [loadedFiles],
   );
 
-  const fieldfiles = loadedFiles.filter(file => filesOut.find(filee => file.id === file.id));
+  const fieldfiles = loadedFiles.filter((file) => filesOut.find((filee) => filee.id === file.id));
   const rootProps = loadedFiles.length || isLoading || isDisabled
     ? {}
     : getRootProps();
@@ -110,7 +109,7 @@ const ImagesFileInput = ({
           [styles.inputFileContainerDragndrop]: !rawStyle,
           [styles.inputFileContainerDragndrop_drag_over]: isDragActive,
           [styles.inputFileContainerDragndrop_has_files]: !!fieldfiles.length && !rawStyle,
-          [styles.inputFileContainerDragndrop_is_disabled]: isDisabled
+          [styles.inputFileContainerDragndrop_is_disabled]: isDisabled,
         })}
       >
         {isLoading && (
@@ -130,7 +129,13 @@ const ImagesFileInput = ({
                 style={{ backgroundImage: `url(${fileData.url})` }}
               >
                 {!isDisabled && (
-                  <span className={styles.fileRemoveIconWrap} onClick={removeFile(fileData)}><CrossIcon className={styles.fileRemoveIcon} /></span>
+                  <span
+                    role="presentation"
+                    className={styles.fileRemoveIconWrap}
+                    onClick={removeFile(fileData)}
+                  >
+                    <CrossIcon className={styles.fileRemoveIcon} />
+                  </span>
                 )}
               </div>
             ))}

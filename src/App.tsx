@@ -12,6 +12,7 @@ import FullPageLoader from './components/common/FullPageLoader';
 import './assets/sass/styles.sass';
 
 const App = (props: any) => {
+  const { phrases, isAuthChecking } = props;
 
   useEffect(() => {
     props.initApp();
@@ -19,8 +20,8 @@ const App = (props: any) => {
 
   return (
     <BrowserRouter>
-      <LocaleContext.Provider value={props.phrases}>
-        {props.isAuthChecking
+      <LocaleContext.Provider value={phrases}>
+        {isAuthChecking
           ? (
             <FullPageLoader />
           )
@@ -35,7 +36,7 @@ const App = (props: any) => {
 export default connect(
   (state: any) => ({
     isAuthChecking: state.auth.isAuthChecking,
-    phrases: state.locale.phrases
+    phrases: state.locale.phrases,
   }),
-  { initApp }
+  { initApp },
 )(App);

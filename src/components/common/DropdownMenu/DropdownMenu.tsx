@@ -24,11 +24,11 @@ const DropdownMenu = ({ isOpen, toggle, ...attributes }: DropdownMenuProps) => {
   function closeDropdown(e) {
     // @ts-ignore
     if (
-      isOpen &&
-      wrapperRef &&
-      wrapperRef.current &&
+      isOpen
+      && wrapperRef
+      && wrapperRef.current
       // @ts-ignore
-      !wrapperRef.current.contains(e.target)
+      && !wrapperRef.current.contains(e.target)
     ) {
       toggle(e);
     }
@@ -36,12 +36,13 @@ const DropdownMenu = ({ isOpen, toggle, ...attributes }: DropdownMenuProps) => {
 
   return (
     <div
+      role="presentation"
       ref={wrapperRef}
       {...attributes}
       className={classNames(
         'dropdownMenu',
         attributes.className,
-        isOpen && 'dropdownMenuOpen'
+        isOpen && 'dropdownMenuOpen',
       )}
       onClick={toggle}
     />

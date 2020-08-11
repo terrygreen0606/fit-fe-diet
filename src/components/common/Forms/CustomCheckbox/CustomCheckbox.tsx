@@ -1,7 +1,7 @@
 import React, { ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 
-import  './CustomCheckbox.sass';
+import './CustomCheckbox.sass';
 
 interface CustomCheckboxProps {
   type?: 'checkbox',
@@ -21,11 +21,11 @@ interface CustomCheckboxProps {
 }
 
 const CustomCheckboxDefaultProps = {
-  type: 'checkbox'
+  type: 'checkbox',
 };
 
 const CustomCheckbox = (props: CustomCheckboxProps) => {
-  const onChange = e => {
+  const onChange = (e) => {
     if (props.disabled) {
       e.preventDefault();
       return;
@@ -43,6 +43,7 @@ const CustomCheckbox = (props: CustomCheckboxProps) => {
     innerRef,
     invalid,
     htmlFor,
+    disabled,
     children, // eslint-disable-line
     ...attributes
   } = props;
@@ -50,10 +51,10 @@ const CustomCheckbox = (props: CustomCheckboxProps) => {
   return (
     <label
       htmlFor={htmlFor}
-      className={classNames(className, "customCheckbox", {
-        "checkboxDisabled": props.disabled,
-        "checkboxInline": inline,
-        "customCheckbox_is_invalid": invalid
+      className={classNames(className, 'customCheckbox', {
+        checkboxDisabled: disabled,
+        checkboxInline: inline,
+        customCheckbox_is_invalid: invalid,
       })}
     >
       {label && label}

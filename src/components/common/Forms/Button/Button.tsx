@@ -29,11 +29,11 @@ const ButtonPropsDefaults = {
   color: 'default',
   weight: 'default',
   size: 'md',
-  block: false
+  block: false,
 };
 
 const Button = (props: ButtonProps) => {
-  const onClick = e => {
+  const onClick = (e) => {
     if (props.disabled) {
       e.preventDefault();
       return;
@@ -70,14 +70,18 @@ const Button = (props: ButtonProps) => {
         `bttn_${size}`,
         `bttnWeight_${weight}`,
         {
-          'bttnBlock': block,
-          'bttnOutline': outline
-        }
+          bttnBlock: block,
+          bttnOutline: outline,
+        },
       )}
       onClick={onClick}
       disabled={disabled || isLoading}
       aria-label={ariaLabel || null}
-    >{children} {isLoading ? <Spinner className="ml-2" /> : null}</button>
+    >
+      {children}
+      {' '}
+      {isLoading ? <Spinner className="ml-2" /> : null}
+    </button>
   );
 };
 

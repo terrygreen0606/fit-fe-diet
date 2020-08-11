@@ -14,7 +14,7 @@ import './SelectInput.sass';
 
 type SelectValueType = string | number | null | undefined | boolean;
 
-type inputError = {
+type InputError = {
   code?: string,
   field?:string,
   message: string
@@ -34,91 +34,89 @@ interface SelectInputProps {
   disabled?: boolean,
   readOnly?: boolean,
   width?: number,
-  errors?: inputError[],
+  errors?: InputError[],
   [propName: string]: any
 }
 
 const SelectInputDefaultProps = {
-  width: 200
+  width: 200,
 };
 
 const SelectInput = (props: SelectInputProps) => {
-
   const [dummyErrorSelectInputRef] = useState(React.createRef<HTMLInputElement>());
 
-  const SelectContainer = ({ children, ...selectContainerProps }) => (
-    <components.SelectContainer 
+  const SelectContainer = ({ children, ...selectContainerProps }: any) => (
+    <components.SelectContainer
       {...selectContainerProps}
-      className={classNames("fgSelectContainer", {
-        "fgSelectContainer_block": props.block,
+      className={classNames('fgSelectContainer', {
+        fgSelectContainer_block: props.block,
       })}
     >
       {children}
     </components.SelectContainer>
   );
 
-  const Input = inputProps => (
+  const Input = (inputProps) => (
     <components.Input {...inputProps} />
   );
 
-  const Control = controlProps => (
+  const Control = (controlProps) => (
     <components.Control
       {...controlProps}
-      className={classNames("fgSelectControl", {
-        "fgSelectControl_block": props.block,
-        "fgSelectControl_focused": controlProps.isFocused || controlProps.hasValue,
-        "fgSelectControl_has_value": controlProps.hasValue,
-        "fgSelectControl_disabled": controlProps.isDisabled,
-        "fgSelectControl_readonly": props.readOnly,
-        "fgSelectControl_is_invalid": props.invalid || (props.errors && props.errors.length > 0)
+      className={classNames('fgSelectControl', {
+        fgSelectControl_block: props.block,
+        fgSelectControl_focused: controlProps.isFocused || controlProps.hasValue,
+        fgSelectControl_has_value: controlProps.hasValue,
+        fgSelectControl_disabled: controlProps.isDisabled,
+        fgSelectControl_readonly: props.readOnly,
+        fgSelectControl_is_invalid: props.invalid || (props.errors && props.errors.length > 0),
       })}
     />
   );
 
-  const SingleValue = ({ children, ...singleValueProps }) => (
+  const SingleValue = ({ children, ...singleValueProps }: any) => (
     <components.SingleValue {...singleValueProps} className="fgSelectSingleValue">{children}</components.SingleValue>
   );
 
-  const Menu = menuProps => (
+  const Menu = (menuProps) => (
     <components.Menu
       {...menuProps}
-      className={classNames("fgSelectMenu", {
-        "fgSelectMenu_block": props.block
+      className={classNames('fgSelectMenu', {
+        fgSelectMenu_block: props.block,
       })}
     >
       {menuProps.children}
     </components.Menu>
   );
 
-  const Option = optionProps => (
+  const Option = (optionProps) => (
     <components.Option
       {...optionProps}
-      className={classNames("fgSelectOption", {
-        "fgSelectOption_selected": optionProps.isSelected,
-        "fgSelectOption_focused": optionProps.isFocused,
-        "fgSelectOption_selected_disabled": optionProps.isDisabled
+      className={classNames('fgSelectOption', {
+        fgSelectOption_selected: optionProps.isSelected,
+        fgSelectOption_focused: optionProps.isFocused,
+        fgSelectOption_selected_disabled: optionProps.isDisabled,
       })}
     />
   );
 
-  const IndicatorsContainer = indicatorsContainerProps => (
+  const IndicatorsContainer = (indicatorsContainerProps) => (
     <components.IndicatorsContainer
       {...indicatorsContainerProps}
       className="fgSelectIndicatorsContainer"
     />
   );
 
-  const IndicatorSeparator = ({ indicatorSeparatorProps }) => (
+  const IndicatorSeparator = ({ indicatorSeparatorProps }: any) => (
     <span
       {...indicatorSeparatorProps}
       className="fgSelectSeprator"
     />
   );
 
-  const onChange = selectValue => {
+  const onChange = (selectValue) => {
     if (props.onChange) {
       if (props.errors) {
-
         const event = new Event('change');
         dummyErrorSelectInputRef.current.value = selectValue;
         dummyErrorSelectInputRef.current.dispatchEvent(event);
@@ -156,7 +154,7 @@ const SelectInput = (props: SelectInputProps) => {
       IndicatorsContainer,
       IndicatorSeparator,
       SelectContainer,
-      Input
+      Input,
     },
     value: value ? value : '', // eslint-disable-line
     onChange,
@@ -164,13 +162,13 @@ const SelectInput = (props: SelectInputProps) => {
     styles: {
       control: (base) => ({
         ...base,
-        width: `${props.width}px`
+        width: `${props.width}px`,
       }),
       menu: (base) => ({
         ...base,
-        width: `${props.width}px`
-      })
-    }
+        width: `${props.width}px`,
+      }),
+    },
   };
 
   if (finalAttributes['data-validate']) {
@@ -204,13 +202,13 @@ const SelectInput = (props: SelectInputProps) => {
           ref={dummyErrorSelectInputRef}
           name={name}
           type="hidden"
-          value={props.value ? props.value : ''}
+          value={value || ''}
           data-param={props['data-param']}
           data-validate={props['data-validate']}
         />
       )}
 
-      {errors && errors.slice(0, 1).map(error => (
+      {errors && errors.slice(0, 1).map((error) => (
         <FormInvalidMessage>{error.message}</FormInvalidMessage>
       ))}
     </>

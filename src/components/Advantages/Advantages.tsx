@@ -1,4 +1,4 @@
-import React, { FunctionComponent, SVGProps } from "react";
+import React, { FunctionComponent, SVGProps } from 'react';
 
 import './Advantages.sass';
 
@@ -15,10 +15,21 @@ type AdvantagesProps = {
   advantage3Desc: string,
 };
 
-const Advantages = (props: AdvantagesProps) => {
-  const Icon1 = props.icon1;
-  const Icon2 = props.icon2;
-  const Icon3 = props.icon3;
+const Advantages = ({
+  icon1,
+  icon2,
+  icon3,
+  mainTitle,
+  advantage1Desc,
+  advantage1Title,
+  advantage2Desc,
+  advantage2Title,
+  advantage3Desc,
+  advantage3Title,
+}: AdvantagesProps) => {
+  const Icon1 = icon1;
+  const Icon2 = icon2;
+  const Icon3 = icon3;
 
   return (
     <section className="how-exercise-plan-works-sect">
@@ -26,7 +37,7 @@ const Advantages = (props: AdvantagesProps) => {
         <div className="row">
           <div className="how-exercise-plan-works-col d-flex align-items-center">
 
-            <h4>{props.mainTitle}</h4>
+            <h4>{mainTitle}</h4>
 
           </div>
           <div className="how-exercise-plan-works-col">
@@ -36,8 +47,8 @@ const Advantages = (props: AdvantagesProps) => {
             </div>
 
             <div className="how-exercise-plan-works-text">
-              <h5 className="mt-4 mb-4">{props.advantage1Title}</h5>
-              <p>{props.advantage1Desc}</p>
+              <h5 className="mt-4 mb-4">{advantage1Title}</h5>
+              <p>{advantage1Desc}</p>
             </div>
 
           </div>
@@ -48,8 +59,8 @@ const Advantages = (props: AdvantagesProps) => {
             </div>
 
             <div className="how-exercise-plan-works-text">
-              <h5 className="mt-4 mb-4">{props.advantage2Title}</h5>
-              <p>{props.advantage2Desc}</p>
+              <h5 className="mt-4 mb-4">{advantage2Title}</h5>
+              <p>{advantage2Desc}</p>
             </div>
 
           </div>
@@ -60,8 +71,8 @@ const Advantages = (props: AdvantagesProps) => {
             </div>
 
             <div className="how-exercise-plan-works-text">
-              <h5 className="mt-4 mb-4">{props.advantage3Title}</h5>
-              <p>{props.advantage3Desc}</p>
+              <h5 className="mt-4 mb-4">{advantage3Title}</h5>
+              <p>{advantage3Desc}</p>
             </div>
 
           </div>
@@ -69,6 +80,6 @@ const Advantages = (props: AdvantagesProps) => {
       </div>
     </section>
   );
-}
+};
 
 export default Advantages;
