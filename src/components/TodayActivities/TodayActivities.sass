@@ -1,0 +1,100 @@
+@import '../../assets/sass/vars'
+
+
+.today-activities-activity
+  &-list
+    display: flex
+    overflow-x: scroll
+    padding: 15px 3px
+
+    input
+      display: none
+
+    input:checked + .today-activities-activity-card .today-activities-activity-card-checkmark
+      opacity: 1
+
+  &-card
+    flex: 0 0 calc(38% - 47px)
+    min-width: calc(38% - 47px)
+    min-height: 100%
+    position: relative
+    padding: 21px 22px
+    text-align: center
+    cursor: pointer
+    margin-right: 46px
+    @media (max-width: 768px)
+      display: flex
+      flex: 0 0 calc(50% - 47px)
+      min-width: calc(50% - 47px)
+      padding: 14px 18px
+      justify-content: center
+      align-items: center
+      margin-right: 26px
+
+    &:hover, &.active
+      color: #fff
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+      border-radius: 20px
+      .today-activities-activity-card
+        &-icon
+          fill: #fff
+          path
+            fill: #fff
+          &-wrap
+            border-color: $caribbean-green
+            background-color: $caribbean-green
+        &-title
+          color: $caribbean-green
+          font-weight: bold
+          @media (max-width: 768px)
+            font-weight: bold
+
+    &.disabled
+      opacity: .6
+      cursor: default
+
+    &-title
+      margin-top: 23px
+      line-height: 22px
+      font-weight: 400
+      @media (max-width: 768px)
+        margin-top: 0
+        font-size: 14px
+        line-height: 17px
+    &-checkmark
+      position: absolute
+      top: -12px
+      right: -12px
+      display: inline-block
+      width: 43px
+      height: 43px
+      background-color: $caribbean-green
+      background-image: url('../../assets/img/icons/check-icon.svg')
+      background-repeat: no-repeat
+      background-position: center center
+      border-radius: 100%
+      box-shadow: 3px -3px 10px rgba(0, 0, 0, 0.08)
+      border: 8px solid #fff
+      opacity: 0
+      @media (max-width: 768px)
+        right: 0
+        //top: -7px
+    &-icon
+      width: 80%
+      fill: #000
+      path
+        fill: #000
+      &-wrap
+        display: inline-flex
+        justify-content: center
+        align-items: center
+        width: 73px
+        height: 76px
+        border: 1px solid #EDEDED
+        border-radius: 13px
+        margin: 16px 16px 0
+        +mt(.2s)
+        @media (max-width: 768px)
+          border-radius: 5px
+          height: 50px
+          margin: 0

@@ -1,0 +1,66 @@
+@import '../../assets/sass/vars'
+
+.how-exercise-plan-works
+  &-sect
+    font-size: 16px
+    .container
+      padding: 40px 0 50px
+      background-color: $steel-blue
+      color: #fff
+      h5, h4
+        color: #fff
+      .row
+        padding: 0 55px
+        justify-content: space-between
+  &-col
+    flex: 0 0 20%
+    max-width: 20%
+  &-icon
+    height: auto
+    width: 70px
+    &-wrap
+      display: flex
+      align-items: flex-end
+      justify-content: flex-start
+      height: 100px
+      padding-left: 35px
+
+@media (max-width: 768px)
+  .how-exercise-plan-works
+    &-sect
+      .container
+        max-width: 100%
+        .row
+          flex-direction: column
+          align-items: center
+    &-col
+      display: flex
+      flex: 0 0 100%
+      max-width: 100%
+      min-width: 100%
+      flex-direction: row
+      justify-items: flex-start
+      &:not(:last-child)
+        margin-bottom: 70px
+      h5, p
+        margin-top: unset !important
+        display: inline-flex
+      h5, h4
+        font-size: 18px
+        line-height: 22px
+      p
+        font-size: 12px
+        line-height: 15px
+    &-icon
+      &-wrap
+        height: unset
+        display: inline-flex
+        padding-left: 0
+        padding-right: 35px
+        align-items: flex-start
+    &-text
+      display: inline-flex
+      flex-direction: column
+      max-width: calc(100% - 105px)
+      justify-self: flex-start
+      align-self: flex-start

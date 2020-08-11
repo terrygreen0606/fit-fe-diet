@@ -1,8 +1,9 @@
 import React from 'react';
 
 // Components
-import Button from 'components/common/Forms/Button'
-import NutritionPlanCard from 'components/NutritionPlanCard'
+import Button from 'components/common/Forms/Button';
+import NutritionPlanCard from 'components/NutritionPlanCard';
+import Advantages from "components/Advantages";
 
 import './NutritionPlanView.sass';
 
@@ -17,47 +18,18 @@ import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-ico
 const NutritionPlanView = () => {
   return (
     <>
-      <section className="how-nutrition-plan-works-sect">
-        <div className="container">
-          <div className="row">
-            <div className="how-nutrition-plan-works-col d-flex align-items-center">
-              
-              <h4>How does the diet plan work?</h4>
-
-            </div>
-            <div className="how-nutrition-plan-works-col">
-              
-              <div className="how-nutrition-plan-works-icon-wrap">
-                <CookCutIcon className="how-nutrition-plan-works-icon" />
-              </div>
-
-              <h5 className="mt-4 mb-4">Quantities are personal</h5>
-              <p>Taking into account your data and purpose, we have created a diet plan where the amounts of food and calories are calculated for you.</p>
-
-            </div>
-            <div className="how-nutrition-plan-works-col">
-              
-              <div className="how-nutrition-plan-works-icon-wrap">
-                <MealIcon className="how-nutrition-plan-works-icon" />
-              </div>
-
-              <h5 className="mt-4 mb-4">All dishes are suitable for every meal</h5>
-              <p>Eat only what you like. You can change all the recipes as you wish.</p>
-
-            </div>
-            <div className="how-nutrition-plan-works-col">
-              
-              <div className="how-nutrition-plan-works-icon-wrap">
-                <DumbbellIcon className="how-nutrition-plan-works-icon" />
-              </div>
-
-              <h5 className="mt-4 mb-4">When you exercise you can eat more</h5>
-              <p>When exercising, write it down before the last meal. This automatically increases the amount of the last meal so that you get enough of the necessary substances and energy from the food.</p>
-
-            </div>
-          </div>
-        </div>
-      </section>
+      <Advantages
+        icon1={CookCutIcon}
+        icon2={MealIcon}
+        icon3={DumbbellIcon}
+        mainTitle="How does the diet plan work?"
+        advantage1Title="Quantities are personal"
+        advantage1Desc="Taking into account your data and purpose, we have created a diet plan where the amounts of food and calories are calculated for you."
+        advantage2Title="All dishes are suitable for every meal"
+        advantage2Desc="Eat only what you like. You can change all the recipes as you wish."
+        advantage3Title="When you exercise you can eat more"
+        advantage3Desc="When exercising, write it down before the last meal. This automatically increases the amount of the last meal so that you get enough of the necessary substances and energy from the food."
+      />
 
       <section className="nutrition-plan-card-list-sect">
         <div className="container">
@@ -65,12 +37,12 @@ const NutritionPlanView = () => {
             <div className="nutrition-plan-card-list-col nutrition-plan-list">
               <div className="row">
                 <div className="col-8 mb-5">
-                  
+
                   <h4><AngleLeftIcon className="mr-4" />Neljapäev, 18. juuni <span className="title-icon ml-4" /></h4>
 
                 </div>
                 <div className="col-4 mb-5">
-                  
+
                   <div className="nutrition-plan-controls-list">
                     <div className="nutrition-plan-controls-item">
                       <FileDyskIcon className="nutrition-plan-controls-icon" />
@@ -85,12 +57,12 @@ const NutritionPlanView = () => {
                 <div className="col-6">
 
                   <NutritionPlanCard />
-                  
+
                 </div>
                 <div className="col-6">
 
                   <NutritionPlanCard type="active" favorite />
-                  
+
                 </div>
                 <div className="col-6">
 
@@ -100,7 +72,7 @@ const NutritionPlanView = () => {
               </div>
             </div>
             <div className="nutrition-plan-info-col">
-              
+
               <div className="nutrition-plan-add-recipe-card card-bg">
                 <h4>Now you can add your own recipes to the diet plan</h4>
                 <img src={require('../../assets/img/recipe-preview-img.jpg')} className="nutrition-plan-add-recipe-card-img" alt="" />
@@ -112,7 +84,7 @@ const NutritionPlanView = () => {
               <div className="nutrition-plan-activity-list">
                 <div className="nutrition-plan-activity-card card-bg active">
                   <span className="nutrition-plan-activity-card-checkmark"></span>
-                  
+
                   <span className="nutrition-plan-activity-card-icon-wrap">
                     <DumbbellIcon className="nutrition-plan-activity-card-icon" />
                   </span>
@@ -122,7 +94,7 @@ const NutritionPlanView = () => {
 
                 <div className="nutrition-plan-activity-card card-bg">
                   <span className="nutrition-plan-activity-card-checkmark"></span>
-                  
+
                   <span className="nutrition-plan-activity-card-icon-wrap">
                     <WeighScaleIcon className="nutrition-plan-activity-card-icon" />
                   </span>

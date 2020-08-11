@@ -1,0 +1,77 @@
+@import '../../assets/sass/vars'
+
+
+.training-plan
+  &-card-list
+    &-col
+      flex: 0 0 calc(62% - 70px)
+      max-width: calc(62% - 70px)
+      @media (max-width: 768px)
+        flex: 0 0 100%
+        max-width: 100%
+      .row
+        margin: unset
+  &-info-col
+    flex: 0 0 38%
+    max-width: 38%
+    margin-left: 70px
+    @media (max-width: 768px)
+      flex: 0 0 calc(100% - 40px)
+      max-width: calc(100% - 40px)
+      margin: auto 24px
+      h4
+        font-size: 18px
+        line-height: 22px
+
+.training-plan
+  &-controls
+    margin-left: 25px
+    &-list
+      display: flex
+      justify-content: flex-end
+      align-items: center
+    &-item
+      &:not(:last-child)
+        margin-right: 10px
+    &-icon
+      width: 30px
+      cursor: pointer
+      fill: #000
+      path
+        fill: #000
+      &:hover
+        fill: $caribbean-green
+        path
+          fill: $caribbean-green
+
+.training-plan
+  &-adherence-diet-card
+    display: flex
+    flex-wrap: wrap
+    padding: 25px 22px
+    &-title
+      flex: 0 0 100%
+      margin-bottom: 30px
+      @media (max-width: 768px)
+        font-size: 16px !important
+        line-height: 20px !important
+    &-img
+      flex: 0 0 20%
+      text-align: center
+      @media (max-width: 768px)
+        svg
+          max-height: 50px
+      img
+        max-width: 70%
+    &-content
+      flex: 0 0 80%
+      @media (max-width: 768px)
+        > *
+          font-size: 14px !important
+          line-height: 17px !important
+
+.week-workout-start-btn
+  @media (max-width: 768px)
+    width: calc(100% - 30px)
+    font-size: 16px
+    line-height: 20px
