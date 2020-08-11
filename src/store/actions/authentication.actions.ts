@@ -10,62 +10,58 @@ export const SET_USER_DATA = 'SET_USER_DATA';
 export const setAuthChecking = (isAuthChecking: boolean) => ({ type: SET_AUTH_CHECKING, isAuthChecking });
 export const userLogin = (token: string) => ({ type: USER_LOGIN, token });
 
-export const authCheck = () => {
-  return dispatch => {
-    const token = localStorage.getItem('authToken');
+export const authCheck = () => (dispatch) => {
+  const token = localStorage.getItem('authToken');
 
-    dispatch(setAuthChecking(true));
+  dispatch(setAuthChecking(true));
 
-    if (token) {
-      userAcknowledge(token).then(response => {
-        if (response.data && response.data.access_token) {
-          localStorage.setItem('authToken', token);
-          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-          dispatch(userLogin(response.data.access_token));
-        }
-        
-        dispatch(setAuthChecking(false));
-      }).catch(error => {
-        dispatch(setAuthChecking(false));
-      });
-    } else {
+  if (token) {
+    userAcknowledge(token).then((response) => {
+      if (response.data && response.data.access_token) {
+        localStorage.setItem('authToken', token);
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        dispatch(userLogin(response.data.access_token));
+      }
+
       dispatch(setAuthChecking(false));
-    }
-  };
+    }).catch((error) => {
+      dispatch(setAuthChecking(false));
+    });
+  } else {
+    dispatch(setAuthChecking(false));
+  }
 };
 
-export const initApp = () => {
-  return dispatch => {
-    const LOCALIZATION_DEV = true;
+export const initApp = () => (dispatch) => {
+  const LOCALIZATION_DEV = true;
 
-    const localeLang = localStorage.getItem('localeLang');
-    let localePhrases = localStorage.getItem('localePhrases');
-    localePhrases = localePhrases ? JSON.parse(localePhrases) : null;
+  const localeLang = localStorage.getItem('localeLang');
+  let localePhrases = localStorage.getItem('localePhrases');
+  localePhrases = localePhrases ? JSON.parse(localePhrases) : null;
 
-    const userLang = window.navigator.language;
+  const userLang = window.navigator.language;
 
-    dispatch(setAuthChecking(true));
+  dispatch(setAuthChecking(true));
 
-    if (!LOCALIZATION_DEV && localePhrases && userLang === localeLang) {
-      dispatch(setLocaleLang(userLang));
-      dispatch(setLocalePhrases(localePhrases));
-      
+  if (!LOCALIZATION_DEV && localePhrases && userLang === localeLang) {
+    dispatch(setLocaleLang(userLang));
+    dispatch(setLocalePhrases(localePhrases));
+
+    dispatch(authCheck());
+  } else {
+    loadPhrases(userLang).then((response) => {
+      if (response.data.success && response.data.data) {
+        dispatch(setLocalePhrases(response.data.data));
+
+        localStorage.setItem('localeLang', userLang);
+        localStorage.setItem('localePhrases', JSON.stringify(response.data.data));
+      }
+
       dispatch(authCheck());
-    } else {
-      loadPhrases(userLang).then(response => {
-        if (response.data.success && response.data.data) {
-          dispatch(setLocalePhrases(response.data.data));
-
-          localStorage.setItem('localeLang', userLang);
-          localStorage.setItem('localePhrases', JSON.stringify(response.data.data));
-        }
-
-        dispatch(authCheck());
-      }).catch(error => {
-        dispatch(setAuthChecking(false));
-      });
-    }
-  };
+    }).catch((error) => {
+      dispatch(setAuthChecking(false));
+    });
+  }
 };
 
 export const userLogout = () => {

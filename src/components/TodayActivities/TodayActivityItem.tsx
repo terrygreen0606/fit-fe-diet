@@ -10,22 +10,27 @@ export type ItemProps = {
   active?: boolean,
 };
 
-const TodayActivityItem = (props: ItemProps) => {
-  const Icon = props.icon;
+const TodayActivityItem = ({
+  icon,
+  active,
+  disabled,
+  text,
+}: ItemProps) => {
+  const Icon = icon;
 
   return (
     <div
-      className={classnames("today-activities-activity-card", {
-        active: props.active,
-        disabled: props.disabled,
+      className={classnames('today-activities-activity-card', {
+        active,
+        disabled,
       })}
     >
-      <span className="today-activities-activity-card-checkmark"/>
+      <span className="today-activities-activity-card-checkmark" />
       <span className="today-activities-activity-card-icon-wrap">
         <Icon className="today-activities-activity-card-icon" />
       </span>
       <h6 className="today-activities-activity-card-title">
-        {props.text}
+        {text}
       </h6>
     </div>
   );

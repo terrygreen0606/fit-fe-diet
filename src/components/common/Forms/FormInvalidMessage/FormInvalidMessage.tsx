@@ -2,8 +2,8 @@ import React from 'react';
 
 import './FormInvalidMessage.sass';
 
-const FormInvalidMessage = (props: any) => (
-  <div className="fgInvalidMsg">{props.children}</div>
+const FormInvalidMessage = ({ children }: any) => (
+  <div className="fgInvalidMsg">{children}</div>
 );
 
 export default FormInvalidMessage;

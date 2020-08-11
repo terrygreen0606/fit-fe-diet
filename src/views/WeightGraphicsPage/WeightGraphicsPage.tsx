@@ -19,29 +19,29 @@ const periodOptions = [
   { value: 'all', label: 'Whole period' },
   { value: 'year', label: 'Last year' },
   { value: 'month', label: 'Last month' },
-  { value: 'week', label: 'Last week' }
+  { value: 'week', label: 'Last week' },
 ];
 
 const chartData = {
-  labels: ["19.06.20", "19.06.20", "19.06.20", "19.06.20", "19.06.20"],
+  labels: ['19.06.20', '19.06.20', '19.06.20', '19.06.20', '19.06.20'],
   datasets: [
     {
-      label: "Weight",
+      label: 'Weight',
       fill: false,
       lineTension: 0.5,
       pointRadius: 7,
-      backgroundColor: "#106EE8",
-      borderColor: "#5B9DFF",
+      backgroundColor: '#106EE8',
+      borderColor: '#5B9DFF',
       borderWidth: 2,
       data: [55, 57, 80, 81, 56],
     },
     {
-      label: "Purpose",
+      label: 'Purpose',
       fill: false,
       lineTension: 0.5,
       pointRadius: 7,
-      backgroundColor: "#BCFFC5",
-      borderColor: "#CDFFD3",
+      backgroundColor: '#BCFFC5',
+      borderColor: '#CDFFD3',
       borderWidth: 2,
       data: [155, 47, 20, 231, 56],
     },
@@ -49,7 +49,6 @@ const chartData = {
 };
 
 const WeightGraphicsPage = () => {
-
   const [dietStatisticsType, setDietStatisticsType] = useState('weight');
   const [dietStatisticsPeriod, setDietStatisticsPeriod] = useState(periodOptions[0]);
 
@@ -59,31 +58,31 @@ const WeightGraphicsPage = () => {
         <div className="container">
           <div className="row">
             <div className="weight-graphics-page-graph-col">
-              
+
               <div className="text-center">
-                <CustomRadio 
-                  label="Weight" 
-                  value="weight" 
-                  inline 
-                  checked={dietStatisticsType === 'weight'} 
-                  onChange={e => setDietStatisticsType(e.target.value)}
+                <CustomRadio
+                  label="Weight"
+                  value="weight"
+                  inline
+                  checked={dietStatisticsType === 'weight'}
+                  onChange={(e) => setDietStatisticsType(e.target.value)}
                 />
 
-                <CustomRadio 
-                  label="Dimensions" 
-                  value="dimensions" 
-                  inline 
-                  checked={dietStatisticsType === 'dimensions'} 
-                  onChange={e => setDietStatisticsType(e.target.value)}
+                <CustomRadio
+                  label="Dimensions"
+                  value="dimensions"
+                  inline
+                  checked={dietStatisticsType === 'dimensions'}
+                  onChange={(e) => setDietStatisticsType(e.target.value)}
                 />
               </div>
 
               <div className="mt-3 text-right">
-                <SelectInput 
-                  value={dietStatisticsPeriod} 
+                <SelectInput
+                  value={dietStatisticsPeriod}
                   options={periodOptions}
                   onChange={setDietStatisticsPeriod}
-                />           
+                />
               </div>
 
               <div className="weight-graphics-graph-container mt-4">
@@ -111,7 +110,10 @@ const WeightGraphicsPage = () => {
                 <div className="weight-change-history-table-row">
                   <div className="weight-change-history-table-cell">60kg</div>
                   <div className="weight-change-history-table-cell">June 19, 2020</div>
-                  <div className="weight-change-history-table-cell">Weight day <PlusIcon className="weight-graphics-plus-icon ml-2" /></div>
+                  <div className="weight-change-history-table-cell">
+                    Weight day
+                    <PlusIcon className="weight-graphics-plus-icon ml-2" />
+                  </div>
                   <div className="weight-change-history-table-cell">Change</div>
                 </div>
               </div>
@@ -122,22 +124,30 @@ const WeightGraphicsPage = () => {
 
             </div>
             <div className="weight-graphics-page-stat-col">
-              
+
               <div className="weight-graph-card card-bg">
-                <DonutChart 
+                <DonutChart
                   className="mx-4"
-                  percent={50} 
-                  content={
+                  percent={50}
+                  content={(
                     <div className="text-center">
                       <h5>5 kg</h5>
                       <p>lost</p>
                     </div>
-                  }
+                  )}
                 />
 
-                <Button className="mt-5 px-2" block color="secondary">Add today's weight</Button>
-                <Button className="mt-4 px-2" block color="secondary" outline><ImagePlusIcon className="mr-2" /> Add selfie</Button>
-                <Button className="mt-4 px-2" block color="secondary" outline><RewardIcon className="mr-2" /> Change the goal</Button>
+                <Button className="mt-5 px-2" block color="secondary">Add today&apos;s weight</Button>
+                <Button className="mt-4 px-2" block color="secondary" outline>
+                  <ImagePlusIcon className="mr-2" />
+                  {' '}
+                  Add selfie
+                </Button>
+                <Button className="mt-4 px-2" block color="secondary" outline>
+                  <RewardIcon className="mr-2" />
+                  {' '}
+                  Change the goal
+                </Button>
               </div>
 
             </div>

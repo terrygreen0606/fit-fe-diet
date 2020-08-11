@@ -1,11 +1,9 @@
 import axios from 'utils/axios';
 
-type imageCreateParams = {
+type ImageCreateParams = {
   category: 'ingredient' | 'recipe' | 'user',
   mime_type: string,
   size: number
 };
 
-export const imageCreate = (params: imageCreateParams) => {
-  return axios.post('/image/create', params);
-};
+export const imageCreate = (params: ImageCreateParams) => axios.post('/image/create', params);

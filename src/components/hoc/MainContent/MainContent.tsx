@@ -5,7 +5,7 @@ import Footer from 'components/Footer';
 
 import './MainContent.sass';
 
-const MainContent = ({ children }) => (
+const MainContent = ({ children }: any) => (
   <div className="mainContentWrapper">
     {children}
 

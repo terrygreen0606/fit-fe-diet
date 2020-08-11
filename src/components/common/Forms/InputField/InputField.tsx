@@ -42,15 +42,15 @@ interface InputFieldProps {
 }
 
 const InputFieldPropsDefaults = {
-  type: 'text'
+  type: 'text',
 };
 
 const InputField = (props: InputFieldProps) => {
   const [inputFieldId] = useState(`inputField-${uuid()}`);
 
-  const onBlur = e => {
+  const onBlur = (e) => {
     if (props.type === 'money' && !props.mask) {
-      const value = e.target.value;
+      const { value } = e.target;
 
       const currency = 'RUB'; // https://www.currency-iso.org/dam/downloads/lists/list_one.xml
 
@@ -58,7 +58,7 @@ const InputField = (props: InputFieldProps) => {
         maximumFractionDigits: 2,
         currency,
         style: 'currency',
-        currencyDisplay: 'symbol'
+        currencyDisplay: 'symbol',
       };
 
       e.target.value = value ? localStringToNumber(value).toLocaleString(undefined, options) : '';
@@ -67,7 +67,7 @@ const InputField = (props: InputFieldProps) => {
         props.onChange(e);
       }
     } else if (props.type === 'percent' && !props.mask) {
-      const value = e.target.value;
+      const { value } = e.target;
 
       e.target.value = value ? numeral(numeral(value.replace(',', '.')).value() / 100).format('0.00%') : '';
 
@@ -81,15 +81,15 @@ const InputField = (props: InputFieldProps) => {
     }
   };
 
-  const onFocus = e => {
+  const onFocus = (e) => {
     if (props.type === 'money' && !props.mask) {
-      const value = e.target.value;
+      const { value } = e.target;
 
       e.target.value = e.target.value
         ? localStringToNumber(value.split(',')[0]) + localStringToNumber(value.split(',')[1]) / 100
         : '';
     } else if (props.type === 'percent' && !props.mask) {
-      const value = e.target.value;
+      const { value } = e.target;
 
       e.target.value = e.target.value ? numeral(numeral(value).value() * 100).format('0.00') : '';
     }
@@ -99,7 +99,7 @@ const InputField = (props: InputFieldProps) => {
     }
   };
 
-  const onChange = e => {
+  const onChange = (e) => {
     if (props.disabled || props.readOnly) {
       e.preventDefault();
       return;

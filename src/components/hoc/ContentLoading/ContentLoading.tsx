@@ -17,22 +17,23 @@ type ContentLoadingProps = {
 };
 
 const ContentLoading = (props: ContentLoadingProps) => {
-
   const {
     isError,
     isLoading,
     fetchData,
     loadingOverlay,
-    children
+    children,
   } = props;
 
   return isError ? (
     <div className="text-center">
-      Ошибка при выполнении запроса <br />
+      Ошибка при выполнении запроса
+      {' '}
+      <br />
 
-      <Button 
-        className="mt-2" 
-        size="sm" 
+      <Button
+        className="mt-2"
+        size="sm"
         onClick={fetchData}
       >
         Повторить запрос
@@ -41,9 +42,10 @@ const ContentLoading = (props: ContentLoadingProps) => {
   ) : (
     <>
       {loadingOverlay ? (
-        <div className={classNames("loadingOverlay", {
-          "loadingOverlay_is_loading": isLoading
-        })}>
+        <div className={classNames('loadingOverlay', {
+          loadingOverlay_is_loading: isLoading,
+        })}
+        >
           <Spinner className="loadingSpinner" width={36} height={36} color="#00C5D1" />
           {children}
         </div>

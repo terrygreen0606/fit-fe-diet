@@ -21,11 +21,11 @@ interface CustomRadioProps {
 }
 
 const CustomRadioDefaultProps = {
-  type: 'radio'
+  type: 'radio',
 };
 
 const CustomRadio = (props: CustomRadioProps) => {
-  const onChange = e => {
+  const onChange = (e) => {
     if (props.disabled) {
       e.preventDefault();
       return;
@@ -44,16 +44,17 @@ const CustomRadio = (props: CustomRadioProps) => {
     invalid,
     htmlFor,
     children, // eslint-disable-line
+    disabled,
     ...attributes
   } = props;
 
   return (
     <label
       htmlFor={htmlFor}
-      className={classNames(className, "customRadio", {
-        "radioDisabled": props.disabled,
-        "radioInline": inline,
-        "customRadio_is_invalid": invalid
+      className={classNames(className, 'customRadio', {
+        radioDisabled: disabled,
+        radioInline: inline,
+        customRadio_is_invalid: invalid,
       })}
     >
       {label && label}

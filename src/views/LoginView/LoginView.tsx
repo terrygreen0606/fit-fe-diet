@@ -6,17 +6,17 @@ import {
   getTranslate,
   initGoogleAuth as initGoogleAuthUtil,
   initFacebookAuth as initFacebookAuthUtil,
-  wait
+  wait,
 } from 'utils';
 import { toast } from 'react-toastify';
 import axios from 'utils/axios';
-import { 
-  userLogin as userAuthLogin, 
-  userGoogleSignIn, 
+import {
+  userLogin as userAuthLogin,
+  userGoogleSignIn,
   userFacebookSignIn,
-  getTplSignup
+  getTplSignup,
 } from 'api';
-import {Helmet} from "react-helmet";
+import { Helmet } from 'react-helmet';
 import { userLogin } from 'store/actions';
 
 // Components
@@ -33,12 +33,11 @@ import { ReactComponent as GoogleIcon } from 'assets/img/icons/google-icon.svg';
 import { ReactComponent as FacebookIcon } from 'assets/img/icons/facebook-letter-icon.svg';
 
 const LoginView = (props: any) => {
-
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   const [loginForm, setLoginForm] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   const [loginErrors, setLoginErrors] = useState([]);
@@ -48,7 +47,7 @@ const LoginView = (props: any) => {
   const [loginGoogleInitLoading, setLoginGoogleInitLoading] = useState(false);
   const [loginGoogleLoading, setLoginGoogleLoading] = useState(false);
   const [loginGoogleLoadingError, setLoginGoogleLoadingError] = useState(false);
-  
+
   const [loginFacebookInitLoading, setLoginFacebookInitLoading] = useState(false);
   const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
 
@@ -56,62 +55,56 @@ const LoginView = (props: any) => {
   const [registerTplLoading, setRegisterTplLoading] = useState(false);
   const [registerTplLoadingError, setRegisterTplLoadingError] = useState(false);
 
-  useEffect(() => {
-    initGoogleAuth();
-    initFacebookAuth();
-    loadRegisterTpl();
-  }, []);
-
   const initGoogleAuth = () => {
     setLoginGoogleInitLoading(true);
 
     const interval = setInterval(tryGoogleAuthInit, 100);
-    
-    function tryGoogleAuthInit () {
+
+    function tryGoogleAuthInit() {
       if (window['gapi']) {
         clearInterval(interval);
-        
-        initGoogleAuthUtil(response => {
+
+        initGoogleAuthUtil((response) => {
           setLoginGoogleInitLoading(false);
-        }, error => {
+        }, (error) => {
           setLoginGoogleInitLoading(true);
         });
       }
     }
-  }
+  };
 
   const initFacebookAuth = () => {
     setLoginFacebookInitLoading(true);
 
     window['fbAsyncInit'] = () => {
       const interval = setInterval(checkFacebookInitSuccess, 100);
-    
-      function checkFacebookInitSuccess () {
+
+      function checkFacebookInitSuccess() {
         if (window['FB']) {
-          clearInterval(interval);        
+          clearInterval(interval);
           setLoginFacebookInitLoading(false);
         }
       }
 
       initFacebookAuthUtil();
     };
-  }
+  };
 
   const loadRegisterTpl = () => {
     setRegisterTplLoading(true);
     setRegisterTplLoadingError(false);
 
-    getTplSignup().then(response => {
+    getTplSignup().then((response) => {
       setRegisterTplLoading(false);
 
       if (response.data.data && response.data.data.tpl) {
         setRegisterTpl(response.data.data.tpl);
       }
-    }).catch(error => {
+    }).catch((error) => {
       setRegisterTplLoading(false);
       setRegisterTplLoadingError(true);
     });
-  }
+  };
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -122,13 +115,23 @@ const LoginView = (props: any) => {
       setLoginForm,
       loginErrors,
       setLoginErrors,
-      element
+      element,
     );
   };
 
+  useEffect(() => {
+    initGoogleAuth();
+    initFacebookAuth();
+    loadRegisterTpl();
+  }, []);
+
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, loginErrors);
 
-  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) => getTranslate(
+    props.localePhrases,
+    code,
+    placeholders,
+  );
 
   const userClientLogin = (authToken: string) => {
     localStorage.setItem('authToken', authToken);
@@ -136,11 +139,11 @@ const LoginView = (props: any) => {
     props.userLogin(authToken);
   };
 
-  const loginSubmit = e => {
+  const loginSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter(i => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -149,17 +152,20 @@ const LoginView = (props: any) => {
     if (!hasError) {
       setLoginLoading(true);
 
-      userAuthLogin(loginForm.email, loginForm.password).then(response => {
+      userAuthLogin(loginForm.email, loginForm.password).then((response) => {
         setLoginLoading(false);
 
-        const token = response.data && response.data.access_token ? response.data.access_token : null;
+        const token = response.data
+        && response.data.access_token
+          ? response.data.access_token
+          : null;
 
         if (token) {
           userClientLogin(token);
         } else {
           toast.error('Error occurred when Sign In User');
         }
-      }).catch(error => {
+      }).catch((error) => {
         setLoginLoading(false);
         toast.error('Error occurred when Sign In User');
       });
@@ -171,25 +177,29 @@ const LoginView = (props: any) => {
 
     setLoginGoogleLoading(true);
 
-    auth2.signIn().then(googleUser => {   
+    auth2.signIn().then((googleUser) => {
       // token
-      const id_token = googleUser.getAuthResponse().id_token;
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const { id_token } = googleUser.getAuthResponse();
 
-      userGoogleSignIn(id_token).then(response => {
+      userGoogleSignIn(id_token).then((response) => {
         setLoginGoogleLoading(false);
 
-        const token = response.data && response.data.access_token ? response.data.access_token : null;
+        const token = response.data
+        && response.data.access_token
+          ? response.data.access_token
+          : null;
 
         if (token) {
           userClientLogin(token);
         } else {
           toast.error('Error occurred when Sign In User');
         }
-      }).catch(error => {
+      }).catch((error) => {
         setLoginGoogleLoading(false);
         toast.error('Error occurred when Sign In User');
       });
-    }).catch(error => {
+    }).catch((error) => {
       setLoginGoogleLoading(false);
     });
   };
@@ -197,19 +207,22 @@ const LoginView = (props: any) => {
   const facebookLogin = () => {
     setLoginFacebookLoading(true);
 
-    window['FB'].login(response => {
+    window['FB'].login((response) => {
       if (response && response.authResponse && response.authResponse.accessToken) {
-        userFacebookSignIn(response.authResponse.accessToken).then(response => {
+        userFacebookSignIn(response.authResponse.accessToken).then((res) => {
           setLoginFacebookLoading(false);
 
-          const token = response.data && response.data.access_token ? response.data.access_token : null;
+          const token = res.data
+          && res.data.access_token
+            ? res.data.access_token
+            : null;
 
           if (token) {
             userClientLogin(token);
           } else {
             toast.error('Error occurred when Sign In User');
           }
-        }).catch(error => {
+        }).catch((error) => {
           setLoginFacebookLoading(false);
           toast.error('Error occurred when Sign In User');
         });
@@ -217,7 +230,7 @@ const LoginView = (props: any) => {
         setLoginFacebookLoading(false);
       }
     }, {
-      scope: 'email'
+      scope: 'email',
     });
   };
 
@@ -240,14 +253,14 @@ const LoginView = (props: any) => {
       <div className="loginScreen">
         <h3 className="loginScreen_title">{t('login.title', { product: 'TEST' })}</h3>
 
-        <form className="loginScreen_form" onSubmit={e => loginSubmit(e)}>
+        <form className="loginScreen_form" onSubmit={(e) => loginSubmit(e)}>
           <FormGroup>
             <InputField
               name="email"
               data-validate='["required", "email"]'
               errors={getFieldErrors('email')}
               value={loginForm.email}
-              onChange={e => validateOnChange('email', e.target.value, e)}
+              onChange={(e) => validateOnChange('email', e.target.value, e)}
               placeholder={t('login.email_placeholder')}
               block
             />
@@ -262,7 +275,7 @@ const LoginView = (props: any) => {
               data-validate='["required"]'
               errors={getFieldErrors('password')}
               value={loginForm.password}
-              onChange={e => validateOnChange('password', e.target.value, e)}
+              onChange={(e) => validateOnChange('password', e.target.value, e)}
               placeholder={t('login.password_placeholder')}
               block
             />
@@ -270,10 +283,10 @@ const LoginView = (props: any) => {
 
           <span className="link link-bold mt-3">{t('login.forgot_pass')}</span>
 
-          <Button 
-            className="loginScreen_btn" 
-            type="submit" 
-            color="primary" 
+          <Button
+            className="loginScreen_btn"
+            type="submit"
+            color="primary"
             size="lg"
             disabled={loginLoading || loginGoogleLoading || loginFacebookLoading}
             isLoading={loginLoading}
@@ -284,28 +297,48 @@ const LoginView = (props: any) => {
         </form>
 
         <div className="loginScreen_socialBtns mt-4">
-          <Button 
-            className="facebook-login-btn mr-3" 
-            onClick={e => facebookLogin()}
-            disabled={loginLoading || loginGoogleLoading || loginFacebookLoading || loginFacebookInitLoading}
+          <Button
+            className="facebook-login-btn mr-3"
+            onClick={(e) => facebookLogin()}
+            disabled={
+              loginLoading
+              || loginGoogleLoading
+              || loginFacebookLoading
+              || loginFacebookInitLoading
+            }
             isLoading={loginFacebookLoading || loginFacebookInitLoading}
           >
-            <FacebookIcon className="mr-2" /> Login with facebook
+            <FacebookIcon className="mr-2" />
+            {' '}
+            Login with facebook
           </Button>
 
           {!loginGoogleLoadingError && (
-            <Button 
-              className="google-login-btn" 
-              onClick={e => loginGoogle()}
-              disabled={loginLoading || loginGoogleLoading || loginFacebookLoading || loginGoogleInitLoading}
+            <Button
+              className="google-login-btn"
+              onClick={(e) => loginGoogle()}
+              disabled={
+                loginLoading
+                || loginGoogleLoading
+                || loginFacebookLoading
+                || loginGoogleInitLoading
+              }
               isLoading={loginGoogleLoading || loginGoogleInitLoading}
             >
-              <GoogleIcon className="mr-2" /> Login with Google
+              <GoogleIcon className="mr-2" />
+              {' '}
+              Login with Google
             </Button>
           )}
         </div>
 
-        <span className="link link-bold mt-4" onClick={() => setRegisterModalOpen(true)}>{t('login.register_link')}</span>
+        <span
+          className="link link-bold mt-4"
+          onClick={() => setRegisterModalOpen(true)}
+          role="presentation"
+        >
+          {t('login.register_link')}
+        </span>
       </div>
     </>
   );
@@ -313,5 +346,5 @@ const LoginView = (props: any) => {
 
 export default WithTranslate(connect(
   null,
-  { userLogin }
+  { userLogin },
 )(LoginView));

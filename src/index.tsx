@@ -16,7 +16,7 @@ ReactDOM.render(
     <App />
     <ToastContainer autoClose={1700} />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

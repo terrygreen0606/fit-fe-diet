@@ -5,12 +5,19 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 import './PageLoader.sass';
 
-const PageLoader = (props: any) => (
-  <div {...props} className={classNames("pageLoader", {
-    [props.classname]: props.classname
-  })}>
-  	<FontAwesomeIcon icon={faCircleNotch} spin size="2x" />
-  </div>
-);
+const PageLoader = (props: any) => {
+  const { classname } = props;
+
+  return (
+    <div
+      {...props}
+      className={classNames('pageLoader', {
+        [classname]: classname,
+      })}
+    >
+      <FontAwesomeIcon icon={faCircleNotch} spin size="2x" />
+    </div>
+  );
+};
 
 export default PageLoader;

@@ -2,7 +2,7 @@ import { SET_LOCALE_LANG, SET_LOCALE_PHRASES } from '../actions';
 
 const initialSettings = {
   lang: window.navigator.language,
-  phrases: {}
+  phrases: {},
 };
 
 const localeReducer = (state = initialSettings, action) => {
@@ -10,15 +10,15 @@ const localeReducer = (state = initialSettings, action) => {
     case SET_LOCALE_LANG:
       return {
         ...state,
-        lang: action.lang
+        lang: action.lang,
       };
 
     case SET_LOCALE_PHRASES:
       return {
         ...state,
-        phrases: action.phrases ? {...action.phrases} : {}
+        phrases: action.phrases ? { ...action.phrases } : {},
       };
-      
+
     default:
       return state;
   }

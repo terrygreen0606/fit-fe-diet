@@ -2,14 +2,14 @@ import {
   USER_LOGIN,
   USER_LOGOUT,
   SET_AUTH_CHECKING,
-  SET_USER_DATA
+  SET_USER_DATA,
 } from '../actions';
 
 const initialState = {
   isAuthenticated: false,
   userToken: '',
   userData: {},
-  isAuthChecking: true // default true when app loads
+  isAuthChecking: true, // default true when app loads
 };
 
 const authenticationReducer = (state = initialState, action) => {
@@ -17,21 +17,21 @@ const authenticationReducer = (state = initialState, action) => {
     case SET_AUTH_CHECKING:
       return {
         ...state,
-        isAuthChecking: action.isAuthChecking ? action.isAuthChecking : false
+        isAuthChecking: action.isAuthChecking ? action.isAuthChecking : false,
       };
 
     case USER_LOGIN:
       return {
         ...state,
         isAuthenticated: true,
-        userToken: action.token
+        userToken: action.token,
       };
 
     case USER_LOGOUT:
       return {
         ...initialState,
         isAuthenticated: false,
-        isAuthChecking: false
+        isAuthChecking: false,
       };
 
     case SET_USER_DATA:
@@ -39,8 +39,8 @@ const authenticationReducer = (state = initialState, action) => {
         ...state,
         userData: {
           ...state.userData,
-          ...action.userData
-        }
+          ...action.userData,
+        },
       };
 
     default:

@@ -15,7 +15,7 @@ type Props = {
   className?: string,
 
   onClose?: (e: SyntheticEvent) => void
-}
+};
 
 const Modal = (props: Props) => {
   const {
@@ -23,7 +23,7 @@ const Modal = (props: Props) => {
     withCloseBtn,
     className,
     shouldCloseOnOverlayClick,
-    children
+    children,
   } = props;
 
   const onClickByBackdrop = (e: SyntheticEvent) => {
@@ -40,10 +40,11 @@ const Modal = (props: Props) => {
 
   return (
     <div className="dialogWrap">
-      <div className="dialogBackdrop" onClick={onClickByBackdrop} />
-      <div className={classNames("dialogContainer", {
-        [className]: className
-      })}>
+      <div role="presentation" className="dialogBackdrop" onClick={onClickByBackdrop} />
+      <div className={classNames('dialogContainer', {
+        [className]: className,
+      })}
+      >
         <header className="dialogHeader">
           {title && (
             <div className="dialogHeaderWrap">

@@ -4,40 +4,40 @@ import classnames from 'classnames';
 import { getTranslate } from 'utils';
 
 import WithTranslate from 'components/hoc/WithTranslate';
-import WaterChart from './WaterChart'
 
 import './WaterTrackerView.sass';
 
 import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue-thin.svg';
 import { ReactComponent as TickIcon } from 'assets/img/icons/tick-icon-big.svg';
 
-const WaterTrackerView = (props: any) => {
+import WaterChart from './WaterChart';
 
+const WaterTrackerView = (props: any) => {
   const [trackerPeriod, setTrackerPeriod] = useState('week');
   const [totalCompleteWater, setTotalCompleteWater] = useState(55);
   const [totalCompleteWaterML, setTotalCompleteWaterML] = useState(1000);
-  const [chartData, setChartData] = useState([50,50,50,50,60]);
+  const [chartData, setChartData] = useState([50, 50, 50, 50, 60]);
 
-  let chartLabels
+  let chartLabels;
 
-  function getChartLabels( period ) {
+  function getChartLabels(period) {
     const weekList = ['Sun', 'Mon', 'Tus', 'Wen', 'Thu', 'Fri', 'Sat'];
     const monthList = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug'];
-    const yearList = ['2021', '2022', '2023', '2024', '2025', '2026', '2027']
-    if (period == 'week') {
-      chartLabels = weekList
-    } else if (period == 'month') {
-      chartLabels = monthList
+    const yearList = ['2021', '2022', '2023', '2024', '2025', '2026', '2027'];
+    if (period === 'week') {
+      chartLabels = weekList;
+    } else if (period === 'month') {
+      chartLabels = monthList;
     } else {
-      chartLabels = yearList
+      chartLabels = yearList;
     }
   }
-  
+
   getChartLabels(trackerPeriod);
 
-  let activePeriod = (period) => classnames({
-    'active-period': trackerPeriod == period,
-  })
+  const activePeriod = (period) => classnames({
+    'active-period': trackerPeriod === period,
+  });
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
@@ -56,30 +56,33 @@ const WaterTrackerView = (props: any) => {
           <div className="row">
             <ul className="waterTracker_period">
               <li
-                onClick={()=> setTrackerPeriod('week')}
+                onClick={() => setTrackerPeriod('week')}
                 className={activePeriod('week')}
+                role="presentation"
               >
                 {t('common.week')}
               </li>
               <li
-                onClick={()=> setTrackerPeriod('month')}
+                onClick={() => setTrackerPeriod('month')}
                 className={activePeriod('month')}
+                role="presentation"
               >
                 {t('common.month')}
               </li>
               <li
-                onClick={()=> setTrackerPeriod('year')}
+                onClick={() => setTrackerPeriod('year')}
                 className={activePeriod('year')}
+                role="presentation"
               >
                 {t('common.year')}
               </li>
             </ul>
           </div>
 
-          <div className="row row-wrap" >
+          <div className="row row-wrap">
             <div className="col-5">
-              <div className='waterTracker_chartwrap'>
-                <WaterChart labels={chartLabels} data={chartData}/>
+              <div className="waterTracker_chartwrap">
+                <WaterChart labels={chartLabels} data={chartData} />
               </div>
             </div>
 
@@ -98,30 +101,30 @@ const WaterTrackerView = (props: any) => {
                   <li className="daynorm-item filled">
                     <TickIcon />
                   </li>
-                  <li className="daynorm-item filled" >
+                  <li className="daynorm-item filled">
                     <TickIcon />
                   </li>
                   <li className="daynorm-item">
                     <PlusIcon />
                   </li>
-                  <li className="daynorm-item">
-                  </li>
-                  <li className="daynorm-item">
-                  </li>
-                  <li className="daynorm-item">
-                  </li>
-                  <li className="daynorm-item">
-                  </li>
-                  <li className="daynorm-item">
-                  </li>
-                  <li className="daynorm-item">
-                  </li>
+                  <li className="daynorm-item" />
+                  <li className="daynorm-item" />
+                  <li className="daynorm-item" />
+                  <li className="daynorm-item" />
+                  <li className="daynorm-item" />
+                  <li className="daynorm-item" />
                 </ul>
               </div>
 
               <div className="water-drop">
-                <h3>{totalCompleteWater}%</h3>
-                <h5>{totalCompleteWaterML}{t('common.ml')}</h5>
+                <h3>
+                  {totalCompleteWater}
+                  %
+                </h3>
+                <h5>
+                  {totalCompleteWaterML}
+                  {t('common.ml')}
+                </h5>
               </div>
             </div>
           </div>
@@ -134,13 +137,21 @@ const WaterTrackerView = (props: any) => {
                 <div>
                   <p>{t('common.day_average')}</p>
                   <p>
-                    <span>2000</span> {t('common.ml')}/{t('common.day')}
+                    <span>2000</span>
+                    {' '}
+                    {t('common.ml')}
+                    /
+                    {t('common.day')}
                   </p>
                 </div>
                 <div>
                   <p>{t('wt.drink_frequency')}</p>
                   <p>
-                    <span>8</span> {t('common.time')}(s)/{t('common.day')}
+                    <span>8</span>
+                    {' '}
+                    {t('common.time')}
+                    (s)/
+                    {t('common.day')}
                   </p>
                 </div>
               </div>
@@ -149,15 +160,24 @@ const WaterTrackerView = (props: any) => {
             <div className="col-7">
               <div className="waterTracker_stats">
                 <p>{t('wt.complete')}</p>
-                <span>1000{t('common.ml')}</span>
+                <span>
+                  1000
+                  {t('common.ml')}
+                </span>
               </div>
               <div className="waterTracker_stats">
                 <p>{t('common.daily_goal')}</p>
-                <span>2000{t('common.ml')}</span>
+                <span>
+                  2000
+                  {t('common.ml')}
+                </span>
               </div>
               <div className="waterTracker_stats">
                 <p>{t('common.average')}</p>
-                <span>1300{t('common.ml')}</span>
+                <span>
+                  1300
+                  {t('common.ml')}
+                </span>
               </div>
               <div className="waterTracker_stats">
                 <p>{t('wt.status')}</p>
@@ -167,7 +187,7 @@ const WaterTrackerView = (props: any) => {
 
           </div>
         </div>
-          
+
       </div>
     </>
   );

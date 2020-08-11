@@ -9,7 +9,7 @@ export const validateFieldOnChange = (
   setData: (data: any) => void,
   errorList: InputError[],
   setErrorList: (errors: InputError[]) => void,
-  element?
+  element?,
 ) => {
   let errors: InputError[] = [];
 
@@ -23,18 +23,18 @@ export const validateFieldOnChange = (
   let errorListTemp = [...errorList];
 
   if (event) {
-    errorListTemp = errorListTemp.filter(error => error.field !== event.target.name);
+    errorListTemp = errorListTemp.filter((error) => error.field !== event.target.name);
   } else if (element) {
-    errorListTemp = errorListTemp.filter(error => error.field !== element.name);
+    errorListTemp = errorListTemp.filter((error) => error.field !== element.name);
   }
 
   setErrorList([
     ...errorListTemp,
-    ...errors
+    ...errors,
   ]);
 
   setData({
     ...data,
-    [name]: value
+    [name]: value,
   });
 };

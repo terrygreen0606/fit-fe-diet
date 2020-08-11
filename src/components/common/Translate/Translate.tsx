@@ -3,7 +3,7 @@ import LocaleContext from 'utils/localeContext';
 
 const Translate = ({ code }: { code: string }) => (
   <LocaleContext.Consumer>
-    {phrases => phrases[code] || null}
+    {(phrases) => phrases[code] || null}
   </LocaleContext.Consumer>
 );
 

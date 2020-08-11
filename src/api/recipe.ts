@@ -10,16 +10,14 @@ export const createRecipe = (
   time_min?: number,
   time_max?: number,
   total_weight?: string,
-  ) => {
-  return axios.post(`/recipe/create`, {
-    name_i18n: name,
-    preparation_i18n: preparation,
-    ingredients: ingredients,
-    cuisine_ids: cuisine,
-    image_ids: image_ids,
-    servings_cnt: servings_cnt,
-    time_min: time_min,
-    time_max: time_max,
-    weight: total_weight,
-  }, {});
-};
+) => axios.post('/recipe/create', {
+  name_i18n: name,
+  preparation_i18n: preparation,
+  ingredients,
+  cuisine_ids: cuisine,
+  image_ids,
+  servings_cnt,
+  time_min,
+  time_max,
+  weight: total_weight,
+}, {});

@@ -12,7 +12,7 @@ export type FileType = {
   url: string,
   isLoaded?: boolean
   isFailed?: boolean
-}
+};
 
 type Options = {
   disabled?: boolean;
@@ -57,7 +57,7 @@ export default ({
         dropElement.removeEventListener('drop', handleDrop);
       };
     },
-    [files, disabled, dropElement]
+    [files, disabled, dropElement],
   );
 
   React.useEffect(
@@ -74,7 +74,7 @@ export default ({
         window.removeEventListener('paste', handlePaste, false);
       };
     },
-    [usePasteEvent, disabled]
+    [usePasteEvent, disabled],
   );
 
   React.useEffect(() => {
@@ -82,16 +82,16 @@ export default ({
       return;
     }
 
-    const filesToAdd = files.length ? initFiles.filter(file => files.every(item => item.image_id !== file.image_id)) : initFiles;
-    const initData = filesToAdd.map(item => {
-      return {
-        id: item.id,
-        image_id: item.image_id,
-        url: item.url,
-        isLoaded: true,
-        isFailed: false
-      };
-    });
+    const filesToAdd = files.length
+      ? initFiles.filter((file) => files.every((item) => item.image_id !== file.image_id))
+      : initFiles;
+    const initData = filesToAdd.map((item) => ({
+      id: item.id,
+      image_id: item.image_id,
+      url: item.url,
+      isLoaded: true,
+      isFailed: false,
+    }));
 
     if (initData.length) {
       setFiles(files.concat(...initData));
@@ -104,17 +104,15 @@ export default ({
     }
 
     const filesToAdd = files.length
-      ? additionalFiles.filter(file => files.every(item => item.image_id !== file.image_id))
+      ? additionalFiles.filter((file) => files.every((item) => item.image_id !== file.image_id))
       : additionalFiles;
-    const initData = filesToAdd.map(item => {
-      return {
-        id: item.id,
-        image_id: item.image_id,
-        url: item.url,
-        isLoaded: true,
-        isFailed: false
-      };
-    });
+    const initData = filesToAdd.map((item) => ({
+      id: item.id,
+      image_id: item.image_id,
+      url: item.url,
+      isLoaded: true,
+      isFailed: false,
+    }));
 
     if (initData.length) {
       setFiles(files.concat(...initData));
@@ -170,8 +168,8 @@ export default ({
                 image_id: resourceData.image_id,
                 url: resourceData.url,
                 isLoaded: true,
-                isFailed: false
-              }
+                isFailed: false,
+              },
             ]
             : [
               {
@@ -179,8 +177,8 @@ export default ({
                 image_id: resourceData.image_id,
                 url: resourceData.url,
                 isLoaded: true,
-                isFailed: false
-              }
+                isFailed: false,
+              },
             ]
         );
       });
@@ -198,8 +196,8 @@ export default ({
               image_id: null,
               url: null,
               isLoaded: false,
-              isFailed: true
-            }
+              isFailed: true,
+            },
           ]
           : [
             {
@@ -207,8 +205,8 @@ export default ({
               image_id: null,
               url: null,
               isLoaded: false,
-              isFailed: true
-            }
+              isFailed: true,
+            },
           ]
       ));
     }
@@ -221,7 +219,7 @@ export default ({
   ) => {
     setIsLoading(true);
 
-    await Promise.all(droppedFiles.map(file => uploadFile(file)));
+    await Promise.all(droppedFiles.map((file) => uploadFile(file)));
 
     setIsLoading(false);
   }, [files]);
@@ -230,31 +228,30 @@ export default ({
     getRootProps,
     getInputProps,
     isDragActive,
-    open
+    open,
   } = useDropzone({
     ...options,
     multiple,
     accept,
     disabled,
-    onDrop: handleDropFiles
+    onDrop: handleDropFiles,
   });
 
   const handleRemoveFile = React.useCallback(
-    (fileData: FileType) =>
-      (e: React.MouseEvent<HTMLSpanElement | HTMLDivElement, MouseEvent>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
+    (fileData: FileType) => (e: React.MouseEvent<HTMLSpanElement | HTMLDivElement, MouseEvent>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
 
-        console.log(files)
+      console.log(files);
 
-        const filteredFiles = files.filter(data => data.id !== fileData.id);
+      const filteredFiles = files.filter((data) => data.id !== fileData.id);
 
-        console.log(filteredFiles)
+      console.log(filteredFiles);
 
-        setFiles(filteredFiles);
-      },
-    [files]
+      setFiles(filteredFiles);
+    },
+    [files],
   );
 
   const handleAddFile = React.useCallback(
@@ -262,10 +259,10 @@ export default ({
       setFiles(files.concat({
         ...file,
         isLoaded: true,
-        isFailed: false
+        isFailed: false,
       } as FileType));
     },
-    [files]
+    [files],
   );
 
   const handleDrop = (e) => {
@@ -291,19 +288,17 @@ export default ({
         return;
       }
 
-      const initData = initFiles.map(item => {
-        return {
-          id: item.id,
-          image_id: item.image_id,
-          url: item.url,
-          isLoaded: true,
-          isFailed: false
-        };
-      });
+      const initData = initFiles.map((item) => ({
+        id: item.id,
+        image_id: item.image_id,
+        url: item.url,
+        isLoaded: true,
+        isFailed: false,
+      }));
 
       setFiles(initData);
     },
-    [initFiles, files]
+    [initFiles, files],
   );
 
   return {
@@ -315,6 +310,6 @@ export default ({
     open,
     reset: handleReset,
     addFile: handleAddFile,
-    removeFile: handleRemoveFile
+    removeFile: handleRemoveFile,
   };
 };
