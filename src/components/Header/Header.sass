@@ -4,14 +4,14 @@
 .mainHeader
   margin: 0 auto
   overflow: hidden
-  padding: 25px 0
   .row
+    padding: 60px 0
     align-items: center
   &_logo
     position: relative
     display: inline-block
     width: 155px
-    height: 145px
+    height: 45px
     background-size: contain
     background-repeat: no-repeat
     background-position: center center
@@ -64,8 +64,15 @@
 
 @media only screen and (max-width : 992px)
   .mainHeader
-    height: 100px
-    padding: 35px 0
+    position: fixed
+    top: 0
+    left: 0
+    width: 100vw
+    background: #ffffff
+    z-index: 10
+    .row
+      padding: 25px 0
+      height: 80px
     &_logo
       display: none
     &_menuList

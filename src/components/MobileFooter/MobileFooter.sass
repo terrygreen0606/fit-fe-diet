@@ -1,9 +1,17 @@
 @import '../../assets/sass/vars'
 
+.mobile-menu-opened .mobileFooter
+  transform: translateX(350px)
+
 .mobileFooter
+  position: fixed
+  bottom: 0
+  left: 0
+  width: 100vw
+  z-index: 10
   background: #FFFFFF
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
-  padding-top: 2em
+  transition: transform .35s ease
   &_list
     margin: 0 2em
     padding: 0
@@ -12,11 +20,13 @@
     flex-direction: row
     justify-content: space-between
     &_item
+      height: 100%
       min-width: 50px
       display: flex
       align-items: center
       justify-content: center
       padding-bottom: 15px
+      padding-top: 20px
       border-bottom: 3px solid transparent
       svg
         max-width: 50px
