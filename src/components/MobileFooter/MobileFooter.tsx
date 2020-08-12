@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { ReactComponent as DumbbellIcon } from 'assets/img/icons/dumbbell-icon.svg';
 import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon-white.svg';
@@ -12,30 +12,55 @@ import './MobileFooter.sass';
 const MobileFooter = () => (
   <footer className="mobileFooter">
     <ul className="mobileFooter_list">
-      <li className="mobileFooter_list_item active">
-        <Link to="/">
+      <li>
+        <NavLink
+          to="/"
+          className="mobileFooter_list_item"
+          activeClassName="active"
+          exact
+        >
           <CutleryIcon />
-        </Link>
+        </NavLink>
       </li>
-      <li className="mobileFooter_list_item">
-        <Link to="/">
+      <li>
+        <NavLink
+          to="/"
+          className="mobileFooter_list_item"
+          activeClassName="active"
+          exact
+        >
           <PurchaseIcon />
-        </Link>
+        </NavLink>
       </li>
-      <li className="mobileFooter_list_item">
-        <Link to="/">
+      <li>
+        <NavLink
+          to="/trainings"
+          className="mobileFooter_list_item"
+          activeClassName="active"
+          exact
+        >
           <DumbbellIcon />
-        </Link>
+        </NavLink>
       </li>
-      <li className="mobileFooter_list_item">
-        <Link to="/">
+      <li>
+        <NavLink
+          to="/"
+          className="mobileFooter_list_item"
+          activeClassName="active"
+          exact
+        >
           <GraphIcon />
-        </Link>
+        </NavLink>
       </li>
-      <li className="mobileFooter_list_item">
-        <Link to="/">
+      <li>
+        <NavLink
+          to="/"
+          className="mobileFooter_list_item"
+          activeClassName="active"
+          exact
+        >
           <BurgerIcon />
-        </Link>
+        </NavLink>
       </li>
     </ul>
   </footer>
