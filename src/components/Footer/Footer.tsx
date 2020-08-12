@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
 
-import MobileFooter from './MobileFooter';
+import MobileFooter from 'components/MobileFooter';
 
 import './Footer.sass';
 

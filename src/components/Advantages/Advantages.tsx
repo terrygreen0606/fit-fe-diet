@@ -35,7 +35,7 @@ const Advantages = ({
     <section className="how-exercise-plan-works-sect">
       <div className="container">
         <div className="row">
-          <div className="col-12 px-md-4 d-md-flex justify-content-between">
+          <div className="col-12 px-md-4 justify-content-between">
             <div className="how-exercise-plan-works-col d-flex align-items-center">
 
               <h4>{mainTitle}</h4>
