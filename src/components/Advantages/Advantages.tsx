@@ -35,46 +35,48 @@ const Advantages = ({
     <section className="how-exercise-plan-works-sect">
       <div className="container">
         <div className="row">
-          <div className="how-exercise-plan-works-col d-flex align-items-center">
+          <div className="col-12 px-md-4 d-md-flex justify-content-between">
+            <div className="how-exercise-plan-works-col d-flex align-items-center">
 
-            <h4>{mainTitle}</h4>
+              <h4>{mainTitle}</h4>
 
-          </div>
-          <div className="how-exercise-plan-works-col">
-
-            <div className="how-exercise-plan-works-icon-wrap">
-              <Icon1 className="how-exercise-plan-works-icon" />
             </div>
+            <div className="how-exercise-plan-works-col">
 
-            <div className="how-exercise-plan-works-text">
-              <h5 className="mt-4 mb-4">{advantage1Title}</h5>
-              <p>{advantage1Desc}</p>
+              <div className="how-exercise-plan-works-icon-wrap">
+                <Icon1 className="how-exercise-plan-works-icon" />
+              </div>
+
+              <div className="how-exercise-plan-works-text">
+                <h5 className="mt-4 mb-4">{advantage1Title}</h5>
+                <p>{advantage1Desc}</p>
+              </div>
+
             </div>
+            <div className="how-exercise-plan-works-col">
 
-          </div>
-          <div className="how-exercise-plan-works-col">
+              <div className="how-exercise-plan-works-icon-wrap">
+                <Icon2 className="how-exercise-plan-works-icon" />
+              </div>
 
-            <div className="how-exercise-plan-works-icon-wrap">
-              <Icon2 className="how-exercise-plan-works-icon" />
+              <div className="how-exercise-plan-works-text">
+                <h5 className="mt-4 mb-4">{advantage2Title}</h5>
+                <p>{advantage2Desc}</p>
+              </div>
+
             </div>
+            <div className="how-exercise-plan-works-col">
 
-            <div className="how-exercise-plan-works-text">
-              <h5 className="mt-4 mb-4">{advantage2Title}</h5>
-              <p>{advantage2Desc}</p>
+              <div className="how-exercise-plan-works-icon-wrap">
+                <Icon3 className="how-exercise-plan-works-icon" />
+              </div>
+
+              <div className="how-exercise-plan-works-text">
+                <h5 className="mt-4 mb-4">{advantage3Title}</h5>
+                <p>{advantage3Desc}</p>
+              </div>
+
             </div>
-
-          </div>
-          <div className="how-exercise-plan-works-col">
-
-            <div className="how-exercise-plan-works-icon-wrap">
-              <Icon3 className="how-exercise-plan-works-icon" />
-            </div>
-
-            <div className="how-exercise-plan-works-text">
-              <h5 className="mt-4 mb-4">{advantage3Title}</h5>
-              <p>{advantage3Desc}</p>
-            </div>
-
           </div>
         </div>
       </div>
