@@ -1,5 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { getTranslate } from 'utils';
+
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './ProfileSidebar.sass';
 
@@ -13,10 +16,13 @@ import { ReactComponent as QuestionIcon } from 'assets/img/icons/question-circle
 import { ReactComponent as LeafIcon } from 'assets/img/icons/leaf-icon.svg';
 
 const ProfileSidebar = (props: any) => {
+
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
   return (
     <div className="profile-menu-sidebar">
       <div className="profile-menu-card card-bg">
-        <h5 className="profile-menu-title">Settings</h5>
+        <h5 className="profile-menu-title">{t('profile.menu_title_payments')}</h5>
 
         <ul className="profile-menu-list">
           <li>
@@ -26,7 +32,7 @@ const ProfileSidebar = (props: any) => {
               exact
               className="profile-menu-list-item"
             >
-              <UserEditIcon className="profile-menu-list-icon" />Personal data
+              <UserEditIcon className="profile-menu-list-icon" /> {t('personal.menu_personal')}
             </NavLink>
           </li>
 
@@ -37,7 +43,7 @@ const ProfileSidebar = (props: any) => {
               exact
               className="profile-menu-list-item"
             >
-              <SettingsIcon className="profile-menu-list-icon" />Diet plan settings
+              <SettingsIcon className="profile-menu-list-icon" /> {t('personal.menu_diet')}
             </NavLink>
           </li>
 
@@ -48,7 +54,7 @@ const ProfileSidebar = (props: any) => {
               exact
               className="profile-menu-list-item"
             >
-              <CutleryIcon className="profile-menu-list-icon" />Change your meal plan
+              <CutleryIcon className="profile-menu-list-icon" /> {t('personal.menu_meal_plan')}
             </NavLink>
           </li>
 
@@ -59,14 +65,14 @@ const ProfileSidebar = (props: any) => {
               exact
               className="profile-menu-list-item"
             >
-              <UsersIcon className="profile-menu-list-icon" />Family members
+              <UsersIcon className="profile-menu-list-icon" /> {t('personal.menu_family')}
             </NavLink>
           </li>
         </ul>
       </div>
 
       <div className="profile-menu-card card-bg mt-3">
-        <h5 className="profile-menu-title">Payments</h5>
+        <h5 className="profile-menu-title">{t('profile.menu_title_settings')}</h5>
 
         <ul className="profile-menu-list">
           <li>
@@ -76,7 +82,7 @@ const ProfileSidebar = (props: any) => {
               exact
               className="profile-menu-list-item"
             >
-              <WalletIcon className="profile-menu-list-icon" />Extend your service life
+              <WalletIcon className="profile-menu-list-icon" /> {t('personal.menu_service_extend')}
             </NavLink>
           </li>
 
@@ -87,14 +93,14 @@ const ProfileSidebar = (props: any) => {
               exact
               className="profile-menu-list-item"
             >
-              <ClockIcon className="profile-menu-list-icon" />Payment history
+              <ClockIcon className="profile-menu-list-icon" /> {t('personal.menu_pay_history')}
             </NavLink>
           </li>
         </ul>
       </div>
 
       <div className="profile-menu-card card-bg mt-3">
-        <h5 className="profile-menu-title">Help and customer support</h5>
+        <h5 className="profile-menu-title">{t('profile.menu_title_support')}</h5>
 
         <ul className="profile-menu-list">
           <li>
@@ -104,7 +110,7 @@ const ProfileSidebar = (props: any) => {
               exact
               className="profile-menu-list-item"
             >
-              <QuestionIcon className="profile-menu-list-icon" />FAQ
+              <QuestionIcon className="profile-menu-list-icon" /> {t('personal.menu_faq')}
             </NavLink>
           </li>
 
@@ -115,7 +121,7 @@ const ProfileSidebar = (props: any) => {
               exact
               className="profile-menu-list-item"
             >
-              <LeafIcon className="profile-menu-list-icon" />Freeware
+              <LeafIcon className="profile-menu-list-icon" /> {t('personal.menu_freeware')}
             </NavLink>
           </li>
         </ul>
@@ -124,4 +130,4 @@ const ProfileSidebar = (props: any) => {
   );
 };
 
-export default ProfileSidebar;
+export default WithTranslate(ProfileSidebar);

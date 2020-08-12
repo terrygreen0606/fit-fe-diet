@@ -33,7 +33,7 @@ interface SelectInputProps {
   block?: boolean,
   disabled?: boolean,
   readOnly?: boolean,
-  style: 'custom' | 'default'
+  style?: 'custom' | 'default'
   width?: number,
   errors?: inputError[],
   [propName: string]: any

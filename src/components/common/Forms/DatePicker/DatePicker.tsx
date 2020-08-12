@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DayPicker from 'react-day-picker';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
-import MomentLocaleUtils, {
-  formatDate,
-  parseDate,
-} from 'react-day-picker/moment';
+import MomentLocaleUtils from 'react-day-picker/moment';
 
 import InputField from 'components/common/Forms/InputField';
 
@@ -48,7 +45,7 @@ const YearMonthForm = ({ date, localeUtils, onChange }) => {
   );
 };
 
-type DatePicker = {
+type DatePickerProps = {
   inputProps: any,
   value: Date,
   onChange: (date: Date) => void
@@ -69,6 +66,10 @@ const DatePicker = (props: DatePickerProps) => {
   };
 
   const handleDayChange = (selectedDay, modifiers, dayPickerInput) => {    
+    const input = dayPickerInput.getInput();
+
+    console.log(input)
+
     setSelectedDay(selectedDay);
 
     if (props.onChange) {
@@ -84,17 +85,7 @@ const DatePicker = (props: DatePickerProps) => {
     <DayPickerInput
       value={selectedDay}
       onDayChange={handleDayChange}
-      component={inputFieldProps => {
-        const {
-          ref,
-          ...inputAttrs
-        } = inputFieldProps;
-
-        console.log(inputAttrs)
-        console.log(inputProps)
-
-        return <InputField {...inputAttrs} innerRef={inputFieldProps.ref} {...inputProps} />;
-      }}
+      component={inputFieldProps => <InputField {...inputFieldProps} {...inputProps} />}
       dayPickerProps={{
         month: currentMonth,
         captionElement: ({ date, localeUtils }) => (
@@ -105,9 +96,9 @@ const DatePicker = (props: DatePickerProps) => {
           />
         )
       }}
-      formatDate={formatDate}
-      parseDate={parseDate}
-      placeholder={`${formatDate(new Date())}`}
+      formatDate={MomentLocaleUtils.formatDate}
+      parseDate={MomentLocaleUtils.parseDate}
+      placeholder={`${MomentLocaleUtils.formatDate(new Date())}`}
     />
   );
 };

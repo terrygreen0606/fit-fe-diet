@@ -4,9 +4,6 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  initGoogleAuth as initGoogleAuthUtil,
-  initFacebookAuth as initFacebookAuthUtil,
-  wait
 } from 'utils';
 import { toast } from 'react-toastify';
 import { fetchUserProfile, userUpdateProfile } from 'api';
@@ -53,9 +50,10 @@ type userUpdateProfileParams = {
   name: string,
   surname: string,
   phone: string,
-  birthdate: number, // timestamp
+  birthdate: Date, // date
   height: number, // millimeters
   is_mailing: boolean,
+  measurement: 'si' | 'us',
   password: string,
   image: string,
   gender: 'm' | 'f',
@@ -71,6 +69,7 @@ const SettingsPersonalView = (props: any) => {
     birthdate: null,
     height: null,
     is_mailing: false,
+    measurement: 'si',
     password: '',
     image: null,
     gender: 'm',
@@ -140,7 +139,9 @@ const SettingsPersonalView = (props: any) => {
       phone: personalDataForm.phone,
       birthdate: new Date(personalDataForm.birthdate).getTime(),
       gender: personalDataForm.gender,
-      height: personalDataForm.height * 100,
+      is_mailing: personalDataForm.is_mailing,
+      measurement: personalDataForm.measurement,
+      height: personalDataForm.height,
       goal: personalDataForm.goal,
     };
   };
@@ -171,7 +172,7 @@ const SettingsPersonalView = (props: any) => {
   return (
     <ProfileLayout>
       <div className="profile-settings-personal-card card-bg">
-        <h5 className="mb-4 mb-xs-5">Personal Data</h5>
+        <h5 className="mb-4 mb-xs-5">{t('profile.personal_title')}</h5>
 
         <ContentLoading
           fetchData={() => fetchUserPersonalData()}
@@ -180,7 +181,7 @@ const SettingsPersonalView = (props: any) => {
         >
           <form className="profile-settings-personal-form" onSubmit={e => personalDataFormSubmit(e)}>
             <FormGroup inline className="mb-5">
-              <FormLabel>Sex</FormLabel>
+              <FormLabel>{t('register.form_sex')}</FormLabel>
 
               <CustomRadio 
                 name="register_sex" 
@@ -192,7 +193,7 @@ const SettingsPersonalView = (props: any) => {
                       })}
                     />
 
-                    Male
+                    {t('register.form_male')}
                   </>
                 }
                 value="m"
@@ -215,7 +216,7 @@ const SettingsPersonalView = (props: any) => {
                       })}
                     />
 
-                    Female
+                    {t('register.form_female')}
                   </>
                 }
                 value="f"
@@ -230,7 +231,7 @@ const SettingsPersonalView = (props: any) => {
             </FormGroup>
 
             <FormGroup inline>
-              <FormLabel>Surname</FormLabel>
+              <FormLabel>{t('register.form_surname')}</FormLabel>
               <InputField
                 name="surname"
                 data-validate='["required"]'
@@ -244,7 +245,7 @@ const SettingsPersonalView = (props: any) => {
             </FormGroup>
 
             <FormGroup inline>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>{t('register.form_name')}</FormLabel>
               <InputField
                 name="name"
                 data-validate='["required"]'
@@ -258,7 +259,7 @@ const SettingsPersonalView = (props: any) => {
             </FormGroup>
 
             <FormGroup inline>
-              <FormLabel>Phone</FormLabel>
+              <FormLabel>{t('register.form_phone')}</FormLabel>
               <InputField
                 name="phone"
                 data-validate='["required", "number"]'
@@ -272,10 +273,10 @@ const SettingsPersonalView = (props: any) => {
             </FormGroup>
 
             <FormGroup inline>
-              <FormLabel>Birthdate</FormLabel>
+              <FormLabel>{t('register.form_birthdate')}</FormLabel>
               <DatePicker
                 value={personalDataForm.birthdate}
-                onChange={date => validateOnChange('birthdate', date)}
+                onChange={date => validateOnChange('birthdate', date, null)}
                 inputProps={{
                   name: 'age',
                   block: true,
@@ -287,7 +288,7 @@ const SettingsPersonalView = (props: any) => {
             </FormGroup>
 
             <FormGroup inline>
-              <FormLabel>Height</FormLabel>
+              <FormLabel>{t('register.form_height')}</FormLabel>
               <InputField
                 name="height"
                 errors={getFieldErrors('height')}
@@ -302,7 +303,7 @@ const SettingsPersonalView = (props: any) => {
             </FormGroup>
 
             <FormGroup inline>
-              <FormLabel>Purpose</FormLabel>
+              <FormLabel>{t('register.form_goal')}</FormLabel>
               <SelectInput 
                 name="goal"
                 data-validate='["required"]'
@@ -310,6 +311,7 @@ const SettingsPersonalView = (props: any) => {
                 value={goalOptions.find(option => option.value === personalDataForm.goal)} 
                 options={goalOptions}
                 onChange={(option, e) => validateOnChange('goal', option.value, e)}
+                style='default'
                 block
               />  
             </FormGroup>
@@ -332,7 +334,7 @@ const SettingsPersonalView = (props: any) => {
             <div className="pl-xs-5">
               <FormGroup className="mt-5">
                 <CustomCheckbox 
-                  label="I want to receive newsletters" 
+                  label={t('register.form_receive_news')} 
                   inline
                   checked={personalDataForm.is_mailing}
                   onChange={e => setPersonalDataForm({
@@ -342,7 +344,14 @@ const SettingsPersonalView = (props: any) => {
                 />
               </FormGroup>
 
-              <Button className="mt-2 mt-xs-3 profile-settings-personal-form-btn" type="submit" color="secondary" isLoading={updatePersonalDataLoading}>Save</Button>
+              <Button 
+                className="mt-2 mt-xs-3 profile-settings-personal-form-btn" 
+                type="submit" 
+                color="secondary" 
+                isLoading={updatePersonalDataLoading}
+              >
+                {t('button.save')}
+              </Button>
             </div>
           </form>          
         </ContentLoading>
