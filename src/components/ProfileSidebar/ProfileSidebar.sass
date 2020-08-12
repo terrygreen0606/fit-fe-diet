@@ -1,0 +1,82 @@
+@import '../../assets/sass/vars'
+
+
+.profile-menu
+  &-card
+    margin-bottom: 32px
+  &-title
+    margin-bottom: 18px
+    padding: 23px 28px
+    padding-bottom: 0
+  &-list
+    margin: 0
+    padding: 0
+    list-style-type: none
+    &-icon
+      width: 37px
+      margin-right: 30px
+      path
+        fill: #000
+        +mt(.2s)
+      circle
+        stroke: #000
+        +mt(.2s)
+    &-item
+      display: flex
+      align-items: center
+      min-height: 83px
+      padding: 23.5px 38px
+      font-size: 24px
+      line-height: 24px
+      text-decoration: none
+      color: #000
+      border: 1px solid transparent
+      border-radius: 20px
+      +mt(.2s)
+      &.active
+        font-weight: bold
+      &.active, &:hover
+        color: $caribbean-green
+        border-color: $caribbean-green
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        .profile-menu-list-icon
+          path
+            fill: $caribbean-green
+          circle
+            stroke: $caribbean-green
+
+
+@media only screen and (max-width : 1600px)
+  .profile-menu
+    &-list
+      &-item
+        font-size: 20px
+
+
+@media only screen and (max-width : 768px)
+  .profile-menu
+    &-title
+      padding: 15px 20px
+      padding-bottom: 0
+    &-list
+      &-icon
+        margin-right: 30px
+      &-item
+        padding: 20px 32px
+
+
+@media only screen and (max-width : 768px)
+  .profile-menu
+    &-title
+      padding: 5px 20px
+      padding-bottom: 0
+      font-size: 18px
+    &-list
+      &-icon
+        width: 25px
+        margin-right: 18px
+      &-item
+        min-height: 35px
+        padding: 10px 25px
+        font-size: 15px
+  

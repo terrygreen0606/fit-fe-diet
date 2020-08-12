@@ -76,9 +76,9 @@ const InfoStep = (props: any) => {
             name="register_sex"
             label={(
               <>
-                <MaleIcon
-                  className={classNames('registerSexIcon', {
-                    registerSexIcon_active: registerData.gender === 'm',
+                <MaleIcon 
+                  className={classNames("genderIcon", {
+                    "genderIcon_active": props.registerData.gender === 'm'
                   })}
                 />
 
@@ -98,9 +98,9 @@ const InfoStep = (props: any) => {
             name="register_sex"
             label={(
               <>
-                <FemaleIcon
-                  className={classNames('registerSexIcon', {
-                    registerSexIcon_active: registerData.gender === 'f',
+                <FemaleIcon 
+                  className={classNames("genderIcon", {
+                    "genderIcon_active": props.registerData.gender === 'f'
                   })}
                 />
 
