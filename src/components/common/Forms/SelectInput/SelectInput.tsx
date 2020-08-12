@@ -33,6 +33,7 @@ interface SelectInputProps {
   block?: boolean,
   disabled?: boolean,
   readOnly?: boolean,
+  style?: 'custom' | 'default'
   width?: number,
   errors?: InputError[],
   [propName: string]: any
@@ -40,6 +41,7 @@ interface SelectInputProps {
 
 const SelectInputDefaultProps = {
   width: 200,
+  style: 'custom'
 };
 
 const SelectInput = (props: SelectInputProps) => {

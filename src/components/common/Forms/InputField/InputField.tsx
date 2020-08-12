@@ -36,7 +36,7 @@ interface InputFieldProps {
   errors?: InputError[],
   openModalFiled?: boolean,
   openModalFiledProps?: any,
-  height?: 'xs' | 'sm' | 'lg' | 'xl',
+  height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl',
   border?: 'light',
   [propName: string]: any
 }

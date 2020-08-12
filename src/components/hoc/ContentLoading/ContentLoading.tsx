@@ -27,16 +27,14 @@ const ContentLoading = (props: ContentLoadingProps) => {
 
   return isError ? (
     <div className="text-center">
-      Ошибка при выполнении запроса
-      {' '}
-      <br />
+      Error when loading <br />
 
       <Button
         className="mt-2"
         size="sm"
         onClick={fetchData}
       >
-        Повторить запрос
+        Retry
       </Button>
     </div>
   ) : (
