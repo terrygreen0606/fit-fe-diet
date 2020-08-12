@@ -94,18 +94,18 @@ const CreateRecipeView = (props: any) => {
       item.value = 0;
       if (item.name === 'fat') {
         ingredientsList.map((indgredientItem) => {
-          item.value
-            += Math.round(indgredientItem.fat) * indgredientItem.weight;
+          item.value +=
+            Math.round(indgredientItem.fat) * indgredientItem.weight;
         });
       } else if (item.name === 'carbohydrate') {
         ingredientsList.map((indgredientItem) => {
-          item.value
-            += Math.round(indgredientItem.carbohydrate) * indgredientItem.weight;
+          item.value +=
+            Math.round(indgredientItem.carbohydrate) * indgredientItem.weight;
         });
       } else if (item.name === 'protein') {
         ingredientsList.map((indgredientItem) => {
-          item.value
-            += Math.round(indgredientItem.protein) * indgredientItem.weight;
+          item.value +=
+            Math.round(indgredientItem.protein) * indgredientItem.weight;
         });
       }
     });
@@ -120,11 +120,12 @@ const CreateRecipeView = (props: any) => {
       setCreateRecipeForm,
       createRecipeErrors,
       setCreateRecipeErrors,
-      element,
+      element
     );
   };
 
-  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
+  const getFieldErrors = (field: string) =>
+    getFieldErrorsUtil(field, createRecipeErrors);
 
   const addIndgredient = (e) => {
     getIngredient(e.value).then((response) => {
@@ -157,9 +158,9 @@ const CreateRecipeView = (props: any) => {
     setCalories({
       ...calories,
       value:
-        calories.value
-        - updatedListOfIngredients[index].calorie
-          * updatedListOfIngredients[index].weight,
+        calories.value -
+        updatedListOfIngredients[index].calorie *
+          updatedListOfIngredients[index].weight,
     });
 
     updatedListOfIngredients.splice(index, 1);
@@ -192,17 +193,20 @@ const CreateRecipeView = (props: any) => {
     }
   };
 
-  const inputValueIngredient = (inputValue: string) => new Promise(
-    debounce((resolve) => {
-      resolve(filterIngredients(inputValue));
-    }, 300),
-  );
+  const inputValueIngredient = (inputValue: string) =>
+    new Promise(
+      debounce((resolve) => {
+        resolve(filterIngredients(inputValue));
+      }, 300)
+    );
 
   const createRecipeSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs = [...form.elements].filter((i) =>
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
+    );
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -218,7 +222,7 @@ const CreateRecipeView = (props: any) => {
         createRecipeForm.servings_cnt,
         createRecipeForm.minTime,
         createRecipeForm.maxTime,
-        createRecipeForm.totalWeight,
+        createRecipeForm.totalWeight
       ).then((response) => response.data.data);
     }
   };
@@ -227,18 +231,15 @@ const CreateRecipeView = (props: any) => {
 
   const [files, setFiles] = React.useState([]);
 
-  const handleChangeFiles = React.useCallback(
-    (ids: any[]) => {
-      console.log(ids);
-      setFiles(ids);
-    },
-    [],
-  );
+  const handleChangeFiles = React.useCallback((ids: any[]) => {
+    console.log(ids);
+    setFiles(ids);
+  }, []);
 
   return (
-    <div className="container-fluid recipe_container">
-      <h1 className="recipe__title">{t('recipe.create.title')}</h1>
-      <form className="recipe_wrap" onSubmit={(e) => createRecipeSubmit(e)}>
+    <div className='container-fluid recipe_container'>
+      <h1 className='recipe__title'>{t('recipe.create.title')}</h1>
+      <form className='recipe_wrap' onSubmit={(e) => createRecipeSubmit(e)}>
         <ImagesFileInput
           dropElement={document.querySelector('#root')}
           filesOut={files}
@@ -252,7 +253,9 @@ const CreateRecipeView = (props: any) => {
             }
 
             return (
-              <Button className="mt-4" onClick={open}>Add file</Button>
+              <Button className='mt-4' onClick={open}>
+                Add file
+              </Button>
             );
           }}
         </ImagesFileInput>
@@ -288,101 +291,103 @@ const CreateRecipeView = (props: any) => {
           </div>
         </div> */}
 
-        <div className="mt-4" />
+        <div className='mt-4' />
 
-        <div className="row recipe__input-data">
-          <div className="col-12 mb-xl-5">
-            <div className="recipe__input-container">
+        <div className='row recipe__input-data'>
+          <div className='col-12 mb-xl-5'>
+            <div className='recipe__input-container'>
               <InputField
                 block
-                name="recipeName"
+                name='recipeName'
                 data-validate='["required"]'
                 errors={getFieldErrors('recipeName')}
                 value={createRecipeForm.recipeName}
-                onChange={(e) => validateOnChange('recipeName', e.target.value, e)}
+                onChange={(e) =>
+                  validateOnChange('recipeName', e.target.value, e)
+                }
                 label={t('recipe.name')}
-                border="light"
+                border='light'
               />
             </div>
           </div>
-          <div className="col-xl-3">
-            <div className="recipe__input-container">
-              <div className="recipe__label">
-                <span className="recipe__label-description">
+          <div className='col-xl-3'>
+            <div className='recipe__input-container'>
+              <div className='recipe__label'>
+                <span className='recipe__label-description'>
                   {t('recipe.serving')}
                 </span>
-                <div className="recipe__label-select">
+                <div className='recipe__label-select'>
                   <Select
                     styles={colourStylesSelect}
                     options={servingOptions}
-                    onChange={(e) => setCreateRecipeForm({
-                      ...createRecipeForm,
-                      servings_cnt: e.value,
-                    })}
+                    onChange={(e) =>
+                      setCreateRecipeForm({
+                        ...createRecipeForm,
+                        servings_cnt: e.value,
+                      })
+                    }
                     placeholder={t('recipe.serving')}
                   />
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-xl-3 ml-xl-5">
-            <label className="recipe__label">
-              <span className="recipe__label-description">
+          <div className='col-xl-3 ml-xl-5'>
+            <label className='recipe__label'>
+              <span className='recipe__label-description'>
                 <ClockIcon />
               </span>
               <InputField
                 block
-                type="number"
-                name="minTime"
-                data-param="0,4320"
+                type='number'
+                name='minTime'
+                data-param='0,4320'
                 data-validate='["min-max"]'
                 value={createRecipeForm.minTime}
                 onChange={(e) => validateOnChange('minTime', e.target.value, e)}
-                className="recipe__label-input"
+                className='recipe__label-input'
                 min={0}
                 max={4320}
-                border="light"
+                border='light'
               />
               <InputField
                 block
-                type="number"
-                name="maxTime"
-                data-param="0,4320"
+                type='number'
+                name='maxTime'
+                data-param='0,4320'
                 data-validate='["min-max"]'
                 value={createRecipeForm.maxTime}
                 onChange={(e) => validateOnChange('maxTime', e.target.value, e)}
-                className="recipe__label-input"
+                className='recipe__label-input'
                 min={+createRecipeForm.minTime + 1}
                 max={4320}
-                border="light"
+                border='light'
               />
             </label>
           </div>
         </div>
-        <div className="recipe__switch">
+        <div className='recipe__switch'>
           <button
-            type="button"
+            type='button'
             onClick={() => setUnit(t('common.gr'))}
             className={classnames('recipe__switch-button', {
-              'recipe__switch-button_active':
-                unit === t('common.gr'),
+              'recipe__switch-button_active': unit === t('common.gr'),
             })}
           >
             <span>{t('common.gr')}</span>
           </button>
           <button
-            type="button"
+            type='button'
             onClick={() => setUnit(t('common.oz'))}
             className={classnames('recipe__switch-button', {
-              'recipe__switch-button_active':
-                unit === t('common.oz'),
+              'recipe__switch-button_active': unit === t('common.oz'),
             })}
           >
             <span>{t('common.oz')}</span>
           </button>
         </div>
-        <div className="recipe__chart">
-          <div className="recipe__chart-progress">
+        <div className='recipe__chart'>
+          <div className='recipe__chart-progress'>
             {proteinFatCarbohydrate.map((item) => (
               <div
                 className={`recipe__chart-progress-item recipe__chart-progress-item_${item.name}`}
@@ -395,59 +400,49 @@ const CreateRecipeView = (props: any) => {
                 />
               </div>
             ))}
-            <div className="recipe__chart-progress-value">
-              {calories.value}
-              {' '}
-              {t('common.kcal')}
-              {' '}
-              /
-              {' '}
-              {calories.maxCalories}
-              {' '}
+            <div className='recipe__chart-progress-value'>
+              {calories.value} {t('common.kcal')} / {calories.maxCalories}{' '}
               {t('common.kcal')}
             </div>
           </div>
-          <div className="recipe__chart-lines">
+          <div className='recipe__chart-lines'>
             {proteinFatCarbohydrate.map((item) => (
-              <div className="recipe__chart-lines-item" key={item.id}>
-                <div className="recipe__chart-lines-item-description">
+              <div className='recipe__chart-lines-item' key={item.id}>
+                <div className='recipe__chart-lines-item-description'>
                   {item.name}
                 </div>
-                <div className="recipe__chart-lines-item-line">
+                <div className='recipe__chart-lines-item-line'>
                   <div
-                    className="recipe__chart-lines-item-line-paint"
+                    className='recipe__chart-lines-item-line-paint'
                     style={{
                       width: `${getPercent(item.value)}%`,
                       backgroundColor: item.background,
                     }}
                   />
                 </div>
-                <div className="recipe__chart-lines-item-description">
-                  {unit === t('common.gr')
-                    ? item.value
-                    : getOz(item.value)}
-                  {' '}
+                <div className='recipe__chart-lines-item-description'>
+                  {unit === t('common.gr') ? item.value : getOz(item.value)}{' '}
                   {unit}
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="recipe__add-ingredients">
-          <div className="recipe__add-ingredients-description">
-            <h2 className="recipe__add-ingredients-description-title">
+        <div className='recipe__add-ingredients'>
+          <div className='recipe__add-ingredients-description'>
+            <h2 className='recipe__add-ingredients-description-title'>
               {t('ingr.label')}
             </h2>
             <Button
-              size="lg"
-              color="secondary"
+              size='lg'
+              color='secondary'
               onClick={() => setActiveInput(!isActiveInput)}
             >
               {t('ingr.add')}
             </Button>
           </div>
           {isActiveInput && (
-            <div className="recipe__add-ingredients-field">
+            <div className='recipe__add-ingredients-field'>
               <AsyncSelect
                 cacheOptions
                 loadOptions={inputValueIngredient}
@@ -458,7 +453,7 @@ const CreateRecipeView = (props: any) => {
             </div>
           )}
         </div>
-        <div className="recipe__list">
+        <div className='recipe__list'>
           {createRecipeForm.ingredients.map(
             (ingredientItem, ingredientIndex) => (
               <div
@@ -467,10 +462,10 @@ const CreateRecipeView = (props: any) => {
                 })}
                 key={ingredientItem.ingredient_id}
               >
-                <div className="recipe__item-content">
+                <div className='recipe__item-content'>
                   <div
-                    className="recipe__item-bg"
-                    role="presentation"
+                    className='recipe__item-bg'
+                    role='presentation'
                     onClick={() => {
                       const updatedlist = [...createRecipeForm.ingredients];
                       updatedlist[ingredientIndex].isFullBlock = !updatedlist[
@@ -483,31 +478,27 @@ const CreateRecipeView = (props: any) => {
                     }}
                   />
 
-                  <div className="recipe__item-name">
+                  <div className='recipe__item-name'>
                     <span>{ingredientItem.name}</span>
                   </div>
 
-                  <div className="recipe__item-counting">
+                  <div className='recipe__item-counting'>
                     {proteinFatCarbohydrate.map((item) => (
                       <div>
-                        {item.namePlural}
-                        {' '}
-                        :
-                        {' '}
+                        {item.namePlural} :{' '}
                         {unit === t('common.gr')
                           ? item.value
-                          : getOz(item.value)}
-                        {' '}
+                          : getOz(item.value)}{' '}
                         {unit}
                       </div>
                     ))}
                   </div>
 
-                  <div className="recipe__item-quantity">
-                    <div className="recipe__item-quantity-counter">
+                  <div className='recipe__item-quantity'>
+                    <div className='recipe__item-quantity-counter'>
                       <button
-                        className="recipe__item-quantity-counter-arrow"
-                        type="button"
+                        className='recipe__item-quantity-counter-arrow'
+                        type='button'
                         onClick={() => {
                           const updatedIngredients = [
                             ...createRecipeForm.ingredients,
@@ -532,8 +523,8 @@ const CreateRecipeView = (props: any) => {
                           calcProteinFatCarbohydrate(updatedIngredients);
                           setCalories({
                             ...calories,
-                            value: calories.value
-                              -= createRecipeForm.ingredients[
+                            value: calories.value -=
+                              createRecipeForm.ingredients[
                                 ingredientIndex
                               ].calorie,
                           });
@@ -553,23 +544,24 @@ const CreateRecipeView = (props: any) => {
                       </button>
 
                       <InputField
-                        type="number"
+                        type='number'
                         name={`indredients[${ingredientIndex}].weight`}
                         value={
                           unit === t('common.gr')
                             ? createRecipeForm.ingredients[ingredientIndex]
-                              .weight
+                                .weight
                             : getOz(
-                              createRecipeForm.ingredients[ingredientIndex]
-                                .weight,
-                            )
+                                createRecipeForm.ingredients[ingredientIndex]
+                                  .weight
+                              )
                         }
                         step={0.1}
                         onChange={(e) => {
                           const updatedIngredients = [
                             ...createRecipeForm.ingredients,
                           ];
-                          const prevIngredient = updatedIngredients[ingredientIndex];
+                          const prevIngredient =
+                            updatedIngredients[ingredientIndex];
                           let countTotalWeight = 0;
 
                           updatedIngredients[ingredientIndex] = {
@@ -582,17 +574,17 @@ const CreateRecipeView = (props: any) => {
                           setCalories({
                             ...calories,
                             value: calories.value += Math.round(
-                              updatedIngredients[ingredientIndex].calorie
-                                * updatedIngredients[ingredientIndex].weight
-                                - prevIngredient.weight
-                                  * updatedIngredients[ingredientIndex].calorie,
+                              updatedIngredients[ingredientIndex].calorie *
+                                updatedIngredients[ingredientIndex].weight -
+                                prevIngredient.weight *
+                                  updatedIngredients[ingredientIndex].calorie
                             ),
                           });
 
                           validateOnChange(
                             'ingredients',
                             updatedIngredients,
-                            e,
+                            e
                           );
 
                           updatedIngredients.forEach((item) => {
@@ -605,15 +597,15 @@ const CreateRecipeView = (props: any) => {
                             totalWeight: `${countTotalWeight}`,
                           });
                         }}
-                        height="xs"
-                        className="recipe__item-quantity-counter-input"
+                        height='xs'
+                        className='recipe__item-quantity-counter-input'
                         min={0}
-                        border="light"
+                        border='light'
                       />
 
                       <button
-                        type="button"
-                        className="recipe__item-quantity-counter-arrow"
+                        type='button'
+                        className='recipe__item-quantity-counter-arrow'
                         onClick={() => {
                           const updatedIngredients = [
                             ...createRecipeForm.ingredients,
@@ -633,7 +625,7 @@ const CreateRecipeView = (props: any) => {
                             ...calories,
                             value: calories.value += Math.round(
                               createRecipeForm.ingredients[ingredientIndex]
-                                .calorie,
+                                .calorie
                             ),
                           });
 
@@ -651,53 +643,49 @@ const CreateRecipeView = (props: any) => {
                         <ArrowRight />
                       </button>
                     </div>
-                    <div className="recipe__item-quantity-counter-total">
+                    <div className='recipe__item-quantity-counter-total'>
                       <span>
                         {Math.round(
-                          ingredientItem.calorie
-                            * +createRecipeForm.ingredients[ingredientIndex]
-                              .weight,
-                        )}
-                        {' '}
+                          ingredientItem.calorie *
+                            +createRecipeForm.ingredients[ingredientIndex]
+                              .weight
+                        )}{' '}
                         {t('common.kcal')}
                       </span>
                     </div>
                   </div>
                   <button
-                    type="button"
-                    className="recipe__item-delete"
+                    type='button'
+                    className='recipe__item-delete'
                     onClick={() => deleteIngredient(ingredientIndex)}
                   >
-                    <div className="recipe__item-delete-media">
+                    <div className='recipe__item-delete-media'>
                       <TrashIcon />
                     </div>
                   </button>
-                  <div className="recipe__item-weight">
-                    {ingredientItem.weight}
-                    {' '}
-                    {unit}
+                  <div className='recipe__item-weight'>
+                    {ingredientItem.weight} {unit}
                   </div>
                 </div>
-                <div className="recipe__item-opt">
+                <div className='recipe__item-opt'>
                   <CustomCheckbox
-                    label="Optional"
-                    className="recipe__item-opt-checkbox"
-                    onChange={
-                      (e) => {
-                        createRecipeForm.ingredients[ingredientIndex].is_opt = e.target.checked;
-                      }
-                    }
+                    label='Optional'
+                    className='recipe__item-opt-checkbox'
+                    onChange={(e) => {
+                      createRecipeForm.ingredients[ingredientIndex].is_opt =
+                        e.target.checked;
+                    }}
                   />
                 </div>
               </div>
-            ),
+            )
           )}
         </div>
-        <div className="recipe__total-weight">
+        <div className='recipe__total-weight'>
           <InputField
             block
-            type="number"
-            name="totalWeight"
+            type='number'
+            name='totalWeight'
             step={0.1}
             value={
               unit === t('common.gr')
@@ -706,29 +694,29 @@ const CreateRecipeView = (props: any) => {
             }
             onChange={(e) => validateOnChange('totalWeight', e.target.value, e)}
             min={0}
-            height="xl"
+            height='xl'
             label={t('recipe.create.total_weight')}
-            border="light"
+            border='light'
           />
         </div>
-        <div className="instructions">
-          <h2 className="instructions__title">
-            {t('recipe.preparation')}
-          </h2>
+        <div className='instructions'>
+          <h2 className='instructions__title'>{t('recipe.preparation')}</h2>
           <InputField
             block
-            type="textarea"
-            name="recipePreparation"
+            type='textarea'
+            name='recipePreparation'
             data-validate='["required"]'
             errors={getFieldErrors('recipePreparation')}
             value={createRecipeForm.recipePreparation}
-            onChange={(e) => validateOnChange('recipePreparation', e.target.value, e)}
+            onChange={(e) =>
+              validateOnChange('recipePreparation', e.target.value, e)
+            }
             rows={16}
-            className="instructions__field"
-            border="light"
+            className='instructions__field'
+            border='light'
           />
-          <div className="instructions__button">
-            <Button type="submit" color="primary">
+          <div className='instructions__button'>
+            <Button type='submit' color='primary'>
               {t('recipe.add')}
             </Button>
           </div>
