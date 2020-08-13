@@ -35,46 +35,6 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/contacts'
-                  className='mainFooter_menuList_item'
-                >
-                  {t('contacts.header')}
-                </a>
-              </li>
-              <li>
-                <a
-                  href='https://stgby.fitlope.com/faq'
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_faq')}
-                </a>
-              </li>
-              <li>
-                <a
-                  href='https://stgby.fitlope.com/terms'
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_terms')}
-                </a>
-              </li>
-              <li>
-                <a
-                  href='https://stgby.fitlope.com/privacy'
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_privacy')}
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className='col-6 col-md-3'>
-            <h6 className='mainFooter_menuList_title'>
-              {t('footer.menu_title_project')}
-            </h6>
-
-            <ul className='mainFooter_menuList'>
-              <li>
-                <a
                   href='https://stgby.fitlope.com/blogs'
                   className='mainFooter_menuList_item'
                 >
@@ -91,11 +51,67 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/about'
+                  href='https://stgby.fitlope.com/challenge'
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_about')}
+                  {t('footer.menu_challenge')}
                 </a>
+              </li>
+              <li>
+                <Link
+                  to='/nutrition/plan/weights'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_nutrition_plan_weights')}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to='/settings/personal'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_personal_settings')}
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className='col-6 col-md-3'>
+            <h6 className='mainFooter_menuList_title'>
+              {t('footer.menu_title_project')}
+            </h6>
+
+            <ul className='mainFooter_menuList'>
+              <li>
+                <a
+                  href='https://stgby.fitlope.com/contacts'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_contact')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href='https://stgby.fitlope.com/privacy'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_privacy')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href='https://stgby.fitlope.com/terms'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_terms')}
+                </a>
+              </li>
+              <li>
+                <Link
+                  to='/recipe/create'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_create_recipe')}
+                </Link>
               </li>
             </ul>
           </div>
@@ -106,16 +122,35 @@ const Footer = (props: any) => {
 
             <ul className='mainFooter_menuList'>
               <li>
-                <Link to='/nutrition/plan' className='mainFooter_menuList_item'>
-                  {t('footer.menu_nutrition_plan')}
-                </Link>
+                <a
+                  href='https://stgby.fitlope.com/trees'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_trees')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href='https://stgby.fitlope.com/stories'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_stories')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href='https://stgby.fitlope.com/testimonials'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_testimonials')}
+                </a>
               </li>
               <li>
                 <Link
-                  to='/nutrition/plan/weights'
+                  to='/water-tracker'
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_nutrition_plan_weights')}
+                  {t('footer.menu_water_tracker')}
                 </Link>
               </li>
             </ul>
