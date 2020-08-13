@@ -104,14 +104,12 @@ const ProfileSidebar = (props: any) => {
 
         <ul className="profile-menu-list">
           <li>
-            <NavLink 
-              to="/settings"
-              activeClassName="active" 
-              exact
+            <a
+              href="https://stgby.fitlope.com/faq"
               className="profile-menu-list-item"
             >
               <QuestionIcon className="profile-menu-list-icon" /> {t('personal.menu_faq')}
-            </NavLink>
+            </a>
           </li>
 
           <li>

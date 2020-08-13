@@ -13,22 +13,20 @@ import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
 import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
-import ChangeMealPlanView from 'views/ChangeMealPlanView';
-import SettingsPersonalView from 'views/Settings/SettingsPersonalView';
+import ChangeMealPlanView from './views/ChangeMealPlanView';
+import SettingsPersonalView from './views/Settings/SettingsPersonalView';
 import NotFound from './views/NotFound';
 
 const Routes = () => (
   <Switch>
     <PrivateRoute
-      path="/"
-      component={(props: any) => (
-        <Layout {...props} />
-      )}
+      path='/'
+      component={(props: any) => <Layout {...props} />}
       exact
     />
 
     <PrivateRoute
-      path="/trainings"
+      path='/trainings'
       component={(props: any) => (
         <Layout {...props}>
           <TrainingsView {...props} />
@@ -38,7 +36,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path="/nutrition/plan"
+      path='/nutrition/plan'
       component={(props: any) => (
         <Layout {...props}>
           <NutritionPlanView {...props} />
@@ -48,7 +46,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path="/nutrition/plan/weights"
+      path='/nutrition/plan/weights'
       component={(props: any) => (
         <Layout {...props}>
           <WeightGraphicsPage {...props} />
@@ -58,7 +56,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path="/recipe/create"
+      path='/recipe/create'
       component={(props: any) => (
         <Layout {...props}>
           <CreateRecipeView {...props} />
@@ -68,7 +66,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path="/recipes"
+      path='/recipes'
       component={(props: any) => (
         <Layout {...props}>
           <RecipesView {...props} />
@@ -78,7 +76,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path="/water-tracker"
+      path='/water-tracker'
       component={(props: any) => (
         <Layout {...props}>
           <WaterTrackerView {...props} />
@@ -88,7 +86,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path="/plan/change-meal"
+      path='/plan/change-meal'
       component={(props: any) => (
         <Layout {...props}>
           <ChangeMealPlanView {...props} />
@@ -108,7 +106,7 @@ const Routes = () => (
     />
 
     <AuthRoute
-      path="/login"
+      path='/login'
       component={(props: any) => (
         <BasePage {...props}>
           <LoginView {...props} />

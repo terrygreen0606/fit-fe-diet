@@ -57,17 +57,17 @@ const TrainingsView: React.FC = (props: any) => {
         advantage3Desc={t('trainings.plan.feat3_desc')}
       />
 
-      <section className="training-plan-card-list-sect">
-        <div className="container">
-          <div className="row">
-            <div className="training-plan-card-list-col training-plan-list">
-              <div className="row">
+      <section className='training-plan-card-list-sect'>
+        <div className='container'>
+          <div className='row'>
+            <div className='training-plan-card-list-col training-plan-list'>
+              <div className='row'>
 
-                <ol className="page-tabs mx-4 mx-md-0">
+                <ol className='page-tabs mx-4 mx-md-0'>
                   {
                     tabs.map((tab) => (
                       <li
-                        role="presentation"
+                        role='presentation'
                         key={`Level: ${tab}`}
                         className={classnames('page-tabs-item', {
                           active: level === tabs.indexOf(tab),
@@ -85,49 +85,49 @@ const TrainingsView: React.FC = (props: any) => {
                   days={dataForWeekWorkout}
                   dayWorkout={weekWorkout}
                   onChange={onWorkoutChange}
-                  type="radio"
+                  type='radio'
                 />
 
                 <Button
-                  className="px-5 mb-5 mx-auto week-workout-start-btn"
-                  size="lg"
-                  color="secondary"
+                  className='px-5 mb-5 mx-auto week-workout-start-btn'
+                  size='lg'
+                  color='secondary'
                 >
                   {t('trainings.start_workout')}
                 </Button>
 
-                <div className="col-12">
+                <div className='col-12'>
                   {Array.from({ length: 8 }, (_, index) => (
                     <TrainingCard
                       key={index}
                       image={WomanGymImage}
-                      text="Intermediate level 1"
+                      text='Intermediate level 1'
                       time={t('common.minutes', { number: 16 })}
                     />
                   ))}
                 </div>
               </div>
             </div>
-            <div className="training-plan-info-col">
+            <div className='training-plan-info-col'>
               <TodayActivities
                 name={t('trainings.today_activities')}
                 items={dataForTodayActivities}
                 todayActivities={todayActivities}
                 onChange={onActivitiesChange}
-                type="checkbox"
+                type='checkbox'
               />
-              <div className="training-plan-adherence-diet-card card-bg mt-5">
-                <h4 className="training-plan-adherence-diet-card-title">
+              <div className='training-plan-adherence-diet-card card-bg mt-5'>
+                <h4 className='training-plan-adherence-diet-card-title'>
                   {t('trainings.diet_plan')}
                 </h4>
-                <div className="training-plan-adherence-diet-card-img">
+                <div className='training-plan-adherence-diet-card-img'>
                   <RewardImage />
                 </div>
-                <div className="training-plan-adherence-diet-card-content">
+                <div className='training-plan-adherence-diet-card-content'>
                   <p>
                     {t('trainings.plan.completed', { number: 0 })}
                   </p>
-                  <a href="/" className="link">
+                  <a href='/' className='link'>
                     {t('trainings.report.week')}
                   </a>
                 </div>

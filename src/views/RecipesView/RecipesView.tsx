@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -26,7 +27,7 @@ const RecipesView = () => {
             </div>
             <div className="col-6 text-right">
 
-              <button className="page-create-btn" type="button">Create your recipe</button>
+              <Link to='/recipe/create' className='page-create-btn'>Create your recipe</Link>
 
             </div>
           </div>

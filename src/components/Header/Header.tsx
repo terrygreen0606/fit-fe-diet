@@ -22,35 +22,57 @@ const Header = (props: any) => {
 
   return (
     <>
-      <header className="mainHeader">
-        <div className="container">
-          <div className="row">
-            <div className="col-2">
-
-              <span className="mainHeader_logo" />
-
+      <header className='mainHeader'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-2'>
+              <Link to='/' className='mainHeader_logo' />
             </div>
-            <div className="col-10 text-right">
+            <div className='col-10 text-right'>
+              <span className='header-controls'>
+                <Button className='mobile-auth-btn' color='primary' outline>
+                  {t('login.submit')}
+                </Button>
+                <Button className='mobile-auth-btn ml-2 mr-4' color='primary'>
+                  {t('button.sign_up')}
+                </Button>
 
-              <span className="header-controls">
-                <Button className="mobile-auth-btn" color="primary" outline>Log in</Button>
-                <Button className="mobile-auth-btn ml-2 mr-4" color="primary">Sign up</Button>
-
-                <BurgerIcon className="menu-toggle-icon" onClick={(e) => toggleSideMenu()} />
+                <BurgerIcon
+                  className='menu-toggle-icon'
+                  onClick={() => toggleSideMenu()}
+                />
               </span>
 
-              <nav className="mainHeader_menuList">
-                <Link to="/trainings" className="mainHeader_menuList_item">{t('header.menu_trainings')}</Link>
-                <a href="/" className="mainHeader_menuList_item">Retseptid</a>
-                <a href="/" className="mainHeader_menuList_item">Edulood</a>
-                <a href="/" className="mainHeader_menuList_item">E-Pood</a>
+              <nav className='mainHeader_menuList'>
+                <Link to='/trainings' className='mainHeader_menuList_item'>
+                  {t('header.menu_trainings')}
+                </Link>
+                <Link to='/recipes' className='mainHeader_menuList_item'>
+                  {t('header.menu_recipes')}
+                </Link>
+                <Link
+                  to='/plan/change-meal'
+                  className='mainHeader_menuList_item'
+                >
+                  {t('mp.change.title')}
+                </Link>
+                <Link to='/nutrition/plan' className='mainHeader_menuList_item'>
+                  {t('nutrition.title')}
+                </Link>
                 {isAuthenticated ? (
-                  <span role="presentation" className="mainHeader_menuList_item" onClick={(e) => props.userLogout()}>Logout</span>
+                  <span
+                    role='presentation'
+                    className='mainHeader_menuList_item'
+                    onClick={() => props.userLogout()}
+                  >
+                    {t('common.logout')}
+                  </span>
                 ) : (
-                  <Link to="/login" className="mainHeader_menuList_item">Login</Link>
+                  <Link to='/login' className='mainHeader_menuList_item'>
+                    {t('login.submit')}
+                  </Link>
                 )}
               </nav>
-
             </div>
           </div>
         </div>
@@ -59,9 +81,11 @@ const Header = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(
-  (state: any) => ({
-    isAuthenticated: state.auth.isAuthenticated,
-  }),
-  { userLogout },
-)(Header));
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      isAuthenticated: state.auth.isAuthenticated,
+    }),
+    { userLogout }
+  )(Header)
+);
