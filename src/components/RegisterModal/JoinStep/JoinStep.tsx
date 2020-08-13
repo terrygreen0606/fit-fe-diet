@@ -142,6 +142,30 @@ const JoinStep = (props: any) => {
     });
   };
 
+  const registerEmail = () => {
+    setRegisterJoinLoading(true);
+
+    userSignup({
+      ...registerData,
+    }).then(response => {
+      setRegisterJoinLoading(false);
+
+      const token = response.data
+      && response.data.access_token
+        ? response.data.access_token
+        : null;
+
+      if (token) {
+        userClientLogin(token);
+      } else {
+        toast.error('Error while registering user');
+      }
+    }).catch(error => {
+      setRegisterJoinLoading(false);
+      toast.error('Error while registering user');
+    });
+  };
+
   const registerJoinSubmit = e => {
     e.preventDefault();
 
@@ -162,37 +186,7 @@ const JoinStep = (props: any) => {
       } else if (socialRegister === 'google') {
         registerGoogle();
       } else {
-         setRegisterJoinLoading(true);
-
-          userSignup({
-            ...registerData,
-            weight: registerData.weight
-              ? registerData.weight * 1000
-              : registerData.weight,
-            height: registerData.height
-              ? registerData.height * 10
-              : registerData.height,
-            weight_goal: registerData.weight_goal
-              ? registerData.weight_goal * 1000
-              : registerData.weight_goal,
-          }).then((response) => {
-            setRegisterJoinLoading(false);
-
-            const token = response.data
-            && response.data.access_token
-              ? response.data.access_token
-              : null;
-
-            if (token) {
-              userClientLogin(token);
-              props.modalClose();
-            } else {
-              toast.error('Error while registering user');
-            }
-          }).catch((error) => {
-            setRegisterJoinLoading(false);
-            toast.error('Error while registering user');
-          });
+         registerEmail();
       }
     }
   };
