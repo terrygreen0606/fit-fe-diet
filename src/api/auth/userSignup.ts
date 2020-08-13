@@ -9,9 +9,9 @@ type UserSignupParams = {
   age?: number,
   gender: 'm' | 'f',
   measurement: 'si' | 'us',
-  height?: number, // millimeters 500..2500
-  weight?: number, // grams 30000..400000
-  weight_goal?: number, // grams 30000..400000
+  height?: number, // centimeters/feet,inch
+  weight?: number, // kilograms 30..400
+  weight_goal?: number, // kilograms 30..400
   goal?: -1 | 0 | 1, // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight
   ignore_cusine_ids?: string[]
 };
