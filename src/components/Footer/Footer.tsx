@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTranslate } from 'utils';
-import { getPublicUrl } from 'utils/getPublicUrl';
+import { getPublicAppUrl } from 'utils/getPublicAppUrl';
 
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
@@ -36,7 +36,7 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href={getPublicUrl('blogs')}
+                  href={getPublicAppUrl('blogs')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_blog')}
@@ -44,7 +44,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href={getPublicUrl('recipes')}
+                  href={getPublicAppUrl('recipes')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_recipes')}
@@ -52,7 +52,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href={getPublicUrl('challenge')}
+                  href={getPublicAppUrl('challenge')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_challenge')}
@@ -84,7 +84,7 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href={getPublicUrl('contacts')}
+                  href={getPublicAppUrl('contacts')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_contact')}
@@ -92,7 +92,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href={getPublicUrl('privacy')}
+                  href={getPublicAppUrl('privacy')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_privacy')}
@@ -100,7 +100,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href={getPublicUrl('terms')}
+                  href={getPublicAppUrl('terms')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_terms')}
@@ -124,7 +124,7 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href={getPublicUrl('trees')}
+                  href={getPublicAppUrl('trees')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_trees')}
@@ -132,7 +132,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href={getPublicUrl('stories')}
+                  href={getPublicAppUrl('stories')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_stories')}
@@ -140,7 +140,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href={getPublicUrl('testimonials')}
+                  href={getPublicAppUrl('testimonials')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_testimonials')}
