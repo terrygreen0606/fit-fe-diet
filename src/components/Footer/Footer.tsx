@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTranslate } from 'utils';
+import { getStgUrl } from 'utils/getStgUrl';
 
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
@@ -35,7 +36,7 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/blogs'
+                  href={getStgUrl('blogs')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_blog')}
@@ -43,7 +44,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/recipes'
+                  href={getStgUrl('recipes')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_recipes')}
@@ -51,7 +52,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/challenge'
+                  href={getStgUrl('challenge')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_challenge')}
@@ -83,7 +84,7 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/contacts'
+                  href={getStgUrl('contacts')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_contact')}
@@ -91,7 +92,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/privacy'
+                  href={getStgUrl('privacy')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_privacy')}
@@ -99,7 +100,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/terms'
+                  href={getStgUrl('terms')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_terms')}
@@ -123,7 +124,7 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/trees'
+                  href={getStgUrl('trees')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_trees')}
@@ -131,7 +132,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/stories'
+                  href={getStgUrl('stories')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_stories')}
@@ -139,7 +140,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/testimonials'
+                  href={getStgUrl('testimonials')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_testimonials')}
