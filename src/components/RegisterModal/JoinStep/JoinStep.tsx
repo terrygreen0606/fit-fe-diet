@@ -70,13 +70,13 @@ const JoinStep = (props: any) => {
       userSignup({
         ...registerData,
         weight: registerData.weight
-          ? registerData.weight * 1000
+          ? registerData.weight
           : registerData.weight,
         height: registerData.height
-          ? registerData.height * 10
+          ? registerData.height
           : registerData.height,
         weight_goal: registerData.weight_goal
-          ? registerData.weight_goal * 1000
+          ? registerData.weight_goal
           : registerData.weight_goal,
       }).then((response) => {
         setRegisterJoinLoading(false);
