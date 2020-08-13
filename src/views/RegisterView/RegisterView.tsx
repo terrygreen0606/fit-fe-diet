@@ -4,7 +4,7 @@ import {
   initGoogleAuth,
   initFacebookAuth
 } from 'utils';
-import { getTplSignUp } from 'api';
+import { getSignUpTpl } from 'api';
 
 // Components
 import AuthSocialHelmet from 'components/AuthSocialHelmet';
@@ -33,7 +33,7 @@ const RegisterView = (props: any) => {
     setRegisterTplLoading(true);
     setRegisterTplLoadingError(false);
 
-    getTplSignUp().then((response) => {
+    getSignUpTpl().then((response) => {
       setRegisterTplLoading(false);
 
       if (response.data.data && response.data.data.tpl) {

@@ -5,7 +5,7 @@ export * from './auth/userGoogleSignIn';
 export * from './auth/userFacebookSignIn';
 export * from './auth/userFacebookSignUp';
 export * from './auth/userGoogleSignUp';
-export * from './auth/getTplSignUp';
+export * from './auth/getSignUpTpl';
 export * from './loadPhrases';
 export * from './ingredients';
 export * from './recipe';
