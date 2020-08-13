@@ -1,7 +1,7 @@
 // const GOOGLE_CLIENT_ID_DEV = '507935053251-5fmvm4gqnggi9a4k2sn0951p0v5pchk9.apps.googleusercontent.com';
 const GOOGLE_CLIENT_ID = '697977923202-90s2n3u16nc2299k6lflfev5uemt1m70.apps.googleusercontent.com';
 
-export const initGoogleAuth = (
+export const googleAuth = (
   onSuccess: (resp: any) => void,
   onError: (err?: any) => void,
 ) => {

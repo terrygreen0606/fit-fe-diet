@@ -6,27 +6,58 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import './Spinner.sass';
 
 type SpinnerProps = {
-  width?: number;
-  height?: number;
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   color?: string,
   className?: string;
 };
 
+const SpinnerDefaultProps = {
+  size: 'sm'
+};
+
 const Spinner = ({
-  width,
-  height,
+  size,
   color,
   className,
-}: SpinnerProps) => (
-  <FontAwesomeIcon
-    className={classNames('spinnerLoader', {
-      [className]: className,
-    })}
-    style={{ width: width && `${width}px`, height: height && `${height}px` }}
-    color={color && color}
-    icon={faCircleNotch}
-    spin
-  />
-);
+}: SpinnerProps) => {
+
+  const getSpinnerSize = (size: string) => {
+    let spinSize = null;
+
+    switch (size) {
+      case 'xs':
+        spinSize = 18;
+        break;
+
+      case 'sm':
+        spinSize = 25;
+        break;
+
+      case 'md':
+        spinSize = 35;
+        break;
+
+      case 'lg':
+        spinSize = 45;
+        break;
+    }
+
+    return spinSize;
+  };
+
+  return (
+    <FontAwesomeIcon
+      className={classNames('spinnerLoader', {
+        [className]: className,
+      })}
+      style={{ width: `${getSpinnerSize(size)}px`, height: `${getSpinnerSize(size)}px` }}
+      color={color && color}
+      icon={faCircleNotch}
+      spin
+    />
+  );
+};
+
+Spinner.defaultProps = SpinnerDefaultProps;
 
 export default Spinner;

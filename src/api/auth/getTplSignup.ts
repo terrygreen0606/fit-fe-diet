@@ -1,3 +1,3 @@
 import axios from 'utils/axios';
 
-export const getTplSignup = () => axios.put('/user/tpl-signup');
+export const getTplSignUp = () => axios.put('/user/tpl-signup');
