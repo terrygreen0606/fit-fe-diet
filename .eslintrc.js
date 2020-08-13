@@ -14,5 +14,6 @@ module.exports = {
     'react/jsx-props-no-spreading': 1,
     'linebreak-style': 0,
     'jsx-quotes': [2, 'prefer-single'],
+    "import/prefer-default-export": "off",
   },
 };
