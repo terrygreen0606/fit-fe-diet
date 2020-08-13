@@ -7,6 +7,7 @@ import AuthRoute from './components/common/AuthRoute';
 
 // Views
 import LoginView from './views/LoginView';
+import RegisterView from './views/RegisterView';
 import NutritionPlanView from './views/NutritionPlanView';
 import TrainingsView from './views/TrainingsView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
@@ -112,6 +113,16 @@ const Routes = () => (
       component={(props: any) => (
         <BasePage {...props}>
           <LoginView {...props} />
+        </BasePage>
+      )}
+      exact
+    />
+
+    <AuthRoute
+      path="/register"
+      component={(props: any) => (
+        <BasePage {...props}>
+          <RegisterView {...props} />
         </BasePage>
       )}
       exact

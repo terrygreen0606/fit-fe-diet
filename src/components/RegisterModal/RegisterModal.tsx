@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UserAuthProfileType } from 'types/auth';
 
 // Components
 import Modal from 'components/common/Modal';
@@ -11,7 +12,12 @@ import JoinStep from './JoinStep';
 
 import './RegisterModal.sass';
 
-const registerDataDefault = {
+interface RegisterDataType extends UserAuthProfileType {
+  email: string;
+  password: string;
+};
+
+const registerDataDefault: RegisterDataType = {
   email: '',
   password: '',
   name: '',
@@ -30,30 +36,24 @@ const registerDataDefault = {
 
 type RegisterModalProps = {
   isOpen: boolean,
+  tpl: number,
   onClose?: (e: React.SyntheticEvent) => void,
-  tpl: any,
-  tplLoading: boolean,
-  tplLoadingError: boolean,
-  fetchTpl: () => void,
   localePhrases: any
 };
 
 const RegisterModal = ({
   isOpen,
-  tpl,
   onClose,
-  localePhrases,
-  tplLoading,
-  tplLoadingError,
-  fetchTpl,
+  tpl,
+  localePhrases
 }: RegisterModalProps) => {
-  const [registerStep, setRegisterStep] = useState('GOAL');
+  const [registerStep, setRegisterStep] = useState<'GOAL' | 'INFO' | 'JOIN'>('GOAL');
 
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
 
   useEffect(() => {
     if (isOpen === false) {
-      setRegisterData({ ...registerDataDefault });
+      setRegisterData({ ...registerDataDefault});
       setRegisterStep('GOAL');
     }
   }, [isOpen]);
@@ -120,17 +120,11 @@ const RegisterModal = ({
       className="registerModal"
     >
       <Modal.Main className="registerModal_main">
-        <ContentLoading
-          isLoading={tplLoading}
-          isError={tplLoadingError}
-          fetchData={fetchTpl}
-        >
-          <Steps step={registerStep} localePhrases={localePhrases || {}} />
+        <Steps step={registerStep} localePhrases={localePhrases || {}} />
 
-          <div className="registerModal_steps_content">
-            {getRegisterStepView(registerStep)}
-          </div>
-        </ContentLoading>
+        <div className="registerModal_steps_content">
+          {getRegisterStepView(registerStep)}
+        </div>
       </Modal.Main>
     </Modal>
   );

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  initGoogleAuth as initGoogleAuthUtil,
-  initFacebookAuth as initFacebookAuthUtil,
+  initGoogleAuth,
+  initFacebookAuth,
   wait,
 } from 'utils';
 import { toast } from 'react-toastify';
@@ -13,13 +14,12 @@ import axios from 'utils/axios';
 import {
   userLogin as userAuthLogin,
   userGoogleSignIn,
-  userFacebookSignIn,
-  getTplSignup,
+  userFacebookSignIn
 } from 'api';
-import { Helmet } from 'react-helmet';
 import { userLogin } from 'store/actions';
 
 // Components
+import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import RegisterModal from 'components/RegisterModal';
 import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
@@ -33,7 +33,6 @@ import { ReactComponent as GoogleIcon } from 'assets/img/icons/google-icon.svg';
 import { ReactComponent as FacebookIcon } from 'assets/img/icons/facebook-letter-icon.svg';
 
 const LoginView = (props: any) => {
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
 
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -51,60 +50,10 @@ const LoginView = (props: any) => {
   const [loginFacebookInitLoading, setLoginFacebookInitLoading] = useState(false);
   const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
 
-  const [registerTpl, setRegisterTpl] = useState(null);
-  const [registerTplLoading, setRegisterTplLoading] = useState(false);
-  const [registerTplLoadingError, setRegisterTplLoadingError] = useState(false);
-
-  const initGoogleAuth = () => {
-    setLoginGoogleInitLoading(true);
-
-    const interval = setInterval(tryGoogleAuthInit, 100);
-
-    function tryGoogleAuthInit() {
-      if (window['gapi']) {
-        clearInterval(interval);
-
-        initGoogleAuthUtil((response) => {
-          setLoginGoogleInitLoading(false);
-        }, (error) => {
-          setLoginGoogleInitLoading(true);
-        });
-      }
-    }
-  };
-
-  const initFacebookAuth = () => {
-    setLoginFacebookInitLoading(true);
-
-    window['fbAsyncInit'] = () => {
-      const interval = setInterval(checkFacebookInitSuccess, 100);
-
-      function checkFacebookInitSuccess() {
-        if (window['FB']) {
-          clearInterval(interval);
-          setLoginFacebookInitLoading(false);
-        }
-      }
-
-      initFacebookAuthUtil();
-    };
-  };
-
-  const loadRegisterTpl = () => {
-    setRegisterTplLoading(true);
-    setRegisterTplLoadingError(false);
-
-    getTplSignup().then((response) => {
-      setRegisterTplLoading(false);
-
-      if (response.data.data && response.data.data.tpl) {
-        setRegisterTpl(response.data.data.tpl);
-      }
-    }).catch((error) => {
-      setRegisterTplLoading(false);
-      setRegisterTplLoadingError(true);
-    });
-  };
+  useEffect(() => {
+    initGoogleAuth(setLoginGoogleInitLoading, setLoginGoogleLoadingError);
+    initFacebookAuth(setLoginFacebookInitLoading);
+  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -118,12 +67,6 @@ const LoginView = (props: any) => {
       element,
     );
   };
-
-  useEffect(() => {
-    initGoogleAuth();
-    initFacebookAuth();
-    loadRegisterTpl();
-  }, []);
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, loginErrors);
 
@@ -236,19 +179,7 @@ const LoginView = (props: any) => {
 
   return (
     <>
-      <Helmet>
-        <script src="https://apis.google.com/js/platform.js" async />
-        <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js" />
-      </Helmet>
-
-      <RegisterModal
-        isOpen={isRegisterModalOpen}
-        onClose={() => setRegisterModalOpen(false)}
-        tpl={registerTpl}
-        tplLoading={registerTplLoading}
-        tplLoadingError={registerTplLoadingError}
-        fetchTpl={getTplSignup}
-      />
+      <AuthSocialHelmet />
 
       <div className="loginScreen">
         <h3 className="loginScreen_title">{t('login.title', { product: 'TEST' })}</h3>
@@ -332,13 +263,13 @@ const LoginView = (props: any) => {
           )}
         </div>
 
-        <span
+        <Link
           className="link link-bold mt-4"
-          onClick={() => setRegisterModalOpen(true)}
+          to="/register"
           role="presentation"
         >
           {t('login.register_link')}
-        </span>
+        </Link>
       </div>
     </>
   );
