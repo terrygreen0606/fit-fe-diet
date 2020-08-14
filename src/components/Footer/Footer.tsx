@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTranslate } from 'utils';
+import { generatePublicUrl } from 'utils/generatePublicUrl';
 
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
@@ -35,35 +36,43 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/contacts'
+                  href={generatePublicUrl('blogs')}
                   className='mainFooter_menuList_item'
                 >
-                  {t('contacts.header')}
+                  {t('footer.menu_blog')}
                 </a>
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/faq'
+                  href={generatePublicUrl('recipes')}
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_faq')}
+                  {t('footer.menu_recipes')}
                 </a>
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/terms'
+                  href={generatePublicUrl('challenge')}
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_terms')}
+                  {t('footer.menu_challenge')}
                 </a>
               </li>
               <li>
-                <a
-                  href='https://stgby.fitlope.com/privacy'
+                <Link
+                  to='/nutrition/plan/weights'
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_privacy')}
-                </a>
+                  {t('footer.menu_nutrition_plan_weights')}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to='/settings/personal'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_personal_settings')}
+                </Link>
               </li>
             </ul>
           </div>
@@ -75,27 +84,35 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/blogs'
+                  href={generatePublicUrl('contacts')}
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_blog')}
+                  {t('footer.menu_contact')}
                 </a>
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/recipes'
+                  href={generatePublicUrl('privacy')}
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_recipes')}
+                  {t('footer.menu_privacy')}
                 </a>
               </li>
               <li>
                 <a
-                  href='https://stgby.fitlope.com/about'
+                  href={generatePublicUrl('terms')}
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_about')}
+                  {t('footer.menu_terms')}
                 </a>
+              </li>
+              <li>
+                <Link
+                  to='/recipe/create'
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_create_recipe')}
+                </Link>
               </li>
             </ul>
           </div>
@@ -106,16 +123,35 @@ const Footer = (props: any) => {
 
             <ul className='mainFooter_menuList'>
               <li>
-                <Link to='/nutrition/plan' className='mainFooter_menuList_item'>
-                  {t('footer.menu_nutrition_plan')}
-                </Link>
+                <a
+                  href={generatePublicUrl('trees')}
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_trees')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={generatePublicUrl('stories')}
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_stories')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={generatePublicUrl('testimonials')}
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_testimonials')}
+                </a>
               </li>
               <li>
                 <Link
-                  to='/nutrition/plan/weights'
+                  to='/water-tracker'
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_nutrition_plan_weights')}
+                  {t('footer.menu_water_tracker')}
                 </Link>
               </li>
             </ul>
