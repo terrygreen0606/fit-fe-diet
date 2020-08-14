@@ -114,7 +114,7 @@ const ImagesFileInput = ({
       >
         {isLoading && (
           <div className={styles.spinner}>
-            <Spinner width={30} height={30} color="#0FC1A1" />
+            <Spinner color="#0FC1A1" />
           </div>
         )}
 
