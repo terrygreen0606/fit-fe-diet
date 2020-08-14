@@ -1,0 +1,173 @@
+.dashboard__user
+  display: flex
+  margin-bottom: 64px
+  padding: 22px 40px
+
+  &-personal-data
+    flex-basis: 31%
+    padding-right: 20px
+    border-right: 1px solid #E8E8E8
+
+    &-name
+      display: flex
+      justify-content: space-between
+      align-items: center
+      margin-bottom: 25px
+      font-size: 34px
+      line-height: 1.2
+      font-weight: bold
+      color: #000
+
+    &-name-settings
+      background: transparent
+      border: none
+      cursor: pointer
+
+      &:hover
+        svg path
+          fill: darken(#CDCDCD, 20%)
+
+      svg path
+        fill: #CDCDCD
+        transition: 0.2s fill ease
+    
+    &_container
+      display: flex
+      align-items: center
+
+    &-media
+      position: relative
+      max-width: 110px
+      border-radius: 50%
+      line-height: 0
+      cursor: pointer
+
+      &:hover
+        &::before
+         opacity: 1
+
+        .dashboard__user-personal-data-media-edit
+          opacity: 1
+
+      & > *
+        line-height: initial
+
+      img
+        max-width: 100%
+        height: auto
+        border-radius: 50%
+
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.245) 100%)
+        border-radius: 50%
+        opacity: 0
+        transition: 0.2s opacity ease
+    
+      &::after
+        content: ''
+        position: absolute
+        bottom: 5px
+        right: 12px
+        width: 16px
+        height: 16px
+        background: #93DE97
+        border-radius: 50%
+
+      &-edit
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        border: none
+        background: transparent
+        opacity: 0
+        transition: 0.2s opacity ease
+    
+    &-activity
+      flex: 1
+      padding-left: 40px
+
+      &-last-login
+        display: flex
+        align-items: center
+        margin-bottom: 20px
+
+        &-description
+          margin-right: 8px
+          font-size: 20px
+          font-weight: 500
+          line-height: 1.7
+
+        &-date
+          font-size: 20px
+          line-height: 1.7
+      
+      &-subscription
+        &-description
+          font-size: 20px
+          font-weight: 500
+          line-height: 1.7
+        
+        &-date
+          display: flex
+          align-items: center
+          font-size: 20px
+
+          span
+            margin: 0 4px
+            font-weight: bold
+            color: #106EE8
+
+  &-progress
+    flex-basis: 44%
+    padding: 0 30px
+    border-right: 1px solid #E8E8E8
+
+    &-title
+      margin-bottom: 15px
+      padding-left: 20px
+      font-size: 22px
+      line-height: 1.5
+      font-weight: bold
+  
+  &-rewards
+    flex-basis: 25%
+    padding-left: 40px
+
+    &-title
+      margin-bottom: 36px
+      font-size: 22px
+      font-weight: bold
+
+    &-item
+      display: flex
+
+      &:not(:first-child)
+        margin-top: 26px
+
+      &-media
+        max-width: 30px
+
+        svg
+          max-width: 100%
+
+      &-text
+        flex: 1
+        padding-left: 30px
+
+        &-title
+          margin-bottom: 2px
+          font-size: 20px
+          line-height: 1.2
+          font-weight: bold
+          color: #0FC1A1
+
+        &-description
+          font-size: 18px
+          line-height: 1.3

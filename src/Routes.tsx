@@ -16,6 +16,7 @@ import WaterTrackerView from './views/WaterTrackerView';
 import ChangeMealPlanView from './views/ChangeMealPlanView';
 import SettingsPersonalView from './views/Settings/SettingsPersonalView';
 import NotFound from './views/NotFound';
+import DashboardView from './views/DashboardView';
 
 const Routes = () => (
   <Switch>
@@ -100,6 +101,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <SettingsPersonalView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/dashboard'
+      component={(props: any) => (
+        <Layout {...props}>
+          <DashboardView {...props} />
         </Layout>
       )}
       exact
