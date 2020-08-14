@@ -9,18 +9,18 @@ type TrainingCardProps = {
 };
 
 const TrainingCard = ({ image, text, time }: TrainingCardProps) => (
-  <div className="training-card">
+  <div className='training-card'>
     <div
-      className="training-card-image"
+      className='training-card-image'
       style={{ backgroundImage: `url(${image})` }}
     />
 
-    <div className="training-card-description">
+    <div className='training-card-description'>
       {text}
     </div>
 
-    <div className="training-card-bottom">
-      <span className="training-card-time">
+    <div className='training-card-bottom'>
+      <span className='training-card-time'>
         {time}
       </span>
     </div>

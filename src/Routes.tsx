@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import BasePage from 'components/hoc/BasePage';
 import Layout from 'components/hoc/Layout';
-import PrivateRoute from './components/common/PrivateRoute';
-import AuthRoute from './components/common/AuthRoute';
+import PrivateRoute from 'components/common/PrivateRoute';
+import AuthRoute from 'components/common/AuthRoute';
 
 // Views
 import LoginView from './views/LoginView';
@@ -12,6 +12,7 @@ import NutritionPlanView from './views/NutritionPlanView';
 import TrainingsView from './views/TrainingsView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
+import FoodPlanView from './views/FoodPlanView';
 import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
 import ChangeMealPlanView from './views/ChangeMealPlanView';
@@ -61,6 +62,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <CreateRecipeView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/meal-plan/list'
+      component={(props: any) => (
+        <Layout {...props}>
+          <FoodPlanView {...props} />
         </Layout>
       )}
       exact

@@ -16,10 +16,10 @@ const TodayActivities = ({
   items, todayActivities, onChange, type, name,
 }: TodayActivitiesProps) => (
   <>
-    <h4 className="mt-5 mb-4">
+    <h4 className='mt-5 mb-4'>
       {name}
     </h4>
-    <div className="today-activities-activity-list">
+    <div className='today-activities-activity-list'>
       {
         items.map((item) => (
           <label key={item.text}>

@@ -1,0 +1,204 @@
+@import '../../assets/sass/vars'
+
+
+.food_plan
+  margin: 0 !important
+  @media (max-width: 768px)
+    flex-direction: column-reverse
+  &_tabs
+    @media (max-width: 768px)
+      display: none !important
+  .week-days
+    padding-bottom: 0
+    &::-webkit-scrollbar
+      display: none
+    @media (max-width: 767px)
+      padding: 0
+    @media (min-width: 769px) and (max-width: 1199px)
+      padding-top: 92px
+      width: 750px
+    @media (min-width: 992px) and (max-width: 1199px)
+      width: 94vw
+  .mobile-sub-tabs
+    @media (max-width: 767px)
+      z-index: 1
+      padding: 13px 0 0
+      margin-top: 25px
+      margin-left: 15px
+      margin-right: 15px
+      background: #FFFFFF
+      box-shadow: 0 3px 20px #BAC2D2
+      border-radius: 5px
+      max-width: calc(100% - 30px)
+      &::-webkit-scrollbar
+        display: none
+
+.page-sub-tabs
+  margin-top: 46px
+  padding: 0
+  list-style-type: none
+  @media (max-width: 768px)
+    display: flex
+    padding: 0 20px
+    width: 100%
+  @media (min-width: 769px) and (max-width: 991px)
+    margin-top: 92px
+    white-space: nowrap
+    z-index: 1
+  &-item
+    position: relative
+    display: inline-block
+    padding: 10px 0
+    font-size: 26px
+    line-height: 32px
+    color: #cdcdcd
+    cursor: pointer
+    font-weight: normal
+    border: none
+    text-align: center
+    &:not(:last-child)
+      margin-right: 25px
+
+    @media (max-width: 768px)
+      font-size: 14px
+      line-height: 17px
+
+    &.active
+      border: 3px solid $caribbean-green
+      border-radius: 5px
+      color: $caribbean-green !important
+      font-weight: bold
+      background-color: unset !important
+      padding: 10px 33px
+      @media (max-width: 768px)
+        border-width: 1px
+        font-weight: normal
+        padding: 9px 18px
+
+    &:hover
+      color: $caribbean-green !important
+
+  &-controls
+    &-list
+      display: flex
+      justify-content: flex-end
+      align-items: center
+      margin: 46px 25px 1em
+      @media (max-width: 1199px)
+        margin-top: 1em
+      @media (max-width: 768px)
+        display: none
+    &-item
+      &:not(:last-child)
+        margin-right: 10px
+    &-icon
+      width: 30px
+      cursor: pointer
+      fill: #000
+      path
+        fill: #000
+      &:hover
+        fill: $caribbean-green
+        path
+          fill: $caribbean-green
+
+.choose_plan
+  justify-content: space-between
+  padding: 0 !important
+  height: fit-content
+  @media (min-width: 769px)
+    flex: 0 0 33.333333%
+    max-width: 33.333333%
+
+  input
+    display: none
+
+  input:checked + .choose_plan_item .choose_plan_item_checkmark
+    opacity: 1
+
+  &_item
+    flex: 0 0 100px
+    width: 100px
+    position: relative
+    padding: 23px 10px
+    text-align: center
+    cursor: pointer
+    margin-right: 27px
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+    border-radius: 20px
+    @media (max-width: 768px)
+      display: flex
+      flex: 0 0 78px
+      max-width: 78px
+      padding: 14px 8px
+      justify-content: center
+      align-items: center
+      margin-right: 37px
+      border-radius: 5px
+    &.active
+      &.daily
+        @media (max-width: 767px)
+          box-shadow: 0 15px 15px #BAC2D2
+          &::after
+            z-index: 2
+            content: ''
+            position: absolute
+            top: 97%
+            left: 0
+            width: 100%
+            height: 30px
+            background-color: #ffffff
+
+    &:hover, &.active
+      color: #fff
+      box-shadow: 0 3px 5px #BAC2D2
+      .choose_plan_item
+        &_icon
+          fill: #fff
+          #change
+            fill: $caribbean-green
+          &_wrap
+            border-color: $caribbean-green
+            background-color: $caribbean-green
+        &_title
+          color: $caribbean-green
+          font-weight: bold
+          @media (max-width: 768px)
+            font-weight: bold
+
+    &.disabled
+      opacity: .6
+      cursor: default
+
+    &_title
+      margin-top: 0
+      line-height: 22px
+      font-weight: 400
+      @media (max-width: 768px)
+        font-size: 14px
+        line-height: 17px
+    &_checkmark
+      position: absolute
+      top: -16px
+      right: -12px
+      display: inline-block
+      width: 43px
+      height: 43px
+      background-color: $caribbean-green
+      background-image: url('../../assets/img/icons/check-icon.svg')
+      background-repeat: no-repeat
+      background-position: center center
+      border-radius: 100%
+      box-shadow: 3px -3px 10px rgba(0, 0, 0, 0.08)
+      border: 8px solid #fff
+      opacity: 0
+      @media (max-width: 768px)
+        top: -12px
+        right: -8px
+        width: 34px
+        height: 34px
+    &_icon
+      width: 80%
+      fill: #000
+      &-wrap
+        z-index: 1

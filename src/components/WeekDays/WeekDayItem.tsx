@@ -21,10 +21,10 @@ const WeekDayItem = ({
       disabled,
     })}
   >
-    <div className="week-workout-item-number">
+    <div className='week-workout-item-number'>
       {number}
     </div>
-    <div className="week-workout-item-of_week">
+    <div className='week-workout-item-of_week'>
       {value}
     </div>
   </div>

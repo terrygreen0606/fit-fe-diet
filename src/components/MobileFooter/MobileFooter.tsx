@@ -10,13 +10,13 @@ import { ReactComponent as CutleryIcon } from 'assets/img/icons/cutlery-icon-whi
 import './MobileFooter.sass';
 
 const MobileFooter = () => (
-  <footer className="mobileFooter">
-    <ul className="mobileFooter_list">
+  <footer className='mobileFooter'>
+    <ul className='mobileFooter_list'>
       <li>
         <NavLink
-          to="/"
-          className="mobileFooter_list_item"
-          activeClassName="active"
+          to='/'
+          className='mobileFooter_list_item'
+          activeClassName='active'
           exact
         >
           <CutleryIcon />
@@ -24,9 +24,9 @@ const MobileFooter = () => (
       </li>
       <li>
         <NavLink
-          to="/"
-          className="mobileFooter_list_item"
-          activeClassName="active"
+          to='/'
+          className='mobileFooter_list_item'
+          activeClassName='active'
           exact
         >
           <PurchaseIcon />
@@ -34,9 +34,9 @@ const MobileFooter = () => (
       </li>
       <li>
         <NavLink
-          to="/trainings"
-          className="mobileFooter_list_item"
-          activeClassName="active"
+          to='/trainings'
+          className='mobileFooter_list_item'
+          activeClassName='active'
           exact
         >
           <DumbbellIcon />
@@ -44,9 +44,9 @@ const MobileFooter = () => (
       </li>
       <li>
         <NavLink
-          to="/"
-          className="mobileFooter_list_item"
-          activeClassName="active"
+          to='/'
+          className='mobileFooter_list_item'
+          activeClassName='active'
           exact
         >
           <GraphIcon />
@@ -54,9 +54,9 @@ const MobileFooter = () => (
       </li>
       <li>
         <NavLink
-          to="/"
-          className="mobileFooter_list_item"
-          activeClassName="active"
+          to='/'
+          className='mobileFooter_list_item'
+          activeClassName='active'
           exact
         >
           <BurgerIcon />

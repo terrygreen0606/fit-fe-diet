@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
@@ -44,21 +44,34 @@ const Header = (props: any) => {
               </span>
 
               <nav className='mainHeader_menuList'>
-                <Link to='/trainings' className='mainHeader_menuList_item'>
+                <NavLink
+                  to='/trainings'
+                  className='mainHeader_menuList_item'
+                  activeClassName='mainHeader_menuList_item_active'
+                >
                   {t('header.menu_trainings')}
-                </Link>
-                <Link to='/recipes' className='mainHeader_menuList_item'>
+                </NavLink>
+                <NavLink
+                  to='/recipes'
+                  className='mainHeader_menuList_item'
+                  activeClassName='mainHeader_menuList_item_active'
+                >
                   {t('header.menu_recipes')}
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to='/plan/change-meal'
                   className='mainHeader_menuList_item'
+                  activeClassName='mainHeader_menuList_item_active'
                 >
                   {t('mp.change.title')}
-                </Link>
-                <Link to='/nutrition/plan' className='mainHeader_menuList_item'>
+                </NavLink>
+                <NavLink
+                  to='/nutrition/plan'
+                  className='mainHeader_menuList_item'
+                  activeClassName='mainHeader_menuList_item_active'
+                >
                   {t('nutrition.title')}
-                </Link>
+                </NavLink>
                 {isAuthenticated ? (
                   <span
                     role='presentation'
@@ -86,6 +99,6 @@ export default WithTranslate(
     (state: any) => ({
       isAuthenticated: state.auth.isAuthenticated,
     }),
-    { userLogout }
-  )(Header)
+    { userLogout },
+  )(Header),
 );

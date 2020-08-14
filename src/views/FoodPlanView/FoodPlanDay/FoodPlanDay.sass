@@ -1,0 +1,111 @@
+@import '../../../assets/sass/vars'
+
+.food_plan_day
+  &_sect
+    margin: 35px auto
+    background: #ffffff
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+    border-radius: 20px
+    padding: 30px 36px
+    @media (max-width: 768px)
+      border: 1px solid $caribbean-green
+      padding: 19px 13px
+    &:not(:first-child)
+      margin-bottom: 45px
+  &_icon
+    @media (max-width: 768px)
+      width: 18px
+    path
+      fill: #878787
+      @media (max-width: 768px)
+        fill: $caribbean-green
+  &_title
+    margin-left: 11px
+    font-size: 26px
+    line-height: 32px
+    color: #878787
+    @media (max-width: 768px)
+      color: $caribbean-green
+      font-size: 14px
+      line-height: 17px
+
+  &_trash
+    background-color: #F27C7C
+    width: 65px
+    height: 65px
+    border-radius: 50%
+    cursor: pointer
+    &:hover
+      opacity: 0.9
+    @media (max-width: 768px)
+      width: 35px
+      height: 35px
+    svg
+      width: 60%
+      height: 60%
+
+  &_btn
+    @media (max-width: 768px)
+      justify-content: space-between !important
+      padding-right: 15px
+      padding-left: 15px
+    &_day
+      white-space: normal
+      padding: 20px 39px
+      font-size: 22px
+      @media (max-width: 768px)
+        flex: 0 0 calc(50% - 1em)
+        max-width: calc(50% - 1em)
+        padding: 15px 8px
+        font-size: 12px
+        line-height: 15px
+        background-color: #FFFFFF
+        color: $steel-blue
+        border: 2px solid $steel-blue
+        &:hover
+          color: $steel-blue
+          background-color: #FFFFFF
+      @media (max-width: 992px)
+        font-size: 17px
+        line-height: 22px
+    &_settings
+      white-space: normal
+      padding: 20px 20px
+      font-size: 22px
+      border: none
+      color: #ffffff
+      background-color: $steel-blue
+      margin-left: 1.5em
+      &:hover
+        color: #ffffff
+      @media (max-width: 768px)
+        flex: 0 0 calc(50% - 1em)
+        max-width: calc(50% - 1em)
+        margin-left: 0
+        padding: 15px 8px
+        font-size: 12px
+        line-height: 15px
+        background-color: $steel-blue
+        color: #ffffff
+        border: 2px solid $steel-blue
+      @media (max-width: 992px)
+        font-size: 17px
+        line-height: 22px
+
+  &_item
+    margin-bottom: 74px
+    @media (max-width: 768px)
+      margin-bottom: 34px
+      padding: 0 !important
+    &_type
+      margin-bottom: 28px
+      display: flex
+      flex-direction: row
+      align-items: center
+      font-size: 24px
+      line-height: 29px
+      font-weight: bold
+      svg
+        margin-right: 16px
+      @media (max-width: 768px)
+        display: none

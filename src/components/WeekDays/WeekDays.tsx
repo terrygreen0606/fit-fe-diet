@@ -7,16 +7,16 @@ import './WeekDays.sass';
 type WeekDaysProps = {
   days: ItemProps[],
   onChange: (any) => void,
-  dayWorkout: string,
-  type?: 'radio' | 'checkbox',
+  curDay: string,
+  type: 'radio' | 'checkbox',
   name?: string,
 };
 
 const WeekDays = ({
-  days, onChange, dayWorkout, type,
+  days, onChange, curDay, type,
 }: WeekDaysProps) => (
-  <section className="col-12 d-flex flex-column align-items-center">
-    <div className="week-workout col-12 align-self-baseline">
+  <section className='d-flex flex-column align-items-center overflow-x-scroll week-days'>
+    <div className='week-workout col-auto align-self-baseline'>
       {
         days.map((day) => (
           <label key={`${day.number} ${day.value}`}>
@@ -24,13 +24,13 @@ const WeekDays = ({
               type={type}
               value={day.value}
               onChange={onChange}
-              checked={day.value === dayWorkout}
+              checked={day.value === curDay}
               disabled={day.disabled}
             />
             <WeekDayItem
               number={day.number}
               value={day.value}
-              active={day.value === dayWorkout}
+              active={day.value === curDay}
               disabled={day.disabled}
             />
           </label>
