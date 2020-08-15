@@ -1,3 +1,5 @@
+@import '../../assets/sass/_vars'
+
 .dashboard__user
   display: flex
   margin-bottom: 64px
@@ -6,7 +8,7 @@
   &-personal-data
     flex-basis: 31%
     padding-right: 20px
-    border-right: 1px solid #E8E8E8
+    border-right: 1px solid $grey-light
 
     &-name
       display: flex
@@ -22,6 +24,9 @@
       background: transparent
       border: none
       cursor: pointer
+
+      svg, img
+        width: 100%
 
       &:hover
         svg path
@@ -88,6 +93,7 @@
         background: transparent
         opacity: 0
         transition: 0.2s opacity ease
+        cursor: pointer
     
     &-activity
       flex: 1
@@ -127,7 +133,7 @@
   &-progress
     flex-basis: 44%
     padding: 0 30px
-    border-right: 1px solid #E8E8E8
+    border-right: 1px solid $grey-light
 
     &-title
       margin-bottom: 15px
@@ -166,8 +172,447 @@
           font-size: 20px
           line-height: 1.2
           font-weight: bold
-          color: #0FC1A1
+          color: $caribbean-green
 
         &-description
           font-size: 18px
           line-height: 1.3
+
+.dashboard__cards
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+  
+  &-item
+    width: calc(33.33% - 30px)
+    margin-bottom: 44px
+    padding: 30px 26px
+
+    &-head
+      display: flex
+      justify-content: space-between
+      margin-bottom: 40px
+
+      &-title
+        max-width: 180px
+        font-size: 34px
+        line-height: 1.2
+        font-weight: bold
+        color: $white
+        text-transform: uppercase
+      
+      &-media
+        > svg, img
+          max-width: 100%
+          height: auto
+
+    &_diet.card-bg
+      background: $caribbean-green
+
+    &_workout.card-bg
+      background: #93DE97
+
+    &_shopping.card-bg
+      background: #EFCBAB
+
+    &_blood.card-bg
+      background: #F5827D
+
+    &_water.card-bg
+      background: #106EE8
+
+    &_invite.card-bg
+      background: #EEA2BB
+    
+    &_diet-description
+      margin: 0 0 0 auto
+      max-width: 210px
+      text-align: right
+      font-size: 24px
+      line-height: 1.2
+      color: #fff
+    
+    &_workout-description
+      margin-top: -50px
+      text-align: right
+
+      &-name
+        margin-bottom: 2px
+        font-size: 18px
+        line-height: 1.2
+        font-weight: bold
+        color: #fff
+
+      &-level
+        margin-bottom: 14px
+        font-size: 16px
+        line-height: 1.2
+        color: #fff
+
+      &-time
+        display: flex
+        align-items: center
+        justify-content: flex-end
+        margin-bottom: 14px
+
+        &-quantity
+          margin-left: 5px
+          font-size: 16px
+          line-height: 1.2
+          color: #fff
+      
+      &-play
+        display: flex
+        align-items: center
+
+        &-duration
+          position: relative
+          height: 16px
+          flex: 1
+          background: rgba(255, 255, 255, 0.3)
+          border-radius: 10px
+
+          &::before
+            content: ''
+            position: absolute
+            top: 50%
+            left: 0
+            transform: translateY(-50%)
+            width: 43%
+            height: 100%
+            background: rgba(255, 255, 255, 1)
+            border-radius: 10px
+
+        &-button
+          margin-left: 16px
+          width: 34px
+
+        &-icon
+          width: 100%
+          height: auto
+
+    &_shopping
+      &-date
+        display: flex
+        align-items: center
+        margin-top: 15px
+
+        &-media
+          margin-right: 6px
+          width: 15px
+
+        &-description
+          font-size: 18px
+          line-height: 1.2
+          color: #fff
+
+      &-notifications
+        display: flex
+
+        &-item
+          display: flex
+          width: 50%
+
+          &-media
+            max-width: 20px
+            margin-right: 10px
+
+            svg, img
+              max-width: 20px
+
+          &-description
+            flex: 1
+
+            &-title
+              margin-bottom: 4px
+              font-size: 22px
+              line-height: 1.2
+              font-weight: bold
+              color: #ffffff
+            
+            &-content
+              font-size: 18px
+              line-height: 1.2
+              color: #fff
+
+    &_blood
+      &-datas
+        display: flex
+        align-items: center
+
+        &-item
+          width: 50%
+          display: flex
+          align-items: center
+
+          &-media
+            max-width: 47px
+            margin-right: 13px
+            line-height: 0
+
+            & > *
+              line-height: initial
+
+            &-img
+              path
+                fill: #fff
+
+            svg, img
+              max-width: 47px
+              
+          &-description
+            flex: 1
+            font-size: 34px
+            line-height: 1.2
+            font-weight: bold
+            color: #fff
+
+    &_water
+      &-rate
+        display: flex
+        align-items: flex-end
+        margin-top: -70px
+
+        &-title
+          margin-bottom: 6px
+          font-size: 26px
+          line-height: 1.2
+          font-weight: bold
+          color: #fff
+
+        &-norm
+          margin-bottom: 3px
+          font-size: 20px
+          line-height: 1.2
+          font-weight: bold
+          color: #ffffff
+
+        &-now
+          font-size: 18px
+          line-height: 1.2
+          color: #ffffff
+
+        &-media
+          display: flex
+          align-items: center
+          justify-content: center
+          margin-bottom: -20px
+          margin-left: 40px
+          padding-top: 66px
+          width: 132px
+          height: 172px
+          background-image: url(../../assets/img/water-drop-trim.svg)
+          background-position: center
+          background-repeat: no-repeat
+          background-size: cover
+          color: $white
+          font-size: 22px
+          line-height: 1.3
+          font-weight: bold
+
+    &_invite
+      &-description
+        max-width: 250px
+        font-size: 26px
+        line-height: 1.2
+        font-weight: bold
+        color: #fff
+
+@media only screen and (max-width: 1440px)
+  .dashboard__user
+    &-personal-data
+
+      &-media
+        max-width: 100px
+    
+      &-activity
+        padding-left: 15px
+
+@media only screen and (max-width: 1366px)
+  .dashboard__user
+    flex-wrap: wrap
+
+    &-personal-data
+      margin-bottom: 80px
+      flex-basis: 100%
+      border-right: none
+
+      &-media
+        max-width: 110px
+
+      &-activity
+        padding-left: 40px
+
+    &-progress
+      flex-basis: 50%
+
+    &-rewards
+      flex-basis: 50%
+
+  .dashboard__cards
+    &-item
+      width: calc(50% - 30px)
+
+@media only screen and (max-width: 768px)
+  .dashboard__user
+    &-personal-data
+      margin-bottom: 30px
+      padding-bottom: 30px
+      padding-right: 0
+      border-bottom: 1px solid #E8E8E8
+
+      &-name
+        margin-bottom: 20px
+        font-size: 26px
+
+      &-name-settings
+        padding: 0
+        width: 26px
+
+      &-media
+        max-width: 100px
+
+      &-activity
+        padding-left: 20px
+
+        &-last-login
+          &-description
+            font-size: 16px
+
+          &-date
+            font-size: 16px
+        
+        &-subscription
+          &-description
+            font-size: 16px
+
+          &-date
+            font-size: 16px
+
+    &-progress
+      flex-basis: 100%
+      padding: 0
+      border-right: none
+
+    &-rewards
+      margin-top: 30px
+      padding-top: 30px
+      border-top: 1px solid #E8E8E8
+      flex-basis: 100%
+      padding-left: 0
+
+      &-item
+        align-items: center
+
+        &-text
+          padding-left: 20px
+
+  .dashboard__cards
+    &-item
+      flex-basis: 100%
+
+      &-head
+        margin-bottom: 10px
+        align-items: center
+
+        &-title
+          font-size: 17px
+
+        &-media
+          max-width: 30px
+
+      &_diet-description
+        margin: 0
+        max-width: 100%
+        text-align: left
+        font-size: 17px
+
+      &_workout-description
+        margin-top: 0
+        text-align: left
+
+        &-time
+          justify-content: flex-start
+
+        &-name
+          font-size: 14px
+
+        &-level
+          font-size: 12px
+
+        &-time
+          svg
+            max-width: 10px
+
+          &-quantity
+            font-size: 10px
+
+      &_shopping
+        .dashboard__cards-item-head-media
+          display: flex
+          flex-direction: column
+          align-items: center
+          max-width: 100%
+
+          > svg
+            max-width: 30px
+
+        &-date
+          margin-top: 0
+
+        &-notifications-item
+          &-description
+            &-title
+              font-size: 12px
+
+            &-content
+              font-size: 10px
+          
+          &-media
+            svg, img
+              max-width: 16px
+
+      &_blood
+        .dashboard__cards-item-head-media
+          flex: 1
+          text-align: right
+          max-width: 100%
+
+        &-datas
+          &-item
+            &-media
+              svg, img
+                max-width: 30px
+
+            &-description
+              font-size: 20px
+
+      &_water
+        &-rate
+          &-title
+            font-size: 14px
+
+          &-norm
+            font-size: 16px
+
+          &-now
+            font-size: 14px
+
+          &-media
+            margin-left: 120px
+
+      &_invite
+        &-description
+          max-width: 100%
+          font-size: 16px
+
+@media only screen and (max-width: 414px)
+  .dashboard__user
+    padding: 20px 15px
+
+  .dashboard__cards
+    &-item
+      &_water
+        &-rate
+          &-media
+            margin-left: 80px

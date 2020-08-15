@@ -1,8 +1,19 @@
 import React, { useEffect, useState, createRef } from 'react';
 
 import Chart from 'chart.js';
+import chartConfig from './chartConfig';
 
-const ProgressChart = () => {
+type LineChartProps = {
+  options?: Object;
+  data: Array<number>;
+  labels: Array<any>;
+};
+
+const ProgressChart = ({
+  options = chartConfig.options,
+  data,
+  labels,
+}: LineChartProps) => {
   const [chartContainer] = useState(createRef<HTMLCanvasElement>());
 
   useEffect(() => {
@@ -10,10 +21,10 @@ const ProgressChart = () => {
     new Chart(chartContainer.current.getContext('2d'), {
       type: 'bar',
       data: {
-        labels: ['', '', '', '', ''],
+        labels,
         datasets: [
           {
-            data: [12, 19, 31, 17, 22],
+            data,
             backgroundColor: [
               '#106EE8',
               '#106EE8',
@@ -25,37 +36,7 @@ const ProgressChart = () => {
           },
         ],
       },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              gridLines: {
-                display: true,
-                tickMarkLength: 4,
-                borderDash: [4, 4],
-                drawTicks: false,
-              },
-              ticks: {
-                beginAtZero: true,
-                fontColor: '#878787',
-                fontSize: 10,
-                padding: 15,
-                callback() {
-                  return '13.05';
-                },
-              },
-            },
-          ],
-          xAxes: [
-            {
-              display: false,
-            },
-          ],
-        },
-        legend: {
-          display: false,
-        },
-      },
+      options,
     });
   });
 
