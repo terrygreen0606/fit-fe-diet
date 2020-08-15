@@ -18,6 +18,7 @@ import WaterTrackerView from './views/WaterTrackerView';
 import ChangeMealPlanView from './views/ChangeMealPlanView';
 import SettingsPersonalView from './views/Settings/SettingsPersonalView';
 import NotFound from './views/NotFound';
+import SavedRecipesView from './views/SavedRecipesView';
 
 const Routes = () => (
   <Switch>
@@ -117,6 +118,16 @@ const Routes = () => (
       exact
     />
 
+    <PrivateRoute
+      path='/recipes/saved'
+      component={(props: any) => (
+        <Layout {...props}>
+          <SavedRecipesView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
     <AuthRoute
       path='/login'
       component={(props: any) => (
@@ -128,7 +139,7 @@ const Routes = () => (
     />
 
     <AuthRoute
-      path="/register"
+      path='/register'
       component={(props: any) => (
         <BasePage {...props}>
           <RegisterView {...props} />
