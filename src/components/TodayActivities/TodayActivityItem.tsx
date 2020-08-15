@@ -25,11 +25,11 @@ const TodayActivityItem = ({
         disabled,
       })}
     >
-      <span className="today-activities-activity-card-checkmark" />
-      <span className="today-activities-activity-card-icon-wrap">
-        <Icon className="today-activities-activity-card-icon" />
+      <span className='today-activities-activity-card-checkmark' />
+      <span className='today-activities-activity-card-icon-wrap'>
+        <Icon className='today-activities-activity-card-icon' />
       </span>
-      <h6 className="today-activities-activity-card-title">
+      <h6 className='today-activities-activity-card-title'>
         {text}
       </h6>
     </div>

@@ -81,7 +81,7 @@ const TrainingsView: React.FC = (props: any) => {
 
                 <WeekDays
                   days={dataForWeekWorkout}
-                  dayWorkout={weekWorkout}
+                  curDay={weekWorkout}
                   onChange={onWorkoutChange}
                   type='radio'
                 />

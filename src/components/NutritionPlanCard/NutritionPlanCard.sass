@@ -115,6 +115,63 @@
     box-shadow: 0 8px 8px rgba(0, 0, 0, 0.08)
     z-index: 0
 
+  &.horizontal-mobile
+    @media (max-width: 768px)
+      display: flex
+      flex-direction: row
+      flex-wrap: wrap
+      box-shadow: none
+      padding: 0
+      &::before
+        content: none
+
+      &.active
+        .nutrition-plan-card-checkmark
+          background-image: url("../../assets/img/icons/plus-icon.svg")
+
+      .horizontal-mobile-div
+        flex: 0 1 calc(60% - 15px)
+        max-width: calc(60% - 15px)
+        position: relative
+
+      .nutrition-plan-card
+        &-image
+          flex: 0 1 calc(40% - 15px)
+          max-width: 126px
+          width: 100%
+          margin-right: 24px
+          max-height: 120px
+          border-radius: 10px
+          &::after
+            content: none
+        &-title
+          margin-bottom: 0 !important
+          align-self: flex-end
+        &-controls-icon
+          align-self: flex-start
+          width: 40px !important
+          height: 40px !important
+        &-descr, &-time, &-mark, &-price
+          font-size: 11px
+          line-height: 13px
+        &-checkmark
+          bottom: 25px
+          right: -10px
+          border: none
+          width: 26px
+          height: 26px
+        &-head
+          @media (max-width: 375px)
+            flex-direction: column-reverse
+            .nutrition-plan-card-title
+              align-self: flex-start
+            .nutrition-plan-card-controls-list
+              justify-content: flex-start
+
+      #nutrition-plan-reload-icon
+        width: 50px !important
+        height: 50px !important
+
 #nutrition-plan-reload-icon
   opacity: .3
   &:hover
