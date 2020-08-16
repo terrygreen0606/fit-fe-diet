@@ -55,6 +55,7 @@
 
   &__list
     &-item
+      position: relative
       padding-right: 46px
       padding-bottom: 35px
       margin-bottom: 78px
@@ -64,6 +65,7 @@
         position: relative
         flex-basis: 27.5%
         border-radius: 27px
+        overflow: hidden
         line-height: 0
 
         & > *
@@ -152,6 +154,74 @@
         &-buttons
           display: flex
           align-items: center
+
+        &-choose-date
+          position: relative
+
+          &-list
+            position: absolute
+            top: calc(100% + 16px)
+            left: 50%
+            transform: translateX(-50%)
+            padding: 40px 15px
+            text-align: center
+            background: $white
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5)
+            z-index: 2
+
+            &::before
+              content: ''
+              position: absolute
+              top: -8px
+              left: 50%
+              transform: translateX(-50%) rotate(45deg)
+              width: 16px
+              height: 16px
+              background: $white
+            
+            &-close
+              position: absolute
+              top: 12px
+              right: 12px
+              width: 25px
+              height: 25px
+              padding: 0
+              display: flex
+              align-items: center
+              justify-content: center
+              background-color: #F2F2F2
+              border: none
+              border-radius: 50%
+              cursor: pointer
+              transition: 0.2s background-color ease
+
+              &:hover
+                background-color: darken(#F2F2F2, 10%)
+
+        &-calendar
+          margin-bottom: 10px
+
+          .DayPicker-Caption
+            text-align: center
+
+          .DayPicker-NavButton--prev
+            right: initial
+            left: 1.5em
+            background-image: url('../../assets/img/icons/arrow-left-calendar-icon.svg')
+
+          .DayPicker-NavButton--next
+            background-image: url('../../assets/img/icons/arrow-right-calendar-icon.svg')
+          
+          .DayPicker-Weekday
+            font-size: 12px
+
+          .DayPicker-Day
+            padding: 0.4em 0.5em
+            margin: 7px
+
+          .DayPicker-Day--today
+            color: $white
+            background-color: $steel-blue
         
         &-meal
           position: relative
@@ -165,9 +235,10 @@
             width: 475px
             text-align: center
             padding: 40px 15px
-            background: #FFFFFF
+            background: $white
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5)
             border-radius: 5px
+            z-index: 2
 
             &::before
               content: ''
@@ -264,3 +335,180 @@
 
         &-button
           margin-top: 20px
+
+.weekly-menu-button
+  text-align: right
+
+
+
+@media only screen and (max-width: 1199px)
+  .saved-recipes
+    &__list-item
+      &-controls
+        position: initial
+
+        &-delete
+          top: -40px
+
+    &__head
+      &-tabs
+        margin-bottom: 60px
+
+      .page-create-btn
+        padding: 22px 96px 22px 19px
+        padding-left: 19px
+        
+        &::before
+          left: initial
+          right: 0
+
+
+@media only screen and (max-width: 991px)
+  .saved-recipes
+    &__head
+      margin-bottom: 70px
+
+      &-tabs
+        &-item
+          padding-right: 0
+          font-size: 18px
+          border-right: none
+
+          &::before
+            width: 100%
+            bottom: -15px
+
+      .page-create-btn
+        padding: 22px 183px 22px 19px
+        font-size: 18px
+
+        &::before
+          top: initial
+          bottom: -22px
+          right: 13px
+
+    &__banner
+      margin-bottom: 60px
+      padding: 30px 10px
+      font-size: 18px
+
+    &__list
+      &-item
+        margin-bottom: 70px
+        padding: 25px 15px
+        background: #FFFFFF
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        border-radius: 20px
+        border-bottom: none
+
+        &::before
+          content: ''
+          width: 56px
+          height: 56px
+          position: absolute
+          top: 0
+          right: 12px
+          transform: translateY(-50%)
+          background-color: $white
+          border-radius: 50%
+
+        &-media
+          margin-bottom: 18px
+          flex-basis: 100%
+
+          &-touch
+            display: none
+
+        &-content
+          &-head
+            flex-wrap: wrap
+
+            &-item
+              display: flex
+              flex-wrap: wrap
+              justify-content: space-between
+              width: 100%
+
+              &:not(:first-child)
+                margin-top: 20px
+
+            &-title
+              width: 100%
+              font-size: 14px
+
+            &-description
+              margin-bottom: 0
+              padding-bottom: 0
+              font-size: 14px
+              border-bottom: none
+
+            &-datas-block
+              font-size: 14px
+
+            &-grams
+              width: 100%
+              font-size: 14px
+
+              &-block
+                padding: 0
+          
+          &-description
+            font-size: 14px
+
+          &-buttons
+            justify-content: space-between
+
+          &-choose-date
+            flex-basis: calc(50% - 20px)
+
+            .bttn
+              width: 100%
+
+          &-meal
+            flex-basis: calc(50% - 20px)
+
+            .bttn
+              width: 100%
+
+        &-controls
+          flex-direction: row
+          justify-content: space-between
+
+          &-button
+            flex-basis: calc(50% - 20px)
+
+          &-delete
+            top: 0
+            right: 22px
+            transform: translateY(-50%)
+
+.weekly-menu-button
+  text-align: left
+
+@media only screen and (max-width: 767px)
+  .saved-recipes__list
+    &-item
+      &-content
+        &-buttons
+          flex-wrap: wrap
+
+        &-choose-date
+          flex-basis: 100%
+
+        &-meal
+          flex-basis: 100%
+          margin-top: 20px
+          margin-left: 0
+
+      &-controls
+        flex-wrap: wrap
+
+        &-button
+          flex-basis: 100%
+
+
+@media only screen and (max-width: 440px)
+  .saved-recipes__head
+    .page-create-btn
+      width: 100%
+      padding: 22px 109px 22px 19px

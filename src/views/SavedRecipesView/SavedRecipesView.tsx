@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Components
+import DayPicker from 'react-day-picker';
 import Button from 'components/common/Forms/Button';
 
 import './SavedRecipesView.sass';
@@ -20,13 +21,14 @@ import { ReactComponent as CloseIcon } from 'assets/img/icons/close-icon.svg';
 
 const SavedRecipesView = () => {
   const [isOpenMealList, setOpenMealList] = useState(false);
+  const [isOpenCalendarList, setOpenCalendarList] = useState(false);
 
   return (
     <div className='saved-recipes'>
       <div className='container'>
         <div className='saved-recipes__head'>
           <div className='row'>
-            <div className='col-6'>
+            <div className='col-xl-6'>
               <ul className='saved-recipes__head-tabs'>
                 <li>
                   <Link to='/' className='saved-recipes__head-tabs-item'>
@@ -45,7 +47,7 @@ const SavedRecipesView = () => {
                 </li>
               </ul>
             </div>
-            <div className='col-6 text-right'>
+            <div className='col-xl-6 text-xl-right'>
               <Link to='/recipe/create' className='page-create-btn'>
                 Create your recipe
               </Link>
@@ -61,8 +63,8 @@ const SavedRecipesView = () => {
         </div>
         <div className='saved-recipes__list'>
           <div className='saved-recipes__list-item'>
-            <div className='row'>
-              <Link to='/' className='saved-recipes__list-item-media col-4'>
+            <div className='row align-items-start'>
+              <Link to='/' className='saved-recipes__list-item-media col-lg-4'>
                 <img
                   src='https://fitstg.s3.eu-central-1.amazonaws.com/nutrition-plan-preview-big.png'
                   alt=''
@@ -70,9 +72,9 @@ const SavedRecipesView = () => {
                 <CursorTouchIcon className='saved-recipes__list-item-media-touch' />
                 <HeartBorderIcon className='saved-recipes__list-item-media-heart' />
               </Link>
-              <div className='saved-recipes__list-item-content col-8'>
+              <div className='saved-recipes__list-item-content col-lg-8 position-static'>
                 <div className='row'>
-                  <div className='col-8'>
+                  <div className='col-xl-8'>
                     <div className='saved-recipes__list-item-content-head'>
                       <div className='saved-recipes__list-item-content-head-item'>
                         <div className='saved-recipes__list-item-content-head-title'>
@@ -122,9 +124,30 @@ const SavedRecipesView = () => {
                       sauce
                     </div>
                     <div className='saved-recipes__list-item-content-buttons'>
-                      <Button color='secondary' icon={<CalendarButtonIcon />}>
-                        Choose date
-                      </Button>
+                      <div className='saved-recipes__list-item-content-choose-date'>
+                        <Button
+                          color='secondary'
+                          icon={<CalendarButtonIcon />}
+                          onClick={() => {
+                            setOpenCalendarList(!isOpenCalendarList);
+                          }}
+                        >
+                          Choose date
+                        </Button>
+                        {isOpenCalendarList && (
+                          <div className='saved-recipes__list-item-content-choose-date-list'>
+                            <DayPicker className='saved-recipes__list-item-content-calendar' />
+                            <Button color='primary'>Done!</Button>
+                            <button
+                              type='button'
+                              className='saved-recipes__list-item-content-choose-date-list-close'
+                              onClick={() => setOpenCalendarList(false)}
+                            >
+                              <CloseIcon />
+                            </button>
+                          </div>
+                        )}
+                      </div>
                       <div className='saved-recipes__list-item-content-meal'>
                         <Button
                           color='secondary'
@@ -193,7 +216,7 @@ const SavedRecipesView = () => {
                       </div>
                     </div>
                   </div>
-                  <div className='col-4'>
+                  <div className='col-xl-4 position-static'>
                     <div className='saved-recipes__list-item-controls'>
                       <button
                         type='button'
@@ -220,6 +243,9 @@ const SavedRecipesView = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className='weekly-menu-button'>
+          <Button color='secondary'>See you weekly menu</Button>
         </div>
       </div>
     </div>
