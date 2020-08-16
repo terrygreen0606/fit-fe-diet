@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { getTranslate } from 'utils';
 
 // Components
 import DayPicker from 'react-day-picker';
 import Button from 'components/common/Forms/Button';
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './SavedRecipesView.sass';
 
@@ -19,9 +23,13 @@ import { ReactComponent as SnackIcon } from 'assets/img/icons/snack-icon.svg';
 import { ReactComponent as DinnerIcon } from 'assets/img/icons/dinner-icon.svg';
 import { ReactComponent as CloseIcon } from 'assets/img/icons/close-icon.svg';
 
-const SavedRecipesView = () => {
+const SavedRecipesView = (props: any) => {
   const [isOpenMealList, setOpenMealList] = useState(false);
   const [isOpenCalendarList, setOpenCalendarList] = useState(false);
+
+  const t = (code: string, placeholders?: any) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    getTranslate(props.localePhrases, code, placeholders);
 
   return (
     <div className='saved-recipes'>
@@ -32,35 +40,29 @@ const SavedRecipesView = () => {
               <ul className='saved-recipes__head-tabs'>
                 <li>
                   <Link to='/' className='saved-recipes__head-tabs-item'>
-                    Everything
+                    {t('common.everything')}
                   </Link>
                 </li>
                 <li>
                   <Link to='/' className='saved-recipes__head-tabs-item'>
-                    Saved
+                    {t('common.saved')}
                   </Link>
                 </li>
                 <li>
                   <Link to='/' className='saved-recipes__head-tabs-item'>
-                    Favourites
+                    {t('common.favourites')}
                   </Link>
                 </li>
               </ul>
             </div>
             <div className='col-xl-6 text-xl-right'>
               <Link to='/recipe/create' className='page-create-btn'>
-                Create your recipe
+                {t('recipe.create.title')}
               </Link>
             </div>
           </div>
         </div>
-        <div className='saved-recipes__banner'>
-          <p>You have no saved recipes.</p>
-          <p>
-            You can save a recipe if you have replaced at least one ingredient
-            in it.
-          </p>
-        </div>
+        <div className='saved-recipes__banner'>{t('recipe.saved.banner')}</div>
         <div className='saved-recipes__list'>
           <div className='saved-recipes__list-item'>
             <div className='row align-items-start'>
@@ -78,14 +80,15 @@ const SavedRecipesView = () => {
                     <div className='saved-recipes__list-item-content-head'>
                       <div className='saved-recipes__list-item-content-head-item'>
                         <div className='saved-recipes__list-item-content-head-title'>
-                          Breakfast
+                          {t('meal.breakfast')}
                         </div>
                         <div className='saved-recipes__list-item-content-head-description'>
-                          Õuna-rosina kohupiimavorm
+                          {t('recipes.saved.recipe_title')}
                         </div>
                         <div className='saved-recipes__list-item-content-head-datas'>
                           <div className='saved-recipes__list-item-content-head-datas-block'>
-                            40 min
+                            40
+                            {t('common.min')}
                           </div>
                           <div className='saved-recipes__list-item-content-head-datas-block'>
                             €€
@@ -95,33 +98,32 @@ const SavedRecipesView = () => {
                       <div className='saved-recipes__list-item-content-head-item'>
                         <div className='saved-recipes__list-item-content-head-grams'>
                           <span className='saved-recipes__list-item-content-head-grams-block'>
-                            Fat
+                            {t('common.fat')}
                           </span>
                           <span className='saved-recipes__list-item-content-head-grams-block'>
-                            32g
-                          </span>
-                        </div>
-                        <div className='saved-recipes__list-item-content-head-grams'>
-                          <span className='saved-recipes__list-item-content-head-grams-block'>
-                            Protein
-                          </span>
-                          <span className='saved-recipes__list-item-content-head-grams-block'>
-                            10g
+                            {t('common.grams', { number: 32 })}
                           </span>
                         </div>
                         <div className='saved-recipes__list-item-content-head-grams'>
                           <span className='saved-recipes__list-item-content-head-grams-block'>
-                            Carbohydrate
+                            {t('common.protein')}
                           </span>
                           <span className='saved-recipes__list-item-content-head-grams-block'>
-                            24g
+                            {t('common.grams', { number: 10 })}
+                          </span>
+                        </div>
+                        <div className='saved-recipes__list-item-content-head-grams'>
+                          <span className='saved-recipes__list-item-content-head-grams-block'>
+                            {t('common.carbohydrate')}
+                          </span>
+                          <span className='saved-recipes__list-item-content-head-grams-block'>
+                            {t('common.grams', { number: 24 })}
                           </span>
                         </div>
                       </div>
                     </div>
                     <div className='saved-recipes__list-item-content-description'>
-                      520 g (1.7 pk) selver shrimp salad with herb-sour cream
-                      sauce
+                      {t('recipes.saved.recipe_description')}
                     </div>
                     <div className='saved-recipes__list-item-content-buttons'>
                       <div className='saved-recipes__list-item-content-choose-date'>
@@ -132,12 +134,14 @@ const SavedRecipesView = () => {
                             setOpenCalendarList(!isOpenCalendarList);
                           }}
                         >
-                          Choose date
+                          {t('recipes.saved.choose_date')}
                         </Button>
                         {isOpenCalendarList && (
                           <div className='saved-recipes__list-item-content-choose-date-list'>
                             <DayPicker className='saved-recipes__list-item-content-calendar' />
-                            <Button color='primary'>Done!</Button>
+                            <Button color='primary'>
+                              {t('recipes.saved.done')}
+                            </Button>
                             <button
                               type='button'
                               className='saved-recipes__list-item-content-choose-date-list-close'
@@ -153,7 +157,7 @@ const SavedRecipesView = () => {
                           color='secondary'
                           onClick={() => setOpenMealList(!isOpenMealList)}
                         >
-                          Meal
+                          {t('recipes.saved.meal')}
                         </Button>
                         {isOpenMealList && (
                           <div className='saved-recipes__list-item-content-meal-list'>
@@ -203,7 +207,9 @@ const SavedRecipesView = () => {
                                 </div>
                               </button>
                             </div>
-                            <Button color='primary'>Done!</Button>
+                            <Button color='primary'>
+                              {t('recipes.saved.done')}
+                            </Button>
                             <button
                               type='button'
                               className='saved-recipes__list-item-content-meal-list-close'
@@ -228,14 +234,14 @@ const SavedRecipesView = () => {
                         color='primary'
                         className='saved-recipes__list-item-controls-button'
                       >
-                        Add to menu
+                        {t('recipes.saved.add_to_menu')}
                       </Button>
                       <Button
                         color='gray'
                         icon={<CartButtonIcon />}
                         className='saved-recipes__list-item-controls-button'
                       >
-                        Shopping list
+                        {t('recipes.saved.shopping_list')}
                       </Button>
                     </div>
                   </div>
@@ -245,11 +251,11 @@ const SavedRecipesView = () => {
           </div>
         </div>
         <div className='weekly-menu-button'>
-          <Button color='secondary'>See you weekly menu</Button>
+          <Button color='secondary'>{t('recipes.saved.weekly_menu')}</Button>
         </div>
       </div>
     </div>
   );
 };
 
-export default SavedRecipesView;
+export default WithTranslate(connect(null)(SavedRecipesView));
