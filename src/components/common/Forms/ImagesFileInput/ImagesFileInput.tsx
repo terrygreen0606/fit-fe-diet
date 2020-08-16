@@ -25,9 +25,9 @@ type Props = {
   disabled?: boolean;
   readOnly?: boolean;
   usePasteEvent?: boolean;
-  localePhrases: any,
+  localePhrases: any;
   children?: (props: ChildrenProps) => void;
-  rawStyle?: boolean,
+  rawStyle?: boolean;
   filesOut?: FileDataType[];
   dropElement?: HTMLDivElement | null;
 };
@@ -47,14 +47,13 @@ const ImagesFileInput = ({
 }: Props) => {
   const isDisabled = disabled || readOnly;
 
-  const t = (code: string, placeholders?: any) => getTranslate(localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(localePhrases, code, placeholders);
 
-  const onFailedLoadFile = React.useCallback(
-    (fileName: string) => {
-      toast.error(t('common.failed_load_file', { fileName }));
-    },
-    [null],
-  );
+  const onFailedLoadFile = React.useCallback((fileName: string) => {
+    toast.error(t('common.failed_load_file', { fileName }));
+    // eslint-disable-next-line
+  }, []);
 
   const {
     files,
@@ -78,28 +77,30 @@ const ImagesFileInput = ({
 
   const loadedFiles = React.useMemo(
     () => files.filter((file) => file.isLoaded),
-    [files],
+    [files]
   );
 
   React.useEffect(() => {
     onLoadFiles(loadedFiles);
+    // eslint-disable-next-line
   }, [loadedFiles]);
 
-  const handleOpenFile = React.useCallback(
-    (url: string) => (): void => {
-      if (!url) {
-        return;
-      }
+  // const handleOpenFile = React.useCallback(
+  //   (url: string) => (): void => {
+  //     if (!url) {
+  //       return;
+  //     }
 
-      window.open(url);
-    },
-    [loadedFiles],
+  //     window.open(url);
+  //   },
+  //   [loadedFiles],
+  // );
+
+  const fieldfiles = loadedFiles.filter((file) =>
+    filesOut.find((filee) => filee.id === file.id)
   );
-
-  const fieldfiles = loadedFiles.filter((file) => filesOut.find((filee) => filee.id === file.id));
-  const rootProps = loadedFiles.length || isLoading || isDisabled
-    ? {}
-    : getRootProps();
+  const rootProps =
+    loadedFiles.length || isLoading || isDisabled ? {} : getRootProps();
 
   return (
     <div className={styles.container}>
@@ -108,17 +109,20 @@ const ImagesFileInput = ({
         className={classNames({
           [styles.inputFileContainerDragndrop]: !rawStyle,
           [styles.inputFileContainerDragndrop_drag_over]: isDragActive,
-          [styles.inputFileContainerDragndrop_has_files]: !!fieldfiles.length && !rawStyle,
+          [styles.inputFileContainerDragndrop_has_files]:
+            !!fieldfiles.length && !rawStyle,
           [styles.inputFileContainerDragndrop_is_disabled]: isDisabled,
         })}
       >
         {isLoading && (
           <div className={styles.spinner}>
-            <Spinner color="#0FC1A1" />
+            <Spinner color='#0FC1A1' />
           </div>
         )}
 
-        {!isLoading && !fieldfiles.length && <span>{t('common.choose_file')}</span>}
+        {!isLoading && !fieldfiles.length && (
+          <span>{t('common.choose_file')}</span>
+        )}
 
         {!!fieldfiles.length && (
           <div className={styles.returnFilesList}>
@@ -130,7 +134,7 @@ const ImagesFileInput = ({
               >
                 {!isDisabled && (
                   <span
-                    role="presentation"
+                    role='presentation'
                     className={styles.fileRemoveIconWrap}
                     onClick={removeFile(fileData)}
                   >

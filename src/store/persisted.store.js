@@ -2,12 +2,11 @@ import { updateClasses } from './middlewares/settings.middleware.js';
 
 const STORAGE_KEY = 'doctor-store-key';
 
-
 /**
  * Use this function if you need to call a middleware
  * when setting the initial state.
  */
-const callMiddlewares = state => {
+const callMiddlewares = (state) => {
   // Since a middlwrare is requried to modify the DOM in this case
   // for settings and themes, is necessary to call middleware
   // directly to set the initial state loaded from storage
@@ -37,7 +36,7 @@ export const saveState = (state) => {
     const stateFilter = JSON.parse(JSON.stringify(state)); // deep clone
 
     // states which we don't want to persist.
-    Array().forEach(item => delete stateFilter.storage[item]);
+    [].forEach((item) => delete stateFilter.storage[item]);
 
     const rawState = JSON.stringify(stateFilter);
 

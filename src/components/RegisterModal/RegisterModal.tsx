@@ -3,7 +3,6 @@ import { UserAuthProfileType } from 'types/auth';
 
 // Components
 import Modal from 'components/common/Modal';
-import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Steps from './Steps';
 import GoalStep from './GoalStep';
@@ -15,7 +14,7 @@ import './RegisterModal.sass';
 interface RegisterDataType extends UserAuthProfileType {
   email: string;
   password: string;
-};
+}
 
 const registerDataDefault: RegisterDataType = {
   email: '',
@@ -31,29 +30,38 @@ const registerDataDefault: RegisterDataType = {
   weight_goal: null,
   tpl_signup: null,
   goal: -1,
-  ignore_cuisine_ids: ['milk', 'meat', 'fish', 'diseases', 'gluten', 'deabetes'],
+  ignore_cuisine_ids: [
+    'milk',
+    'meat',
+    'fish',
+    'diseases',
+    'gluten',
+    'deabetes',
+  ],
 };
 
 type RegisterModalProps = {
-  isOpen: boolean,
-  tpl: number,
-  onClose?: (e: React.SyntheticEvent) => void,
-  localePhrases: any
+  isOpen: boolean;
+  tpl: number;
+  onClose?: (e: React.SyntheticEvent) => void;
+  localePhrases: any;
 };
 
 const RegisterModal = ({
   isOpen,
   onClose,
   tpl,
-  localePhrases
+  localePhrases,
 }: RegisterModalProps) => {
-  const [registerStep, setRegisterStep] = useState<'GOAL' | 'INFO' | 'JOIN'>('GOAL');
+  const [registerStep, setRegisterStep] = useState<'GOAL' | 'INFO' | 'JOIN'>(
+    'GOAL'
+  );
 
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
 
   useEffect(() => {
     if (isOpen === false) {
-      setRegisterData({ ...registerDataDefault});
+      setRegisterData({ ...registerDataDefault });
       setRegisterStep('GOAL');
     }
   }, [isOpen]);
@@ -65,6 +73,7 @@ const RegisterModal = ({
         tpl_signup: tpl,
       });
     }
+    // eslint-disable-next-line
   }, [tpl]);
 
   const getRegisterStepView = (registerStepType: string) => {
@@ -107,22 +116,19 @@ const RegisterModal = ({
         );
         break;
 
-      default: break;
+      default:
+        break;
     }
 
     return registerStepView;
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      className="registerModal"
-    >
-      <Modal.Main className="registerModal_main">
+    <Modal isOpen={isOpen} onClose={onClose} className='registerModal'>
+      <Modal.Main className='registerModal_main'>
         <Steps step={registerStep} localePhrases={localePhrases || {}} />
 
-        <div className="registerModal_steps_content">
+        <div className='registerModal_steps_content'>
           {getRegisterStepView(registerStep)}
         </div>
       </Modal.Main>

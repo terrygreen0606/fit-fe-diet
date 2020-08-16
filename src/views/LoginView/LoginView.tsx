@@ -7,20 +7,18 @@ import {
   getTranslate,
   initGoogleAuth,
   initFacebookAuth,
-  wait,
 } from 'utils';
 import { toast } from 'react-toastify';
 import axios from 'utils/axios';
 import {
   userLogin as userAuthLogin,
   userGoogleSignIn,
-  userFacebookSignIn
+  userFacebookSignIn,
 } from 'api';
 import { userLogin } from 'store/actions';
 
 // Components
 import AuthSocialHelmet from 'components/AuthSocialHelmet';
-import RegisterModal from 'components/RegisterModal';
 import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
@@ -33,7 +31,6 @@ import { ReactComponent as GoogleIcon } from 'assets/img/icons/google-icon.svg';
 import { ReactComponent as FacebookIcon } from 'assets/img/icons/facebook-letter-icon.svg';
 
 const LoginView = (props: any) => {
-
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
@@ -47,7 +44,9 @@ const LoginView = (props: any) => {
   const [loginGoogleLoading, setLoginGoogleLoading] = useState(false);
   const [loginGoogleLoadingError, setLoginGoogleLoadingError] = useState(false);
 
-  const [loginFacebookInitLoading, setLoginFacebookInitLoading] = useState(false);
+  const [loginFacebookInitLoading, setLoginFacebookInitLoading] = useState(
+    false
+  );
   const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
 
   useEffect(() => {
@@ -64,17 +63,15 @@ const LoginView = (props: any) => {
       setLoginForm,
       loginErrors,
       setLoginErrors,
-      element,
+      element
     );
   };
 
-  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, loginErrors);
+  const getFieldErrors = (field: string) =>
+    getFieldErrorsUtil(field, loginErrors);
 
-  const t = (code: string, placeholders?: any) => getTranslate(
-    props.localePhrases,
-    code,
-    placeholders,
-  );
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
 
   const userClientLogin = (authToken: string) => {
     localStorage.setItem('authToken', authToken);
@@ -86,7 +83,9 @@ const LoginView = (props: any) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs = [...form.elements].filter((i) =>
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
+    );
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -95,23 +94,25 @@ const LoginView = (props: any) => {
     if (!hasError) {
       setLoginLoading(true);
 
-      userAuthLogin(loginForm.email, loginForm.password).then((response) => {
-        setLoginLoading(false);
+      userAuthLogin(loginForm.email, loginForm.password)
+        .then((response) => {
+          setLoginLoading(false);
 
-        const token = response.data
-        && response.data.access_token
-          ? response.data.access_token
-          : null;
+          const token =
+            response.data && response.data.access_token
+              ? response.data.access_token
+              : null;
 
-        if (token) {
-          userClientLogin(token);
-        } else {
+          if (token) {
+            userClientLogin(token);
+          } else {
+            toast.error('Error occurred when Sign In User');
+          }
+        })
+        .catch((error) => {
+          setLoginLoading(false);
           toast.error('Error occurred when Sign In User');
-        }
-      }).catch((error) => {
-        setLoginLoading(false);
-        toast.error('Error occurred when Sign In User');
-      });
+        });
     }
   };
 
@@ -120,74 +121,90 @@ const LoginView = (props: any) => {
 
     setLoginGoogleLoading(true);
 
-    auth2.signIn().then((googleUser) => {
-      // token
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { id_token } = googleUser.getAuthResponse();
+    auth2
+      .signIn()
+      .then((googleUser) => {
+        // token
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const { id_token } = googleUser.getAuthResponse();
 
-      userGoogleSignIn(id_token).then((response) => {
+        userGoogleSignIn(id_token)
+          .then((response) => {
+            setLoginGoogleLoading(false);
+
+            const token =
+              response.data && response.data.access_token
+                ? response.data.access_token
+                : null;
+
+            if (token) {
+              userClientLogin(token);
+            } else {
+              toast.error('Error occurred when Sign In User');
+            }
+          })
+          .catch((error) => {
+            setLoginGoogleLoading(false);
+            toast.error('Error occurred when Sign In User');
+          });
+      })
+      .catch((error) => {
         setLoginGoogleLoading(false);
-
-        const token = response.data
-        && response.data.access_token
-          ? response.data.access_token
-          : null;
-
-        if (token) {
-          userClientLogin(token);
-        } else {
-          toast.error('Error occurred when Sign In User');
-        }
-      }).catch((error) => {
-        setLoginGoogleLoading(false);
-        toast.error('Error occurred when Sign In User');
       });
-    }).catch((error) => {
-      setLoginGoogleLoading(false);
-    });
   };
 
   const facebookLogin = () => {
     setLoginFacebookLoading(true);
 
-    window['FB'].login((response) => {
-      if (response && response.authResponse && response.authResponse.accessToken) {
-        userFacebookSignIn(response.authResponse.accessToken).then((res) => {
-          setLoginFacebookLoading(false);
+    window['FB'].login(
+      (response) => {
+        if (
+          response &&
+          response.authResponse &&
+          response.authResponse.accessToken
+        ) {
+          userFacebookSignIn(response.authResponse.accessToken)
+            .then((res) => {
+              setLoginFacebookLoading(false);
 
-          const token = res.data
-          && res.data.access_token
-            ? res.data.access_token
-            : null;
+              const token =
+                res.data && res.data.access_token
+                  ? res.data.access_token
+                  : null;
 
-          if (token) {
-            userClientLogin(token);
-          } else {
-            toast.error('Error occurred when Sign In User');
-          }
-        }).catch((error) => {
+              if (token) {
+                userClientLogin(token);
+              } else {
+                toast.error('Error occurred when Sign In User');
+              }
+            })
+            .catch((error) => {
+              setLoginFacebookLoading(false);
+              toast.error('Error occurred when Sign In User');
+            });
+        } else {
           setLoginFacebookLoading(false);
-          toast.error('Error occurred when Sign In User');
-        });
-      } else {
-        setLoginFacebookLoading(false);
+        }
+      },
+      {
+        scope: 'email',
       }
-    }, {
-      scope: 'email',
-    });
+    );
   };
 
   return (
     <>
       <AuthSocialHelmet />
 
-      <div className="loginScreen">
-        <h3 className="loginScreen_title">{t('login.title', { product: 'TEST' })}</h3>
+      <div className='loginScreen'>
+        <h3 className='loginScreen_title'>
+          {t('login.title', { product: 'TEST' })}
+        </h3>
 
-        <form className="loginScreen_form" onSubmit={(e) => loginSubmit(e)}>
+        <form className='loginScreen_form' onSubmit={(e) => loginSubmit(e)}>
           <FormGroup>
             <InputField
-              name="email"
+              name='email'
               data-validate='["required", "email"]'
               errors={getFieldErrors('email')}
               value={loginForm.email}
@@ -199,10 +216,10 @@ const LoginView = (props: any) => {
 
           <FormGroup>
             <InputField
-              name="password"
-              className="mt-3"
-              type="password"
-              autocomplate="current-password"
+              name='password'
+              className='mt-3'
+              type='password'
+              autocomplate='current-password'
               data-validate='["required"]'
               errors={getFieldErrors('password')}
               value={loginForm.password}
@@ -212,14 +229,16 @@ const LoginView = (props: any) => {
             />
           </FormGroup>
 
-          <span className="link link-bold mt-3">{t('login.forgot_pass')}</span>
+          <span className='link link-bold mt-3'>{t('login.forgot_pass')}</span>
 
           <Button
-            className="loginScreen_btn"
-            type="submit"
-            color="primary"
-            size="lg"
-            disabled={loginLoading || loginGoogleLoading || loginFacebookLoading}
+            className='loginScreen_btn'
+            type='submit'
+            color='primary'
+            size='lg'
+            disabled={
+              loginLoading || loginGoogleLoading || loginFacebookLoading
+            }
             isLoading={loginLoading}
             block
           >
@@ -227,46 +246,42 @@ const LoginView = (props: any) => {
           </Button>
         </form>
 
-        <div className="loginScreen_socialBtns mt-4">
+        <div className='loginScreen_socialBtns mt-4'>
           <Button
-            className="facebook-login-btn mr-3"
+            className='facebook-login-btn mr-3'
             onClick={(e) => facebookLogin()}
             disabled={
-              loginLoading
-              || loginGoogleLoading
-              || loginFacebookLoading
-              || loginFacebookInitLoading
+              loginLoading ||
+              loginGoogleLoading ||
+              loginFacebookLoading ||
+              loginFacebookInitLoading
             }
             isLoading={loginFacebookLoading || loginFacebookInitLoading}
           >
-            <FacebookIcon className="mr-2" />
-            {' '}
-            Login with facebook
+            <FacebookIcon className='mr-2' /> Login with facebook
           </Button>
 
           {!loginGoogleLoadingError && (
             <Button
-              className="google-login-btn"
+              className='google-login-btn'
               onClick={(e) => loginGoogle()}
               disabled={
-                loginLoading
-                || loginGoogleLoading
-                || loginFacebookLoading
-                || loginGoogleInitLoading
+                loginLoading ||
+                loginGoogleLoading ||
+                loginFacebookLoading ||
+                loginGoogleInitLoading
               }
               isLoading={loginGoogleLoading || loginGoogleInitLoading}
             >
-              <GoogleIcon className="mr-2" />
-              {' '}
-              Login with Google
+              <GoogleIcon className='mr-2' /> Login with Google
             </Button>
           )}
         </div>
 
         <Link
-          className="link link-bold mt-4"
-          to="/register"
-          role="presentation"
+          className='link link-bold mt-4'
+          to='/register'
+          role='presentation'
         >
           {t('login.register_link')}
         </Link>
@@ -275,7 +290,4 @@ const LoginView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(
-  null,
-  { userLogin },
-)(LoginView));
+export default WithTranslate(connect(null, { userLogin })(LoginView));
