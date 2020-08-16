@@ -19,6 +19,7 @@ import ChangeMealPlanView from './views/ChangeMealPlanView';
 import SettingsPersonalView from './views/Settings/SettingsPersonalView';
 import NotFound from './views/NotFound';
 import SavedRecipesView from './views/SavedRecipesView';
+import FavouriteRecipesView from './views/FavouriteRecipesView';
 
 const Routes = () => (
   <Switch>
@@ -123,6 +124,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <SavedRecipesView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/recipes/favourites'
+      component={(props: any) => (
+        <Layout {...props}>
+          <FavouriteRecipesView {...props} />
         </Layout>
       )}
       exact

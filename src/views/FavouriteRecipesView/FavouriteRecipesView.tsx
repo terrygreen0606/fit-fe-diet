@@ -9,7 +9,7 @@ import DayPicker from 'react-day-picker';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import './SavedRecipesView.sass';
+import './FavouriteRecipesView.sass';
 
 // Icons
 import { ReactComponent as CursorTouchIcon } from 'assets/img/icons/cursor-touch-icon.svg';
@@ -23,7 +23,7 @@ import { ReactComponent as SnackIcon } from 'assets/img/icons/snack-icon.svg';
 import { ReactComponent as DinnerIcon } from 'assets/img/icons/dinner-icon.svg';
 import { ReactComponent as CloseIcon } from 'assets/img/icons/close-icon.svg';
 
-const SavedRecipesView = (props: any) => {
+const FavouriteRecipesView = (props: any) => {
   const [isOpenMealList, setOpenMealList] = useState(false);
   const [isOpenCalendarList, setOpenCalendarList] = useState(false);
 
@@ -46,7 +46,7 @@ const SavedRecipesView = (props: any) => {
                 <li>
                   <Link
                     to='/recipes/saved'
-                    className='saved-recipes__head-tabs-item active'
+                    className='saved-recipes__head-tabs-item'
                   >
                     {t('common.saved')}
                   </Link>
@@ -54,7 +54,7 @@ const SavedRecipesView = (props: any) => {
                 <li>
                   <Link
                     to='/recipes/favourites'
-                    className='saved-recipes__head-tabs-item'
+                    className='saved-recipes__head-tabs-item active'
                   >
                     {t('common.favourites')}
                   </Link>
@@ -68,7 +68,9 @@ const SavedRecipesView = (props: any) => {
             </div>
           </div>
         </div>
-        <div className='saved-recipes__banner'>{t('recipe.saved.banner')}</div>
+        <div className='saved-recipes__banner'>
+          {t('recipes.favourites.banner')}
+        </div>
         <div className='saved-recipes__list'>
           <div className='saved-recipes__list-item'>
             <div className='row align-items-start'>
@@ -264,4 +266,4 @@ const SavedRecipesView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(SavedRecipesView));
+export default WithTranslate(connect(null)(FavouriteRecipesView));
