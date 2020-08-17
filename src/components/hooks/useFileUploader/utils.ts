@@ -1,5 +1,6 @@
-import { imageCreate, uploadImageAWS } from 'api';
-import { getImageAWSFormData } from 'utils';
+import { imageCreate } from 'api';
+// import { imageCreate, uploadImageAWS } from 'api';
+// import { getImageAWSFormData } from 'utils';
 
 export const uploadFileAWS = async (file: File) => {
   let data;
@@ -11,10 +12,10 @@ export const uploadFileAWS = async (file: File) => {
       size: file.size,
     });
 
-    const uploadImageAWSResp = await uploadImageAWS(
-      imageCreateResponse.data.action,
-      getImageAWSFormData(imageCreateResponse.data.fields, file),
-    );
+    // const uploadImageAWSResp = await uploadImageAWS(
+    //   imageCreateResponse.data.action,
+    //   getImageAWSFormData(imageCreateResponse.data.fields, file),
+    // );
 
     data = {
       image_id: imageCreateResponse.data.image_id,
@@ -36,7 +37,9 @@ export const validateFile = (file: File, accept: string | string[]) => {
   if (Array.isArray(accept)) {
     acceptRegExp.push(...accept);
   } else {
-    acceptRegExp.push(...accept.split(/,\s?/).map((item) => new RegExp(`${item}$`, 'g')));
+    acceptRegExp.push(
+      ...accept.split(/,\s?/).map((item) => new RegExp(`${item}$`, 'g'))
+    );
   }
 
   return acceptRegExp.some((item) => item.test(file.name));

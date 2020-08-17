@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
   getTranslate,
-// getFoodItem - shpuld be removed after back ingtegration?
+  // getFoodItem - shpuld be removed after back ingtegration?
 } from 'utils';
 import classNames from 'classnames';
 
@@ -28,8 +28,8 @@ import { ReactComponent as MeatIcon } from 'assets/img/icons/meat-icon.svg';
 import { ReactComponent as FishIcon } from 'assets/img/icons/fish-icon.svg';
 
 const ChangeMealPlanView = (props: any) => {
-// refactor after backend integration
-  const [ignoreCuisineIds, setIgnoreCuisineIds] = useState([
+  // refactor after backend integration
+  const [ignoreCuisineIds] = useState([
     { title: 'milk', icon: MilkIcon },
     { title: 'meat', icon: MeatIcon },
     { title: 'fish', icon: FishIcon },
@@ -59,208 +59,183 @@ const ChangeMealPlanView = (props: any) => {
 
   return (
     <>
-      <div className="change-meal">
-        <div className="container container-mb70">
-          <div className="row">
-            <h4 className="change-meal_title">
-              {t('mp.change.title')}
-            </h4>
+      <div className='change-meal'>
+        <div className='container container-mb70'>
+          <div className='row'>
+            <h4 className='change-meal_title'>{t('mp.change.title')}</h4>
           </div>
         </div>
 
-        <div className="container">
-          <div className="row">
-            <div className="change-meal_info card-bg">
-
-              <div className="change-meal_info-row">
-                <Button
-                  className="change-meal_green-btn mb-3"
-                  color="primary"
-                >
+        <div className='container'>
+          <div className='row'>
+            <div className='change-meal_info card-bg'>
+              <div className='change-meal_info-row'>
+                <Button className='change-meal_green-btn mb-3' color='primary'>
                   <LiftWeightIcon />
                   {t('register.lift_weight')}
                 </Button>
 
-                <div className="change-meal_not-eating">
-                  <span className="change-meal_green-text">
-                    {t('register.not_eating')}
-                    :
+                <div className='change-meal_not-eating'>
+                  <span className='change-meal_green-text'>
+                    {t('register.not_eating')}:
                   </span>
 
                   {/* refactor translation after backend integration */}
-                  <div className="change-meal_food-list">
+                  <div className='change-meal_food-list'>
                     {ignoreCuisineIds.map(({ title, icon: Icon }) => (
-                      <div className="change-meal_food-list_item" key={title}>
+                      <div className='change-meal_food-list_item' key={title}>
                         <Icon />
                         {t(`food.${title.toLowerCase()}`)}
 
-                        {isEditing
-                          && (
+                        {isEditing && (
                           <CrossIcon
                             // onClick={() => removeMealItem(id)}
-                            className="change-meal_cross-icon"
+                            className='change-meal_cross-icon'
                           />
-                          )}
+                        )}
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              <div className="change-meal_info-row">
-                <div className="change-meal_stats">
-                  <div className="change-meal_stats-item">
+              <div className='change-meal_info-row'>
+                <div className='change-meal_stats'>
+                  <div className='change-meal_stats-item'>
                     {t('register.form_sex')}
 
-                    {isEditing
-                      ? (
-                        <div className="change-meal_stats_radio">
-                          <CustomRadio
-                            name="change-meal_sex"
-                            label={(
-                              <>
-                                <MaleIcon
-                                  className={classNames('change-meal_sex-icon', {
-                                    'change-meal_sex-icon_active': true,
-                                  })}
-                                />
-                                {t('register.form_male')}
-                              </>
-                          )}
-                            value="m"
-                            checked
-                            inline
-                          />
-                          <CustomRadio
-                            name="register_sex"
-                            label={(
-                              <>
-                                <FemaleIcon
-                                  className={classNames('change-meal_sex-icon', {
-                                    'change-meal_sex-icon_active': false,
-                                  })}
-                                />
-                                {t('register.form_female')}
-                              </>
-                          )}
-                            value="f"
-                            checked={false}
-                            inline
-                          />
-                        </div>
-                      )
-                      : (
-                        <span className="change-meal_stats-item_text">
-                          {t('register.form_male')}
-                        </span>
-                      )}
-                  </div>
-                  <div className="change-meal_stats-item">
-                    {t('register.form_age')}
-                    {isEditing
-                      ? (
-                        <InputField
-                          type="number"
-                          border="light"
-                          min={1}
-                          name="age"
-                          value={30}
-                          data-validate='["required"]'
-                          // onChange={e => validateOnChange('age', e.target.value, e)}
-                          height="xs"
+                    {isEditing ? (
+                      <div className='change-meal_stats_radio'>
+                        <CustomRadio
+                          name='change-meal_sex'
+                          label={
+                            <>
+                              <MaleIcon
+                                className={classNames('change-meal_sex-icon', {
+                                  'change-meal_sex-icon_active': true,
+                                })}
+                              />
+                              {t('register.form_male')}
+                            </>
+                          }
+                          value='m'
+                          checked
+                          inline
                         />
-                      )
-                      : (
-                        <span className="change-meal_stats-item_text">
-                          30
-                        </span>
-                      )}
+                        <CustomRadio
+                          name='register_sex'
+                          label={
+                            <>
+                              <FemaleIcon
+                                className={classNames('change-meal_sex-icon', {
+                                  'change-meal_sex-icon_active': false,
+                                })}
+                              />
+                              {t('register.form_female')}
+                            </>
+                          }
+                          value='f'
+                          checked={false}
+                          inline
+                        />
+                      </div>
+                    ) : (
+                      <span className='change-meal_stats-item_text'>
+                        {t('register.form_male')}
+                      </span>
+                    )}
+                  </div>
+                  <div className='change-meal_stats-item'>
+                    {t('register.form_age')}
+                    {isEditing ? (
+                      <InputField
+                        type='number'
+                        border='light'
+                        min={1}
+                        name='age'
+                        value={30}
+                        data-validate='["required"]'
+                        // onChange={e => validateOnChange('age', e.target.value, e)}
+                        height='xs'
+                      />
+                    ) : (
+                      <span className='change-meal_stats-item_text'>30</span>
+                    )}
                   </div>
 
-                  <div className="change-meal_stats-item">
+                  <div className='change-meal_stats-item'>
                     {t('common.height')}
-                    {isEditing
-                      ? (
-                        <InputField
-                          type="number"
-                          border="light"
-                          value={180}
-                          name="height"
-                          data-param="50,250"
-                          data-validate='["required", "min-max"]'
-                          // onChange={e => validateOnChange('height', e.target.value, e)}
-                          height="xs"
-                        />
-                      )
-                      : (
-                        <span className="change-meal_stats-item_text">
-                          180
-                          {' '}
-                          {t('common.cm')}
-                        </span>
-                      )}
+                    {isEditing ? (
+                      <InputField
+                        type='number'
+                        border='light'
+                        value={180}
+                        name='height'
+                        data-param='50,250'
+                        data-validate='["required", "min-max"]'
+                        // onChange={e => validateOnChange('height', e.target.value, e)}
+                        height='xs'
+                      />
+                    ) : (
+                      <span className='change-meal_stats-item_text'>
+                        180 {t('common.cm')}
+                      </span>
+                    )}
                   </div>
-                  <div className="change-meal_stats-item">
+                  <div className='change-meal_stats-item'>
                     {t('common.weight')}
-                    {isEditing
-                      ? (
-                        <InputField
-                          block
-                          type="number"
-                          border="light"
-                          value={66}
-                          data-param="30,400"
-                          data-validate='["required", "min-max"]'
-                          name="weight"
-                          // onChange={e => validateOnChange('weight', e.target.value, e)}
-                          height="xs"
-                        />
-                      )
-                      : (
-                        <span className="change-meal_stats-item_text">
-                          66
-                          {' '}
-                          {t('common.kg')}
-                        </span>
-                      )}
+                    {isEditing ? (
+                      <InputField
+                        block
+                        type='number'
+                        border='light'
+                        value={66}
+                        data-param='30,400'
+                        data-validate='["required", "min-max"]'
+                        name='weight'
+                        // onChange={e => validateOnChange('weight', e.target.value, e)}
+                        height='xs'
+                      />
+                    ) : (
+                      <span className='change-meal_stats-item_text'>
+                        66 {t('common.kg')}
+                      </span>
+                    )}
                   </div>
                 </div>
-                {isEditing
-                  ? (
-                    <Button
-                      color="primary"
-                      outline
-                      size="lg"
-                      className="mt-3 mb-3 bttn_wide"
-                      onClick={() => saveChanges()}
-                    >
-                      Save
-                    </Button>
-                  )
-                  : (
-                    <Button
-                      color="secondary"
-                      outline
-                      size="lg"
-                      className="mt-3 mb-3 bttn_wide"
-                      onClick={() => changeInfo()}
-                    >
-                      {t('mp.change.change_info')}
-                    </Button>
-                  )}
+                {isEditing ? (
+                  <Button
+                    color='primary'
+                    outline
+                    size='lg'
+                    className='mt-3 mb-3 bttn_wide'
+                    onClick={() => saveChanges()}
+                  >
+                    Save
+                  </Button>
+                ) : (
+                  <Button
+                    color='secondary'
+                    outline
+                    size='lg'
+                    className='mt-3 mb-3 bttn_wide'
+                    onClick={() => changeInfo()}
+                  >
+                    {t('mp.change.change_info')}
+                  </Button>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="container">
-          <div className="row meal-row">
-
+        <div className='container'>
+          <div className='row meal-row'>
             {[1, 2, 3, 4].map((item, i) => (
-              <div className="col-3 meal-row_col" key={`${i + 1}`}>
-                <div className="meal-block card-bg">
-                  <div className="meal-block_head">
-                    <div className="meal-block_head-count">
+              <div className='col-3 meal-row_col' key={`${i + 1}`}>
+                <div className='meal-block card-bg'>
+                  <div className='meal-block_head'>
+                    <div className='meal-block_head-count'>
                       <h3>{i + 3}</h3>
                     </div>
                     <p>{t('mp.change.meals_per_day')}</p>
@@ -270,82 +245,74 @@ const ChangeMealPlanView = (props: any) => {
                       'row-mb79': i === 1,
                     })}
                   >
-                    {i === 0
-                      ? (
-                        <>
-                          <div className="col-4">
-                            <div className="meal-block_row-item">
-                              <BreakfastIcon />
-                              <p>{t('meal.breakfast')}</p>
-                            </div>
+                    {i === 0 ? (
+                      <>
+                        <div className='col-4'>
+                          <div className='meal-block_row-item'>
+                            <BreakfastIcon />
+                            <p>{t('meal.breakfast')}</p>
                           </div>
+                        </div>
 
-                          <div className="col-4">
-                            <div className="meal-block_row-item">
-                              <LunchIcon />
-                              <p>{t('meal.lunch')}</p>
-                            </div>
+                        <div className='col-4'>
+                          <div className='meal-block_row-item'>
+                            <LunchIcon />
+                            <p>{t('meal.lunch')}</p>
                           </div>
-                          <div className="col-4">
-                            <div className="meal-block_row-item">
-                              <DinnerIcon />
-                              <p>{t('meal.dinner')}</p>
-                            </div>
+                        </div>
+                        <div className='col-4'>
+                          <div className='meal-block_row-item'>
+                            <DinnerIcon />
+                            <p>{t('meal.dinner')}</p>
                           </div>
-                        </>
-                      )
-                      : (
-                        <>
-                          <div className="col-6">
-                            <div className="meal-block_row-item">
-                              <BreakfastIcon />
-                              <p>{t('meal.breakfast')}</p>
-                            </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className='col-6'>
+                          <div className='meal-block_row-item'>
+                            <BreakfastIcon />
+                            <p>{t('meal.breakfast')}</p>
                           </div>
-                          {i > 1
-                            && (
-                            <div className="col-6">
-                              <div className="meal-block_row-item">
-                                <SnackIcon />
-                                <p>{t('meal.snack')}</p>
-                              </div>
-                            </div>
-                            )}
-                          <div className="col-6">
-                            <div className="meal-block_row-item">
-                              <LunchIcon />
-                              <p>{t('meal.lunch')}</p>
-                            </div>
-                          </div>
-                          <div className="col-6">
-                            <div className="meal-block_row-item">
+                        </div>
+                        {i > 1 && (
+                          <div className='col-6'>
+                            <div className='meal-block_row-item'>
                               <SnackIcon />
                               <p>{t('meal.snack')}</p>
                             </div>
                           </div>
-                          <div className="col-6">
-                            <div className="meal-block_row-item">
-                              <DinnerIcon />
-                              <p>{t('meal.dinner')}</p>
+                        )}
+                        <div className='col-6'>
+                          <div className='meal-block_row-item'>
+                            <LunchIcon />
+                            <p>{t('meal.lunch')}</p>
+                          </div>
+                        </div>
+                        <div className='col-6'>
+                          <div className='meal-block_row-item'>
+                            <SnackIcon />
+                            <p>{t('meal.snack')}</p>
+                          </div>
+                        </div>
+                        <div className='col-6'>
+                          <div className='meal-block_row-item'>
+                            <DinnerIcon />
+                            <p>{t('meal.dinner')}</p>
+                          </div>
+                        </div>
+                        {i === 3 && (
+                          <div className='col-6'>
+                            <div className='meal-block_row-item'>
+                              <SnackIcon />
+                              <p>{t('meal.snack')}</p>
                             </div>
                           </div>
-                          {i === 3
-                            && (
-                            <div className="col-6">
-                              <div className="meal-block_row-item">
-                                <SnackIcon />
-                                <p>{t('meal.snack')}</p>
-                              </div>
-                            </div>
-                            )}
-                        </>
-                      )}
+                        )}
+                      </>
+                    )}
                   </div>
-                  <Button
-                    color="primary"
-                    outline
-                    block
-                  >
+                  <Button color='primary' outline block>
                     {t('mp.change.choose_it')}
                   </Button>
                 </div>
@@ -358,6 +325,4 @@ const ChangeMealPlanView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(
-  null,
-)(ChangeMealPlanView));
+export default WithTranslate(connect(null)(ChangeMealPlanView));

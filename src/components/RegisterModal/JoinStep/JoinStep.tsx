@@ -8,11 +8,7 @@ import {
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import { UserAuthProfileType } from 'types/auth';
-import { 
-  userSignup, 
-  userGoogleSignUp,
-  userFacebookSignUp 
-} from 'api';
+import { userSignup, userGoogleSignUp, userFacebookSignUp } from 'api';
 import { userLogin } from 'store/actions';
 
 // Components
@@ -32,13 +28,18 @@ const JoinStep = (props: any) => {
   const { registerData } = props;
   const [registerJoinErrors, setRegisterJoinErrors] = useState([]);
 
-  const [registerLoading, setRegisterLoading] = useState<boolean>(false);
   const [socialRegister, setSocialRegister] = useState<string>(null);
 
-  const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(false);
-  const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
+  const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(
+    false
+  );
+  const [registerFacebookLoading, setRegisterFacebookLoading] = useState<
+    boolean
+  >(false);
 
-  const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
+  const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(
+    false
+  );
   const [appRulesAccepted, setAppRulesAccepted] = useState(null);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -50,11 +51,12 @@ const JoinStep = (props: any) => {
       props.setRegisterData,
       registerJoinErrors,
       setRegisterJoinErrors,
-      element,
+      element
     );
   };
 
-  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, registerJoinErrors);
+  const getFieldErrors = (field: string) =>
+    getFieldErrorsUtil(field, registerJoinErrors);
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
@@ -65,13 +67,9 @@ const JoinStep = (props: any) => {
   };
 
   const getRegisterProfilePayload = (): UserAuthProfileType => {
-    const {
-      email,
-      password,
-      ...userProfileData
-    } = props.registerData;
+    const { email, password, ...userProfileData } = props.registerData;
 
-    return {...userProfileData};
+    return { ...userProfileData };
   };
 
   const registerGoogle = () => {
@@ -79,67 +77,81 @@ const JoinStep = (props: any) => {
 
     setRegisterGoogleLoading(true);
 
-    auth2.signIn().then((googleUser) => {
-      // token
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { id_token } = googleUser.getAuthResponse();
+    auth2
+      .signIn()
+      .then((googleUser) => {
+        // token
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        const { id_token } = googleUser.getAuthResponse();
 
-      userGoogleSignUp({
-        id_token,
-        profile: getRegisterProfilePayload()
-      }).then((response) => {
+        userGoogleSignUp({
+          id_token,
+          profile: getRegisterProfilePayload(),
+        })
+          .then((response) => {
+            setRegisterGoogleLoading(false);
+
+            const token =
+              response.data && response.data.access_token
+                ? response.data.access_token
+                : null;
+
+            if (token) {
+              userClientLogin(token);
+            } else {
+              toast.error('Error occurred when Sign In User');
+            }
+          })
+          .catch((error) => {
+            setRegisterGoogleLoading(false);
+            toast.error('Error occurred when Sign In User');
+          });
+      })
+      .catch((error) => {
         setRegisterGoogleLoading(false);
-
-        const token = response.data
-        && response.data.access_token
-          ? response.data.access_token
-          : null;
-
-        if (token) {
-          userClientLogin(token);
-        } else {
-          toast.error('Error occurred when Sign In User');
-        }
-      }).catch((error) => {
-        setRegisterGoogleLoading(false);
-        toast.error('Error occurred when Sign In User');
       });
-    }).catch((error) => {
-      setRegisterGoogleLoading(false);
-    });
   };
 
   const facebookRegister = () => {
     setRegisterFacebookLoading(true);
 
-    window['FB'].login((response) => {
-      if (response && response.authResponse && response.authResponse.accessToken) {
-        userFacebookSignUp({
-          token: response.authResponse.accessToken,
-          profile: getRegisterProfilePayload()
-        }).then((res) => {
-          setRegisterFacebookLoading(false);
+    window['FB'].login(
+      (response) => {
+        if (
+          response &&
+          response.authResponse &&
+          response.authResponse.accessToken
+        ) {
+          userFacebookSignUp({
+            token: response.authResponse.accessToken,
+            profile: getRegisterProfilePayload(),
+          })
+            .then((res) => {
+              setRegisterFacebookLoading(false);
 
-          const token = res.data
-          && res.data.access_token
-            ? res.data.access_token
-            : null;
+              const token =
+                res.data && res.data.access_token
+                  ? res.data.access_token
+                  : null;
 
-          if (token) {
-            userClientLogin(token);
-          } else {
-            toast.error('Error occurred when Sign In User');
-          }
-        }).catch((error) => {
+              if (token) {
+                userClientLogin(token);
+              } else {
+                toast.error('Error occurred when Sign In User');
+              }
+            })
+            .catch((error) => {
+              setRegisterFacebookLoading(false);
+              toast.error('Error occurred when Sign In User');
+            });
+        } else {
           setRegisterFacebookLoading(false);
-          toast.error('Error occurred when Sign In User');
-        });
-      } else {
-        setRegisterFacebookLoading(false);
+        }
+      },
+      {
+        scope: 'email',
       }
-    }, {
-      scope: 'email',
-    });
+    );
   };
 
   const registerEmail = () => {
@@ -147,30 +159,34 @@ const JoinStep = (props: any) => {
 
     userSignup({
       ...registerData,
-    }).then(response => {
-      setRegisterJoinLoading(false);
+    })
+      .then((response) => {
+        setRegisterJoinLoading(false);
 
-      const token = response.data
-      && response.data.access_token
-        ? response.data.access_token
-        : null;
+        const token =
+          response.data && response.data.access_token
+            ? response.data.access_token
+            : null;
 
-      if (token) {
-        userClientLogin(token);
-      } else {
+        if (token) {
+          userClientLogin(token);
+        } else {
+          toast.error('Error while registering user');
+        }
+      })
+      .catch((error) => {
+        setRegisterJoinLoading(false);
         toast.error('Error while registering user');
-      }
-    }).catch(error => {
-      setRegisterJoinLoading(false);
-      toast.error('Error while registering user');
-    });
+      });
   };
 
-  const registerJoinSubmit = e => {
+  const registerJoinSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs = [...form.elements].filter((i) =>
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
+    );
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -186,14 +202,16 @@ const JoinStep = (props: any) => {
       } else if (socialRegister === 'google') {
         registerGoogle();
       } else {
-         registerEmail();
+        registerEmail();
       }
     }
   };
 
   return (
-    <div className="register_join">
-      <h6 className="register_title mb-5">{t('register.plan_is_ready_text')}</h6>
+    <div className='register_join'>
+      <h6 className='register_title mb-5'>
+        {t('register.plan_is_ready_text')}
+      </h6>
 
       <CustomCheckbox
         invalid={appRulesAccepted === false}
@@ -201,113 +219,101 @@ const JoinStep = (props: any) => {
         onChange={(e) => setAppRulesAccepted(e.target.checked)}
       />
 
-      <form className="register_join_form mt-4" onSubmit={(e) => registerJoinSubmit(e)}>
-
-        <div className="register_socialBtns">
+      <form
+        className='register_join_form mt-4'
+        onSubmit={(e) => registerJoinSubmit(e)}
+      >
+        <div className='register_socialBtns'>
           <Button
-            type="submit"
-            className="facebook-login-btn"
+            type='submit'
+            className='facebook-login-btn'
             block
-            onClick={e => setSocialRegister('facebook')}
+            onClick={(e) => setSocialRegister('facebook')}
             disabled={
-              registerJoinLoading
-              || registerGoogleLoading
-              || registerFacebookLoading
-              || props.facebookInitLoading
+              registerJoinLoading ||
+              registerGoogleLoading ||
+              registerFacebookLoading ||
+              props.facebookInitLoading
             }
             isLoading={registerFacebookLoading || props.facebookInitLoading}
           >
-            <FacebookIcon className="mr-2" />
-            {' '}
-            Login with facebook
+            <FacebookIcon className='mr-2' /> Login with facebook
           </Button>
 
           {!props.googleLoadingError && (
             <Button
-              type="submit"
-              className="google-login-btn mt-3"
+              type='submit'
+              className='google-login-btn mt-3'
               block
-              onClick={e => setSocialRegister('google')}
+              onClick={(e) => setSocialRegister('google')}
               disabled={
-                registerJoinLoading
-                || registerGoogleLoading
-                || registerFacebookLoading
-                || props.googleInitLoading
+                registerJoinLoading ||
+                registerGoogleLoading ||
+                registerFacebookLoading ||
+                props.googleInitLoading
               }
               isLoading={registerGoogleLoading || props.googleInitLoading}
             >
-              <GoogleIcon className="mr-2" />
-              {' '}
-              Login with Google
+              <GoogleIcon className='mr-2' /> Login with Google
             </Button>
           )}
-        </div>        
+        </div>
 
-        <div className="register_join_or">
-          <span className="register_join_or_txt">{t('register.form_or')}</span>
+        <div className='register_join_or'>
+          <span className='register_join_or_txt'>{t('register.form_or')}</span>
         </div>
 
         <FormGroup inline>
-          <FormLabel>
-            {t('register.form_name')}
-            *
-          </FormLabel>
+          <FormLabel>{t('register.form_name')}*</FormLabel>
           <InputField
             block
-            name="name"
+            name='name'
             value={registerData.name}
             data-validate='["required"]'
             onChange={(e) => validateOnChange('name', e.target.value, e)}
             errors={getFieldErrors('name')}
-            placeholder=""
+            placeholder=''
           />
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>
-            {t('register.form_surname')}
-            *
-          </FormLabel>
+          <FormLabel>{t('register.form_surname')}*</FormLabel>
           <InputField
             block
-            name="surname"
+            name='surname'
             value={registerData.surname}
             data-validate='["required"]'
             onChange={(e) => validateOnChange('surname', e.target.value, e)}
             errors={getFieldErrors('surname')}
-            placeholder=""
+            placeholder=''
           />
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>
-            {t('register.form_email')}
-            *
-          </FormLabel>
+          <FormLabel>{t('register.form_email')}*</FormLabel>
           <InputField
             block
-            name="email"
+            name='email'
             value={registerData.email}
-            data-validate={`["email"${socialRegister === 'email' ? ', "required"' : ''}]`}
+            data-validate={`["email"${
+              socialRegister === 'email' ? ', "required"' : ''
+            }]`}
             onChange={(e) => validateOnChange('email', e.target.value, e)}
             errors={getFieldErrors('email')}
-            placeholder=""
+            placeholder=''
           />
         </FormGroup>
 
         <FormGroup inline>
-          <FormLabel>
-            {t('register.form_phone')}
-            *
-          </FormLabel>
+          <FormLabel>{t('register.form_phone')}*</FormLabel>
           <InputField
             block
-            name="phone"
+            name='phone'
             value={registerData.phone}
             data-validate='["required", "number"]'
             onChange={(e) => validateOnChange('phone', e.target.value, e)}
             errors={getFieldErrors('phone')}
-            placeholder=""
+            placeholder=''
           />
         </FormGroup>
 
@@ -315,24 +321,26 @@ const JoinStep = (props: any) => {
           <FormLabel>{t('register.form_password')}</FormLabel>
           <InputField
             block
-            name="password"
-            type="password"
+            name='password'
+            type='password'
             value={registerData.password}
-            data-validate={`[${socialRegister === 'email' ? '"required"' : ''}]`}
+            data-validate={`[${
+              socialRegister === 'email' ? '"required"' : ''
+            }]`}
             onChange={(e) => validateOnChange('password', e.target.value, e)}
             errors={getFieldErrors('password')}
-            placeholder=""
+            placeholder=''
           />
         </FormGroup>
 
-        <div className="text-center mt-5">
+        <div className='text-center mt-5'>
           <Button
-            className="registerBtn"
-            type="submit"
-            onClick={e => setSocialRegister('email')}
+            className='registerBtn'
+            type='submit'
+            onClick={(e) => setSocialRegister('email')}
             block
-            size="lg"
-            color="primary"
+            size='lg'
+            color='primary'
             isLoading={registerJoinLoading}
           >
             {t('register.form_submit')}
@@ -340,10 +348,10 @@ const JoinStep = (props: any) => {
 
           <Button
             outline
-            color="secondary"
-            size="lg"
+            color='secondary'
+            size='lg'
             onClick={() => props.setRegisterStep('INFO')}
-            className="mt-4"
+            className='mt-4'
             style={{ width: '217px' }}
           >
             {t('register.form_back')}
@@ -354,7 +362,4 @@ const JoinStep = (props: any) => {
   );
 };
 
-export default connect(
-  null,
-  { userLogin },
-)(JoinStep);
+export default connect(null, { userLogin })(JoinStep);
