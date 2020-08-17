@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import {
   validateFieldOnChange,
@@ -34,11 +34,12 @@ const InfoStep = (props: any) => {
       props.setRegisterData,
       registerInfoErrors,
       setRegisterInfoErrors,
-      element,
+      element
     );
   };
 
-  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, registerInfoErrors);
+  const getFieldErrors = (field: string) =>
+    getFieldErrorsUtil(field, registerInfoErrors);
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
@@ -46,7 +47,9 @@ const InfoStep = (props: any) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs = [...form.elements].filter((i) =>
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
+    );
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -63,57 +66,64 @@ const InfoStep = (props: any) => {
   };
 
   return (
-    <div className="register_info">
-      <h6 className="register_title mb-5">{t('register.fill_details_text')}</h6>
+    <div className='register_info'>
+      <h6 className='register_title mb-5'>{t('register.fill_details_text')}</h6>
 
       <div style={{ height: '50px' }} />
 
-      <form className="register_info_form" onSubmit={(e) => registerInfoSubmit(e)}>
+      <form
+        className='register_info_form'
+        onSubmit={(e) => registerInfoSubmit(e)}
+      >
         <FormGroup inline>
           <FormLabel>{t('register.form_sex')}</FormLabel>
 
           <CustomRadio
-            name="register_sex"
-            label={(
+            name='register_sex'
+            label={
               <>
-                <MaleIcon 
-                  className={classNames("genderIcon", {
-                    "genderIcon_active": props.registerData.gender === 'm'
+                <MaleIcon
+                  className={classNames('genderIcon', {
+                    genderIcon_active: props.registerData.gender === 'm',
                   })}
                 />
 
                 {t('register.form_male')}
               </>
-            )}
-            value="m"
+            }
+            value='m'
             checked={registerData.gender === 'm'}
             inline
-            onChange={(e) => props.setRegisterData({
-              ...registerData,
-              gender: e.target.value,
-            })}
+            onChange={(e) =>
+              props.setRegisterData({
+                ...registerData,
+                gender: e.target.value,
+              })
+            }
           />
 
           <CustomRadio
-            name="register_sex"
-            label={(
+            name='register_sex'
+            label={
               <>
-                <FemaleIcon 
-                  className={classNames("genderIcon", {
-                    "genderIcon_active": props.registerData.gender === 'f'
+                <FemaleIcon
+                  className={classNames('genderIcon', {
+                    genderIcon_active: props.registerData.gender === 'f',
                   })}
                 />
 
                 {t('register.form_female')}
               </>
-            )}
-            value="f"
+            }
+            value='f'
             checked={registerData.gender === 'f'}
             inline
-            onChange={(e) => props.setRegisterData({
-              ...registerData,
-              gender: e.target.value,
-            })}
+            onChange={(e) =>
+              props.setRegisterData({
+                ...registerData,
+                gender: e.target.value,
+              })
+            }
           />
         </FormGroup>
 
@@ -121,14 +131,14 @@ const InfoStep = (props: any) => {
           <FormLabel>{t('register.form_age')}</FormLabel>
           <InputField
             block
-            type="number"
+            type='number'
             min={1}
-            name="age"
+            name='age'
             value={registerData.age}
             data-validate='["required"]'
             onChange={(e) => validateOnChange('age', e.target.value, e)}
             errors={getFieldErrors('age')}
-            placeholder=""
+            placeholder=''
           />
         </FormGroup>
 
@@ -136,14 +146,14 @@ const InfoStep = (props: any) => {
           <FormLabel>{t('register.form_height')}</FormLabel>
           <InputField
             block
-            type="number"
+            type='number'
             value={registerData.height}
-            name="height"
-            data-param="50,250"
+            name='height'
+            data-param='50,250'
             data-validate='["required", "min-max"]'
             onChange={(e) => validateOnChange('height', e.target.value, e)}
             errors={getFieldErrors('height')}
-            placeholder=""
+            placeholder=''
           />
         </FormGroup>
 
@@ -151,23 +161,23 @@ const InfoStep = (props: any) => {
           <FormLabel>{t('register.form_weight')}</FormLabel>
           <InputField
             block
-            type="number"
+            type='number'
             value={registerData.weight}
-            data-param="30,400"
+            data-param='30,400'
             data-validate='["required", "min-max"]'
-            name="weight"
+            name='weight'
             onChange={(e) => validateOnChange('weight', e.target.value, e)}
             errors={getFieldErrors('weight')}
-            placeholder=""
+            placeholder=''
           />
         </FormGroup>
 
-        <div className="text-center mt-5">
+        <div className='text-center mt-5'>
           <Button
             style={{ width: '217px' }}
             outline
-            color="secondary"
-            size="lg"
+            color='secondary'
+            size='lg'
             onClick={() => props.setRegisterStep('GOAL')}
           >
             {t('register.form_back')}
@@ -175,10 +185,10 @@ const InfoStep = (props: any) => {
 
           <Button
             style={{ width: '217px' }}
-            color="primary"
-            type="submit"
-            className="ml-3"
-            size="lg"
+            color='primary'
+            type='submit'
+            className='ml-3'
+            size='lg'
             isLoading={registerInfoLoading}
           >
             {t('register.form_next')}
