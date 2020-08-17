@@ -69,7 +69,7 @@ const FavouriteRecipesView = (props: any) => {
           </div>
         </div>
         <div className='saved-recipes__banner'>
-          {t('recipes.favourites.banner')}
+          {t('recipe.favourites.banner')}
         </div>
         <div className='saved-recipes__list'>
           <div className='saved-recipes__list-item'>
@@ -91,7 +91,7 @@ const FavouriteRecipesView = (props: any) => {
                           {t('meal.breakfast')}
                         </div>
                         <div className='saved-recipes__list-item-content-head-description'>
-                          {t('recipes.saved.recipe_title')}
+                          {t('recipe.saved.recipe_title')}
                         </div>
                         <div className='saved-recipes__list-item-content-head-datas'>
                           <div className='saved-recipes__list-item-content-head-datas-block'>
@@ -131,7 +131,7 @@ const FavouriteRecipesView = (props: any) => {
                       </div>
                     </div>
                     <div className='saved-recipes__list-item-content-description'>
-                      {t('recipes.saved.recipe_description')}
+                      {t('recipe.saved.recipe_description')}
                     </div>
                     <div className='saved-recipes__list-item-content-buttons'>
                       <div className='saved-recipes__list-item-content-choose-date'>
@@ -142,13 +142,13 @@ const FavouriteRecipesView = (props: any) => {
                             setOpenCalendarList(!isOpenCalendarList);
                           }}
                         >
-                          {t('recipes.saved.choose_date')}
+                          {t('recipe.saved.choose_date')}
                         </Button>
                         {isOpenCalendarList && (
                           <div className='saved-recipes__list-item-content-choose-date-list'>
                             <DayPicker className='saved-recipes__list-item-content-calendar' />
                             <Button color='primary'>
-                              {t('recipes.saved.done')}
+                              {t('recipe.saved.done')}
                             </Button>
                             <button
                               type='button'
@@ -165,7 +165,7 @@ const FavouriteRecipesView = (props: any) => {
                           color='secondary'
                           onClick={() => setOpenMealList(!isOpenMealList)}
                         >
-                          {t('recipes.saved.meal')}
+                          {t('recipe.saved.meal')}
                         </Button>
                         {isOpenMealList && (
                           <div className='saved-recipes__list-item-content-meal-list'>
@@ -216,7 +216,7 @@ const FavouriteRecipesView = (props: any) => {
                               </button>
                             </div>
                             <Button color='primary'>
-                              {t('recipes.saved.done')}
+                              {t('recipe.saved.done')}
                             </Button>
                             <button
                               type='button'
@@ -242,14 +242,14 @@ const FavouriteRecipesView = (props: any) => {
                         color='primary'
                         className='saved-recipes__list-item-controls-button'
                       >
-                        {t('recipes.saved.add_to_menu')}
+                        {t('recipe.saved.add_to_menu')}
                       </Button>
                       <Button
                         color='gray'
                         icon={<CartButtonIcon />}
                         className='saved-recipes__list-item-controls-button'
                       >
-                        {t('recipes.saved.shopping_list')}
+                        {t('recipe.saved.shopping_list')}
                       </Button>
                     </div>
                   </div>
@@ -259,7 +259,7 @@ const FavouriteRecipesView = (props: any) => {
           </div>
         </div>
         <div className='weekly-menu-button'>
-          <Button color='secondary'>{t('recipes.saved.weekly_menu')}</Button>
+          <Button color='secondary'>{t('recipe.saved.weekly_menu')}</Button>
         </div>
       </div>
     </div>
