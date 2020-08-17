@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { getTranslate } from 'utils';
 
 // Components
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
 import NutritionPlanCard from 'components/NutritionPlanCard';
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './RecipesView.sass';
 
-const RecipesView = () => {
+const RecipesView = (props: any) => {
   const [recipesSearch, setRecipesSearch] = useState('');
+
+  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
   return (
     <>
@@ -19,9 +25,9 @@ const RecipesView = () => {
             <div className="col-6">
 
               <ul className="page-tabs">
-                <li className="page-tabs-item active">Everything</li>
-                <li className="page-tabs-item">Saved</li>
-                <li className="page-tabs-item">Favourites</li>
+                <Link to='/recipes' className="page-tabs-item active">{t('common.everything')}</Link>
+                <Link to='/recipes/saved' className="page-tabs-item">{t('common.saved')}</Link>
+                <Link to='/recipes/favourites' className="page-tabs-item">{t('common.favourites')}</Link>
               </ul>
 
             </div>
@@ -151,4 +157,4 @@ const RecipesView = () => {
   );
 };
 
-export default RecipesView;
+export default WithTranslate(connect(null)(RecipesView));

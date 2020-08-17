@@ -7,21 +7,22 @@ import Spinner from 'components/common/Spinner';
 import './Button.sass';
 
 interface ButtonProps {
-  type?: 'submit' | 'button' | 'reset',
-  size?: 'md' | 'sm' | 'lg',
-  color?: 'primary' | 'default' | 'secondary' | 'raw' | 'info',
-  weight?: 'medium' | 'default',
-  outline?: boolean,
-  block?: boolean,
-  isLoading?: boolean,
-  active?: boolean,
-  disabled?: boolean,
-  onClick?: (any) => void,
-  innerRef?: RefObject<HTMLButtonElement>,
-  children?: ReactNode,
-  className?: string,
-  ariaLabel?: string,
-  [propName: string]: any
+  type?: 'submit' | 'button' | 'reset';
+  size?: 'md' | 'sm' | 'lg';
+  color?: 'primary' | 'default' | 'secondary' | 'raw' | 'info' | 'gray';
+  weight?: 'medium' | 'default';
+  icon?: any;
+  outline?: boolean;
+  block?: boolean;
+  isLoading?: boolean;
+  active?: boolean;
+  disabled?: boolean;
+  onClick?: (any) => void;
+  innerRef?: RefObject<HTMLButtonElement>;
+  children?: ReactNode;
+  className?: string;
+  ariaLabel?: string;
+  [propName: string]: any;
 }
 
 const ButtonPropsDefaults = {
@@ -50,6 +51,7 @@ const Button = (props: ButtonProps) => {
     block,
     size,
     weight,
+    icon,
     outline,
     children,
     disabled,
@@ -72,15 +74,15 @@ const Button = (props: ButtonProps) => {
         {
           bttnBlock: block,
           bttnOutline: outline,
-        },
+          bttnWithIcon: icon,
+        }
       )}
       onClick={onClick}
       disabled={disabled || isLoading}
       aria-label={ariaLabel || null}
     >
-      {children}
-      {' '}
-      {isLoading ? <Spinner className="ml-2" /> : null}
+      {icon}
+      {children} {isLoading ? <Spinner className='ml-2' /> : null}
     </button>
   );
 };

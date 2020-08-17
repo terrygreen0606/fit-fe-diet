@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import BasePage from 'components/hoc/BasePage';
@@ -18,6 +19,8 @@ import WaterTrackerView from './views/WaterTrackerView';
 import ChangeMealPlanView from './views/ChangeMealPlanView';
 import SettingsPersonalView from './views/Settings/SettingsPersonalView';
 import NotFound from './views/NotFound';
+import SavedRecipesView from './views/SavedRecipesView';
+import FavouriteRecipesView from './views/FavouriteRecipesView';
 import DashboardView from './views/DashboardView';
 
 const Routes = () => (
@@ -119,6 +122,26 @@ const Routes = () => (
     />
 
     <PrivateRoute
+      path='/recipes/saved'
+      component={(props: any) => (
+        <Layout {...props}>
+          <SavedRecipesView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/recipes/favourites'
+      component={(props: any) => (
+        <Layout {...props}>
+          <FavouriteRecipesView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
       path='/dashboard'
       component={(props: any) => (
         <Layout {...props}>
@@ -139,7 +162,7 @@ const Routes = () => (
     />
 
     <AuthRoute
-      path="/register"
+      path='/register'
       component={(props: any) => (
         <BasePage {...props}>
           <RegisterView {...props} />
