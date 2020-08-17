@@ -16,110 +16,120 @@ import { ReactComponent as QuestionIcon } from 'assets/img/icons/question-circle
 import { ReactComponent as LeafIcon } from 'assets/img/icons/leaf-icon.svg';
 
 const ProfileSidebar = (props: any) => {
-
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   return (
-    <div className="profile-menu-sidebar">
-      <div className="profile-menu-card card-bg">
-        <h5 className="profile-menu-title">{t('profile.menu_title_payments')}</h5>
+    <div className='profile-menu-sidebar'>
+      <div className='profile-menu-card card-bg'>
+        <h5 className='profile-menu-title'>
+          {t('profile.menu_title_payments')}
+        </h5>
 
-        <ul className="profile-menu-list">
+        <ul className='profile-menu-list'>
           <li>
-            <NavLink 
-              to="/settings/personal"
-              activeClassName="active" 
+            <NavLink
+              to='/settings/personal'
+              activeClassName='active'
               exact
-              className="profile-menu-list-item"
+              className='profile-menu-list-item'
             >
-              <UserEditIcon className="profile-menu-list-icon" /> {t('personal.menu_personal')}
+              <UserEditIcon className='profile-menu-list-icon' />
+              {t('personal.menu_personal')}
             </NavLink>
           </li>
 
           <li>
-            <NavLink 
-              to="/settings"
-              activeClassName="active" 
+            <NavLink
+              to='/settings'
+              activeClassName='active'
               exact
-              className="profile-menu-list-item"
+              className='profile-menu-list-item'
             >
-              <SettingsIcon className="profile-menu-list-icon" /> {t('personal.menu_diet')}
+              <SettingsIcon className='profile-menu-list-icon' />
+              {t('personal.menu_diet')}
             </NavLink>
           </li>
 
           <li>
-            <NavLink 
-              to="/settings"
-              activeClassName="active" 
+            <NavLink
+              to='/settings'
+              activeClassName='active'
               exact
-              className="profile-menu-list-item"
+              className='profile-menu-list-item'
             >
-              <CutleryIcon className="profile-menu-list-icon" /> {t('personal.menu_meal_plan')}
+              <CutleryIcon className='profile-menu-list-icon' />
+              {t('personal.menu_meal_plan')}
             </NavLink>
           </li>
 
           <li>
-            <NavLink 
-              to="/settings"
-              activeClassName="active" 
+            <NavLink
+              to='/settings'
+              activeClassName='active'
               exact
-              className="profile-menu-list-item"
+              className='profile-menu-list-item'
             >
-              <UsersIcon className="profile-menu-list-icon" /> {t('personal.menu_family')}
-            </NavLink>
-          </li>
-        </ul>
-      </div>
-
-      <div className="profile-menu-card card-bg mt-3">
-        <h5 className="profile-menu-title">{t('profile.menu_title_settings')}</h5>
-
-        <ul className="profile-menu-list">
-          <li>
-            <NavLink 
-              to="/settings"
-              activeClassName="active" 
-              exact
-              className="profile-menu-list-item"
-            >
-              <WalletIcon className="profile-menu-list-icon" /> {t('personal.menu_service_extend')}
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink 
-              to="/settings"
-              activeClassName="active" 
-              exact
-              className="profile-menu-list-item"
-            >
-              <ClockIcon className="profile-menu-list-icon" /> {t('personal.menu_pay_history')}
+              <UsersIcon className='profile-menu-list-icon' />
+              {t('personal.menu_family')}
             </NavLink>
           </li>
         </ul>
       </div>
 
-      <div className="profile-menu-card card-bg mt-3">
-        <h5 className="profile-menu-title">{t('profile.menu_title_support')}</h5>
+      <div className='profile-menu-card card-bg mt-3'>
+        <h5 className='profile-menu-title'>
+          {t('profile.menu_title_settings')}
+        </h5>
 
-        <ul className="profile-menu-list">
+        <ul className='profile-menu-list'>
           <li>
-            <a
-              href="https://stgby.fitlope.com/faq"
-              className="profile-menu-list-item"
+            <NavLink
+              to='/settings'
+              activeClassName='active'
+              exact
+              className='profile-menu-list-item'
             >
-              <QuestionIcon className="profile-menu-list-icon" /> {t('personal.menu_faq')}
-            </a>
+              <WalletIcon className='profile-menu-list-icon' />
+              {t('personal.menu_service_extend')}
+            </NavLink>
           </li>
 
           <li>
-            <NavLink 
-              to="/settings"
-              activeClassName="active" 
+            <NavLink
+              to='/settings'
+              activeClassName='active'
               exact
-              className="profile-menu-list-item"
+              className='profile-menu-list-item'
             >
-              <LeafIcon className="profile-menu-list-icon" /> {t('personal.menu_freeware')}
+              <ClockIcon className='profile-menu-list-icon' />
+              {t('personal.menu_pay_history')}
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+
+      <div className='profile-menu-card card-bg mt-3'>
+        <h5 className='profile-menu-title'>
+          {t('profile.menu_title_support')}
+        </h5>
+
+        <ul className='profile-menu-list'>
+          <li>
+            <NavLink to='/settings/faq' className='profile-menu-list-item'>
+              <QuestionIcon className='profile-menu-list-icon' />
+              {t('personal.menu_faq')}
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to='/settings'
+              activeClassName='active'
+              exact
+              className='profile-menu-list-item'
+            >
+              <LeafIcon className='profile-menu-list-icon' />
+              {t('personal.menu_freeware')}
             </NavLink>
           </li>
         </ul>
