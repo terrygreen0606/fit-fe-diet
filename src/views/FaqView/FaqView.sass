@@ -1,0 +1,118 @@
+@import '../../assets/sass/_vars'
+
+.faq
+  padding-top: 40px
+
+  &__title
+    margin-bottom: 70px
+    font-size: 24px
+    font-weight: bold
+    line-height: 1.2
+    text-transform: uppercase
+
+  &__item
+    margin-bottom: 40px
+    border: 1px solid transparent
+    transition: 0.2s border ease
+
+    &.active,
+    &:hover
+      border: 1px solid $caribbean-green
+
+      .faq__item-question-description
+        color: $caribbean-green
+
+      .faq__item-question-arrow
+        background-color: $caribbean-green
+
+        svg path
+          fill: $white
+
+    &.active
+      .faq__item-question-arrow
+        transform: rotate(90deg)
+
+      .faq__item-answer
+        position: static
+        opacity: 1
+        visibility: visible
+
+    &-question
+      display: flex
+      justify-content: space-between
+      width: 100%
+      padding: 20px 45px
+      border: none
+      background-color: transparent
+      cursor: pointer
+
+      &-description
+        font-size: 24px
+        line-height: 1.2
+        transition: 0.2s color ease
+
+      &-arrow
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 26px
+        height: 26px
+        background-color: #F2F2F2
+        border-radius: 50%
+        transition: background-color 0.2s, transform 0.2s ease
+
+        svg
+          margin-left: 2px
+
+          path
+            transition: 0.2s fill ease
+
+    &-answer
+      position: absolute
+      padding: 20px 45px 40px
+      opacity: 0
+      visibility: hidden
+      transition: 0.2s opacity, visibility ease
+
+      &-title
+        margin-bottom: 20px
+        font-size: 18px
+        font-weight: bold
+
+      p
+        margin-top: 0
+        margin-bottom: 18px
+
+      a
+        display: inline-block
+        vertical-align: middle
+        margin-left: 5px
+        color: $caribbean-green
+        text-decoration: none
+        border-bottom: 1px solid transparent
+        transition: 0.2s border-bottom ease
+
+        &:hover
+          border-bottom: 1px solid
+
+@media only screen and(max-width: 767px)
+  .faq
+    &__title
+      font-size: 16px
+      margin-bottom: 30px
+
+    &__item
+      &-question
+        padding: 20px 25px
+
+        &-description
+          font-size: 16px
+
+      &-answer
+        padding: 20px 25px
+
+        &-title
+          font-size: 16px
+
+        p
+          font-size: 16px
