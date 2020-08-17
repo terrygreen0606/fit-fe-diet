@@ -20,6 +20,7 @@ import SettingsPersonalView from './views/Settings/SettingsPersonalView';
 import NotFound from './views/NotFound';
 import SavedRecipesView from './views/SavedRecipesView';
 import FavouriteRecipesView from './views/FavouriteRecipesView';
+import DashboardView from './views/DashboardView';
 
 const Routes = () => (
   <Switch>
@@ -134,6 +135,12 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <FavouriteRecipesView {...props} />
+          
+    <PrivateRoute
+      path='/dashboard'
+      component={(props: any) => (
+        <Layout {...props}>
+          <DashboardView {...props} />
         </Layout>
       )}
       exact

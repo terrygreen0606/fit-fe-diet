@@ -15,7 +15,11 @@ import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.s
 import { ReactComponent as RewardImage } from 'assets/img/reward-img.svg';
 import WomanGymImage from 'assets/img/woman_ball_gym.png';
 
-import { dataForWeekWorkout, dataForTodayActivities, tabs } from './mockDataForTrainings';
+import {
+  dataForWeekWorkout,
+  dataForTodayActivities,
+  tabs,
+} from './mockDataForTrainings';
 
 import './TrainingsView.sass';
 
@@ -24,11 +28,8 @@ const TrainingsView: React.FC = (props: any) => {
   const [weekWorkout, setWeekWorkout] = useState('wed');
   const [todayActivities, setTodayActivities] = useState(['workout_add']);
 
-  const t = (code: string, placeholders?: any) => getTranslate(
-    props.localePhrases,
-    code,
-    placeholders,
-  );
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
 
   const onWorkoutChange = (e) => setWeekWorkout(e.target.value);
 
@@ -37,9 +38,9 @@ const TrainingsView: React.FC = (props: any) => {
     return e.target.checked
       ? setTodayActivities((prev) => [...prev, e.target.value])
       : setTodayActivities((prev) => [
-        ...prev.slice(0, prev.indexOf(e.target.value)),
-        ...prev.slice(prev.indexOf(e.target.value) + 1),
-      ]);
+          ...prev.slice(0, prev.indexOf(e.target.value)),
+          ...prev.slice(prev.indexOf(e.target.value) + 1),
+        ]);
   };
 
   return (
@@ -62,23 +63,20 @@ const TrainingsView: React.FC = (props: any) => {
           <div className='row'>
             <div className='training-plan-card-list-col training-plan-list'>
               <div className='row'>
-
                 <ol className='page-tabs mx-4 mx-md-0'>
-                  {
-                    tabs.map((tab) => (
-                      <li
-                        role='presentation'
-                        key={`Level: ${tab}`}
-                        className={classnames('page-tabs-item', {
-                          active: level === tabs.indexOf(tab),
-                        })}
-                        value={tabs.indexOf(tab)}
-                        onClick={(e) => setLevel(e.currentTarget.value)}
-                      >
-                        {tab}
-                      </li>
-                    ))
-                  }
+                  {tabs.map((tab) => (
+                    <li
+                      role='presentation'
+                      key={`Level: ${tab}`}
+                      className={classnames('page-tabs-item', {
+                        active: level === tabs.indexOf(tab),
+                      })}
+                      value={tabs.indexOf(tab)}
+                      onClick={(e) => setLevel(e.currentTarget.value)}
+                    >
+                      {tab}
+                    </li>
+                  ))}
                 </ol>
 
                 <WeekDays
@@ -124,9 +122,7 @@ const TrainingsView: React.FC = (props: any) => {
                   <RewardImage />
                 </div>
                 <div className='training-plan-adherence-diet-card-content'>
-                  <p>
-                    {t('trainings.plan.completed', { number: 0 })}
-                  </p>
+                  <p>{t('trainings.plan.completed', { number: 0 })}</p>
                   <a href='/' className='link'>
                     {t('trainings.report.week')}
                   </a>
