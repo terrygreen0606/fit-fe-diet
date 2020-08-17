@@ -178,7 +178,7 @@ const FavouriteRecipesView = (props: any) => {
                                   <BreakfastIcon />
                                 </div>
                                 <div className='saved-recipes__list-item-content-meal-list-block-text'>
-                                  Breakfast
+                                  {t('meal.breakfast')}
                                 </div>
                               </button>
                               <button
@@ -189,7 +189,7 @@ const FavouriteRecipesView = (props: any) => {
                                   <LunchIcon />
                                 </div>
                                 <div className='saved-recipes__list-item-content-meal-list-block-text'>
-                                  Lunch
+                                  {t('meal.lunch')}
                                 </div>
                               </button>
                               <button
@@ -200,7 +200,7 @@ const FavouriteRecipesView = (props: any) => {
                                   <SnackIcon />
                                 </div>
                                 <div className='saved-recipes__list-item-content-meal-list-block-text'>
-                                  Snack
+                                  {t('meal.snack')}
                                 </div>
                               </button>
                               <button
@@ -211,7 +211,7 @@ const FavouriteRecipesView = (props: any) => {
                                   <DinnerIcon />
                                 </div>
                                 <div className='saved-recipes__list-item-content-meal-list-block-text'>
-                                  Dinner
+                                  {t('meal.dinner')}
                                 </div>
                               </button>
                             </div>
