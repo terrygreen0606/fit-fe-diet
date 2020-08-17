@@ -176,7 +176,7 @@ const SavedRecipesView = (props: any) => {
                                   <BreakfastIcon />
                                 </div>
                                 <div className='saved-recipes__list-item-content-meal-list-block-text'>
-                                  Breakfast
+                                  {t('meal.breakfast')}
                                 </div>
                               </button>
                               <button
