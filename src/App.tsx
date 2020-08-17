@@ -16,18 +16,13 @@ const App = (props: any) => {
 
   useEffect(() => {
     props.initApp();
+    // eslint-disable-next-line
   }, []);
 
   return (
     <BrowserRouter>
       <LocaleContext.Provider value={phrases}>
-        {isAuthChecking
-          ? (
-            <FullPageLoader />
-          )
-          : (
-            <Routes />
-          )}
+        {isAuthChecking ? <FullPageLoader /> : <Routes />}
       </LocaleContext.Provider>
     </BrowserRouter>
   );
@@ -38,5 +33,5 @@ export default connect(
     isAuthChecking: state.auth.isAuthChecking,
     phrases: state.locale.phrases,
   }),
-  { initApp },
+  { initApp }
 )(App);

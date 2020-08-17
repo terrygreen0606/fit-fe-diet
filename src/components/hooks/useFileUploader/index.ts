@@ -7,11 +7,11 @@ import { FileDataType } from 'types/file';
 import { uploadFileAWS, validateFile } from './utils';
 
 export type FileType = {
-  id: string,
-  image_id: string,
-  url: string,
-  isLoaded?: boolean
-  isFailed?: boolean
+  id: string;
+  image_id: string;
+  url: string;
+  isLoaded?: boolean;
+  isFailed?: boolean;
 };
 
 type Options = {
@@ -39,43 +39,39 @@ export default ({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [files, setFiles] = React.useState<FileType[]>([]);
 
-  React.useEffect(
-    () => {
-      if (!dropElement) {
-        return;
-      }
+  React.useEffect(() => {
+    if (!dropElement) {
+      return;
+    }
 
-      if (disabled) {
-        dropElement.removeEventListener('drop', handleDrop);
+    if (disabled) {
+      dropElement.removeEventListener('drop', handleDrop);
 
-        return;
-      }
+      return;
+    }
 
-      dropElement.addEventListener('drop', handleDrop);
+    dropElement.addEventListener('drop', handleDrop);
 
-      return () => {
-        dropElement.removeEventListener('drop', handleDrop);
-      };
-    },
-    [files, disabled, dropElement],
-  );
+    return () => {
+      dropElement.removeEventListener('drop', handleDrop);
+    };
+    // eslint-disable-next-line
+  }, [files, disabled, dropElement]);
 
-  React.useEffect(
-    () => {
-      if (!usePasteEvent || disabled) {
-        window.removeEventListener('paste', handlePaste, false);
+  React.useEffect(() => {
+    if (!usePasteEvent || disabled) {
+      window.removeEventListener('paste', handlePaste, false);
 
-        return;
-      }
+      return;
+    }
 
-      window.addEventListener('paste', handlePaste, false);
+    window.addEventListener('paste', handlePaste, false);
 
-      return () => {
-        window.removeEventListener('paste', handlePaste, false);
-      };
-    },
-    [usePasteEvent, disabled],
-  );
+    return () => {
+      window.removeEventListener('paste', handlePaste, false);
+    };
+    // eslint-disable-next-line
+  }, [usePasteEvent, disabled]);
 
   React.useEffect(() => {
     if (!initFiles) {
@@ -83,7 +79,9 @@ export default ({
     }
 
     const filesToAdd = files.length
-      ? initFiles.filter((file) => files.every((item) => item.image_id !== file.image_id))
+      ? initFiles.filter((file) =>
+          files.every((item) => item.image_id !== file.image_id)
+        )
       : initFiles;
     const initData = filesToAdd.map((item) => ({
       id: item.id,
@@ -96,6 +94,7 @@ export default ({
     if (initData.length) {
       setFiles(files.concat(...initData));
     }
+    // eslint-disable-next-line
   }, [initFiles]);
 
   React.useEffect(() => {
@@ -104,7 +103,9 @@ export default ({
     }
 
     const filesToAdd = files.length
-      ? additionalFiles.filter((file) => files.every((item) => item.image_id !== file.image_id))
+      ? additionalFiles.filter((file) =>
+          files.every((item) => item.image_id !== file.image_id)
+        )
       : additionalFiles;
     const initData = filesToAdd.map((item) => ({
       id: item.id,
@@ -117,6 +118,7 @@ export default ({
     if (initData.length) {
       setFiles(files.concat(...initData));
     }
+    // eslint-disable-next-line
   }, [additionalFiles]);
 
   const handlePaste = async (e: ClipboardEvent) => {
@@ -142,94 +144,95 @@ export default ({
     }
   };
 
-  const uploadFile = React.useCallback(async (file: File): Promise<void> => {
-    let processedFile;
+  const uploadFile = React.useCallback(
+    async (file: File): Promise<void> => {
+      let processedFile;
 
-    if (beforeUpload) {
-      try {
-        processedFile = await beforeUpload(file);
-      } catch {
-        return;
+      if (beforeUpload) {
+        try {
+          processedFile = await beforeUpload(file);
+        } catch {
+          return;
+        }
       }
-    }
 
-    try {
-      const resourceData = await uploadFileAWS(processedFile || file);
+      try {
+        const resourceData = await uploadFileAWS(processedFile || file);
 
-      setFiles((state) => {
-        const loadedFile = processedFile || file;
+        setFiles((state) => {
+          // const loadedFile = processedFile || file;
 
-        return (
+          return multiple
+            ? [
+                ...state,
+                {
+                  id: uuid(),
+                  image_id: resourceData.image_id,
+                  url: resourceData.url,
+                  isLoaded: true,
+                  isFailed: false,
+                },
+              ]
+            : [
+                {
+                  id: uuid(),
+                  image_id: resourceData.image_id,
+                  url: resourceData.url,
+                  isLoaded: true,
+                  isFailed: false,
+                },
+              ];
+        });
+      } catch (error) {
+        if (onFailedLoadFile) {
+          onFailedLoadFile(file.name);
+        }
+
+        setFiles((state) =>
           multiple
             ? [
-              ...state,
-              {
-                id: uuid(),
-                image_id: resourceData.image_id,
-                url: resourceData.url,
-                isLoaded: true,
-                isFailed: false,
-              },
-            ]
+                ...state,
+                {
+                  id: uuid(),
+                  image_id: null,
+                  url: null,
+                  isLoaded: false,
+                  isFailed: true,
+                },
+              ]
             : [
-              {
-                id: uuid(),
-                image_id: resourceData.image_id,
-                url: resourceData.url,
-                isLoaded: true,
-                isFailed: false,
-              },
-            ]
+                {
+                  id: uuid(),
+                  image_id: null,
+                  url: null,
+                  isLoaded: false,
+                  isFailed: true,
+                },
+              ]
         );
-      });
-    } catch (error) {
-      if (onFailedLoadFile) {
-        onFailedLoadFile(file.name);
       }
+    },
+    // eslint-disable-next-line
+    [files]
+  );
 
-      setFiles((state) => (
-        multiple
-          ? [
-            ...state,
-            {
-              id: uuid(),
-              image_id: null,
-              url: null,
-              isLoaded: false,
-              isFailed: true,
-            },
-          ]
-          : [
-            {
-              id: uuid(),
-              image_id: null,
-              url: null,
-              isLoaded: false,
-              isFailed: true,
-            },
-          ]
-      ));
-    }
-  }, [files]);
+  const handleDropFiles = React.useCallback(
+    async (
+      droppedFiles: File[], // eslint-disable-line
+      rejectedFiles: FileRejection[] = [], // eslint-disable-line
+      e: any = {} // eslint-disable-line
+    ) => {
+      setIsLoading(true);
 
-  const handleDropFiles = React.useCallback(async (
-    droppedFiles: File[], // eslint-disable-line
-    rejectedFiles: FileRejection[] = [], // eslint-disable-line
-    e: any = {} // eslint-disable-line
-  ) => {
-    setIsLoading(true);
+      await Promise.all(droppedFiles.map((file) => uploadFile(file)));
 
-    await Promise.all(droppedFiles.map((file) => uploadFile(file)));
+      setIsLoading(false);
+    },
+    // eslint-disable-next-line
+    [files]
+  );
 
-    setIsLoading(false);
-  }, [files]);
-
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    open,
-  } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     ...options,
     multiple,
     accept,
@@ -238,7 +241,9 @@ export default ({
   });
 
   const handleRemoveFile = React.useCallback(
-    (fileData: FileType) => (e: React.MouseEvent<HTMLSpanElement | HTMLDivElement, MouseEvent>) => {
+    (fileData: FileType) => (
+      e: React.MouseEvent<HTMLSpanElement | HTMLDivElement, MouseEvent>
+    ) => {
       e.preventDefault();
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
@@ -251,55 +256,56 @@ export default ({
 
       setFiles(filteredFiles);
     },
-    [files],
+    [files]
   );
 
   const handleAddFile = React.useCallback(
     (file: Partial<FileType>) => {
-      setFiles(files.concat({
-        ...file,
-        isLoaded: true,
-        isFailed: false,
-      } as FileType));
+      setFiles(
+        files.concat({
+          ...file,
+          isLoaded: true,
+          isFailed: false,
+        } as FileType)
+      );
     },
-    [files],
+    [files]
   );
 
   const handleDrop = (e) => {
     e.preventDefault();
 
     const { files: droppedFiles } = e.dataTransfer;
-    const filesArray = Array.from(droppedFiles).filter((item: File) => validateFile(item, accept));
+    const filesArray = Array.from(droppedFiles).filter((item: File) =>
+      validateFile(item, accept)
+    );
 
     if (filesArray.length) {
       handleDropFiles(filesArray as File[]);
     }
   };
 
-  const handleReset = React.useCallback(
-    () => {
-      if (files.length) {
-        setFiles([]);
+  const handleReset = React.useCallback(() => {
+    if (files.length) {
+      setFiles([]);
 
-        return;
-      }
+      return;
+    }
 
-      if (!initFiles || !initFiles.length) {
-        return;
-      }
+    if (!initFiles || !initFiles.length) {
+      return;
+    }
 
-      const initData = initFiles.map((item) => ({
-        id: item.id,
-        image_id: item.image_id,
-        url: item.url,
-        isLoaded: true,
-        isFailed: false,
-      }));
+    const initData = initFiles.map((item) => ({
+      id: item.id,
+      image_id: item.image_id,
+      url: item.url,
+      isLoaded: true,
+      isFailed: false,
+    }));
 
-      setFiles(initData);
-    },
-    [initFiles, files],
-  );
+    setFiles(initData);
+  }, [initFiles, files]);
 
   return {
     files,

@@ -34,6 +34,7 @@ const WaterChart = ({
       },
       options,
     });
+    // eslint-disable-next-line
   }, [data, labels]);
 
   return <canvas ref={chartContainer} />;

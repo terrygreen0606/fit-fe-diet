@@ -6,23 +6,27 @@ import ModalView from './Modal';
 import ModalMain from './Main';
 import ModalFooter from './Footer';
 
-export const Main = ({ children, className }: any) => <ModalMain className={className}>{children}</ModalMain>;
-export const Footer = ({ children, className }: any) => <ModalFooter className={className}>{children}</ModalFooter>;
+export const Main = ({ children, className }: any) => (
+  <ModalMain className={className}>{children}</ModalMain>
+);
+export const Footer = ({ children, className }: any) => (
+  <ModalFooter className={className}>{children}</ModalFooter>
+);
 
 type Props = {
-  isOpen: boolean,
-  onAfterOpen?: () => void,
-  onAfterClose?: () => void,
-  bodyOpenClassName?: string,
-  withCloseBtn?: boolean,
+  isOpen: boolean;
+  onAfterOpen?: () => void;
+  onAfterClose?: () => void;
+  bodyOpenClassName?: string;
+  withCloseBtn?: boolean;
 
-  shouldCloseOnOverlayClick?: boolean,
+  shouldCloseOnOverlayClick?: boolean;
 
-  title?: string,
-  children: any,
-  className?: string,
+  title?: string;
+  children: any;
+  className?: string;
 
-  onClose?: (e: SyntheticEvent) => void
+  onClose?: (e: SyntheticEvent) => void;
 };
 
 const Modal = (props: Props) => {
@@ -58,22 +62,21 @@ const Modal = (props: Props) => {
     } else {
       document.querySelector('body').classList.remove(bodyOpenClassName);
     }
+    // eslint-disable-next-line
   }, [isOpen]);
 
   if (isOpen) {
-    return (
-      ReactDOM.createPortal(
-        <ModalView
-          title={title}
-          onClose={onClose}
-          withCloseBtn={withCloseBtn}
-          className={className}
-          shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-        >
-          {children}
-        </ModalView>,
-        document.getElementById('modal'),
-      )
+    return ReactDOM.createPortal(
+      <ModalView
+        title={title}
+        onClose={onClose}
+        withCloseBtn={withCloseBtn}
+        className={className}
+        shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+      >
+        {children}
+      </ModalView>,
+      document.getElementById('modal')
     );
   }
 

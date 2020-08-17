@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import DayPicker from 'react-day-picker';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import MomentLocaleUtils from 'react-day-picker/moment';
 
@@ -26,16 +25,26 @@ const YearMonthForm = ({ date, localeUtils, onChange }) => {
   };
 
   return (
-    <form className="DayPicker-Caption">
-      <select className="DayPicker-select" name="month" onChange={handleChange} value={date.getMonth()}>
+    <form className='DayPicker-Caption'>
+      <select
+        className='DayPicker-select'
+        name='month'
+        onChange={handleChange}
+        value={date.getMonth()}
+      >
         {months.map((month, i) => (
           <option key={month} value={i}>
             {month}
           </option>
         ))}
       </select>
-      <select className="DayPicker-select" name="year" onChange={handleChange} value={date.getFullYear()}>
-        {years.map(year => (
+      <select
+        className='DayPicker-select'
+        name='year'
+        onChange={handleChange}
+        value={date.getFullYear()}
+      >
+        {years.map((year) => (
           <option key={year} value={year}>
             {year}
           </option>
@@ -46,12 +55,12 @@ const YearMonthForm = ({ date, localeUtils, onChange }) => {
 };
 
 type DatePickerProps = {
-  inputProps: any,
-  value: Date,
-  onChange: (date: Date) => void
+  inputProps: any;
+  value: Date;
+  onChange: (date: Date) => void;
 };
 
-const FORMAT = 'DD-MM-yyyy';
+// const FORMAT = 'DD-MM-yyyy';
 
 const DatePicker = (props: DatePickerProps) => {
   const [selectedDay, setSelectedDay] = useState<Date>(props.value);
@@ -61,14 +70,14 @@ const DatePicker = (props: DatePickerProps) => {
     setSelectedDay(props.value);
   }, [props.value]);
 
-  const handleYearMonthChange = month => {
+  const handleYearMonthChange = (month) => {
     setCurrentMonth(month);
   };
 
-  const handleDayChange = (selectedDay, modifiers, dayPickerInput) => {    
+  const handleDayChange = (selectedDay, modifiers, dayPickerInput) => {
     const input = dayPickerInput.getInput();
 
-    console.log(input)
+    console.log(input);
 
     setSelectedDay(selectedDay);
 
@@ -77,15 +86,15 @@ const DatePicker = (props: DatePickerProps) => {
     }
   };
 
-  const {
-    inputProps
-  } = props;
+  const { inputProps } = props;
 
   return (
     <DayPickerInput
       value={selectedDay}
       onDayChange={handleDayChange}
-      component={inputFieldProps => <InputField {...inputFieldProps} {...inputProps} />}
+      component={(inputFieldProps) => (
+        <InputField {...inputFieldProps} {...inputProps} />
+      )}
       dayPickerProps={{
         month: currentMonth,
         captionElement: ({ date, localeUtils }) => (
@@ -94,7 +103,7 @@ const DatePicker = (props: DatePickerProps) => {
             localeUtils={localeUtils}
             onChange={handleYearMonthChange}
           />
-        )
+        ),
       }}
       formatDate={MomentLocaleUtils.formatDate}
       parseDate={MomentLocaleUtils.parseDate}

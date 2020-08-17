@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';

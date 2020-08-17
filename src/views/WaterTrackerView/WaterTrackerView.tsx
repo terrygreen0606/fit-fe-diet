@@ -14,9 +14,9 @@ import WaterChart from './WaterChart';
 
 const WaterTrackerView = (props: any) => {
   const [trackerPeriod, setTrackerPeriod] = useState('week');
-  const [totalCompleteWater, setTotalCompleteWater] = useState(55);
-  const [totalCompleteWaterML, setTotalCompleteWaterML] = useState(1000);
-  const [chartData, setChartData] = useState([50, 50, 50, 50, 60]);
+  const [totalCompleteWater] = useState(55);
+  const [totalCompleteWaterML] = useState(1000);
+  const [chartData] = useState([50, 50, 50, 50, 60]);
 
   let chartLabels;
 
