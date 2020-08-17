@@ -14,26 +14,25 @@ import './FaqView.sass';
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 
 const FaqView = (props: any) => {
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
   const [faqData, setFaqData] = useState([
     {
       id: 1,
-      question: 'FAQ 1. How this service works?',
-      answerTitle: 'Terms of payment',
-      answerDescription:
-        'You have the right to withdraw from the purchase and request a refund within 14 days. If you want to do it, please write to us at info@fitlap.ee Fixed payment packages renew automatically at the end of the period',
+      question: t('faq.question'),
+      answerTitle: t('faq.answer.title'),
+      answerDescription: t('faq.answer.description'),
       isOpen: false,
     },
     {
       id: 2,
-      question: 'FAQ 2. Other question?',
-      answerTitle: 'Terms of payment',
-      answerDescription:
-        'You have the right to withdraw from the purchase and request a refund within 14 days. If you want to do it, please write to us at info@fitlap.ee Fixed payment packages renew automatically at the end of the period',
+      question: t('faq.question'),
+      answerTitle: t('faq.answer.title'),
+      answerDescription: t('faq.answer.description'),
       isOpen: false,
     },
   ]);
 
-  const t = (code: string) => getTranslate(props.localePhrases, code);
   return (
     <ProfileLayout>
       <div className='faq'>
