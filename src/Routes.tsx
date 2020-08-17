@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import BasePage from 'components/hoc/BasePage';
@@ -135,7 +136,11 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <FavouriteRecipesView {...props} />
-          
+        </Layout>
+      )}
+      exact
+    />
+
     <PrivateRoute
       path='/dashboard'
       component={(props: any) => (
