@@ -23,7 +23,7 @@ import SavedRecipesView from './views/SavedRecipesView';
 import FavouriteRecipesView from './views/FavouriteRecipesView';
 import DashboardView from './views/DashboardView';
 import FaqView from './views/FaqView';
-import RefferalView from './views/RefferalView';
+import ReferralView from './views/ReferralView';
 
 const Routes = () => (
   <Switch>
@@ -164,10 +164,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path='/refferal'
+      path='/referral'
       component={(props: any) => (
         <Layout {...props}>
-          <RefferalView {...props} />
+          <ReferralView {...props} />
         </Layout>
       )}
       exact

@@ -15,7 +15,7 @@ import { userInviteFriendByEmail } from 'api';
 import InputField from 'components/common/Forms/InputField';
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import './RefferalView.sass';
+import './ReferralView.sass';
 
 // Icons
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
@@ -25,7 +25,7 @@ import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-i
 import { ReactComponent as InstagramLogo } from 'assets/img/icons/instagram-logo-icon.svg';
 import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 
-const RefferalView = (props: any) => {
+const ReferralView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const [inviteFriendsForm, setInviteFriendsForm] = useState({
@@ -67,30 +67,30 @@ const RefferalView = (props: any) => {
       userInviteFriendByEmail(inviteFriendsForm.email)
         .then((response) => {
           setInviteFriendsForm({ ...inviteFriendsForm, email: '' });
-          toast.success(t('refferal.email_sent'));
+          toast.success(t('referral.email_sent'));
           return response.data.data;
         })
         .catch(() => {
-          toast.error(t('refferal.error'));
+          toast.error(t('referral.error'));
         });
     }
   };
 
   return (
-    <section className='refferal'>
+    <section className='referral'>
       <div className='container'>
         <div className='row align-items-center'>
           <div className='col-7 position-static'>
-            <div className='refferal__text-content'>
-              <h1 className='refferal__title'>{t('refferal.title')}</h1>
-              <h2 className='refferal__subtitle'>{t('refferal.subtitle')}</h2>
-              <div className='refferal__bonus'>{t('refferal.bonus')}</div>
-              <p className='refferal__description'>
-                {t('refferal.description')}
+            <div className='referral__text-content'>
+              <h1 className='referral__title'>{t('referral.title')}</h1>
+              <h2 className='referral__subtitle'>{t('referral.subtitle')}</h2>
+              <div className='referral__bonus'>{t('referral.bonus')}</div>
+              <p className='referral__description'>
+                {t('referral.description')}
               </p>
               <form
                 onSubmit={(e) => inviteFriendsSubmit(e)}
-                className='refferal__container-input'
+                className='referral__container-input'
               >
                 <InputField
                   name='email'
@@ -99,56 +99,56 @@ const RefferalView = (props: any) => {
                   value={inviteFriendsForm.email}
                   onChange={(e) => validateOnChange('email', e.target.value, e)}
                   block
-                  placeholder={t('refferal.enter_email')}
+                  placeholder={t('referral.enter_email')}
                   height='lg'
-                  className='refferal__input card-bg'
+                  className='referral__input card-bg'
                 />
-                <button type='submit' className='refferal__invite-button'>
-                  <span className='refferal__invite-button-text'>
-                    {t('refferal.invite')}
+                <button type='submit' className='referral__invite-button'>
+                  <span className='referral__invite-button-text'>
+                    {t('referral.invite')}
                   </span>
-                  <div className='refferal__invite-button-container-icon'>
-                    <ArrowRight className='refferal__invite-button-icon' />
+                  <div className='referral__invite-button-container-icon'>
+                    <ArrowRight className='referral__invite-button-icon' />
                   </div>
                 </button>
               </form>
             </div>
           </div>
           <div className='col-5'>
-            <div className='refferal__container-media'>
+            <div className='referral__container-media'>
               <img
                 src='https://fitstg.s3.eu-central-1.amazonaws.com/friends.png'
                 alt=''
-                className='refferal__media'
+                className='referral__media'
               />
             </div>
           </div>
         </div>
-        <div className='refferal__socials'>
-          <a href='https://www.twitter.com/' className='refferal__socials-item'>
+        <div className='referral__socials'>
+          <a href='https://www.twitter.com/' className='referral__socials-item'>
             <TwitterLogo />
           </a>
           <a
             href='https://www.whatsapp.com/'
-            className='refferal__socials-item'
+            className='referral__socials-item'
           >
             <WhatsAppLogo />
           </a>
           <a
             href='https://www.facebook.com/'
-            className='refferal__socials-item'
+            className='referral__socials-item'
           >
             <FacebookLogo />
           </a>
           <a
             href='https://www.instagram.com/'
-            className='refferal__socials-item'
+            className='referral__socials-item'
           >
             <InstagramLogo />
           </a>
           <a
             href='https://web.telegram.org/'
-            className='refferal__socials-item'
+            className='referral__socials-item'
           >
             <TelegramLogo />
           </a>
@@ -158,4 +158,4 @@ const RefferalView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(RefferalView));
+export default WithTranslate(connect(null)(ReferralView));
