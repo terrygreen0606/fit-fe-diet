@@ -67,11 +67,11 @@ const RefferalView = (props: any) => {
       userInviteFriendByEmail(inviteFriendsForm.email)
         .then((response) => {
           setInviteFriendsForm({ ...inviteFriendsForm, email: '' });
-          toast.success('Email sent successfully!');
+          toast.success(t('refferal.email_sent'));
           return response.data.data;
         })
         .catch(() => {
-          toast.error('Error!');
+          toast.error(t('refferal.error'));
         });
     }
   };
