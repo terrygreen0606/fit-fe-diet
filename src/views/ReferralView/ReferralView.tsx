@@ -1,3 +1,5 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
@@ -47,7 +49,6 @@ const ReferralView = (props: any) => {
   };
 
   const getFieldErrors = (field: string) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
     getFieldErrorsUtil(field, inviteFriendsErrors);
 
   const inviteFriendsSubmit = (e) => {
@@ -125,30 +126,43 @@ const ReferralView = (props: any) => {
           </div>
         </div>
         <div className='referral__socials'>
-          <a href='https://www.twitter.com/' className='referral__socials-item'>
+          <a
+            href='https://twitter.com/intent/tweet?text=Follow%20link:%20https://appstgby.fitlope.com/invite/5f1aa884a67cce2f8375a713'
+            className='referral__socials-item'
+            rel='noopener noreferrer'
+            target='_blank'
+          >
             <TwitterLogo />
           </a>
           <a
             href='https://www.whatsapp.com/'
             className='referral__socials-item'
+            rel='noopener noreferrer'
+            target='_blank'
           >
             <WhatsAppLogo />
           </a>
           <a
             href='https://www.facebook.com/'
             className='referral__socials-item'
+            rel='noopener noreferrer'
+            target='_blank'
           >
             <FacebookLogo />
           </a>
           <a
             href='https://www.instagram.com/'
             className='referral__socials-item'
+            rel='noopener noreferrer'
+            target='_blank'
           >
             <InstagramLogo />
           </a>
           <a
             href='https://web.telegram.org/'
             className='referral__socials-item'
+            rel='noopener noreferrer'
+            target='_blank'
           >
             <TelegramLogo />
           </a>
