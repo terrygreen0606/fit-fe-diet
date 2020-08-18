@@ -70,8 +70,7 @@ const RefferalView = (props: any) => {
           toast.success('Email sent successfully!');
           return response.data.data;
         })
-        .catch((reject) => {
-          console.log(reject);
+        .catch(() => {
           toast.error('Error!');
         });
     }
