@@ -77,8 +77,9 @@ const ReferralView = (props: any) => {
     }
   };
 
-  const checkShare = () => {
+  const checkShare = (e) => {
     if (navigator.share) {
+      e.preventDefault();
       navigator.share({
         title: 'Share your referrence link!',
         url: 'https://appstgby.fitlope.com/invite/5f1aa884a67cce2f8375a713',
@@ -140,44 +141,46 @@ const ReferralView = (props: any) => {
             className='referral__socials-item'
             rel='noopener noreferrer'
             target='_blank'
+            onClick={(e) => checkShare(e)}
           >
             <TwitterLogo />
           </a>
-          <button
-            type='button'
+          <a
+            href='https://www.whatsapp.com/'
             className='referral__socials-item'
-            onClick={() => checkShare()}
-          >
-            <TwitterLogo />
-          </button>
-          <button
-            type='button'
-            className='referral__socials-item'
-            onClick={() => checkShare()}
+            rel='noopener noreferrer'
+            target='_blank'
+            onClick={(e) => checkShare(e)}
           >
             <WhatsAppLogo />
-          </button>
-          <button
-            type='button'
+          </a>
+          <a
+            href='https://www.facebook.com/'
             className='referral__socials-item'
-            onClick={() => checkShare()}
+            rel='noopener noreferrer'
+            target='_blank'
+            onClick={(e) => checkShare(e)}
           >
             <FacebookLogo />
-          </button>
-          <button
-            type='button'
+          </a>
+          <a
+            href='https://www.instagram.com/'
             className='referral__socials-item'
-            onClick={() => checkShare()}
+            rel='noopener noreferrer'
+            target='_blank'
+            onClick={(e) => checkShare(e)}
           >
             <InstagramLogo />
-          </button>
-          <button
-            type='button'
+          </a>
+          <a
+            href='https://telegram.org/'
             className='referral__socials-item'
-            onClick={() => checkShare()}
+            rel='noopener noreferrer'
+            target='_blank'
+            onClick={(e) => checkShare(e)}
           >
             <TelegramLogo />
-          </button>
+          </a>
         </div>
       </div>
     </section>
