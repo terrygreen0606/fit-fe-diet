@@ -77,6 +77,15 @@ const ReferralView = (props: any) => {
     }
   };
 
+  const checkShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Share your referrence link!',
+        url: 'https://appstgby.fitlope.com/invite/5f1aa884a67cce2f8375a713',
+      });
+    }
+  };
+
   return (
     <section className='referral'>
       <div className='container'>
@@ -139,6 +148,7 @@ const ReferralView = (props: any) => {
             className='referral__socials-item'
             rel='noopener noreferrer'
             target='_blank'
+            onClick={() => checkShare()}
           >
             <WhatsAppLogo />
           </a>
@@ -147,6 +157,7 @@ const ReferralView = (props: any) => {
             className='referral__socials-item'
             rel='noopener noreferrer'
             target='_blank'
+            onClick={() => checkShare()}
           >
             <FacebookLogo />
           </a>
@@ -155,6 +166,7 @@ const ReferralView = (props: any) => {
             className='referral__socials-item'
             rel='noopener noreferrer'
             target='_blank'
+            onClick={() => checkShare()}
           >
             <InstagramLogo />
           </a>
@@ -163,6 +175,7 @@ const ReferralView = (props: any) => {
             className='referral__socials-item'
             rel='noopener noreferrer'
             target='_blank'
+            onClick={() => checkShare()}
           >
             <TelegramLogo />
           </a>
