@@ -88,11 +88,7 @@ const ReferralView = (props: any) => {
   return (
     <>
       <Helmet>
-        <meta property='og:title' content='helmet title facebook' />
-        <meta property='og:description' content='helmet description facebook' />
-
-        <meta name='twitter:title' content='helmet title twitter' />
-        <meta name='twitter:description' content='helmet description twitter' />
+        <title>helmet title</title>
       </Helmet>
       <section className='referral'>
         <div className='container'>
