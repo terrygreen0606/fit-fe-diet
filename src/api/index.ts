@@ -14,3 +14,4 @@ export * from './uploadImageAWS';
 export * from './user/userUpdateProfile';
 export * from './fetchUserProfile';
 export * from './user/userInviteFriendByEmail';
+export * from './user/getUserInviteLink';

@@ -11,7 +11,7 @@ import {
   getTranslate,
 } from 'utils';
 import FormValidator from 'utils/FormValidator';
-import { userInviteFriendByEmail } from 'api';
+import { userInviteFriendByEmail, getUserInviteLink } from 'api';
 
 // Components
 import InputField from 'components/common/Forms/InputField';
@@ -33,6 +33,8 @@ const ReferralView = (props: any) => {
   const [inviteFriendsForm, setInviteFriendsForm] = useState({
     email: '',
   });
+
+  const [inviteLink, setInviteLink] = useState('');
 
   const [inviteFriendsErrors, setInviteFriendsErrors] = useState([]);
 
@@ -77,12 +79,16 @@ const ReferralView = (props: any) => {
     }
   };
 
+  getUserInviteLink().then((response) => {
+    setInviteLink(response.data.data.invite_url);
+  });
+
   const checkShare = (e) => {
     if (navigator.share) {
       e.preventDefault();
       navigator.share({
         title: 'Share your referrence link!',
-        url: 'https://appstgby.fitlope.com/invite/5f1aa884a67cce2f8375a713',
+        url: inviteLink,
       });
     }
   };
@@ -137,7 +143,7 @@ const ReferralView = (props: any) => {
         </div>
         <div className='referral__socials'>
           <a
-            href='https://twitter.com/intent/tweet?text=Follow%20link:%20https://appstgby.fitlope.com/invite/5f1aa884a67cce2f8375a713'
+            href={`https://twitter.com/intent/tweet?text=Follow%20link:%20${inviteLink}`}
             className='referral__socials-item'
             rel='noopener noreferrer'
             target='_blank'
