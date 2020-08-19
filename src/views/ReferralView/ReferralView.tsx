@@ -4,6 +4,16 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
+import {
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+} from 'react-share';
 
 import {
   validateFieldOnChange,
@@ -16,16 +26,6 @@ import { userInviteFriendByEmail, getUserInviteLink } from 'api';
 // Components
 import InputField from 'components/common/Forms/InputField';
 import WithTranslate from 'components/hoc/WithTranslate';
-import {
-  TwitterIcon,
-  TwitterShareButton,
-  WhatsappIcon,
-  WhatsappShareButton,
-  FacebookIcon,
-  FacebookShareButton,
-  TelegramIcon,
-  TelegramShareButton,
-} from 'react-share';
 
 import './ReferralView.sass';
 
