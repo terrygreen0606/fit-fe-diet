@@ -1,25 +1,17 @@
+/* eslint-disable react/jsx-curly-newline */
 /* eslint-disable function-paren-newline */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import {
-  TwitterIcon,
-  TwitterShareButton,
-  WhatsappIcon,
-  WhatsappShareButton,
-  FacebookIcon,
-  FacebookShareButton,
-  TelegramIcon,
-  TelegramShareButton,
-} from 'react-share';
 
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
+import { openShareLink } from 'utils/openShareLink';
 import FormValidator from 'utils/FormValidator';
 import { userInviteFriendByEmail, getUserInviteLink } from 'api';
 
@@ -31,6 +23,10 @@ import './ReferralView.sass';
 
 // Icons
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
+import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
+import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
+import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
+import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 
 const ReferralView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
@@ -137,30 +133,44 @@ const ReferralView = (props: any) => {
           </div>
         </div>
         <div className='referral__socials'>
-          <TwitterShareButton
-            url={inviteLink}
+          <button
+            type='button'
             className='referral__socials-item'
+            onClick={() =>
+              openShareLink(
+                `https://twitter.com/intent/tweet?text=${inviteLink}`
+              )
+            }
           >
-            <TwitterIcon borderRadius={50} />
-          </TwitterShareButton>
-          <WhatsappShareButton
-            url={inviteLink}
+            <TwitterLogo />
+          </button>
+          <button
+            type='button'
             className='referral__socials-item'
+            onClick={() =>
+              openShareLink(
+                `https://www.facebook.com/sharer/sharer.php?u=${inviteLink}`
+              )
+            }
           >
-            <WhatsappIcon borderRadius={50} />
-          </WhatsappShareButton>
-          <FacebookShareButton
-            url={inviteLink}
+            <FacebookLogo />
+          </button>
+          <button
+            type='button'
             className='referral__socials-item'
+            onClick={() =>
+              openShareLink(`https://t.me/share/url?url=${inviteLink}`)
+            }
           >
-            <FacebookIcon borderRadius={50} />
-          </FacebookShareButton>
-          <TelegramShareButton
-            url={inviteLink}
+            <TelegramLogo />
+          </button>
+          <button
+            type='button'
             className='referral__socials-item'
+            onClick={() => openShareLink(`https://wa.me/?text=${inviteLink}`)}
           >
-            <TelegramIcon borderRadius={50} />
-          </TelegramShareButton>
+            <WhatsappLogo />
+          </button>
         </div>
       </div>
     </section>
