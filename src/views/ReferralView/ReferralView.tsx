@@ -143,42 +143,41 @@ const ReferralView = (props: any) => {
           >
             <TwitterLogo />
           </a>
-          <a
-            href='https://www.whatsapp.com/'
+          <button
+            type='button'
             className='referral__socials-item'
-            rel='noopener noreferrer'
-            target='_blank'
+            onClick={() => checkShare()}
+          >
+            <TwitterLogo />
+          </button>
+          <button
+            type='button'
+            className='referral__socials-item'
             onClick={() => checkShare()}
           >
             <WhatsAppLogo />
-          </a>
-          <a
-            href='https://www.facebook.com/'
+          </button>
+          <button
+            type='button'
             className='referral__socials-item'
-            rel='noopener noreferrer'
-            target='_blank'
             onClick={() => checkShare()}
           >
             <FacebookLogo />
-          </a>
-          <a
-            href='https://www.instagram.com/'
+          </button>
+          <button
+            type='button'
             className='referral__socials-item'
-            rel='noopener noreferrer'
-            target='_blank'
             onClick={() => checkShare()}
           >
             <InstagramLogo />
-          </a>
-          <a
-            href='https://web.telegram.org/'
+          </button>
+          <button
+            type='button'
             className='referral__socials-item'
-            rel='noopener noreferrer'
-            target='_blank'
             onClick={() => checkShare()}
           >
             <TelegramLogo />
-          </a>
+          </button>
         </div>
       </div>
     </section>
