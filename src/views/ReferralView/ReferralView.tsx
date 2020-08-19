@@ -5,7 +5,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import Helmet from 'react-helmet';
 
 import {
   validateFieldOnChange,
@@ -86,102 +85,95 @@ const ReferralView = (props: any) => {
   });
 
   return (
-    <>
-      <Helmet>
-        <title>helmet title</title>
-      </Helmet>
-      <section className='referral'>
-        <div className='container'>
-          <div className='row align-items-center'>
-            <div className='col-7 position-static'>
-              <div className='referral__text-content'>
-                <h1 className='referral__title'>{t('referral.title')}</h1>
-                <h2 className='referral__subtitle'>{t('referral.subtitle')}</h2>
-                <div className='referral__bonus'>{t('referral.bonus')}</div>
-                <p className='referral__description'>
-                  {t('referral.description')}
-                </p>
-                <form
-                  onSubmit={(e) => inviteFriendsSubmit(e)}
-                  className='referral__container-input'
-                >
-                  <InputField
-                    name='email'
-                    data-validate='["email"]'
-                    errors={getFieldErrors('email')}
-                    value={inviteFriendsForm.email}
-                    onChange={(e) =>
-                      validateOnChange('email', e.target.value, e)
-                    }
-                    block
-                    placeholder={t('referral.enter_email')}
-                    height='lg'
-                    className='referral__input card-bg'
-                  />
-                  <button type='submit' className='referral__invite-button'>
-                    <span className='referral__invite-button-text'>
-                      {t('referral.invite')}
-                    </span>
-                    <div className='referral__invite-button-container-icon'>
-                      <ArrowRight className='referral__invite-button-icon' />
-                    </div>
-                  </button>
-                </form>
-              </div>
-            </div>
-            <div className='col-5'>
-              <div className='referral__container-media'>
-                <img
-                  src='https://fitstg.s3.eu-central-1.amazonaws.com/friends.png'
-                  alt=''
-                  className='referral__media'
+    <section className='referral'>
+      <div className='container'>
+        <div className='row align-items-center'>
+          <div className='col-7 position-static'>
+            <div className='referral__text-content'>
+              <h1 className='referral__title'>{t('referral.title')}</h1>
+              <h2 className='referral__subtitle'>{t('referral.subtitle')}</h2>
+              <div className='referral__bonus'>{t('referral.bonus')}</div>
+              <p className='referral__description'>
+                {t('referral.description')}
+              </p>
+              <form
+                onSubmit={(e) => inviteFriendsSubmit(e)}
+                className='referral__container-input'
+              >
+                <InputField
+                  name='email'
+                  data-validate='["email"]'
+                  errors={getFieldErrors('email')}
+                  value={inviteFriendsForm.email}
+                  onChange={(e) => validateOnChange('email', e.target.value, e)}
+                  block
+                  placeholder={t('referral.enter_email')}
+                  height='lg'
+                  className='referral__input card-bg'
                 />
-              </div>
+                <button type='submit' className='referral__invite-button'>
+                  <span className='referral__invite-button-text'>
+                    {t('referral.invite')}
+                  </span>
+                  <div className='referral__invite-button-container-icon'>
+                    <ArrowRight className='referral__invite-button-icon' />
+                  </div>
+                </button>
+              </form>
             </div>
           </div>
-          <div className='referral__socials'>
-            <button
-              type='button'
-              className='referral__socials-item'
-              onClick={() =>
-                openShareLink(
-                  `https://twitter.com/intent/tweet?text=${inviteLink}`
-                )
-              }
-            >
-              <TwitterLogo />
-            </button>
-            <button
-              type='button'
-              className='referral__socials-item'
-              onClick={() =>
-                openShareLink(
-                  `https://www.facebook.com/sharer/sharer.php?u=${inviteLink}`
-                )
-              }
-            >
-              <FacebookLogo />
-            </button>
-            <button
-              type='button'
-              className='referral__socials-item'
-              onClick={() =>
-                openShareLink(`https://t.me/share/url?url=${inviteLink}`)
-              }
-            >
-              <TelegramLogo />
-            </button>
-            <button
-              type='button'
-              className='referral__socials-item'
-              onClick={() => openShareLink(`https://wa.me/?text=${inviteLink}`)}
-            >
-              <WhatsappLogo />
-            </button>
+          <div className='col-5'>
+            <div className='referral__container-media'>
+              <img
+                src='https://fitstg.s3.eu-central-1.amazonaws.com/friends.png'
+                alt=''
+                className='referral__media'
+              />
+            </div>
           </div>
         </div>
-      </section>
-    </>
+        <div className='referral__socials'>
+          <button
+            type='button'
+            className='referral__socials-item'
+            onClick={() =>
+              openShareLink(
+                `https://twitter.com/intent/tweet?text=${inviteLink}`
+              )
+            }
+          >
+            <TwitterLogo />
+          </button>
+          <button
+            type='button'
+            className='referral__socials-item'
+            onClick={() =>
+              openShareLink(
+                `https://www.facebook.com/sharer/sharer.php?u=${inviteLink}`
+              )
+            }
+          >
+            <FacebookLogo />
+          </button>
+          <button
+            type='button'
+            className='referral__socials-item'
+            onClick={() =>
+              openShareLink(`https://t.me/share/url?url=${inviteLink}`)
+            }
+          >
+            <TelegramLogo />
+          </button>
+          <button
+            type='button'
+            className='referral__socials-item'
+            onClick={() => openShareLink(`https://wa.me/?text=${inviteLink}`)}
+          >
+            <WhatsappLogo />
+          </button>
+        </div>
+      </div>
+    </section>
   );
 };
 
