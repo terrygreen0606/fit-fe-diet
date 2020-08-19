@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserAuthProfileType } from 'types/auth';
+import { getTranslate } from 'utils';
 
 // Components
 import Modal from 'components/common/Modal';
@@ -8,6 +9,10 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Steps from './Steps';
 import GoalStep from './GoalStep';
 import InfoStep from './InfoStep';
+import NotEatingStep from './NotEatingStep';
+import PlanProgressStep from './PlanProgressStep';
+import ExpectationsStep from './ExpectationsStep';
+import PlanReadyStep from './PlanReadyStep';
 import JoinStep from './JoinStep';
 
 import './RegisterModal.sass';
@@ -41,22 +46,59 @@ type RegisterModalProps = {
   localePhrases: any
 };
 
+type RegisterViewType = 'GOAL' | 'PLAN_PROGRESS' | 'NOT_EATING' | 'EXPECTATIONS' | 'INFO' | 'JOIN' | 'READY';
+
+type RegisterStepTitlesType = [string, string, string];
+
 const RegisterModal = ({
   isOpen,
   onClose,
   tpl,
   localePhrases
 }: RegisterModalProps) => {
-  const [registerStep, setRegisterStep] = useState<'GOAL' | 'INFO' | 'JOIN'>('GOAL');
+  const t = (code: string) => getTranslate(localePhrases, code);
+  const registerStepTitlesDefault: RegisterStepTitlesType = [t('register.step_goal'), t('register.step_info'), t('register.step_join')];
+
+  const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
+  const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
+  const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
 
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
 
   useEffect(() => {
     if (isOpen === false) {
       setRegisterData({ ...registerDataDefault});
-      setRegisterStep('GOAL');
+      setRegisterStep(0);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    let currentRegisterStep: 0 | 1 | 2 = null;
+
+    switch (registerView) {
+      case 'GOAL':
+      case 'NOT_EATING':
+        currentRegisterStep = 0;
+        break;
+
+      case 'PLAN_PROGRESS':
+      case 'INFO':
+      case 'EXPECTATIONS':
+      case 'READY':
+        currentRegisterStep = 1;
+        break;
+
+      case 'JOIN':
+        currentRegisterStep = 2;
+        break;
+
+      default: break;
+    }
+
+    if (currentRegisterStep !== null) {
+      setRegisterStep(currentRegisterStep);
+    }
+  }, [registerView]);
 
   useEffect(() => {
     if (tpl) {
@@ -67,17 +109,63 @@ const RegisterModal = ({
     }
   }, [tpl]);
 
-  const getRegisterStepView = (registerStepType: string) => {
+  const getRegisterStepView = (registerView: string) => {
     let registerStepView = null;
 
-    switch (registerStepType) {
+    switch (registerView) {
       case 'GOAL':
         registerStepView = (
           <GoalStep
             registerData={registerData}
             setRegisterData={setRegisterData}
-            setRegisterStep={setRegisterStep}
+            setRegisterView={setRegisterView}
             modalClose={onClose}
+            localePhrases={localePhrases || {}}
+          />
+        );
+        break;
+
+      case 'PLAN_PROGRESS':
+        registerStepView = (
+          <PlanProgressStep
+            stepTitlesDefault={registerStepTitlesDefault}
+            setStepTitles={setRegisterStepTitles}
+            setRegisterView={setRegisterView}
+            localePhrases={localePhrases || {}}
+          />
+        );
+        break;
+
+      case 'EXPECTATIONS':
+        registerStepView = (
+          <ExpectationsStep
+            stepTitlesDefault={registerStepTitlesDefault}
+            setStepTitles={setRegisterStepTitles}
+            setRegisterView={setRegisterView}
+            localePhrases={localePhrases || {}}
+          />
+        );
+        break;
+
+      case 'READY':
+        registerStepView = (
+          <PlanReadyStep
+            stepTitlesDefault={registerStepTitlesDefault}
+            setStepTitles={setRegisterStepTitles}
+            setRegisterView={setRegisterView}
+            localePhrases={localePhrases || {}}
+          />
+        );
+        break;
+
+      case 'NOT_EATING':
+        registerStepView = (
+          <NotEatingStep 
+            registerData={registerData}
+            setRegisterData={setRegisterData}
+            setRegisterView={setRegisterView}
+            stepTitlesDefault={registerStepTitlesDefault}
+            setStepTitles={setRegisterStepTitles}
             localePhrases={localePhrases || {}}
           />
         );
@@ -87,8 +175,9 @@ const RegisterModal = ({
         registerStepView = (
           <JoinStep
             registerData={registerData}
+            stepTitlesDefault={registerStepTitlesDefault}
+            setStepTitles={setRegisterStepTitles}
             setRegisterData={setRegisterData}
-            setRegisterStep={setRegisterStep}
             modalClose={onClose}
             localePhrases={localePhrases || {}}
           />
@@ -100,7 +189,7 @@ const RegisterModal = ({
           <InfoStep
             registerData={registerData}
             setRegisterData={setRegisterData}
-            setRegisterStep={setRegisterStep}
+            setRegisterView={setRegisterView}
             modalClose={onClose}
             localePhrases={localePhrases || {}}
           />
@@ -120,10 +209,13 @@ const RegisterModal = ({
       className="registerModal"
     >
       <Modal.Main className="registerModal_main">
-        <Steps step={registerStep} localePhrases={localePhrases || {}} />
+        <Steps 
+          step={registerStep} 
+          titles={registerStepTitles} 
+        />
 
         <div className="registerModal_steps_content">
-          {getRegisterStepView(registerStep)}
+          {getRegisterStepView(registerView)}
         </div>
       </Modal.Main>
     </Modal>

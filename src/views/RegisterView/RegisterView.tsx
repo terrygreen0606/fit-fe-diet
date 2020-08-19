@@ -20,7 +20,7 @@ const RegisterView = (props: any) => {
   const [registerFacebookInitLoading, setRegisterFacebookInitLoading] = useState<boolean>(false);
 
   const [registerTpl, setRegisterTpl] = useState(null);
-  const [registerTplLoading, setRegisterTplLoading] = useState<boolean>(false);
+  const [registerTplLoading, setRegisterTplLoading] = useState<boolean>(true);
   const [registerTplLoadingError, setRegisterTplLoadingError] = useState<boolean>(false);
 
   useEffect(() => {

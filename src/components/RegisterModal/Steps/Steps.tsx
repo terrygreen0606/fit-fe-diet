@@ -1,43 +1,42 @@
 import React from 'react';
-import { getTranslate } from 'utils';
 import classNames from 'classnames';
 
 import './Steps.sass';
 
-const Steps = ({
-  step,
-  localePhrases,
-}: any) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
+type StepsProps = {
+  step: 0 | 1 | 2,
+  titles: [string, string, string]
+};
 
+const Steps = ({ step, titles }: StepsProps) => {
   return (
     <div className={classNames('registerModal_steps_wrap', {
-      registerModal_steps_wrap_step1: step === 'GOAL',
-      registerModal_steps_wrap_step2: step === 'INFO',
-      registerModal_steps_wrap_step3: step === 'JOIN',
+      registerModal_steps_wrap_step1: step === 0,
+      registerModal_steps_wrap_step2: step === 1,
+      registerModal_steps_wrap_step3: step === 2
     })}
     >
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 'GOAL',
+        registerModal_step_active: step === 0
       })}
       >
-        <h5 className="registerModal_step_label">{t('register.step_goal')}</h5>
+        <h5 className="registerModal_step_label">{titles[0]}</h5>
         <span className="registerModal_step_mark" />
       </div>
 
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 'INFO',
+        registerModal_step_active: step === 1
       })}
       >
-        <h5 className="registerModal_step_label">{t('register.step_info')}</h5>
+        <h5 className="registerModal_step_label">{titles[1]}</h5>
         <span className="registerModal_step_mark" />
       </div>
 
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 'JOIN',
+        registerModal_step_active: step === 2
       })}
       >
-        <h5 className="registerModal_step_label">{t('register.step_join')}</h5>
+        <h5 className="registerModal_step_label">{titles[2]}</h5>
         <span className="registerModal_step_mark" />
       </div>
     </div>

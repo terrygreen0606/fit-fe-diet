@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
@@ -40,6 +40,17 @@ const JoinStep = (props: any) => {
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
   const [appRulesAccepted, setAppRulesAccepted] = useState(null);
+
+  useEffect(() => {
+    let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[2] = 'Confirm information';
+
+    props.setStepTitles([...currStepTitles]);
+
+    return () => {
+      props.setStepTitles([...props.stepTitlesDefault]);
+    };
+  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -193,17 +204,17 @@ const JoinStep = (props: any) => {
 
   return (
     <div className="register_join">
-      <h6 className="register_title mb-5">{t('register.plan_is_ready_text')}</h6>
+      <h4 className="mb-5 text-center text-steel-blue">Confirm your account information</h4>
 
-      <CustomCheckbox
+      {/*<CustomCheckbox
         invalid={appRulesAccepted === false}
         label={t('register.read_terms')}
         onChange={(e) => setAppRulesAccepted(e.target.checked)}
-      />
+      />*/}
 
-      <form className="register_join_form mt-4" onSubmit={(e) => registerJoinSubmit(e)}>
+      <form className="register_join_form mt-4 px-5" onSubmit={(e) => registerJoinSubmit(e)}>
 
-        <div className="register_socialBtns">
+        {/*<div className="register_socialBtns">
           <Button
             type="submit"
             className="facebook-login-btn"
@@ -241,13 +252,13 @@ const JoinStep = (props: any) => {
               Login with Google
             </Button>
           )}
-        </div>        
+        </div>*/}        
 
-        <div className="register_join_or">
+        {/*<div className="register_join_or">
           <span className="register_join_or_txt">{t('register.form_or')}</span>
-        </div>
+        </div>*/}
 
-        <FormGroup inline>
+        <FormGroup>
           <FormLabel>
             {t('register.form_name')}
             *
@@ -263,23 +274,7 @@ const JoinStep = (props: any) => {
           />
         </FormGroup>
 
-        <FormGroup inline>
-          <FormLabel>
-            {t('register.form_surname')}
-            *
-          </FormLabel>
-          <InputField
-            block
-            name="surname"
-            value={registerData.surname}
-            data-validate='["required"]'
-            onChange={(e) => validateOnChange('surname', e.target.value, e)}
-            errors={getFieldErrors('surname')}
-            placeholder=""
-          />
-        </FormGroup>
-
-        <FormGroup inline>
+        <FormGroup>
           <FormLabel>
             {t('register.form_email')}
             *
@@ -295,23 +290,7 @@ const JoinStep = (props: any) => {
           />
         </FormGroup>
 
-        <FormGroup inline>
-          <FormLabel>
-            {t('register.form_phone')}
-            *
-          </FormLabel>
-          <InputField
-            block
-            name="phone"
-            value={registerData.phone}
-            data-validate='["required", "number"]'
-            onChange={(e) => validateOnChange('phone', e.target.value, e)}
-            errors={getFieldErrors('phone')}
-            placeholder=""
-          />
-        </FormGroup>
-
-        <FormGroup inline>
+        <FormGroup>
           <FormLabel>{t('register.form_password')}</FormLabel>
           <InputField
             block
@@ -328,25 +307,15 @@ const JoinStep = (props: any) => {
         <div className="text-center mt-5">
           <Button
             className="registerBtn"
+            style={{ width: '355px' }}
             type="submit"
             onClick={e => setSocialRegister('email')}
             block
             size="lg"
-            color="primary"
+            color="secondary"
             isLoading={registerJoinLoading}
           >
             {t('register.form_submit')}
-          </Button>
-
-          <Button
-            outline
-            color="secondary"
-            size="lg"
-            onClick={() => props.setRegisterStep('INFO')}
-            className="mt-4"
-            style={{ width: '217px' }}
-          >
-            {t('register.form_back')}
           </Button>
         </div>
       </form>

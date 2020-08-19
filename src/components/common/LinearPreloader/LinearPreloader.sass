@@ -1,0 +1,38 @@
+.linearProgress
+  background: #CDCDCD
+  height: 12px
+  position: relative
+  width: 100%
+  margin: 0 auto
+  overflow: hidden
+  animation: start .3s ease-in
+  border-radius: 10px
+  
+  &_bar
+    position: absolute
+    background: linear-gradient(90deg, #106EE8 36.8%, #CDCDCD 62.8%), #C4C4C4
+    transition: transform .2s linear
+    position: absolute
+    left: 0
+    top: 0
+    bottom: 0
+    width: 100%
+    border-radius: 10px
+    
+  &_bar1
+    animation: progressLinearMovement 2.5s infinite
+    animation-delay: 0
+    
+  &_bar2
+    left: -100%
+    animation: progressLinearMovement 2.5s infinite
+    animation-delay: .7s
+
+    
+@keyframes progressLinearMovement
+  0%
+    left: -100%
+  50%
+    left: 100%
+  100%
+    left: 100%
