@@ -67,9 +67,11 @@ const chartOptions = {
 
 const ExpectationsStep = (props: any) => {
 
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[1] = 'Expectations';
+    currStepTitles[1] = t('register.expect_step');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -77,8 +79,6 @@ const ExpectationsStep = (props: any) => {
       props.setStepTitles([...props.stepTitlesDefault]);
     };
   }, []);
-
-  const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const getChartLabels = () => {
     const { predicted_date } = props.registerData;
@@ -107,16 +107,17 @@ const ExpectationsStep = (props: any) => {
   };
 
   const getPredictedDate = () => {
-    return moment(new Date(predicted_date * 1000)).format('MMMM DD');
+    const monthLocale = new Date(predicted_date * 1000).toLocaleString(window.navigator.language, { month: 'long' });
+    return `${monthLocale} ${moment(new Date(predicted_date * 1000)).format('DD')}`;
   };
 
   const { weight, weight_goal, predicted_date } = props.registerData;
 
   return (
     <div className="text-center">
-      <h5 className="mb-4 fw-regular">Based on your answer, you'll be</h5>
+      <h5 className="mb-4 fw-regular">{t('register.expect_title')}</h5>
 
-      <h4 className="mb-5 text-steel-blue">{weight_goal} kg. by {getPredictedDate()}</h4>
+      <h4 className="mb-5 text-steel-blue">{weight_goal} {t('common.kg')} {t('register.expect_date_by')} {getPredictedDate()}</h4>
 
       <div className="register_expectation_chart">
         <LineChart 
@@ -140,7 +141,7 @@ const ExpectationsStep = (props: any) => {
           size="lg"
           onClick={() => props.setRegisterView('READY')}
         >
-          Continue
+          {t('button.continue')}
         </Button>
       </div>
     </div>

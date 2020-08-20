@@ -8,9 +8,11 @@ import { ReactComponent as MealIcon } from 'assets/img/icons/meal-icon.svg';
 
 const PlanReadyStep = (props: any) => {
 
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[1] = 'Ready to started';
+    currStepTitles[1] = t('register.ready_step');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -18,8 +20,6 @@ const PlanReadyStep = (props: any) => {
       props.setStepTitles([...props.stepTitlesDefault]);
     };
   }, []);
-
-  const t = (code: string) => getTranslate(props.localePhrases, code);
 
   return (
     <div className="mt-5 pt-5 text-center">
