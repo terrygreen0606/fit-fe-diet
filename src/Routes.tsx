@@ -25,6 +25,7 @@ import DashboardView from './views/DashboardView';
 import FaqView from './views/FaqView';
 import ReferralView from './views/ReferralView';
 import MainView from './views/MainView';
+import TestimonialsFormView from './views/Forms/TestimonialsFormView';
 
 const Routes = () => (
   <Switch>
@@ -173,6 +174,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <ReferralView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/testimonials'
+      component={(props: any) => (
+        <Layout {...props}>
+          <TestimonialsFormView {...props} />
         </Layout>
       )}
       exact
