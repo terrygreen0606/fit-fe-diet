@@ -11,7 +11,7 @@ const MainView = (props: any) => {
 
   return (
     <Helmet>
-      <title>{t('public.title.main')}</title>
+      <title>{t('app.title.main')}</title>
     </Helmet>
   );
 };
