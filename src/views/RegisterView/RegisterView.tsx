@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import {
   initGoogleAuth,
-  initFacebookAuth
+  initFacebookAuth,
+  getTranslate
 } from 'utils';
 import { UserAuthProfileType } from 'types/auth';
 import { getSignUpTpl, getRecipeCuisines } from 'api';
@@ -138,4 +139,4 @@ const RegisterView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(RegisterView));
+export default WithTranslate(RegisterView);

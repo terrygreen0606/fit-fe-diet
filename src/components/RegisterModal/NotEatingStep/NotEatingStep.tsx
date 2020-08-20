@@ -9,8 +9,6 @@ import ContentLoading from 'components/hoc/ContentLoading';
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon-black.svg';
 import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
 
-import { getMealItem } from './getMealItem';
-
 const NotEatingStep = (props: any) => {
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
