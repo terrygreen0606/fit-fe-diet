@@ -76,8 +76,8 @@ const InfoStep = (props: any) => {
 
       <div className="text-center">
         <CustomSwitch 
-          label1="US" 
-          label2="Metrik" 
+          label1={t('common.us_metric')}
+          label2={t('common.metric')} 
           checked={props.registerData.measurement === 'si'} 
           onChange={e => props.setRegisterData({
             ...props.registerData,
