@@ -9477,11 +9477,6 @@ react-app-rewired@^2.1.6:
   dependencies:
     semver "^5.6.0"
 
-react-bootstrap-daterangepicker@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/react-bootstrap-daterangepicker/-/react-bootstrap-daterangepicker-7.0.0.tgz#172228cccaa3b0f4a42e84eb6d646b4988a0df64"
-  integrity sha512-lZ5/Foj3Y6wbfOtIBmKbb+6PSFu2NGzpLw4WC7J/C/SRinNpYShzyNkFMULw0hCpUNVlllfFjqQCCI39KDnHCA==
-
 react-day-picker@^7.4.8:
   version "7.4.8"
   resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-7.4.8.tgz#675625240d3fae1b41c0a9d5177c968c8517c1d4"

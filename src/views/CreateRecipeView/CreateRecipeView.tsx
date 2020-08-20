@@ -669,7 +669,7 @@ const CreateRecipeView = (props: any) => {
             }
             onChange={(e) => validateOnChange('totalWeight', e.target.value, e)}
             min={0}
-            height='xl'
+            height='md'
             label={t('recipe.create.total_weight')}
             border='light'
           />

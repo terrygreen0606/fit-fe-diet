@@ -1,0 +1,205 @@
+@import '../../assets/sass/_vars'
+
+.referral
+  &__text-content
+    text-align: center
+
+  &__title
+    margin-top: 0
+    margin-bottom: 70px
+    font-size: 80px
+    line-height: 1.2
+    font-weight: bold
+
+  &__subtitle
+    margin-bottom: 5px
+    font-size: 34px
+    line-height: 1.2
+    font-weight: bold
+
+  &__bonus
+    margin-bottom: 50px
+    font-size: 48px
+    line-height: 1.2
+    font-weight: bold
+    color: $caribbean-green
+
+  &__description
+    margin-bottom: 50px
+    text-align: left
+    font-size: 20px
+    line-height: 1.67
+
+  &__container-input
+    position: relative
+
+  &__input.fg-input
+    padding: 30px 140px 30px 40px
+    font-size: 20px
+    border-color: $caribbean-green
+    color: darken($caribbean-green, 10%)
+
+    &::placeholder
+      font-size: 20px
+      color: $caribbean-green
+  
+  &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):hover,
+  &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):focus
+      border-color: darken($caribbean-green, 10%) !important
+
+  &__invite-button
+    position: absolute
+    top: 28px
+    right: 28px
+    display: flex
+    align-items: center
+    font-size: 22px
+    font-weight: bold
+    color: $caribbean-green
+    border: none
+    background: transparent
+    cursor: pointer
+
+    &:hover
+      .referral__invite-button-container-icon
+        transform: translateX(3px)
+
+    &-text
+      margin-right: 20px
+
+    &-container-icon
+      width: 26px
+      height: 26px
+      display: flex
+      align-items: center
+      justify-content: center
+      background: $caribbean-green
+      border-radius: 50%
+      transition: transform 0.2s ease
+      
+    &-icon
+      margin-right: -2px
+
+      path
+        fill: $white
+
+  &__socials
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-top: 40px
+    z-index: 2
+
+    &-item
+      display: inline-block
+      margin: 0 17px
+      line-height: 0
+      border: none
+      background-color: transparent
+      cursor: pointer
+      transition: opacity 0.2s ease
+
+      svg, img
+        max-width: 100%
+        height: auto
+
+      & > *
+        line-height: initial
+
+      &:hover
+        opacity: 0.8
+
+  &__container-media
+    position: relative
+
+    &::before
+      content: ''
+      position: absolute
+      top: 0
+      left: 70px
+      width: 300%
+      height: calc(100% - 60px)
+      background: $steel-blue
+
+    &::after
+      content: ''
+      position: absolute
+      top: 60px
+      left: 0px
+      width: 280px
+      height: 400px
+      background-image: radial-gradient(#e0e0e0 20%, transparent 20%)
+      background-position: 0 0
+      background-size: 30px 30px
+  
+  &__media
+    position: relative
+    z-index: 2
+
+@media only screen and(max-width: 767px)
+  .referral
+    position: relative
+
+    &__text-content
+      text-align: left
+      
+    &__title
+      margin-bottom: 40px
+      font-size: 28px
+
+    &__subtitle
+      margin-bottom: 24px
+      font-size: 18px
+
+    &__bonus
+      margin-bottom: 40px
+      font-size: 18px
+
+    &__description
+      font-size: 14px
+
+    &__container-media
+      &::before
+       top: -20px
+       height: calc(100% + 40px)
+
+      &::after
+        width: 115px
+        height: 166px
+        top: -30px
+        left: 0
+        background-size: 22px 22px
+
+    &__media
+      max-width: 450px
+
+    &__socials
+      margin-top: 200px
+      justify-content: space-between
+
+      &-item
+        margin: 0 6px
+        width: 56px
+    
+    &__container-input
+      position: absolute
+      bottom: 150px
+      left: 50%
+      transform: translateX(-50%)
+      max-width: 540px
+      width: 100%
+
+    &__input.fg-input:placeholder-shown
+      &::placeholder
+        font-size: 14px
+    
+    &__invite-button
+      &-text
+        font-size: 14px
+
+    
+@media only screen and(max-width: 567px)
+  .referral
+    &__container-input
+      max-width: initial
