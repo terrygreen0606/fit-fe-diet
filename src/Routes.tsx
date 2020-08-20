@@ -22,7 +22,8 @@ import NotFound from './views/NotFound';
 import SavedRecipesView from './views/SavedRecipesView';
 import FavouriteRecipesView from './views/FavouriteRecipesView';
 import DashboardView from './views/DashboardView';
-import FaqView from './views/FaqView';
+import SettingsFaqView from './views/Settings/SettingsFaqView';
+import SettingsFamilyView from './views/Settings/SettingsFamilyView';
 import ReferralView from './views/ReferralView';
 import MainView from './views/MainView';
 
@@ -162,7 +163,7 @@ const Routes = () => (
       path='/settings/faq'
       component={(props: any) => (
         <Layout {...props}>
-          <FaqView {...props} />
+          <SettingsFaqView {...props} />
         </Layout>
       )}
       exact
@@ -173,6 +174,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <ReferralView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/settings/family'
+      component={(props: any) => (
+        <Layout {...props}>
+          <SettingsFamilyView {...props} />
         </Layout>
       )}
       exact
