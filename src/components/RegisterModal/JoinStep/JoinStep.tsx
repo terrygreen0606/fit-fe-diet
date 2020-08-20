@@ -79,6 +79,7 @@ const JoinStep = (props: any) => {
     const {
       email,
       password,
+      predicted_date,
       ...userProfileData
     } = props.registerData;
 
@@ -160,7 +161,9 @@ const JoinStep = (props: any) => {
     setRegisterJoinLoading(true);
 
     userSignup({
-      ...registerData,
+      email: props.registerData.email,
+      password: props.registerData.password,
+      ...getRegisterProfilePayload()
     }).then(response => {
       setRegisterJoinLoading(false);
 
@@ -194,7 +197,7 @@ const JoinStep = (props: any) => {
       setAppRulesAccepted(false);
     }
 
-    if (!hasError && appRulesAccepted) {
+    if (!hasError) {
       if (socialRegister === 'facebook') {
         facebookRegister();
       } else if (socialRegister === 'google') {

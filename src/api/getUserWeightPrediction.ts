@@ -9,7 +9,7 @@ type UserWeightPredictionParams = {
 };
 
 export const getUserWeightPrediction = (params: UserWeightPredictionParams) => {
-  return axios.get('/user/weightprediction', {
+  return axios.get('/user/weight-prediction', {
     params
   });
 };

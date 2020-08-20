@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import {
   initGoogleAuth,
   initFacebookAuth
 } from 'utils';
+import { UserAuthProfileType } from 'types/auth';
 import { getSignUpTpl, getRecipeCuisines } from 'api';
 
 // Components
@@ -13,13 +14,38 @@ import ContentLoading from 'components/hoc/ContentLoading';
 
 import './RegisterView.sass';
 
+interface RegisterDataType extends UserAuthProfileType {
+  email: string;
+  password: string;
+  predicted_date: string;
+};
+
+const registerDataDefault: RegisterDataType = {
+  email: '',
+  password: '',
+  name: '',
+  surname: '',
+  phone: '',
+  age: null,
+  gender: 'm',
+  measurement: 'si',
+  height: null,
+  weight: null,
+  weight_goal: null,
+  predicted_date: null,
+  tpl_signup: null,
+  goal: -1,
+  ignore_cuisine_ids: [],
+};
+
 const RegisterView = (props: any) => {
+
+  const [registerData, setRegisterData] = useState({...registerDataDefault});
 
   const [registerGoogleInitLoading, setRegisterGoogleInitLoading] = useState<boolean>(false);
   const [registerGoogleLoadingError, setRegisterGoogleLoadingError] = useState(false);
   const [registerFacebookInitLoading, setRegisterFacebookInitLoading] = useState<boolean>(false);
 
-  const [registerTpl, setRegisterTpl] = useState(null);
   const [registerTplLoading, setRegisterTplLoading] = useState<boolean>(true);
   const [registerTplLoadingError, setRegisterTplLoadingError] = useState<boolean>(false);
 
@@ -31,8 +57,13 @@ const RegisterView = (props: any) => {
     initGoogleAuth(setRegisterGoogleInitLoading, setRegisterGoogleLoadingError);
     initFacebookAuth(setRegisterFacebookInitLoading);
     loadRegisterTpl();
-    fetchRecipeCuisines();
   }, []);
+
+  useEffect(() => {
+    if (registerData.tpl_signup !== null) {
+      fetchRecipeCuisines();
+    }
+  }, [registerData.tpl_signup]);
 
   const loadRegisterTpl = () => {
     setRegisterTplLoading(true);
@@ -42,7 +73,10 @@ const RegisterView = (props: any) => {
       setRegisterTplLoading(false);
 
       if (response.data.data && response.data.data.tpl) {
-        setRegisterTpl(response.data.data.tpl);
+        setRegisterData({
+          ...registerData,
+          tpl_signup: response.data.data.tpl
+        });
       }
     }).catch((error) => {
       setRegisterTplLoading(false);
@@ -58,8 +92,10 @@ const RegisterView = (props: any) => {
       setRecipeCuisinesLoading(false);
 
       if (response.data && response.data.data) {
-        console.log(response.data.data)
-        setRecipeCuisines(response.data.data);
+        setRegisterData({
+          ...registerData,
+          ignore_cuisine_ids: response.data.data
+        });
       }
     }).catch(error => {
       setRecipeCuisinesLoading(false);
@@ -78,8 +114,8 @@ const RegisterView = (props: any) => {
 
       <RegisterModal
         isOpen={true}
-        tpl={registerTpl}
-        cuisines={recipeCuisines}
+        registerData={registerData}
+        setRegisterData={setRegisterData}
         cuisinesLoading={recipeCuisinesLoading}
         cuisinesLoadingError={recipeCuisinesLoadingError}
         fetchRecipeCuisines={fetchRecipeCuisines}

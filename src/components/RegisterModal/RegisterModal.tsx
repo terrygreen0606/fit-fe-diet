@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { UserAuthProfileType } from 'types/auth';
 import { getTranslate } from 'utils';
 
 // Components
@@ -17,32 +16,10 @@ import JoinStep from './JoinStep';
 
 import './RegisterModal.sass';
 
-interface RegisterDataType extends UserAuthProfileType {
-  email: string;
-  password: string;
-};
-
-const registerDataDefault: RegisterDataType = {
-  email: '',
-  password: '',
-  name: '',
-  surname: '',
-  phone: '',
-  age: null,
-  gender: 'm',
-  measurement: 'si',
-  height: null,
-  weight: null,
-  weight_goal: null,
-  tpl_signup: null,
-  goal: -1,
-  ignore_cuisine_ids: [],
-};
-
 type RegisterModalProps = {
   isOpen: boolean,
-  tpl: number,
-  cuisines: any[],
+  registerData: any,
+  setRegisterData: (any) => void,
   cuisinesLoading: boolean,
   cuisinesLoadingError: boolean,
   fetchRecipeCuisines: () => void,
@@ -54,31 +31,13 @@ type RegisterViewType = 'GOAL' | 'PLAN_PROGRESS' | 'NOT_EATING' | 'EXPECTATIONS'
 
 type RegisterStepTitlesType = [string, string, string];
 
-const RegisterModal = ({
-  isOpen,
-  onClose,
-  tpl,
-  cuisines,
-  cuisinesLoading,
-  cuisinesLoadingError,
-  fetchRecipeCuisines,
-  localePhrases
-}: RegisterModalProps) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
+const RegisterModal = (props: RegisterModalProps) => {
+  const t = (code: string) => getTranslate(props.localePhrases, code);
   const registerStepTitlesDefault: RegisterStepTitlesType = [t('register.step_goal'), t('register.step_info'), t('register.step_join')];
 
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
   const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
   const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
-
-  const [registerData, setRegisterData] = useState({ ...registerDataDefault });
-
-  useEffect(() => {
-    if (isOpen === false) {
-      setRegisterData({ ...registerDataDefault});
-      setRegisterStep(0);
-    }
-  }, [isOpen]);
 
   useEffect(() => {
     let currentRegisterStep: 0 | 1 | 2 = null;
@@ -108,26 +67,17 @@ const RegisterModal = ({
     }
   }, [registerView]);
 
-  useEffect(() => {
-    if (tpl) {
-      setRegisterData({
-        ...registerData,
-        tpl_signup: tpl,
-      });
-    }
-  }, [tpl]);
-
-  useEffect(() => {
-    if (cuisines) {
-      setRegisterData({
-        ...registerData,
-        ignore_cuisine_ids: cuisines
-      });
-    }
-  }, [cuisines]);
-
   const getRegisterStepView = (registerView: string) => {
     let registerStepView = null;
+
+    const {
+      registerData,
+      setRegisterData,
+      cuisinesLoading,
+      cuisinesLoadingError,
+      fetchRecipeCuisines,
+      localePhrases
+    } = props;
 
     switch (registerView) {
       case 'GOAL':
@@ -136,7 +86,6 @@ const RegisterModal = ({
             registerData={registerData}
             setRegisterData={setRegisterData}
             setRegisterView={setRegisterView}
-            modalClose={onClose}
             localePhrases={localePhrases || {}}
           />
         );
@@ -145,6 +94,8 @@ const RegisterModal = ({
       case 'PLAN_PROGRESS':
         registerStepView = (
           <PlanProgressStep
+            registerData={registerData}
+            setRegisterData={setRegisterData}
             stepTitlesDefault={registerStepTitlesDefault}
             setStepTitles={setRegisterStepTitles}
             setRegisterView={setRegisterView}
@@ -156,6 +107,7 @@ const RegisterModal = ({
       case 'EXPECTATIONS':
         registerStepView = (
           <ExpectationsStep
+            registerData={registerData}
             stepTitlesDefault={registerStepTitlesDefault}
             setStepTitles={setRegisterStepTitles}
             setRegisterView={setRegisterView}
@@ -198,7 +150,6 @@ const RegisterModal = ({
             stepTitlesDefault={registerStepTitlesDefault}
             setStepTitles={setRegisterStepTitles}
             setRegisterData={setRegisterData}
-            modalClose={onClose}
             localePhrases={localePhrases || {}}
           />
         );
@@ -210,7 +161,6 @@ const RegisterModal = ({
             registerData={registerData}
             setRegisterData={setRegisterData}
             setRegisterView={setRegisterView}
-            modalClose={onClose}
             localePhrases={localePhrases || {}}
           />
         );
@@ -224,8 +174,8 @@ const RegisterModal = ({
 
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={props.isOpen}
+      onClose={props.onClose}
       className="registerModal"
     >
       <Modal.Main className="registerModal_main">

@@ -38,7 +38,7 @@ const LineChart = ({ options = optionsDefault, data }: LineChartProps) => {
     new Chart(chartRef.current.getContext('2d'), {
       type: 'line',
       data,
-      options,
+      options
     });
   }, [data]);
 

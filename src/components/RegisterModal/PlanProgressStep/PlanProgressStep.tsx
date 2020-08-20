@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { getTranslate } from 'utils';
+import { toast } from 'react-toastify';
+import { getUserWeightPrediction } from 'api';
 
 // Components
 import LinearPreloader from 'components/common/LinearPreloader';
@@ -12,9 +14,34 @@ const PlanProgressStep = (props: any) => {
 
     props.setStepTitles([...currStepTitles]);
 
-    setTimeout(() => {
-      props.setRegisterView('EXPECTATIONS');
-    }, 3000);
+    if (props.registerData.goal === 0) {
+      setTimeout(() => {
+        props.setRegisterView('READY');        
+      }, 2000);
+    } else {
+      getUserWeightPrediction({
+        measurement: props.registerData.measurement,
+        height: props.registerData.height,
+        weight: props.registerData.weight,
+        weight_goal: props.registerData.weight_goal,
+        goal: props.registerData.goal
+      }).then(response => {
+        if (response.data && response.data.data) {
+          props.setRegisterData({
+            ...props.registerData,
+            predicted_date: response.data.data.predicted_date
+          });
+
+          setTimeout(() => {
+            props.setRegisterView('EXPECTATIONS');
+          }, 1000);
+        } else {
+          toast.error('Error when loading weight expectations');  
+        }
+      }).catch(error => {
+        toast.error('Error when loading weight expectations');
+      });
+    }
 
     return () => {
       props.setStepTitles([...props.stepTitlesDefault]);
