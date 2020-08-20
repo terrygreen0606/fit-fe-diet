@@ -8,9 +8,11 @@ import LinearPreloader from 'components/common/LinearPreloader';
 
 const PlanProgressStep = (props: any) => {
 
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[1] = 'Generating your meal plan...';
+    currStepTitles[1] = t('register.plan_create_step');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -36,10 +38,10 @@ const PlanProgressStep = (props: any) => {
             props.setRegisterView('EXPECTATIONS');
           }, 1000);
         } else {
-          toast.error('Error when loading weight expectations');  
+          toast.error(t('register.weight_predict_error_msg'));
         }
       }).catch(error => {
-        toast.error('Error when loading weight expectations');
+        toast.error(t('register.weight_predict_error_msg'));
       });
     }
 
@@ -48,11 +50,9 @@ const PlanProgressStep = (props: any) => {
     };
   }, []);
 
-  const t = (code: string) => getTranslate(props.localePhrases, code);
-
   return (
     <div className="pt-5 text-center">
-      <h5 className="mb-5 fw-regular">Based on your answer...</h5>
+      <h5 className="mb-5 fw-regular">{t('register.plan_progress_title')}</h5>
 
       <span className="site-logo mb-4" />
       
@@ -60,8 +60,8 @@ const PlanProgressStep = (props: any) => {
       
       <br/>
 
-      <p>Sit tight!</p>
-      <p>We are building your perfect plan based on ansers.</p>
+      <p>{t('register.plan_progress_descr1')}</p>
+      <p>{t('register.plan_progress_descr2')}</p>
     </div>
   );
 };

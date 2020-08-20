@@ -26,6 +26,8 @@ import { ReactComponent as FacebookIcon } from 'assets/img/icons/facebook-letter
 
 const JoinStep = (props: any) => {
   const { registerData } = props;
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
   const [registerJoinErrors, setRegisterJoinErrors] = useState([]);
 
   const [socialRegister, setSocialRegister] = useState<string>(null);
@@ -44,7 +46,7 @@ const JoinStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[2] = 'Confirm information';
+    currStepTitles[2] = t('register.step_confirm');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -68,8 +70,6 @@ const JoinStep = (props: any) => {
 
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, registerJoinErrors);
-
-  const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const userClientLogin = (authToken: string) => {
     localStorage.setItem('authToken', authToken);
@@ -118,12 +118,12 @@ const JoinStep = (props: any) => {
             if (token) {
               userClientLogin(token);
             } else {
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             }
           })
           .catch((error) => {
             setRegisterGoogleLoading(false);
-            toast.error('Error occurred when Sign In User');
+            toast.error(t('register.error_msg'));
           });
       })
       .catch((error) => {
@@ -156,12 +156,12 @@ const JoinStep = (props: any) => {
               if (token) {
                 userClientLogin(token);
               } else {
-                toast.error('Error occurred when Sign In User');
+                toast.error(t('register.error_msg'));
               }
             })
             .catch((error) => {
               setRegisterFacebookLoading(false);
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             });
         } else {
           setRegisterFacebookLoading(false);
@@ -191,12 +191,12 @@ const JoinStep = (props: any) => {
         if (token) {
           userClientLogin(token);
         } else {
-          toast.error('Error while registering user');
+          toast.error(t('register.error_msg'));
         }
       })
       .catch((error) => {
         setRegisterJoinLoading(false);
-        toast.error('Error while registering user');
+        toast.error(t('register.error_msg'));
       });
   };
 

@@ -13,9 +13,11 @@ import { getMealItem } from './getMealItem';
 
 const NotEatingStep = (props: any) => {
 
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[0] = 'Foods you don’t like';
+    currStepTitles[0] = t('register.not_eating_step');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -23,8 +25,6 @@ const NotEatingStep = (props: any) => {
       props.setStepTitles([...props.stepTitlesDefault]);
     };
   }, []);
-
-  const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const removeMealItem = (cuisineId: string) => {
     props.setRegisterData({

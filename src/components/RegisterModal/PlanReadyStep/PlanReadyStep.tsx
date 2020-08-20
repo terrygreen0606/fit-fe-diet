@@ -25,7 +25,7 @@ const PlanReadyStep = (props: any) => {
     <div className="mt-5 pt-5 text-center">
       <span className="diet-plan-feature-icon mb-5" style={{ backgroundImage: 'url(https://fitdev.s3.amazonaws.com/assets/pub/images/list-feature.png)' }} />
 
-      <h4 className="mb-4 text-steel-blue">Your personalized meal plan is now ready!</h4>
+      <h4 className="mb-4 text-steel-blue">{t('register.plan_ready_title')}</h4>
 
       <div className="text-center mt-5">
         <Button
@@ -35,7 +35,7 @@ const PlanReadyStep = (props: any) => {
           size="lg"
           onClick={() => props.setRegisterView('JOIN')}
         >
-          <MealIcon className="mr-3" /> Check it
+          <MealIcon className="mr-3" /> {t('register.check_btn')}
         </Button>
       </div>
     </div>
