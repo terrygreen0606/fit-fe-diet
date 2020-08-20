@@ -5,6 +5,7 @@ import {
   // getFoodItem - shpuld be removed after back ingtegration?
 } from 'utils';
 import classNames from 'classnames';
+import Helmet from 'react-helmet';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
@@ -59,6 +60,9 @@ const ChangeMealPlanView = (props: any) => {
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.change_meal_plan')}</title>
+      </Helmet>
       <div className='change-meal'>
         <div className='container container-mb70'>
           <div className='row'>

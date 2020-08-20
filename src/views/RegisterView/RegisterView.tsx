@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { initGoogleAuth, initFacebookAuth } from 'utils';
 import { getSignUpTpl } from 'api';
+import Helmet from 'react-helmet';
+
+import { getTranslate } from 'utils';
 
 // Components
 import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import RegisterModal from 'components/RegisterModal';
 import ContentLoading from 'components/hoc/ContentLoading';
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './RegisterView.sass';
 
 const RegisterView = (props: any) => {
+  const t = (code: string, placeholders?: any) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    getTranslate(props.localePhrases, code, placeholders);
+
   const [registerGoogleInitLoading, setRegisterGoogleInitLoading] = useState<
     boolean
   >(false);
@@ -52,23 +61,28 @@ const RegisterView = (props: any) => {
   };
 
   return (
-    <ContentLoading
-      isLoading={registerTplLoading}
-      isError={registerTplLoadingError}
-      fetchData={() => loadRegisterTpl()}
-      spinSize='lg'
-    >
-      <AuthSocialHelmet />
+    <>
+      <Helmet>
+        <title>{t('app.title.register')}</title>
+      </Helmet>
+      <ContentLoading
+        isLoading={registerTplLoading}
+        isError={registerTplLoadingError}
+        fetchData={() => loadRegisterTpl()}
+        spinSize='lg'
+      >
+        <AuthSocialHelmet />
 
-      <RegisterModal
-        isOpen={true}
-        tpl={registerTpl}
-        facebookInitLoading={registerFacebookInitLoading}
-        googleLoadingError={registerGoogleLoadingError}
-        googleInitLoading={registerGoogleInitLoading}
-      />
-    </ContentLoading>
+        <RegisterModal
+          isOpen={true}
+          tpl={registerTpl}
+          facebookInitLoading={registerFacebookInitLoading}
+          googleLoadingError={registerGoogleLoadingError}
+          googleInitLoading={registerGoogleInitLoading}
+        />
+      </ContentLoading>
+    </>
   );
 };
 
-export default RegisterView;
+export default WithTranslate(connect(null)(RegisterView));

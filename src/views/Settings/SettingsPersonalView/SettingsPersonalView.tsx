@@ -8,6 +8,7 @@ import {
 } from 'utils';
 import { toast } from 'react-toastify';
 import { fetchUserProfile, userUpdateProfile } from 'api';
+import Helmet from 'react-helmet';
 
 // Components
 import ProfileLayout from 'components/hoc/ProfileLayout';
@@ -185,204 +186,209 @@ const SettingsPersonalView = (props: any) => {
   };
 
   return (
-    <ProfileLayout>
-      <div className='profile-settings-personal-card card-bg'>
-        <h5 className='mb-4 mb-xs-5'>{t('profile.personal_title')}</h5>
+    <>
+      <Helmet>
+        <title>{t('app.title.settings_personal')}</title>
+      </Helmet>
+      <ProfileLayout>
+        <div className='profile-settings-personal-card card-bg'>
+          <h5 className='mb-4 mb-xs-5'>{t('profile.personal_title')}</h5>
 
-        <ContentLoading
-          fetchData={() => fetchUserPersonalData()}
-          isLoading={personalDataLoading}
-          isError={personalDataLoadingError}
-        >
-          <form
-            className='profile-settings-personal-form'
-            onSubmit={(e) => personalDataFormSubmit(e)}
+          <ContentLoading
+            fetchData={() => fetchUserPersonalData()}
+            isLoading={personalDataLoading}
+            isError={personalDataLoadingError}
           >
-            <FormGroup inline className='mb-5'>
-              <FormLabel>{t('register.form_sex')}</FormLabel>
+            <form
+              className='profile-settings-personal-form'
+              onSubmit={(e) => personalDataFormSubmit(e)}
+            >
+              <FormGroup inline className='mb-5'>
+                <FormLabel>{t('register.form_sex')}</FormLabel>
 
-              <CustomRadio
-                name='register_sex'
-                label={
-                  <>
-                    <MaleIcon
-                      className={classNames('genderIcon', {
-                        genderIcon_active: personalDataForm.gender === 'm',
-                      })}
-                    />
+                <CustomRadio
+                  name='register_sex'
+                  label={
+                    <>
+                      <MaleIcon
+                        className={classNames('genderIcon', {
+                          genderIcon_active: personalDataForm.gender === 'm',
+                        })}
+                      />
 
-                    {t('register.form_male')}
-                  </>
-                }
-                value='m'
-                checked={personalDataForm.gender === 'm'}
-                inline
-                onChange={(e) =>
-                  setPersonalDataForm({
-                    ...personalDataForm,
-                    gender: e.target.value,
-                  })
-                }
-              />
-
-              <CustomRadio
-                name='register_sex'
-                label={
-                  <>
-                    <FemaleIcon
-                      className={classNames('genderIcon', {
-                        genderIcon_active: personalDataForm.gender === 'f',
-                      })}
-                    />
-
-                    {t('register.form_female')}
-                  </>
-                }
-                value='f'
-                checked={personalDataForm.gender === 'f'}
-                inline
-                onChange={(e) =>
-                  setPersonalDataForm({
-                    ...personalDataForm,
-                    gender: e.target.value,
-                  })
-                }
-              />
-            </FormGroup>
-
-            <FormGroup inline>
-              <FormLabel>{t('register.form_surname')}</FormLabel>
-              <InputField
-                name='surname'
-                data-validate='["required"]'
-                errors={getFieldErrors('surname')}
-                value={personalDataForm.surname}
-                onChange={(e) => validateOnChange('surname', e.target.value, e)}
-                block
-                height='md'
-                placeholder=''
-              />
-            </FormGroup>
-
-            <FormGroup inline>
-              <FormLabel>{t('register.form_name')}</FormLabel>
-              <InputField
-                name='name'
-                data-validate='["required"]'
-                errors={getFieldErrors('name')}
-                value={personalDataForm.name}
-                onChange={(e) => validateOnChange('name', e.target.value, e)}
-                block
-                height='md'
-                placeholder=''
-              />
-            </FormGroup>
-
-            <FormGroup inline>
-              <FormLabel>{t('register.form_phone')}</FormLabel>
-              <InputField
-                name='phone'
-                data-validate='["required", "number"]'
-                errors={getFieldErrors('phone')}
-                value={personalDataForm.phone}
-                onChange={(e) => validateOnChange('phone', e.target.value, e)}
-                block
-                height='md'
-                placeholder=''
-              />
-            </FormGroup>
-
-            <FormGroup inline>
-              <FormLabel>{t('register.form_birthdate')}</FormLabel>
-              <DatePicker
-                value={personalDataForm.birthdate}
-                onChange={(date) => validateOnChange('birthdate', date, null)}
-                inputProps={{
-                  name: 'age',
-                  block: true,
-                  'data-validate': '["required"]',
-                  errors: getFieldErrors('age'),
-                  height: 'md',
-                }}
-              />
-            </FormGroup>
-
-            <FormGroup inline>
-              <FormLabel>{t('register.form_height')}</FormLabel>
-              <InputField
-                name='height'
-                errors={getFieldErrors('height')}
-                value={personalDataForm.height}
-                data-param='50,250'
-                data-validate='["required", "min-max"]'
-                onChange={(e) => validateOnChange('height', e.target.value, e)}
-                block
-                height='md'
-                placeholder=''
-              />
-            </FormGroup>
-
-            <FormGroup inline>
-              <FormLabel>{t('register.form_goal')}</FormLabel>
-              <SelectInput
-                name='goal'
-                data-validate='["required"]'
-                errors={getFieldErrors('goal')}
-                value={goalOptions.find(
-                  (option) => option.value === personalDataForm.goal
-                )}
-                options={goalOptions}
-                onChange={(option, e) =>
-                  validateOnChange('goal', option.value, e)
-                }
-                style='default'
-                block
-              />
-            </FormGroup>
-
-            {/*<FormGroup inline>
-              <FormLabel>Password</FormLabel>
-              <InputField
-                name="password"
-                type="password"
-                data-validate='["required"]'
-                errors={getFieldErrors('password')}
-                value={personalDataForm.password}
-                onChange={e => validateOnChange('password', e.target.value, e)}
-                block
-                height="md"
-                placeholder=""
-              />
-            </FormGroup>*/}
-
-            <div className='pl-xs-5'>
-              <FormGroup className='mt-5'>
-                <CustomCheckbox
-                  label={t('register.form_receive_news')}
+                      {t('register.form_male')}
+                    </>
+                  }
+                  value='m'
+                  checked={personalDataForm.gender === 'm'}
                   inline
-                  checked={personalDataForm.is_mailing}
                   onChange={(e) =>
                     setPersonalDataForm({
                       ...personalDataForm,
-                      is_mailing: e.target.checked,
+                      gender: e.target.value,
+                    })
+                  }
+                />
+
+                <CustomRadio
+                  name='register_sex'
+                  label={
+                    <>
+                      <FemaleIcon
+                        className={classNames('genderIcon', {
+                          genderIcon_active: personalDataForm.gender === 'f',
+                        })}
+                      />
+
+                      {t('register.form_female')}
+                    </>
+                  }
+                  value='f'
+                  checked={personalDataForm.gender === 'f'}
+                  inline
+                  onChange={(e) =>
+                    setPersonalDataForm({
+                      ...personalDataForm,
+                      gender: e.target.value,
                     })
                   }
                 />
               </FormGroup>
 
-              <Button
-                className='mt-2 mt-xs-3 profile-settings-personal-form-btn'
-                type='submit'
-                color='secondary'
-                isLoading={updatePersonalDataLoading}
-              >
-                {t('button.save')}
-              </Button>
-            </div>
-          </form>
-        </ContentLoading>
-      </div>
-    </ProfileLayout>
+              <FormGroup inline>
+                <FormLabel>{t('register.form_surname')}</FormLabel>
+                <InputField
+                  name='surname'
+                  data-validate='["required"]'
+                  errors={getFieldErrors('surname')}
+                  value={personalDataForm.surname}
+                  onChange={(e) => validateOnChange('surname', e.target.value, e)}
+                  block
+                  height='md'
+                  placeholder=''
+                />
+              </FormGroup>
+
+              <FormGroup inline>
+                <FormLabel>{t('register.form_name')}</FormLabel>
+                <InputField
+                  name='name'
+                  data-validate='["required"]'
+                  errors={getFieldErrors('name')}
+                  value={personalDataForm.name}
+                  onChange={(e) => validateOnChange('name', e.target.value, e)}
+                  block
+                  height='md'
+                  placeholder=''
+                />
+              </FormGroup>
+
+              <FormGroup inline>
+                <FormLabel>{t('register.form_phone')}</FormLabel>
+                <InputField
+                  name='phone'
+                  data-validate='["required", "number"]'
+                  errors={getFieldErrors('phone')}
+                  value={personalDataForm.phone}
+                  onChange={(e) => validateOnChange('phone', e.target.value, e)}
+                  block
+                  height='md'
+                  placeholder=''
+                />
+              </FormGroup>
+
+              <FormGroup inline>
+                <FormLabel>{t('register.form_birthdate')}</FormLabel>
+                <DatePicker
+                  value={personalDataForm.birthdate}
+                  onChange={(date) => validateOnChange('birthdate', date, null)}
+                  inputProps={{
+                    name: 'age',
+                    block: true,
+                    'data-validate': '["required"]',
+                    errors: getFieldErrors('age'),
+                    height: 'md',
+                  }}
+                />
+              </FormGroup>
+
+              <FormGroup inline>
+                <FormLabel>{t('register.form_height')}</FormLabel>
+                <InputField
+                  name='height'
+                  errors={getFieldErrors('height')}
+                  value={personalDataForm.height}
+                  data-param='50,250'
+                  data-validate='["required", "min-max"]'
+                  onChange={(e) => validateOnChange('height', e.target.value, e)}
+                  block
+                  height='md'
+                  placeholder=''
+                />
+              </FormGroup>
+
+              <FormGroup inline>
+                <FormLabel>{t('register.form_goal')}</FormLabel>
+                <SelectInput
+                  name='goal'
+                  data-validate='["required"]'
+                  errors={getFieldErrors('goal')}
+                  value={goalOptions.find(
+                    (option) => option.value === personalDataForm.goal
+                  )}
+                  options={goalOptions}
+                  onChange={(option, e) =>
+                    validateOnChange('goal', option.value, e)
+                  }
+                  style='default'
+                  block
+                />
+              </FormGroup>
+
+              {/*<FormGroup inline>
+                <FormLabel>Password</FormLabel>
+                <InputField
+                  name="password"
+                  type="password"
+                  data-validate='["required"]'
+                  errors={getFieldErrors('password')}
+                  value={personalDataForm.password}
+                  onChange={e => validateOnChange('password', e.target.value, e)}
+                  block
+                  height="md"
+                  placeholder=""
+                />
+              </FormGroup>*/}
+
+              <div className='pl-xs-5'>
+                <FormGroup className='mt-5'>
+                  <CustomCheckbox
+                    label={t('register.form_receive_news')}
+                    inline
+                    checked={personalDataForm.is_mailing}
+                    onChange={(e) =>
+                      setPersonalDataForm({
+                        ...personalDataForm,
+                        is_mailing: e.target.checked,
+                      })
+                    }
+                  />
+                </FormGroup>
+
+                <Button
+                  className='mt-2 mt-xs-3 profile-settings-personal-form-btn'
+                  type='submit'
+                  color='secondary'
+                  isLoading={updatePersonalDataLoading}
+                >
+                  {t('button.save')}
+                </Button>
+              </div>
+            </form>
+          </ContentLoading>
+        </div>
+      </ProfileLayout>
+    </>
   );
 };
 

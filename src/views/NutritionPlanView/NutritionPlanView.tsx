@@ -1,9 +1,13 @@
 import React from 'react';
+import Helmet from 'react-helmet';
+
+import { getTranslate } from 'utils';
 
 // Components
 import Button from 'components/common/Forms/Button';
 import NutritionPlanCard from 'components/NutritionPlanCard';
 import Advantages from 'components/Advantages';
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './NutritionPlanView.sass';
 
@@ -18,8 +22,15 @@ import RecipePreviewImage from 'assets/img/recipe-preview-img.jpg';
 import RewardImage from 'assets/img/reward-img.svg';
 import ClockImage from 'assets/img/icons/clock-icon.svg';
 
-const NutritionPlanView = () => (
-  <>
+const NutritionPlanView = (props: any) => {
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
+
+  return (
+    <>
+    <Helmet>
+      <title>{t('app.title.nutrition_plan')}</title>
+    </Helmet>
     <Advantages
       icon1={CookCutIcon}
       icon2={MealIcon}
@@ -164,6 +175,6 @@ const NutritionPlanView = () => (
       </div>
     </section>
   </>
-);
+)};
 
-export default NutritionPlanView;
+export default WithTranslate(NutritionPlanView);

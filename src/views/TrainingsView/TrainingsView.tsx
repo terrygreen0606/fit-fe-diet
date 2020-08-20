@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
+import Helmet from 'react-helmet';
 
 import WeekDays from 'components/WeekDays';
 import TrainingCard from 'components/TrainingCard';
@@ -24,12 +25,12 @@ import {
 import './TrainingsView.sass';
 
 const TrainingsView: React.FC = (props: any) => {
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
+
   const [level, setLevel] = useState(0);
   const [weekWorkout, setWeekWorkout] = useState('wed');
   const [todayActivities, setTodayActivities] = useState(['workout_add']);
-
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
 
   const onWorkoutChange = (e) => setWeekWorkout(e.target.value);
 
@@ -45,6 +46,9 @@ const TrainingsView: React.FC = (props: any) => {
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.trainings')}</title>
+      </Helmet>
       <Advantages
         mainTitle={t('trainings.plan.main_title')}
         icon1={RewardIcon}
