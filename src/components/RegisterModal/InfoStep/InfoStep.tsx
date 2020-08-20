@@ -5,25 +5,29 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
+import { toast } from 'react-toastify';
+import { getUserWeightPrediction } from 'api';
 
 // Components
 import CustomRadio from 'components/common/Forms/CustomRadio';
+import CustomSwitch from 'components/common/Forms/CustomSwitch';
 import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
+import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 
 import '../RegisterModal.sass';
 
 import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
 import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
+import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
 
 const InfoStep = (props: any) => {
   const { registerData } = props;
   const [registerInfoErrors, setRegisterInfoErrors] = useState([]);
-
-  const [registerInfoLoading, setRegisterInfoLoading] = useState(false);
+  const [weightPredictionLoading, setWeightPredictionLoading] = useState(false);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -56,25 +60,33 @@ const InfoStep = (props: any) => {
     setRegisterInfoErrors([...errors]);
 
     if (!hasError) {
-      setRegisterInfoLoading(true);
-
-      setTimeout(() => {
-        setRegisterInfoLoading(false);
-        props.setRegisterStep('JOIN');
-      }, 400);
+      props.setRegisterView('PLAN_PROGRESS');
     }
   };
 
   return (
-    <div className='register_info'>
-      <h6 className='register_title mb-5'>{t('register.fill_details_text')}</h6>
+    <div className="register_info">
+      <h6 className="register_title mb-5">
+        <AngleLeftIcon 
+          className="register-back-icon mr-3" 
+          onClick={e => props.setRegisterView('NOT_EATING')}
+        /> 
+        {t('register.fill_details_text')}
+      </h6>
 
-      <div style={{ height: '50px' }} />
+      <div className="text-center">
+        <CustomSwitch 
+          label1="US" 
+          label2="Metrik" 
+          checked={props.registerData.measurement === 'si'} 
+          onChange={e => props.setRegisterData({
+            ...props.registerData,
+            measurement: e.target.checked ? 'si' : 'us'
+          })}
+        />
+      </div>
 
-      <form
-        className='register_info_form'
-        onSubmit={(e) => registerInfoSubmit(e)}
-      >
+      <form className="register_info_form mt-5" onSubmit={(e) => registerInfoSubmit(e)}>
         <FormGroup inline>
           <FormLabel>{t('register.form_sex')}</FormLabel>
 
@@ -127,69 +139,117 @@ const InfoStep = (props: any) => {
           />
         </FormGroup>
 
-        <FormGroup inline>
-          <FormLabel>{t('register.form_age')}</FormLabel>
-          <InputField
-            block
-            type='number'
-            min={1}
-            name='age'
-            value={registerData.age}
-            data-validate='["required"]'
-            onChange={(e) => validateOnChange('age', e.target.value, e)}
-            errors={getFieldErrors('age')}
-            placeholder=''
-          />
-        </FormGroup>
+        <div className="row">
+          <div className="col-6 mt-3 mb-4">
+            
+            <FormGroup className="register_info_fg_age mb-0" inline>
+              <FormLabel>{t('register.form_age')}</FormLabel>
+              <InputField
+                block
+                height="md"
+                type="number"
+                min={1}
+                name="age"
+                value={registerData.age}
+                data-validate='["required"]'
+                onChange={(e) => validateOnChange('age', e.target.value, e)}
+                invalid={getFieldErrors('age').length > 0}
+                placeholder=""
+              />
+              <FormLabel>{t('common.age_yo')}</FormLabel>
+            </FormGroup>
 
-        <FormGroup inline>
-          <FormLabel>{t('register.form_height')}</FormLabel>
-          <InputField
-            block
-            type='number'
-            value={registerData.height}
-            name='height'
-            data-param='50,250'
-            data-validate='["required", "min-max"]'
-            onChange={(e) => validateOnChange('height', e.target.value, e)}
-            errors={getFieldErrors('height')}
-            placeholder=''
-          />
-        </FormGroup>
+            {getFieldErrors('age').slice(0, 1).map((error, i) => (
+              <FormInvalidMessage key={i} className="text-center">{error.message}</FormInvalidMessage>
+            ))}
 
-        <FormGroup inline>
-          <FormLabel>{t('register.form_weight')}</FormLabel>
-          <InputField
-            block
-            type='number'
-            value={registerData.weight}
-            data-param='30,400'
-            data-validate='["required", "min-max"]'
-            name='weight'
-            onChange={(e) => validateOnChange('weight', e.target.value, e)}
-            errors={getFieldErrors('weight')}
-            placeholder=''
-          />
-        </FormGroup>
+          </div>
+          <div className="col-6 mt-3 mb-4">
+            
+            <FormGroup className="register_info_fg_height mb-0" inline>
+              <FormLabel>{t('register.form_height')}</FormLabel>
+              <InputField
+                block
+                height="md"
+                type="number"
+                value={registerData.height}
+                name="height"
+                data-param="50,250"
+                data-validate='["required", "min-max"]'
+                onChange={(e) => validateOnChange('height', e.target.value, e)}
+                invalid={getFieldErrors('height').length > 0}
+                placeholder=""
+              />
+              <FormLabel>{t('common.cm')}</FormLabel>
+            </FormGroup>
 
-        <div className='text-center mt-5'>
+            {getFieldErrors('height').slice(0, 1).map((error, i) => (
+              <FormInvalidMessage key={i} className="text-center">{error.message}</FormInvalidMessage>
+            ))}
+
+          </div>
+          <div className={classNames({
+            "col-6 offset-3 mt-3 mb-4": registerData.goal === 0,
+            "col-6 mt-3 mb-4": registerData.goal !== 0,
+          })}>
+            
+            <FormGroup className="register_info_fg_weight mb-0" inline>
+              <FormLabel>{t('register.form_weight_now')}</FormLabel>
+              <InputField
+                block
+                height="md"
+                type="number"
+                value={registerData.weight}
+                data-param="30,400"
+                data-validate='["required", "min-max"]'
+                name="weight"
+                onChange={(e) => validateOnChange('weight', e.target.value, e)}
+                invalid={getFieldErrors('weight').length > 0}
+                placeholder=""
+              />
+              <FormLabel>{t('common.kg')}</FormLabel>
+            </FormGroup>
+
+            {getFieldErrors('weight').slice(0, 1).map((error, i) => (
+              <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
+            ))}
+
+          </div>
+          {registerData.goal !== 0 && (
+            <div className="col-6 mt-3 mb-4">
+              
+              <FormGroup className="register_info_fg_weight mb-0" inline>
+                <FormLabel>{t('register.form_weight_want')}</FormLabel>
+                <InputField
+                  block
+                  height="md"
+                  type="number"
+                  value={registerData.weight_goal}
+                  data-param="30,400"
+                  data-validate='["required", "min-max"]'
+                  name="weight_goal"
+                  onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
+                  invalid={getFieldErrors('weight_goal').length > 0}
+                  placeholder=""
+                />
+                <FormLabel>{t('common.kg')}</FormLabel>
+              </FormGroup>
+
+              {getFieldErrors('weight_goal').slice(0, 1).map((error, i) => (
+                <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
+              ))}
+
+            </div>
+          )}
+        </div>
+
+        <div className="text-center mt-4">
           <Button
             style={{ width: '217px' }}
-            outline
-            color='secondary'
-            size='lg'
-            onClick={() => props.setRegisterStep('GOAL')}
-          >
-            {t('register.form_back')}
-          </Button>
-
-          <Button
-            style={{ width: '217px' }}
-            color='primary'
-            type='submit'
-            className='ml-3'
-            size='lg'
-            isLoading={registerInfoLoading}
+            color="primary"
+            type="submit"
+            size="lg"
+            isLoading={weightPredictionLoading}
           >
             {t('register.form_next')}
           </Button>

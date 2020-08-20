@@ -60,24 +60,7 @@ $borderRadius: 0px
   overflow-y: auto
   scroll-padding: 10px
 
-  &::-webkit-scrollbar
-    width: 7px
-    height: 7px
-
-  /* Track */
-  &::-webkit-scrollbar-track
-    background: $grey-bg
-    border-radius: $borderRadius
-    margin: 0
-
-  /* Handle */
-  &::-webkit-scrollbar-thumb
-    background: $caribbean-green
-    border-radius: $borderRadius
-
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover
-    background: darken($caribbean-green, 10%)
+  +scrollStyle(7px)
 
 
 .dialogFooter
