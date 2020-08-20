@@ -180,7 +180,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path='/testimonials'
+      path='/testimonials_form'
       component={(props: any) => (
         <Layout {...props}>
           <TestimonialsFormView {...props} />
