@@ -60,6 +60,28 @@ $base_font: 'Montserrat', sans-serif
 @mixin mt($time)
   transition: all $time ease
 
+// Custom Scroll
+@mixin scrollStyle($width)
+  &::-webkit-scrollbar
+    width: $width
+    height: $width
+
+  /* Track */
+  &::-webkit-scrollbar-track
+    background: $grey-bg
+    border-radius: 0
+    margin: 0
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb
+    background: $caribbean-green
+    border-radius: 0
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover
+    background: darken($caribbean-green, 10%)
+    
+
 $pageContentPadding: 24px
 $layout_max_width: 1170px
 $header_height: 80px
