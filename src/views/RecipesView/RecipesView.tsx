@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 import { getTranslate } from 'utils';
 
@@ -19,6 +20,9 @@ const RecipesView = (props: any) => {
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.recipes')}</title>
+      </Helmet>
       <section className="recipes-head-sect">
         <div className="container">
           <div className="row">

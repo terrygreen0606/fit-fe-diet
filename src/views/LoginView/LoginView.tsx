@@ -16,6 +16,7 @@ import {
   userFacebookSignIn,
 } from 'api';
 import { userLogin } from 'store/actions';
+import Helmet from 'react-helmet';
 
 // Components
 import AuthSocialHelmet from 'components/AuthSocialHelmet';
@@ -194,6 +195,10 @@ const LoginView = (props: any) => {
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.login')}</title>
+      </Helmet>
+
       <AuthSocialHelmet />
 
       <div className='loginScreen'>

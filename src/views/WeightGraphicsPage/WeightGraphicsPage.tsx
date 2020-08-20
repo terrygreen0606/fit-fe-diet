@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import Helmet from 'react-helmet';
+
+import { getTranslate } from 'utils';
 
 // Components
 import DonutChart from 'components/common/charts/DonutChart';
@@ -6,6 +9,7 @@ import LineChart from 'components/common/charts/LineChart';
 import Button from 'components/common/Forms/Button';
 import CustomRadio from 'components/common/Forms/CustomRadio';
 import SelectInput from 'components/common/Forms/SelectInput';
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './WeightGraphicsPage.sass';
 
@@ -48,12 +52,18 @@ const chartData = {
   ],
 };
 
-const WeightGraphicsPage = () => {
+const WeightGraphicsPage = (props: any) => {
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
+
   const [dietStatisticsType, setDietStatisticsType] = useState('weight');
   const [dietStatisticsPeriod, setDietStatisticsPeriod] = useState(periodOptions[0]);
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.weight_graphic')}</title>
+      </Helmet>
       <section className="weight-graphics-page">
         <div className="container">
           <div className="row">
@@ -158,4 +168,4 @@ const WeightGraphicsPage = () => {
   );
 };
 
-export default WeightGraphicsPage;
+export default WithTranslate(WeightGraphicsPage);

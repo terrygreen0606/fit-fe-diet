@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { getTranslate } from 'utils';
+import Helmet from 'react-helmet';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 
@@ -44,6 +45,9 @@ const WaterTrackerView = (props: any) => {
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.water_tracker')}</title>
+      </Helmet>
       <div className='waterTracker'>
         <div className='container'>
           <div className='row'>

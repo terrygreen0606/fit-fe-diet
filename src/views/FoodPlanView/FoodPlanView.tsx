@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getTranslate } from 'utils';
 import classnames from 'classnames';
+import Helmet from 'react-helmet';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import WeekDays from 'components/WeekDays';
@@ -65,6 +66,9 @@ const FoodPlanView = (props: any) => {
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.food_plan')}</title>
+      </Helmet>
       <section>
         <div className='container'>
           <div className='row food_plan'>
