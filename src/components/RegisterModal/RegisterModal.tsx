@@ -36,12 +36,16 @@ const registerDataDefault: RegisterDataType = {
   weight_goal: null,
   tpl_signup: null,
   goal: -1,
-  ignore_cuisine_ids: ['milk', 'meat', 'fish', 'diseases', 'gluten', 'deabetes'],
+  ignore_cuisine_ids: [],
 };
 
 type RegisterModalProps = {
   isOpen: boolean,
   tpl: number,
+  cuisines: any[],
+  cuisinesLoading: boolean,
+  cuisinesLoadingError: boolean,
+  fetchRecipeCuisines: () => void,
   onClose?: (e: React.SyntheticEvent) => void,
   localePhrases: any
 };
@@ -54,6 +58,10 @@ const RegisterModal = ({
   isOpen,
   onClose,
   tpl,
+  cuisines,
+  cuisinesLoading,
+  cuisinesLoadingError,
+  fetchRecipeCuisines,
   localePhrases
 }: RegisterModalProps) => {
   const t = (code: string) => getTranslate(localePhrases, code);
@@ -108,6 +116,15 @@ const RegisterModal = ({
       });
     }
   }, [tpl]);
+
+  useEffect(() => {
+    if (cuisines) {
+      setRegisterData({
+        ...registerData,
+        ignore_cuisine_ids: cuisines
+      });
+    }
+  }, [cuisines]);
 
   const getRegisterStepView = (registerView: string) => {
     let registerStepView = null;
@@ -166,6 +183,9 @@ const RegisterModal = ({
             setRegisterView={setRegisterView}
             stepTitlesDefault={registerStepTitlesDefault}
             setStepTitles={setRegisterStepTitles}
+            cuisinesLoading={cuisinesLoading}
+            cuisinesLoadingError={cuisinesLoadingError}
+            fetchRecipeCuisines={fetchRecipeCuisines}
             localePhrases={localePhrases || {}}
           />
         );

@@ -14,4 +14,5 @@ export * from './uploadImageAWS';
 export * from './userUpdateProfile';
 export * from './fetchUserProfile';
 export * from './getUserWeightChart';
+export * from './getRecipeCuisines';
 export * from './getUserWeightPrediction';

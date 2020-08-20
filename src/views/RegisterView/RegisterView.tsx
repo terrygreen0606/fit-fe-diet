@@ -4,7 +4,7 @@ import {
   initGoogleAuth,
   initFacebookAuth
 } from 'utils';
-import { getSignUpTpl } from 'api';
+import { getSignUpTpl, getRecipeCuisines } from 'api';
 
 // Components
 import AuthSocialHelmet from 'components/AuthSocialHelmet';
@@ -23,10 +23,15 @@ const RegisterView = (props: any) => {
   const [registerTplLoading, setRegisterTplLoading] = useState<boolean>(true);
   const [registerTplLoadingError, setRegisterTplLoadingError] = useState<boolean>(false);
 
+  const [recipeCuisines, setRecipeCuisines] = useState([]);
+  const [recipeCuisinesLoading, setRecipeCuisinesLoading] = useState<boolean>(false);
+  const [recipeCuisinesLoadingError, setRecipeCuisinesLoadingError] = useState<boolean>(false);
+
   useEffect(() => {
     initGoogleAuth(setRegisterGoogleInitLoading, setRegisterGoogleLoadingError);
     initFacebookAuth(setRegisterFacebookInitLoading);
     loadRegisterTpl();
+    fetchRecipeCuisines();
   }, []);
 
   const loadRegisterTpl = () => {
@@ -45,6 +50,23 @@ const RegisterView = (props: any) => {
     });
   };
 
+  const fetchRecipeCuisines = () => {
+    setRecipeCuisinesLoading(true);
+    setRecipeCuisinesLoadingError(false);
+
+    getRecipeCuisines().then(response => {
+      setRecipeCuisinesLoading(false);
+
+      if (response.data && response.data.data) {
+        console.log(response.data.data)
+        setRecipeCuisines(response.data.data);
+      }
+    }).catch(error => {
+      setRecipeCuisinesLoading(false);
+      setRecipeCuisinesLoadingError(true);
+    });
+  };
+
   return (
     <ContentLoading
       isLoading={registerTplLoading}
@@ -57,6 +79,10 @@ const RegisterView = (props: any) => {
       <RegisterModal
         isOpen={true}
         tpl={registerTpl}
+        cuisines={recipeCuisines}
+        cuisinesLoading={recipeCuisinesLoading}
+        cuisinesLoadingError={recipeCuisinesLoadingError}
+        fetchRecipeCuisines={fetchRecipeCuisines}
         facebookInitLoading={registerFacebookInitLoading}
         googleLoadingError={registerGoogleLoadingError}
         googleInitLoading={registerGoogleInitLoading}

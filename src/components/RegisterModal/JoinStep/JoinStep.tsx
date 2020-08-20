@@ -82,7 +82,10 @@ const JoinStep = (props: any) => {
       ...userProfileData
     } = props.registerData;
 
-    return {...userProfileData};
+    return {
+      ...userProfileData,
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id)
+    };
   };
 
   const registerGoogle = () => {

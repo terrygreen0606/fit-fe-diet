@@ -4,6 +4,7 @@ import { getTranslate } from 'utils';
 
 // Components
 import Button from 'components/common/Forms/Button';
+import ContentLoading from 'components/hoc/ContentLoading';
 
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon-black.svg';
 import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
@@ -11,8 +12,6 @@ import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-ico
 import { getMealItem } from './getMealItem';
 
 const NotEatingStep = (props: any) => {
-
-  const [ignoreCuisineIds, setIgnoreCuisineIds] = useState([]);
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
@@ -25,31 +24,15 @@ const NotEatingStep = (props: any) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (props.registerData && props.registerData.ignore_cuisine_ids) {
-      setIgnoreCuisineIds(props.registerData.ignore_cuisine_ids.map((mealKey) => ({
-        id: uuid(),
-        key: mealKey,
-        ...getMealItem(mealKey),
-      })));
-    }
-  }, [props.registerData]);
-
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const removeMealItem = (mealId: string) => {
-    const mealItem = ignoreCuisineIds.find((meal) => meal.id === mealId);
-
-    if (mealItem) {
-      props.setRegisterData({
-        ...props.registerData,
-        ignore_cuisine_ids: props.registerData.ignore_cuisine_ids.filter(
-          (mealKey) => mealKey !== mealItem.key,
-        ),
-      });
-
-      setIgnoreCuisineIds(ignoreCuisineIds.filter((meal) => meal.key !== mealItem.key));
-    }
+  const removeMealItem = (cuisineId: string) => {
+    props.setRegisterData({
+      ...props.registerData,
+      ignore_cuisine_ids: props.registerData.ignore_cuisine_ids.filter(
+        cuisine => cuisine.id !== cuisineId,
+      ),
+    });
   };
 
   return (
@@ -62,18 +45,24 @@ const NotEatingStep = (props: any) => {
         {t('register.not_eating')}
       </h6>
 
-     <div className="register_eating_list">
-        {ignoreCuisineIds.map(({ id, title, icon: Icon }) => (
-          <div key={id} className="register_eating_item">
-            <span>
-              <Icon className="register_eating_item_icon" />
-              <span className="register_eating_item_label">{title}</span>
-            </span>
+      <ContentLoading
+        isLoading={props.cuisinesLoading}
+        isError={props.cuisinesLoadingError}
+        fetchData={props.fetchRecipeCuisines}
+      >
+       <div className="register_eating_list">
+          {props.registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
+            <div key={id} className="register_eating_item">
+              <span>
+                <img src={image} className="register_eating_item_icon" />
+                <span className="register_eating_item_label">{name}</span>
+              </span>
 
-            <CrossIcon onClick={() => removeMealItem(id)} className="register_eating_item_cross" />
-          </div>
-        ))}
-      </div>
+              <CrossIcon onClick={() => removeMealItem(id)} className="register_eating_item_cross" />
+            </div>
+          ))}
+        </div>
+      </ContentLoading>
 
       <div className="text-center mt-4">
         <Button
