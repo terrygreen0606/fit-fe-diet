@@ -176,7 +176,7 @@ const TestimonialsFormView = (props: any) => {
           </div>
           <div>
             <div className='testimonials-form__label-title'>
-              {t('testimonials.add.likered_scale')}
+              {t('testimonials.add.liked_scale')}
             </div>
             <div className='testimonials-form__rating-table'>
               <div className='testimonials-form__rating-table-row'>
