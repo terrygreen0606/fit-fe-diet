@@ -28,26 +28,26 @@ const CancellationFormView = (props: any) => {
             </div>
           </h2>
           <div className='cancellation-form__sub-title'>
-            {t('cancellation.date_title')}
+            {t('cancellation.date.title')}
           </div>
           <div className='cancellation-form__sub-desc'>
-            {t('cancellation.date_desc')}
+            {t('cancellation.date.desc')}
           </div>
           <div className='cancellation-form__sub-title'>
-            {t('cancellation.data_delation_title')}
+            {t('cancellation.deletion.title')}
           </div>
           <div className='cancellation-form__sub-desc'>
-            {t('cancellation.data_delation_desc')}
+            {t('cancellation.deletion.desc')}
           </div>
           <div className='cancellation-form__sub-title cancellation-form__sub-title_mt'>
-            {t('cancellation.reason_title')}
+            {t('cancellation.reason.title')}
           </div>
           <div className='cancellation-form__reasons-list'>
             <div className='cancellation-form__reasons-item'>
               <CustomRadio
                 name='reason'
                 className='cancellation-form__reasons-item-radio'
-                label={t('cancellation.didnt_needs')}
+                label={t('cancellation.not_needs')}
               />
             </div>
             <div className='cancellation-form__reasons-item'>
@@ -81,7 +81,7 @@ const CancellationFormView = (props: any) => {
           </div>
           <div className='cancellation-form__feedback'>
             <div className='cancellation-form__sub-title'>
-              {t('cancellation.feedback_title')}
+              {t('cancellation.feedback.title')}
             </div>
             <InputField
               type='textarea'
@@ -91,7 +91,7 @@ const CancellationFormView = (props: any) => {
             />
             <div className='cancellation-form__feedback-button-wrap'>
               <Button color='secondary'>
-                {t('cancellation.feedback_button')}
+                {t('cancellation.feedback.button')}
               </Button>
             </div>
           </div>
