@@ -114,25 +114,25 @@ const TestimonialsFormView = (props: any) => {
   return (
     <>
       <Helmet>
-        <title>{t('app.title.testimonials_form')}</title>
+        <title>{t('app.title.testimonials.add')}</title>
       </Helmet>
       <div className='container'>
         <div className='testimonials-form'>
           <h2 className='testimonials-form__title'>
             <span className='testimonials-form__title-wrap'>
-              {t('testimonials_form.title')}
+              {t('testimonials.add.title')}
             </span>
           </h2>
           <p className='testimonials-form__description'>
-            {t('testimonials_form.description')}
+            {t('testimonials.add.description')}
           </p>
           <div>
             <div className='testimonials-form__label-title'>
-              {t('testimonials_form.recommendation_title')}
+              {t('testimonials.add.recommendation_title')}
             </div>
             <div className='testimonials-form__recommendation-description'>
-              <span>{t('testimonials_form.not_likely')}</span>
-              <span>{t('testimonials_form.most_likely')}</span>
+              <span>{t('testimonials.add.not_likely')}</span>
+              <span>{t('testimonials.add.most_likely')}</span>
             </div>
             <div className='testimonials-form__recommendation'>
               {likeCounter.map((count) => (
@@ -176,30 +176,30 @@ const TestimonialsFormView = (props: any) => {
           </div>
           <div>
             <div className='testimonials-form__label-title'>
-              {t('testimonials_form.likered_scale')}
+              {t('testimonials.add.likered_scale')}
             </div>
             <div className='testimonials-form__rating-table'>
               <div className='testimonials-form__rating-table-row'>
                 <div className='testimonials-form__rating-table-item_big testimonials-form__rating-table-head' />
                 <div className='testimonials-form__rating-table-item testimonials-form__rating-table-head'>
-                  {t('testimonials_form.strongly_disagree')}
+                  {t('testimonials.add.strongly_disagree')}
                 </div>
                 <div className='testimonials-form__rating-table-item testimonials-form__rating-table-head'>
-                  {t('testimonials_form.disagree')}
+                  {t('testimonials.add.disagree')}
                 </div>
                 <div className='testimonials-form__rating-table-item testimonials-form__rating-table-head'>
-                  {t('testimonials_form.neutral')}
+                  {t('testimonials.add.neutral')}
                 </div>
                 <div className='testimonials-form__rating-table-item testimonials-form__rating-table-head'>
-                  {t('testimonials_form.agree')}
+                  {t('testimonials.add.agree')}
                 </div>
                 <div className='testimonials-form__rating-table-item testimonials-form__rating-table-head'>
-                  {t('testimonials_form.strongly_agree')}
+                  {t('testimonials.add.strongly_agree')}
                 </div>
               </div>
               <div className='testimonials-form__rating-table-row'>
                 <div className='testimonials-form__rating-table-item_big testimonials-form__rating-table-cell'>
-                  {t('testimonials_form.archive_goals')}
+                  {t('testimonials.add.archive_goals')}
                 </div>
                 <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
                   <CustomRadio
@@ -228,48 +228,48 @@ const TestimonialsFormView = (props: any) => {
                 <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
                   <CustomRadio
                     name='goals'
-                    className='testimonials-form__rating-table-radio'
-                  />
-                </div>
-              </div>
-              <div className='testimonials-form__rating-table-row'>
-                <div className='testimonials-form__rating-table-item_big testimonials-form__rating-table-cell'>
-                  {t('testimonials_form.recommend_others')}
-                </div>
-                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
-                  <CustomRadio
-                    name='recommendation'
-                    className='testimonials-form__rating-table-radio'
-                  />
-                </div>
-                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
-                  <CustomRadio
-                    name='recommendation'
-                    className='testimonials-form__rating-table-radio'
-                  />
-                </div>
-                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
-                  <CustomRadio
-                    name='recommendation'
-                    className='testimonials-form__rating-table-radio'
-                  />
-                </div>
-                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
-                  <CustomRadio
-                    name='recommendation'
-                    className='testimonials-form__rating-table-radio'
-                  />
-                </div>
-                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
-                  <CustomRadio
-                    name='recommendation'
                     className='testimonials-form__rating-table-radio'
                   />
                 </div>
               </div>
               <div className='testimonials-form__rating-table-row'>
                 <div className='testimonials-form__rating-table-item_big testimonials-form__rating-table-cell'>
-                  {t('testimonials_form.changed_like')}
+                  {t('testimonials.add.recommend_others')}
+                </div>
+                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
+                  <CustomRadio
+                    name='recommendation'
+                    className='testimonials-form__rating-table-radio'
+                  />
+                </div>
+                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
+                  <CustomRadio
+                    name='recommendation'
+                    className='testimonials-form__rating-table-radio'
+                  />
+                </div>
+                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
+                  <CustomRadio
+                    name='recommendation'
+                    className='testimonials-form__rating-table-radio'
+                  />
+                </div>
+                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
+                  <CustomRadio
+                    name='recommendation'
+                    className='testimonials-form__rating-table-radio'
+                  />
+                </div>
+                <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
+                  <CustomRadio
+                    name='recommendation'
+                    className='testimonials-form__rating-table-radio'
+                  />
+                </div>
+              </div>
+              <div className='testimonials-form__rating-table-row'>
+                <div className='testimonials-form__rating-table-item_big testimonials-form__rating-table-cell'>
+                  {t('testimonials.add.changed_like')}
                 </div>
                 <div className='testimonials-form__rating-table-cell testimonials-form__rating-table-item'>
                   <CustomRadio
@@ -306,7 +306,7 @@ const TestimonialsFormView = (props: any) => {
           </div>
           <div>
             <div className='testimonials-form__label-title'>
-              {t('testimonials_form.raiting')}
+              {t('testimonials.add.raiting')}
             </div>
             <div className='testimonials-form__rating-stars'>
               {starRating.map((starButton) => (
@@ -338,7 +338,7 @@ const TestimonialsFormView = (props: any) => {
           </div>
           <div>
             <div className='testimonials-form__label-title'>
-              {t('testimonials_form.improve_title')}
+              {t('testimonials.add.improve_title')}
             </div>
             <InputField
               type='textarea'
@@ -347,9 +347,7 @@ const TestimonialsFormView = (props: any) => {
               className='testimonials-form__opinion'
             />
             <div className='testimonials-form__add-button-wrap'>
-              <Button color='primary'>
-                {t('testimonials_form.add_testimonials')}
-              </Button>
+              <Button color='primary'>{t('testimonials.add.button')}</Button>
             </div>
           </div>
         </div>
