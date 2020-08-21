@@ -26,6 +26,7 @@ import FaqView from './views/FaqView';
 import ReferralView from './views/ReferralView';
 import MainView from './views/MainView';
 import TestimonialsFormView from './views/Forms/TestimonialsFormView';
+import CancellationFormView from './views/Forms/CancellationFormView';
 
 const Routes = () => (
   <Switch>
@@ -184,6 +185,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <TestimonialsFormView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/cancellation'
+      component={(props: any) => (
+        <Layout {...props}>
+          <CancellationFormView {...props} />
         </Layout>
       )}
       exact
