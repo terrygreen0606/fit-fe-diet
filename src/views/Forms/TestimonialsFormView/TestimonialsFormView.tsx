@@ -306,7 +306,7 @@ const TestimonialsFormView = (props: any) => {
           </div>
           <div>
             <div className='testimonials-form__label-title'>
-              {t('testimonials.add.raiting')}
+              {t('testimonials.add.rating')}
             </div>
             <div className='testimonials-form__rating-stars'>
               {starRating.map((starButton) => (
