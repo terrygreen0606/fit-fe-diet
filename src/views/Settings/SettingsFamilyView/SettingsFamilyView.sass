@@ -1,0 +1,151 @@
+@import '../../../assets/sass/_vars'
+
+.family
+  padding: 36px 40px 100px
+    
+  &__title
+    margin-bottom: 30px
+    font-size: 26px
+    line-height: 1.2
+    font-weight: bold
+
+  &__invite-link
+    margin: 0 auto 45px
+    max-width: 540px
+    text-align: center
+
+    &-desc
+      margin-top: 0
+      margin-bottom: 30px
+      font-size: 20px
+
+    &-input
+      width: 100%
+      font-size: 20px
+      text-align: center
+      font-family: Montserrat
+
+      &.fg-input:disabled:not(:read-only)
+        border: 1px solid $black
+        background-color: $white
+
+  &__separator
+    position: relative
+    margin-bottom: 60px
+    text-align: center
+
+    &::before
+      content: ''
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      width: 480px
+      border-bottom: 1px dashed #106EE8
+
+    &-text
+      position: relative
+      padding: 0 32px
+      font-size: 26px
+      line-height: 1.2
+      background-color: $white
+
+  &__invite-email
+    display: flex
+    align-items: center
+    margin-bottom: 120px
+
+    &-input-wrap
+      display: flex
+      align-items: center
+      flex-basis: 78%
+      padding-right: 20px
+
+      .fgLabel
+        margin-right: 30px
+        font-size: 20px
+
+    &-input
+      flex: 1
+
+    &-button-wrap
+      flex-basis: 22%
+
+    &-button
+      width: 100%
+
+  &__user
+    margin: 60px -40px 18px
+    padding: 20px
+    text-align: center
+    background-color: #F1F1F1
+    font-size: 26px
+    line-height: 1.2
+
+    &-name
+      display: block
+      margin-bottom: 4px
+      font-weight: bold
+
+  &__list-item
+    display: flex
+    align-items: center
+    padding: 30px 13px 20px
+
+    &-media
+      flex-basis: 75px
+      border-radius: 50%
+      overflow: hidden
+
+      img, svg
+        max-width: 100%
+        height: auto
+
+    &-desc
+      flex: 1
+      padding: 0 40px
+
+      &-name
+        margin-bottom: 6px
+        font-size: 18px
+        font-weight: bold
+        line-height: 1.2
+
+      &-email
+        text-decoration: none
+        color: $black
+        border-bottom: 1px solid transparent
+        transition: border-bottom 0.2s ease
+
+        &:hover
+          border-bottom: 1px solid
+
+      &-way
+        margin-top: 10px
+        font-size: 16px
+        color: #C4C4C4
+
+    &-close
+      display: flex
+      align-items: center
+      justify-content: center
+      flex-basis: 26px
+      height: 26px
+      padding: 0
+      border: none
+      background-color: #F2F2F2
+      border-radius: 50%
+      transition: background-color 0.2s ease
+      cursor: pointer
+
+      &:hover
+        background-color: darken(#F2F2F2, 10%)
+
+      svg
+        width: 12px
+        height: auto
+
+        //need add border to item
+
+
+
