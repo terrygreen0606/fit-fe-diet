@@ -2,7 +2,7 @@
 /* eslint-disable function-paren-newline */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -14,7 +14,12 @@ import {
   getTranslate,
 } from 'utils';
 import FormValidator from 'utils/FormValidator';
-import { userInviteFriendByEmail, getUserInviteLink, getUserInfo } from 'api';
+import {
+  userInviteFriendByEmail,
+  getUserInviteLink,
+  getUserInfo,
+  getUserFamily,
+} from 'api';
 
 // Components
 import InputField from 'components/common/Forms/InputField';
@@ -42,17 +47,23 @@ const SettingsFamilyView = (props: any) => {
     surname: '',
   });
 
-  useMemo(() => {
-    getUserInviteLink().then((response) => {
-      setInviteLink(response.data.data.url);
-    });
-  }, [inviteLink]);
+  const [userFamily, setUserFamily] = useState([]);
 
-  if (!userInfo.name) {
+  useEffect(() => {
+    getUserFamily().then((response) => {
+      setUserFamily(response.data.data.list);
+      // console.log('response', response);
+      // console.log('userFamily', userFamily);
+    });
+
     getUserInfo().then((response) => {
       setUserInfo(response.data.data);
     });
-  }
+
+    getUserInviteLink().then((response) => {
+      setInviteLink(response.data.data.url);
+    });
+  }, []);
 
   const [inviteEmailErrors, setInviteEmailErrors] = useState([]);
 
@@ -100,7 +111,7 @@ const SettingsFamilyView = (props: any) => {
   return (
     <>
       <Helmet>
-        <title>Family members</title>
+        <title>{t('app.title.family')}</title>
       </Helmet>
       <ProfileLayout>
         <div className='family card-bg'>
@@ -109,11 +120,13 @@ const SettingsFamilyView = (props: any) => {
             <p className='family__invite-link-desc'>
               {t('family.invite_link.desc')}
             </p>
-            <InputField
-              disabled
-              value={inviteLink}
+            <Button
+              type='button'
               className='family__invite-link-input'
-            />
+              onClick={() => navigator.clipboard.writeText(inviteLink)}
+            >
+              {inviteLink}
+            </Button>
           </div>
           <div className='family__separator'>
             <span className='family__separator-text'>{t('common.or')}</span>
