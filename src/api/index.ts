@@ -15,3 +15,4 @@ export * from './user/userUpdateProfile';
 export * from './fetchUserProfile';
 export * from './user/userInviteFriendByEmail';
 export * from './user/getUserInviteLink';
+export * from './user/getUserInfo';

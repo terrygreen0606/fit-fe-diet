@@ -24,6 +24,7 @@
       font-size: 20px
       text-align: center
       font-family: Montserrat
+      cursor: pointer
 
       &.fg-input:disabled:not(:read-only)
         border: 1px solid $black
@@ -52,18 +53,22 @@
 
   &__invite-email
     display: flex
-    align-items: center
     margin-bottom: 120px
 
     &-input-wrap
       display: flex
       align-items: center
+      flex-wrap: wrap
       flex-basis: 78%
       padding-right: 20px
 
       .fgLabel
         margin-right: 30px
         font-size: 20px
+
+      .fgInvalidMsg
+        width: 100%
+        padding-left: 196px
 
     &-input
       flex: 1
@@ -87,10 +92,14 @@
       margin-bottom: 4px
       font-weight: bold
 
+  &__list
+    margin-bottom: 70px
+
   &__list-item
     display: flex
     align-items: center
     padding: 30px 13px 20px
+    border-bottom: 1px solid #D2D2D2
 
     &-media
       flex-basis: 75px
@@ -145,7 +154,95 @@
         width: 12px
         height: auto
 
-        //need add border to item
+  &__referral-button-wrap
+    text-align: center
+
+  &__referral-button-link
+    text-decoration: none
+
+@media only screen and (max-width: 767px)
+  .family
+    padding: 40px 20px
+
+    &__title
+      font-size: 18px
+
+    &__invite-link
+      &-desc
+        text-align: left
+        font-size: 14px
+
+      &-input
+        padding: 10px 5px
+        font-size: 14px
+
+    &__separator
+      margin-bottom: 40px
+
+    &__invite-email
+      margin-bottom: 60px
+      flex-wrap: wrap
+
+      &-input-wrap
+        flex-wrap: wrap
+        margin-bottom: 20px
+        padding-right: 0
+        flex-basis: 100%
+
+        .fgLabel
+          width: 100%
+
+        .fgInvalidMsg
+          padding-left: 0
+
+      &-input
+        width: 100%
+        padding: 10px 5px
+        font-size: 14px
+
+      &-button-wrap
+        flex-basis: 100%
+
+      &-button
+        max-width: 200px
+        padding: 11px 12px
+        font-size: 16px
+
+    &__user
+      margin: 0 -20px 20px
+      font-size: 18px
+
+    &__list
+      &-item
+        &-media
+          flex-basis: 60px
+
+        &-desc
+          padding: 0 20px
+
+          &-name
+            font-size: 14px
+
+          &-email
+            font-size: 14px
+
+          &-way
+            margin-top: 6px
+            font-size: 14px
+
+@media only screen and (max-width: 400px)
+  .family
+    &__list
+      &-item
+        flex-wrap: wrap
+
+        &-media
+          margin-bottom: 10px
+          flex-basis: 70px
+
+        &-desc
+          flex-basis: calc(100% - 26px)
+          padding: 0 20px 0 0
 
 
 
