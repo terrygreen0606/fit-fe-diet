@@ -11,3 +11,4 @@ export * from './getImagePath';
 export * from './getImageAWSFormData';
 export * from './initGoogleAuth';
 export * from './initFacebookAuth';
+export * from './copyTextInBuffer';

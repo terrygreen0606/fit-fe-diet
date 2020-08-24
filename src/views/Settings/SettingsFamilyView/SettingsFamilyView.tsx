@@ -12,6 +12,7 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
+  copyTextInBuffer,
 } from 'utils';
 import FormValidator from 'utils/FormValidator';
 import {
@@ -123,7 +124,7 @@ const SettingsFamilyView = (props: any) => {
             <Button
               type='button'
               className='family__invite-link-input'
-              onClick={() => navigator.clipboard.writeText(inviteLink)}
+              onClick={(e) => copyTextInBuffer('.family__invite-link-input')}
             >
               {inviteLink}
             </Button>
