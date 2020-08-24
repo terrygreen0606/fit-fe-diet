@@ -32,6 +32,7 @@ import './SettingsFamilyView.sass';
 
 // Icons
 import { ReactComponent as CloseIcon } from 'assets/img/icons/close-icon.svg';
+import { ReactComponent as ManPlugIcon } from 'assets/img/icons/man-plug-icon.svg';
 
 const SettingsFamilyView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
@@ -50,11 +51,11 @@ const SettingsFamilyView = (props: any) => {
 
   const [userFamily, setUserFamily] = useState([]);
 
+  const [isActiveCopiedBlock, setActiveCopiedBlock] = useState(false);
+
   useEffect(() => {
     getUserFamily().then((response) => {
       setUserFamily(response.data.data.list);
-      // console.log('response', response);
-      // console.log('userFamily', userFamily);
     });
 
     getUserInfo().then((response) => {
@@ -124,10 +125,21 @@ const SettingsFamilyView = (props: any) => {
             <Button
               type='button'
               className='family__invite-link-input'
-              onClick={(e) => copyTextInBuffer('.family__invite-link-input')}
+              onClick={() => {
+                copyTextInBuffer('.family__invite-link-input');
+                setActiveCopiedBlock(true);
+                setTimeout(() => {
+                  setActiveCopiedBlock(false);
+                }, 2000);
+              }}
             >
               {inviteLink}
             </Button>
+            {isActiveCopiedBlock && (
+              <div className='family__invite-link-copied'>
+                {t('family.copied')}
+              </div>
+            )}
           </div>
           <div className='family__separator'>
             <span className='family__separator-text'>{t('common.or')}</span>
@@ -167,31 +179,34 @@ const SettingsFamilyView = (props: any) => {
               {t('common.you')}
             </div>
             <div className='family__list'>
-              <div className='family__list-item'>
-                <div className='family__list-item-media'>
-                  <img
-                    src='https://fitstg.s3.eu-central-1.amazonaws.com/anna_t.png'
-                    alt=''
-                  />
-                </div>
-                <div className='family__list-item-desc'>
-                  <div className='family__list-item-desc-name'>
-                    Gabriel Martinez
+              {userFamily.map((member) => (
+                <div key={member.email} className='family__list-item'>
+                  <div className='family__list-item-media'>
+                    {member.image ? (
+                      <img src={member.image} alt='' />
+                    ) : (
+                      <ManPlugIcon />
+                    )}
                   </div>
-                  <a
-                    href='mailto:gabi34555@gmail.com'
-                    className='family__list-item-desc-email'
-                  >
-                    gabi34555@gmail.com
-                  </a>
-                  <div className='family__list-item-desc-way'>
-                    {t('family.link_sent')}
+                  <div className='family__list-item-desc'>
+                    <div className='family__list-item-desc-name'>
+                      {member.name}
+                    </div>
+                    <a
+                      href={member.email}
+                      className='family__list-item-desc-email'
+                    >
+                      {member.email}
+                    </a>
+                    <div className='family__list-item-desc-way'>
+                      {t('family.link_sent')}
+                    </div>
                   </div>
+                  <button type='button' className='family__list-item-close'>
+                    <CloseIcon />
+                  </button>
                 </div>
-                <button type='button' className='family__list-item-close'>
-                  <CloseIcon />
-                </button>
-              </div>
+              ))}
             </div>
             <div className='family__referral-button-wrap'>
               <Link to='/referral' className='family__referral-button-link'>
