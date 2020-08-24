@@ -52,9 +52,9 @@ const CustomCheckbox = (props: CustomCheckboxProps) => {
     <label
       htmlFor={htmlFor}
       className={classNames(className, 'customCheckbox', {
-        checkboxDisabled: disabled,
-        checkboxInline: inline,
-        customCheckbox_is_invalid: invalid,
+        'checkboxDisabled': disabled,
+        'checkboxInline': inline,
+        'customCheckbox_is_invalid': invalid,
       })}
     >
       {label && label}

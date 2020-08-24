@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
@@ -26,6 +26,8 @@ import { ReactComponent as FacebookIcon } from 'assets/img/icons/facebook-letter
 
 const JoinStep = (props: any) => {
   const { registerData } = props;
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
   const [registerJoinErrors, setRegisterJoinErrors] = useState([]);
 
   const [socialRegister, setSocialRegister] = useState<string>(null);
@@ -41,6 +43,17 @@ const JoinStep = (props: any) => {
     false
   );
   const [appRulesAccepted, setAppRulesAccepted] = useState(null);
+
+  useEffect(() => {
+    let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[2] = t('register.step_confirm');
+
+    props.setStepTitles([...currStepTitles]);
+
+    return () => {
+      props.setStepTitles([...props.stepTitlesDefault]);
+    };
+  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -58,8 +71,6 @@ const JoinStep = (props: any) => {
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, registerJoinErrors);
 
-  const t = (code: string) => getTranslate(props.localePhrases, code);
-
   const userClientLogin = (authToken: string) => {
     localStorage.setItem('authToken', authToken);
     axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
@@ -67,9 +78,17 @@ const JoinStep = (props: any) => {
   };
 
   const getRegisterProfilePayload = (): UserAuthProfileType => {
-    const { email, password, ...userProfileData } = props.registerData;
+    const {
+      email,
+      password,
+      predicted_date,
+      ...userProfileData
+    } = props.registerData;
 
-    return { ...userProfileData };
+    return {
+      ...userProfileData,
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id)
+    };
   };
 
   const registerGoogle = () => {
@@ -99,12 +118,12 @@ const JoinStep = (props: any) => {
             if (token) {
               userClientLogin(token);
             } else {
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             }
           })
           .catch((error) => {
             setRegisterGoogleLoading(false);
-            toast.error('Error occurred when Sign In User');
+            toast.error(t('register.error_msg'));
           });
       })
       .catch((error) => {
@@ -137,12 +156,12 @@ const JoinStep = (props: any) => {
               if (token) {
                 userClientLogin(token);
               } else {
-                toast.error('Error occurred when Sign In User');
+                toast.error(t('register.error_msg'));
               }
             })
             .catch((error) => {
               setRegisterFacebookLoading(false);
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             });
         } else {
           setRegisterFacebookLoading(false);
@@ -158,10 +177,11 @@ const JoinStep = (props: any) => {
     setRegisterJoinLoading(true);
 
     userSignup({
-      ...registerData,
-    })
-      .then((response) => {
-        setRegisterJoinLoading(false);
+      email: props.registerData.email,
+      password: props.registerData.password,
+      ...getRegisterProfilePayload()
+    }).then(response => {
+      setRegisterJoinLoading(false);
 
         const token =
           response.data && response.data.access_token
@@ -171,12 +191,12 @@ const JoinStep = (props: any) => {
         if (token) {
           userClientLogin(token);
         } else {
-          toast.error('Error while registering user');
+          toast.error(t('register.error_msg'));
         }
       })
       .catch((error) => {
         setRegisterJoinLoading(false);
-        toast.error('Error while registering user');
+        toast.error(t('register.error_msg'));
       });
   };
 
@@ -196,7 +216,7 @@ const JoinStep = (props: any) => {
       setAppRulesAccepted(false);
     }
 
-    if (!hasError && appRulesAccepted) {
+    if (!hasError) {
       if (socialRegister === 'facebook') {
         facebookRegister();
       } else if (socialRegister === 'google') {
@@ -208,22 +228,18 @@ const JoinStep = (props: any) => {
   };
 
   return (
-    <div className='register_join'>
-      <h6 className='register_title mb-5'>
-        {t('register.plan_is_ready_text')}
-      </h6>
+    <div className="register_join">
+      <h4 className="mb-5 text-center text-steel-blue">{t('register.info_confirm_title')}</h4>
 
-      <CustomCheckbox
+      {/*<CustomCheckbox
         invalid={appRulesAccepted === false}
         label={t('register.read_terms')}
         onChange={(e) => setAppRulesAccepted(e.target.checked)}
-      />
+      />*/}
 
-      <form
-        className='register_join_form mt-4'
-        onSubmit={(e) => registerJoinSubmit(e)}
-      >
-        <div className='register_socialBtns'>
+      <form className="register_join_form mt-4 px-5" onSubmit={(e) => registerJoinSubmit(e)}>
+
+        {/*<div className="register_socialBtns">
           <Button
             type='submit'
             className='facebook-login-btn'
@@ -257,14 +273,17 @@ const JoinStep = (props: any) => {
               <GoogleIcon className='mr-2' /> Login with Google
             </Button>
           )}
-        </div>
+        </div>*/}        
 
-        <div className='register_join_or'>
-          <span className='register_join_or_txt'>{t('register.form_or')}</span>
-        </div>
+        {/*<div className="register_join_or">
+          <span className="register_join_or_txt">{t('register.form_or')}</span>
+        </div>*/}
 
-        <FormGroup inline>
-          <FormLabel>{t('register.form_name')}*</FormLabel>
+        <FormGroup>
+          <FormLabel>
+            {t('register.form_name')}
+            *
+          </FormLabel>
           <InputField
             block
             name='name'
@@ -276,21 +295,11 @@ const JoinStep = (props: any) => {
           />
         </FormGroup>
 
-        <FormGroup inline>
-          <FormLabel>{t('register.form_surname')}*</FormLabel>
-          <InputField
-            block
-            name='surname'
-            value={registerData.surname}
-            data-validate='["required"]'
-            onChange={(e) => validateOnChange('surname', e.target.value, e)}
-            errors={getFieldErrors('surname')}
-            placeholder=''
-          />
-        </FormGroup>
-
-        <FormGroup inline>
-          <FormLabel>{t('register.form_email')}*</FormLabel>
+        <FormGroup>
+          <FormLabel>
+            {t('register.form_email')}
+            *
+          </FormLabel>
           <InputField
             block
             name='email'
@@ -304,20 +313,7 @@ const JoinStep = (props: any) => {
           />
         </FormGroup>
 
-        <FormGroup inline>
-          <FormLabel>{t('register.form_phone')}*</FormLabel>
-          <InputField
-            block
-            name='phone'
-            value={registerData.phone}
-            data-validate='["required", "number"]'
-            onChange={(e) => validateOnChange('phone', e.target.value, e)}
-            errors={getFieldErrors('phone')}
-            placeholder=''
-          />
-        </FormGroup>
-
-        <FormGroup inline>
+        <FormGroup>
           <FormLabel>{t('register.form_password')}</FormLabel>
           <InputField
             block
@@ -335,26 +331,16 @@ const JoinStep = (props: any) => {
 
         <div className='text-center mt-5'>
           <Button
-            className='registerBtn'
-            type='submit'
-            onClick={(e) => setSocialRegister('email')}
+            className="registerBtn"
+            style={{ width: '355px' }}
+            type="submit"
+            onClick={e => setSocialRegister('email')}
             block
-            size='lg'
-            color='primary'
+            size="lg"
+            color="secondary"
             isLoading={registerJoinLoading}
           >
             {t('register.form_submit')}
-          </Button>
-
-          <Button
-            outline
-            color='secondary'
-            size='lg'
-            onClick={() => props.setRegisterStep('INFO')}
-            className='mt-4'
-            style={{ width: '217px' }}
-          >
-            {t('register.form_back')}
           </Button>
         </div>
       </form>

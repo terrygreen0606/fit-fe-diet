@@ -3,10 +3,10 @@ import classNames from 'classnames';
 
 import './FormLabel.sass';
 
-const FormLabel = ({ invalid, ...props }: any) => (
+const FormLabel = ({ invalid, className, ...props }: any) => (
   <label
     {...props}
-    className={classNames('fgLabel', {
+    className={classNames('fgLabel', className, {
       fgLabel_is_invalid: invalid,
     })}
   />

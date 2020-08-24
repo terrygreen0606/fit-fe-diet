@@ -16,5 +16,6 @@ module.exports = {
     'jsx-quotes': [2, 'prefer-single'],
     'import/prefer-default-export': 'off',
     'react/self-closing-comp': 'off',
+    'no-plusplus': 'off',
   },
 };

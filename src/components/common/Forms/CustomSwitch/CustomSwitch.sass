@@ -1,0 +1,50 @@
+@import '../../../../assets/sass/vars'
+
+
+.customSwitch
+  padding: 14.5px 0
+  line-height: 22px
+  &_mark
+    display: inline-flex
+    position: relative
+    background: #FFFFFF
+    box-shadow: inset 0px 1px 15px rgba(0, 0, 0, 0.1)
+    border-radius: 30px
+    cursor: pointer
+    &::before
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      width: 50%
+      height: 100%
+      border-radius: 30px
+      background-color: $steel-blue
+      z-index: 1
+      +mt(.2s)
+    &_text
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      padding: 14.5px
+      width: 140px
+      color: #9F9F9F
+      font-size: 18px
+      line-height: 22px
+      z-index: 2
+      +mt(.2s)
+      &:first-child
+        color: #fff
+      &:last-child
+        color: #9F9F9F
+  input
+    display: none
+    &:checked ~ .customSwitch_mark
+      &::before
+        left: unset
+        right: 0
+      .customSwitch_mark_text
+        &:first-child
+          color: #9F9F9F
+        &:last-child
+          color: #fff
