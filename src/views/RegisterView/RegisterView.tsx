@@ -11,6 +11,7 @@ import { getSignUpTpl, getRecipeCuisines } from 'api';
 // Components
 import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import RegisterModal from 'components/RegisterModal';
+import RegisterV2Tpl from './RegisterV2Tpl';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
 
@@ -123,7 +124,7 @@ const RegisterView = (props: any) => {
       >
         <AuthSocialHelmet />
 
-        <RegisterModal
+        {/*<RegisterModal
           isOpen={true}
           registerData={registerData}
           setRegisterData={setRegisterData}
@@ -133,7 +134,9 @@ const RegisterView = (props: any) => {
           facebookInitLoading={registerFacebookInitLoading}
           googleLoadingError={registerGoogleLoadingError}
           googleInitLoading={registerGoogleInitLoading}
-        />
+        />*/}
+
+        <RegisterV2Tpl />
       </ContentLoading>
     </>
   );
