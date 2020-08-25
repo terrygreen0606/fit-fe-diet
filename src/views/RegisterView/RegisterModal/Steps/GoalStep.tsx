@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { getTranslate } from 'utils';
-import uuid from 'react-uuid';
+import classNames from 'classnames';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -23,54 +23,54 @@ const GoalStep = (props: any) => {
 
       <div className="register_goals_list">
         <Button
-          className="register_goal_btn"
-          color="primary"
+          className={classNames("register_goal_btn", {
+            'active': registerData.goal === -1
+          })}
           block
           onClick={(e) => props.setRegisterData({
             ...registerData,
             goal: -1,
           })}
-          outline={registerData.goal !== -1}
         >
           <span>
-            <LoseIcon className="register_goal_icon" />
+            <LoseIcon className="register_goal_icon mr-3" />
             {t('register.lose_weight')}
           </span>
-          <AngleRightIcon />
+          <AngleRightIcon className="register_goal_icon" />
         </Button>
 
         <Button
-          className="register_goal_btn"
-          color="primary"
+          className={classNames("register_goal_btn", {
+            'active': registerData.goal === 0
+          })}
           block
           onClick={(e) => props.setRegisterData({
             ...registerData,
             goal: 0,
           })}
-          outline={registerData.goal !== 0}
         >
           <span>
-            <KeepIcon className="register_goal_icon" />
+            <KeepIcon className="register_goal_icon mr-3" />
             {t('register.keep_weight')}
           </span>
-          <AngleRightIcon />
+          <AngleRightIcon className="register_goal_icon" />
         </Button>
 
         <Button
-          className="register_goal_btn"
-          color="primary"
+          className={classNames("register_goal_btn", {
+            'active': registerData.goal === 1
+          })}
           block
           onClick={(e) => props.setRegisterData({
             ...registerData,
             goal: 1,
           })}
-          outline={registerData.goal !== 1}
         >
           <span>
-            <LiftIcon className="register_goal_icon" />
+            <LiftIcon className="register_goal_icon mr-3" />
             {t('register.lift_weight')}
           </span>
-          <AngleRightIcon />
+          <AngleRightIcon className="register_goal_icon" />
         </Button>
       </div>
 

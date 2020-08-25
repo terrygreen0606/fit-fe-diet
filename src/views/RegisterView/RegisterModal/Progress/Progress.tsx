@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import './Steps.sass';
+import './Progress.sass';
 
-type StepsProps = {
+type ProgressProps = {
   step: 0 | 1 | 2,
   titles: [string, string, string]
 };
 
-const Steps = ({ step, titles }: StepsProps) => {
+const Progress = ({ step, titles }: ProgressProps) => {
   return (
     <div className={classNames('registerModal_steps_wrap', {
       registerModal_steps_wrap_step1: step === 0,
@@ -43,4 +43,4 @@ const Steps = ({ step, titles }: StepsProps) => {
   );
 };
 
-export default Steps;
+export default Progress;

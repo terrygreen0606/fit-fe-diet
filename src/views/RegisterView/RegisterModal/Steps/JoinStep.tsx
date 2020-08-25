@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -9,10 +8,8 @@ import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import { UserAuthProfileType } from 'types/auth';
 import { userSignup, userGoogleSignUp, userFacebookSignUp } from 'api';
-import { userLogin } from 'store/actions';
 
 // Components
-import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
@@ -20,9 +17,6 @@ import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
 
 import '../RegisterModal.sass';
-
-import { ReactComponent as GoogleIcon } from 'assets/img/icons/google-icon.svg';
-import { ReactComponent as FacebookIcon } from 'assets/img/icons/facebook-letter-icon.svg';
 
 const JoinStep = (props: any) => {
   const { registerData } = props;
@@ -32,21 +26,17 @@ const JoinStep = (props: any) => {
 
   const [socialRegister, setSocialRegister] = useState<string>(null);
 
-  const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(
-    false
-  );
-  const [registerFacebookLoading, setRegisterFacebookLoading] = useState<
-    boolean
-  >(false);
+  const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(false);
+  const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
 
-  const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(
-    false
-  );
+  const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
   const [appRulesAccepted, setAppRulesAccepted] = useState(null);
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[2] = t('register.step_confirm');
+    currStepTitles[0] = t('register.expect_step');
+    currStepTitles[1] = t('register.step_confirm');
+    currStepTitles[2] = t('register.ready_step');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -71,10 +61,16 @@ const JoinStep = (props: any) => {
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, registerJoinErrors);
 
-  const userClientLogin = (authToken: string) => {
+  const finalWelcomeStep = (authToken: string) => {
     localStorage.setItem('authToken', authToken);
     axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
-    props.userLogin(authToken);
+
+    props.setRegisterData({
+      ...registerData,
+      token: authToken
+    });
+
+    props.setRegisterView('READY');
   };
 
   const getRegisterProfilePayload = (): UserAuthProfileType => {
@@ -116,7 +112,7 @@ const JoinStep = (props: any) => {
                 : null;
 
             if (token) {
-              userClientLogin(token);
+              finalWelcomeStep(token);
             } else {
               toast.error(t('register.error_msg'));
             }
@@ -154,7 +150,7 @@ const JoinStep = (props: any) => {
                   : null;
 
               if (token) {
-                userClientLogin(token);
+                finalWelcomeStep(token);
               } else {
                 toast.error(t('register.error_msg'));
               }
@@ -189,7 +185,7 @@ const JoinStep = (props: any) => {
             : null;
 
         if (token) {
-          userClientLogin(token);
+          finalWelcomeStep(token);
         } else {
           toast.error(t('register.error_msg'));
         }
@@ -348,4 +344,4 @@ const JoinStep = (props: any) => {
   );
 };
 
-export default connect(null, { userLogin })(JoinStep);
+export default JoinStep;

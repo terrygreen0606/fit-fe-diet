@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import {
   initGoogleAuth,
@@ -10,7 +10,7 @@ import { getSignUpTpl, getRecipeCuisines } from 'api';
 
 // Components
 import AuthSocialHelmet from 'components/AuthSocialHelmet';
-import RegisterModal from 'components/RegisterModal';
+import RegisterModal from './RegisterModal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
 
@@ -20,6 +20,7 @@ interface RegisterDataType extends UserAuthProfileType {
   email: string;
   password: string;
   predicted_date: string;
+  token: string;
 };
 
 const registerDataDefault: RegisterDataType = {
@@ -28,6 +29,7 @@ const registerDataDefault: RegisterDataType = {
   name: '',
   surname: '',
   phone: '',
+  token: null,
   age: null,
   gender: 'm',
   measurement: 'si',
@@ -54,7 +56,6 @@ const RegisterView = (props: any) => {
   const [registerTplLoading, setRegisterTplLoading] = useState<boolean>(true);
   const [registerTplLoadingError, setRegisterTplLoadingError] = useState<boolean>(false);
 
-  const [recipeCuisines, setRecipeCuisines] = useState([]);
   const [recipeCuisinesLoading, setRecipeCuisinesLoading] = useState<boolean>(false);
   const [recipeCuisinesLoadingError, setRecipeCuisinesLoadingError] = useState<boolean>(false);
 

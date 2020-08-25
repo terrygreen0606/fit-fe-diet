@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
-import { toast } from 'react-toastify';
-import { getUserWeightPrediction } from 'api';
 
 // Components
 import CustomRadio from 'components/common/Forms/CustomRadio';
@@ -29,6 +27,19 @@ const InfoStep = (props: any) => {
   const [registerInfoErrors, setRegisterInfoErrors] = useState([]);
   const [weightPredictionLoading, setWeightPredictionLoading] = useState(false);
 
+  const t = (code: string) => getTranslate(props.localePhrases, code);
+
+  useEffect(() => {
+    let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[2] = t('register.not_eating_step');
+
+    props.setStepTitles([...currStepTitles]);
+
+    return () => {
+      props.setStepTitles([...props.stepTitlesDefault]);
+    };
+  }, []);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -45,8 +56,6 @@ const InfoStep = (props: any) => {
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, registerInfoErrors);
 
-  const t = (code: string) => getTranslate(props.localePhrases, code);
-
   const registerInfoSubmit = (e) => {
     e.preventDefault();
 
@@ -60,7 +69,12 @@ const InfoStep = (props: any) => {
     setRegisterInfoErrors([...errors]);
 
     if (!hasError) {
-      props.setRegisterView('PLAN_PROGRESS');
+      setWeightPredictionLoading(true);
+
+      setTimeout(() => {
+        setWeightPredictionLoading(false);
+        props.setRegisterView('PLAN_PROGRESS');
+      }, 500);
     }
   };
 
@@ -69,7 +83,7 @@ const InfoStep = (props: any) => {
       <h6 className="register_title mb-5">
         <AngleLeftIcon 
           className="register-back-icon mr-3" 
-          onClick={e => props.setRegisterView('NOT_EATING')}
+          onClick={e => props.setRegisterView('GOAL')}
         /> 
         {t('register.fill_details_text')}
       </h6>
