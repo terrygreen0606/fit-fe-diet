@@ -12,13 +12,15 @@ const PlanProgressStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[0] = t('register.not_eating_step');
     currStepTitles[1] = t('register.plan_create_step');
+    currStepTitles[2] = t('register.expect_step');
 
     props.setStepTitles([...currStepTitles]);
 
     if (props.registerData.goal === 0) {
       setTimeout(() => {
-        props.setRegisterView('READY');        
+        props.setRegisterView('HEALTH_PROBLEMS');
       }, 2000);
     } else {
       getUserWeightPrediction({
@@ -35,7 +37,7 @@ const PlanProgressStep = (props: any) => {
           });
 
           setTimeout(() => {
-            props.setRegisterView('EXPECTATIONS');
+            props.setRegisterView('HEALTH_PROBLEMS');
           }, 1000);
         } else {
           toast.error(t('register.weight_predict_error_msg'));

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import uuid from 'react-uuid';
+import React, { useEffect } from 'react';
 import { getTranslate } from 'utils';
 
 // Components
@@ -15,7 +14,8 @@ const NotEatingStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[0] = t('register.not_eating_step');
+    currStepTitles[1] = t('register.not_eating_step');
+    currStepTitles[2] = t('register.plan_create_step');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -38,7 +38,7 @@ const NotEatingStep = (props: any) => {
       <h6 className="register_title mb-5">
         <AngleLeftIcon 
           className="register-back-icon mr-5" 
-          onClick={e => props.setRegisterView('GOAL')}
+          onClick={e => props.setRegisterView('INFO')}
         />
         {t('register.not_eating')}
       </h6>

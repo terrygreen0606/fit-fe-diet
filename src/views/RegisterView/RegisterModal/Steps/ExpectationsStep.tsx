@@ -71,7 +71,9 @@ const ExpectationsStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[0] = t('register.step_health');
     currStepTitles[1] = t('register.expect_step');
+    currStepTitles[2] = t('register.step_confirm');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -107,7 +109,9 @@ const ExpectationsStep = (props: any) => {
   };
 
   const getPredictedDate = () => {
-    const monthLocale = new Date(predicted_date * 1000).toLocaleString(window.navigator.language, { month: 'long' });
+    let monthLocale = new Date(predicted_date * 1000).toLocaleString(window.navigator.language, { month: 'long' });
+    monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
+
     return `${monthLocale} ${moment(new Date(predicted_date * 1000)).format('DD')}`;
   };
 
@@ -139,7 +143,7 @@ const ExpectationsStep = (props: any) => {
           color="secondary"
           type="submit"
           size="lg"
-          onClick={() => props.setRegisterView('READY')}
+          onClick={() => props.setRegisterView('JOIN')}
         >
           {t('button.continue')}
         </Button>
