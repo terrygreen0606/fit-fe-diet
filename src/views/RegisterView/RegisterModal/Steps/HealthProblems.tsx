@@ -25,6 +25,14 @@ const HealthProblems = (props: any) => {
     };
   }, []);
 
+  const nextStep = () => {
+    if (props.registerData.goal === 0) {
+      props.setRegisterView('JOIN');
+    } else {
+      props.setRegisterView('EXPECTATIONS');
+    }
+  };
+
   return (
     <>
       <h6 className="register_title mb-5">
@@ -110,7 +118,7 @@ const HealthProblems = (props: any) => {
           style={{ width: '220px' }}
           color="primary"
           size="lg"
-          onClick={() => props.setRegisterView('NOT_EATING')}
+          onClick={() => nextStep()}
         >
           {t('register.form_next')}
         </Button>

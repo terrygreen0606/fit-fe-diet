@@ -65,6 +65,7 @@ export default (
     case 'HEALTH_PROBLEMS':
       registerStepView = (
         <HealthProblems 
+          registerData={registerData}
           setRegisterView={setRegisterView}
           stepTitlesDefault={registerStepTitlesDefault}
           setStepTitles={setRegisterStepTitles}
