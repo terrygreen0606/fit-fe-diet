@@ -15,6 +15,8 @@ export * from './user/userUpdateProfile';
 export * from './fetchUserProfile';
 export * from './user/userInviteFriendByEmail';
 export * from './user/getUserInviteLink';
+export * from './user/getUserInfo';
+export * from './user/getUserFamily';
 export * from './getUserWeightChart';
 export * from './getRecipeCuisines';
 export * from './getUserWeightPrediction';

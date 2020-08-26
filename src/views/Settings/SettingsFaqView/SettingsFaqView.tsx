@@ -9,12 +9,12 @@ import { getTranslate } from 'utils';
 import ProfileLayout from 'components/hoc/ProfileLayout';
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import './FaqView.sass';
+import './SettingsFaqView.sass';
 
 // Icons
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 
-const FaqView = (props: any) => {
+const SettingsFaqView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const [faqData, setFaqData] = useState([
@@ -79,4 +79,4 @@ const FaqView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(FaqView));
+export default WithTranslate(connect(null)(SettingsFaqView));

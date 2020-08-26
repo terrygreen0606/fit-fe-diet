@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import {
   initGoogleAuth,
   initFacebookAuth,
-  getTranslate
+  getTranslate,
 } from 'utils';
 import { UserAuthProfileType } from 'types/auth';
 import { getSignUpTpl, getRecipeCuisines } from 'api';
@@ -21,7 +21,7 @@ interface RegisterDataType extends UserAuthProfileType {
   password: string;
   predicted_date: string;
   token: string;
-};
+}
 
 const registerDataDefault: RegisterDataType = {
   email: '',
@@ -43,11 +43,13 @@ const registerDataDefault: RegisterDataType = {
 };
 
 const RegisterView = (props: any) => {
-  const t = (code: string, placeholders?: any) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    getTranslate(props.localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) => getTranslate(
+    props.localePhrases,
+    code,
+    placeholders,
+  );
 
-  const [registerData, setRegisterData] = useState({...registerDataDefault});
+  const [registerData, setRegisterData] = useState({ ...registerDataDefault });
 
   const [registerGoogleInitLoading, setRegisterGoogleInitLoading] = useState<boolean>(false);
   const [registerGoogleLoadingError, setRegisterGoogleLoadingError] = useState(false);
@@ -58,6 +60,45 @@ const RegisterView = (props: any) => {
 
   const [recipeCuisinesLoading, setRecipeCuisinesLoading] = useState<boolean>(false);
   const [recipeCuisinesLoadingError, setRecipeCuisinesLoadingError] = useState<boolean>(false);
+
+  const loadRegisterTpl = () => {
+    setRegisterTplLoading(true);
+    setRegisterTplLoadingError(false);
+
+    getSignUpTpl()
+      .then((response) => {
+        setRegisterTplLoading(false);
+
+        if (response.data.data && response.data.data.tpl) {
+          setRegisterData({
+            ...registerData,
+            tpl_signup: response.data.data.tpl,
+          });
+        }
+      }).catch((error) => {
+        setRegisterTplLoading(false);
+        setRegisterTplLoadingError(true);
+      });
+  };
+
+  const fetchRecipeCuisines = () => {
+    setRecipeCuisinesLoading(true);
+    setRecipeCuisinesLoadingError(false);
+
+    getRecipeCuisines().then((response) => {
+      setRecipeCuisinesLoading(false);
+
+      if (response.data && response.data.data) {
+        setRegisterData({
+          ...registerData,
+          ignore_cuisine_ids: response.data.data,
+        });
+      }
+    }).catch((error) => {
+      setRecipeCuisinesLoading(false);
+      setRecipeCuisinesLoadingError(true);
+    });
+  };
 
   useEffect(() => {
     initGoogleAuth(setRegisterGoogleInitLoading, setRegisterGoogleLoadingError);
@@ -70,45 +111,6 @@ const RegisterView = (props: any) => {
       fetchRecipeCuisines();
     }
   }, [registerData.tpl_signup]);
-
-  const loadRegisterTpl = () => {
-    setRegisterTplLoading(true);
-    setRegisterTplLoadingError(false);
-
-    getSignUpTpl()
-      .then((response) => {
-        setRegisterTplLoading(false);
-
-      if (response.data.data && response.data.data.tpl) {
-        setRegisterData({
-          ...registerData,
-          tpl_signup: response.data.data.tpl
-        });
-      }
-    }).catch((error) => {
-      setRegisterTplLoading(false);
-      setRegisterTplLoadingError(true);
-    });
-  };
-
-  const fetchRecipeCuisines = () => {
-    setRecipeCuisinesLoading(true);
-    setRecipeCuisinesLoadingError(false);
-
-    getRecipeCuisines().then(response => {
-      setRecipeCuisinesLoading(false);
-
-      if (response.data && response.data.data) {
-        setRegisterData({
-          ...registerData,
-          ignore_cuisine_ids: response.data.data
-        });
-      }
-    }).catch(error => {
-      setRecipeCuisinesLoading(false);
-      setRecipeCuisinesLoadingError(true);
-    });
-  };
 
   return (
     <>
@@ -125,7 +127,7 @@ const RegisterView = (props: any) => {
         <AuthSocialHelmet />
 
         <RegisterModal
-          isOpen={true}
+          isOpen
           registerData={registerData}
           setRegisterData={setRegisterData}
           cuisinesLoading={recipeCuisinesLoading}
