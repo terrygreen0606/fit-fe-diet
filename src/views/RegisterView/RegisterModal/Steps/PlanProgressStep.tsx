@@ -53,10 +53,10 @@ const PlanProgressStep = (props: any) => {
   }, []);
 
   return (
-    <div className="pt-5 text-center">
-      <h5 className="mb-5 fw-regular">{t('register.plan_progress_title')}</h5>
+    <div className="pt-xl-5 text-center">
+      <h5 className="mb-2 mb-xl-5 fw-regular">{t('register.plan_progress_title')}</h5>
 
-      <span className="site-logo mb-4" />
+      <span className="site-logo mb-2 mb-xl-4" />
       
       <LinearPreloader />
       

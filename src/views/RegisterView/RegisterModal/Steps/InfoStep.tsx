@@ -80,7 +80,7 @@ const InfoStep = (props: any) => {
 
   return (
     <div className="register_info">
-      <h6 className="register_title mb-5">
+      <h6 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon 
           className="register-back-icon mr-3" 
           onClick={e => props.setRegisterView('GOAL')}
@@ -101,7 +101,7 @@ const InfoStep = (props: any) => {
       </div>
 
       <form className="register_info_form mt-5" onSubmit={(e) => registerInfoSubmit(e)}>
-        <FormGroup inline>
+        <FormGroup inline className="mb-5">
           <FormLabel>{t('register.form_sex')}</FormLabel>
 
           <CustomRadio
@@ -154,7 +154,7 @@ const InfoStep = (props: any) => {
         </FormGroup>
 
         <div className="row">
-          <div className="col-6 mt-3 mb-4">
+          <div className="col-sm-6 mb-45">
             
             <FormGroup className="register_info_fg_age mb-0" inline>
               <FormLabel>{t('register.form_age')}</FormLabel>
@@ -178,7 +178,7 @@ const InfoStep = (props: any) => {
             ))}
 
           </div>
-          <div className="col-6 mt-3 mb-4">
+          <div className="col-sm-6 mb-45">
             
             <FormGroup className="register_info_fg_height mb-0" inline>
               <FormLabel>{t('register.form_height')}</FormLabel>
@@ -203,8 +203,8 @@ const InfoStep = (props: any) => {
 
           </div>
           <div className={classNames({
-            "col-6 offset-3 mt-3 mb-4": registerData.goal === 0,
-            "col-6 mt-3 mb-4": registerData.goal !== 0,
+            "col-sm-6 offset-sm-3 mb-45": registerData.goal === 0,
+            "col-sm-6 mb-45": registerData.goal !== 0,
           })}>
             
             <FormGroup className="register_info_fg_weight mb-0" inline>
@@ -230,7 +230,7 @@ const InfoStep = (props: any) => {
 
           </div>
           {registerData.goal !== 0 && (
-            <div className="col-6 mt-3 mb-4">
+            <div className="col-sm-6 mb-45">
               
               <FormGroup className="register_info_fg_weight mb-0" inline>
                 <FormLabel>{t('register.form_weight_want')}</FormLabel>
@@ -257,7 +257,7 @@ const InfoStep = (props: any) => {
           )}
         </div>
 
-        <div className="text-center mt-4">
+        <div className="text-center mt-xl-5 mt-45">
           <Button
             style={{ width: '217px' }}
             color="primary"

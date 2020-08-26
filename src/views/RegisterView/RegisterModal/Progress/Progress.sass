@@ -156,25 +156,27 @@
 
 @media only screen and (max-width : 1200px)
   .registerModal
-    &_main
-      flex-wrap: wrap
     &_steps_wrap
       display: flex
-      height: 120px
+      height: 180px
       margin: 0
       justify-content: space-between
+      align-items: center
       overflow: unset
+      position: relative
+      left: -31px
+      background-size: 300px
+      background-position: calc(50% + 31px) 100%
       &::before
         top: 0
         left: 0
-        width: 100%
-        height: 100%
+        width: calc(100% + 31px)
+        height: 120px
         border-radius: 0
     &_step
       position: static
       z-index: 5
-      top: unset !important
-      bottom: -25% !important
+      transition: none
       &:nth-child(1)
         order: 1
         &.active
@@ -185,9 +187,12 @@
         order: 5
         &.active
           order: 2
+      &:not(.active)
+        padding-top: 50px
       &.active
         flex-wrap: wrap
         justify-content: center
+        flex: 0 0 calc(100% - 62px)
         .registerModal_step_mark
           margin: 0
           flex: 0 0 60px !important
@@ -209,4 +214,5 @@
         flex: 0 0 62px !important
         width: 62px !important
         height: 62px !important
+        margin: 0 !important
         border-width: 14px !important

@@ -35,7 +35,7 @@ const NotEatingStep = (props: any) => {
 
   return (
     <>
-      <h6 className="register_title mb-5">
+      <h6 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon 
           className="register-back-icon mr-5" 
           onClick={e => props.setRegisterView('INFO')}
@@ -62,7 +62,7 @@ const NotEatingStep = (props: any) => {
         </div>
       </ContentLoading>
 
-      <div className="text-center mt-4">
+      <div className="text-center mt-xl-5 mt-3">
         <Button
           style={{ width: '217px' }}
           color="primary"
