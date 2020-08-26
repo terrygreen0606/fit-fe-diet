@@ -9,6 +9,9 @@
     height: 100%
     padding: 0 !important
     padding-right: 70px !important
+
+    @media only screen and (max-width : 1200px)
+      padding-right: 0 !important
   &_steps_content
     flex: 0 0 500px
     max-height: calc(700px - 50px - 37px)
@@ -17,6 +20,9 @@
     overflow: auto
 
     +scrollStyle(5px)
+
+    @media only screen and (max-width : 1200px)
+      flex: 0 0 100%
   .dialogHeader
     padding: 0
 

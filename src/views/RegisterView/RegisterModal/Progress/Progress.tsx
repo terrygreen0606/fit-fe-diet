@@ -17,7 +17,7 @@ const Progress = ({ step, titles }: ProgressProps) => {
     })}
     >
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 0
+        'active': step === 0
       })}
       >
         <h5 className="registerModal_step_label">{titles[0]}</h5>
@@ -25,7 +25,7 @@ const Progress = ({ step, titles }: ProgressProps) => {
       </div>
 
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 1
+        'active': step === 1
       })}
       >
         <h5 className="registerModal_step_label">{titles[1]}</h5>
@@ -33,7 +33,7 @@ const Progress = ({ step, titles }: ProgressProps) => {
       </div>
 
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 2
+        'active': step === 2
       })}
       >
         <h5 className="registerModal_step_label">{titles[2]}</h5>
