@@ -19,7 +19,7 @@ const GoalStep = (props: any) => {
 
   return (
     <div className="register_goal">
-      <h6 className="register_title mb-5">{t('register.help_achieve_goal')}</h6>
+      <h6 className="register_title mb-xl-5 mb-45">{t('register.help_achieve_goal')}</h6>
 
       <div className="register_goals_list">
         <Button
@@ -76,7 +76,7 @@ const GoalStep = (props: any) => {
 
       <div className="text-center">
         <Button
-          className="mt-5"
+          className="mt-xl-5 mt-45"
           style={{ width: '220px' }}
           color="primary"
           size="lg"

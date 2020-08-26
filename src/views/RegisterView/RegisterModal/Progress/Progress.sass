@@ -22,7 +22,7 @@
       height: 910px
       border-radius: 100%
       background-color: $steel-blue
-      opacity: .76
+      opacity: .76        
     &_step1
       background-image: url('../../../../assets/img/food/food-serving-img-1.png')
       background-size: 85%
@@ -128,8 +128,8 @@
     display: flex
     align-items: center
     justify-content: flex-end
-    +mt(.35s)
-    &_active
+    +mt(.35s)  
+    &.active
       .registerModal_step_label
         font-size: 32px
         font-weight: bold
@@ -152,3 +152,67 @@
       border-color: #fff
       border-style: solid
       box-shadow: 0 3px 5px #BAC2D2
+
+
+@media only screen and (max-width : 1200px)
+  .registerModal
+    &_steps_wrap
+      display: flex
+      height: 180px
+      margin: 0
+      justify-content: space-between
+      align-items: center
+      overflow: unset
+      position: relative
+      left: -31px
+      background-size: 300px
+      background-position: calc(50% + 31px) 100%
+      &::before
+        top: 0
+        left: 0
+        width: calc(100% + 31px)
+        height: 120px
+        border-radius: 0
+    &_step
+      position: static
+      z-index: 5
+      transition: none
+      &:nth-child(1)
+        order: 1
+        &.active
+          order: 4
+      &:nth-child(2)
+        order: 3
+      &:nth-child(3)
+        order: 5
+        &.active
+          order: 2
+      &:not(.active)
+        padding-top: 50px
+      &.active
+        flex-wrap: wrap
+        justify-content: center
+        flex: 0 0 calc(100% - 62px)
+        .registerModal_step_mark
+          margin: 0
+          flex: 0 0 60px !important
+          width: 60px !important
+          height: 60px !important
+        .registerModal_step_label
+          display: block
+          width: 100%
+          margin-bottom: 20px
+          padding: 0
+          text-align: center
+          font-size: 18px !important
+          line-height: 22px !important
+          color: #fff
+          font-weight: bold
+      &_label
+        display: none
+      &_mark
+        flex: 0 0 62px !important
+        width: 62px !important
+        height: 62px !important
+        margin: 0 !important
+        border-width: 14px !important

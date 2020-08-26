@@ -26,18 +26,19 @@ const PlanReadyStep = (props: any) => {
   }, []);
 
   return (
-    <div className="mt-5 pt-5 text-center">
-      <span className="diet-plan-feature-icon mb-5" style={{ backgroundImage: 'url(https://fitdev.s3.amazonaws.com/assets/pub/images/list-feature.png)' }} />
+    <div className="mt-xl-5 pt-xl-5 text-center">
+      <span className="diet-plan-feature-icon mb-5 d-none d-md-inline-block" style={{ backgroundImage: 'url(https://fitdev.s3.amazonaws.com/assets/pub/images/list-feature.png)' }} />
 
-      <h4 className="mb-4">{t('register.plan_ready_title', { first_name: props.registerData.name })},</h4>
-      <h5 className="mt-2">{t('register.plan_ready_subtitle')}</h5>
+      <h4 id="register_title_final_welcome" className="register_title mb-xl-4">{t('register.plan_ready_title', { first_name: props.registerData.name })},</h4>
+      <h5 className="register_title mt-md-2">{t('register.plan_ready_subtitle')}</h5>
 
-      <div className="text-center mt-5">
+      <div className="text-center mt-md-5 mt-4">
         <Button
-          style={{ width: '355px' }}
-          color="secondary"
+          style={{ maxWidth: '355px' }}
+          color="primary"
           type="submit"
           size="lg"
+          block
           onClick={e => props.userLogin(props.registerData.token)}
         >
           <MealIcon className="mr-3" /> {t('register.check_btn')}

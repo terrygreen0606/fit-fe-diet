@@ -35,7 +35,7 @@ const HealthProblems = (props: any) => {
 
   return (
     <>
-      <h6 className="register_title mb-5">
+      <h6 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon 
           className="register-back-icon mr-5" 
           onClick={e => props.setRegisterView('NOT_EATING')}
@@ -114,7 +114,7 @@ const HealthProblems = (props: any) => {
 
       <div className="text-center">
         <Button
-          className="mt-5"
+          className="mt-xl-5 mt-45"
           style={{ width: '220px' }}
           color="primary"
           size="lg"

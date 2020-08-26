@@ -119,9 +119,9 @@ const ExpectationsStep = (props: any) => {
 
   return (
     <div className="text-center">
-      <h5 className="mb-4 fw-regular">{t('register.expect_title')}</h5>
+      <h5 className="mb-xl-4 mb-2 fw-regular">{t('register.expect_title')}</h5>
 
-      <h4 className="mb-5 text-steel-blue">{weight_goal} {t('common.kg')} {t('register.expect_date_by')} {getPredictedDate()}</h4>
+      <h4 className="mb-xl-5 mb-3 text-steel-blue">{weight_goal} {t('common.kg')} {t('register.expect_date_by')} {getPredictedDate()}</h4>
 
       <div className="register_expectation_chart">
         <LineChart 
@@ -137,12 +137,13 @@ const ExpectationsStep = (props: any) => {
         />
       </div>
 
-      <div className="text-center mt-4">
+      <div className="text-center mt-xl-5 mt-3">
         <Button
-          style={{ width: '355px' }}
-          color="secondary"
+          style={{ maxWidth: '355px' }}
+          color="primary"
           type="submit"
           size="lg"
+          block
           onClick={() => props.setRegisterView('JOIN')}
         >
           {t('button.continue')}
