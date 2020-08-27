@@ -18,8 +18,9 @@ import FormValidator from 'utils/FormValidator';
 import {
   userInviteFriendByEmail,
   getUserInviteLink,
-  getUserInfo,
+  fetchUserProfile,
   getUserFamily,
+  deleteFamilyMembers,
 } from 'api';
 
 // Components
@@ -58,7 +59,7 @@ const SettingsFamilyView = (props: any) => {
       setUserFamily(response.data.data.list);
     });
 
-    getUserInfo().then((response) => {
+    fetchUserProfile().then((response) => {
       setUserInfo(response.data.data);
     });
 
@@ -179,7 +180,7 @@ const SettingsFamilyView = (props: any) => {
               {t('common.you')}
             </div>
             <div className='family__list'>
-              {userFamily.map((member) => (
+              {userFamily.map((member, memberIndex) => (
                 <div key={member.email} className='family__list-item'>
                   <div className='family__list-item-media'>
                     {member.image ? (
@@ -198,11 +199,23 @@ const SettingsFamilyView = (props: any) => {
                     >
                       {member.email}
                     </a>
-                    <div className='family__list-item-desc-way'>
-                      {t('family.link_sent')}
-                    </div>
+                    {member.is_joined && (
+                      <div className='family__list-item-desc-way'>
+                        {t('family.link_sent')}
+                      </div>
+                    )}
                   </div>
-                  <button type='button' className='family__list-item-close'>
+                  <button
+                    onClick={() =>
+                      deleteFamilyMembers(member.email).then(() => {
+                        const updatedFamily = [...userFamily];
+                        updatedFamily.splice(memberIndex, 1);
+                        setUserFamily(updatedFamily);
+                      })
+                    }
+                    type='button'
+                    className='family__list-item-close'
+                  >
                     <CloseIcon />
                   </button>
                 </div>

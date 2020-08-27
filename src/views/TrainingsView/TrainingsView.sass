@@ -2,6 +2,28 @@
 
 
 .training-plan
+  &-title
+    margin-bottom: 40px
+    font-size: 34px
+    line-height: 1.2
+    font-weight: bold
+    @media (max-width: 768px)
+      font-size: 18px
+
+    &-text
+      position: relative
+      display: inline-block
+      padding-bottom: 20px
+
+      &::before
+        content: ''
+        position: absolute
+        bottom: 0
+        left: 0
+        width: 100%
+        height: 6px
+        background-color: $steel-blue
+
   &-card-list
     &-col
       flex: 0 0 calc(62% - 70px)
@@ -22,6 +44,12 @@
       h4
         font-size: 18px
         line-height: 22px
+
+  &-days
+    margin-bottom: 60px
+    background: $white
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.05)
+    border-radius: 5px
 
 .training-plan
   &-controls
@@ -48,30 +76,281 @@
   &-adherence-diet-card
     display: flex
     flex-wrap: wrap
-    padding: 25px 22px
+    align-items: center
+    justify-content: center
+    text-align: center
+    margin-bottom: 50px
+    padding: 25px 22px 45px
     &-title
       flex: 0 0 100%
       margin-bottom: 30px
+      text-align: center
       @media (max-width: 768px)
         font-size: 16px !important
         line-height: 20px !important
     &-img
-      flex: 0 0 20%
-      text-align: center
+      max-width: 40px
+      margin-right: 20px
+      svg, img
+        max-width: 100%
       @media (max-width: 768px)
         svg
-          max-height: 50px
+          max-height: 70px
       img
         max-width: 70%
     &-content
-      flex: 0 0 80%
+      max-width: 190px
       @media (max-width: 768px)
         > *
           font-size: 14px !important
           line-height: 17px !important
+    &-progress
+      margin-top: 26px
+      padding-top: 22px
+      width: 100%
+      border-top: 1px solid $grey-light
+      &-desc
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin-bottom: 45px
+        &-title
+          font-size: 20px
+          line-height: 1.2
+          font-weight: bold
+        &-link
+          font-size: 16px
+          line-height: 1.2
+          color: $steel-blue
+          border-bottom: 1px solid
+          text-decoration: none
+          transition: ease 0.2s border-bottom
+          &:hover
+            border-bottom: 1px solid transparent
+      &-line
+        position: relative
+        width: 100%
+        height: 14px
+        background-color: #C4C4C4
+        border-radius: 5px
+        &-percent
+          position: absolute
+          bottom: calc(100% + 3px)
+          font-size: 20px
+          line-height: 1.2
+        &-painted
+          position: absolute
+          width: 100%
+          height: 14px
+          top: 0
+          left: 0
+          background-color: #FFD60D
+          border-radius: 5px
+    &-level
+      margin-bottom: 60px
+      &-title
+        margin-bottom: 22px
+        font-size: 32px
+        line-height: 1.2
+        font-weight: bold
+        @media (max-width: 768px)
+          font-size: 18px
+      &-list
+        display: flex
+        justify-content: space-between
+        &-item
+          position: relative
+          display: flex
+          align-items: center
+          justify-content: center
+          flex-basis: 140px
+          padding: 40px 14px
+          cursor: pointer
+          &-checked
+            display: flex
+            align-items: center
+            justify-content: center
+            position: absolute
+            top: 0
+            right: 0
+            transform: translate(50%, -50%)
+            width: 34px
+            height: 34px
+            background-color: #ffffff
+            border-radius: 50%
+            box-shadow: 5px -5px 5px rgba(186, 194, 210, 0.2)
+            opacity: 0
+            transition: opacity 0.2s ease
+            &::before
+              content: ''
+              position: absolute
+              top: 50%
+              left: 50%
+              transform: translate(-50%, -50%)
+              width: 18px
+              height: 18px
+              background-color: $bright-green
+              border-radius: 50%
+            svg, img
+              position: relative
+              width: 11px
+          &-radio
+            position: absolute
+            opacity: 0
+            visibility: hidden
+            &:checked
+              & + .training-plan-adherence-diet-card-level-list-item-wrap
+                .training-plan-adherence-diet-card-level-list-item
+                  &-checked
+                    opacity: 1
+                  &-desc
+                    color: $steel-blue
+                    font-weight: bold
+          &-desc
+            font-size: 18px
+            line-height: 1.2
+            transition: color 0.2s, font-weight 0.2s ease
+    &-workout-settings
+      margin-bottom: 45px
+      padding: 36px 50px 20px 60px
+      @media (max-width: 991px)
+        padding: 35px 20px
+      &-desc
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin-bottom: 18px
+        &-media
+          flex-basis: 78px
+        &-text
+          flex: 1
+          padding-left: 30px
+          font-size: 24px
+          line-height: 1.2
+          font-weight: bold
+          @media (max-width: 768px)
+            font-size: 18px
+      &-button
+        text-align: center
+    &-socials
+      padding: 40px
+      &-title
+        margin-bottom: 25px
+        font-size: 24px
+        line-height: 1.2
+        font-weight: bold
+        @media (max-width: 768px)
+          font-size: 18px
+      &-list
+        display: flex
+        align-items: center
+        justify-content: space-between
+        &-item
+          padding: 0
+          width: 58px
+          border: none
+          background-color: transparent
+          cursor: pointer
+          transition: opacity 0.2s
+          &:hover
+            opacity: 0.7
+          @media (max-width: 768px)
+            width: 42px
+          svg, img
+            max-width: 100%
+            height: auto
 
 .week-workout-start-btn
   @media (max-width: 768px)
     width: calc(100% - 30px)
     font-size: 16px
     line-height: 20px
+
+.place-of-work
+  display: flex
+  margin-bottom: 16px
+
+  &__item
+    margin-right: 30px
+    cursor: pointer
+
+    &-input
+      position: absolute
+      width: 0
+      height: 0
+      opacity: 0
+      visibility: hidden
+
+      &:checked
+        & + .place-of-work__item-wrap
+          .place-of-work__item-checked
+            opacity: 1
+
+          .place-of-work__item-media
+            svg path
+              fill: #4596FF
+
+          .place-of-work__item-desc
+            font-weight: bold
+            color: #4596FF
+
+    &-wrap
+      position: relative
+      padding: 15px
+      max-width: 78px
+      text-align: center
+      background-color: $white
+      box-shadow: 0px 3px 15px rgba(151, 151, 151, 0.2)
+      border-radius: 5px
+
+    &-checked
+      display: flex
+      align-items: center
+      justify-content: center
+      position: absolute
+      top: 0
+      right: 0
+      transform: translate(50%, -50%)
+      width: 34px
+      height: 34px
+      background-color: $white
+      border-radius: 50%
+      box-shadow: 5px -5px 5px rgba(186, 194, 210, 0.2)
+      opacity: 0
+      transition: opacity 0.2s ease
+
+      &::before
+        content: ''
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        width: 18px
+        height: 18px
+        background-color: #4596FF
+        border-radius: 50%
+
+      svg
+        position: relative
+        width: 11px
+
+    &-media
+      display: flex
+      align-items: center
+      justify-content: center
+      margin-bottom: 10px
+      height: 60px
+      
+      svg
+        max-width: 100%
+        max-height: 100%
+
+        path
+          fill: #F2F2F2
+          transition: fill 0.2s ease
+
+    &-desc
+      font-size: 14px
+      transition: color 0.2s, font-weight 0.2s ease
+
+      

@@ -73,6 +73,7 @@ const RegisterModal = (props: RegisterModalProps) => {
       <Modal.Main className="registerModal_main">
         <Progress 
           step={registerStep} 
+          view={registerView}
           titles={registerStepTitles} 
         />
 

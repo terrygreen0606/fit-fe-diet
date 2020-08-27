@@ -1,25 +1,33 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable @typescript-eslint/indent */
 import React, { useState } from 'react';
-import classnames from 'classnames';
 import Helmet from 'react-helmet';
+
+import { routes, MAIN, MEAL_PLAN_LIST } from 'constants/routes';
 
 import WeekDays from 'components/WeekDays';
 import TrainingCard from 'components/TrainingCard';
 import TodayActivities from 'components/TodayActivities';
-import Advantages from 'components/Advantages';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import { getTranslate } from 'utils';
+import Breadcrumb from 'components/Breadcrumb';
 
-import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-icon-white.svg';
-import { ReactComponent as ClockIcon } from 'assets/img/icons/15-min-clock-icon.svg';
-import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
 import { ReactComponent as RewardImage } from 'assets/img/reward-img.svg';
+import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
+import { ReactComponent as WorkoutSettingsIcon } from 'assets/img/icons/workout-settings-icon.svg';
+import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
+import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
+import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
+import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 import WomanGymImage from 'assets/img/woman_ball_gym.png';
 
 import {
   dataForWeekWorkout,
   dataForTodayActivities,
-  tabs,
+  workPlace,
 } from './mockDataForTrainings';
 
 import './TrainingsView.sass';
@@ -28,7 +36,6 @@ const TrainingsView: React.FC = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
-  const [level, setLevel] = useState(0);
   const [weekWorkout, setWeekWorkout] = useState('wed');
   const [todayActivities, setTodayActivities] = useState(['workout_add']);
 
@@ -49,45 +56,59 @@ const TrainingsView: React.FC = (props: any) => {
       <Helmet>
         <title>{t('app.title.trainings')}</title>
       </Helmet>
-      <Advantages
-        mainTitle={t('trainings.plan.main_title')}
-        icon1={RewardIcon}
-        advantage1Title={t('trainings.plan.feat1_title')}
-        advantage1Desc={t('trainings.plan.feat1_desc')}
-        icon2={ClockIcon}
-        advantage2Title={t('trainings.plan.feat2_title')}
-        advantage2Desc={t('trainings.plan.feat2_desc')}
-        icon3={CalendarIcon}
-        advantage3Title={t('trainings.plan.feat3_title')}
-        advantage3Desc={t('trainings.plan.feat3_desc')}
-      />
 
       <section className='training-plan-card-list-sect'>
         <div className='container'>
+          <Breadcrumb
+            routes={[
+              {
+                url: routes[MAIN],
+                name: MAIN,
+              },
+              {
+                url: routes[MEAL_PLAN_LIST],
+                name: MEAL_PLAN_LIST,
+              },
+            ]}
+            currentPage='Trainings'
+          />
+          <h1 className='training-plan-title'>
+            <span className='training-plan-title-text'>
+              {t('trainings.title')}
+            </span>
+          </h1>
           <div className='row'>
             <div className='training-plan-card-list-col training-plan-list'>
               <div className='row'>
-                <ol className='page-tabs mx-4 mx-md-0'>
-                  {tabs.map((tab) => (
-                    <li
-                      role='presentation'
-                      key={`Level: ${tab}`}
-                      className={classnames('page-tabs-item', {
-                        active: level === tabs.indexOf(tab),
-                      })}
-                      value={tabs.indexOf(tab)}
-                      onClick={(e) => setLevel(e.currentTarget.value)}
-                    >
-                      {tab}
-                    </li>
+                <div className='place-of-work'>
+                  {workPlace.map((item) => (
+                    <label key={item.title} className='place-of-work__item'>
+                      <input
+                        type='radio'
+                        className='place-of-work__item-input'
+                        name='work-place'
+                      />
+                      <div className='place-of-work__item-wrap'>
+                        <div className='place-of-work__item-checked'>
+                          <CheckedIcon />
+                        </div>
+                        <div className='place-of-work__item-media'>
+                          {item.icon}
+                        </div>
+                        <div className='place-of-work__item-desc'>
+                          {item.title}
+                        </div>
+                      </div>
+                    </label>
                   ))}
-                </ol>
+                </div>
 
                 <WeekDays
                   days={dataForWeekWorkout}
                   curDay={weekWorkout}
                   onChange={onWorkoutChange}
                   type='radio'
+                  className='training-plan-days'
                 />
 
                 <Button
@@ -127,9 +148,135 @@ const TrainingsView: React.FC = (props: any) => {
                 </div>
                 <div className='training-plan-adherence-diet-card-content'>
                   <p>{t('trainings.plan.completed', { number: 0 })}</p>
-                  <a href='/' className='link'>
-                    {t('trainings.report.week')}
-                  </a>
+                </div>
+                <div className='training-plan-adherence-diet-card-progress'>
+                  <div className='training-plan-adherence-diet-card-progress-desc'>
+                    <div className='training-plan-adherence-diet-card-progress-desc-title'>
+                      {t('trainings.week_progress')}
+                    </div>
+                    <a
+                      href='/'
+                      className='training-plan-adherence-diet-card-progress-desc-link'
+                    >
+                      {t('trainings.report')}
+                    </a>
+                  </div>
+                  <div className='training-plan-adherence-diet-card-progress-line'>
+                    <div
+                      style={{
+                        left: 'calc(20% - 40px)',
+                      }}
+                      className='training-plan-adherence-diet-card-progress-line-percent'
+                    >
+                      20%
+                    </div>
+                    <div
+                      style={{
+                        width: '20%',
+                      }}
+                      className='training-plan-adherence-diet-card-progress-line-painted'
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className='training-plan-adherence-diet-card-level'>
+                <div className='training-plan-adherence-diet-card-level-title'>
+                  {t('trainings.level')}
+                </div>
+                <div className='training-plan-adherence-diet-card-level-list'>
+                  <label className='training-plan-adherence-diet-card-level-list-item card-bg'>
+                    <input
+                      type='radio'
+                      name='level'
+                      className='training-plan-adherence-diet-card-level-list-item-radio'
+                    />
+                    <div className='training-plan-adherence-diet-card-level-list-item-wrap'>
+                      <div className='training-plan-adherence-diet-card-level-list-item-checked'>
+                        <CheckedIcon />
+                      </div>
+                      <div className='training-plan-adherence-diet-card-level-list-item-desc'>
+                        {t('trainings.elementary')}
+                      </div>
+                    </div>
+                  </label>
+                  <label className='training-plan-adherence-diet-card-level-list-item card-bg'>
+                    <input
+                      type='radio'
+                      name='level'
+                      className='training-plan-adherence-diet-card-level-list-item-radio'
+                    />
+                    <div className='training-plan-adherence-diet-card-level-list-item-wrap'>
+                      <div className='training-plan-adherence-diet-card-level-list-item-checked'>
+                        <CheckedIcon />
+                      </div>
+                      <div className='training-plan-adherence-diet-card-level-list-item-desc'>
+                        {t('trainings.intermediate')}
+                      </div>
+                    </div>
+                  </label>
+                  <label className='training-plan-adherence-diet-card-level-list-item card-bg'>
+                    <input
+                      type='radio'
+                      name='level'
+                      className='training-plan-adherence-diet-card-level-list-item-radio'
+                    />
+                    <div className='training-plan-adherence-diet-card-level-list-item-wrap'>
+                      <div className='training-plan-adherence-diet-card-level-list-item-checked'>
+                        <CheckedIcon />
+                      </div>
+                      <div className='training-plan-adherence-diet-card-level-list-item-desc'>
+                        {t('trainings.advanced')}
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div className='training-plan-adherence-diet-card-workout-settings card-bg'>
+                <div className='training-plan-adherence-diet-card-workout-settings-desc'>
+                  <div className='training-plan-adherence-diet-card-workout-settings-desc-media'>
+                    <WorkoutSettingsIcon />
+                  </div>
+                  <div className='training-plan-adherence-diet-card-workout-settings-desc-text'>
+                    {t('trainings.workout_settings.title')}
+                  </div>
+                </div>
+                <div className='training-plan-adherence-diet-card-workout-settings-button'>
+                  <Button color='secondary'>{t('trainings.settings')}</Button>
+                </div>
+              </div>
+              <div className='training-plan-adherence-diet-card-socials card-bg'>
+                <div className='training-plan-adherence-diet-card-socials-title'>
+                  {t('trainings.socails_title')}
+                </div>
+                <div className='training-plan-adherence-diet-card-socials-list'>
+                  <button
+                    type='button'
+                    className='training-plan-adherence-diet-card-socials-list-item'
+                    onClick={() => {}}
+                  >
+                    <TwitterLogo />
+                  </button>
+                  <button
+                    type='button'
+                    className='training-plan-adherence-diet-card-socials-list-item'
+                    onClick={() => {}}
+                  >
+                    <FacebookLogo />
+                  </button>
+                  <button
+                    type='button'
+                    className='training-plan-adherence-diet-card-socials-list-item'
+                    onClick={() => {}}
+                  >
+                    <WhatsappLogo />
+                  </button>
+                  <button
+                    type='button'
+                    className='training-plan-adherence-diet-card-socials-list-item'
+                    onClick={() => {}}
+                  >
+                    <TelegramLogo />
+                  </button>
                 </div>
               </div>
             </div>

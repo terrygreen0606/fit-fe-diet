@@ -66,6 +66,7 @@ export default (
       registerStepView = (
         <HealthProblems 
           registerData={registerData}
+          setRegisterData={setRegisterData}
           setRegisterView={setRegisterView}
           stepTitlesDefault={registerStepTitlesDefault}
           setStepTitles={setRegisterStepTitles}

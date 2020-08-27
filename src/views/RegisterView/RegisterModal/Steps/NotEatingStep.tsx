@@ -3,7 +3,6 @@ import { getTranslate } from 'utils';
 
 // Components
 import Button from 'components/common/Forms/Button';
-import ContentLoading from 'components/hoc/ContentLoading';
 
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon-black.svg';
 import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
@@ -35,7 +34,7 @@ const NotEatingStep = (props: any) => {
 
   return (
     <>
-      <h6 className="register_title mb-5">
+      <h6 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon 
           className="register-back-icon mr-5" 
           onClick={e => props.setRegisterView('INFO')}
@@ -43,32 +42,22 @@ const NotEatingStep = (props: any) => {
         {t('register.not_eating')}
       </h6>
 
-      <ContentLoading
-        isLoading={props.cuisinesLoading}
-        isError={props.cuisinesLoadingError}
-        fetchData={props.fetchRecipeCuisines}
-      >
-       <div className="register_eating_list">
-          {props.registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
-            <div key={id} className="register_eating_item">
-              <span>
-                <img src={image} className="register_eating_item_icon" />
-                <span className="register_eating_item_label">{name}</span>
-              </span>
+      <div className="register_eating_list">
+        {props.registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
+          <div key={id} className="register_eating_item">
+            <img src={image} className="register_eating_item_icon" />
+            <span className="register_eating_item_label">{name}</span>
+          </div>
+        ))}
+      </div>
 
-              <CrossIcon onClick={() => removeMealItem(id)} className="register_eating_item_cross" />
-            </div>
-          ))}
-        </div>
-      </ContentLoading>
-
-      <div className="text-center mt-4">
+      <div className="text-center mt-xl-5 mt-45">
         <Button
           style={{ width: '217px' }}
           color="primary"
           type="submit"
           size="lg"
-          onClick={() => props.setRegisterView('INFO')}
+          onClick={() => props.setRegisterView('PLAN_PROGRESS')}
         >
           {t('register.form_next')}
         </Button>

@@ -28,6 +28,7 @@ const Header = (props: any) => {
             <div className='col-2'>
               <Link to='/' className='mainHeader_logo' />
             </div>
+            
             <div className='col-10 text-right'>
               <span className='header-controls'>
                 <Button className='mobile-auth-btn' color='primary' outline>
@@ -51,6 +52,7 @@ const Header = (props: any) => {
                 >
                   {t('header.menu_trainings')}
                 </NavLink>
+
                 <NavLink
                   to='/recipes'
                   className='mainHeader_menuList_item'
@@ -58,6 +60,7 @@ const Header = (props: any) => {
                 >
                   {t('header.menu_recipes')}
                 </NavLink>
+
                 <NavLink
                   to='/plan/change-meal'
                   className='mainHeader_menuList_item'
@@ -65,6 +68,7 @@ const Header = (props: any) => {
                 >
                   {t('mp.change.title')}
                 </NavLink>
+
                 <NavLink
                   to='/nutrition/plan'
                   className='mainHeader_menuList_item'
@@ -72,6 +76,7 @@ const Header = (props: any) => {
                 >
                   {t('nutrition.title')}
                 </NavLink>
+
                 {isAuthenticated ? (
                   <span
                     role='presentation'
@@ -81,9 +86,19 @@ const Header = (props: any) => {
                     {t('common.logout')}
                   </span>
                 ) : (
-                  <Link to='/login' className='mainHeader_menuList_item'>
-                    {t('login.submit')}
-                  </Link>
+                  <>
+                    <NavLink 
+                      to='/login' 
+                      className='mainHeader_menuList_item' 
+                      activeClassName='mainHeader_menuList_item_active'
+                    >
+                      {t('login.submit')}
+                    </NavLink>
+
+                    <NavLink to='/register' className="link-raw">
+                      <Button color="primary">{t('button.register')}</Button>
+                    </NavLink>
+                  </>
                 )}
               </nav>
             </div>

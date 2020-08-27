@@ -33,9 +33,29 @@ const HealthProblems = (props: any) => {
     }
   };
 
+  const changeDiseaseState = (code: string, checked: boolean) => {
+    const index = props.registerData.diseases.findIndex(disease => disease.code === code);
+
+    if (index >= 0) {
+      let diseases = props.registerData.diseases;
+
+      if (diseases[index]) {
+        diseases[index] = {
+          ...diseases[index],
+          checked
+        };
+
+        props.setRegisterData({
+          ...props.registerData,
+          diseases
+        });
+      }
+    }
+  };
+
   return (
     <>
-      <h6 className="register_title mb-5">
+      <h6 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon 
           className="register-back-icon mr-5" 
           onClick={e => props.setRegisterView('NOT_EATING')}
@@ -44,77 +64,25 @@ const HealthProblems = (props: any) => {
       </h6>
 
       <div className="register_health_problem_list">
-        <label className="register_health_problem_item">
-          <input 
-            name="register_health_problem" 
-            type="checkbox" 
-          />
+        {props.registerData.diseases.map(({ code, checked, i18n_code }) => (
+          <label className="register_health_problem_item">
+            <input 
+              name="register_health_problem" 
+              type="checkbox" 
+              checked={checked}
+              onChange={e => changeDiseaseState(code, e.target.checked)}
+            />
 
-          <Button className="register_health_problem_btn" block spanBtn>
-            Heart desiase
-          </Button>
-        </label>
-
-        <label className="register_health_problem_item">
-          <input 
-            name="register_health_problem" 
-            type="checkbox" 
-          />
-
-          <Button className="register_health_problem_btn" block spanBtn>
-            Diabets
-          </Button>
-        </label>
-
-        <label className="register_health_problem_item">
-          <input 
-            name="register_health_problem" 
-            type="checkbox" 
-          />
-
-          <Button className="register_health_problem_btn" block spanBtn>
-            Kidney desiase
-          </Button>
-        </label>
-
-        <label className="register_health_problem_item">
-          <input 
-            name="register_health_problem" 
-            type="checkbox" 
-          />
-
-          <Button className="register_health_problem_btn" block spanBtn>
-            Osteoartritis
-          </Button>
-        </label>
-
-        <label className="register_health_problem_item">
-          <input 
-            name="register_health_problem" 
-            type="checkbox" 
-          />
-
-          <Button className="register_health_problem_btn" block spanBtn>
-            NASH
-          </Button>
-        </label>
-
-        <label className="register_health_problem_item">
-          <input 
-            name="register_health_problem" 
-            type="checkbox" 
-          />
-
-          <Button className="register_health_problem_btn" block spanBtn>
-            None
-          </Button>
-        </label>
-
+            <Button className="register_health_problem_btn" block spanBtn>
+              {t(i18n_code)}
+            </Button>
+          </label>
+        ))}
       </div>
 
       <div className="text-center">
         <Button
-          className="mt-5"
+          className="mt-xl-5 mt-45"
           style={{ width: '220px' }}
           color="primary"
           size="lg"

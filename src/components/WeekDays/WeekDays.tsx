@@ -10,10 +10,19 @@ type WeekDaysProps = {
   curDay: string;
   type: 'radio' | 'checkbox';
   name?: string;
+  className?: string;
 };
 
-const WeekDays = ({ days, onChange, curDay, type }: WeekDaysProps) => (
-  <section className='d-flex flex-column align-items-center overflow-auto week-days'>
+const WeekDays = ({
+  days,
+  onChange,
+  curDay,
+  type,
+  className,
+}: WeekDaysProps) => (
+  <section
+    className={`d-flex flex-column align-items-center overflow-auto week-days ${className}`}
+  >
     <div className='week-workout col-auto align-self-baseline'>
       {days.map((day) => (
         <label key={`${day.number} ${day.value}`}>

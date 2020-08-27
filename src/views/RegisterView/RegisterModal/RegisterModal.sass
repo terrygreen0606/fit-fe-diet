@@ -4,6 +4,8 @@
 .registerModal
   max-width: 1120px !important
   height: 700px
+  .dialogHeader
+    display: none
   &_main
     display: flex
     height: 100%
@@ -15,7 +17,6 @@
     margin: 50px 0 37px
     padding-right: 20px
     overflow: auto
-
     +scrollStyle(5px)
   .dialogHeader
     padding: 0
@@ -30,8 +31,6 @@
     line-height: 41px
     color: #000
     text-align: center
-    .register-back-icon
-      top: 5px
 
   &_expectation_chart
     padding: 10px
@@ -111,11 +110,14 @@
       background-color: transparent
       color: #000000
       +mt(.2s)
-      &.active, &:hover
+      &.active
         font-weight: bold
         color: #fff
         background-color: $steel-blue
         border-color: $steel-blue
+      &:hover
+        border-color: $steel-blue
+        color: $steel-blue
 
   &_eating
     &_list
@@ -144,14 +146,6 @@
       &_icon
         margin-right: 10px
         height: 24px
-      &_cross
-        width: 11px
-        height: 11px
-        margin-left: 11px
-        cursor: pointer
-        fill: #000
-        path
-          fill: #000
 
   &_info
     &_form
@@ -170,7 +164,7 @@
         flex: 0 0 20%
         &:first-child
           flex: 0 0 100%
-          margin-bottom: 17px
+          margin-bottom: 15px
       .fg-input
         margin-right: 10px
         flex-grow: 1
@@ -204,3 +198,104 @@
     +mt(.2s)
     &:hover
       fill: darken(#CDCDCD, 10%)
+
+
+@media only screen and (min-width : 1200px)
+  #register_title_final_welcome
+    font-size: 34px
+    line-height: 50px
+
+@media only screen and (max-width : 1200px)
+  .register
+    &_title
+      font-size: 24px
+      line-height: 36px
+
+  .registerModal
+    overflow: hidden
+    height: 100%
+    &_steps_content
+      flex: 0 0 100%
+    &_wrap
+      padding: 20px !important
+      padding-bottom: 30px
+      align-items: flex-end
+    &_main
+      flex-wrap: wrap
+      padding-right: 0 !important
+    &_steps_content
+      margin: 0
+      margin-top: 15px
+      padding: 20px
+      max-height: calc(100% - 220px)
+      max-width: 600px
+      margin: 0 auto
+
+
+@media only screen and (max-width : 768px)
+  .registerModal
+    &_wrap
+      padding: 0 !important
+    &_steps_content
+      padding-top: 0
+
+  .register
+    &_eating
+      &_list
+        .register_eating_item
+          display: flex
+          width: calc(50% - 6px)
+          margin: 0
+          margin-bottom: 11px
+          height: 59px
+          justify-content: center
+          &:nth-child(2n + 1)
+            margin-right: 12px
+
+
+@media only screen and (max-width : 576px)
+  .register
+    &_info
+      &_fg_age, &_fg_height, &_fg_weight
+        flex-wrap: nowrap
+        .fg-input
+          flex: 0 0 calc(100% - 40% - 20px)
+          margin: 0
+        .fgLabel
+          &:first-child
+            flex: 0 0 30%
+            margin-right: 10px
+          &:last-child
+            flex: 0 0 10%
+            margin-left: 10px
+
+
+@media only screen and (max-width : 480px)
+  .register
+    &_info
+      &_fg_age, &_fg_height, &_fg_weight
+        flex-wrap: wrap
+        .fg-input
+          flex: 0 0 calc(100% - 80px)
+          margin: 0
+        .fgLabel
+          &:first-child
+            flex: 0 0 100%
+            margin-bottom: 15px
+          &:last-child
+            flex: 0 0 70px
+            margin-left: 10px
+    &_health_problem
+      &_list
+        .register_health_problem_item
+          width: 100%
+          margin-bottom: 11px
+          &:nth-child(2n + 1)
+            margin-right: 0
+    &_eating
+      &_list
+        .register_eating_item
+          width: 100%
+          &:nth-child(2n + 1)
+            margin-right: 0
+    

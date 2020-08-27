@@ -83,7 +83,8 @@ const JoinStep = (props: any) => {
 
     return {
       ...userProfileData,
-      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id)
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id),
+      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code)
     };
   };
 
@@ -225,7 +226,7 @@ const JoinStep = (props: any) => {
 
   return (
     <div className="register_join">
-      <h4 className="mb-5 text-center text-steel-blue">{t('register.info_confirm_title')}</h4>
+      <h4 className="register_title mb-xl-5 mb-45 text-center">{t('register.info_confirm_title')}</h4>
 
       {/*<CustomCheckbox
         invalid={appRulesAccepted === false}
@@ -233,7 +234,7 @@ const JoinStep = (props: any) => {
         onChange={(e) => setAppRulesAccepted(e.target.checked)}
       />*/}
 
-      <form className="register_join_form mt-4 px-5" onSubmit={(e) => registerJoinSubmit(e)}>
+      <form className="register_join_form mt-4 px-xl-5" onSubmit={(e) => registerJoinSubmit(e)}>
 
         {/*<div className="register_socialBtns">
           <Button
@@ -325,15 +326,15 @@ const JoinStep = (props: any) => {
           />
         </FormGroup>
 
-        <div className='text-center mt-5'>
+        <div className='text-center mt-xl-5 mt-45'>
           <Button
             className="registerBtn"
-            style={{ width: '355px' }}
+            style={{ maxWidth: '355px' }}
             type="submit"
             onClick={e => setSocialRegister('email')}
             block
             size="lg"
-            color="secondary"
+            color="primary"
             isLoading={registerJoinLoading}
           >
             {t('register.form_submit')}
