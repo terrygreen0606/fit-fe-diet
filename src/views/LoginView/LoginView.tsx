@@ -202,7 +202,7 @@ const LoginView = (props: any) => {
       <AuthSocialHelmet />
 
       <div className='loginScreen mt-3 mt-md-5'>
-        <h3 className='loginScreen_title d-none d-lg-block'>
+        <h3 className='loginScreen_title d-none d-lg-inline-block'>
           {t('login.title', { product: 'TEST' })}
         </h3>
 
