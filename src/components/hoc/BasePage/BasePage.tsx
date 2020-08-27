@@ -1,13 +1,20 @@
 import React from 'react';
 
+// Components
+import Header from 'components/Header';
+import SideMenu from 'components/SideMenu';
+
 import './BasePage.sass';
 
 const BasePage = ({ children }: any) => (
-  <section className="basePageLayoutWrapper">
+  <div className="basePageLayoutWrapper">
+    <Header />
+    <SideMenu />
+
     <div className="basePageMainContentWrapper">
       {children}
     </div>
-  </section>
+  </div>
 );
 
 export default BasePage;
