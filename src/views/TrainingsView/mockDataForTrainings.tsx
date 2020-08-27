@@ -1,5 +1,9 @@
+import React from 'react';
+
 import { ReactComponent as DumbbellIcon } from 'assets/img/icons/dumbbell-icon.svg';
 import { ReactComponent as WeighScaleIcon } from 'assets/img/icons/weigh-scale-icon.svg';
+import { ReactComponent as WaterGlassIcon } from 'assets/img/icons/water-glass-icon.svg';
+import { ReactComponent as HomeIcon } from 'assets/img/icons/home-icon.svg';
 
 export const tabs = ['Elementary level', 'Intermediate', 'Advanced'];
 
@@ -44,5 +48,21 @@ export const dataForTodayActivities = [
     icon: WeighScaleIcon,
     text: "Add today's weight",
     value: 'weight_add',
+  },
+  {
+    icon: WaterGlassIcon,
+    text: 'Water tracker',
+    value: 'water_tracker',
+  },
+];
+
+export const workPlace = [
+  {
+    icon: <HomeIcon />,
+    title: 'Home',
+  },
+  {
+    icon: <DumbbellIcon />,
+    title: 'Gym',
   },
 ];

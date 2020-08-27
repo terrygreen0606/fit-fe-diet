@@ -1,0 +1,30 @@
+@import '../../assets/sass/_vars'
+  
+.breadcrumb
+  display: flex
+  align-items: center
+  margin-bottom: 50px
+
+  &__link
+    font-size: 18px
+    line-height: 1.2
+    text-decoration: none
+    color: $black
+    border-bottom: 1px solid transparent
+    transition: 0.2s color ease
+
+    &:hover
+      color: lighten($black, 50%)
+
+    &::after
+      content: '»'
+      font-size: 18px
+      line-height: 1.2
+      font-family: Montserrat
+      margin: 0 10px
+
+  &__current
+    font-size: 18px
+    line-height: 1.2
+    font-weight: bold
+    color: $steel-blue
