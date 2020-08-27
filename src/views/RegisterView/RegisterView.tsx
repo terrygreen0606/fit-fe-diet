@@ -6,7 +6,7 @@ import {
   getTranslate,
 } from 'utils';
 import { UserAuthProfileType } from 'types/auth';
-import { getSignUpTpl, getRecipeCuisines } from 'api';
+import { getSignUpData } from 'api';
 
 // Components
 import AuthSocialHelmet from 'components/AuthSocialHelmet';
@@ -40,6 +40,7 @@ const registerDataDefault: RegisterDataType = {
   tpl_signup: null,
   goal: -1,
   ignore_cuisine_ids: [],
+  diseases: []
 };
 
 const RegisterView = (props: any) => {
@@ -55,62 +56,41 @@ const RegisterView = (props: any) => {
   const [registerGoogleLoadingError, setRegisterGoogleLoadingError] = useState(false);
   const [registerFacebookInitLoading, setRegisterFacebookInitLoading] = useState<boolean>(false);
 
-  const [registerTplLoading, setRegisterTplLoading] = useState<boolean>(true);
-  const [registerTplLoadingError, setRegisterTplLoadingError] = useState<boolean>(false);
+  const [registerSettingsLoading, setRegisterSettingsLoading] = useState<boolean>(true);
+  const [registerSettingsLoadingError, setRegisterSettingsLoadingError] = useState<boolean>(false);
 
-  const [recipeCuisinesLoading, setRecipeCuisinesLoading] = useState<boolean>(false);
-  const [recipeCuisinesLoadingError, setRecipeCuisinesLoadingError] = useState<boolean>(false);
+  const loadRegisterSettings = () => {
+    setRegisterSettingsLoading(true);
+    setRegisterSettingsLoadingError(false);
 
-  const loadRegisterTpl = () => {
-    setRegisterTplLoading(true);
-    setRegisterTplLoadingError(false);
+    getSignUpData()
+      .then(response => {
+        setRegisterSettingsLoading(false);
 
-    getSignUpTpl()
-      .then((response) => {
-        setRegisterTplLoading(false);
-
-        if (response.data.data && response.data.data.tpl) {
+        if (response.data.data) {
           setRegisterData({
             ...registerData,
-            tpl_signup: response.data.data.tpl,
+            tpl_signup: response.data.data.tpl || null,
+            ignore_cuisine_ids: response.data.data.cuisines || [],
+            diseases: response.data.data.diseases.map(disease => ({
+              ...disease,
+              checked: false
+            })) || []
+
           });
         }
-      }).catch((error) => {
-        setRegisterTplLoading(false);
-        setRegisterTplLoadingError(true);
+      })
+      .catch(error => {
+        setRegisterSettingsLoading(false);
+        setRegisterSettingsLoadingError(true);
       });
-  };
-
-  const fetchRecipeCuisines = () => {
-    setRecipeCuisinesLoading(true);
-    setRecipeCuisinesLoadingError(false);
-
-    getRecipeCuisines().then((response) => {
-      setRecipeCuisinesLoading(false);
-
-      if (response.data && response.data.data) {
-        setRegisterData({
-          ...registerData,
-          ignore_cuisine_ids: response.data.data,
-        });
-      }
-    }).catch((error) => {
-      setRecipeCuisinesLoading(false);
-      setRecipeCuisinesLoadingError(true);
-    });
   };
 
   useEffect(() => {
     initGoogleAuth(setRegisterGoogleInitLoading, setRegisterGoogleLoadingError);
     initFacebookAuth(setRegisterFacebookInitLoading);
-    loadRegisterTpl();
+    loadRegisterSettings();
   }, []);
-
-  useEffect(() => {
-    if (registerData.tpl_signup !== null) {
-      fetchRecipeCuisines();
-    }
-  }, [registerData.tpl_signup]);
 
   return (
     <>
@@ -119,9 +99,9 @@ const RegisterView = (props: any) => {
       </Helmet>
 
       <ContentLoading
-        isLoading={registerTplLoading}
-        isError={registerTplLoadingError}
-        fetchData={() => loadRegisterTpl()}
+        isLoading={registerSettingsLoading}
+        isError={registerSettingsLoadingError}
+        fetchData={() => loadRegisterSettings()}
         spinSize='lg'
       >
         <AuthSocialHelmet />
@@ -130,9 +110,6 @@ const RegisterView = (props: any) => {
           isOpen
           registerData={registerData}
           setRegisterData={setRegisterData}
-          cuisinesLoading={recipeCuisinesLoading}
-          cuisinesLoadingError={recipeCuisinesLoadingError}
-          fetchRecipeCuisines={fetchRecipeCuisines}
           facebookInitLoading={registerFacebookInitLoading}
           googleLoadingError={registerGoogleLoadingError}
           googleInitLoading={registerGoogleInitLoading}

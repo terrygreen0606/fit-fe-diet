@@ -257,7 +257,7 @@ const InfoStep = (props: any) => {
           )}
         </div>
 
-        <div className="text-center mt-xl-5 mt-45">
+        <div className="text-center mt-xl-4 mt-3">
           <Button
             style={{ width: '217px' }}
             color="primary"

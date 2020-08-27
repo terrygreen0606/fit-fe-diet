@@ -83,7 +83,8 @@ const JoinStep = (props: any) => {
 
     return {
       ...userProfileData,
-      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id)
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id),
+      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code)
     };
   };
 

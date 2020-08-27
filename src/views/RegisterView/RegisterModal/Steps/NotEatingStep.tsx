@@ -3,7 +3,6 @@ import { getTranslate } from 'utils';
 
 // Components
 import Button from 'components/common/Forms/Button';
-import ContentLoading from 'components/hoc/ContentLoading';
 
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon-black.svg';
 import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
@@ -43,24 +42,18 @@ const NotEatingStep = (props: any) => {
         {t('register.not_eating')}
       </h6>
 
-      <ContentLoading
-        isLoading={props.cuisinesLoading}
-        isError={props.cuisinesLoadingError}
-        fetchData={props.fetchRecipeCuisines}
-      >
-       <div className="register_eating_list">
-          {props.registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
-            <div key={id} className="register_eating_item">
-              <span>
-                <img src={image} className="register_eating_item_icon" />
-                <span className="register_eating_item_label">{name}</span>
-              </span>
+      <div className="register_eating_list">
+        {props.registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
+          <div key={id} className="register_eating_item">
+            <span>
+              <img src={image} className="register_eating_item_icon" />
+              <span className="register_eating_item_label">{name}</span>
+            </span>
 
-              <CrossIcon onClick={() => removeMealItem(id)} className="register_eating_item_cross" />
-            </div>
-          ))}
-        </div>
-      </ContentLoading>
+            <CrossIcon onClick={() => removeMealItem(id)} className="register_eating_item_cross" />
+          </div>
+        ))}
+      </div>
 
       <div className="text-center mt-xl-5 mt-3">
         <Button
