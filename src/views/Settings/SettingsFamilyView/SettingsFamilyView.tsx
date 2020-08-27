@@ -180,50 +180,46 @@ const SettingsFamilyView = (props: any) => {
               {t('common.you')}
             </div>
             <div className='family__list'>
-              {userFamily.map((member) => {
-                return (
-                  <div key={member.email} className='family__list-item'>
-                    <div className='family__list-item-media'>
-                      {member.image ? (
-                        <img src={member.image} alt='' />
-                      ) : (
-                        <ManPlugIcon />
-                      )}
-                    </div>
-                    <div className='family__list-item-desc'>
-                      <div className='family__list-item-desc-name'>
-                        {member.name}
-                      </div>
-                      <a
-                        href={member.email}
-                        className='family__list-item-desc-email'
-                      >
-                        {member.email}
-                      </a>
-                      {member.is_joined && (
-                        <div className='family__list-item-desc-way'>
-                          {t('family.link_sent')}
-                        </div>
-                      )}
-                    </div>
-                    <button
-                      onClick={() => {
-                        return deleteFamilyMembers(member.email)
-                          .then((response) => {
-                            console.log('res', response);
-                          })
-                          .catch((reject) => {
-                            console.log('reject', reject);
-                          });
-                      }}
-                      type='button'
-                      className='family__list-item-close'
-                    >
-                      <CloseIcon />
-                    </button>
+              {userFamily.map((member, memberIndex) => (
+                <div key={member.email} className='family__list-item'>
+                  <div className='family__list-item-media'>
+                    {member.image ? (
+                      <img src={member.image} alt='' />
+                    ) : (
+                      <ManPlugIcon />
+                    )}
                   </div>
-                );
-              })}
+                  <div className='family__list-item-desc'>
+                    <div className='family__list-item-desc-name'>
+                      {member.name}
+                    </div>
+                    <a
+                      href={member.email}
+                      className='family__list-item-desc-email'
+                    >
+                      {member.email}
+                    </a>
+                    {member.is_joined && (
+                      <div className='family__list-item-desc-way'>
+                        {t('family.link_sent')}
+                      </div>
+                    )}
+                  </div>
+                  <button
+                    onClick={() =>
+                      deleteFamilyMembers(member.email).then(() => {
+                        const updatedFamily = [...userFamily];
+                        updatedFamily.splice(memberIndex, 1);
+                        setUserFamily(updatedFamily);
+                      })
+                    }
+                    type='button'
+                    className='family__list-item-close'
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+              ))}
             </div>
             <div className='family__referral-button-wrap'>
               <Link to='/referral' className='family__referral-button-link'>
