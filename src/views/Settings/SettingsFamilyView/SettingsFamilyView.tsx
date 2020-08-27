@@ -18,8 +18,9 @@ import FormValidator from 'utils/FormValidator';
 import {
   userInviteFriendByEmail,
   getUserInviteLink,
-  getUserInfo,
+  fetchUserProfile,
   getUserFamily,
+  deleteFamilyMembers,
 } from 'api';
 
 // Components
@@ -58,7 +59,7 @@ const SettingsFamilyView = (props: any) => {
       setUserFamily(response.data.data.list);
     });
 
-    getUserInfo().then((response) => {
+    fetchUserProfile().then((response) => {
       setUserInfo(response.data.data);
     });
 
@@ -179,34 +180,50 @@ const SettingsFamilyView = (props: any) => {
               {t('common.you')}
             </div>
             <div className='family__list'>
-              {userFamily.map((member) => (
-                <div key={member.email} className='family__list-item'>
-                  <div className='family__list-item-media'>
-                    {member.image ? (
-                      <img src={member.image} alt='' />
-                    ) : (
-                      <ManPlugIcon />
-                    )}
-                  </div>
-                  <div className='family__list-item-desc'>
-                    <div className='family__list-item-desc-name'>
-                      {member.name}
+              {userFamily.map((member) => {
+                return (
+                  <div key={member.email} className='family__list-item'>
+                    <div className='family__list-item-media'>
+                      {member.image ? (
+                        <img src={member.image} alt='' />
+                      ) : (
+                        <ManPlugIcon />
+                      )}
                     </div>
-                    <a
-                      href={member.email}
-                      className='family__list-item-desc-email'
+                    <div className='family__list-item-desc'>
+                      <div className='family__list-item-desc-name'>
+                        {member.name}
+                      </div>
+                      <a
+                        href={member.email}
+                        className='family__list-item-desc-email'
+                      >
+                        {member.email}
+                      </a>
+                      {member.is_joined && (
+                        <div className='family__list-item-desc-way'>
+                          {t('family.link_sent')}
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => {
+                        return deleteFamilyMembers(member.email)
+                          .then((response) => {
+                            console.log('res', response);
+                          })
+                          .catch((reject) => {
+                            console.log('reject', reject);
+                          });
+                      }}
+                      type='button'
+                      className='family__list-item-close'
                     >
-                      {member.email}
-                    </a>
-                    <div className='family__list-item-desc-way'>
-                      {t('family.link_sent')}
-                    </div>
+                      <CloseIcon />
+                    </button>
                   </div>
-                  <button type='button' className='family__list-item-close'>
-                    <CloseIcon />
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className='family__referral-button-wrap'>
               <Link to='/referral' className='family__referral-button-link'>
