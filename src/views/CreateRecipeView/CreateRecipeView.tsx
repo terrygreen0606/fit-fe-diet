@@ -318,14 +318,14 @@ const CreateRecipeView = (props: any) => {
                   block
                   type='number'
                   name='minTime'
-                  data-param='0,4320'
+                  data-param='1,4320'
                   data-validate='["min-max"]'
                   value={createRecipeForm.minTime}
                   onChange={(e) =>
                     validateOnChange('minTime', e.target.value, e)
                   }
                   className='recipe__label-input'
-                  min={0}
+                  min={1}
                   max={4320}
                   border='light'
                 />
@@ -333,7 +333,7 @@ const CreateRecipeView = (props: any) => {
                   block
                   type='number'
                   name='maxTime'
-                  data-param='0,4320'
+                  data-param='1,4320'
                   data-validate='["min-max"]'
                   value={createRecipeForm.maxTime}
                   onChange={(e) =>
