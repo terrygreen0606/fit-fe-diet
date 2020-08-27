@@ -39,7 +39,9 @@ const Modal = (props: Props) => {
   };
 
   return (
-    <div className="dialogWrap">
+    <div className={classNames("dialogWrap", {
+      [`${className}_wrap`]: className
+    })}>
       <div role="presentation" className="dialogBackdrop" onClick={onClickByBackdrop} />
       <div className={classNames('dialogContainer', {
         [className]: className,

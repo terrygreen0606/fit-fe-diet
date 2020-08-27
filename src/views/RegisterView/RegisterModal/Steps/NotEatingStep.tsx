@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import uuid from 'react-uuid';
+import React, { useEffect } from 'react';
 import { getTranslate } from 'utils';
 
 // Components
@@ -15,7 +14,8 @@ const NotEatingStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[0] = t('register.not_eating_step');
+    currStepTitles[1] = t('register.not_eating_step');
+    currStepTitles[2] = t('register.plan_create_step');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -35,10 +35,10 @@ const NotEatingStep = (props: any) => {
 
   return (
     <>
-      <h6 className="register_title mb-5">
+      <h6 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon 
           className="register-back-icon mr-5" 
-          onClick={e => props.setRegisterView('GOAL')}
+          onClick={e => props.setRegisterView('INFO')}
         />
         {t('register.not_eating')}
       </h6>
@@ -62,7 +62,7 @@ const NotEatingStep = (props: any) => {
         </div>
       </ContentLoading>
 
-      <div className="text-center mt-4">
+      <div className="text-center mt-xl-5 mt-3">
         <Button
           style={{ width: '217px' }}
           color="primary"

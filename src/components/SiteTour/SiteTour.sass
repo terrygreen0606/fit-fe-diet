@@ -1,0 +1,120 @@
+@import '../../assets/sass/vars'
+
+.quick_tour
+  &_sect
+    position: relative
+    background: #FFFFFF
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+    border-radius: 20px
+    padding-top: 37px
+    padding-bottom: 33px
+    margin: 30px auto
+    z-index: 510
+    height: 585px
+    &.slide_4
+      padding-bottom: 0
+    @media (max-width: 768px)
+      max-width: 90%
+      padding-top: 72px
+      height: 522px
+
+  &_row
+    height: 100%
+
+  &_col
+    display: none
+    transition: display 1s ease
+    flex-direction: column
+    align-items: center
+    text-align: center
+    margin: 0 auto
+    max-width: 80% !important
+    height: 100%
+    background-position: center center
+    background-repeat: no-repeat
+    background-size: cover
+    @media (max-width: 768px)
+      max-width: 100% !important
+    &.visible
+      display: flex
+
+    &_1
+      background-position: center 75%
+      background-size: 83%
+      @media (max-width: 768px)
+        background-size: 90%
+        background-position: center 65%
+
+    &_2
+      background-position: 55% 65%
+      background-size: 60%
+      @media (max-width: 768px)
+        background-size: 90%
+
+    &_3
+      background-position: center 65%
+      background-size: 75%
+      @media (max-width: 768px)
+        background-size: 90%
+
+    &_4
+      max-width: 60% !important
+      @media (max-width: 768px)
+        max-width: 100% !important
+
+      background-position: center bottom
+      background-size: 60%
+      @media (max-width: 1200px)
+        background-size: 70%
+      @media (min-width: 1200px)
+        background-size: 50%
+
+  &_title
+    font-weight: normal
+    font-size: 36px
+    line-height: 44px
+    @media (max-width: 768px)
+      font-size: 22px
+      line-height: 27px
+
+  &_text
+    font-weight: bold
+    font-size: 18px
+    line-height: 22px
+    @media (max-width: 768px)
+      font-size: 16px
+      line-height: 20px
+      margin-bottom: 20px
+
+  &_button
+    position: absolute
+    bottom: 0
+    left: 50%
+    transform: translateX(-50%)
+
+    margin-top: 10px
+    font-size: 26px
+    line-height: 30px
+    font-weight: normal
+    @media (max-width: 768px)
+      margin-top: 20px
+    &.slide_4
+      font-weight: bold
+      bottom: 32px
+      padding-left: 16px
+      padding-right: 16px
+
+  &_skip
+    position: absolute
+    top: 25px
+    right: 35px
+    color: #878787
+    text-decoration: underline
+    font-size: 18px
+    line-height: 22px
+    cursor: pointer
+    @media (max-width: 768px)
+      top: 20px
+      right: 20px
+    &:hover
+      color: #000000

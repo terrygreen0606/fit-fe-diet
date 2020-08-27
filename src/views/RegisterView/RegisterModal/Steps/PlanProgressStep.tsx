@@ -12,13 +12,15 @@ const PlanProgressStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[0] = t('register.not_eating_step');
     currStepTitles[1] = t('register.plan_create_step');
+    currStepTitles[2] = t('register.expect_step');
 
     props.setStepTitles([...currStepTitles]);
 
     if (props.registerData.goal === 0) {
       setTimeout(() => {
-        props.setRegisterView('READY');        
+        props.setRegisterView('HEALTH_PROBLEMS');
       }, 2000);
     } else {
       getUserWeightPrediction({
@@ -35,7 +37,7 @@ const PlanProgressStep = (props: any) => {
           });
 
           setTimeout(() => {
-            props.setRegisterView('EXPECTATIONS');
+            props.setRegisterView('HEALTH_PROBLEMS');
           }, 1000);
         } else {
           toast.error(t('register.weight_predict_error_msg'));
@@ -51,10 +53,10 @@ const PlanProgressStep = (props: any) => {
   }, []);
 
   return (
-    <div className="pt-5 text-center">
-      <h5 className="mb-5 fw-regular">{t('register.plan_progress_title')}</h5>
+    <div className="pt-xl-5 text-center">
+      <h5 className="mb-2 mb-xl-5 fw-regular">{t('register.plan_progress_title')}</h5>
 
-      <span className="site-logo mb-4" />
+      <span className="site-logo mb-2 mb-xl-4" />
       
       <LinearPreloader />
       

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { getTranslate } from 'utils';
-import uuid from 'react-uuid';
+import classNames from 'classnames';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -19,64 +19,64 @@ const GoalStep = (props: any) => {
 
   return (
     <div className="register_goal">
-      <h6 className="register_title mb-5">{t('register.help_achieve_goal')}</h6>
+      <h6 className="register_title mb-xl-5 mb-45">{t('register.help_achieve_goal')}</h6>
 
       <div className="register_goals_list">
         <Button
-          className="register_goal_btn"
-          color="primary"
+          className={classNames("register_goal_btn", {
+            'active': registerData.goal === -1
+          })}
           block
           onClick={(e) => props.setRegisterData({
             ...registerData,
             goal: -1,
           })}
-          outline={registerData.goal !== -1}
         >
           <span>
-            <LoseIcon className="register_goal_icon" />
+            <LoseIcon className="register_goal_icon mr-3" />
             {t('register.lose_weight')}
           </span>
-          <AngleRightIcon />
+          <AngleRightIcon className="register_goal_icon" />
         </Button>
 
         <Button
-          className="register_goal_btn"
-          color="primary"
+          className={classNames("register_goal_btn", {
+            'active': registerData.goal === 0
+          })}
           block
           onClick={(e) => props.setRegisterData({
             ...registerData,
             goal: 0,
           })}
-          outline={registerData.goal !== 0}
         >
           <span>
-            <KeepIcon className="register_goal_icon" />
+            <KeepIcon className="register_goal_icon mr-3" />
             {t('register.keep_weight')}
           </span>
-          <AngleRightIcon />
+          <AngleRightIcon className="register_goal_icon" />
         </Button>
 
         <Button
-          className="register_goal_btn"
-          color="primary"
+          className={classNames("register_goal_btn", {
+            'active': registerData.goal === 1
+          })}
           block
           onClick={(e) => props.setRegisterData({
             ...registerData,
             goal: 1,
           })}
-          outline={registerData.goal !== 1}
         >
           <span>
-            <LiftIcon className="register_goal_icon" />
+            <LiftIcon className="register_goal_icon mr-3" />
             {t('register.lift_weight')}
           </span>
-          <AngleRightIcon />
+          <AngleRightIcon className="register_goal_icon" />
         </Button>
       </div>
 
       <div className="text-center">
         <Button
-          className="mt-5"
+          className="mt-xl-5 mt-45"
           style={{ width: '220px' }}
           color="primary"
           size="lg"

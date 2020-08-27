@@ -15,6 +15,7 @@ interface ButtonProps {
   outline?: boolean;
   block?: boolean;
   isLoading?: boolean;
+  spanBtn?: boolean,
   active?: boolean;
   disabled?: boolean;
   onClick?: (any) => void;
@@ -53,6 +54,7 @@ const Button = (props: ButtonProps) => {
     weight,
     icon,
     outline,
+    spanBtn,
     children,
     disabled,
     ariaLabel,
@@ -61,8 +63,11 @@ const Button = (props: ButtonProps) => {
     ...attributes
   } = props;
 
+  const ButtonComponent = (ButtonComponentProps: any) => 
+    spanBtn ? <span {...ButtonComponentProps} /> : <button {...ButtonComponentProps} />;
+
   return (
-    <button // eslint-disable-line
+    <ButtonComponent // eslint-disable-line
       {...attributes}
       ref={innerRef}
       className={classNames(
@@ -83,7 +88,7 @@ const Button = (props: ButtonProps) => {
     >
       {icon}
       {children} {isLoading ? <Spinner className='ml-2' /> : null}
-    </button>
+    </ButtonComponent>
   );
 };
 

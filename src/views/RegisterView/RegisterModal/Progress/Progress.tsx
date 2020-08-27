@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import './Steps.sass';
+import './Progress.sass';
 
-type StepsProps = {
+type ProgressProps = {
   step: 0 | 1 | 2,
   titles: [string, string, string]
 };
 
-const Steps = ({ step, titles }: StepsProps) => {
+const Progress = ({ step, titles }: ProgressProps) => {
   return (
     <div className={classNames('registerModal_steps_wrap', {
       registerModal_steps_wrap_step1: step === 0,
@@ -17,7 +17,7 @@ const Steps = ({ step, titles }: StepsProps) => {
     })}
     >
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 0
+        'active': step === 0
       })}
       >
         <h5 className="registerModal_step_label">{titles[0]}</h5>
@@ -25,7 +25,7 @@ const Steps = ({ step, titles }: StepsProps) => {
       </div>
 
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 1
+        'active': step === 1
       })}
       >
         <h5 className="registerModal_step_label">{titles[1]}</h5>
@@ -33,7 +33,7 @@ const Steps = ({ step, titles }: StepsProps) => {
       </div>
 
       <div className={classNames('registerModal_step', {
-        registerModal_step_active: step === 2
+        'active': step === 2
       })}
       >
         <h5 className="registerModal_step_label">{titles[2]}</h5>
@@ -43,4 +43,4 @@ const Steps = ({ step, titles }: StepsProps) => {
   );
 };
 
-export default Steps;
+export default Progress;
