@@ -4,8 +4,8 @@
 .today-activities-activity
   &-list
     display: flex
-    overflow-x: auto
-    padding: 15px 3px
+    flex-wrap: wrap
+    justify-content: space-between
 
     input
       display: none
@@ -14,18 +14,14 @@
       opacity: 1
 
   &-card
-    flex: 0 0 calc(38% - 47px)
-    min-width: calc(38% - 47px)
-    min-height: 100%
+    max-width: 140px
     position: relative
-    padding: 21px 22px
+    padding: 40px 20px 25px
     text-align: center
     cursor: pointer
-    margin-right: 46px
     @media (max-width: 768px)
       display: flex
-      flex: 0 0 calc(50% - 47px)
-      min-width: calc(50% - 47px)
+      max-width: 210px
       padding: 14px 18px
       justify-content: center
       align-items: center
@@ -41,10 +37,10 @@
           path
             fill: #fff
           &-wrap
-            border-color: $caribbean-green
-            background-color: $caribbean-green
+            border-color: $steel-blue
+            background-color: $steel-blue
         &-title
-          color: $caribbean-green
+          color: $steel-blue
           font-weight: bold
           @media (max-width: 768px)
             font-weight: bold
@@ -54,7 +50,7 @@
       cursor: default
 
     &-title
-      margin-top: 23px
+      margin-top: 0
       line-height: 22px
       font-weight: 400
       @media (max-width: 768px)
@@ -68,7 +64,7 @@
       display: inline-block
       width: 43px
       height: 43px
-      background-color: $caribbean-green
+      background-color: $bright-green
       background-image: url('../../assets/img/icons/check-icon.svg')
       background-repeat: no-repeat
       background-position: center center
@@ -78,21 +74,17 @@
       opacity: 0
       @media (max-width: 768px)
         right: 0
-        //top: -7px
     &-icon
       width: 80%
-      fill: #000
-      path
-        fill: #000
       &-wrap
         display: inline-flex
         justify-content: center
         align-items: center
+        margin-bottom: 20px
         width: 73px
         height: 76px
         border: 1px solid #EDEDED
         border-radius: 13px
-        margin: 16px 16px 0
         +mt(.2s)
         @media (max-width: 768px)
           border-radius: 5px
