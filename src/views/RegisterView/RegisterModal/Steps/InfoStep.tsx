@@ -73,7 +73,7 @@ const InfoStep = (props: any) => {
 
       setTimeout(() => {
         setWeightPredictionLoading(false);
-        props.setRegisterView('PLAN_PROGRESS');
+        props.setRegisterView('NOT_EATING');
       }, 500);
     }
   };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getTranslate } from 'utils';
 import { toast } from 'react-toastify';
 import { getUserWeightPrediction } from 'api';
@@ -10,6 +10,18 @@ const PlanProgressStep = (props: any) => {
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
+  const [progressTitle, setProgressTitle] = useState(t('register.plan_progress_descr1'));
+
+  const getProgressTitlte = () => {
+    setTimeout(() => {
+      setProgressTitle(t('register.plan_progress_descr2'));
+    }, 2500);
+
+    setTimeout(() => {
+      setProgressTitle(t('register.plan_progress_descr3'));
+    }, 6000);
+  };
+
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
     currStepTitles[0] = t('register.not_eating_step');
@@ -18,10 +30,12 @@ const PlanProgressStep = (props: any) => {
 
     props.setStepTitles([...currStepTitles]);
 
+    getProgressTitlte();
+
     if (props.registerData.goal === 0) {
       setTimeout(() => {
         props.setRegisterView('HEALTH_PROBLEMS');
-      }, 2000);
+      }, 10000);
     } else {
       getUserWeightPrediction({
         measurement: props.registerData.measurement,
@@ -38,7 +52,7 @@ const PlanProgressStep = (props: any) => {
 
           setTimeout(() => {
             props.setRegisterView('HEALTH_PROBLEMS');
-          }, 1000);
+          }, 9000);
         } else {
           toast.error(t('register.weight_predict_error_msg'));
         }
@@ -62,8 +76,7 @@ const PlanProgressStep = (props: any) => {
       
       <br/>
 
-      <p>{t('register.plan_progress_descr1')}</p>
-      <p>{t('register.plan_progress_descr2')}</p>
+      <p>{progressTitle}</p>
     </div>
   );
 };

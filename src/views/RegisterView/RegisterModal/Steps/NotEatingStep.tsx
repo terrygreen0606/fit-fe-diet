@@ -45,23 +45,19 @@ const NotEatingStep = (props: any) => {
       <div className="register_eating_list">
         {props.registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
           <div key={id} className="register_eating_item">
-            <span>
-              <img src={image} className="register_eating_item_icon" />
-              <span className="register_eating_item_label">{name}</span>
-            </span>
-
-            <CrossIcon onClick={() => removeMealItem(id)} className="register_eating_item_cross" />
+            <img src={image} className="register_eating_item_icon" />
+            <span className="register_eating_item_label">{name}</span>
           </div>
         ))}
       </div>
 
-      <div className="text-center mt-xl-5 mt-3">
+      <div className="text-center mt-xl-5 mt-45">
         <Button
           style={{ width: '217px' }}
           color="primary"
           type="submit"
           size="lg"
-          onClick={() => props.setRegisterView('INFO')}
+          onClick={() => props.setRegisterView('PLAN_PROGRESS')}
         >
           {t('register.form_next')}
         </Button>
