@@ -27,13 +27,38 @@
 
 .nutrition-plan
   &-card-list
+    &-sect
+      padding-bottom: 80px
+      @media (max-width: 768px)
+        padding-bottom: 100px
+      .container > .row
+        @media (max-width: 768px)
+          flex-direction: column
     &-col
       flex: 0 0 calc(62% - 82px)
       max-width: calc(62% - 82px)
+      height: fit-content
+      position: relative
+      @media (max-width: 768px)
+        padding: 0 15px
+        flex-basis: 100%
+        max-width: 100%
+      &.hinted > .row
+        z-index: 510
+        position: relative
+        background-color: #FFFFFF
+        box-shadow: 0 0 0 20px #ffffff
+        @media (max-width: 768px)
+          box-shadow: none
   &-info-col
     flex: 0 0 38%
     max-width: 38%
     margin-left: 82px
+    @media (max-width: 768px)
+      flex-basis: 100%
+      max-width: 100%
+      margin-left: 0
+      padding: 0 15px
 
 .nutrition-plan
   &-controls
@@ -156,3 +181,178 @@
         max-width: 70%
     &-content
       flex: 0 0 80%
+
+
+.nutrition-plan-diet-settings-card-back, .nutrition-plan-add-recipe-card-back
+  box-shadow: 0 0 0 20px #ffffff
+  background-color: #ffffff
+  z-index: 0
+  position: relative
+  &.hinted
+    z-index: 510
+
+.nutrition-plan-diet-settings-card
+  &-img
+    svg
+      max-width: 70%
+      path
+        fill: #000000
+
+.hint_sect_backdrop
+  position: fixed
+  top: 0
+  bottom: 0
+  right: 0
+  left: 0
+  background-color: rgba(0, 0, 0, 0.3)
+  z-index: 505
+
+.hint
+  &_sect
+    display: flex
+    flex-direction: column
+    background-color: $steel-blue
+    position: absolute
+    padding: 10px
+    max-width: 300px
+    width: fit-content
+    z-index: 510
+    &_1
+      bottom: 35px
+      right: 0
+      @media (max-width: 768px)
+        right: 0
+        left: 0
+        bottom: 100%
+        max-width: unset
+        padding: 20px
+      &_triangle
+        bottom: -10px
+        right: 50px
+        @media (max-width: 768px)
+          border-top: 160px solid $steel-blue !important
+          border-right: 30px solid transparent !important
+          border-left: 30px solid transparent !important
+          bottom: unset
+          top: 100%
+          right: 35px
+
+    &_2
+      top: -15%
+      left: calc(38% - 82px)
+      padding: 15px
+      text-align: center
+      @media (max-width: 768px)
+        right: 0
+        left: 0
+        top: 103%
+        max-width: unset
+        width: unset
+        text-align: unset
+        padding: 20px
+      @media (min-width: 768px) and (max-width: 992px)
+        top: 0
+        left: calc(38% - 52px)
+      &_triangle
+        bottom: -10px
+        left: 15px
+        @media (max-width: 768px)
+          bottom: 100%
+          left: 50%
+          transform: translateX(-50%)
+          border-top: unset !important
+          border-bottom: 10px solid $steel-blue !important
+
+    &_3
+      top: 80%
+      left: 103%
+      @media (max-width: 768px)
+        right: 0
+        left: 0
+        top: 100%
+        max-width: unset
+        width: unset
+        padding: 20px
+        margin: 0 15px
+      &_triangle
+        right: 100%
+        top: 50%
+        border-right: 15px solid $steel-blue !important
+        border-left: unset !important
+        border-top: 15px solid transparent !important
+        border-bottom: 15px solid transparent !important
+        transform: translateY(-50%)
+        @media (max-width: 768px)
+          bottom: 100%
+          top: unset
+          right: unset
+          left: 20%
+          border-right: 30px solid transparent !important
+          border-left: 30px solid transparent !important
+          border-top: unset !important
+          border-bottom: 30px solid $steel-blue !important
+          transform: unset
+
+    &_4
+      top: 50%
+      transform: translateY(-50%)
+      right: 103%
+      padding: 15px
+      @media (max-width: 768px)
+        right: 0
+        left: 0
+        top: 100%
+        max-width: unset
+        width: unset
+        padding: 20px
+        transform: unset
+      &_triangle
+        left: 100%
+        top: 50%
+        transform: translateY(-50%)
+        border-right: unset !important
+        border-left: 15px solid $steel-blue !important
+        border-top: 15px solid transparent !important
+        border-bottom: 15px solid transparent !important
+        @media (max-width: 768px)
+          bottom: 100%
+          top: unset
+          left: 50%
+          transform: translateX(-50%)
+          border-right: 25px solid transparent !important
+          border-left: 25px solid transparent !important
+          border-top: unset !important
+          border-bottom: 25px solid $steel-blue !important
+
+  &_triangle
+    position: absolute
+    width: 0
+    height: 0
+    border-right: 15px solid transparent
+    border-left: 15px solid transparent
+    border-top: 10px solid $steel-blue
+    z-index: 3
+
+  &_text
+    color: #FFFFFF
+    font-weight: bold
+    @media (max-width: 768px)
+      font-size: 20px
+      line-height: 24px
+
+  &_close
+    color: #FFFFFF
+    font-size: 14px
+    border-bottom: 3px solid #FFFFFF
+    align-self: flex-end
+    cursor: pointer
+    &:hover
+      color: darken(#FFFFFF, 20)
+      border-bottom-color: darken(#FFFFFF, 20)
+
+.today-activities
+  &.hinted
+    position: relative
+    background-color: #FFFFFF
+    z-index: 510
+    box-shadow: 0 0 0 20px #ffffff

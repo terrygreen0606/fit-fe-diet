@@ -22,10 +22,12 @@ import NotFound from './views/NotFound';
 import SavedRecipesView from './views/SavedRecipesView';
 import FavouriteRecipesView from './views/FavouriteRecipesView';
 import DashboardView from './views/DashboardView';
-import FaqView from './views/FaqView';
+import SettingsFaqView from './views/Settings/SettingsFaqView';
+import SettingsFamilyView from './views/Settings/SettingsFamilyView';
 import ReferralView from './views/ReferralView';
 import MainView from './views/MainView';
 import TestimonialsFormView from './views/Forms/TestimonialsFormView';
+import CancellationFormView from './views/Forms/CancellationFormView';
 
 const Routes = () => (
   <Switch>
@@ -163,7 +165,7 @@ const Routes = () => (
       path='/settings/faq'
       component={(props: any) => (
         <Layout {...props}>
-          <FaqView {...props} />
+          <SettingsFaqView {...props} />
         </Layout>
       )}
       exact
@@ -180,10 +182,30 @@ const Routes = () => (
     />
 
     <PrivateRoute
+      path='/settings/family'
+      component={(props: any) => (
+        <Layout {...props}>
+          <SettingsFamilyView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
       path='/add_testimonial'
       component={(props: any) => (
         <Layout {...props}>
           <TestimonialsFormView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path='/cancellation'
+      component={(props: any) => (
+        <Layout {...props}>
+          <CancellationFormView {...props} />
         </Layout>
       )}
       exact

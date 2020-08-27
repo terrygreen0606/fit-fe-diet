@@ -1,0 +1,206 @@
+@import '../../../assets/sass/vars'
+
+
+.registerModal
+  max-width: 1120px !important
+  height: 700px
+  &_main
+    display: flex
+    height: 100%
+    padding: 0 !important
+    padding-right: 70px !important
+  &_steps_content
+    flex: 0 0 500px
+    max-height: calc(700px - 50px - 37px)
+    margin: 50px 0 37px
+    padding-right: 20px
+    overflow: auto
+
+    +scrollStyle(5px)
+  .dialogHeader
+    padding: 0
+
+.register
+  &_title
+    display: flex
+    align-items: center
+    justify-content: center
+    font-weight: bold
+    font-size: 34px
+    line-height: 41px
+    color: #000
+    text-align: center
+    .register-back-icon
+      top: 5px
+
+  &_expectation_chart
+    padding: 10px
+    canvas
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15)
+      border-radius: 20px
+
+  &_socialBtns
+    padding: 0 70px
+
+  &_goals_list
+    .register_goal_btn
+      &:not(:last-child)
+        margin-bottom: 28px
+  &_goal_btn
+    height: 77px
+    padding-left: 17px
+    padding-right: 27px
+    justify-content: space-between
+    color: #000
+    font-size: 20px
+    border-color: #000
+    border-width: 1px
+    line-height: 24px
+    font-weight: bold
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease
+    span
+      display: inline-flex
+      align-items: center
+    &.active, &:hover
+      color: #fff
+      background-color: $steel-blue
+      border-color: $steel-blue
+      .register_goal_icon
+        fill: #fff
+        path
+          fill: #fff
+        circle
+          fill: $steel-blue
+          stroke: #fff
+  &_goal_icon
+    width: 26px
+    fill: #000
+    +mt(.05s)
+    path
+      fill: #000
+      +mt(.05s)
+    circle
+      fill: #fff
+      +mt(.1s)
+
+  &_health_problem
+    &_list
+      display: flex
+      align-items: flex-start
+      justify-content: center
+      flex-wrap: wrap
+      .register_health_problem_item
+        display: block
+        width: calc(50% - 12px)
+        margin-bottom: 29px
+        &:nth-child(2n + 1)
+          margin-right: 24px
+        input
+          display: none
+          &:checked ~ .register_health_problem_btn
+            font-weight: bold
+            color: #fff
+            background-color: $steel-blue
+            border-color: $steel-blue
+    &_btn
+      height: 77px
+      border: 1px solid #878787
+      border-radius: 5px
+      font-size: 20px
+      line-height: 24px
+      background-color: transparent
+      color: #000000
+      +mt(.2s)
+      &.active, &:hover
+        font-weight: bold
+        color: #fff
+        background-color: $steel-blue
+        border-color: $steel-blue
+
+  &_eating
+    &_list
+      display: flex
+      align-items: flex-start
+      justify-content: center
+      flex-wrap: wrap
+      .register_eating_item
+        margin-right: 19px
+        margin-bottom: 24px
+    &_item
+      display: inline-flex
+      align-items: center
+      justify-content: space-between
+      height: 42px
+      padding: 0 10px
+      border: 1px solid $caribbean-green
+      border-radius: 5px
+      font-size: 18px
+      line-height: 18px
+      font-weight: 400
+      color: #000
+      span
+        display: inline-flex
+        align-items: center
+      &_icon
+        margin-right: 10px
+        height: 24px
+      &_cross
+        width: 11px
+        height: 11px
+        margin-left: 11px
+        cursor: pointer
+        fill: #000
+        path
+          fill: #000
+
+  &_info
+    &_form
+      .fgLabel
+        font-size: 20px
+    &_fg_age, &_fg_height
+      .fg-input
+        flex: 0 0 100px
+        margin: 0 10px
+      .fgLabel
+        flex: auto
+        margin: 0
+    &_fg_weight
+      .fgLabel
+        margin: 0
+        flex: 0 0 20%
+        &:first-child
+          flex: 0 0 100%
+          margin-bottom: 17px
+      .fg-input
+        margin-right: 10px
+        flex-grow: 1
+
+  &_join
+    &_or
+      border-bottom: 1px dashed #106EE8
+      text-align: center
+      margin-bottom: 40px
+      &_txt
+        position: relative
+        top: 20px
+        z-index: 1
+        display: inline-block
+        padding: 10px 36px
+        background-color: #fff
+
+.registerBtn
+  max-width: 357px
+  margin: 0 auto
+
+.register-back-icon
+  position: relative
+  cursor: pointer
+  width: 24px
+  height: 24px
+  path
+    width: 24px
+    height: 24px
+    fill: #CDCDCD
+    +mt(.2s)
+    &:hover
+      fill: darken(#CDCDCD, 10%)

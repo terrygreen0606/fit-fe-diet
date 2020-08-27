@@ -64,7 +64,7 @@ const ProfileSidebar = (props: any) => {
 
           <li>
             <NavLink
-              to='/settings'
+              to='/settings/family'
               activeClassName='active'
               exact
               className='profile-menu-list-item'
