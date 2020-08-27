@@ -108,11 +108,14 @@
       background-color: transparent
       color: #000000
       +mt(.2s)
-      &.active, &:hover
+      &.active
         font-weight: bold
         color: #fff
         background-color: $steel-blue
         border-color: $steel-blue
+      &:hover
+        border-color: $steel-blue
+        color: $steel-blue
 
   &_eating
     &_list
