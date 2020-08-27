@@ -1,20 +1,25 @@
 import React from 'react';
 import classNames from 'classnames';
+import getRegisterStepImage from '../getRegisterStepImage';
+import { RegisterViewType, RegisterStepTitlesType } from '../types';
 
 import './Progress.sass';
 
 type ProgressProps = {
-  step: 0 | 1 | 2,
-  titles: [string, string, string]
+  step: 0 | 1 | 2;
+  view: RegisterViewType;
+  titles: RegisterStepTitlesType;
 };
 
-const Progress = ({ step, titles }: ProgressProps) => {
+const Progress = ({ step, view, titles }: ProgressProps) => {
   return (
-    <div className={classNames('registerModal_steps_wrap', {
-      registerModal_steps_wrap_step1: step === 0,
-      registerModal_steps_wrap_step2: step === 1,
-      registerModal_steps_wrap_step3: step === 2
-    })}
+    <div 
+      className={classNames('registerModal_steps_wrap', {
+        registerModal_steps_wrap_step1: step === 0,
+        registerModal_steps_wrap_step2: step === 1,
+        registerModal_steps_wrap_step3: step === 2
+      })}
+      style={{ backgroundImage: `url(${getRegisterStepImage(view)})` }}
     >
       <div className={classNames('registerModal_step', {
         'active': step === 0

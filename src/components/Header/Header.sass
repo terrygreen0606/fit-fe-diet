@@ -32,21 +32,21 @@
     &_item
       display: inline-block
       font-size: 18px
-      line-height: 22px
+      line-height: 32px
       font-weight: 400
       cursor: pointer
       color: $black
       text-decoration: none
       border-bottom: 2px solid transparent
       &:hover, &_active
-        color: $caribbean-green
-        border-bottom-color: $caribbean-green
+        color: $steel-blue
+        border-bottom-color: $steel-blue
       &:not(:last-child)
         margin-right: 60px
 
 .menu-toggle-icon
   width: 29px
-  fill: $caribbean-green
+  fill: $steel-blue
   cursor: pointer
 
 .mobile-auth-btn
@@ -62,7 +62,7 @@
   align-items: center
 
 
-@media only screen and (max-width : 992px)
+@media only screen and (max-width : 1400px)
   .mainHeader
     position: fixed
     top: 0
@@ -73,7 +73,7 @@
     .row
       padding: 25px 0
       height: 80px
-    &_logo
+    .mainHeader_logo
       display: none
     &_menuList
       display: none

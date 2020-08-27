@@ -80,7 +80,7 @@ const GoalStep = (props: any) => {
           style={{ width: '220px' }}
           color="primary"
           size="lg"
-          onClick={() => props.setRegisterView('NOT_EATING')}
+          onClick={() => props.setRegisterView('INFO')}
         >
           {t('register.form_next')}
         </Button>

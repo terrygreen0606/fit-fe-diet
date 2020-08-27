@@ -201,15 +201,18 @@ const LoginView = (props: any) => {
 
       <AuthSocialHelmet />
 
-      <div className='loginScreen'>
-        <h3 className='loginScreen_title'>
+      <div className='loginScreen mt-3 mt-md-5'>
+        <h3 className='loginScreen_title d-none d-lg-block'>
           {t('login.title', { product: 'TEST' })}
         </h3>
+
+        <span className='mainHeader_logo d-lg-none' />
 
         <form className='loginScreen_form' onSubmit={(e) => loginSubmit(e)}>
           <FormGroup>
             <InputField
               name='email'
+              label={t('login.form_email')}
               data-validate='["required", "email"]'
               errors={getFieldErrors('email')}
               value={loginForm.email}
@@ -222,7 +225,7 @@ const LoginView = (props: any) => {
           <FormGroup>
             <InputField
               name='password'
-              className='mt-3'
+              label={t('login.form_password')}
               type='password'
               autocomplate='current-password'
               data-validate='["required"]'
@@ -234,24 +237,22 @@ const LoginView = (props: any) => {
             />
           </FormGroup>
 
-          <span className='link link-bold mt-3'>{t('login.forgot_pass')}</span>
-
           <Button
             className='loginScreen_btn'
             type='submit'
-            color='primary'
+            color='secondary'
             size='lg'
-            disabled={
-              loginLoading || loginGoogleLoading || loginFacebookLoading
-            }
-            isLoading={loginLoading}
             block
+            disabled={loginLoading || loginGoogleLoading || loginFacebookLoading}
+            isLoading={loginLoading}
           >
             {t('login.submit')}
           </Button>
+
+          <span className='loginScreen_link link link-bold link-blue mt-md-5 mt-45'>{t('login.forgot_pass')}</span>
         </form>
 
-        <div className='loginScreen_socialBtns mt-4'>
+        {/*<div className='loginScreen_socialBtns mt-4'>
           <Button
             className='facebook-login-btn mr-3'
             onClick={(e) => facebookLogin()}
@@ -281,15 +282,7 @@ const LoginView = (props: any) => {
               <GoogleIcon className='mr-2' /> Login with Google
             </Button>
           )}
-        </div>
-
-        <Link
-          className='link link-bold mt-4'
-          to='/register'
-          role='presentation'
-        >
-          {t('login.register_link')}
-        </Link>
+        </div>*/}
       </div>
     </>
   );

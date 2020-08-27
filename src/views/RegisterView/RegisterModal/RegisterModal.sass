@@ -4,6 +4,8 @@
 .registerModal
   max-width: 1120px !important
   height: 700px
+  .dialogHeader
+    display: none
   &_main
     display: flex
     height: 100%
@@ -144,14 +146,6 @@
       &_icon
         margin-right: 10px
         height: 24px
-      &_cross
-        width: 11px
-        height: 11px
-        margin-left: 11px
-        cursor: pointer
-        fill: #000
-        path
-          fill: #000
 
   &_info
     &_form
@@ -245,6 +239,19 @@
     &_steps_content
       padding-top: 0
 
+  .register
+    &_eating
+      &_list
+        .register_eating_item
+          display: flex
+          width: calc(50% - 6px)
+          margin: 0
+          margin-bottom: 11px
+          height: 59px
+          justify-content: center
+          &:nth-child(2n + 1)
+            margin-right: 12px
+
 
 @media only screen and (max-width : 576px)
   .register
@@ -285,3 +292,10 @@
           margin-bottom: 11px
           &:nth-child(2n + 1)
             margin-right: 0
+    &_eating
+      &_list
+        .register_eating_item
+          width: 100%
+          &:nth-child(2n + 1)
+            margin-right: 0
+    
