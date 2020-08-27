@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getTranslate } from 'utils';
-import { generatePublicUrl } from 'utils/generatePublicUrl';
+import { getTranslate, generatePublicUrl } from 'utils';
 
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
@@ -107,10 +106,7 @@ const Footer = (props: any) => {
                 </a>
               </li>
               <li>
-                <Link
-                  to='/recipe/create'
-                  className='mainFooter_menuList_item'
-                >
+                <Link to='/recipe/create' className='mainFooter_menuList_item'>
                   {t('footer.menu_create_recipe')}
                 </Link>
               </li>
@@ -147,10 +143,7 @@ const Footer = (props: any) => {
                 </a>
               </li>
               <li>
-                <Link
-                  to='/water-tracker'
-                  className='mainFooter_menuList_item'
-                >
+                <Link to='/water-tracker' className='mainFooter_menuList_item'>
                   {t('footer.menu_water_tracker')}
                 </Link>
               </li>
