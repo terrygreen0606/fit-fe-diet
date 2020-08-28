@@ -6,7 +6,7 @@ export const RECIPE_CREATE = 'Create recipe';
 export const MEAL_PLAN_LIST = 'Meal plan list';
 export const RECIPES = 'Recipes';
 export const WATER_TRACKER = 'Water tracker';
-export const PLAN_CHANGE_MEAL = 'Change meal';
+export const SETTINGS_CHANGE_MEAL_PLAN = 'Change meal';
 export const SETTINGS_PERSONAL = 'Personal settings';
 export const RECIPES_SAVED = 'Saved recipes';
 export const RECIPES_FAVOURITES = 'Favourites recipes';
@@ -28,7 +28,7 @@ export const routes = {
   [MEAL_PLAN_LIST]: '/meal-plan/list',
   [RECIPES]: '/recipes',
   [WATER_TRACKER]: '/water-tracker',
-  [PLAN_CHANGE_MEAL]: '/plan/change-meal',
+  [SETTINGS_CHANGE_MEAL_PLAN]: '/settings/change-meal-plan',
   [SETTINGS_PERSONAL]: '/settings/personal',
   [RECIPES_SAVED]: '/recipes/saved',
   [RECIPES_FAVOURITES]: '/recipes/favourites',

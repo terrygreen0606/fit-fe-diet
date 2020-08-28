@@ -16,7 +16,7 @@ import {
   MEAL_PLAN_LIST,
   RECIPES,
   WATER_TRACKER,
-  PLAN_CHANGE_MEAL,
+  SETTINGS_CHANGE_MEAL_PLAN,
   SETTINGS_PERSONAL,
   RECIPES_SAVED,
   RECIPES_FAVOURITES,
@@ -40,7 +40,7 @@ import RecipesView from './views/RecipesView';
 import FoodPlanView from './views/FoodPlanView';
 import CreateRecipeView from './views/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
-import ChangeMealPlanView from './views/ChangeMealPlanView';
+import SettingsChangeMealPlanView from './views/Settings/SettingsChangeMealPlanView';
 import SettingsPersonalView from './views/Settings/SettingsPersonalView';
 import NotFound from './views/NotFound';
 import SavedRecipesView from './views/SavedRecipesView';
@@ -136,10 +136,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[PLAN_CHANGE_MEAL]}
+      path={routes[SETTINGS_CHANGE_MEAL_PLAN]}
       component={(props: any) => (
         <Layout {...props}>
-          <ChangeMealPlanView {...props} />
+          <SettingsChangeMealPlanView {...props} />
         </Layout>
       )}
       exact
