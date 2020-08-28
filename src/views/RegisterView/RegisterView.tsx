@@ -107,7 +107,10 @@ const RegisterView = (props: any) => {
       >
         <AuthSocialHelmet />
 
-        <RegisterV2Tpl />
+        <RegisterV2Tpl
+          registerData={registerData}
+          setRegisterData={setRegisterData}
+        />
 
         {/*<RegisterModal
           isOpen
@@ -117,8 +120,6 @@ const RegisterView = (props: any) => {
           googleLoadingError={registerGoogleLoadingError}
           googleInitLoading={registerGoogleInitLoading}
         />*/}
-
-        <RegisterV2Tpl />
       </ContentLoading>
     </>
   );

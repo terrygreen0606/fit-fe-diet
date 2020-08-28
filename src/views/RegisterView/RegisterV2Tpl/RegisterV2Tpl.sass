@@ -2,25 +2,82 @@
 
 
 .register_v2tpl
+  padding-top: 50px
+  &_content
+    margin-top: 90px
+    text-align: center
   &_title
+    margin-bottom: 80px
     font-size: 36px
     font-weight: bold
     line-height: 44px
+    text-align: center
     color: #000
-  &_goals_list
-    .register_v2tpl_goal_btn
-      &:not(:last-child)
-        margin-bottom: 29px
-  &_goal_btn
-    padding-left: 17px
-    padding-right: 27px
-    justify-content: space-between
-    font-size: 18px
-    line-height: 22px
-    font-weight: bold
-    span
+  &_btn
+    min-width: 220px
+    margin-top: 50px  
+  &_check
+    &_item
       display: inline-flex
       align-items: center
-  &_goal_icon
-    margin-right: 7px
-    width: 26px
+      justify-content: center
+      width: 100%
+      min-height: 77px
+      padding: 0 25px
+      border: 1px solid #f0f0f0
+      border-radius: 5px
+      font-size: 20px
+      line-height: 24px
+      background-color: #f0f0f0
+      color: #000000
+      cursor: pointer
+      +mt(.2s)
+      &.active
+        font-weight: bold
+        color: #fff
+        background-color: $steel-blue
+        border-color: $steel-blue
+      &:hover
+        border-color: $steel-blue
+        color: $steel-blue
+        background-color: #fff
+        box-shadow: 3px 4px 26px -9px $steel-blue
+    &_list
+      .register_v2tpl_check_item
+        margin-bottom: 39px
+      .register_v2tpl_check_label
+        &:last-child
+          .register_v2tpl_check_item
+            margin-bottom: 0
+    &_label
+      input
+        display: none
+        &:checked ~ .register_v2tpl_check_item
+          font-weight: bold
+          color: #fff
+          background-color: $steel-blue
+          border-color: $steel-blue
+  &_eating
+    &_list
+      display: flex
+      align-items: flex-start
+      justify-content: center
+      flex-wrap: wrap
+      .register_v2tpl_eating_label
+        display: flex
+        width: calc(50% - 7px)
+        margin-bottom: 29px
+        &:nth-child(2n + 1)
+          margin-right: 14px
+    &_item
+      span
+        display: inline-flex
+        align-items: center
+      &_icon
+        margin-right: 10px
+        height: 24px
+  &_fg_inline
+    .fgLabel
+      margin-right: 0
+      padding-left: 29px
+      text-align: left

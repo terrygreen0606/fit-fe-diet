@@ -51,18 +51,19 @@ const RegisterModal = (props: RegisterModalProps) => {
     }
   }, [registerView]);
 
-  const getRegisterStepView = (registerView: RegisterViewType) => getRegisterStepViewUtil(
-    registerView,
-    props.registerData,
-    props.setRegisterData,
-    props.cuisinesLoading,
-    props.cuisinesLoadingError,
-    props.fetchRecipeCuisines,
-    props.localePhrases,
-    registerStepTitlesDefault,
-    setRegisterStepTitles,
-    setRegisterView
-  );
+  const getRegisterStepView = (registerView: RegisterViewType) => 
+    getRegisterStepViewUtil(
+      registerView,
+      props.registerData,
+      props.setRegisterData,
+      props.cuisinesLoading,
+      props.cuisinesLoadingError,
+      props.fetchRecipeCuisines,
+      props.localePhrases,
+      registerStepTitlesDefault,
+      setRegisterStepTitles,
+      setRegisterView
+    );
 
   return (
     <Modal

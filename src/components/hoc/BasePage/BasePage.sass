@@ -15,14 +15,16 @@
   background-repeat: no-repeat
 
 .basePageMainContentWrapper
-  max-width: 750px
+  max-width: 900px
   margin: 0 auto
   padding: 40px !important
+  padding-bottom: 60px !important
 
 
 @media only screen and (max-width : 1400px)
   .basePageLayoutWrapper
-    padding-top: 80px
+    &:not(.hide_header)
+      padding-top: 80px
 
 
 @media only screen and (max-width : 576px)

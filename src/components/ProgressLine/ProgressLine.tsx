@@ -4,13 +4,18 @@ import classNames from 'classnames'
 import './ProgressLine.sass';
 
 type ProgressLineProps = {
-  steps: string[],
-  activeStepIndex: number
+  steps: string[];
+  activeStepIndex: number;
+  className?: string;
 };
 
-const ProgressLine = ({ steps, activeStepIndex }: ProgressLineProps) => {
+const ProgressLine = ({ steps, activeStepIndex, className }: ProgressLineProps) => {
   return (
-    <div className="progress-line-steps">
+    <div 
+      className={classNames("progress-line-steps", {
+        className: className
+      })}
+    >
       {steps.map((stepTitle, stepIndex) => (
         <div
           className={classNames('progress-line-step', {

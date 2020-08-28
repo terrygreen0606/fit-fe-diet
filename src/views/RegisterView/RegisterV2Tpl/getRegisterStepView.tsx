@@ -15,13 +15,20 @@ import ConfirmInfo from './Steps/ConfirmInfo';
 import FinalWelcome from './Steps/FinalWelcome';
 
 
-export default (registerView: RegisterViewType, localePhrases: any) => {
+export default (
+  registerView: RegisterViewType,
+  registerData: any,
+  setRegisterData: (any) => void,
+  localePhrases: any
+) => {
   let registerStepView = null;
 
   switch (registerView) {
     case 'GOAL':
       registerStepView = (
         <Goal
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );
@@ -30,6 +37,8 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'NOT_EATING':
       registerStepView = (
         <NotEating
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );
@@ -38,6 +47,8 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'GENDER':
       registerStepView = (
         <Gender
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );
@@ -46,6 +57,8 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'BACK_ISSUES':
       registerStepView = (
         <BackIssues
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );
@@ -54,6 +67,8 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'HEALTH_PROBLEMS':
       registerStepView = (
         <HealthProblems
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );
@@ -62,6 +77,8 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'DAY_MEALPLAN':
       registerStepView = (
         <DayMealPlan
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );
@@ -70,6 +87,8 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'HEIGHT_WEIGHT':
       registerStepView = (
         <HeghtWeight
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );
@@ -78,6 +97,8 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'WEIGHT_GOAL':
       registerStepView = (
         <WeightGoal
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );
@@ -86,6 +107,7 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'PLAN_PROGRESS':
       registerStepView = (
         <PlanProgress
+          registerData={registerData}
           localePhrases={localePhrases}
         />
       );
@@ -102,6 +124,8 @@ export default (registerView: RegisterViewType, localePhrases: any) => {
     case 'CONFIRM':
       registerStepView = (
         <ConfirmInfo
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           localePhrases={localePhrases}
         />
       );

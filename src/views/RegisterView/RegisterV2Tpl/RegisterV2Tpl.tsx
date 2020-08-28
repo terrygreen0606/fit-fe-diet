@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import getRegisterStepView from './getRegisterStepView';
+import getRegisterStepViewUtil from './getRegisterStepView';
 import { RegisterViewType } from './types';
 
 // Components
@@ -10,17 +10,27 @@ import './RegisterV2Tpl.sass';
 
 const RegisterV2Tpl = (props: any) => {
 
-  const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
+  const [registerView, setRegisterView] = useState<RegisterViewType>('PLAN_PROGRESS');
+
+  const getRegisterStepView = (registerView: RegisterViewType) => 
+    getRegisterStepViewUtil(
+      registerView,
+      props.registerData,
+      props.setRegisterData,
+      props.localePhrases
+    );
 
   return (
-    <>
+    <div className="register_v2tpl">
       <ProgressLine
         steps={['Choose a goal', 'Add info', 'Join']}
         activeStepIndex={1}
       />
 
-      {getRegisterStepView(registerView, props.localePhrases)}
-    </>
+      <div className="register_v2tpl_content">
+        {getRegisterStepView(registerView)}
+      </div>
+    </div>
   );
 };
 
