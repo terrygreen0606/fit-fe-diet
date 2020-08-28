@@ -11,14 +11,16 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
+  copyTextInBuffer,
+  openShareLink,
 } from 'utils';
-import { openShareLink } from 'utils/openShareLink';
 import FormValidator from 'utils/FormValidator';
 import { userInviteFriendByEmail, getUserInviteLink } from 'api';
 
 // Components
 import InputField from 'components/common/Forms/InputField';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Button from 'components/common/Forms/Button';
 
 import './ReferralView.sass';
 
@@ -39,6 +41,8 @@ const ReferralView = (props: any) => {
   const [inviteLink, setInviteLink] = useState('');
 
   const [inviteFriendsErrors, setInviteFriendsErrors] = useState([]);
+
+  const [isActiveCopiedBlock, setActiveCopiedBlock] = useState(false);
 
   const validateOnChange = (name: string, value: any, event) => {
     validateFieldOnChange(
@@ -101,6 +105,34 @@ const ReferralView = (props: any) => {
                 <p className='referral__description'>
                   {t('referral.description')}
                 </p>
+                <p className='referral__description'>
+                  {t('referral.copy_desc')}
+                </p>
+                <div className='referral__invite-link'>
+                  <Button
+                    type='button'
+                    className='referral__invite-link-input'
+                    onClick={() => {
+                      copyTextInBuffer('.referral__invite-link-input');
+                      setActiveCopiedBlock(true);
+                      setTimeout(() => {
+                        setActiveCopiedBlock(false);
+                      }, 2000);
+                    }}
+                  >
+                    {inviteLink}
+                  </Button>
+                  {isActiveCopiedBlock && (
+                    <div className='referral__invite-link-copied'>
+                      {t('referral.copied')}
+                    </div>
+                  )}
+                </div>
+                <div className='referral__separator'>
+                  <span className='referral__separator-text'>
+                    {t('common.or')}
+                  </span>
+                </div>
                 <form
                   onSubmit={(e) => inviteFriendsSubmit(e)}
                   className='referral__container-input'
@@ -110,7 +142,9 @@ const ReferralView = (props: any) => {
                     data-validate='["email"]'
                     errors={getFieldErrors('email')}
                     value={inviteFriendsForm.email}
-                    onChange={(e) => validateOnChange('email', e.target.value, e)}
+                    onChange={(e) =>
+                      validateOnChange('email', e.target.value, e)
+                    }
                     block
                     placeholder={t('referral.enter_email')}
                     height='lg'

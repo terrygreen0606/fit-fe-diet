@@ -10,11 +10,10 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
+  getOz,
 } from 'utils';
 import { searchIngredients, createRecipe, getIngredient } from 'api';
 import FormValidator from 'utils/FormValidator';
-
-import { getOz } from 'utils/getOz';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -319,12 +318,14 @@ const CreateRecipeView = (props: any) => {
                   block
                   type='number'
                   name='minTime'
-                  data-param='0,4320'
+                  data-param='1,4320'
                   data-validate='["min-max"]'
                   value={createRecipeForm.minTime}
-                  onChange={(e) => validateOnChange('minTime', e.target.value, e)}
+                  onChange={(e) =>
+                    validateOnChange('minTime', e.target.value, e)
+                  }
                   className='recipe__label-input'
-                  min={0}
+                  min={1}
                   max={4320}
                   border='light'
                 />
@@ -332,10 +333,12 @@ const CreateRecipeView = (props: any) => {
                   block
                   type='number'
                   name='maxTime'
-                  data-param='0,4320'
+                  data-param='1,4320'
                   data-validate='["min-max"]'
                   value={createRecipeForm.maxTime}
-                  onChange={(e) => validateOnChange('maxTime', e.target.value, e)}
+                  onChange={(e) =>
+                    validateOnChange('maxTime', e.target.value, e)
+                  }
                   className='recipe__label-input'
                   min={+createRecipeForm.minTime + 1}
                   max={4320}
@@ -447,9 +450,10 @@ const CreateRecipeView = (props: any) => {
                         role='presentation'
                         onClick={() => {
                           const updatedlist = [...createRecipeForm.ingredients];
-                          updatedlist[ingredientIndex].isFullBlock = !updatedlist[
+                          updatedlist[
                             ingredientIndex
-                          ].isFullBlock;
+                          ].isFullBlock = !updatedlist[ingredientIndex]
+                            .isFullBlock;
                           setCreateRecipeForm({
                             ...createRecipeForm,
                             ingredients: updatedlist,
@@ -530,8 +534,9 @@ const CreateRecipeView = (props: any) => {
                                 ? createRecipeForm.ingredients[ingredientIndex]
                                     .weight
                                 : getOz(
-                                    createRecipeForm.ingredients[ingredientIndex]
-                                      .weight
+                                    createRecipeForm.ingredients[
+                                      ingredientIndex
+                                    ].weight
                                   )
                             }
                             step={0.1}
@@ -556,7 +561,8 @@ const CreateRecipeView = (props: any) => {
                                   updatedIngredients[ingredientIndex].calorie *
                                     updatedIngredients[ingredientIndex].weight -
                                     prevIngredient.weight *
-                                      updatedIngredients[ingredientIndex].calorie
+                                      updatedIngredients[ingredientIndex]
+                                        .calorie
                                 ),
                               });
 
@@ -672,7 +678,9 @@ const CreateRecipeView = (props: any) => {
                   ? createRecipeForm.totalWeight
                   : getOz(+createRecipeForm.totalWeight)
               }
-              onChange={(e) => validateOnChange('totalWeight', e.target.value, e)}
+              onChange={(e) =>
+                validateOnChange('totalWeight', e.target.value, e)
+              }
               min={0}
               height='md'
               label={t('recipe.create.total_weight')}
