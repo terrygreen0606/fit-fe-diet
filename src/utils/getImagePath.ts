@@ -5,7 +5,9 @@ export const getImagePath = (imagePath: string) => {
     s3ImgPath = `img/${imagePath}`;
   }
 
+  const localImg = require(`assets/img/${imagePath}`);
+
   return process.env.NODE_ENV === 'development'
-    ? require(`assets/img/${imagePath}`) 
+    ? localImg 
     : `https://fitdev.s3.amazonaws.com/assets/app/media/${s3ImgPath}`;
 };
