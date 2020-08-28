@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
+import { routes, MAIN } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
@@ -10,149 +11,150 @@ import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
 import NutritionPlanCard from 'components/NutritionPlanCard';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './RecipesView.sass';
 
 const RecipesView = (props: any) => {
   const [recipesSearch, setRecipesSearch] = useState('');
 
-  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
 
   return (
     <>
       <Helmet>
         <title>{t('app.title.recipes')}</title>
       </Helmet>
-      <section className="recipes-head-sect">
-        <div className="container">
-          <div className="row">
-            <div className="col-6">
-
-              <ul className="page-tabs">
-                <Link to='/recipes' className="page-tabs-item active">{t('common.everything')}</Link>
-                <Link to='/recipes/saved' className="page-tabs-item">{t('common.saved')}</Link>
-                <Link to='/recipes/favourites' className="page-tabs-item">{t('common.favourites')}</Link>
+      <section className='recipes-head-sect'>
+        <div className='container'>
+          <Breadcrumb
+            routes={[
+              {
+                url: routes[MAIN],
+                name: MAIN,
+              },
+            ]}
+            currentPage={t('app.title.recipes')}
+          />
+          <div className='row'>
+            <div className='col-6'>
+              <ul className='page-tabs'>
+                <Link to='/recipes' className='page-tabs-item active'>
+                  {t('common.everything')}
+                </Link>
+                <Link to='/recipes/saved' className='page-tabs-item'>
+                  {t('common.saved')}
+                </Link>
+                <Link to='/recipes/favourites' className='page-tabs-item'>
+                  {t('common.favourites')}
+                </Link>
               </ul>
-
             </div>
-            <div className="col-6 text-right">
-
-              <Link to='/recipe/create' className='page-create-btn'>Create your recipe</Link>
-
+            <div className='col-6 text-right'>
+              <Link to='/recipe/create' className='page-create-btn'>
+                Create your recipe
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="recipes-search-sect">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-
+      <section className='recipes-search-sect'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-12'>
               <h4>Look for recipes in our recipe database</h4>
 
-              <div className="recipes-search-wrap">
-                <InputField value={recipesSearch} onChange={(e) => setRecipesSearch(e.target.value)} searchBar block placeholder="Search by ingredients" />
+              <div className='recipes-search-wrap'>
+                <InputField
+                  value={recipesSearch}
+                  onChange={(e) => setRecipesSearch(e.target.value)}
+                  searchBar
+                  block
+                  placeholder='Search by ingredients'
+                />
               </div>
 
-              <div className="search-tags-list">
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+              <div className='search-tags-list'>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
 
-                <div className="search-tags-list-item">
-                  <Button className="search-tags-list-btn">Magustoidud</Button>
+                <div className='search-tags-list-item'>
+                  <Button className='search-tags-list-btn'>Magustoidud</Button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
       </section>
 
-      <section className="recipes-list-sect nutrition-plan-list">
-        <div className="container">
-          <div className="row">
-            <div className="col-4">
-
+      <section className='recipes-list-sect nutrition-plan-list'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-4'>
               <NutritionPlanCard />
-
             </div>
-            <div className="col-4">
-
-              <NutritionPlanCard type="active" favorite />
-
+            <div className='col-4'>
+              <NutritionPlanCard type='active' favorite />
             </div>
-            <div className="col-4">
-
-              <NutritionPlanCard type="active" favorite />
-
+            <div className='col-4'>
+              <NutritionPlanCard type='active' favorite />
             </div>
-            <div className="col-4">
-
+            <div className='col-4'>
               <NutritionPlanCard />
-
             </div>
-            <div className="col-4">
-
-              <NutritionPlanCard type="active" favorite />
-
+            <div className='col-4'>
+              <NutritionPlanCard type='active' favorite />
             </div>
-            <div className="col-4">
-
-              <NutritionPlanCard type="active" favorite />
-
+            <div className='col-4'>
+              <NutritionPlanCard type='active' favorite />
             </div>
-            <div className="col-4">
-
+            <div className='col-4'>
               <NutritionPlanCard />
-
             </div>
-            <div className="col-4">
-
-              <NutritionPlanCard type="active" favorite />
-
+            <div className='col-4'>
+              <NutritionPlanCard type='active' favorite />
             </div>
-            <div className="col-4">
-
-              <NutritionPlanCard type="active" favorite />
-
+            <div className='col-4'>
+              <NutritionPlanCard type='active' favorite />
             </div>
           </div>
         </div>

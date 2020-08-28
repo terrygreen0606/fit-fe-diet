@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
+import { routes, MAIN, RECIPES } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
 import DayPicker from 'react-day-picker';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './FavouriteRecipesView.sass';
 
@@ -39,12 +41,28 @@ const FavouriteRecipesView = (props: any) => {
       </Helmet>
       <div className='saved-recipes'>
         <div className='container'>
+          <Breadcrumb
+            routes={[
+              {
+                url: routes[MAIN],
+                name: MAIN,
+              },
+              {
+                url: routes[RECIPES],
+                name: RECIPES,
+              },
+            ]}
+            currentPage={t('app.title.favourite_recipes')}
+          />
           <div className='saved-recipes__head'>
             <div className='row'>
               <div className='col-xl-6'>
                 <ul className='saved-recipes__head-tabs'>
                   <li>
-                    <Link to='/recipes' className='saved-recipes__head-tabs-item'>
+                    <Link
+                      to='/recipes'
+                      className='saved-recipes__head-tabs-item'
+                    >
                       {t('common.everything')}
                     </Link>
                   </li>
@@ -79,7 +97,10 @@ const FavouriteRecipesView = (props: any) => {
           <div className='saved-recipes__list'>
             <div className='saved-recipes__list-item'>
               <div className='row align-items-start'>
-                <Link to='/' className='saved-recipes__list-item-media col-lg-4'>
+                <Link
+                  to='/'
+                  className='saved-recipes__list-item-media col-lg-4'
+                >
                   <img
                     src='https://fitstg.s3.eu-central-1.amazonaws.com/nutrition-plan-preview-big.png'
                     alt=''

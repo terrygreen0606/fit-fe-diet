@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
+import { routes, MAIN } from 'constants/routes';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -27,6 +28,7 @@ import InputField from 'components/common/Forms/InputField';
 import ProfileLayout from 'components/hoc/ProfileLayout';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './SettingsFamilyView.sass';
 
@@ -115,6 +117,17 @@ const SettingsFamilyView = (props: any) => {
       <Helmet>
         <title>{t('app.title.family')}</title>
       </Helmet>
+      <div className='container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes[MAIN],
+              name: MAIN,
+            },
+          ]}
+          currentPage={t('app.title.family')}
+        />
+      </div>
       <ProfileLayout>
         <div className='family card-bg'>
           <h2 className='family__title'>{t('family.invite_link.title')}</h2>

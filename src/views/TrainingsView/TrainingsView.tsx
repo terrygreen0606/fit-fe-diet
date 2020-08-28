@@ -69,7 +69,7 @@ const TrainingsView: React.FC = (props: any) => {
                 name: MEAL_PLAN_LIST,
               },
             ]}
-            currentPage='Trainings'
+            currentPage={t('app.title.trainings')}
           />
           <h1 className='training-plan-title'>
             <span className='training-plan-title-text'>

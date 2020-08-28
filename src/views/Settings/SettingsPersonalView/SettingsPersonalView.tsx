@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import { fetchUserProfile, userUpdateProfile } from 'api';
 import Helmet from 'react-helmet';
 
+import { routes, MAIN } from 'constants/routes';
+
 // Components
 import ProfileLayout from 'components/hoc/ProfileLayout';
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -23,6 +25,7 @@ import Button from 'components/common/Forms/Button';
 import DatePicker from 'components/common/Forms/DatePicker';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './SettingsPersonalView.sass';
 
@@ -190,6 +193,17 @@ const SettingsPersonalView = (props: any) => {
       <Helmet>
         <title>{t('app.title.settings_personal')}</title>
       </Helmet>
+      <div className='container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes[MAIN],
+              name: MAIN,
+            },
+          ]}
+          currentPage={t('app.title.settings_personal')}
+        />
+      </div>
       <ProfileLayout>
         <div className='profile-settings-personal-card card-bg'>
           <h5 className='mb-4 mb-xs-5'>{t('profile.personal_title')}</h5>
@@ -262,7 +276,9 @@ const SettingsPersonalView = (props: any) => {
                   data-validate='["required"]'
                   errors={getFieldErrors('surname')}
                   value={personalDataForm.surname}
-                  onChange={(e) => validateOnChange('surname', e.target.value, e)}
+                  onChange={(e) =>
+                    validateOnChange('surname', e.target.value, e)
+                  }
                   block
                   height='md'
                   placeholder=''
@@ -320,7 +336,9 @@ const SettingsPersonalView = (props: any) => {
                   value={personalDataForm.height}
                   data-param='50,250'
                   data-validate='["required", "min-max"]'
-                  onChange={(e) => validateOnChange('height', e.target.value, e)}
+                  onChange={(e) =>
+                    validateOnChange('height', e.target.value, e)
+                  }
                   block
                   height='md'
                   placeholder=''

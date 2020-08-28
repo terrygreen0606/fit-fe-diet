@@ -2,6 +2,11 @@
 
 
 .profile-settings-personal
+  &-form
+    .formGroup_inline
+      flex-wrap: nowrap
+      .fgLabel
+        min-width: 78px
   &-card
     padding: 36px 66px      
 
@@ -13,6 +18,9 @@
 
 @media only screen and (max-width : 480px)    
   .profile-settings-personal
+    &-form
+      .formGroup_inline
+        flex-wrap: wrap
     &-card
       padding: 25px 30px
     &-form

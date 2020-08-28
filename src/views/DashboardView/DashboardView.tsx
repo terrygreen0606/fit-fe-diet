@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 
+import { routes, MAIN } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 // Icons
 import { ReactComponent as SettingsIcon } from 'assets/img/icons/settings-icon.svg';
@@ -42,6 +44,15 @@ const DashboardView = (props: any) => {
         <title>{t('app.title.dashboard')}</title>
       </Helmet>
       <div className='container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes[MAIN],
+              name: MAIN,
+            },
+          ]}
+          currentPage={t('app.title.dashboard')}
+        />
         <div className='dashboard'>
           <div className='dashboard__user card-bg'>
             <div className='dashboard__user-personal-data'>
@@ -292,7 +303,9 @@ const DashboardView = (props: any) => {
                     {`1000 ${t('common.ml')}`}
                   </div>
                 </div>
-                <div className='dashboard__cards-item_water-rate-media'>50%</div>
+                <div className='dashboard__cards-item_water-rate-media'>
+                  50%
+                </div>
               </div>
             </div>
             <div

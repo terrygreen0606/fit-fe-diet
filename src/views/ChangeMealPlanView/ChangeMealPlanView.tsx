@@ -7,10 +7,13 @@ import {
 import classNames from 'classnames';
 import Helmet from 'react-helmet';
 
+import { routes, MAIN } from 'constants/routes';
+
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
 import CustomRadio from 'components/common/Forms/CustomRadio';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './ChangeMealPlanView.sass';
 
@@ -65,6 +68,15 @@ const ChangeMealPlanView = (props: any) => {
       </Helmet>
       <div className='change-meal'>
         <div className='container container-mb70'>
+          <Breadcrumb
+            routes={[
+              {
+                url: routes[MAIN],
+                name: MAIN,
+              },
+            ]}
+            currentPage={t('mp.change.title')}
+          />
           <div className='row'>
             <h4 className='change-meal_title'>{t('mp.change.title')}</h4>
           </div>
