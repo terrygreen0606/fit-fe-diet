@@ -16,7 +16,7 @@ const MainView = (props: any) => {
         <title>{t('app.title.main')}</title>
       </Helmet>
       <div className='container'>
-        <Breadcrumb currentPage={t('app.title.main')} />
+        <Breadcrumb currentPage={t('breadcrumb.main')} />
       </div>
     </>
   );
