@@ -1,4 +1,4 @@
-export const MAIN = 'Main';
+export const MAIN = 'Home';
 export const TRAININGS = 'Trainings';
 export const NUTRITION_PLAN = 'Nutrition plan';
 export const NUTRITION_PLAN_WEIGHTS = 'Nutrition plan weights';

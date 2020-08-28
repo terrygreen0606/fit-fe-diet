@@ -6,6 +6,7 @@ import AsyncSelect from 'react-select/async';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
+import { routes, MAIN, RECIPES } from 'constants/routes';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -22,6 +23,7 @@ import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import WithTranslate from 'components/hoc/WithTranslate';
 import DonutChart from 'components/common/charts/DonutChart';
 import ImagesFileInput from 'components/common/Forms/ImagesFileInput';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './CreateRecipeView.sass';
 
@@ -248,6 +250,19 @@ const CreateRecipeView = (props: any) => {
         <title>{t('app.title.recipe_create')}</title>
       </Helmet>
       <div className='container-fluid recipe_container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes[MAIN],
+              name: MAIN,
+            },
+            {
+              url: routes[RECIPES],
+              name: RECIPES,
+            },
+          ]}
+          currentPage={t('app.title.recipe_create')}
+        />
         <h1 className='recipe__title'>{t('recipe.create.title')}</h1>
         <form className='recipe_wrap' onSubmit={(e) => createRecipeSubmit(e)}>
           <ImagesFileInput

@@ -63,7 +63,7 @@ const WaterTrackerView = (props: any) => {
                 name: MAIN,
               },
             ]}
-            currentPage='Water tracker'
+            currentPage={t('wt.head_title')}
           />
           <h4 className='waterTracker_title'>
             <span className='waterTracker_title-text'>
