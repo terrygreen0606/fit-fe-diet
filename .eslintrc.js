@@ -17,5 +17,6 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/self-closing-comp': 'off',
     'no-plusplus': 'off',
+    'implicit-arrow-linebreak': 'off',
   },
 };

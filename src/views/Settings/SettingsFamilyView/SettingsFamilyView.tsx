@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';

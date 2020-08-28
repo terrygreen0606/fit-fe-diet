@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable @typescript-eslint/indent */
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';

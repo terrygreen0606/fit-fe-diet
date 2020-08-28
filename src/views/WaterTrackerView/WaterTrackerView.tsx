@@ -1,16 +1,20 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { getTranslate } from 'utils';
 import Helmet from 'react-helmet';
+
+import { getTranslate, getImagePath } from 'utils';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 
 import './WaterTrackerView.sass';
 
-import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon-blue-thin.svg';
-import { ReactComponent as TickIcon } from 'assets/img/icons/tick-icon-big.svg';
+import { ReactComponent as DropIcon } from 'assets/img/icons/drop-icon.svg';
+import { ReactComponent as TrashLineIcon } from 'assets/img/icons/trash-line-icon.svg';
 
+import Button from 'components/common/Forms/Button';
 import WaterChart from './WaterChart';
 
 const WaterTrackerView = (props: any) => {
@@ -50,12 +54,31 @@ const WaterTrackerView = (props: any) => {
       </Helmet>
       <div className='waterTracker'>
         <div className='container'>
-          <div className='row'>
-            <h4 className='waterTracker_title'>{t('wt.head_title')}</h4>
+          <h4 className='waterTracker_title'>
+            <span className='waterTracker_title-text'>
+              {t('wt.head_title')}
+            </span>
+          </h4>
+          <div className='waterTracker_banner card-bg'>
+            <div className='waterTracker_banner-text'>
+              <div
+                className='waterTracker_banner-text-title'
+                dangerouslySetInnerHTML={{ __html: t('wt.banner.title') }}
+              />
+              <div className='waterTracker_banner-text-desc'>
+                {t('wt.banner.desc')}
+              </div>
+            </div>
+            <div className='waterTracker_banner-media'>
+              <img src={getImagePath('water-woman.png')} alt='' />
+            </div>
+            <div className='waterTracker_banner-btnWrap'>
+              <Button color='primary' className='waterTracker_banner-btn'>
+                {t('wt.next')}
+              </Button>
+            </div>
+            <Button className='waterTracker_banner-skip'>{t('wt.skip')}</Button>
           </div>
-        </div>
-
-        <div className='container'>
           <div className='row'>
             <ul className='waterTracker_period'>
               <li
@@ -82,62 +105,150 @@ const WaterTrackerView = (props: any) => {
             </ul>
           </div>
 
-          <div className='row row-wrap'>
-            <div className='col-5'>
+          <div className='row row-wrap mb-5'>
+            <div className='col-lg-5'>
               <div className='waterTracker_chartwrap'>
                 <WaterChart labels={chartLabels} data={chartData} />
               </div>
             </div>
 
-            <div className='col-7'>
-              <div className='col-9'>
-                <ul className='waterTracker_daynorm'>
-                  <li className='daynorm-item filled'>
-                    <TickIcon />
-                  </li>
-                  <li className='daynorm-item filled'>
-                    <TickIcon />
-                  </li>
-                  <li className='daynorm-item filled'>
-                    <TickIcon />
-                  </li>
-                  <li className='daynorm-item filled'>
-                    <TickIcon />
-                  </li>
-                  <li className='daynorm-item filled'>
-                    <TickIcon />
-                  </li>
-                  <li className='daynorm-item'>
-                    <PlusIcon />
-                  </li>
-                  <li className='daynorm-item' />
-                  <li className='daynorm-item' />
-                  <li className='daynorm-item' />
-                  <li className='daynorm-item' />
-                  <li className='daynorm-item' />
-                  <li className='daynorm-item' />
-                </ul>
-              </div>
+            <div className='col-lg-7'>
+              <div className='row'>
+                <div className='col-lg-8'>
+                  <div className='waterTracker_daynorm'>
+                    <div className='waterTracker_daynorm-item'>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <DropIcon className='waterTracker_daynorm-item-drop' />
+                        <div className='waterTracker_daynorm-item-time'>
+                          11:00
+                        </div>
+                      </div>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <div className='waterTracker_daynorm-item-size'>
+                          200 {t('common.ml')}
+                        </div>
+                        <button
+                          type='button'
+                          className='waterTracker_daynorm-item-btn-trash'
+                        >
+                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
+                        </button>
+                      </div>
+                    </div>
+                    <div className='waterTracker_daynorm-item'>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <DropIcon className='waterTracker_daynorm-item-drop' />
+                        <div className='waterTracker_daynorm-item-time'>
+                          11:00
+                        </div>
+                      </div>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <div className='waterTracker_daynorm-item-size'>
+                          200 {t('common.ml')}
+                        </div>
+                        <button
+                          type='button'
+                          className='waterTracker_daynorm-item-btn-trash'
+                        >
+                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
+                        </button>
+                      </div>
+                    </div>
+                    <div className='waterTracker_daynorm-item'>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <DropIcon className='waterTracker_daynorm-item-drop' />
+                        <div className='waterTracker_daynorm-item-time'>
+                          11:00
+                        </div>
+                      </div>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <div className='waterTracker_daynorm-item-size'>
+                          200 {t('common.ml')}
+                        </div>
+                        <button
+                          type='button'
+                          className='waterTracker_daynorm-item-btn-trash'
+                        >
+                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
+                        </button>
+                      </div>
+                    </div>
+                    <div className='waterTracker_daynorm-item'>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <DropIcon className='waterTracker_daynorm-item-drop' />
+                        <div className='waterTracker_daynorm-item-time'>
+                          11:00
+                        </div>
+                      </div>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <div className='waterTracker_daynorm-item-size'>
+                          200 {t('common.ml')}
+                        </div>
+                        <button
+                          type='button'
+                          className='waterTracker_daynorm-item-btn-trash'
+                        >
+                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
+                        </button>
+                      </div>
+                    </div>
+                    <div className='waterTracker_daynorm-item'>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <DropIcon className='waterTracker_daynorm-item-drop' />
+                        <div className='waterTracker_daynorm-item-time'>
+                          11:00
+                        </div>
+                      </div>
+                      <div className='waterTracker_daynorm-item-wrap'>
+                        <div className='waterTracker_daynorm-item-size'>
+                          200 {t('common.ml')}
+                        </div>
+                        <button
+                          type='button'
+                          className='waterTracker_daynorm-item-btn-trash'
+                        >
+                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
+                        </button>
+                      </div>
+                    </div>
+                    <div className='waterTracker_daynorm-delete'>
+                      <span>{t('wt.delete')}</span>
+                      <button
+                        type='button'
+                        className='waterTracker_daynorm-delete-btn'
+                      >
+                        {t('common.yes')}
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-              <div className='water-drop'>
-                <h3>{totalCompleteWater}%</h3>
-                <h5>
-                  {totalCompleteWaterML}
-                  {t('common.ml')}
-                </h5>
+                <div className='col-lg-4 text-center'>
+                  <div className='water-drop'>
+                    <h3>{totalCompleteWater}%</h3>
+                    <h5>
+                      {totalCompleteWaterML}
+                      {t('common.ml')}
+                    </h5>
+                  </div>
+                  <div className='log-drink-wrap'>
+                    <Button color='secondary' className='log-drink-btn'>
+                      {t('wt.log_drink')}
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className='container'>
-          <div className='row row-wrap'>
+          <div className='row row-wrap align-items-end'>
             <div className='col-5'>
               <div className='waterTracker_info'>
                 <div>
                   <p>{t('common.day_average')}</p>
                   <p>
-                    <span>2000</span> {t('common.ml')}/{t('common.day')}
+                    <span>2000</span>
+                    {t('common.ml')}/{t('common.day')}
                   </p>
                 </div>
                 <div>
