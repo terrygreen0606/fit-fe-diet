@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
+import { routes, MAIN } from 'constants/routes';
 import { getTranslate, getImagePath } from 'utils';
 
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './WaterTrackerView.sass';
 
@@ -54,6 +56,15 @@ const WaterTrackerView = (props: any) => {
       </Helmet>
       <div className='waterTracker'>
         <div className='container'>
+          <Breadcrumb
+            routes={[
+              {
+                url: routes[MAIN],
+                name: MAIN,
+              },
+            ]}
+            currentPage='Water tracker'
+          />
           <h4 className='waterTracker_title'>
             <span className='waterTracker_title-text'>
               {t('wt.head_title')}
