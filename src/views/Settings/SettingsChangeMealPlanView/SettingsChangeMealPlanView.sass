@@ -1,0 +1,149 @@
+@import '../../../assets/sass/_vars'
+  
+.change-meal-plan
+  padding: 40px
+    
+  &__title
+    margin-bottom: 60px
+    text-align: center
+    font-size: 24px
+    line-height: 1.2
+    font-weight: bold
+  
+  &__btn-wrap
+    text-align: center
+
+  &__btn
+    padding: 13px 74px
+    font-size: 24px
+
+  &__goals
+    display: flex
+    justify-content: space-between
+    margin-bottom: 50px
+
+    &-item
+      flex-basis: calc(33.33% - 10px)
+
+      &-radio
+        position: absolute
+        width: 0
+        height: 0
+        opacity: 0
+        visibility: hidden
+
+        &:checked
+          & + .change-meal-plan__goals-item-btn
+            border: 1px solid $steel-blue
+            background-color: $steel-blue
+            color: $white
+
+            .change-meal-plan__goals-item-btn-media
+              svg
+                path
+                  fill: $white
+
+      &-btn
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 100%
+        padding: 25px
+        font-family: "Montserrat", sans-serif
+        font-size: 18px
+        line-height: 1.2
+        font-weight: bold
+        background-color: transparent
+        border: 1px solid $black
+        border-radius: 5px
+        cursor: pointer
+        transition: color 0.2s, background-color 0.2s, border 0.2s ease
+
+        &-media
+          margin-right: 16px
+
+          svg
+            max-width: 40px
+            height: auto
+
+            path
+              transition: fill 0.2s ease
+
+  &__not-eating
+    display: flex
+    flex-wrap: wrap
+    margin-bottom: 70px
+
+    &-item
+      display: flex
+      align-items: center
+      margin-right: 20px
+      margin-bottom: 30px
+      padding: 10px
+      border: 1px solid $steel-blue
+      border-radius: 5px
+
+      &-media
+        margin-right: 12px
+
+      &-desc
+        margin-right: 12px
+        font-size: 20px
+        line-height: 1.2
+
+      &-close
+        padding: 0
+        background-color: transparent
+        border: none
+        cursor: pointer
+
+        &:hover
+          svg
+            path
+              fill: lighten($black, 30%)
+
+        svg
+          width: 12px
+          height: 12px
+
+          path
+            fill: $black
+            transition: fill 0.2s ease
+
+  &__desiases
+    display: flex
+    justify-content: space-between
+    flex-wrap: wrap
+    margin-bottom: 30px
+
+    &-item
+      flex-basis: calc(33.33% - 10px)
+      margin-bottom: 20px
+
+      &-checkbox
+        position: absolute
+        width: 0
+        height: 0
+        opacity: 0
+        visibility: hidden
+
+        &:checked
+         & + .change-meal-plan__desiases-item-desc
+          font-weight: bold
+          color: $white
+          background-color: $steel-blue
+          border: 1px solid $steel-blue
+
+      &-desc
+        padding: 26px 20px
+        text-align: center
+        font-size: 20px
+        line-height: 1.2
+        border: 1px solid $black
+        border-radius: 5px
+        transition: color 0.2s, background-color 0.2s, border 0.2s, font-weight 0.2s ease
+        cursor: pointer
+
+
+
+
