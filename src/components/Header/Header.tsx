@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
+import { routes, SETTINGS_CHANGE_MEAL_PLAN } from 'constants/routes';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -28,7 +29,7 @@ const Header = (props: any) => {
             <div className='col-2'>
               <Link to='/' className='mainHeader_logo' />
             </div>
-            
+
             <div className='col-10 text-right'>
               <span className='header-controls'>
                 <Button className='mobile-auth-btn' color='primary' outline>
@@ -62,7 +63,7 @@ const Header = (props: any) => {
                 </NavLink>
 
                 <NavLink
-                  to='/plan/change-meal'
+                  to={routes[SETTINGS_CHANGE_MEAL_PLAN]}
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
                 >
@@ -87,16 +88,16 @@ const Header = (props: any) => {
                   </span>
                 ) : (
                   <>
-                    <NavLink 
-                      to='/login' 
-                      className='mainHeader_menuList_item' 
+                    <NavLink
+                      to='/login'
+                      className='mainHeader_menuList_item'
                       activeClassName='mainHeader_menuList_item_active'
                     >
                       {t('login.submit')}
                     </NavLink>
 
-                    <NavLink to='/register' className="link-raw">
-                      <Button color="primary">{t('button.register')}</Button>
+                    <NavLink to='/register' className='link-raw'>
+                      <Button color='primary'>{t('button.register')}</Button>
                     </NavLink>
                   </>
                 )}
@@ -114,6 +115,6 @@ export default WithTranslate(
     (state: any) => ({
       isAuthenticated: state.auth.isAuthenticated,
     }),
-    { userLogout },
-  )(Header),
+    { userLogout }
+  )(Header)
 );
