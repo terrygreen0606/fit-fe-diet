@@ -116,6 +116,7 @@ export default (
     case 'EXPECTATIONS':
       registerStepView = (
         <ExpectationsGraph
+          registerData={registerData}
           localePhrases={localePhrases}
         />
       );
@@ -134,6 +135,7 @@ export default (
     case 'FINAL':
       registerStepView = (
         <FinalWelcome
+          registerData={registerData}
           localePhrases={localePhrases}
         />
       );

@@ -10,7 +10,7 @@ import './RegisterV2Tpl.sass';
 
 const RegisterV2Tpl = (props: any) => {
 
-  const [registerView, setRegisterView] = useState<RegisterViewType>('PLAN_PROGRESS');
+  const [registerView, setRegisterView] = useState<RegisterViewType>('CONFIRM');
 
   const getRegisterStepView = (registerView: RegisterViewType) => 
     getRegisterStepViewUtil(

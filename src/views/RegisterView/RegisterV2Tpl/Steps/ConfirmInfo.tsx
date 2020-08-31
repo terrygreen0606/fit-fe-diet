@@ -120,67 +120,73 @@ const ConfirmInfo = (props: any) => {
     <>
       <h4 className="register_title mb-xl-5 mb-45 text-center">{t('register.info_confirm_title')}</h4>
 
-      <form className="register_join_form mt-4 px-xl-5" onSubmit={(e) => registerJoinSubmit(e)}>
-        <FormGroup>
-          <FormLabel>
-            {t('register.form_name')}
-            *
-          </FormLabel>
-          <InputField
-            block
-            name='name'
-            value={registerData.name}
-            data-validate='["required"]'
-            onChange={(e) => validateOnChange('name', e.target.value, e)}
-            errors={getFieldErrors('name')}
-            placeholder=''
-          />
-        </FormGroup>
+      <div className="row">
+        <div className="col-xs-10 offset-xs-1 col-md-8 offset-md-2 px-md-4">
+          
+          <form className="text-left mt-4 px-xl-5" onSubmit={(e) => registerJoinSubmit(e)}>
+            <FormGroup>
+              <FormLabel>
+                {t('register.form_name')}
+                *
+              </FormLabel>
+              <InputField
+                block
+                name='name'
+                value={registerData.name}
+                data-validate='["required"]'
+                onChange={(e) => validateOnChange('name', e.target.value, e)}
+                errors={getFieldErrors('name')}
+                placeholder=''
+              />
+            </FormGroup>
 
-        <FormGroup>
-          <FormLabel>
-            {t('register.form_email')}
-            *
-          </FormLabel>
-          <InputField
-            block
-            name='email'
-            value={registerData.email}
-            data-validate='["email", "required"]'
-            onChange={e => validateOnChange('email', e.target.value, e)}
-            errors={getFieldErrors('email')}
-            placeholder=''
-          />
-        </FormGroup>
+            <FormGroup>
+              <FormLabel>
+                {t('register.form_email')}
+                *
+              </FormLabel>
+              <InputField
+                block
+                name='email'
+                value={registerData.email}
+                data-validate='["email", "required"]'
+                onChange={e => validateOnChange('email', e.target.value, e)}
+                errors={getFieldErrors('email')}
+                placeholder=''
+              />
+            </FormGroup>
 
-        <FormGroup>
-          <FormLabel>{t('register.form_password')}</FormLabel>
-          <InputField
-            block
-            name='password'
-            type='password'
-            value={registerData.password}
-            data-validate='["required"]'
-            onChange={e => validateOnChange('password', e.target.value, e)}
-            errors={getFieldErrors('password')}
-            placeholder=''
-          />
-        </FormGroup>
+            <FormGroup className="mb-0">
+              <FormLabel>{t('register.form_password')}</FormLabel>
+              <InputField
+                block
+                name='password'
+                type='password'
+                value={registerData.password}
+                data-validate='["required"]'
+                onChange={e => validateOnChange('password', e.target.value, e)}
+                errors={getFieldErrors('password')}
+                placeholder=''
+              />
+            </FormGroup>
 
-        <div className='text-center mt-xl-5 mt-45'>
-          <Button
-            className="registerBtn"
-            style={{ maxWidth: '355px' }}
-            type="submit"
-            block
-            size="lg"
-            color="primary"
-            isLoading={registerJoinLoading}
-          >
-            {t('register.form_submit')}
-          </Button>
+            <div className="text-center">
+              <Button
+                className="register_v2tpl_btn"
+                style={{ maxWidth: '355px' }}
+                color="primary"
+                type="submit"
+                size="lg"
+                block
+                onClick={() => props.setRegisterView('JOIN')}
+              >
+                {t('button.continue')}
+              </Button>
+            </div>
+          </form>
+
         </div>
-      </form>
+      </div>
     </>
   );
 };

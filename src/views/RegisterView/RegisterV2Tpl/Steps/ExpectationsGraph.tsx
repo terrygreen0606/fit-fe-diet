@@ -107,27 +107,28 @@ const ExpectationsGraph = (props: any) => {
   const { weight, weight_goal, predicted_date } = props.registerData;
 
   return (
-    <>
-      <h5 className="mb-xl-4 mb-2 fw-regular">{t('register.expect_title')}</h5>
+    <div className="row">
+      <div className="col-8 offset-2">
+        <h5 className="mb-xl-4 mb-2 fw-regular">{t('register.expect_title')}</h5>
 
-      <h4 className="mb-xl-5 mb-3 text-steel-blue">{weight_goal} {t('common.kg')} {t('register.expect_date_by')} {getPredictedDate()}</h4>
+        <h4 className="mb-xl-5 mb-3 text-steel-blue">{weight_goal} {t('common.kg')} {t('register.expect_date_by')} {getPredictedDate()}</h4>
 
-      <div className="register_expectation_chart">
-        <LineChart 
-          data={{
-            ...chartData,
-            labels: getChartLabels(),
-            datasets: [{
-              ...chartData.datasets[0],
-              data: getChartData()
-            }]
-          }}
-          options={chartOptions}
-        />
-      </div>
+        <div className="register_expectation_chart">
+          <LineChart 
+            data={{
+              ...chartData,
+              labels: getChartLabels(),
+              datasets: [{
+                ...chartData.datasets[0],
+                data: getChartData()
+              }]
+            }}
+            options={chartOptions}
+          />
+        </div>
 
-      <div className="text-center mt-xl-5 mt-3">
         <Button
+          className="register_v2tpl_btn"
           style={{ maxWidth: '355px' }}
           color="primary"
           type="submit"
@@ -138,7 +139,7 @@ const ExpectationsGraph = (props: any) => {
           {t('button.continue')}
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 
