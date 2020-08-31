@@ -2,6 +2,9 @@
   
 .change-meal-plan
   padding: 40px
+
+  @media (max-width: 500px)
+    padding: 30px 20px
     
   &__title
     margin-bottom: 60px
@@ -9,6 +12,9 @@
     font-size: 24px
     line-height: 1.2
     font-weight: bold
+
+    @media (max-width: 767px)
+      font-size: 18px
   
   &__btn-wrap
     text-align: center
@@ -17,13 +23,24 @@
     padding: 13px 74px
     font-size: 24px
 
+    @media (max-width: 767px)
+      width: 100%
+
   &__goals
     display: flex
     justify-content: space-between
-    margin-bottom: 50px
+    margin-bottom: 50px 
+
+    @media (max-width: 767px)
+      flex-wrap: wrap
+      margin-bottom: 0
 
     &-item
       flex-basis: calc(33.33% - 10px)
+
+      @media (max-width: 767px)
+        flex-basis: 100%
+        margin-bottom: 30px
 
       &-radio
         position: absolute
@@ -69,10 +86,37 @@
             path
               transition: fill 0.2s ease
 
+  &__metrics
+    display: flex
+    flex-wrap: wrap
+
+    &-item
+      display: flex
+      align-items: center
+      justify-content: center
+      margin-bottom: 45px
+      flex-basis: 50%
+
+      @media (max-width: 767px)
+        flex-basis: 100%
+
+      &-desc
+        max-width: 90px
+        margin-right: 60px
+        font-size: 20px
+        text-align: right
+
+      &-value
+        font-size: 20px
+        font-weight: bold
+
   &__not-eating
     display: flex
     flex-wrap: wrap
     margin-bottom: 70px
+
+    @media (max-width: 767px)
+      justify-content: center
 
     &-item
       display: flex
@@ -120,6 +164,12 @@
       flex-basis: calc(33.33% - 10px)
       margin-bottom: 20px
 
+      @media (max-width: 767px)
+        flex-basis: calc(50% - 10px)
+
+      @media (max-width: 500px)
+        flex-basis: 100%
+
       &-checkbox
         position: absolute
         width: 0
@@ -144,6 +194,90 @@
         transition: color 0.2s, background-color 0.2s, border 0.2s, font-weight 0.2s ease
         cursor: pointer
 
+  &__meals-item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 36px
+    padding: 26px 36px 26px 0px
+    border: 1px solid transparent
+    transition: border 0.2s ease
 
+    @media (max-width: 767px)
+      flex-direction: column
+      justify-content: initial
+      flex-wrap: wrap
+      padding: 20px
+
+    &:hover
+      border: 1px solid $steel-blue
+
+    &-count
+      display: flex
+      justify-content: center
+      align-items: center
+      transform: translateX(-50%)
+      flex-basis: 102px
+      height: 102px
+      font-size: 48px
+      line-height: 1.2
+      font-weight: bold
+      color: $white
+      background-color: $steel-blue
+      border-radius: 50%
+      
+      @media (max-width: 767px)
+        width: 76px
+        height: 76px
+        flex-basis: 76px
+        transform: translate(0, -50%)
+
+    &-desc
+      flex-basis: 55px
+      font-size: 14px
+
+      @media (max-width: 767px)
+        flex-basis: initial
+        margin-top: -20px
+
+    &-content
+      display: flex
+      flex-wrap: wrap
+      flex-basis: 300px
+
+      @media (max-width: 767px)
+        flex-basis: initial
+        width: 100%
+        justify-content: center
+
+      &-block
+        margin: 15px 0
+        flex-basis: calc(33.33% - 15px)
+        text-align: center
+
+        &-media
+          display: flex
+          align-items: center
+          justify-content: center
+          height: 42px
+          margin-bottom: 16px
+
+          svg
+            max-width: 100%
+            height: auto
+
+            path
+              fill: $steel-blue
+
+    &-btn
+      border: 2px solid $black
+      color: $black
+      transition: border 0.2s, background-color 0.2s, color 0.2s ease
+
+      &:hover
+        border: 2px solid $steel-blue 
+        background-color: $steel-blue
+        color: $white
+    
 
 

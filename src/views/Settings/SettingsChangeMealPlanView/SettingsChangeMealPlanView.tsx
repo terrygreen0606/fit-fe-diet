@@ -1,11 +1,12 @@
 /* eslint-disable import/order */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 
 import { routes, MAIN } from 'constants/routes';
 import { getTranslate } from 'utils';
+import { steps } from './steps';
 
 // Components
 import ProfileLayout from 'components/hoc/ProfileLayout';
@@ -21,12 +22,18 @@ import { ReactComponent as LoseWeightIcon } from 'assets/img/icons/lose-weight-i
 import { ReactComponent as KeepWeightIcon } from 'assets/img/icons/keep-weight-icon.svg';
 import { ReactComponent as LiftWeightIcon } from 'assets/img/icons/lift-weight-icon.svg';
 import { ReactComponent as CloseIcon } from 'assets/img/icons/close-icon.svg';
+import { ReactComponent as BreakfastIcon } from 'assets/img/icons/breakfast-icon.svg';
+import { ReactComponent as LunchIcon } from 'assets/img/icons/lunch-icon.svg';
+import { ReactComponent as DinnerIcon } from 'assets/img/icons/dinner-icon.svg';
+import { ReactComponent as SnackIcon } from 'assets/img/icons/snack-icon.svg';
 
 import { notEating, desiases } from './mockData';
 
 const SettingsChangeMealPlanView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
+
+  const [activeStep, setActiveStep] = useState(steps.goal);
 
   return (
     <>
@@ -45,6 +52,7 @@ const SettingsChangeMealPlanView = (props: any) => {
         />
       </div>
       <ProfileLayout>
+        {/* {activeStep === steps.goal && ( */}
         <div className='change-meal-plan card-bg'>
           <Progress
             goal
@@ -102,12 +110,14 @@ const SettingsChangeMealPlanView = (props: any) => {
               type='button'
               color='primary'
               className='change-meal-plan__btn'
+              onClick={() => setActiveStep(steps.metrics)}
             >
               {t('mp.next')}
             </Button>
           </div>
         </div>
-        {/* add blocks after answer by Vitaliy */}
+        {/* )} */}
+        {/* {activeStep === steps.metrics && ( */}
         <div className='change-meal-plan card-bg'>
           <Progress
             goal
@@ -120,16 +130,45 @@ const SettingsChangeMealPlanView = (props: any) => {
             percent={40}
           />
           <div className='change-meal-plan__title'>{t('mp.metrics.title')}</div>
+          <div className='change-meal-plan__metrics'>
+            <div className='change-meal-plan__metrics-item'>
+              <div className='change-meal-plan__metrics-item-desc'>
+                {t('mp.metrics.sex')}
+              </div>
+              <div className='change-meal-plan__metrics-item-value'>Male</div>
+            </div>
+            <div className='change-meal-plan__metrics-item'>
+              <div className='change-meal-plan__metrics-item-desc'>
+                {t('mp.metrics.age')}
+              </div>
+              <div className='change-meal-plan__metrics-item-value'>33</div>
+            </div>
+            <div className='change-meal-plan__metrics-item'>
+              <div className='change-meal-plan__metrics-item-desc'>
+                {t('mp.metrics.height')}
+              </div>
+              <div className='change-meal-plan__metrics-item-value'>170 cm</div>
+            </div>
+            <div className='change-meal-plan__metrics-item'>
+              <div className='change-meal-plan__metrics-item-desc'>
+                {t('mp.metrics.weight')}
+              </div>
+              <div className='change-meal-plan__metrics-item-value'>56 kg</div>
+            </div>
+          </div>
           <div className='change-meal-plan__btn-wrap'>
             <Button
               type='button'
               color='primary'
               className='change-meal-plan__btn'
+              onClick={() => setActiveStep(steps.notEating)}
             >
               {t('mp.next')}
             </Button>
           </div>
         </div>
+        {/* )} */}
+        {/* {activeStep === steps.notEating && ( */}
         <div className='change-meal-plan card-bg'>
           <Progress
             goal
@@ -168,11 +207,14 @@ const SettingsChangeMealPlanView = (props: any) => {
               type='button'
               color='primary'
               className='change-meal-plan__btn'
+              onClick={() => setActiveStep(steps.desiases)}
             >
               {t('mp.next')}
             </Button>
           </div>
         </div>
+        {/* )} */}
+        {/* {activeStep === steps.desiases && ( */}
         <div className='change-meal-plan card-bg'>
           <Progress
             goal
@@ -208,11 +250,14 @@ const SettingsChangeMealPlanView = (props: any) => {
               type='button'
               color='primary'
               className='change-meal-plan__btn'
+              onClick={() => setActiveStep(steps.meals)}
             >
               {t('mp.next')}
             </Button>
           </div>
         </div>
+        {/* )}
+        {activeStep === steps.meals && ( */}
         <div className='change-meal-plan card-bg'>
           <Progress
             goal
@@ -228,6 +273,113 @@ const SettingsChangeMealPlanView = (props: any) => {
             percent={100}
           />
           <div className='change-meal-plan__title'>{t('mp.meals.title')}</div>
+          <div className='change-meal-plan__meals'>
+            <div className='change-meal-plan__meals-item card-bg'>
+              <div className='change-meal-plan__meals-item-count'>3</div>
+              <div className='change-meal-plan__meals-item-desc'>
+                {t('mp.meals.desc')}
+              </div>
+              <div className='change-meal-plan__meals-item-content'>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <BreakfastIcon />
+                  </div>
+                  {t('meal.breakfast')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <LunchIcon />
+                  </div>
+                  {t('meal.lunch')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <DinnerIcon />
+                  </div>
+                  {t('meal.dinner')}
+                </div>
+              </div>
+              <Button className='change-meal-plan__meals-item-btn'>
+                {t('mp.meals.choose')}
+              </Button>
+            </div>
+            <div className='change-meal-plan__meals-item card-bg'>
+              <div className='change-meal-plan__meals-item-count'>4</div>
+              <div className='change-meal-plan__meals-item-desc'>
+                {t('mp.meals.desc')}
+              </div>
+              <div className='change-meal-plan__meals-item-content'>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <BreakfastIcon />
+                  </div>
+                  {t('meal.breakfast')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <LunchIcon />
+                  </div>
+                  {t('meal.lunch')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <SnackIcon />
+                  </div>
+                  {t('meal.snack')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <DinnerIcon />
+                  </div>
+                  {t('meal.dinner')}
+                </div>
+              </div>
+              <Button className='change-meal-plan__meals-item-btn'>
+                {t('mp.meals.choose')}
+              </Button>
+            </div>
+            <div className='change-meal-plan__meals-item card-bg'>
+              <div className='change-meal-plan__meals-item-count'>5</div>
+              <div className='change-meal-plan__meals-item-desc'>
+                {t('mp.meals.desc')}
+              </div>
+              <div className='change-meal-plan__meals-item-content'>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <BreakfastIcon />
+                  </div>
+                  {t('meal.breakfast')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <SnackIcon />
+                  </div>
+                  {t('meal.snack')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <LunchIcon />
+                  </div>
+                  {t('meal.lunch')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <SnackIcon />
+                  </div>
+                  {t('meal.snack')}
+                </div>
+                <div className='change-meal-plan__meals-item-content-block'>
+                  <div className='change-meal-plan__meals-item-content-block-media'>
+                    <DinnerIcon />
+                  </div>
+                  {t('meal.dinner')}
+                </div>
+              </div>
+              <Button className='change-meal-plan__meals-item-btn'>
+                {t('mp.meals.choose')}
+              </Button>
+            </div>
+          </div>
           <div className='change-meal-plan__btn-wrap'>
             <Button
               type='button'
@@ -238,6 +390,7 @@ const SettingsChangeMealPlanView = (props: any) => {
             </Button>
           </div>
         </div>
+        {/* )} */}
       </ProfileLayout>
     </>
   );
