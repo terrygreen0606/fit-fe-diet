@@ -6,9 +6,6 @@
 .recipe_wrap
 	margin-bottom: 290px
 	padding: 40px 75px 60px
-	background-color: $white
-	border-radius: 20px
-	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
 
 .recipe__title
 	position: relative
@@ -34,6 +31,11 @@
 	&-layout
 		display: flex
 	
+.recipe__add-photo-list
+	display: flex
+	justify-content: space-between
+	margin-bottom: 60px
+
 .recipe__add-photo
 	width: 100%
 	min-height: 260px
@@ -42,15 +44,18 @@
 	justify-content: center
 	align-items: center
 	border: none
-	transition: 0.3s background
+	border-radius: 0
+	transition: 0.2s background-color
 	cursor: pointer
 
 	&:hover
-		background-color: darken(#C4C4C4, 20%)
+		background-color: darken(#C4C4C4, 20%) !important
+
+		& > span
+			color: $black
 	
-	&-description
+	& > span
 		padding: 16px
-		font-family: $base_font
 		font-size: 26px
 		background: $white
 		border-radius: 10px
@@ -72,11 +77,22 @@
 .recipe__label
 	display: flex
 	align-items: center
+			
+	@media (max-width: 400px)
+		width: 100%
 
 	&-description
 		margin-right: 20px
 		font-size: 26px
+		line-height: 1.2
 		font-weight: 500
+
+		&_media
+			width: 53px
+
+			svg
+				width: 100%
+				height: auto
 
 	&-input
 		padding: 22px 10px
@@ -84,11 +100,19 @@
 
 	&-input + .recipe__label-input
 		margin-left: 12px
-	
-	&-select
-		flex: 1
-		min-width: 180px
 
+	&-select
+		.fgSelectContainer
+			@media (max-width: 400px)
+				width: 100%
+
+		.fgSelectControl
+			min-height: 66px !important
+			width: 140px
+
+			@media (max-width: 400px)
+				width: 100%
+	
 .recipe__switch
 	display: flex
 	justify-content: flex-end
@@ -452,9 +476,13 @@
 		font-size: 26px
 		line-height: 1.5
 
-	&__button
+	&__button-wrap
 		margin-top: 40px
 		text-align: center
+
+	&__button
+		padding: 21px 26px
+		font-size: 26px
 	
 
 @media only screen and (max-width: 1200px)

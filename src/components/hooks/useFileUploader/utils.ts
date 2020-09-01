@@ -1,6 +1,6 @@
-import { imageCreate } from 'api';
-// import { imageCreate, uploadImageAWS } from 'api';
-// import { getImageAWSFormData } from 'utils';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { imageCreate, uploadImageAWS } from 'api';
+import { getImageAWSFormData } from 'utils';
 
 export const uploadFileAWS = async (file: File) => {
   let data;
@@ -12,10 +12,10 @@ export const uploadFileAWS = async (file: File) => {
       size: file.size,
     });
 
-    // const uploadImageAWSResp = await uploadImageAWS(
-    //   imageCreateResponse.data.action,
-    //   getImageAWSFormData(imageCreateResponse.data.fields, file),
-    // );
+    const uploadImageAWSResp = await uploadImageAWS(
+      imageCreateResponse.data.action,
+      getImageAWSFormData(imageCreateResponse.data.fields, file),
+    );
 
     data = {
       image_id: imageCreateResponse.data.image_id,
@@ -38,7 +38,7 @@ export const validateFile = (file: File, accept: string | string[]) => {
     acceptRegExp.push(...accept);
   } else {
     acceptRegExp.push(
-      ...accept.split(/,\s?/).map((item) => new RegExp(`${item}$`, 'g'))
+      ...accept.split(/,\s?/).map((item) => new RegExp(`${item}$`, 'g')),
     );
   }
 

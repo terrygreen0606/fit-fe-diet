@@ -8,18 +8,23 @@ export const createRecipe = (
   cuisine?: Array<string>,
   image_ids?: Array<string>,
   servings_cnt?: number,
-  time_min?: number,
-  time_max?: number,
+  time?: number,
   total_weight?: string,
-) => axios.post('/recipe/create', {
-  name_i18n: name,
-  preparation_i18n: preparation,
-  ingredients,
-  measurement,
-  cuisine_ids: cuisine,
-  image_ids,
-  servings_cnt,
-  time_min,
-  time_max,
-  weight: total_weight,
-}, {});
+  cost_level?: number,
+) =>
+  axios.post(
+    '/recipe/create',
+    {
+      name_i18n: name,
+      preparation_i18n: preparation,
+      ingredients,
+      measurement,
+      cuisine_ids: cuisine,
+      image_ids,
+      servings_cnt,
+      time,
+      weight: total_weight,
+      cost_level,
+    },
+    {},
+  );
