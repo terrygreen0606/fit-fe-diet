@@ -1,0 +1,394 @@
+@import '../../assets/sass/vars'
+
+.shopping_list
+  &_container
+    background-color: #FFFFFF
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+    border-radius: 20px
+    padding: 55px 35px
+    margin-top: 45px
+    margin-bottom: 30px
+    width: 100%
+    @media (max-width: 768px)
+      padding: 27px 20px
+
+  &_header
+    display: flex
+    flex-direction: column
+    margin-bottom: 36px
+
+    &_title
+      margin: 0
+
+    &_text
+      font-size: 16px
+      line-height: 20px
+
+  &_body
+    display: grid
+    grid-column-gap: 50px
+    grid-row-gap: 10px
+    grid-template-columns: repeat(2, 1fr)
+    margin-bottom: 70px
+    @media (max-width: 768px)
+      grid-template-columns: 1fr
+
+    &_title_sect
+      display: flex
+      flex-direction: row
+      justify-content: space-between
+      margin-bottom: 32px
+
+      &_text
+        color: $caribbean-green
+        margin: 0
+        font-size: 24px
+        line-height: 29px
+        @media (max-width: 768px)
+          font-size: 18px
+          line-height: 22px
+
+      &_icons
+        position: relative
+        display: flex
+        justify-content: space-between
+        align-items: center
+        min-width: 110px
+
+    &_sect
+      height: fit-content
+      display: inline-flex
+      flex-direction: column
+      flex-wrap: wrap
+      @media (max-width: 768px)
+        flex: 0 1 100%
+        max-width: 100%
+        &:not(:last-child)
+          padding-bottom: 20px
+          border-bottom: 1px solid #C4C4C4
+        &:not(:first-child)
+          margin-top: 10px
+
+      &_category
+        font-weight: bold
+        font-size: 18px
+        line-height: 40px
+        color: #000000
+        max-width: calc(100% - 40px)
+        @media (max-width: 768px)
+          white-space: nowrap
+          overflow-x: hidden
+          text-overflow: ellipsis
+
+      &_item
+        position: relative
+        height: auto
+        background-color: #FFFFFF
+        display: flex
+        justify-content: space-between
+        align-items: center
+        &:not(:last-child)
+          margin-bottom: 10px
+
+        &.active
+          span.checkmark
+            background-color: $caribbean-green
+            border-color: $caribbean-green
+            &::after
+              border-color: #FFFFFF
+
+        &_checkbox
+          margin-right: 0 !important
+
+        &_trash
+          background-color: #FF3D00
+          display: inline-flex
+          justify-content: center
+          align-items: center
+          width: 37px
+          height: 37px
+          border-radius: 50%
+          cursor: pointer
+          &:hover
+            background-color: darken(#FF3D00, 10)
+
+  &_footer
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    flex-wrap: wrap
+    margin-bottom: 70px
+    @media (max-width: 1200px)
+      flex-direction: column
+      align-items: normal
+      margin-bottom: 20px
+    @media (max-width: 767px)
+      flex-wrap: nowrap
+
+    &_ingredient
+      position: relative
+      flex: 0 1 50%
+      display: flex
+      justify-content: space-between
+      align-items: center
+      @media (max-width: 1200px)
+        margin-bottom: 25px
+      @media (max-width: 767px)
+        flex-direction: column
+        align-items: normal
+
+      &_text
+        font-size: 16px
+        font-weight: bold
+        line-height: 20px
+        @media (max-width: 767px)
+          margin-bottom: 18px
+
+      &_input
+        padding: 19px 28px
+        flex: 0 1 100%
+
+        &.invalid
+          border: 1px solid #F391AA
+
+        &_sect
+          position: relative
+          display: inline-flex
+          flex: 0 1 70%
+          &:focus
+            outline: 1px auto #F391AA
+
+    &_quantity
+      position: relative
+      flex: 0 1 45%
+      display: flex
+      justify-content: space-between
+      align-items: center
+      @media (max-width: 767px)
+        flex-direction: column
+        align-items: normal
+
+      &_text
+        font-size: 16px
+        font-weight: bold
+        line-height: 20px
+        @media (max-width: 767px)
+          margin-bottom: 18px
+
+      &_input
+        padding: 19px 28px
+        flex: 0 1 calc(100% - 270px)
+        max-width: calc(100% - 270px)
+        border: 1px solid #F391AA
+        &:focus
+          outline: 1px auto #F391AA
+        @media (max-width: 767px)
+          flex: 0 1 calc(100% - 120px)
+          max-width: calc(100% - 120px)
+
+        &.invalid
+          border: 1px solid #F391AA
+
+        &_sect
+          position: relative
+          display: inline-flex
+          flex: 0 1 70%
+          justify-content: space-between
+          @media (max-width: 767px)
+            flex: 0 1 100%
+            flex-wrap: wrap
+
+      &_button
+        max-width: 130px
+        @media (max-width: 767px)
+          max-width: 200px
+          margin: 30px auto 0
+
+.popup
+  position: absolute
+  z-index: 99
+  top: 130px
+  right: 10%
+  background: #FBFBFB
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
+  padding: 32px 26px
+  width: auto
+  height: auto
+  border-top: 1px solid $caribbean-green
+
+  &_header
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 60px
+
+    &_title
+      font-size: 24px
+      line-height: 29px
+      color: $caribbean-green
+      margin: 0 20px 0 0
+
+    &_icons
+      position: relative
+      display: flex
+      justify-content: space-between
+      align-items: center
+      width: 110px
+      .sharing_socials
+        bottom: unset
+        top: 110%
+
+  &_body
+    &:not(:last-child)
+      border-bottom: 1px solid #C4C4C4
+    &:not(:first-child)
+      margin-top: 10px
+
+    &_category
+      font-weight: bold
+      font-size: 18px
+      line-height: 40px
+      color: #000000
+
+    &_item
+      position: relative
+      margin-bottom: 20px
+      display: flex
+      flex-direction: row
+      justify-content: space-between
+      align-items: center
+
+      &.active
+        span.checkmark
+          background-color: $caribbean-green
+          border-color: $caribbean-green
+          &::after
+            border-color: #FFFFFF
+
+      &_trash
+        background-color: #FF3D00
+        display: inline-flex
+        justify-content: center
+        align-items: center
+        width: 37px
+        height: 37px
+        border-radius: 50%
+        cursor: pointer
+        &:hover
+          background-color: darken(#FF3D00, 10)
+
+.shopping_tour
+  z-index: 100
+  height: 280px
+  padding: 0
+  margin-bottom: 90px
+
+  @media (max-width: 768px)
+    height: 500px
+
+  .quick_tour_col
+    padding: 58px 55px
+    max-width: 100% !important
+    text-align: left
+    align-items: flex-start
+    @media (max-width: 768px)
+      padding: 60px 26px
+
+    &_1, &_2, &_3
+      background-size: contain
+      background-position: 70% center
+      @media (max-width: 768px)
+        background-size: 70%
+        background-position: center bottom
+      @media (max-width: 500px)
+        background-size: 80%
+
+    .quick_tour_title, .quick_tour_text
+      max-width: 55%
+      @media (max-width: 768px)
+        max-width: 100%
+        text-align: center
+
+    .quick_tour_title
+      @media (min-width: 768px) and (max-width: 1200px)
+        font-size: 24px
+        line-height: 32px
+
+    .quick_tour_button
+      right: 7%
+      left: unset
+      top: 50%
+      bottom: unset
+      transform: translateY(-50%)
+      padding: 12px 70px
+      @media (max-width: 768px)
+        bottom: 45px
+        top: unset
+        right: unset
+        left: 50%
+        transform: translateX(-50%)
+
+  .quick_tour_skip
+    z-index: 1
+
+.sharing_socials
+  position: absolute
+  bottom: 110%
+  right: 0
+  display: flex
+  align-items: center
+  justify-content: center
+  z-index: 2
+  background-color: #ffffff
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.08)
+
+  &_item
+    display: inline-block
+    line-height: 0
+    border: none
+    background-color: transparent
+    cursor: pointer
+    transition: opacity 0.2s ease
+    &:not(:last-child)
+      margin: 5px 5px
+
+    &[disabled]
+      opacity: 0.4
+      cursor: not-allowed
+      &:hover
+        opacity: 0.4
+
+    svg, img
+      max-width: 40px
+      height: auto
+
+    & > *
+      line-height: initial
+
+    &:hover
+      opacity: 0.8
+
+
+@media print
+  body *
+    visibility: hidden
+  *::-webkit-scrollbar
+    display: none
+  .shopping_list_body, .shopping_list_body *, .shopping_list_body_title_sect, .shopping_list_body_title_sect *, .popup_header_title, .popup_body, .popup_body *
+    visibility: visible
+  .shopping_list_body_title_sect_icons, .shopping_list_body_sect_item_trash, .popup_body_item_trash, .shopping_list_header
+    display: none !important
+  .shopping_list_container
+    margin: 20px
+    padding: 0
+    position: fixed
+    top: 0
+    left: 0
+  .popup
+    position: fixed
+    top: 0
+    left: 0
+  .shopping_list_body_title_sect, .popup_header
+    margin-bottom: 10px

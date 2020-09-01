@@ -39,8 +39,11 @@ const NutritionPlanView = (props: any) => {
   const [tourStep, setTourStep] = useState(0);
   const { scrollbarWidth } = getScrollbarSize();
 
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) => getTranslate(
+    localePhrases,
+    code,
+    placeholders,
+  );
 
   const onAction = () => {
     setAfterSignUp(false);
@@ -230,7 +233,11 @@ const NutritionPlanView = (props: any) => {
                 </div>
 
                 <div className='nutrition-plan-adherence-diet-card-content'>
-                  <p>{t('trainings.plan.completed', { number: 0 })}</p>
+                  <p
+                    dangerouslySetInnerHTML={
+                      { __html: t('trainings.plan.completed', { number: 0 }) }
+                    }
+                  />
                   <a href='/' className='link'>
                     {t('trainings.report.week')}
                   </a>
@@ -243,8 +250,14 @@ const NutritionPlanView = (props: any) => {
                 </div>
 
                 <div className='nutrition-plan-usage-time-card-content'>
-                  <h5>{t('nutrition.active_time')}</h5>
-                  <p>{t('nutrition.days_use', { number: 4 })}</p>
+                  <h5>
+                    {t('nutrition.active_time')}
+                  </h5>
+                  <p
+                    dangerouslySetInnerHTML={
+                      { __html: t('nutrition.days_use', { number: 4 }) }
+                    }
+                  />
                   <Button className='mt-3' color='primary'>
                     {t('nutrition.subscription')}
                   </Button>

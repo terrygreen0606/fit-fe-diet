@@ -1,36 +1,31 @@
-import {
-  s1_image,
-  s2_image,
-  s3_image,
-  s4_image,
-} from 'assets/img/tour-after-signup';
+import { getImagePath } from 'utils';
 
 export const mockData = [
   {
     slide: 1,
     title: 'tour.step1.title',
     text: 'tour.step1.text',
-    image: s1_image,
+    image: getImagePath('tour-after-signup/s1_image.png'),
     btn_text: 'register.next',
   },
   {
     slide: 2,
     title: 'tour.step2.title',
     text: 'tour.step1.text',
-    image: s2_image,
+    image: getImagePath('tour-after-signup/s2_image.png'),
     btn_text: 'register.next',
   },
   {
     slide: 3,
     title: 'tour.step3.title',
     text: 'tour.step1.text',
-    image: s3_image,
+    image: getImagePath('tour-after-signup/s3_image.png'),
     btn_text: 'register.next',
   },
   {
     slide: 4,
     title: 'tour.step4.title',
-    image: s4_image,
+    image: getImagePath('tour-after-signup/s4_image.png'),
     btn_text: 'tour.start_service',
   },
 ];

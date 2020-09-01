@@ -12,6 +12,7 @@ import {
   TRAININGS,
   NUTRITION_PLAN,
   NUTRITION_PLAN_WEIGHTS,
+  SHOPPING_LIST,
   RECIPE_CREATE,
   MEAL_PLAN_LIST,
   RECIPES,
@@ -35,6 +36,7 @@ import LoginView from './views/LoginView';
 import RegisterView from './views/RegisterView';
 import NutritionPlanView from './views/NutritionPlanView';
 import TrainingsView from './views/TrainingsView';
+import ShoppingListView from './views/ShoppingListView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
 import RecipesView from './views/RecipesView';
 import FoodPlanView from './views/FoodPlanView';
@@ -60,6 +62,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <MainView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path={routes[SHOPPING_LIST]}
+      component={(props: any) => (
+        <Layout {...props}>
+          <ShoppingListView {...props} />
         </Layout>
       )}
       exact

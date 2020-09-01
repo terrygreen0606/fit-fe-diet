@@ -28,15 +28,9 @@ const Step = ({
     })}
     style={{ backgroundImage: `url(${image})` }}
   >
-    <h2 className='quick_tour_title'>
-      {title}
-    </h2>
+    <h2 className='quick_tour_title' dangerouslySetInnerHTML={{ __html: title }} />
 
-    { text && (
-    <p className='quick_tour_text'>
-      {text}
-    </p>
-    )}
+    { text && <p className='quick_tour_text' dangerouslySetInnerHTML={{ __html: text }} /> }
 
     <Button
       type='button'
