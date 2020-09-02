@@ -1,10 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable array-callback-return */
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
-import AsyncSelect from 'react-select/async';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
+import { toast } from 'react-toastify';
 
 import { routes, MAIN, RECIPES } from 'constants/routes';
 import {
@@ -55,7 +56,7 @@ const CreateRecipeView = (props: any) => {
     cuisine: [],
     image_ids: [],
     servings_cnt: null,
-    time: null,
+    time: 1,
     totalWeight: 0,
     costLevel: null,
   });
@@ -181,13 +182,23 @@ const CreateRecipeView = (props: any) => {
   const addIndgredient = (e) => {
     getIngredient(e.value).then((response) => {
       const { data } = response.data;
+      if (
+        createRecipeForm.ingredients.find(
+          (item) => item.ingredient_id === data._id,
+        )
+      ) {
+        toast.error(t('recipe.create.duplication_error'), {
+          autoClose: 3000,
+        });
+        return;
+      }
       const filteredData = {
         ingredient_id: data._id,
         costLevel: data.cost_level,
         name: data.name_i18n,
         weight: '0',
         is_opt: false,
-        calorie: data.calorie / 10000,
+        calorie: data.calorie / 100000,
         fat: data.fat / 100,
         carbohydrate: data.carbohydrate / 100,
         protein: data.protein / 100,
@@ -268,21 +279,49 @@ const CreateRecipeView = (props: any) => {
         createRecipeForm.recipePreparation,
         createRecipeForm.ingredients,
         createRecipeForm.measurement,
+        createRecipeForm.servings_cnt,
         createRecipeForm.cuisine,
         createRecipeForm.image_ids,
-        createRecipeForm.servings_cnt,
         createRecipeForm.time,
         createRecipeForm.totalWeight,
-      ).then((response) => response.data.data);
+      )
+        .then((response) => {
+          toast.success(t('recipe.create.success'), {
+            autoClose: 3000,
+          });
+          setCreateRecipeForm({
+            recipeName: '',
+            recipePreparation: '',
+            ingredients: [],
+            measurement: 'si',
+            cuisine: [],
+            image_ids: [],
+            servings_cnt: null,
+            time: null,
+            totalWeight: 0,
+            costLevel: null,
+          });
+          return response.data.data;
+        })
+        .catch(() => {
+          if (createRecipeForm.ingredients.length === 0) {
+            toast.error(t('recipe.create.images_error'), {
+              autoClose: 3000,
+            });
+          }
+        });
     }
   };
 
   const getPercent = (value: number) => (value / maxCalories) * 100;
 
-  const [files, setFiles] = React.useState([]);
+  const [files, setFiles] = useState([]);
 
-  const handleChangeFiles = React.useCallback((ids: any[]) => {
+  const handleChangeFiles = useCallback((ids: any[]) => {
+    const pushedIds = [];
     setFiles(ids);
+    ids.forEach((item) => pushedIds.push(item.image_id));
+    setCreateRecipeForm({ ...createRecipeForm, image_ids: pushedIds });
   }, []);
 
   return (
@@ -369,7 +408,9 @@ const CreateRecipeView = (props: any) => {
             <div className='col-xl-3'>
               <div className='recipe__input-container'>
                 <div className='recipe__label'>
-                  <span className='recipe__label-description'>$$$</span>
+                  <span className='recipe__label-description'>
+                    {t('recipe.create.price_level')}
+                  </span>
                   <div className='recipe__label-select'>
                     <SelectInput
                       value={costCategoryOptions.find(
@@ -488,12 +529,14 @@ const CreateRecipeView = (props: any) => {
               </h2>
             </div>
             <div className='recipe__add-ingredients-field'>
-              <AsyncSelect
-                cacheOptions
+              <SelectInput
+                async
+                value=''
                 loadOptions={inputValueIngredient}
-                placeholder={t('recipe.create.name')}
+                placeholder={t('recipe.create.ingredient_search')}
                 onChange={addIndgredient}
                 styles={colourStylesSelect}
+                openMenuOnClick={false}
               />
             </div>
           </div>
@@ -598,13 +641,16 @@ const CreateRecipeView = (props: any) => {
                                     .weight,
                                 )
                           }
-                          step={1}
+                          step={0.1}
                           onChange={(e) => {
                             const updatedIngredients = [
                               ...createRecipeForm.ingredients,
                             ];
-                            // const prevIngredient =
-                            //   updatedIngredients[ingredientIndex];
+
+                            const prevWeight = +updatedIngredients[
+                              ingredientIndex
+                            ].weight;
+
                             let countTotalWeight = 0;
 
                             updatedIngredients[ingredientIndex].weight =
@@ -612,17 +658,15 @@ const CreateRecipeView = (props: any) => {
 
                             calcComposition(updatedIngredients);
 
-                            // setCalories({
-                            //   ...calories,
-                            //   value: calories.value += Math.round(
-                            //     (updatedIngredients[ingredientIndex].calorie /
-                            //       100) *
-                            //       updatedIngredients[ingredientIndex].weight -
-                            //       (updatedIngredients[ingredientIndex].calorie /
-                            //         100) *
-                            //         prevIngredient.weight,
-                            //   ),
-                            // });
+                            setCalories(
+                              +(
+                                calories +
+                                +updatedIngredients[ingredientIndex].calorie *
+                                  +e.target.value -
+                                prevWeight *
+                                  +updatedIngredients[ingredientIndex].calorie
+                              ).toFixed(2),
+                            );
 
                             validateOnChange(
                               'ingredients',
@@ -631,7 +675,7 @@ const CreateRecipeView = (props: any) => {
                             );
 
                             updatedIngredients.forEach((item) => {
-                              countTotalWeight += item.weight;
+                              countTotalWeight += +item.weight;
                             });
 
                             setCreateRecipeForm({

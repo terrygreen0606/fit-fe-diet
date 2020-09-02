@@ -68,11 +68,30 @@
 		margin-right: 20px
 
 .recipe__input-container
-		display: flex
-		align-items: center
+	display: flex
+	align-items: center
+	flex-wrap: wrap
 
-		.fgInvalidMsg
-			margin-left: 20px
+	.fgLabel
+		padding-left: 0
+
+		@media (max-width: 400px)
+			max-width: 100%
+			margin-bottom: 10px
+
+	.fg-input
+		flex: 1
+		@media (max-width: 400px)
+			flex: initial
+
+	.fgInvalidMsg
+		width: 100%
+		margin-top: 20px
+		margin-left: 120px
+		margin-bottom: 0
+		
+		@media (max-width: 400px)
+			margin-top: 5px
 
 .recipe__label
 	display: flex
@@ -82,7 +101,7 @@
 		width: 100%
 
 	&-description
-		margin-right: 20px
+		margin-right: 16px
 		font-size: 26px
 		line-height: 1.2
 		font-weight: 500
@@ -191,6 +210,12 @@
 			&_protein
 				width: 210px
 
+			&_sugar
+				width: 170px
+
+			&_salt
+				width: 130px
+
 	&-progress-value 
 		max-width: 90px
 		text-align: center
@@ -254,6 +279,11 @@
 		position: relative
 		margin-bottom: 20px
 
+		.fgSelectContainer,
+		.fgSelectControl,
+		.fgSelectMenu
+			width: 100%
+
 .recipe__item
 	display: flex
 	align-items: center
@@ -291,108 +321,108 @@
 			position: relative
 
 	&-quantity
-			flex-basis: 33.33%
+		flex-basis: 33.33%
 
-			&-counter
-				display: flex
-				align-items: center
-				justify-content: flex-end
-				margin-bottom: 34px
+		&-counter
+			display: flex
+			align-items: center
+			justify-content: flex-end
+			margin-bottom: 34px
 
-				&-input
-					position: relative
-					margin: 0 10px
-					max-width: 110px
-					font-size: 24px
-					text-align: center
-					-moz-appearance: textfield
+			&-input
+				position: relative
+				margin: 0 10px
+				max-width: 110px
+				font-size: 24px
+				text-align: center
+				-moz-appearance: textfield
 
-					&::-webkit-outer-spin-button,
-					&::-webkit-inner-spin-button 
-							-webkit-appearance: none
+				&::-webkit-outer-spin-button,
+				&::-webkit-inner-spin-button
+					-webkit-appearance: none
 					
 
-				&-arrow
-					position: relative
-					display: flex
-					align-items: center
-					justify-content: center
-					width: 30px
-					height: 30px
-					border-radius: 50%
-					background-color: transparent
-					border: none
-					transition: background-color, opacity 0.3s
-					cursor: pointer
-					opacity: 0.3
-
-					&:hover
-						opacity: 1
-						background-color: $ghost-white
-		
-				&-total 
-					text-align: right
-					margin-bottom: 20px
-
-					span
-						position: relative
-
-				&-cost
-					display: flex
-					align-items: center
-					justify-content: space-between
-					max-width: 160px
-					margin: 0 0 0 auto
-
-	&-delete
-			position: absolute
-			right: 60px
-			bottom: 0px
-			padding: 0
-			background: transparent
-			border: none
-			cursor: pointer
-			z-index: 2
-
-			&::before
-				content: ''
-				position: absolute
-				top: 50%
-				left: 50%
-				transform: translate(-50%, -50%)
-				width: calc(100% + 42px)
-				height: calc(100% + 42px)
-				background: $white
-				border-radius: 50%
-
-			&::after
-				content: ''
-				position: absolute
-				top: 50%
-				left: 50%
-				transform: translate(-50%, -50%)
-				width: calc(100% + 22px)
-				height: calc(100% + 22px)
-				background: $white
-				box-shadow: 0px 3px 5px #BAC2D2
-				border-radius: 50%
-				transition: .3s
-			
-			&:hover
-				&::after
-					width: calc(100% + 42px)
-					height: calc(100% + 42px)
-
-			&-media
+			&-arrow
 				position: relative
 				display: flex
 				align-items: center
 				justify-content: center
-				width: 32px
-				height: 32px
-				background: #F27C7C
+				width: 30px
+				height: 30px
 				border-radius: 50%
-				z-index: 2
+				background-color: transparent
+				border: none
+				transition: background-color, opacity 0.3s
+				cursor: pointer
+				opacity: 0.3
+
+				&:hover
+					opacity: 1
+					background-color: $ghost-white
+	
+			&-total 
+				text-align: right
+				margin-bottom: 20px
+
+				span
+					position: relative
+
+			&-cost
+				display: flex
+				align-items: center
+				justify-content: space-between
+				max-width: 160px
+				margin: 0 0 0 auto
+
+	&-delete
+		position: absolute
+		right: 60px
+		bottom: 0px
+		padding: 0
+		background: transparent
+		border: none
+		cursor: pointer
+		z-index: 2
+
+		&::before
+			content: ''
+			position: absolute
+			top: 50%
+			left: 50%
+			transform: translate(-50%, -50%)
+			width: calc(100% + 42px)
+			height: calc(100% + 42px)
+			background: $white
+			border-radius: 50%
+
+		&::after
+			content: ''
+			position: absolute
+			top: 50%
+			left: 50%
+			transform: translate(-50%, -50%)
+			width: calc(100% + 22px)
+			height: calc(100% + 22px)
+			background: $white
+			box-shadow: 0px 3px 5px #BAC2D2
+			border-radius: 50%
+			transition: .3s
+		
+		&:hover
+			&::after
+				width: calc(100% + 42px)
+				height: calc(100% + 42px)
+
+		&-media
+			position: relative
+			display: flex
+			align-items: center
+			justify-content: center
+			width: 32px
+			height: 32px
+			background: #F27C7C
+			border-radius: 50%
+			z-index: 2
 
 	&-opt
 		&-checkbox
@@ -465,7 +495,7 @@
 
 		&::-webkit-outer-spin-button,
 		&::-webkit-inner-spin-button 
-				-webkit-appearance: none
+			-webkit-appearance: none
 
 
 .instructions
