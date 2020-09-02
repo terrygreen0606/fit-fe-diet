@@ -2,78 +2,84 @@
 
 
 .fg-input
-	display: inline-block
-	width: 200px
-	padding: 22.5px 27px
-	color: $black
-	background-color: #fff
-	font-size: 16px
-	line-height: 20px
-	border: 1px solid #676767
-	border-radius: 5px
-	box-shadow: none
-	appearance: none
-	+mt(.2s)
-	&:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid)
-		&:hover
-			border-color: lighten($black, 30%) !important
-	&::-webkit-input-placeholder
-		font-family: $base_font
-		font-weight: 400
-		color: $grey-medium
-		font-size: 14px
-		line-height: 16px
-		opacity: 1
-	&:placeholder-shown
-		border-color: $grey-light
-	&:focus, &:active
-		outline: none
-		border-color: lighten($black, 30%)
-	&:disabled:not(:read-only)
-		border-color: $grey-light
-		background-color: $grey-bg
-	&:read-only
-		cursor: not-allowed !important
-		&:focus, &:active
-			&:placeholder-shown
-				border-color: $grey-light
-	&.input-block
-		display: block
-		width: 100%
-	&.is-invalid, &:invalid
-		border-color: $red !important
-	&.is-searchbar
-		padding-left: 105px
-		border-radius: 0
-		font-size: 24px
-		border-color: $malachite-green
-		background-image: url('../../../../assets/img/icons/search-icon.svg')
-		background-repeat: no-repeat
-		background-position: 38px center
-		background-size: 30px
+  display: inline-block
+  width: 200px
+  padding: 22.5px 27px
+  color: $black
+  background-color: #fff
+  font-size: 16px
+  line-height: 20px
+  border: 1px solid #676767
+  border-radius: 5px
+  box-shadow: none
+  appearance: none
+  +mt(.2s)
+  &:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid)
+    &:hover
+      border-color: lighten($black, 30%) !important
+  &::-webkit-input-placeholder
+    font-family: $base_font
+    font-weight: 400
+    color: $grey-medium
+    font-size: 14px
+    line-height: 16px
+    opacity: 1
+  &:placeholder-shown
+    border-color: $grey-light
+  &:focus, &:active
+    outline: none
+    border-color: lighten($black, 30%)
+  &:disabled:not(:read-only)
+    border-color: $grey-light
+    background-color: $grey-bg
+  &:read-only
+    cursor: not-allowed !important
+    &:focus, &:active
+      &:placeholder-shown
+        border-color: $grey-light
+  &.input-block
+    display: block
+    width: 100%
+  &.is-invalid, &:invalid
+    border-color: $red !important
+  &.is-valid
+    &:not(:placeholder-shown)
+      padding-right: 60px
+      background-image: url('../../../../assets/img/icons/check-green-icon.svg')
+      background-position: calc(100% - 19px) center
+      background-repeat: no-repeat
+  &.is-searchbar
+    padding-left: 105px
+    border-radius: 0
+    font-size: 24px
+    border-color: $malachite-green
+    background-image: url('../../../../assets/img/icons/search-icon.svg')
+    background-repeat: no-repeat
+    background-position: 38px center
+    background-size: 30px
 
-	&.height
-		&-xs
-			padding: 2px 20px // styles
-		&-sm
-			padding: 7px 27px
-		&-md
-			padding: 18.5px 27px // styles
-		&-lg
-			padding: 30px 40px // styles
-		&-xl
-			padding: 17px 27px 
+  &.height
+    &-xs
+      padding: 2px 20px // styles
+    &-sm
+      padding: 7px 27px
+    &-md
+      padding: 18.5px 27px // styles
+    &-lg
+      padding: 30px 40px // styles
+    &-xl
+      padding: 17px 27px 
 
-	&.border
-		&-light
-			border: 1px solid #C6C6C6
+  &.border
+    &-light
+      border: 1px solid #C6C6C6
 
-			&:hover,
-			&:focus
-				border: 1px solid darken(#C6C6C6, 50% )
+      &:hover,
+      &:focus
+        border: 1px solid darken(#C6C6C6, 50% )
 
 textarea
-	resize: vertical
-	font-family: $base_font
-	&.fg-input
-		height: auto
+  resize: vertical
+  font-family: $base_font
+  &.fg-input
+    height: auto
