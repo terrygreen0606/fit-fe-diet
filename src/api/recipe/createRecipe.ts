@@ -9,7 +9,7 @@ export const createRecipe = (
   image_ids?: Array<string>,
   servings_cnt?: number,
   time?: number,
-  total_weight?: string,
+  total_weight?: number,
   cost_level?: number,
 ) =>
   axios.post(

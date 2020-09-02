@@ -45,6 +45,8 @@ const CreateRecipeView = (props: any) => {
 
   const [unit, setUnit] = useState(t('common.gr'));
 
+  const maxCalories: number = 500;
+
   const [createRecipeForm, setCreateRecipeForm] = useState({
     recipeName: '',
     recipePreparation: '',
@@ -54,13 +56,13 @@ const CreateRecipeView = (props: any) => {
     image_ids: [],
     servings_cnt: null,
     time: null,
-    totalWeight: '0',
+    totalWeight: 0,
     costLevel: null,
   });
 
   const [composition] = useState([
     {
-      name: t('common.fat'),
+      name: 'fat',
       namePlural: t('common.fats'),
       value: 0,
       id: 0,
@@ -69,7 +71,7 @@ const CreateRecipeView = (props: any) => {
       background: '#279A40',
     },
     {
-      name: t('common.carbohydrate'),
+      name: 'carbohydrate',
       namePlural: t('common.carbohydrates'),
       value: 0,
       id: 1,
@@ -78,7 +80,7 @@ const CreateRecipeView = (props: any) => {
       background: '#FFB56E',
     },
     {
-      name: t('common.protein'),
+      name: 'protein',
       namePlural: t('common.proteins'),
       value: 0,
       id: 2,
@@ -86,39 +88,76 @@ const CreateRecipeView = (props: any) => {
       lastColorGradient: '#EFD4FF',
       background: '#3070F2',
     },
+    {
+      name: 'sugar',
+      namePlural: t('common.sugar'),
+      value: 0,
+      id: 3,
+      firstColorGradient: '#CCFFCF',
+      lastColorGradient: '#ADEFBC',
+      background: '#90E0AB',
+    },
+    {
+      name: 'salt',
+      namePlural: t('common.salt'),
+      value: 0,
+      id: 4,
+      firstColorGradient: '#F391AA',
+      lastColorGradient: '#F391AA',
+      background: '#F391AA',
+    },
   ]);
 
-  const [calories, setCalories] = useState({
-    value: 0,
-    maxCalories: 500,
-  });
+  const [calories, setCalories] = useState(0);
 
   const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
 
-  const calccomposition = (ingredientsList: Array<any>) => {
+  const calcComposition = (ingredientsList: Array<any>) => {
     composition.map((item) => {
       item.value = 0;
-      if (item.name === 'fat') {
-        ingredientsList.map((indgredientItem) => {
-          const countedValue: string = (
-            indgredientItem.fat.toFixed(4) * indgredientItem.weight
-          ).toFixed(4);
-          item.value = +countedValue;
-        });
-      } else if (item.name === 'carbohydrate') {
-        ingredientsList.map((indgredientItem) => {
-          const countedValue: string = (
-            indgredientItem.carbohydrate.toFixed(4) * indgredientItem.weight
-          ).toFixed(4);
-          item.value = +countedValue;
-        });
-      } else if (item.name === 'protein') {
-        ingredientsList.map((indgredientItem) => {
-          const countedValue: string = (
-            indgredientItem.protein.toFixed(4) * indgredientItem.weight
-          ).toFixed(4);
-          item.value = +countedValue;
-        });
+      switch (item.name) {
+        case 'fat':
+          ingredientsList.map((indgredientItem) => {
+            const countedValue: string = (
+              indgredientItem.fat.toFixed(4) * indgredientItem.weight
+            ).toFixed(4);
+            item.value = +countedValue;
+          });
+          break;
+        case 'carbohydrate':
+          ingredientsList.map((indgredientItem) => {
+            const countedValue: string = (
+              indgredientItem.carbohydrate.toFixed(4) * indgredientItem.weight
+            ).toFixed(4);
+            item.value = +countedValue;
+          });
+          break;
+        case 'protein':
+          ingredientsList.map((indgredientItem) => {
+            const countedValue: string = (
+              indgredientItem.protein.toFixed(4) * indgredientItem.weight
+            ).toFixed(4);
+            item.value = +countedValue;
+          });
+          break;
+        case 'sugar':
+          ingredientsList.map((indgredientItem) => {
+            const countedValue: string = (
+              indgredientItem.sugar.toFixed(4) * indgredientItem.weight
+            ).toFixed(4);
+            item.value = +countedValue;
+          });
+          break;
+        case 'salt':
+          ingredientsList.map((indgredientItem) => {
+            const countedValue: string = (
+              indgredientItem.salt.toFixed(4) * indgredientItem.weight
+            ).toFixed(4);
+            item.value = +countedValue;
+          });
+          break;
+        default:
+          return null;
       }
     });
   };
@@ -144,13 +183,16 @@ const CreateRecipeView = (props: any) => {
       const { data } = response.data;
       const filteredData = {
         ingredient_id: data._id,
+        costLevel: data.cost_level,
         name: data.name_i18n,
         weight: '0',
         is_opt: false,
-        calorie: data.calorie / 1000,
-        carbohydrate: data.carbohydrate / 1000,
-        protein: data.protein / 1000,
-        fat: data.fat / 1000,
+        calorie: data.calorie / 10000,
+        fat: data.fat / 100,
+        carbohydrate: data.carbohydrate / 100,
+        protein: data.protein / 100,
+        sugar: data.sugar / 100,
+        salt: data.salt / 100,
         isFullBlock: true,
       };
 
@@ -165,26 +207,24 @@ const CreateRecipeView = (props: any) => {
     const updatedListOfIngredients: Array<any> = [
       ...createRecipeForm.ingredients,
     ];
-    let countTotalWeight: number = +createRecipeForm.totalWeight;
+    let countTotalWeight: number = createRecipeForm.totalWeight;
 
-    setCalories({
-      ...calories,
-      value:
-        calories.value -
-        (updatedListOfIngredients[index].calorie / 100) *
+    setCalories(
+      calories -
+        +updatedListOfIngredients[index].calorie.toFixed(2) *
           updatedListOfIngredients[index].weight,
-    });
+    );
 
     updatedListOfIngredients.splice(index, 1);
 
-    calccomposition(updatedListOfIngredients);
+    calcComposition(updatedListOfIngredients);
 
     countTotalWeight -= createRecipeForm.ingredients[index].weight;
 
     setCreateRecipeForm({
       ...createRecipeForm,
       ingredients: updatedListOfIngredients,
-      totalWeight: `${countTotalWeight}`,
+      totalWeight: countTotalWeight,
     });
   };
 
@@ -237,7 +277,7 @@ const CreateRecipeView = (props: any) => {
     }
   };
 
-  const getPercent = (value: number) => (value / calories.maxCalories) * 100;
+  const getPercent = (value: number) => (value / maxCalories) * 100;
 
   const [files, setFiles] = React.useState([]);
 
@@ -414,8 +454,8 @@ const CreateRecipeView = (props: any) => {
                 </div>
               ))}
               <div className='recipe__chart-progress-value'>
-                {calories.value}
-                {t('common.kcal')} /{calories.maxCalories} {t('common.kcal')}
+                {calories}
+                {t('common.kcal')} /{maxCalories} {t('common.kcal')}
               </div>
             </div>
             <div className='recipe__chart-lines'>
@@ -507,39 +547,39 @@ const CreateRecipeView = (props: any) => {
                             const updatedIngredients = [
                               ...createRecipeForm.ingredients,
                             ];
-                            const updatedWeight = +updatedIngredients[
-                              ingredientIndex
-                            ].weight;
+
+                            const currentWeight =
+                              updatedIngredients[ingredientIndex].weight;
+
                             let countTotalWeight = 0;
 
-                            if (updatedWeight <= 1) {
-                              updatedIngredients[ingredientIndex] = {
-                                ...updatedIngredients[ingredientIndex],
-                                weight: '0',
-                              };
+                            if (currentWeight === 0) {
+                              return;
+                            }
+                            if (currentWeight === 1) {
+                              updatedIngredients[ingredientIndex].weight = 0;
                             } else {
-                              updatedIngredients[ingredientIndex] = {
-                                ...updatedIngredients[ingredientIndex],
-                                weight: updatedWeight - 1,
-                              };
+                              updatedIngredients[ingredientIndex].weight--;
                             }
 
-                            calccomposition(updatedIngredients);
-                            setCalories({
-                              ...calories,
-                              value: calories.value -=
-                                createRecipeForm.ingredients[ingredientIndex]
-                                  .calorie / 100,
-                            });
+                            calcComposition(updatedIngredients);
+
+                            const updatedCalories = (
+                              calories -
+                              createRecipeForm.ingredients[ingredientIndex]
+                                .calorie
+                            ).toFixed(2);
+
+                            setCalories(+updatedCalories);
 
                             updatedIngredients.forEach((item) => {
-                              countTotalWeight += +item.weight;
+                              countTotalWeight += item.weight;
                             });
 
                             setCreateRecipeForm({
                               ...createRecipeForm,
                               ingredients: updatedIngredients,
-                              totalWeight: `${countTotalWeight}`,
+                              totalWeight: countTotalWeight,
                             });
                           }}
                         >
@@ -558,33 +598,31 @@ const CreateRecipeView = (props: any) => {
                                     .weight,
                                 )
                           }
-                          step={0.1}
+                          step={1}
                           onChange={(e) => {
                             const updatedIngredients = [
                               ...createRecipeForm.ingredients,
                             ];
-                            const prevIngredient =
-                              updatedIngredients[ingredientIndex];
+                            // const prevIngredient =
+                            //   updatedIngredients[ingredientIndex];
                             let countTotalWeight = 0;
 
-                            updatedIngredients[ingredientIndex] = {
-                              ...updatedIngredients[ingredientIndex],
-                              weight: e.target.value,
-                            };
+                            updatedIngredients[ingredientIndex].weight =
+                              e.target.value;
 
-                            calccomposition(updatedIngredients);
+                            calcComposition(updatedIngredients);
 
-                            setCalories({
-                              ...calories,
-                              value: calories.value += Math.round(
-                                (updatedIngredients[ingredientIndex].calorie /
-                                  100) *
-                                  updatedIngredients[ingredientIndex].weight -
-                                  (updatedIngredients[ingredientIndex].calorie /
-                                    100) *
-                                    prevIngredient.weight,
-                              ),
-                            });
+                            // setCalories({
+                            //   ...calories,
+                            //   value: calories.value += Math.round(
+                            //     (updatedIngredients[ingredientIndex].calorie /
+                            //       100) *
+                            //       updatedIngredients[ingredientIndex].weight -
+                            //       (updatedIngredients[ingredientIndex].calorie /
+                            //         100) *
+                            //         prevIngredient.weight,
+                            //   ),
+                            // });
 
                             validateOnChange(
                               'ingredients',
@@ -593,13 +631,13 @@ const CreateRecipeView = (props: any) => {
                             );
 
                             updatedIngredients.forEach((item) => {
-                              countTotalWeight += +item.weight;
+                              countTotalWeight += item.weight;
                             });
 
                             setCreateRecipeForm({
                               ...createRecipeForm,
                               ingredients: updatedIngredients,
-                              totalWeight: `${countTotalWeight}`,
+                              totalWeight: countTotalWeight,
                             });
                           }}
                           height='xs'
@@ -615,33 +653,29 @@ const CreateRecipeView = (props: any) => {
                             const updatedIngredients = [
                               ...createRecipeForm.ingredients,
                             ];
-                            const updatedWeight = +updatedIngredients[
-                              ingredientIndex
-                            ].weight;
+
                             let countTotalWeight = 0;
 
-                            updatedIngredients[ingredientIndex] = {
-                              ...updatedIngredients[ingredientIndex],
-                              weight: updatedWeight + 1,
-                            };
+                            updatedIngredients[ingredientIndex].weight++;
 
-                            calccomposition(updatedIngredients);
-                            setCalories({
-                              ...calories,
-                              value: calories.value += Math.round(
-                                createRecipeForm.ingredients[ingredientIndex]
-                                  .calorie / 100,
-                              ),
-                            });
+                            calcComposition(updatedIngredients);
+
+                            const updatedCalories = (
+                              calories +
+                              createRecipeForm.ingredients[ingredientIndex]
+                                .calorie
+                            ).toFixed(2);
+
+                            setCalories(+updatedCalories);
 
                             updatedIngredients.forEach((item) => {
-                              countTotalWeight += +item.weight;
+                              countTotalWeight += item.weight;
                             });
 
                             setCreateRecipeForm({
                               ...createRecipeForm,
                               ingredients: updatedIngredients,
-                              totalWeight: `${countTotalWeight}`,
+                              totalWeight: countTotalWeight,
                             });
                           }}
                         >
@@ -650,12 +684,9 @@ const CreateRecipeView = (props: any) => {
                       </div>
                       <div className='recipe__item-quantity-counter-total'>
                         <span>
-                          {Math.round(
-                            ingredientItem.calorie *
-                              +createRecipeForm.ingredients[ingredientIndex]
-                                .weight,
-                          )}{' '}
-                          {t('common.kcal')}
+                          {`${(
+                            ingredientItem.calorie * ingredientItem.weight
+                          ).toFixed(2)} ${t('common.kcal')}`}
                         </span>
                       </div>
                     </div>
@@ -691,11 +722,11 @@ const CreateRecipeView = (props: any) => {
               block
               type='number'
               name='totalWeight'
-              step={0.1}
+              step={1}
               value={
                 unit === t('common.gr')
                   ? createRecipeForm.totalWeight
-                  : getOz(+createRecipeForm.totalWeight)
+                  : getOz(createRecipeForm.totalWeight)
               }
               onChange={(e) =>
                 validateOnChange('totalWeight', e.target.value, e)
