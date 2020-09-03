@@ -13,6 +13,7 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getOz,
+  getVideo,
 } from 'utils';
 import { searchIngredients, createRecipe, getIngredient } from 'api';
 import FormValidator from 'utils/FormValidator';
@@ -52,11 +53,12 @@ const CreateRecipeView = (props: any) => {
     ingredients: [],
     measurement: 'si',
     cuisine: [],
-    image_ids: [],
-    servings_cnt: null,
+    imageIds: [],
+    servingsCnt: null,
     time: 1,
     totalWeight: 0,
     costLevel: null,
+    videoUrl: '',
   });
 
   const [composition] = useState([
@@ -108,6 +110,8 @@ const CreateRecipeView = (props: any) => {
   ]);
 
   const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
+
+  const [videoLinkIframe, setVideoLinkIframe] = useState('');
 
   const calcComposition = (ingredientsList: Array<any>) => {
     composition.map((item) => {
@@ -264,11 +268,13 @@ const CreateRecipeView = (props: any) => {
         createRecipeForm.recipePreparation,
         createRecipeForm.ingredients,
         createRecipeForm.measurement,
-        createRecipeForm.servings_cnt,
+        createRecipeForm.servingsCnt,
         createRecipeForm.cuisine,
-        createRecipeForm.image_ids,
+        createRecipeForm.imageIds,
         createRecipeForm.time,
         createRecipeForm.totalWeight,
+        createRecipeForm.costLevel,
+        createRecipeForm.videoUrl,
       )
         .then((response) => {
           toast.success(t('recipe.create.success'), {
@@ -280,11 +286,12 @@ const CreateRecipeView = (props: any) => {
             ingredients: [],
             measurement: 'si',
             cuisine: [],
-            image_ids: [],
-            servings_cnt: null,
+            imageIds: [],
+            servingsCnt: null,
             time: null,
             totalWeight: 0,
             costLevel: null,
+            videoUrl: '',
           });
           return response.data.data;
         })
@@ -309,7 +316,7 @@ const CreateRecipeView = (props: any) => {
     const pushedIds = [];
     setFiles(ids);
     ids.forEach((item) => pushedIds.push(item.image_id));
-    setCreateRecipeForm({ ...createRecipeForm, image_ids: pushedIds });
+    setCreateRecipeForm({ ...createRecipeForm, imageIds: pushedIds });
   }, []);
 
   return (
@@ -354,6 +361,60 @@ const CreateRecipeView = (props: any) => {
             </ImagesFileInput>
           </div>
 
+          <div className='recipe__add-video'>
+            <div className='recipe__add-video-preview'>
+              {videoLinkIframe ? (
+                <iframe
+                  title='video'
+                  width='100%'
+                  height='100%'
+                  src={videoLinkIframe}
+                  allowFullScreen
+                />
+              )
+                :
+                t('recipe.create.preview')
+              }
+              <button
+                type='button'
+                onClick={() => {
+                  setVideoLinkIframe('');
+                  setCreateRecipeForm({ ...createRecipeForm, videoUrl: '' });
+                }}
+                className='recipe__add-video-preview-btn'
+              >
+                <TrashIcon />
+              </button>
+            </div>
+            <div className='recipe__add-video-desc'>
+              <div className='recipe__add-video-desc-title'>
+                {t('recipe.create.upload_video')}
+              </div>
+              <div className='recipe__add-video-desc-container'>
+                <div className='recipe__add-video-desc-input-wrap'>
+                  <InputField
+                    block
+                    name='videoUrl'
+                    data-validate='["url"]'
+                    errors={getFieldErrors('videoUrl')}
+                    value={createRecipeForm.videoUrl}
+                    onChange={(e) => validateOnChange('videoUrl', e.target.value, e)}
+                    placeholder={t('recipe.create.paste_link')}
+                    border='light'
+                    className='recipe__add-video-desc-input'
+                  />
+                </div>
+                <Button
+                  color='primary'
+                  onClick={() => setVideoLinkIframe(getVideo(createRecipeForm.videoUrl))}
+                  className='recipe__add-video-desc-btn'
+                >
+                  {t('recipe.create.upload')}
+                </Button>
+              </div>
+            </div>
+          </div>
+
           <div className='row recipe__input-data'>
             <div className='col-12 mb-xl-5'>
               <div className='recipe__input-container'>
@@ -381,11 +442,11 @@ const CreateRecipeView = (props: any) => {
                     <SelectInput
                       value={servingOptions.find(
                         (option) =>
-                          option.value === createRecipeForm.servings_cnt,
+                          option.value === createRecipeForm.servingsCnt,
                       )}
                       options={servingOptions}
                       onChange={(option, e) =>
-                        validateOnChange('servings_cnt', option.value, e)
+                        validateOnChange('servingsCnt', option.value, e)
                       }
                       placeholder={t('recipe.serving')}
                     />

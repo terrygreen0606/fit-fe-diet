@@ -64,6 +64,7 @@
 	.fgLabel
 		max-width: 100px
 		font-size: 26px
+		line-height: 1.2
 		font-weight: 500
 		margin-right: 20px
 
@@ -77,7 +78,7 @@
 
 		@media (max-width: 400px)
 			max-width: 100%
-			margin-bottom: 10px
+			margin-bottom: 6px
 
 	.fg-input
 		flex: 1
@@ -131,7 +132,109 @@
 
 			@media (max-width: 400px)
 				width: 100%
+
+.recipe__add-video
+	display: flex
+	align-items: center
+	padding: 30px 0px
+	margin-bottom: 80px
 	
+	@media (max-width: 1024px)
+		flex-wrap: wrap
+
+	&-preview
+		position: relative
+		display: flex
+		align-items: center
+		justify-content: center
+		font-size: 26px
+		line-height: 1.2
+		font-weight: bold
+		width: 250px
+		height: 190px
+		background-color: #C4C4C4
+
+		@media (max-width: 1024px)
+			width: 100%
+			max-height: 300px
+			margin-bottom: 30px
+
+		&-btn
+			position: absolute
+			top: 14px
+			right: 14px
+			width: 34px
+			height: 34px
+			display: flex
+			align-items: center
+			justify-content: center
+			padding: 0
+			background-color: #FF3D00
+			border: none
+			border-radius: 50%
+			transition: 0.2s background-color ease
+			cursor: pointer
+
+			&:hover
+				background-color: darken(#FF3D00, 10%)
+
+	&-desc
+		flex: 1
+		padding-left: 85px
+
+		@media (max-width: 1024px)
+			padding-left: 0
+
+		&-title
+			margin-bottom: 35px
+			font-size: 26px
+			line-height: 1.2
+			font-weight: 500
+
+			@media (max-width: 576px)
+				margin-bottom: 20px
+				font-size: 20px
+
+		&-container
+			display: flex
+			align-items: flex-start
+
+			@media (max-width: 576px)
+				flex-wrap: wrap
+				justify-content: center
+
+		&-input-wrap
+			flex: 1
+
+			@media (max-width: 576px)
+				width: 100%
+				flex: initial
+
+		&-input
+			width: 100%
+			padding: 19px 27px
+			font-size: 24px
+			line-height: 1.2
+
+			@media (max-width: 576px)
+				margin-bottom: 20px
+				font-size: 16px
+
+			&::placeholder
+				font-size: 24px
+				line-height: 1.2
+
+				@media (max-width: 576px)
+					font-size: 16px
+
+		&-btn
+			padding: 22px 28px
+			font-size: 26px
+
+			@media (max-width: 576px)
+				width: 50%
+				font-size: 20px
+
 .recipe__switch
 	display: flex
 	justify-content: flex-end
@@ -487,6 +590,7 @@
 	.fgLabel
 		margin-right: 12px
 		font-size: 26px
+		line-height: 1.2
 		font-weight: 500
 
 	.fg-input
@@ -548,6 +652,7 @@
 		padding: 40px 25px 60px
 
 	.recipe__add-ingredients-description
+		margin-bottom: 20px
 		flex-wrap: wrap
 
 

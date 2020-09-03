@@ -11,6 +11,7 @@ export const createRecipe = (
   time?: number,
   total_weight?: number,
   cost_level?: number,
+  video_url?: string,
 ) =>
   axios.post(
     '/recipe/create',
@@ -25,6 +26,7 @@ export const createRecipe = (
       time,
       weight: total_weight,
       cost_level,
+      video_url,
     },
     {},
   );
