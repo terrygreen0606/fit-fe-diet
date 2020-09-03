@@ -233,12 +233,12 @@ const CreateRecipeView = (props: any) => {
     try {
       const response = await searchIngredients(inputValue);
       const listOfIngredients = response.data.data;
-      for (const prop in listOfIngredients) {
+      Object.entries(listOfIngredients).forEach((prop) => {
         filteredListOfIngredients.push({
-          value: prop,
-          label: listOfIngredients[prop],
+          value: prop[0],
+          label: prop[1],
         });
-      }
+      });
       return filteredListOfIngredients;
     } catch {
       return filteredListOfIngredients;
@@ -254,9 +254,7 @@ const CreateRecipeView = (props: any) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName),
-    );
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -371,10 +369,7 @@ const CreateRecipeView = (props: any) => {
                   src={videoLinkIframe}
                   allowFullScreen
                 />
-              )
-                :
-                t('recipe.create.preview')
-              }
+              ) : t('recipe.create.preview')}
               <button
                 type='button'
                 onClick={() => {
@@ -424,9 +419,7 @@ const CreateRecipeView = (props: any) => {
                   data-validate='["required"]'
                   errors={getFieldErrors('recipeName')}
                   value={createRecipeForm.recipeName}
-                  onChange={(e) =>
-                    validateOnChange('recipeName', e.target.value, e)
-                  }
+                  onChange={(e) => validateOnChange('recipeName', e.target.value, e)}
                   label={t('recipe.name')}
                   border='light'
                 />
@@ -445,9 +438,7 @@ const CreateRecipeView = (props: any) => {
                           option.value === createRecipeForm.servingsCnt,
                       )}
                       options={servingOptions}
-                      onChange={(option, e) =>
-                        validateOnChange('servingsCnt', option.value, e)
-                      }
+                      onChange={(option, e) => validateOnChange('servingsCnt', option.value, e)}
                       placeholder={t('recipe.serving')}
                     />
                   </div>
@@ -466,9 +457,7 @@ const CreateRecipeView = (props: any) => {
                         (option) => option.value === createRecipeForm.costLevel,
                       )}
                       options={costCategoryOptions}
-                      onChange={(option, e) =>
-                        validateOnChange('costLevel', option.value, e)
-                      }
+                      onChange={(option, e) => validateOnChange('costLevel', option.value, e)}
                       placeholder={t('recipe.cost_level')}
                     />
                   </div>
@@ -563,8 +552,7 @@ const CreateRecipeView = (props: any) => {
                     />
                   </div>
                   <div className='recipe__chart-lines-item-description'>
-                    {unit === t('common.gr') ? item.value : getOz(item.value)}{' '}
-                    {unit}
+                    {`${unit === t('common.gr') ? item.value : getOz(item.value)} ${unit}`}
                   </div>
                 </div>
               ))}
@@ -623,9 +611,16 @@ const CreateRecipeView = (props: any) => {
                     </div>
 
                     <div className='recipe__item-counting'>
-                      <div>{`${t('common.fats')}: ${(ingredientItem.fat * ingredientItem.weight).toFixed(2)}`}</div>
-                      <div>{`${t('common.carbohydrates')}: ${(ingredientItem.carbohydrate * ingredientItem.weight).toFixed(2)}`}</div>
-                      <div>{`${t('common.proteins')}: ${(ingredientItem.protein * ingredientItem.weight).toFixed(2)}`}</div>
+                      <div>
+                        {`${t('common.fats')}: ${(ingredientItem.fat * ingredientItem.weight).toFixed(2)}`}
+                      </div>
+                      <div>
+                        {`${t('common.carbohydrates')}: 
+                          ${(ingredientItem.carbohydrate * ingredientItem.weight).toFixed(2)}`}
+                      </div>
+                      <div>
+                        {`${t('common.proteins')}: ${(ingredientItem.protein * ingredientItem.weight).toFixed(2)}`}
+                      </div>
                     </div>
 
                     <div className='recipe__item-quantity'>
@@ -638,8 +633,7 @@ const CreateRecipeView = (props: any) => {
                               ...createRecipeForm.ingredients,
                             ];
 
-                            const currentWeight =
-                              updatedIngredients[ingredientIndex].weight;
+                            const currentWeight = updatedIngredients[ingredientIndex].weight;
 
                             let countTotalWeight = 0;
 
@@ -649,7 +643,7 @@ const CreateRecipeView = (props: any) => {
                             if (currentWeight === 1) {
                               updatedIngredients[ingredientIndex].weight = 0;
                             } else {
-                              updatedIngredients[ingredientIndex].weight--;
+                              updatedIngredients[ingredientIndex].weight -= 1;
                             }
 
                             calcComposition(updatedIngredients);
@@ -687,8 +681,7 @@ const CreateRecipeView = (props: any) => {
                             ];
                             let countTotalWeight = 0;
 
-                            updatedIngredients[ingredientIndex].weight =
-                              e.target.value;
+                            updatedIngredients[ingredientIndex].weight = e.target.value;
 
                             calcComposition(updatedIngredients);
 
@@ -724,7 +717,7 @@ const CreateRecipeView = (props: any) => {
 
                             let countTotalWeight = 0;
 
-                            updatedIngredients[ingredientIndex].weight++;
+                            updatedIngredients[ingredientIndex].weight += 1;
 
                             calcComposition(updatedIngredients);
 
@@ -760,7 +753,7 @@ const CreateRecipeView = (props: any) => {
                       </div>
                     </button>
                     <div className='recipe__item-weight'>
-                      {ingredientItem.weight} {unit}
+                      {`${ingredientItem.weight} ${unit}`}
                     </div>
                   </div>
                   <div className='recipe__item-opt'>
@@ -768,8 +761,7 @@ const CreateRecipeView = (props: any) => {
                       label='Optional'
                       className='recipe__item-opt-checkbox'
                       onChange={(e) => {
-                        createRecipeForm.ingredients[ingredientIndex].is_opt =
-                          e.target.checked;
+                        createRecipeForm.ingredients[ingredientIndex].is_opt = e.target.checked;
                       }}
                     />
                   </div>
@@ -788,9 +780,7 @@ const CreateRecipeView = (props: any) => {
                   ? createRecipeForm.totalWeight
                   : getOz(createRecipeForm.totalWeight)
               }
-              onChange={(e) =>
-                validateOnChange('totalWeight', e.target.value, e)
-              }
+              onChange={(e) => validateOnChange('totalWeight', e.target.value, e)}
               min={0}
               height='md'
               label={t('recipe.create.total_weight')}
@@ -806,9 +796,7 @@ const CreateRecipeView = (props: any) => {
               data-validate='["required"]'
               errors={getFieldErrors('recipePreparation')}
               value={createRecipeForm.recipePreparation}
-              onChange={(e) =>
-                validateOnChange('recipePreparation', e.target.value, e)
-              }
+              onChange={(e) => validateOnChange('recipePreparation', e.target.value, e)}
               rows={16}
               className='instructions__field'
               border='light'
