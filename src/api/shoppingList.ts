@@ -1,6 +1,6 @@
 import axios from 'utils/axios';
 
-export const getShoppingList = () => axios.get('/shopping-list');
+export const getShoppingList = (columns: number = 1) => axios.get(`/shopping-list?columns=${columns}`);
 
 export const getPublicShopListUrl = (txt: number = 0) => axios.get(`/user/shopping-list-url?txt=${txt}`);
 

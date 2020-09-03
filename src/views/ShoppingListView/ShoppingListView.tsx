@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import AsyncSelect from 'react-select/async';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
-import uuid from 'react-uuid';
 import { toast } from 'react-toastify';
 
 import { getTranslate, openShareLink } from 'utils';
@@ -45,7 +44,6 @@ const ShoppingListView: React.FC = (props: any) => {
   const [measurement, setMeasurement] = useState(null);
   const [publicShopListUrl, setPublicShopListUrl] = useState(null);
   const [items, setItems] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [ingredientId, setIngredientId] = useState<string>('');
   const [ingredientWeight, setIngredientWeight] = useState('');
   const [quantity, setQuantity] = useState(null);
@@ -73,12 +71,12 @@ const ShoppingListView: React.FC = (props: any) => {
     try {
       const response = await searchIngredients(inputValue);
       const listOfIngredients = response.data.data;
-      for (const prop in listOfIngredients) {
+      Object.entries(listOfIngredients).forEach(([value, label]) => {
         filteredListOfIngredients.push({
-          value: prop,
-          label: listOfIngredients[prop],
+          value,
+          label,
         });
-      }
+      });
       return filteredListOfIngredients;
     } catch {
       return filteredListOfIngredients;
@@ -96,7 +94,7 @@ const ShoppingListView: React.FC = (props: any) => {
         ingredientId,
         ingredientWeight ? +ingredientWeight : undefined,
       );
-      await getShoppingList()
+      await getShoppingList(2)
         .then((res) => setItems(res.data.data.list));
     }
   };
@@ -104,7 +102,7 @@ const ShoppingListView: React.FC = (props: any) => {
   const deleteIngredient = async (item) => {
     await deleteFromShoppingList(item.id)
       .catch((error) => toast.error(error.message));
-    await getShoppingList()
+    await getShoppingList(2)
       .then((res) => setItems(res.data.data.list))
       .catch((error) => toast.error(error.message));
   };
@@ -116,7 +114,7 @@ const ShoppingListView: React.FC = (props: any) => {
 
     await setShoppingRowBought(item.id, e.target.checked)
       .catch((error) => toast.error(error.message));
-    await getShoppingList()
+    await getShoppingList(2)
       .then((res) => setItems(res.data.data.list))
       .catch((error) => toast.error(error.message));
 
@@ -137,8 +135,101 @@ const ShoppingListView: React.FC = (props: any) => {
       .then((res) => window.location.assign(res.data.data.url));
   };
 
+  const renderItems = () => {
+    const firstColumn = [];
+    const secondColumn = [];
+    const categories = [];
+
+    const filterCategories = (category) => {
+      if (!categories.includes(category)) {
+        categories.push(category);
+        return category;
+      } return null;
+    };
+
+    items.forEach((item) => {
+      if (item.column === 1) {
+        firstColumn.push(
+          <React.Fragment key={item.id}>
+            {
+              filterCategories(item.cuisine_name_i18n) && (
+                <div className='shopping_list_body_sect_category'>
+                  {item.cuisine_name_i18n}
+                </div>
+              )
+            }
+            <div
+              className={classnames('shopping_list_body_sect_item', {
+                active: item.is_bought,
+              })}
+            >
+              <CustomCheckbox
+                label={namingEditor(item)}
+                checked={item.is_bought}
+                onChange={(e) => onChangeHandler(e, item)}
+                className='shopping_list_body_sect_item_checkbox'
+                inline
+              />
+              <span
+                role='presentation'
+                className='shopping_list_body_sect_item_trash'
+                onClick={() => deleteIngredient(item)}
+              >
+                <TrashIcon />
+              </span>
+            </div>
+          </React.Fragment>,
+        );
+      } else {
+        secondColumn.push(
+          <React.Fragment key={item.id}>
+            {
+              filterCategories(item.cuisine_name_i18n) && (
+                <div className='shopping_list_body_sect_category'>
+                  {item.cuisine_name_i18n}
+                </div>
+              )
+            }
+            <div
+              className={classnames('shopping_list_body_sect_item', {
+                active: item.is_bought,
+              })}
+              key={item.id}
+            >
+              <CustomCheckbox
+                label={namingEditor(item)}
+                checked={item.is_bought}
+                onChange={(e) => onChangeHandler(e, item)}
+                className='shopping_list_body_sect_item_checkbox'
+                inline
+              />
+              <span
+                role='presentation'
+                className='shopping_list_body_sect_item_trash'
+                onClick={() => deleteIngredient(item)}
+              >
+                <TrashIcon />
+              </span>
+            </div>
+          </React.Fragment>,
+        );
+      }
+    });
+
+    return (
+      <div className='shopping_list_body_sect'>
+        <div className='shopping_list_body_sect_1'>
+          {firstColumn.map((item) => item)}
+        </div>
+        <div className='shopping_list_body_sect_2'>
+          {secondColumn.map((item) => item)}
+        </div>
+      </div>
+    );
+  };
+
   useEffect(() => {
-    getShoppingList()
+    getShoppingList(2)
       .then((res) => setItems(res.data.data.list));
     getUserSettings()
       .then((res) => {
@@ -151,17 +242,7 @@ const ShoppingListView: React.FC = (props: any) => {
       .then((res) => setPublicShopListUrl(res.data.data.url));
   }, []);
 
-  useEffect(() => {
-    if (items) {
-      items.forEach((item) => setCategories(
-        (prev) => (prev.includes(item.cuisine_name_i18n)
-          ? prev
-          : [...prev, item.cuisine_name_i18n]),
-      ));
-    }
-  }, [items]);
-
-  if (!items.length && !categories.length) return <Spinner color='#0FC1A1' />;
+  if (!items.length) return <Spinner color='#0FC1A1' />;
 
   return (
     <>
@@ -265,48 +346,11 @@ const ShoppingListView: React.FC = (props: any) => {
                   }
                 </div>
               </div>
+
               <div className='shopping_list_body'>
-                {
-                  categories.map((category) => (
-                    <div
-                      className='shopping_list_body_sect'
-                      key={uuid()}
-                      style={{ gridRow: `span ${items.filter((item) => item.cuisine_name_i18n === category).length}` }}
-                    >
-                      <div className='shopping_list_body_sect_category'>
-                        {category}
-                      </div>
-                      {
-                        items
-                          .filter((item) => item.cuisine_name_i18n === category)
-                          .map((item) => (
-                            <div
-                              className={classnames('shopping_list_body_sect_item', {
-                                active: item.is_bought,
-                              })}
-                              key={item.id}
-                            >
-                              <CustomCheckbox
-                                label={namingEditor(item)}
-                                checked={item.is_bought}
-                                onChange={(e) => onChangeHandler(e, item)}
-                                className='shopping_list_body_sect_item_checkbox'
-                                inline
-                              />
-                              <span
-                                role='presentation'
-                                className='shopping_list_body_sect_item_trash'
-                                onClick={() => deleteIngredient(item)}
-                              >
-                                <TrashIcon />
-                              </span>
-                            </div>
-                          ))
-                      }
-                    </div>
-                  ))
-                }
+                {renderItems()}
               </div>
+
               <div className='shopping_list_footer'>
                 <div className='shopping_list_footer_ingredient'>
                   <span className='shopping_list_footer_ingredient_text'>

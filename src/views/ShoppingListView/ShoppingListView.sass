@@ -25,13 +25,9 @@
       line-height: 20px
 
   &_body
-    display: grid
-    grid-column-gap: 50px
-    grid-row-gap: 10px
-    grid-template-columns: repeat(2, 1fr)
+    display: flex
+    justify-content: space-between
     margin-bottom: 70px
-    @media (max-width: 768px)
-      grid-template-columns: 1fr
 
     &_title_sect
       display: flex
@@ -56,25 +52,43 @@
         min-width: 110px
 
     &_sect
-      height: fit-content
-      display: inline-flex
-      flex-direction: column
-      flex-wrap: wrap
+      flex: 0 1 100%
+      display: flex
+      flex-direction: row
+      justify-content: space-between
       @media (max-width: 768px)
-        flex: 0 1 100%
-        max-width: 100%
+        flex-direction: column
         &:not(:last-child)
           padding-bottom: 20px
           border-bottom: 1px solid #C4C4C4
         &:not(:first-child)
           margin-top: 10px
 
+      &_1, &_2
+        flex: 0 1 45%
+        max-width: 45%
+        @media (max-width: 768px)
+          flex: 0 1 100%
+          max-width: 100%
+
+      &_1
+        .shopping_list_body_sect_category
+          &:not(:first-child)
+            @media (max-width: 768px)
+              padding-top: 10px
+              border-top: 1px solid #C4C4C4
+
+      &_2
+        .shopping_list_body_sect_category
+          @media (max-width: 768px)
+            padding-top: 10px
+            border-top: 1px solid #C4C4C4
+
       &_category
         font-weight: bold
         font-size: 18px
         line-height: 40px
         color: #000000
-        max-width: calc(100% - 40px)
         @media (max-width: 768px)
           white-space: nowrap
           overflow-x: hidden
@@ -87,8 +101,7 @@
         display: flex
         justify-content: space-between
         align-items: center
-        &:not(:last-child)
-          margin-bottom: 10px
+        margin-bottom: 10px
 
         &.active
           span.checkmark
