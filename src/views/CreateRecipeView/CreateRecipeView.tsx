@@ -191,7 +191,7 @@ const CreateRecipeView = (props: any) => {
         ingredient_id: data._id,
         costLevel: data.cost_level,
         name: data.name_i18n,
-        weight: 0,
+        weight: null,
         is_opt: false,
         calorie: data.calorie / 100000,
         fat: data.fat / 100,
@@ -641,7 +641,7 @@ const CreateRecipeView = (props: any) => {
                               return;
                             }
                             if (currentWeight === 1) {
-                              updatedIngredients[ingredientIndex].weight = 0;
+                              updatedIngredients[ingredientIndex].weight = null;
                             } else {
                               updatedIngredients[ingredientIndex].weight -= 1;
                             }
@@ -676,6 +676,10 @@ const CreateRecipeView = (props: any) => {
                           }
                           step={0.1}
                           onChange={(e) => {
+                            if (e.target.value === '0') {
+                              e.target.value = null;
+                            }
+
                             const updatedIngredients = [
                               ...createRecipeForm.ingredients,
                             ];
