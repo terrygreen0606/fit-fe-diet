@@ -32,6 +32,26 @@ const NotEatingStep = (props: any) => {
     });
   };
 
+  const changeCuisineState = (id: string, checked: boolean) => {
+    const index = props.registerData.ignore_cuisine_ids.findIndex(cuisine => cuisine.id === id);
+
+    if (index >= 0) {
+      let ignore_cuisine_ids = props.registerData.ignore_cuisine_ids;
+
+      if (ignore_cuisine_ids[index]) {
+        ignore_cuisine_ids[index] = {
+          ...ignore_cuisine_ids[index],
+          checked
+        };
+
+        props.setRegisterData({
+          ...props.registerData,
+          ignore_cuisine_ids
+        });
+      }
+    }
+  };
+
   return (
     <>
       <h6 className="register_title mb-xl-5 mb-45">
@@ -43,11 +63,20 @@ const NotEatingStep = (props: any) => {
       </h6>
 
       <div className="register_eating_list">
-        {props.registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
-          <div key={id} className="register_eating_item">
-            <img src={image} className="register_eating_item_icon" />
-            <span className="register_eating_item_label">{name}</span>
-          </div>
+        {props.registerData.ignore_cuisine_ids.map(({ id, name, checked, image }) => (
+          <label className="register_eating_label">
+            <input 
+              name="register_eating_item" 
+              type="checkbox"
+              checked={checked}
+              onChange={e => changeCuisineState(id, e.target.checked)}
+            />
+
+            <div key={id} className="register_eating_item">
+              <img src={image} className="register_eating_item_icon" />
+              <span className="register_eating_item_label">{name}</span>
+            </div>
+          </label>
         ))}
       </div>
 

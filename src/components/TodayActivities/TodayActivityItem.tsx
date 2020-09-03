@@ -11,29 +11,25 @@ export type ItemProps = {
 };
 
 const TodayActivityItem = ({
-  icon,
+  icon: Icon,
   active,
   disabled,
   text,
-}: ItemProps) => {
-  const Icon = icon;
-
-  return (
-    <div
-      className={classnames('today-activities-activity-card', {
-        active,
-        disabled,
-      })}
-    >
-      <span className='today-activities-activity-card-checkmark' />
-      <span className='today-activities-activity-card-icon-wrap'>
-        <Icon className='today-activities-activity-card-icon' />
-      </span>
-      <h6 className='today-activities-activity-card-title'>
-        {text}
-      </h6>
-    </div>
-  );
-};
+}: ItemProps) => (
+  <div
+    className={classnames('today-activities-activity-card', {
+      active,
+      disabled,
+    })}
+  >
+    <span className='today-activities-activity-card-checkmark' />
+    <span className='today-activities-activity-card-icon-wrap'>
+      <Icon className='today-activities-activity-card-icon' />
+    </span>
+    <h6 className='today-activities-activity-card-title'>
+      {text}
+    </h6>
+  </div>
+);
 
 export default TodayActivityItem;

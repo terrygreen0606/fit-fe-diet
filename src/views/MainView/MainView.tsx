@@ -5,7 +5,6 @@ import Helmet from 'react-helmet';
 import { getTranslate } from 'utils';
 
 import WithTranslate from 'components/hoc/WithTranslate';
-import Breadcrumb from 'components/Breadcrumb';
 
 const MainView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
@@ -15,9 +14,6 @@ const MainView = (props: any) => {
       <Helmet>
         <title>{t('app.title.main')}</title>
       </Helmet>
-      <div className='container'>
-        <Breadcrumb currentPage={t('breadcrumb.main')} />
-      </div>
     </>
   );
 };

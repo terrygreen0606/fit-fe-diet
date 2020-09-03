@@ -11,7 +11,7 @@ export const costCategoryOptions = [
     value: 3,
     label: '$$$',
   },
-]
+];
 
 export const servingOptions = [
   {
@@ -37,14 +37,14 @@ export const servingOptions = [
 ];
 
 export const colourStylesSelect = {
-  control: styles => ({
+  control: (styles) => ({
     ...styles,
     padding: '15px',
     border: '1px solid #c6c6c6',
     borderRadius: '5px',
     transition: 'all 0.2s ease',
     ':hover': {
-      border: '1px solid #474747'
-    }
+      border: '1px solid #474747',
+    },
   }),
 };

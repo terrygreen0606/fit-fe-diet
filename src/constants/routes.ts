@@ -2,6 +2,7 @@ export const MAIN = 'Home';
 export const TRAININGS = 'Trainings';
 export const NUTRITION_PLAN = 'Nutrition plan';
 export const NUTRITION_PLAN_WEIGHTS = 'Nutrition plan weights';
+export const SHOPPING_LIST = 'Shopping list';
 export const RECIPE_CREATE = 'Create recipe';
 export const MEAL_PLAN_LIST = 'Meal plan list';
 export const RECIPES = 'Recipes';
@@ -24,6 +25,7 @@ export const routes = {
   [TRAININGS]: '/trainings',
   [NUTRITION_PLAN]: '/nutrition/plan',
   [NUTRITION_PLAN_WEIGHTS]: '/nutrition/plan/weights',
+  [SHOPPING_LIST]: '/shopping-list',
   [RECIPE_CREATE]: '/recipe/create',
   [MEAL_PLAN_LIST]: '/meal-plan/list',
   [RECIPES]: '/recipes',

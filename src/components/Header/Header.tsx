@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
@@ -12,14 +12,49 @@ import Button from 'components/common/Forms/Button';
 import './Header.sass';
 
 import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon.svg';
+import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-icon.svg';
 
 const Header = (props: any) => {
-  const { isAuthenticated } = props;
+  const {
+    isAuthenticated,
+    popup,
+    setPopup,
+    location,
+  } = props;
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const toggleSideMenu = () => {
     document.body.classList.toggle('mobile-menu-opened');
   };
+
+  const outsideCLickListener = (e) => {
+    const popupEl = document.querySelector('.popup');
+    const shoppingCartEl = document.querySelector('.shopping_cart');
+    let targetElement = e.target; // clicked element
+
+    do {
+      if (targetElement === popupEl || targetElement === shoppingCartEl) {
+        // This is a click inside. Do nothing, just return.
+        return;
+      }
+      // Go up the DOM
+      targetElement = targetElement.parentNode;
+    } while (targetElement);
+
+    // This is a click outside.
+    if (isAuthenticated) setPopup(false);
+  };
+
+  const openShopListPopupHandler = () => {
+    if (!location.pathname.includes('shopping-list')) setPopup(!popup);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', outsideCLickListener, true);
+    return () => {
+      document.removeEventListener('click', outsideCLickListener, true);
+    };
+  }, []);
 
   return (
     <>
@@ -55,6 +90,14 @@ const Header = (props: any) => {
                 </NavLink>
 
                 <NavLink
+                  to='/shopping-list'
+                  className='mainHeader_menuList_item'
+                  activeClassName='mainHeader_menuList_item_active'
+                >
+                  {t('recipe.saved.shopping_list')}
+                </NavLink>
+
+                <NavLink
                   to='/recipes'
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
@@ -77,6 +120,14 @@ const Header = (props: any) => {
                 >
                   {t('nutrition.title')}
                 </NavLink>
+
+                <span
+                  role='presentation'
+                  className='mainHeader_menuList_item shopping_cart'
+                  onClick={openShopListPopupHandler}
+                >
+                  <ShoppingCartIcon className='mainHeader_menuList_item_icon' />
+                </span>
 
                 {isAuthenticated ? (
                   <span
@@ -102,6 +153,7 @@ const Header = (props: any) => {
                   </>
                 )}
               </nav>
+
             </div>
           </div>
         </div>

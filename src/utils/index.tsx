@@ -18,3 +18,4 @@ export * from './initGoogleAuth';
 export * from './openShareLink';
 export * from './validateFieldOnChange';
 export * from './wait';
+export * from './getVideo';
