@@ -7,6 +7,7 @@ import Helmet from 'react-helmet';
 import { routes, MAIN } from 'constants/routes';
 import { getTranslate } from 'utils';
 import { steps } from './steps';
+import { userUpdateMealSettings } from 'api';
 
 // Components
 import ProfileLayout from 'components/hoc/ProfileLayout';
@@ -14,6 +15,9 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import Button from 'components/common/Forms/Button';
 import Progress from './Progress';
+import SelectInput from 'components/common/Forms/SelectInput';
+import InputField from 'components/common/Forms/InputField';
+import CustomSwitch from 'components/common/Forms/CustomSwitch';
 
 import './SettingsChangeMealPlanView.sass';
 
@@ -21,7 +25,6 @@ import './SettingsChangeMealPlanView.sass';
 import { ReactComponent as LoseWeightIcon } from 'assets/img/icons/lose-weight-icon.svg';
 import { ReactComponent as KeepWeightIcon } from 'assets/img/icons/keep-weight-icon.svg';
 import { ReactComponent as LiftWeightIcon } from 'assets/img/icons/lift-weight-icon.svg';
-import { ReactComponent as CloseIcon } from 'assets/img/icons/close-icon.svg';
 import { ReactComponent as BreakfastIcon } from 'assets/img/icons/breakfast-icon.svg';
 import { ReactComponent as LunchIcon } from 'assets/img/icons/lunch-icon.svg';
 import { ReactComponent as DinnerIcon } from 'assets/img/icons/dinner-icon.svg';
@@ -34,6 +37,17 @@ const SettingsChangeMealPlanView = (props: any) => {
     getTranslate(props.localePhrases, code, placeholders);
 
   const [activeStep, setActiveStep] = useState(steps.goal);
+
+  const [sex] = useState([
+    {
+      value: 'm',
+      label: t('meal_plan.form.male'),
+    },
+    {
+      value: 'f',
+      label: t('meal_plan.form.female'),
+    },
+  ]);
 
   return (
     <>
@@ -135,25 +149,39 @@ const SettingsChangeMealPlanView = (props: any) => {
               <div className='change-meal-plan__metrics-item-desc'>
                 {t('mp.metrics.sex')}
               </div>
-              <div className='change-meal-plan__metrics-item-value'>Male</div>
+              <div className='change-meal-plan__metrics-item-value'>
+                <SelectInput
+                  options={sex}
+                  placeholder='Male'
+                  onChange={() => { }}
+                />
+              </div>
             </div>
             <div className='change-meal-plan__metrics-item'>
               <div className='change-meal-plan__metrics-item-desc'>
                 {t('mp.metrics.age')}
               </div>
-              <div className='change-meal-plan__metrics-item-value'>33</div>
+              <div className='change-meal-plan__metrics-item-value'>
+                <InputField type='number' />
+              </div>
             </div>
             <div className='change-meal-plan__metrics-item'>
               <div className='change-meal-plan__metrics-item-desc'>
                 {t('mp.metrics.height')}
               </div>
-              <div className='change-meal-plan__metrics-item-value'>170 cm</div>
+              <div className='change-meal-plan__metrics-item-value'>
+                <InputField type='number' />
+                {t('common.cm')}
+              </div>
             </div>
             <div className='change-meal-plan__metrics-item'>
               <div className='change-meal-plan__metrics-item-desc'>
                 {t('mp.metrics.weight')}
               </div>
-              <div className='change-meal-plan__metrics-item-value'>56 kg</div>
+              <div className='change-meal-plan__metrics-item-value'>
+                <InputField type='number' />
+                <CustomSwitch label1={t('common.pound')} label2={t('common.kg')} />
+              </div>
             </div>
           </div>
           <div className='change-meal-plan__btn-wrap'>
@@ -186,20 +214,24 @@ const SettingsChangeMealPlanView = (props: any) => {
           </div>
           <div className='change-meal-plan__not-eating'>
             {notEating.map((item) => (
-              <div key={item.id} className='change-meal-plan__not-eating-item'>
-                <div className='change-meal-plan__not-eating-item-media'>
-                  {item.icon}
-                </div>
-                <div className='change-meal-plan__not-eating-item-desc'>
-                  {item.title}
-                </div>
-                <button
-                  type='button'
-                  className='change-meal-plan__not-eating-item-close'
+              <label className='change-meal-plan__not-eating-label'>
+                <input
+                  name='not-eating'
+                  type='checkbox'
+                  className='change-meal-plan__not-eating-input'
+                />
+                <div
+                  key={item.id}
+                  className='change-meal-plan__not-eating-item'
                 >
-                  <CloseIcon />
-                </button>
-              </div>
+                  <div className='change-meal-plan__not-eating-item-media'>
+                    {item.icon}
+                  </div>
+                  <div className='change-meal-plan__not-eating-item-desc'>
+                    {item.title}
+                  </div>
+                </div>
+              </label>
             ))}
           </div>
           <div className='change-meal-plan__btn-wrap'>

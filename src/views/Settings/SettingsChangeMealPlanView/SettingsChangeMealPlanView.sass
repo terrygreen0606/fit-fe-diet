@@ -59,6 +59,9 @@
               svg
                 path
                   fill: $white
+                
+                circle
+                  stroke: $white
 
       &-btn
         display: flex
@@ -86,11 +89,16 @@
             path
               transition: fill 0.2s ease
 
+            circle
+              transition: stroke 0.2s ease
+
   &__metrics
     display: flex
     flex-wrap: wrap
+    margin-bottom: 40px
 
     &-item
+      position: relative
       display: flex
       align-items: center
       justify-content: center
@@ -99,16 +107,79 @@
 
       @media (max-width: 767px)
         flex-basis: 100%
+        justify-content: flex-start
 
       &-desc
+        min-width: 74px
         max-width: 90px
-        margin-right: 60px
+        margin-right: 30px
         font-size: 20px
         text-align: right
 
       &-value
+        display: flex
+        align-items: center
         font-size: 20px
         font-weight: bold
+
+        .fgSelectControl
+          width: 90px
+          padding: 0 0 0 12px
+          min-height: initial !important
+          font-size: 20px
+          font-weight: bold
+          border-color: transparent
+          border-bottom: 1px solid $black
+          border-radius: 0 !important
+
+          & > div
+            padding: 0
+
+            & > div
+              color: $black
+
+        .fgSelectControl:hover:not(.fgSelectControl_readonly):not(.fgSelectControl_disabled)
+          border-color: transparent
+          border-bottom: 1px solid $black
+
+        .fgSelectIndicatorsContainer
+          & > div
+            width: initial
+            height: initial
+          
+        .fgSelectMenu
+          width: 100%
+          font-size: 16px
+        
+        .fg-input
+          width: 90px
+          padding: 0 10px
+          text-align: center
+          border: none
+          border-bottom: 1px solid $black
+          border-radius: 0
+
+        .customSwitch
+          position: absolute
+          top: 50%
+          transform: translateY(-50%)
+          right: -30px
+
+          @media (max-width: 1599px)
+            top: calc(100% + 10px)
+            transform: none
+            left: 80px
+            right: initial
+
+          @media (max-width: 767px)
+            position: initial
+            left: initial
+            transform: initial
+            margin-left: 10px
+
+          &_mark_text
+            width: 64px
+            padding: 7px 0
 
   &__not-eating
     display: flex
@@ -118,41 +189,48 @@
     @media (max-width: 767px)
       justify-content: center
 
+    &-label
+      margin-bottom: 30px
+
+    &-input
+      position: absolute
+      width: 0
+      height: 0
+      visibility: hidden
+      opacity: 0
+
+      &:checked 
+        & + .change-meal-plan__not-eating-item
+          background-color: #FF3D00
+          border: 1px solid #FF3D00
+
+          .change-meal-plan__not-eating-item-desc
+            color: $white
+
     &-item
       display: flex
       align-items: center
       margin-right: 20px
-      margin-bottom: 30px
       padding: 10px
       border: 1px solid $steel-blue
       border-radius: 5px
+      cursor: pointer
+      transition: background-color 0.2s, border 0.2s ease
 
       &-media
         margin-right: 12px
+        max-height: 25px
+
+        svg
+          max-width: 100%
+          height: auto
 
       &-desc
         margin-right: 12px
+        font-family: Montserrat
         font-size: 20px
         line-height: 1.2
-
-      &-close
-        padding: 0
-        background-color: transparent
-        border: none
-        cursor: pointer
-
-        &:hover
-          svg
-            path
-              fill: lighten($black, 30%)
-
-        svg
-          width: 12px
-          height: 12px
-
-          path
-            fill: $black
-            transition: fill 0.2s ease
+        transition: color 0.2s ease
 
   &__desiases
     display: flex
@@ -178,11 +256,11 @@
         visibility: hidden
 
         &:checked
-         & + .change-meal-plan__desiases-item-desc
-          font-weight: bold
-          color: $white
-          background-color: $steel-blue
-          border: 1px solid $steel-blue
+          & + .change-meal-plan__desiases-item-desc
+            font-weight: bold
+            color: $white
+            background-color: $steel-blue
+            border: 1px solid $steel-blue
 
       &-desc
         padding: 26px 20px

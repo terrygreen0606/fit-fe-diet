@@ -22,3 +22,4 @@ export * from './user/getUserWeightPrediction';
 export * from './user/deleteFamilyMembers';
 export * from './user/getUserSettings';
 export * from './shoppingList';
+export * from './user/userUpdateMealSettings';
