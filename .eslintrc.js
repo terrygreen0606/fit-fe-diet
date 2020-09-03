@@ -16,5 +16,8 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/self-closing-comp': 'off',
     'implicit-arrow-linebreak': 'off',
+    'no-param-reassign': 'off',
+    'consistent-return': 'off',
+    'jsx-a11y/label-has-associated-control': 'off',
   },
 };
