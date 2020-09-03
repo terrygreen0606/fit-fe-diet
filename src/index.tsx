@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import chartConfig from 'utils/chartConfig';
 
 import App from './App';
 
@@ -10,6 +11,9 @@ import * as serviceWorker from './serviceWorker';
 import configureStore from './store/store';
 
 const store = configureStore();
+
+chartConfig();
+
 
 ReactDOM.render(
   <Provider store={store}>

@@ -3,7 +3,7 @@
 
 .registerModal
   max-width: 1120px !important
-  height: 700px
+  height: 750px
   .dialogHeader
     display: none
   &_main
@@ -12,11 +12,11 @@
     padding: 0 !important
     padding-right: 70px !important
   &_steps_content
-    flex: 0 0 500px
-    max-height: calc(700px - 50px - 37px)
+    flex: 0 0 520px
+    max-height: calc(100% - 50px - 37px)
     margin: 50px 0 37px
-    padding-right: 20px
-    overflow: auto
+    overflow-y: auto
+    overflow-x: hidden
     +scrollStyle(5px)
   .dialogHeader
     padding: 0
@@ -128,6 +128,15 @@
       .register_eating_item
         margin-right: 19px
         margin-bottom: 24px
+    &_label
+      cursor: pointer
+      input
+        display: none
+        &:checked ~ .register_eating_item
+          font-weight: bold
+          color: #fff
+          border-color: $steel-blue
+          background-color: $steel-blue
     &_item
       display: inline-flex
       align-items: center
@@ -146,7 +155,13 @@
       &_icon
         margin-right: 10px
         height: 24px
-
+      &:hover
+        box-shadow: 3px 4px 26px -9px $caribbean-green
+      &.active
+        font-weight: bold
+        color: #fff
+        border-color: $steel-blue
+        background-color: $steel-blue
   &_info
     &_form
       .fgLabel
@@ -156,8 +171,11 @@
         flex: 0 0 100px
         margin: 0 10px
       .fgLabel
-        flex: auto
+        flex: 0 0 auto
         margin: 0
+        padding: 0
+        &:last-child
+          flex: 0 0 50px
     &_fg_weight
       .fgLabel
         margin: 0
