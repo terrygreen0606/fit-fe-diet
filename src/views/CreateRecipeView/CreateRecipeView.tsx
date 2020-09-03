@@ -286,7 +286,7 @@ const CreateRecipeView = (props: any) => {
             cuisine: [],
             imageIds: [],
             servingsCnt: null,
-            time: null,
+            time: 1,
             totalWeight: 0,
             costLevel: null,
             videoUrl: '',
