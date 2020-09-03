@@ -71,7 +71,10 @@ const RegisterView = (props: any) => {
           setRegisterData({
             ...registerData,
             tpl_signup: response.data.data.tpl || null,
-            ignore_cuisine_ids: response.data.data.cuisines || [],
+            ignore_cuisine_ids: response.data.data.cuisines.map(cuisine => ({
+              ...cuisine,
+              checked: false
+            })) || [],
             diseases: response.data.data.diseases.map(disease => ({
               ...disease,
               checked: false

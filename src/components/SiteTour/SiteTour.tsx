@@ -9,12 +9,18 @@ import Step, { StepProps } from './Step';
 import './SiteTour.sass';
 
 type SiteTourProps = {
+  className?: string,
   data: StepProps[],
   onAction: (any) => void,
   localePhrases: [],
 };
 
-const SiteTour = ({ data, onAction, localePhrases }: SiteTourProps) => {
+const SiteTour = ({
+  data,
+  onAction,
+  localePhrases,
+  className,
+}: SiteTourProps) => {
   const [step, setStep] = useState(1);
 
   const t = (code: string, placeholders?: any) => getTranslate(
@@ -30,7 +36,7 @@ const SiteTour = ({ data, onAction, localePhrases }: SiteTourProps) => {
   );
 
   return (
-    <section className={classnames('container quick_tour_sect', {
+    <section className={classnames('container quick_tour_sect', className, {
       slide_4: step === 4,
     })}
     >

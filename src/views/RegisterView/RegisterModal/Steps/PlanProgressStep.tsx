@@ -5,6 +5,7 @@ import { getUserWeightPrediction } from 'api';
 
 // Components
 import LinearPreloader from 'components/common/LinearPreloader';
+import LinearProgress from 'components/common/LinearProgress';
 
 const PlanProgressStep = (props: any) => {
 
@@ -71,8 +72,10 @@ const PlanProgressStep = (props: any) => {
       <h5 className="mb-2 mb-xl-5 fw-regular">{t('register.plan_progress_title')}</h5>
 
       <span className="site-logo mb-2 mb-xl-4" />
+
+      <LinearProgress />
       
-      <LinearPreloader />
+      {/*<LinearPreloader />*/}
       
       <br/>
 

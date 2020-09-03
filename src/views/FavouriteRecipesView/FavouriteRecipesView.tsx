@@ -30,9 +30,11 @@ const FavouriteRecipesView = (props: any) => {
   const [isOpenMealList, setOpenMealList] = useState(false);
   const [isOpenCalendarList, setOpenCalendarList] = useState(false);
 
-  const t = (code: string, placeholders?: any) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    getTranslate(props.localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) => getTranslate(
+    props.localePhrases,
+    code,
+    placeholders,
+  );
 
   return (
     <>

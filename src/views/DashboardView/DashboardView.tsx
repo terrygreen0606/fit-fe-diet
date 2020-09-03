@@ -34,9 +34,11 @@ import './DashboardView.sass';
 import { data, labels } from './mockDatasChart';
 
 const DashboardView = (props: any) => {
-  const t = (code: string, placeholders?: any) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    getTranslate(props.localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) => getTranslate(
+    props.localePhrases,
+    code,
+    placeholders,
+  );
 
   return (
     <>
@@ -185,7 +187,7 @@ const DashboardView = (props: any) => {
                   </span>
                 </div>
                 <div className='dashboard__cards-item_workout-description-play'>
-                  <div className='dashboard__cards-item_workout-description-play-duration'></div>
+                  <div className='dashboard__cards-item_workout-description-play-duration' />
                   <a
                     href='/'
                     className='dashboard__cards-item_workout-description-play-button'

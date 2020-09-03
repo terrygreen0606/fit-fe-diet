@@ -27,8 +27,11 @@ const FoodPlanView = (props: any) => {
   const [curDay, setCurDay] = useState('wed');
   const activeWeek = weeks[week];
 
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) => getTranslate(
+    props.localePhrases,
+    code,
+    placeholders,
+  );
 
   const dynamicTabs = () => {
     if (plan === 'daily') {
@@ -134,9 +137,7 @@ const FoodPlanView = (props: any) => {
                 <div
                   className={classnames(
                     'd-flex flex-column choose_plan_item daily mr-0',
-                    {
-                      active: plan === 'daily',
-                    }
+                    { active: plan === 'daily' },
                   )}
                 >
                   <span className='choose_plan_item_checkmark' />

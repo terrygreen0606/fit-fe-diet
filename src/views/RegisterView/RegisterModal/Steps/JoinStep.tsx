@@ -83,7 +83,7 @@ const JoinStep = (props: any) => {
 
     return {
       ...userProfileData,
-      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id),
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.filter(cuisine => cuisine.checked).map(cuisine => cuisine.id),
       diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code)
     };
   };
@@ -284,6 +284,7 @@ const JoinStep = (props: any) => {
           <InputField
             block
             name='name'
+            isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
             value={registerData.name}
             data-validate='["required"]'
             onChange={(e) => validateOnChange('name', e.target.value, e)}
@@ -301,6 +302,7 @@ const JoinStep = (props: any) => {
             block
             name='email'
             value={registerData.email}
+            isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
             data-validate={`["email"${
               socialRegister === 'email' ? ', "required"' : ''
             }]`}
@@ -316,6 +318,7 @@ const JoinStep = (props: any) => {
             block
             name='password'
             type='password'
+            isValid={getFieldErrors('password').length === 0 && registerData.password.length > 0}
             value={registerData.password}
             data-validate={`[${
               socialRegister === 'email' ? '"required"' : ''
@@ -331,7 +334,6 @@ const JoinStep = (props: any) => {
             className="registerBtn"
             style={{ maxWidth: '355px' }}
             type="submit"
-            onClick={e => setSocialRegister('email')}
             block
             size="lg"
             color="primary"

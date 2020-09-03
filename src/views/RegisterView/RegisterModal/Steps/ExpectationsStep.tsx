@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { getTranslate } from 'utils';
 import moment from 'moment';
+import Chart from 'chart.js';
 
 // Components
 import LineChart from 'components/common/charts/LineChart';
@@ -62,7 +63,34 @@ const chartOptions = {
 
     }]
   },
-  responsive: true
+  responsive: true,
+  showAllTooltips: true,
+  tooltips: {
+    filter: (tooltipItem, data) => {
+      const label = data.labels[tooltipItem.index];
+      
+      if (tooltipItem.index === 1 || tooltipItem.index === 3) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    backgroundColor: '#FFF',
+    titleFontFamily: 'Montserrat',
+    titleFontSize: 14,
+    titleFontColor: '#000',
+    titleFontStyle: '500',
+    caretSize: 0,
+    caretPadding: 25,
+    position: 'average',
+    bodyFontStyle: 'bold',
+    titleAlign: 'center',
+    bodyFontColor: '#000',
+    bodyFontFamily: 'Montserrat',
+    bodyAlign: 'center',
+    bodyFontSize: 14,
+    displayColors: false,
+  }
 };
 
 const ExpectationsStep = (props: any) => {
@@ -115,6 +143,13 @@ const ExpectationsStep = (props: any) => {
     return `${monthLocale} ${moment(new Date(predicted_date * 1000)).format('DD')}`;
   };
 
+  const getShortDate = (dateStr: string) => {
+    let monthLocale = new Date(dateStr).toLocaleString(window.navigator.language, { month: 'short' });
+    monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
+
+    return `${moment(new Date(dateStr)).format('DD')} ${monthLocale}`;
+  };
+
   const { weight, weight_goal, predicted_date } = props.registerData;
 
   return (
@@ -133,7 +168,32 @@ const ExpectationsStep = (props: any) => {
               data: getChartData()
             }]
           }}
-          options={chartOptions}
+          options={{
+            ...chartOptions,
+            tooltips: {
+              ...chartOptions.tooltips,
+              callbacks: {
+                title: function(tooltipItem, data) {
+                  if (tooltipItem.length > 0) {
+                    if (tooltipItem[0].index === 1 || tooltipItem[0].index === 3) {
+                      return getShortDate(tooltipItem[0].label);
+                    } else {
+                      return null;
+                    }
+                  } else {
+                    return null;
+                  }
+                },
+                label: function(tooltipItem, data) {
+                  if (tooltipItem.index === 1 || tooltipItem.index === 3) {
+                    return `${tooltipItem.value} ${t('common.kg')}`;
+                  } else {
+                    return null;
+                  }
+                }
+              },
+            }
+          }}
         />
       </div>
 
