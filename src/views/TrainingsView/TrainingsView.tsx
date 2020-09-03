@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-curly-newline */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable @typescript-eslint/indent */
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 
@@ -11,7 +9,7 @@ import TrainingCard from 'components/TrainingCard';
 import TodayActivities from 'components/TodayActivities';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
-import { getTranslate } from 'utils';
+import { getTranslate, getImagePath } from 'utils';
 import Breadcrumb from 'components/Breadcrumb';
 
 import { ReactComponent as RewardImage } from 'assets/img/reward-img.svg';
@@ -21,7 +19,6 @@ import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-ico
 import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
 import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
 import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
-import WomanGymImage from 'assets/img/woman_ball_gym.png';
 
 import {
   dataForWeekWorkout,
@@ -32,7 +29,6 @@ import {
 import './TrainingsView.sass';
 
 const TrainingsView: React.FC = (props: any) => {
-  const [level, setLevel] = useState(0);
   const [weekWorkout, setWeekWorkout] = useState('wed');
   const [todayActivities, setTodayActivities] = useState(['workout_add']);
 
@@ -126,7 +122,7 @@ const TrainingsView: React.FC = (props: any) => {
                   {Array.from({ length: 8 }, (_, index) => (
                     <TrainingCard
                       key={index}
-                      image={WomanGymImage}
+                      image={getImagePath('woman_ball_gym.png')}
                       text='Intermediate level 1'
                       time={t('common.minutes', { number: 16 })}
                     />

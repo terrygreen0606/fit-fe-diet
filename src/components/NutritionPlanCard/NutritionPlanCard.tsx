@@ -1,9 +1,9 @@
 import React from 'react';
+import { getImagePath } from 'utils';
 
 import './NutritionPlanCard.sass';
 
 import { ReactComponent as ReloadIcon } from 'assets/img/icons/reload-icon.svg';
-import NutritionPlanPreviewImage from 'assets/img/nutrition-plan-preview-img.jpg';
 
 type NutritionPlanCardProps = {
   type: 'active' | 'cross' | 'default',
@@ -20,7 +20,10 @@ const NutritionPlanCard = ({
   type, favorite, mobileStyle,
 }: NutritionPlanCardProps) => (
   <div className={`nutrition-plan-card card-bg ${type} ${mobileStyle}`}>
-    <div className='nutrition-plan-card-image' style={{ backgroundImage: `url(${NutritionPlanPreviewImage})` }} />
+    <div
+      className='nutrition-plan-card-image'
+      style={{ backgroundImage: `url(${getImagePath('nutrition-plan-preview-img.jpg')})` }}
+    />
 
     <div className={`${mobileStyle}-div`}>
       <div className='nutrition-plan-card-head'>

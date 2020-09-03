@@ -43,7 +43,7 @@ const ShoppingListView: React.FC = (props: any) => {
   const [userName, setUserName] = useState(null);
   const [measurement, setMeasurement] = useState(null);
   const [publicShopListUrl, setPublicShopListUrl] = useState(null);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(null);
   const [ingredientId, setIngredientId] = useState<string>('');
   const [ingredientWeight, setIngredientWeight] = useState('');
   const [quantity, setQuantity] = useState(null);
@@ -99,27 +99,25 @@ const ShoppingListView: React.FC = (props: any) => {
     }
   };
 
-  const deleteIngredient = async (item) => {
-    await deleteFromShoppingList(item.id)
-      .catch((error) => toast.error(error.message));
-    await getShoppingList(2)
-      .then((res) => setItems(res.data.data.list))
+  const deleteIngredient = (item) => {
+    setItems((prev) => [
+      ...prev.splice(0, prev.indexOf(item)),
+      ...prev.splice(prev.indexOf(item) + 1),
+    ]);
+
+    deleteFromShoppingList(item.id)
       .catch((error) => toast.error(error.message));
   };
 
-  const onChangeHandler = async (e, item) => {
-    e.persist();
-    e.target.parentElement.style.cursor = 'wait';
-    document.body.style.cursor = 'wait';
+  const onChangeHandler = (e, item) => {
+    if (e.target.checked) {
+      e.target.parentElement.parentElement.classList.add('active');
+    } else {
+      e.target.parentElement.parentElement.classList.remove('active');
+    }
 
-    await setShoppingRowBought(item.id, e.target.checked)
+    setShoppingRowBought(item.id, e.target.checked)
       .catch((error) => toast.error(error.message));
-    await getShoppingList(2)
-      .then((res) => setItems(res.data.data.list))
-      .catch((error) => toast.error(error.message));
-
-    e.target.parentElement.style.cursor = 'pointer';
-    document.body.style.cursor = 'auto';
   };
 
   const namingEditor = (item) => {
@@ -165,7 +163,7 @@ const ShoppingListView: React.FC = (props: any) => {
             >
               <CustomCheckbox
                 label={namingEditor(item)}
-                checked={item.is_bought}
+                defaultChecked={item.is_bought}
                 onChange={(e) => onChangeHandler(e, item)}
                 className='shopping_list_body_sect_item_checkbox'
                 inline
@@ -198,7 +196,7 @@ const ShoppingListView: React.FC = (props: any) => {
             >
               <CustomCheckbox
                 label={namingEditor(item)}
-                checked={item.is_bought}
+                defaultChecked={item.is_bought}
                 onChange={(e) => onChangeHandler(e, item)}
                 className='shopping_list_body_sect_item_checkbox'
                 inline
@@ -242,7 +240,15 @@ const ShoppingListView: React.FC = (props: any) => {
       .then((res) => setPublicShopListUrl(res.data.data.url));
   }, []);
 
-  if (!items.length) return <Spinner color='#0FC1A1' />;
+  useEffect(() => {
+    const actives = document.querySelectorAll('.shopping_list_body_sect_item.active');
+
+    actives.forEach((item) => {
+      item.querySelector('input').setAttribute('checked', 'checked');
+    });
+  });
+
+  if (!items) return <Spinner color='#0FC1A1' />;
 
   return (
     <>
@@ -316,7 +322,9 @@ const ShoppingListView: React.FC = (props: any) => {
                           className='sharing_socials_item'
                           disabled={!items || !items.length}
                           onClick={() => openShareLink(
-                            `https://www.facebook.com/sharer/sharer.php?u=${publicShopListUrl}&t=${t('shop_list.sharing')}`,
+                            `https://www.facebook.com/sharer/sharer.php?u=${publicShopListUrl}&t=${
+                              t('shop_list.sharing')
+                            }`,
                           )}
                         >
                           <FacebookLogo />
@@ -348,7 +356,7 @@ const ShoppingListView: React.FC = (props: any) => {
               </div>
 
               <div className='shopping_list_body'>
-                {renderItems()}
+                { items.length ? renderItems() : t('shopping_list.empty') }
               </div>
 
               <div className='shopping_list_footer'>

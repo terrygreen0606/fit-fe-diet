@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { getTranslate } from 'utils';
+import { getImagePath, getTranslate } from 'utils';
 import { connect } from 'react-redux';
 import { userLogin } from 'store/actions';
 
@@ -27,7 +27,10 @@ const PlanReadyStep = (props: any) => {
 
   return (
     <div className="mt-xl-5 pt-xl-5 text-center">
-      <span className="diet-plan-feature-icon mb-5 d-none d-md-inline-block" style={{ backgroundImage: 'url(https://fitdev.s3.amazonaws.com/assets/pub/images/list-feature.png)' }} />
+      <span
+        className="diet-plan-feature-icon mb-5 d-none d-md-inline-block"
+        style={{ backgroundImage: `url(${getImagePath('features/list-feature.png')})` }}
+      />
 
       <h4 id="register_title_final_welcome" className="register_title mb-xl-4">{t('register.plan_ready_title', { first_name: props.registerData.name })},</h4>
       <h5 className="register_title mt-md-2">{t('register.plan_ready_subtitle')}</h5>
