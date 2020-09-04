@@ -99,6 +99,9 @@
         flex-basis: 100%
         justify-content: flex-start
 
+      @media (max-width: 500px)
+        align-items: flex-start
+
       &-desc
         min-width: 74px
         max-width: 90px
@@ -106,11 +109,17 @@
         font-size: 20px
         text-align: right
 
+        @media (max-width: 500px)
+          margin-right: 15px
+
       &-value
         display: flex
         align-items: center
         font-size: 20px
         font-weight: bold
+
+        @media (max-width: 500px)
+          flex-wrap: wrap
 
         .fgSelectControl
           width: 90px
@@ -155,6 +164,12 @@
           &::-webkit-outer-spin-button,
           &::-webkit-inner-spin-button 
             -webkit-appearance: none
+
+        .fgInvalidMsg
+          position: absolute
+          top: 100%
+          right: 0
+          width: max-content
 
         .customSwitch
           position: absolute
@@ -231,36 +246,27 @@
     &-item
       flex-basis: calc(33.33% - 10px)
       margin-bottom: 20px
+      padding: 26px 20px
+      text-align: center
+      font-size: 20px
+      line-height: 1.2
+      background-color: transparent
+      border: 1px solid $black
+      border-radius: 5px
+      transition: color 0.2s, background-color 0.2s, border 0.2s, font-weight 0.2s ease
+      cursor: pointer
+
+      &:hover, &.active
+        font-weight: bold
+        color: $white
+        background-color: $steel-blue
+        border: 1px solid $steel-blue
 
       @media (max-width: 767px)
         flex-basis: calc(50% - 10px)
 
       @media (max-width: 500px)
         flex-basis: 100%
-
-      &-checkbox
-        position: absolute
-        width: 0
-        height: 0
-        opacity: 0
-        visibility: hidden
-
-        &:checked
-          & + .change-meal-plan__desiases-item-desc
-            font-weight: bold
-            color: $white
-            background-color: $steel-blue
-            border: 1px solid $steel-blue
-
-      &-desc
-        padding: 26px 20px
-        text-align: center
-        font-size: 20px
-        line-height: 1.2
-        border: 1px solid $black
-        border-radius: 5px
-        transition: color 0.2s, background-color 0.2s, border 0.2s, font-weight 0.2s ease
-        cursor: pointer
 
   &__meals-item
     display: flex

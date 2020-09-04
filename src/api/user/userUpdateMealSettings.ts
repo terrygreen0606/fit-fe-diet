@@ -1,8 +1,8 @@
 import axios from 'utils/axios';
 
 export const userUpdateMealSettings = (
-  measurement: 'si' | 'us',
-  gender?: 'm' | 'f',
+  measurement: 'si' | 'us' | string,
+  gender?: 'm' | 'f' | string,
   age?: number,
   height?: string, // centimeters/feet,inch
   weight?: number, // kilograms/pounds 30..999
