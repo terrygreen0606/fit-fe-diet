@@ -27,7 +27,7 @@ const RegisterModal = (props: RegisterModalProps) => {
 
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
   const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
-  const [registerView, setRegisterView] = useState<RegisterViewType>('JOIN');
+  const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
 
   useEffect(() => {
     let currentRegisterStep: 0 | 1 | 2 = null;
