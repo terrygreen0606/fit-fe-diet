@@ -54,7 +54,11 @@ const InfoStep = (props: any) => {
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerInfoErrors);
+    getFieldErrorsUtil(field, registerInfoErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
