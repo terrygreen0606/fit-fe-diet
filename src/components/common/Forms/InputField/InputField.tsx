@@ -13,7 +13,7 @@ import FormInvalidMessage from '../FormInvalidMessage';
 import './InputField.sass';
 
 interface InputFieldProps {
-  type?: 'text' | 'number' | 'password' | 'money' | 'percent' | 'textarea',
+  type?: 'text' | 'number' | 'password' | 'money' | 'percent' | 'textarea' | 'radio',
   name?: string,
   label?: string,
   value?: string | number,

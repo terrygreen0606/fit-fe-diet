@@ -1,13 +1,19 @@
 /* eslint-disable import/order */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import classnames from 'classnames';
 
 import { routes, MAIN } from 'constants/routes';
-import { getTranslate } from 'utils';
+import {
+  validateFieldOnChange,
+  getFieldErrors as getFieldErrorsUtil,
+  getTranslate,
+} from 'utils';
 import { steps } from './steps';
-import { userUpdateMealSettings } from 'api';
+import { userUpdateMealSettings, getRecipeCuisines, getDiseases } from 'api';
+import FormValidator from 'utils/FormValidator';
 
 // Components
 import ProfileLayout from 'components/hoc/ProfileLayout';
@@ -36,9 +42,7 @@ const SettingsChangeMealPlanView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
-  const [activeStep, setActiveStep] = useState(steps.goal);
-
-  const [sex] = useState([
+  const [gender] = useState([
     {
       value: 'm',
       label: t('meal_plan.form.male'),
@@ -48,6 +52,58 @@ const SettingsChangeMealPlanView = (props: any) => {
       label: t('meal_plan.form.female'),
     },
   ]);
+
+  const [activeStep, setActiveStep] = useState(steps.goal);
+
+  const [cuisinesList, setCuisinesList] = useState([]);
+
+  const [diseasesList, setDiseasesList] = useState([]);
+
+  const [updateChangeMealForm, setUpdateChangeMealForm] = useState({
+    measurement: null,
+    gender: '',
+    age: null,
+    height: '',
+    weight: null,
+    goal: null,
+    ignore_cuisine_ids: [],
+    diseases: [],
+  });
+
+  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
+
+  const validateOnChange = (name: string, value: any, event, element?) => {
+    validateFieldOnChange(
+      name,
+      value,
+      event,
+      updateChangeMealForm,
+      setUpdateChangeMealForm,
+      createRecipeErrors,
+      setCreateRecipeErrors,
+      element,
+    );
+  };
+
+  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, createRecipeErrors);
+
+  const updateChangeMealSubmit = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+
+    const { errors, hasError } = FormValidator.bulkValidate(inputs);
+
+    setCreateRecipeErrors([...errors]);
+
+    // if (!hasError) { }
+  };
+
+  useEffect(() => {
+    getRecipeCuisines().then((response) => setCuisinesList(response.data.data));
+    getDiseases().then((response) => setDiseasesList(response.data.data));
+  }, []);
 
   return (
     <>
@@ -67,7 +123,10 @@ const SettingsChangeMealPlanView = (props: any) => {
       </div>
       <ProfileLayout>
         {/* {activeStep === steps.goal && ( */}
-        <div className='change-meal-plan card-bg'>
+        <form
+          onSubmit={(e) => updateChangeMealSubmit(e)}
+          className='change-meal-plan card-bg'
+        >
           <Progress
             goal
             goalText={t('mp.progress.goal')}
@@ -79,45 +138,39 @@ const SettingsChangeMealPlanView = (props: any) => {
           />
           <div className='change-meal-plan__title'>{t('mp.goal.title')}</div>
           <div className='change-meal-plan__goals'>
-            <label className='change-meal-plan__goals-item'>
-              <input
-                type='radio'
-                className='change-meal-plan__goals-item-radio'
-                name='goal'
-              />
-              <div className='change-meal-plan__goals-item-btn'>
-                <div className='change-meal-plan__goals-item-btn-media'>
-                  <LoseWeightIcon />
-                </div>
-                <span>{t('mp.goal.lose')}</span>
+            <Button
+              className={classnames('change-meal-plan__goals-item', {
+                active: updateChangeMealForm.goal === -1,
+              })}
+              onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: -1 })}
+            >
+              <div className='change-meal-plan__goals-item-media'>
+                <LoseWeightIcon />
               </div>
-            </label>
-            <label className='change-meal-plan__goals-item'>
-              <input
-                type='radio'
-                className='change-meal-plan__goals-item-radio'
-                name='goal'
-              />
-              <div className='change-meal-plan__goals-item-btn'>
-                <div className='change-meal-plan__goals-item-btn-media'>
-                  <KeepWeightIcon />
-                </div>
-                <span>{t('mp.goal.lift')}</span>
+              <span>{t('mp.goal.lose')}</span>
+            </Button>
+            <Button
+              className={classnames('change-meal-plan__goals-item', {
+                active: updateChangeMealForm.goal === 0,
+              })}
+              onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: 0 })}
+            >
+              <div className='change-meal-plan__goals-item-media'>
+                <KeepWeightIcon />
               </div>
-            </label>
-            <label className='change-meal-plan__goals-item'>
-              <input
-                type='radio'
-                className='change-meal-plan__goals-item-radio'
-                name='goal'
-              />
-              <div className='change-meal-plan__goals-item-btn'>
-                <div className='change-meal-plan__goals-item-btn-media'>
-                  <LiftWeightIcon />
-                </div>
-                <span>{t('mp.goal.lose')}</span>
+              <span>{t('mp.goal.keep')}</span>
+            </Button>
+            <Button
+              className={classnames('change-meal-plan__goals-item', {
+                active: updateChangeMealForm.goal === 1,
+              })}
+              onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: 1 })}
+            >
+              <div className='change-meal-plan__goals-item-media'>
+                <LiftWeightIcon />
               </div>
-            </label>
+              <span>{t('mp.goal.lift')}</span>
+            </Button>
           </div>
           <div className='change-meal-plan__btn-wrap'>
             <Button
@@ -129,7 +182,7 @@ const SettingsChangeMealPlanView = (props: any) => {
               {t('mp.next')}
             </Button>
           </div>
-        </div>
+        </form>
         {/* )} */}
         {/* {activeStep === steps.metrics && ( */}
         <div className='change-meal-plan card-bg'>
@@ -151,9 +204,10 @@ const SettingsChangeMealPlanView = (props: any) => {
               </div>
               <div className='change-meal-plan__metrics-item-value'>
                 <SelectInput
-                  options={sex}
+                  value={gender.find((option) => option.value === updateChangeMealForm.gender)}
+                  options={gender}
                   placeholder='Male'
-                  onChange={() => { }}
+                  onChange={(option, e) => validateOnChange('gender', option.value, e)}
                 />
               </div>
             </div>
@@ -162,7 +216,16 @@ const SettingsChangeMealPlanView = (props: any) => {
                 {t('mp.metrics.age')}
               </div>
               <div className='change-meal-plan__metrics-item-value'>
-                <InputField type='number' />
+                <InputField
+                  type='number'
+                  name='age'
+                  data-param='12, 100'
+                  data-validate='["min-max"]'
+                  value={updateChangeMealForm.age}
+                  onChange={(e) => validateOnChange('age', +e.target.value, e)}
+                  min={12}
+                  max={100}
+                />
               </div>
             </div>
             <div className='change-meal-plan__metrics-item'>
@@ -170,7 +233,11 @@ const SettingsChangeMealPlanView = (props: any) => {
                 {t('mp.metrics.height')}
               </div>
               <div className='change-meal-plan__metrics-item-value'>
-                <InputField type='number' />
+                <InputField
+                  name='height'
+                  value={updateChangeMealForm.height}
+                  onChange={(e) => validateOnChange('height', e.target.value, e)}
+                />
                 {t('common.cm')}
               </div>
             </div>
@@ -179,7 +246,16 @@ const SettingsChangeMealPlanView = (props: any) => {
                 {t('mp.metrics.weight')}
               </div>
               <div className='change-meal-plan__metrics-item-value'>
-                <InputField type='number' />
+                <InputField
+                  type='number'
+                  name='weight'
+                  data-param='30, 999'
+                  data-validate='["min-max"]'
+                  value={updateChangeMealForm.weight}
+                  onChange={(e) => validateOnChange('weight', +e.target.value, e)}
+                  min={30}
+                  max={999}
+                />
                 <CustomSwitch label1={t('common.pound')} label2={t('common.kg')} />
               </div>
             </div>
@@ -213,25 +289,34 @@ const SettingsChangeMealPlanView = (props: any) => {
             {t('mp.not_eating.title')}
           </div>
           <div className='change-meal-plan__not-eating'>
-            {notEating.map((item) => (
-              <label className='change-meal-plan__not-eating-label'>
-                <input
-                  name='not-eating'
-                  type='checkbox'
-                  className='change-meal-plan__not-eating-input'
-                />
-                <div
-                  key={item.id}
-                  className='change-meal-plan__not-eating-item'
-                >
-                  <div className='change-meal-plan__not-eating-item-media'>
-                    {item.icon}
-                  </div>
-                  <div className='change-meal-plan__not-eating-item-desc'>
-                    {item.title}
-                  </div>
+            {cuisinesList.map((item) => (
+              <button
+                key={item.id}
+                type='button'
+                onClick={() => {
+                  if (!item.isActive) {
+                    item.isActive = true;
+                    updateChangeMealForm.ignore_cuisine_ids.push(item.id);
+                  } else {
+                    item.isActive = false;
+                    updateChangeMealForm.ignore_cuisine_ids.find((cuisineItem, cuisineItemIndex) => {
+                      if (cuisineItem === item.id) {
+                        updateChangeMealForm.ignore_cuisine_ids.splice(cuisineItemIndex, 1);
+                      }
+                    });
+                  }
+                }}
+                className={classnames('change-meal-plan__not-eating-item', {
+                  active: item.isActive,
+                })}
+              >
+                <div className='change-meal-plan__not-eating-item-media'>
+                  <img src={item.image} alt='icon' />
                 </div>
-              </label>
+                <div className='change-meal-plan__not-eating-item-desc'>
+                  {item.name}
+                </div>
+              </button>
             ))}
           </div>
           <div className='change-meal-plan__btn-wrap'>
@@ -264,15 +349,15 @@ const SettingsChangeMealPlanView = (props: any) => {
             {t('mp.desiases.title')}
           </div>
           <div className='change-meal-plan__desiases'>
-            {desiases.map((item) => (
-              <label key={item.id} className='change-meal-plan__desiases-item'>
+            {diseasesList.map((item) => (
+              <label key={item.code} className='change-meal-plan__desiases-item'>
                 <input
                   type='checkbox'
                   name='desiase'
                   className='change-meal-plan__desiases-item-checkbox'
                 />
-                <div className='change-meal-plan__desiases-item-desc'>
-                  {item.title}
+                <div className='change-meal-plan__desiases-item-desc' onClick={() => console.log('update', updateChangeMealForm)}>
+                  {t(item.i18n_code)}
                 </div>
               </label>
             ))}
@@ -414,7 +499,7 @@ const SettingsChangeMealPlanView = (props: any) => {
           </div>
           <div className='change-meal-plan__btn-wrap'>
             <Button
-              type='button'
+              type='submit'
               color='primary'
               className='change-meal-plan__btn'
             >
