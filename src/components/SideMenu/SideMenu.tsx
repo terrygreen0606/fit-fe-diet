@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTranslate } from 'utils';
 
@@ -9,12 +10,12 @@ import './SideMenu.sass';
 
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon.svg';
 
-const SideMenu = (props: any) => {
+const SideMenu = ({ localePhrases, isAuthenticated }: any) => {
   const closeSideMenu = () => {
     document.body.classList.remove('mobile-menu-opened');
   };
 
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+  const t = (code: string) => getTranslate(localePhrases, code);
 
   return (
     <>
@@ -53,21 +54,33 @@ const SideMenu = (props: any) => {
           </li>
         </ul>
 
-        <Link
-          to='/login'
-          className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
-        >
-          {t('login.submit')}
-        </Link>
-        <Link
-          to='/login'
-          className='mt-3 bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
-        >
-          {t('button.register')}
-        </Link>
+        {isAuthenticated && (
+          <>
+            <Link
+              to='/login'
+              className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
+            >
+              {t('login.submit')}
+            </Link>
+            <Link
+              to='/register'
+              className='mt-3 bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
+            >
+              {t('button.register')}
+            </Link>
+          </>
+        )}
       </div>
     </>
   );
 };
 
-export default WithTranslate(SideMenu);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      isAuthenticated: state.auth.isAuthenticated,
+    }),
+    null
+  )(SideMenu),
+);
+

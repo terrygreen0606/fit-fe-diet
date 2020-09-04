@@ -162,10 +162,12 @@ const InfoStep = (props: any) => {
                 block
                 height="md"
                 type="number"
-                min={1}
+                min={12}
+                max={100}
+                data-param="12,100"
                 name="age"
                 value={registerData.age}
-                data-validate='["required"]'
+                data-validate='["required", "min-max"]'
                 onChange={(e) => validateOnChange('age', e.target.value, e)}
                 invalid={getFieldErrors('age').length > 0}
                 placeholder=""
@@ -194,7 +196,10 @@ const InfoStep = (props: any) => {
                 invalid={getFieldErrors('height').length > 0}
                 placeholder=""
               />
-              <FormLabel>{t('common.cm')}</FormLabel>
+              <FormLabel>
+                {registerData.measurement === 'us' && t('common.foot')}
+                {registerData.measurement === 'si' && t('common.cm')}
+              </FormLabel>
             </FormGroup>
 
             {getFieldErrors('height').slice(0, 1).map((error, i) => (
@@ -221,7 +226,10 @@ const InfoStep = (props: any) => {
                 invalid={getFieldErrors('weight').length > 0}
                 placeholder=""
               />
-              <FormLabel>{t('common.kg')}</FormLabel>
+              <FormLabel>
+                {registerData.measurement === 'us' && t('common.pound')}
+                {registerData.measurement === 'si' && t('common.kg')}
+              </FormLabel>
             </FormGroup>
 
             {getFieldErrors('weight').slice(0, 1).map((error, i) => (
@@ -246,7 +254,10 @@ const InfoStep = (props: any) => {
                   invalid={getFieldErrors('weight_goal').length > 0}
                   placeholder=""
                 />
-                <FormLabel>{t('common.kg')}</FormLabel>
+                <FormLabel>
+                  {registerData.measurement === 'us' && t('common.pound')}
+                  {registerData.measurement === 'si' && t('common.kg')}
+                </FormLabel>
               </FormGroup>
 
               {getFieldErrors('weight_goal').slice(0, 1).map((error, i) => (
