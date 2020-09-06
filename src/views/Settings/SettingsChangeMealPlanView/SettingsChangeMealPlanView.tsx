@@ -63,10 +63,6 @@ const SettingsChangeMealPlanView = (props: any) => {
 
   const [diseasesList, setDiseasesList] = useState([]);
 
-  const [userSettings, setUserSettings] = useState({
-    measurement: null,
-  });
-
   const [updateChangeMealForm, setUpdateChangeMealForm] = useState({
     measurement: null,
     gender: '',
@@ -108,7 +104,7 @@ const SettingsChangeMealPlanView = (props: any) => {
 
     if (!hasError) {
       userUpdateMealSettings(
-        updateChangeMealForm.measurement = userSettings.measurement,
+        updateChangeMealForm.measurement,
         updateChangeMealForm.gender,
         updateChangeMealForm.age,
         updateChangeMealForm.height,
@@ -124,7 +120,7 @@ const SettingsChangeMealPlanView = (props: any) => {
 
         setUpdateChangeMealForm({
           ...updateChangeMealForm,
-          measurement: userSettings.measurement,
+          measurement: null,
           gender: '',
           age: null,
           height: '',
@@ -165,7 +161,9 @@ const SettingsChangeMealPlanView = (props: any) => {
   useEffect(() => {
     getRecipeCuisines().then((response) => setCuisinesList(response.data.data));
     getDiseases().then((response) => setDiseasesList(response.data.data));
-    getUserSettings().then((response) => setUserSettings(response.data.data));
+    getUserSettings().then((response) => {
+      setUpdateChangeMealForm({ ...updateChangeMealForm, measurement: response.data.data.measurement });
+    });
   }, []);
 
   return (
@@ -326,7 +324,17 @@ const SettingsChangeMealPlanView = (props: any) => {
                     min={30}
                     max={999}
                   />
-                  <CustomSwitch label1={t('common.pound')} label2={t('common.kg')} />
+                  <CustomSwitch
+                    label1={t('common.pound')}
+                    label2={t('common.kg')}
+                    checked={updateChangeMealForm.measurement === 'si'}
+                    onChange={() => {
+                      setUpdateChangeMealForm({
+                        ...updateChangeMealForm,
+                        measurement: updateChangeMealForm.measurement === 'si' ? 'us' : 'si',
+                      });
+                    }}
+                  />
                 </div>
               </div>
             </div>
