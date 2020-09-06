@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
+import { toast } from 'react-toastify';
 
 import { routes, MAIN } from 'constants/routes';
 import {
@@ -12,7 +13,12 @@ import {
   getTranslate,
 } from 'utils';
 import { steps } from './steps';
-import { userUpdateMealSettings, getRecipeCuisines, getDiseases } from 'api';
+import {
+  userUpdateMealSettings,
+  getRecipeCuisines,
+  getDiseases,
+  getUserSettings,
+} from 'api';
 import FormValidator from 'utils/FormValidator';
 
 // Components
@@ -43,11 +49,11 @@ const SettingsChangeMealPlanView = (props: any) => {
   const [gender] = useState([
     {
       value: 'm',
-      label: t('meal_plan.form.male'),
+      label: t('mp.form.male'),
     },
     {
       value: 'f',
-      label: t('meal_plan.form.female'),
+      label: t('mp.form.female'),
     },
   ]);
 
@@ -57,8 +63,12 @@ const SettingsChangeMealPlanView = (props: any) => {
 
   const [diseasesList, setDiseasesList] = useState([]);
 
+  const [userSettings, setUserSettings] = useState({
+    measurement: null,
+  });
+
   const [updateChangeMealForm, setUpdateChangeMealForm] = useState({
-    measurement: 'si',
+    measurement: null,
     gender: '',
     age: null,
     height: '',
@@ -66,6 +76,7 @@ const SettingsChangeMealPlanView = (props: any) => {
     goal: null,
     ignore_cuisine_ids: [],
     diseases: [],
+    meals_cnt: null,
   });
 
   const [updateChangeMeal, setUpdateChangeMealErrors] = useState([]);
@@ -97,7 +108,7 @@ const SettingsChangeMealPlanView = (props: any) => {
 
     if (!hasError) {
       userUpdateMealSettings(
-        updateChangeMealForm.measurement,
+        updateChangeMealForm.measurement = userSettings.measurement,
         updateChangeMealForm.gender,
         updateChangeMealForm.age,
         updateChangeMealForm.height,
@@ -105,11 +116,48 @@ const SettingsChangeMealPlanView = (props: any) => {
         updateChangeMealForm.goal,
         updateChangeMealForm.ignore_cuisine_ids,
         updateChangeMealForm.diseases,
+        updateChangeMealForm.meals_cnt,
       ).then((response) => {
-        console.log('response', response.data.data);
-      }).catch((reject) => {
-        console.log('reject', reject);
-        console.log('updateChangeMealForm', updateChangeMealForm);
+        toast.success(t('mp.form.success'), {
+          autoClose: 3000,
+        });
+
+        setUpdateChangeMealForm({
+          ...updateChangeMealForm,
+          measurement: userSettings.measurement,
+          gender: '',
+          age: null,
+          height: '',
+          weight: null,
+          goal: null,
+          ignore_cuisine_ids: [],
+          diseases: [],
+          meals_cnt: null,
+        });
+
+        const updatedDiseasesList = [];
+
+        diseasesList.map((item) => {
+          item.isActive = false;
+          updatedDiseasesList.push(item);
+        });
+
+        setDiseasesList(updatedDiseasesList);
+
+        const updatedCuisinesList = [];
+
+        cuisinesList.map((item) => {
+          item.isActive = false;
+          updatedCuisinesList.push(item);
+        });
+
+        setCuisinesList(updatedCuisinesList);
+
+        return response.data.data;
+      }).catch(() => {
+        toast.success(t('mp.form.error'), {
+          autoClose: 3000,
+        });
       });
     }
   };
@@ -117,6 +165,7 @@ const SettingsChangeMealPlanView = (props: any) => {
   useEffect(() => {
     getRecipeCuisines().then((response) => setCuisinesList(response.data.data));
     getDiseases().then((response) => setDiseasesList(response.data.data));
+    getUserSettings().then((response) => setUserSettings(response.data.data));
   }, []);
 
   return (
@@ -430,7 +479,10 @@ const SettingsChangeMealPlanView = (props: any) => {
             />
             <div className='change-meal-plan__title'>{t('mp.meals.title')}</div>
             <div className='change-meal-plan__meals'>
-              <div className='change-meal-plan__meals-item card-bg'>
+              <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
+                active: updateChangeMealForm.meals_cnt === 3,
+              })}
+              >
                 <div className='change-meal-plan__meals-item-count'>3</div>
                 <div className='change-meal-plan__meals-item-desc'>
                   {t('mp.meals.desc')}
@@ -455,11 +507,18 @@ const SettingsChangeMealPlanView = (props: any) => {
                     {t('meal.dinner')}
                   </div>
                 </div>
-                <Button type='button' className='change-meal-plan__meals-item-btn'>
+                <Button
+                  type='button'
+                  onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 3 })}
+                  className='change-meal-plan__meals-item-btn'
+                >
                   {t('mp.meals.choose')}
                 </Button>
               </div>
-              <div className='change-meal-plan__meals-item card-bg'>
+              <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
+                active: updateChangeMealForm.meals_cnt === 4,
+              })}
+              >
                 <div className='change-meal-plan__meals-item-count'>4</div>
                 <div className='change-meal-plan__meals-item-desc'>
                   {t('mp.meals.desc')}
@@ -490,11 +549,18 @@ const SettingsChangeMealPlanView = (props: any) => {
                     {t('meal.dinner')}
                   </div>
                 </div>
-                <Button type='button' className='change-meal-plan__meals-item-btn'>
+                <Button
+                  type='button'
+                  onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 4 })}
+                  className='change-meal-plan__meals-item-btn'
+                >
                   {t('mp.meals.choose')}
                 </Button>
               </div>
-              <div className='change-meal-plan__meals-item card-bg'>
+              <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
+                active: updateChangeMealForm.meals_cnt === 5,
+              })}
+              >
                 <div className='change-meal-plan__meals-item-count'>5</div>
                 <div className='change-meal-plan__meals-item-desc'>
                   {t('mp.meals.desc')}
@@ -531,7 +597,11 @@ const SettingsChangeMealPlanView = (props: any) => {
                     {t('meal.dinner')}
                   </div>
                 </div>
-                <Button type='button' className='change-meal-plan__meals-item-btn'>
+                <Button
+                  type='button'
+                  onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 5 })}
+                  className='change-meal-plan__meals-item-btn'
+                >
                   {t('mp.meals.choose')}
                 </Button>
               </div>

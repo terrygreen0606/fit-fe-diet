@@ -9,6 +9,7 @@ export const userUpdateMealSettings = (
   goal?: -1 | 0 | 1, // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight,
   ignore_cuisine_ids?: Array<string>,
   diseases?: Array<string>,
+  meals_cnt?: 3 | 4 | 5,
 ) => axios.put(
   '/user/meal-settings',
   {
@@ -20,5 +21,6 @@ export const userUpdateMealSettings = (
     goal,
     ignore_cuisine_ids,
     diseases,
+    meals_cnt,
   },
 );
