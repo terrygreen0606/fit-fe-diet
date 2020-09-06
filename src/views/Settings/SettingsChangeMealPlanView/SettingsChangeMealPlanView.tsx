@@ -270,7 +270,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                     <SelectInput
                       value={gender.find((option) => option.value === updateChangeMealForm.gender)}
                       options={gender}
-                      placeholder='Male'
+                      placeholder=''
                       onChange={(option, e) => validateOnChange('gender', option.value, e)}
                     />
                   </div>
