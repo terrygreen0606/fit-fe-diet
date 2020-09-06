@@ -36,8 +36,8 @@ const CustomSwitch = (props: CustomSwitchProps) => {
 
   return (
     <label className={classNames(className, 'customSwitch', {
-        'customSwitch_disabled': disabled
-      })}>
+      'customSwitch_disabled': disabled
+    })}>
       <input type="checkbox" checked={checked} onChange={onChange} />
 
       <span className="customSwitch_mark">
