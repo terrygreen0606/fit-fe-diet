@@ -67,12 +67,16 @@ const Header = (props: any) => {
 
             <div className='col-10 text-right'>
               <span className='header-controls'>
-                <Button className='mobile-auth-btn' color='primary' outline>
-                  {t('login.submit')}
-                </Button>
-                <Button className='mobile-auth-btn ml-2 mr-4' color='primary'>
-                  {t('button.sign_up')}
-                </Button>
+                {isAuthenticated && (
+                  <>
+                    <Button className='mobile-auth-btn' color='primary' outline>
+                      {t('login.submit')}
+                    </Button>
+                    <Button className='mobile-auth-btn ml-2 mr-4' color='primary'>
+                      {t('button.sign_up')}
+                    </Button>
+                  </>
+                )}
 
                 <BurgerIcon
                   className='menu-toggle-icon'

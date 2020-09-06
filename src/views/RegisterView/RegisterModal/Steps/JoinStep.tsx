@@ -59,7 +59,11 @@ const JoinStep = (props: any) => {
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerJoinErrors);
+    getFieldErrorsUtil(field, registerJoinErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const finalWelcomeStep = (authToken: string) => {
     localStorage.setItem('authToken', authToken);
