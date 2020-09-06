@@ -289,6 +289,7 @@ const CreateRecipeView = (props: any) => {
             autoClose: 3000,
           });
           setCreateRecipeForm({
+            ...createRecipeForm,
             recipeName: '',
             recipePreparation: '',
             ingredients: [],
@@ -306,6 +307,10 @@ const CreateRecipeView = (props: any) => {
         .catch(() => {
           if (createRecipeForm.ingredients.length === 0) {
             toast.error(t('recipe.create.images_error'), {
+              autoClose: 3000,
+            });
+          } else {
+            toast.error(t('recipe.create.error'), {
               autoClose: 3000,
             });
           }
