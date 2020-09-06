@@ -482,9 +482,10 @@ const CreateRecipeView = (props: any) => {
                 <InputField
                   block
                   type='number'
-                  name='minTime'
+                  name='time'
                   data-param='1,4320'
                   data-validate='["min-max"]'
+                  errors={getFieldErrors('time')}
                   value={createRecipeForm.time}
                   onChange={(e) => validateOnChange('time', e.target.value, e)}
                   className='recipe__label-input'
@@ -743,7 +744,7 @@ const CreateRecipeView = (props: any) => {
                       </div>
                     </button>
                     <div className='recipe__item-weight'>
-                      {`${ingredientItem.weight} ${unit}`}
+                      {`${!ingredientItem.weight ? 0 : ingredientItem.weight} ${unit}`}
                     </div>
                   </div>
                   <div className='recipe__item-opt'>

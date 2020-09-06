@@ -167,8 +167,7 @@
 				font-size: 18px
 
 .recipe__input-data
-	@media (max-width: 1199px)
-		margin-bottom: 30px
+	margin-bottom: 30px
 
 	.fgLabel
 		max-width: 100px
@@ -211,6 +210,7 @@
 		margin-bottom: 0
 
 .recipe__label
+	position: relative
 	display: flex
 	align-items: center
 
@@ -284,6 +284,11 @@
 
 			& > div
 				padding: 0
+
+	.fgInvalidMsg
+		position: absolute
+		top: 100%
+		left: 0
 
 .recipe__switch
 	display: flex
