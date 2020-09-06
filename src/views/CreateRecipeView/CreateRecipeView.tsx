@@ -27,6 +27,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import DonutChart from 'components/common/charts/DonutChart';
 import ImagesFileInput from 'components/common/Forms/ImagesFileInput';
 import Breadcrumb from 'components/Breadcrumb';
+import CustomSwitch from 'components/common/Forms/CustomSwitch';
 
 import './CreateRecipeView.sass';
 
@@ -486,38 +487,19 @@ const CreateRecipeView = (props: any) => {
               </label>
             </div>
           </div>
-          <div className='recipe__switch'>
-            <button
-              type='button'
-              onClick={() => {
-                setCreateRecipeForm({
-                  ...createRecipeForm,
-                  measurement: 'si',
-                });
-                return setUnit(t('common.gr'));
-              }}
-              className={classnames('recipe__switch-button', {
-                'recipe__switch-button_active': unit === t('common.gr'),
-              })}
-            >
-              <span>{t('common.gr')}</span>
-            </button>
-            <button
-              type='button'
-              onClick={() => {
-                setCreateRecipeForm({
-                  ...createRecipeForm,
-                  measurement: 'us',
-                });
-                return setUnit(t('common.oz'));
-              }}
-              className={classnames('recipe__switch-button', {
-                'recipe__switch-button_active': unit === t('common.oz'),
-              })}
-            >
-              <span>{t('common.oz')}</span>
-            </button>
-          </div>
+          <CustomSwitch
+            label1={t('common.gr')}
+            label2={t('common.oz')}
+            onChange={() => {
+              setCreateRecipeForm({
+                ...createRecipeForm,
+                measurement: createRecipeForm.measurement === 'si' ? 'us' : 'si',
+              });
+
+              return setUnit(unit === t('common.gr') ? t('common.oz') : t('common.gr'));
+            }}
+            className='recipe__switch'
+          />
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
               {composition.map((item) => (
@@ -757,7 +739,11 @@ const CreateRecipeView = (props: any) => {
                       </div>
                     </button>
                     <div className='recipe__item-weight'>
-                      {`${ingredientItem.weight} ${unit}`}
+                      {
+                        unit === t('common.gr')
+                          ? `${ingredientItem.weight} ${unit}`
+                          : `${getOz(ingredientItem.weight)} ${unit}`
+                      }
                     </div>
                   </div>
                   <div className='recipe__item-opt'>
@@ -778,7 +764,7 @@ const CreateRecipeView = (props: any) => {
               block
               type='number'
               name='totalWeight'
-              step={1}
+              step={0.1}
               value={
                 unit === t('common.gr')
                   ? createRecipeForm.totalWeight
@@ -790,6 +776,9 @@ const CreateRecipeView = (props: any) => {
               label={t('recipe.create.total_weight')}
               border='light'
             />
+            <div className='recipe__total-weight-unit'>
+              {unit}
+            </div>
           </div>
           <div className='instructions'>
             <h2 className='instructions__title'>{t('recipe.preparation')}</h2>
