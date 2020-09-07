@@ -58,7 +58,7 @@ const Progress = ({
         className={classnames('progress__list-item', {
           active: goal,
         })}
-        onClick={goal && onClickGoal}
+        onClick={goal ? onClickGoal : null}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
@@ -70,7 +70,7 @@ const Progress = ({
         className={classnames('progress__list-item', {
           active: metrics,
         })}
-        onClick={metrics && onClickMetrics}
+        onClick={metrics ? onClickMetrics : null}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
@@ -82,7 +82,7 @@ const Progress = ({
         className={classnames('progress__list-item', {
           active: notEating,
         })}
-        onClick={notEating && onClickNotEating}
+        onClick={notEating ? onClickNotEating : null}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
@@ -94,7 +94,7 @@ const Progress = ({
         className={classnames('progress__list-item', {
           active: desiases,
         })}
-        onClick={desiases && onClickDesiases}
+        onClick={desiases ? onClickDesiases : null}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
@@ -106,7 +106,7 @@ const Progress = ({
         className={classnames('progress__list-item', {
           active: meals,
         })}
-        onClick={meals && onClickMeals}
+        onClick={meals ? onClickMeals : null}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
