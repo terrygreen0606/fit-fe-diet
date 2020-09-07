@@ -71,7 +71,7 @@ const CreateRecipeView = (props: any) => {
     });
   }, []);
 
-  const [composition] = useState([
+  const [composition, setComposition] = useState([
     {
       name: 'fat',
       namePlural: t('common.fats'),
@@ -122,6 +122,8 @@ const CreateRecipeView = (props: any) => {
   const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
 
   const [videoLinkIframe, setVideoLinkIframe] = useState('');
+
+  const [files, setFiles] = useState([]);
 
   const calcComposition = (ingredientsList: Array<any>) => {
     composition.map((item) => {
@@ -295,6 +297,7 @@ const CreateRecipeView = (props: any) => {
           toast.success(t('recipe.create.success'), {
             autoClose: 3000,
           });
+
           setCreateRecipeForm({
             ...createRecipeForm,
             recipeName: '',
@@ -309,6 +312,19 @@ const CreateRecipeView = (props: any) => {
             costLevel: null,
             videoUrl: '',
           });
+
+          setFiles([]);
+
+          setVideoLinkIframe('');
+
+          const updatedComposition = composition;
+
+          updatedComposition.map((item) => {
+            item.value = 0;
+          });
+
+          setComposition([...updatedComposition]);
+
           return response.data.data;
         })
         .catch(() => {
@@ -324,14 +340,12 @@ const CreateRecipeView = (props: any) => {
     return (value / createRecipeForm.totalWeight) * 100;
   };
 
-  const [files, setFiles] = useState([]);
-
   const handleChangeFiles = useCallback((ids: any[]) => {
     const pushedIds = [];
     setFiles(ids);
     ids.forEach((item) => pushedIds.push(item.image_id));
     setCreateRecipeForm({ ...createRecipeForm, imageIds: pushedIds });
-  }, []);
+  }, [createRecipeForm]);
 
   return (
     <>
