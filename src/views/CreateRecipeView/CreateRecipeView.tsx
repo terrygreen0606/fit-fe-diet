@@ -334,6 +334,8 @@ const CreateRecipeView = (props: any) => {
 
           setComposition([...updatedComposition]);
 
+          setUnit(t('common.gr'));
+
           return response.data.data;
         })
         .catch(() => {
