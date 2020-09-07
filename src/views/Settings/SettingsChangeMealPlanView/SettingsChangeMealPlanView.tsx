@@ -170,6 +170,7 @@ const SettingsChangeMealPlanView = (props: any) => {
 
       setUpdateChangeMealForm({
         ...updateChangeMealForm,
+        measurement: userSettings.measurement,
         goal: data.goal,
         gender: data.gender,
         age: data.age,
@@ -203,35 +204,38 @@ const SettingsChangeMealPlanView = (props: any) => {
           className='change-meal-plan card-bg'
         >
           <Progress
-            goal={activeStep === steps.goal
-              || activeStep === steps.metrics
-              || activeStep === steps.notEating
-              || activeStep === steps.desiases
-              || activeStep === steps.meals}
             goalText={t('mp.progress.goal')}
-            metrics={activeStep === steps.metrics
-              || activeStep === steps.notEating
-              || activeStep === steps.desiases
-              || activeStep === steps.meals}
             metricsText={t('mp.progress.metrics')}
-            notEating={activeStep === steps.notEating
-              || activeStep === steps.desiases
-              || activeStep === steps.meals}
             notEatingText={t('mp.progress.not_eating')}
-            desiases={activeStep === steps.desiases
-              || activeStep === steps.meals}
             desiasesText={t('mp.progress.desiases')}
-            meals={activeStep === steps.meals}
             mealsText={t('mp.progress.meals')}
-            percent={activeStep === steps.goal && 20
-              || activeStep === steps.metrics && 40
-              || activeStep === steps.notEating && 60
-              || activeStep === steps.desiases && 80
-              || activeStep === steps.meals && 100}
             onClickGoal={() => setActiveStep(steps.goal)}
             onClickMetrics={() => setActiveStep(steps.metrics)}
-            onClickNotEating={() => setActiveStep(steps.notEating)}
-            onClickDesiases={() => setActiveStep(steps.desiases)}
+            onClickNotEating={() => {
+              const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
+
+              if (ignoreCuisinesList.length > 0) {
+                updateChangeMealForm.ignore_cuisine_ids.forEach((ignoreCuisineItem) => {
+                  updatedIgnoreCuisinesList.find((findItem) => ignoreCuisineItem === findItem.id).isActive = true;
+                });
+
+                setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
+              }
+
+              setActiveStep(steps.notEating);
+            }}
+            onClickDesiases={() => {
+              const updatedDiseasesList = [...diseasesList];
+
+              if (updatedDiseasesList.length > 0) {
+                updateChangeMealForm.diseases.forEach((diseasesItem) => {
+                  updatedDiseasesList.find((findItem) => diseasesItem === findItem.code).isActive = true;
+                });
+                setDiseasesList([...updatedDiseasesList]);
+              }
+
+              setActiveStep(steps.desiases);
+            }}
             onClickMeals={() => setActiveStep(steps.meals)}
           />
           {activeStep === steps.goal && (
