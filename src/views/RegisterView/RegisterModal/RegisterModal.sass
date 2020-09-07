@@ -2,22 +2,34 @@
 
 
 .registerModal
-  max-width: 1120px !important
-  height: 750px
+  max-width: 100% !important
+  height: 100%
   .dialogHeader
     display: none
+  &_wrap
+    padding: 0 !important
   &_main
     display: flex
+    position: relative
     height: 100%
     padding: 0 !important
-    padding-right: 70px !important
+  &_logo
+    position: absolute !important
+    top: 47px !important
+    right: 47px !important
   &_steps_content
-    flex: 0 0 520px
+    max-width: 520px
     max-height: calc(100% - 50px - 37px)
-    margin: 50px 0 37px
+    margin: 50px auto 0
+    padding-bottom: 37px
     overflow-y: auto
     overflow-x: hidden
     +scrollStyle(5px)
+    &_wrap
+      display: flex
+      align-items: center
+      padding: 0 30px
+      padding-top: 140px
   .dialogHeader
     padding: 0
 
@@ -232,22 +244,26 @@
   .registerModal
     overflow: hidden
     height: 100%
-    &_steps_content
-      flex: 0 0 100%
     &_wrap
-      padding: 20px !important
-      padding-bottom: 30px
       align-items: flex-end
     &_main
       flex-wrap: wrap
+      justify-content: center
       padding-right: 0 !important
+    &_logo
+      display: none !important
     &_steps_content
       margin: 0
       margin-top: 15px
       padding: 20px
-      max-height: calc(100% - 220px)
+      max-height: unset
       max-width: 600px
       margin: 0 auto
+      &_wrap
+        display: block
+        flex: 0 0 100%
+        max-height: calc(100% - 220px)
+        padding-top: 0
 
 
 @media only screen and (max-width : 768px)

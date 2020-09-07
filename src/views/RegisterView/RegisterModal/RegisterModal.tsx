@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getTranslate } from 'utils';
+import { Link } from 'react-router-dom';
 import getRegisterStepViewUtil from './getRegisterStepView';
 import { RegisterViewType, RegisterStepTitlesType } from './types';
 
@@ -27,7 +28,7 @@ const RegisterModal = (props: RegisterModalProps) => {
 
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
   const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
-  const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
+  const [registerView, setRegisterView] = useState<RegisterViewType>('READY');
 
   useEffect(() => {
     let currentRegisterStep: 0 | 1 | 2 = null;
@@ -71,14 +72,18 @@ const RegisterModal = (props: RegisterModalProps) => {
       className="registerModal"
     >
       <Modal.Main className="registerModal_main">
+        <Link to='/' className='mainHeader_logo registerModal_logo' />
+
         <Progress 
           step={registerStep} 
           view={registerView}
           titles={registerStepTitles} 
         />
 
-        <div className="registerModal_steps_content">
-          {getRegisterStepView(registerView)}
+        <div className="registerModal_steps_content_wrap">
+          <div className="registerModal_steps_content">
+            {getRegisterStepView(registerView)}
+          </div>
         </div>
       </Modal.Main>
     </Modal>

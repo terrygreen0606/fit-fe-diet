@@ -129,7 +129,7 @@ const ImagesFileInput = ({
         )}
 
         {!!fieldfiles.length && (
-          <div className={styles.returnFilesList}>
+          <button type='button' onClick={open} className={styles.returnFilesList}>
             {fieldfiles.map((fileData, index) => (
               <div
                 key={fileData.id}
@@ -147,7 +147,7 @@ const ImagesFileInput = ({
                 )}
               </div>
             ))}
-          </div>
+          </button>
         )}
 
         <input {...getInputProps()} />

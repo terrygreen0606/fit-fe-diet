@@ -206,7 +206,7 @@ const LoginView = (props: any) => {
           {t('login.title', { product: 'TEST' })}
         </h3>
 
-        <span className='mainHeader_logo d-lg-none' />
+        <span className='mainHeader_logo d-lg-none-i' />
 
         <form className='loginScreen_form' onSubmit={(e) => loginSubmit(e)}>
           <FormGroup>
