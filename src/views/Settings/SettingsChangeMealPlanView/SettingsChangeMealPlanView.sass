@@ -292,8 +292,16 @@
         flex-wrap: wrap
         padding: 20px
 
-      &:hover, &.active
+      &:hover
         border: 1px solid $steel-blue
+
+      &.active
+        border: 1px solid $steel-blue
+
+        .change-meal-plan__meals-item-btn
+          border: 2px solid $steel-blue
+          background-color: $steel-blue
+          color: $white
 
       &-count
         display: flex
