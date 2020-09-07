@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable array-callback-return */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
@@ -12,10 +11,14 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  getOz,
   getVideo,
 } from 'utils';
-import { searchIngredients, createRecipe, getIngredient } from 'api';
+import {
+  searchIngredients,
+  createRecipe,
+  getIngredient,
+  getUserSettings,
+} from 'api';
 import FormValidator from 'utils/FormValidator';
 
 // Components
@@ -27,6 +30,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import DonutChart from 'components/common/charts/DonutChart';
 import ImagesFileInput from 'components/common/Forms/ImagesFileInput';
 import Breadcrumb from 'components/Breadcrumb';
+import CustomSwitch from 'components/common/Forms/CustomSwitch';
 
 import './CreateRecipeView.sass';
 
@@ -51,7 +55,7 @@ const CreateRecipeView = (props: any) => {
     recipeName: '',
     recipePreparation: '',
     ingredients: [],
-    measurement: 'si',
+    measurement: null,
     cuisine: [],
     imageIds: [],
     servingsCnt: null,
@@ -61,7 +65,13 @@ const CreateRecipeView = (props: any) => {
     videoUrl: '',
   });
 
-  const [composition] = useState([
+  useEffect(() => {
+    getUserSettings().then((response) => {
+      setCreateRecipeForm({ ...createRecipeForm, measurement: response.data.data.measurement });
+    });
+  }, []);
+
+  const [composition, setComposition] = useState([
     {
       name: 'fat',
       namePlural: t('common.fats'),
@@ -112,6 +122,8 @@ const CreateRecipeView = (props: any) => {
   const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
 
   const [videoLinkIframe, setVideoLinkIframe] = useState('');
+
+  const [files, setFiles] = useState([]);
 
   const calcComposition = (ingredientsList: Array<any>) => {
     composition.map((item) => {
@@ -260,6 +272,22 @@ const CreateRecipeView = (props: any) => {
 
     setCreateRecipeErrors([...errors]);
 
+    if (errors.length > 0) {
+      const itemWithError = document.querySelector(`[name='${errors[0].field}']`);
+      itemWithError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (createRecipeForm.ingredients.length === 0) {
+      toast.error(t('recipe.create.ingredients_error'), {
+        autoClose: 3000,
+      });
+
+      const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
+      ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
     if (!hasError) {
       createRecipe(
         createRecipeForm.recipeName,
@@ -278,7 +306,9 @@ const CreateRecipeView = (props: any) => {
           toast.success(t('recipe.create.success'), {
             autoClose: 3000,
           });
+
           setCreateRecipeForm({
+            ...createRecipeForm,
             recipeName: '',
             recipePreparation: '',
             ingredients: [],
@@ -291,14 +321,27 @@ const CreateRecipeView = (props: any) => {
             costLevel: null,
             videoUrl: '',
           });
+
+          setFiles([]);
+
+          setVideoLinkIframe('');
+
+          const updatedComposition = composition;
+
+          updatedComposition.map((item) => {
+            item.value = 0;
+          });
+
+          setComposition([...updatedComposition]);
+
+          setUnit(t('common.gr'));
+
           return response.data.data;
         })
         .catch(() => {
-          if (createRecipeForm.ingredients.length === 0) {
-            toast.error(t('recipe.create.images_error'), {
-              autoClose: 3000,
-            });
-          }
+          toast.error(t('recipe.create.error'), {
+            autoClose: 3000,
+          });
         });
     }
   };
@@ -308,14 +351,12 @@ const CreateRecipeView = (props: any) => {
     return (value / createRecipeForm.totalWeight) * 100;
   };
 
-  const [files, setFiles] = useState([]);
-
   const handleChangeFiles = useCallback((ids: any[]) => {
     const pushedIds = [];
     setFiles(ids);
     ids.forEach((item) => pushedIds.push(item.image_id));
     setCreateRecipeForm({ ...createRecipeForm, imageIds: pushedIds });
-  }, []);
+  }, [createRecipeForm]);
 
   return (
     <>
@@ -472,9 +513,10 @@ const CreateRecipeView = (props: any) => {
                 <InputField
                   block
                   type='number'
-                  name='minTime'
+                  name='time'
                   data-param='1,4320'
                   data-validate='["min-max"]'
+                  errors={getFieldErrors('time')}
                   value={createRecipeForm.time}
                   onChange={(e) => validateOnChange('time', e.target.value, e)}
                   className='recipe__label-input'
@@ -482,42 +524,24 @@ const CreateRecipeView = (props: any) => {
                   max={4320}
                   border='light'
                 />
-                <span className='recipe__label-description ml-3'>min</span>
+                <span className='recipe__label-description ml-xl-3'>min</span>
               </label>
             </div>
           </div>
-          <div className='recipe__switch'>
-            <button
-              type='button'
-              onClick={() => {
-                setCreateRecipeForm({
-                  ...createRecipeForm,
-                  measurement: 'si',
-                });
-                return setUnit(t('common.gr'));
-              }}
-              className={classnames('recipe__switch-button', {
-                'recipe__switch-button_active': unit === t('common.gr'),
-              })}
-            >
-              <span>{t('common.gr')}</span>
-            </button>
-            <button
-              type='button'
-              onClick={() => {
-                setCreateRecipeForm({
-                  ...createRecipeForm,
-                  measurement: 'us',
-                });
-                return setUnit(t('common.oz'));
-              }}
-              className={classnames('recipe__switch-button', {
-                'recipe__switch-button_active': unit === t('common.oz'),
-              })}
-            >
-              <span>{t('common.oz')}</span>
-            </button>
-          </div>
+          <CustomSwitch
+            label1={t('common.gr')}
+            label2={t('common.oz')}
+            checked={createRecipeForm.measurement === 'us'}
+            onChange={() => {
+              setCreateRecipeForm({
+                ...createRecipeForm,
+                measurement: createRecipeForm.measurement === 'si' ? 'us' : 'si',
+              });
+
+              setUnit(unit === t('common.gr') ? t('common.oz') : t('common.gr'));
+            }}
+            className='recipe__switch'
+          />
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
               {composition.map((item) => (
@@ -552,7 +576,7 @@ const CreateRecipeView = (props: any) => {
                     />
                   </div>
                   <div className='recipe__chart-lines-item-description'>
-                    {`${unit === t('common.gr') ? item.value : getOz(item.value)} ${unit}`}
+                    {`${item.value} ${unit}`}
                   </div>
                 </div>
               ))}
@@ -605,8 +629,7 @@ const CreateRecipeView = (props: any) => {
                         {`${ingredientItem.name} ${
                           costCategoryOptions.find(
                             (item) => item.value === ingredientItem.costLevel,
-                          ).label
-                          }`}
+                          ).label}`}
                       </span>
                     </div>
 
@@ -665,15 +688,7 @@ const CreateRecipeView = (props: any) => {
                         <InputField
                           type='number'
                           name={`indredients[${ingredientIndex}].weight`}
-                          value={
-                            unit === t('common.gr')
-                              ? createRecipeForm.ingredients[ingredientIndex]
-                                .weight
-                              : getOz(
-                                createRecipeForm.ingredients[ingredientIndex]
-                                  .weight,
-                              )
-                          }
+                          value={createRecipeForm.ingredients[ingredientIndex].weight}
                           step={0.1}
                           onChange={(e) => {
                             if (e.target.value === '0') {
@@ -738,6 +753,9 @@ const CreateRecipeView = (props: any) => {
                         >
                           <ArrowRight />
                         </button>
+                        <div className='recipe__item-quantity-counter-unit'>
+                          {unit}
+                        </div>
                       </div>
                       <div className='recipe__item-quantity-counter-total'>
                         <span>
@@ -757,7 +775,7 @@ const CreateRecipeView = (props: any) => {
                       </div>
                     </button>
                     <div className='recipe__item-weight'>
-                      {`${ingredientItem.weight} ${unit}`}
+                      {`${!ingredientItem.weight ? 0 : ingredientItem.weight} ${unit}`}
                     </div>
                   </div>
                   <div className='recipe__item-opt'>
@@ -778,18 +796,17 @@ const CreateRecipeView = (props: any) => {
               block
               type='number'
               name='totalWeight'
-              step={1}
-              value={
-                unit === t('common.gr')
-                  ? createRecipeForm.totalWeight
-                  : getOz(createRecipeForm.totalWeight)
-              }
+              step={0.1}
+              value={createRecipeForm.totalWeight}
               onChange={(e) => validateOnChange('totalWeight', e.target.value, e)}
               min={0}
               height='md'
               label={t('recipe.create.total_weight')}
               border='light'
             />
+            <div className='recipe__total-weight-unit'>
+              {unit}
+            </div>
           </div>
           <div className='instructions'>
             <h2 className='instructions__title'>{t('recipe.preparation')}</h2>

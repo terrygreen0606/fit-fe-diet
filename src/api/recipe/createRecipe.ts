@@ -4,7 +4,7 @@ export const createRecipe = (
   name: string,
   preparation: string,
   ingredients: Array<object>,
-  measurement: string,
+  measurement: 'si' | 'us' | string,
   servings_cnt: number,
   cuisine?: Array<string>,
   image_ids?: Array<string>,
