@@ -1,6 +1,6 @@
 import axios from 'utils/axios';
-import { userAcknowledge, loadPhrases } from 'api';
-import { setLocaleLang, setLocalePhrases } from './locale.actions';
+import { userAcknowledge, loadPhrases, getAppSettings } from 'api';
+import { setLocaleLang, setLocalePhrases, setAppSetting } from 'store/actions';
 
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
@@ -45,25 +45,37 @@ export const initApp = () => (dispatch) => {
 
   dispatch(setAuthChecking(true));
 
-  if (!LOCALIZATION_DEV && localePhrases && userLang === localeLang) {
-    dispatch(setLocaleLang(userLang));
-    dispatch(setLocalePhrases(localePhrases));
+  getAppSettings()
+    .then(response => {
+      if (response.data && response.data.data) {
+        setAppSetting(response.data.data);
 
-    dispatch(authCheck());
-  } else {
-    loadPhrases(userLang).then((response) => {
-      if (response.data.success && response.data.data) {
-        dispatch(setLocalePhrases(response.data.data));
+        if (!LOCALIZATION_DEV && localePhrases && userLang === localeLang) {
+          dispatch(setLocaleLang(userLang));
+          dispatch(setLocalePhrases(localePhrases));
 
-        localStorage.setItem('localeLang', userLang);
-        localStorage.setItem('localePhrases', JSON.stringify(response.data.data));
+          dispatch(authCheck());
+        } else {
+          loadPhrases(userLang).then((response) => {
+            if (response.data.success && response.data.data) {
+              dispatch(setLocalePhrases(response.data.data));
+
+              localStorage.setItem('localeLang', userLang);
+              localStorage.setItem('localePhrases', JSON.stringify(response.data.data));
+            }
+
+            dispatch(authCheck());
+          }).catch((error) => {
+            dispatch(setAuthChecking(false));
+          });
+        }
+      } else {
+        dispatch(setAuthChecking(false));
       }
-
-      dispatch(authCheck());
-    }).catch((error) => {
+    })
+    .catch(error => {
       dispatch(setAuthChecking(false));
     });
-  }
 };
 
 export const userLogout = () => {
