@@ -29,7 +29,8 @@
   &-item
     max-width: 100px
     text-align: center
-
+    background-color: transparent
+    border: none
 
     &-media
       position: relative
@@ -75,6 +76,8 @@
         font-size: 12px
 
   &-item.active
+    cursor: pointer
+    
     .progress__list-item-media
       &::before
         background-color: $steel-blue
@@ -85,5 +88,4 @@
 
     .progress__list-item-desc
       color: $black
-        
         

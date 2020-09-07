@@ -196,6 +196,11 @@ const SettingsChangeMealPlanView = (props: any) => {
                 desiasesText={t('mp.progress.desiases')}
                 mealsText={t('mp.progress.meals')}
                 percent={20}
+                onClickGoal={() => setActiveStep(steps.goal)}
+                onClickMetrics={() => setActiveStep(steps.metrics)}
+                onClickNotEating={() => setActiveStep(steps.notEating)}
+                onClickDesiases={() => setActiveStep(steps.desiases)}
+                onClickMeals={() => setActiveStep(steps.meals)}
               />
               <div className='change-meal-plan__title'>{t('mp.goal.title')}</div>
               <div className='change-meal-plan__goals'>
@@ -259,6 +264,11 @@ const SettingsChangeMealPlanView = (props: any) => {
                 desiasesText={t('mp.progress.desiases')}
                 mealsText={t('mp.progress.meals')}
                 percent={40}
+                onClickGoal={() => setActiveStep(steps.goal)}
+                onClickMetrics={() => setActiveStep(steps.metrics)}
+                onClickNotEating={() => setActiveStep(steps.notEating)}
+                onClickDesiases={() => setActiveStep(steps.desiases)}
+                onClickMeals={() => setActiveStep(steps.meals)}
               />
               <div className='change-meal-plan__title'>{t('mp.metrics.title')}</div>
               <div className='change-meal-plan__metrics'>
@@ -361,6 +371,11 @@ const SettingsChangeMealPlanView = (props: any) => {
                 desiasesText={t('mp.progress.desiases')}
                 mealsText={t('mp.progress.meals')}
                 percent={60}
+                onClickGoal={() => setActiveStep(steps.goal)}
+                onClickMetrics={() => setActiveStep(steps.metrics)}
+                onClickNotEating={() => setActiveStep(steps.notEating)}
+                onClickDesiases={() => setActiveStep(steps.desiases)}
+                onClickMeals={() => setActiveStep(steps.meals)}
               />
               <div className='change-meal-plan__title'>
                 {t('mp.not_eating.title')}
@@ -424,6 +439,11 @@ const SettingsChangeMealPlanView = (props: any) => {
                 desiasesText={t('mp.progress.desiases')}
                 mealsText={t('mp.progress.meals')}
                 percent={80}
+                onClickGoal={() => setActiveStep(steps.goal)}
+                onClickMetrics={() => setActiveStep(steps.metrics)}
+                onClickNotEating={() => setActiveStep(steps.notEating)}
+                onClickDesiases={() => setActiveStep(steps.desiases)}
+                onClickMeals={() => setActiveStep(steps.meals)}
               />
               <div className='change-meal-plan__title'>
                 {t('mp.desiases.title')}
@@ -483,6 +503,11 @@ const SettingsChangeMealPlanView = (props: any) => {
                 meals
                 mealsText={t('mp.progress.meals')}
                 percent={100}
+                onClickGoal={() => setActiveStep(steps.goal)}
+                onClickMetrics={() => setActiveStep(steps.metrics)}
+                onClickNotEating={() => setActiveStep(steps.notEating)}
+                onClickDesiases={() => setActiveStep(steps.desiases)}
+                onClickMeals={() => setActiveStep(steps.meals)}
               />
               <div className='change-meal-plan__title'>{t('mp.meals.title')}</div>
               <div className='change-meal-plan__meals'>

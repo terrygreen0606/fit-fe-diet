@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-indent */
 import React from 'react';
 import classnames from 'classnames';
 
@@ -18,6 +19,11 @@ type ProgressProps = {
   meals?: boolean;
   mealsText?: string;
   percent?: number;
+  onClickGoal?: () => void;
+  onClickMetrics?: () => void;
+  onClickNotEating?: () => void;
+  onClickDesiases?: () => void;
+  onClickMeals?: () => void;
 };
 
 const Progress = ({
@@ -32,8 +38,12 @@ const Progress = ({
   meals,
   mealsText,
   percent,
-}: ProgressProps) => {
-  return (
+  onClickGoal,
+  onClickMetrics,
+  onClickNotEating,
+  onClickDesiases,
+  onClickMeals,
+}: ProgressProps) => (
     <div className='progress__list'>
       <div className='progress__list-line'>
         <div
@@ -43,58 +53,67 @@ const Progress = ({
           className='progress__list-line-painted'
         />
       </div>
-      <div
+      <button
+        type='button'
         className={classnames('progress__list-item', {
           active: goal,
         })}
+        onClick={goal && onClickGoal}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
         </div>
         <div className='progress__list-item-desc'>{goalText}</div>
-      </div>
-      <div
+      </button>
+      <button
+        type='button'
         className={classnames('progress__list-item', {
           active: metrics,
         })}
+        onClick={metrics && onClickMetrics}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
         </div>
         <div className='progress__list-item-desc'>{metricsText}</div>
-      </div>
-      <div
+      </button>
+      <button
+        type='button'
         className={classnames('progress__list-item', {
           active: notEating,
         })}
+        onClick={notEating && onClickNotEating}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
         </div>
         <div className='progress__list-item-desc'>{notEatingText}</div>
-      </div>
-      <div
+      </button>
+      <button
+        type='button'
         className={classnames('progress__list-item', {
           active: desiases,
         })}
+        onClick={desiases && onClickDesiases}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
         </div>
         <div className='progress__list-item-desc'>{desiasesText}</div>
-      </div>
-      <div
+      </button>
+      <button
+        type='button'
         className={classnames('progress__list-item', {
           active: meals,
         })}
+        onClick={meals && onClickMeals}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
         </div>
         <div className='progress__list-item-desc'>{mealsText}</div>
-      </div>
+      </button>
     </div>
   );
-};
 
 export default Progress;
