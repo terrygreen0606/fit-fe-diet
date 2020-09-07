@@ -270,6 +270,13 @@ const CreateRecipeView = (props: any) => {
 
     setCreateRecipeErrors([...errors]);
 
+    if (createRecipeForm.ingredients.length === 0) {
+      toast.error(t('recipe.create.ingredients_error'), {
+        autoClose: 3000,
+      });
+      return;
+    }
+
     if (!hasError) {
       createRecipe(
         createRecipeForm.recipeName,
@@ -305,15 +312,9 @@ const CreateRecipeView = (props: any) => {
           return response.data.data;
         })
         .catch(() => {
-          if (createRecipeForm.ingredients.length === 0) {
-            toast.error(t('recipe.create.images_error'), {
-              autoClose: 3000,
-            });
-          } else {
-            toast.error(t('recipe.create.error'), {
-              autoClose: 3000,
-            });
-          }
+          toast.error(t('recipe.create.error'), {
+            autoClose: 3000,
+          });
         });
     }
   };
