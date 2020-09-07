@@ -24,3 +24,4 @@ export * from './user/getUserSettings';
 export * from './shoppingList';
 export * from './user/userUpdateMealSettings';
 export * from './getDiseases';
+export * from './getAppSettings';
