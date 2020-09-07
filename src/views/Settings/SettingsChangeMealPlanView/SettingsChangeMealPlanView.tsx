@@ -304,7 +304,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                       value={updateChangeMealForm.height}
                       onChange={(e) => validateOnChange('height', e.target.value, e)}
                     />
-                    {t('common.cm')}
+                    {updateChangeMealForm.measurement === 'si' ? t('common.cm') : t('common.pound')}
                   </div>
                 </div>
                 <div className='change-meal-plan__metrics-item'>
