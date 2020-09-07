@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getTranslate } from 'utils';
+import { Link } from 'react-router-dom';
 import getRegisterStepViewUtil from './getRegisterStepView';
 import { RegisterViewType, RegisterStepTitlesType } from './types';
 
@@ -71,6 +72,8 @@ const RegisterModal = (props: RegisterModalProps) => {
       className="registerModal"
     >
       <Modal.Main className="registerModal_main">
+        <Link to='/' className='mainHeader_logo registerModal_logo' />
+
         <Progress 
           step={registerStep} 
           view={registerView}
