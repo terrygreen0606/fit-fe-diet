@@ -92,13 +92,15 @@ const Header = (props: any) => {
                   {t('header.menu_trainings')}
                 </NavLink>
 
-                <NavLink
-                  to='/shopping-list'
-                  className='mainHeader_menuList_item'
-                  activeClassName='mainHeader_menuList_item_active'
-                >
-                  {t('recipe.saved.shopping_list')}
-                </NavLink>
+                {isAuthenticated && (
+                  <NavLink
+                    to='/shopping-list'
+                    className='mainHeader_menuList_item'
+                    activeClassName='mainHeader_menuList_item_active'
+                  >
+                    {t('recipe.saved.shopping_list')}
+                  </NavLink>
+                )}
 
                 <NavLink
                   to='/recipes'
@@ -124,22 +126,24 @@ const Header = (props: any) => {
                   {t('nutrition.title')}
                 </NavLink>
 
-                <span
-                  role='presentation'
-                  className='mainHeader_menuList_item shopping_cart'
-                  onClick={openShopListPopupHandler}
-                >
-                  <ShoppingCartIcon className='mainHeader_menuList_item_icon' />
-                </span>
-
                 {isAuthenticated ? (
-                  <span
-                    role='presentation'
-                    className='mainHeader_menuList_item'
-                    onClick={() => props.userLogout()}
-                  >
-                    {t('common.logout')}
-                  </span>
+                  <>
+                    <span
+                      role='presentation'
+                      className='mainHeader_menuList_item shopping_cart'
+                      onClick={openShopListPopupHandler}
+                    >
+                      <ShoppingCartIcon className='mainHeader_menuList_item_icon' />
+                    </span>
+
+                    <span
+                      role='presentation'
+                      className='mainHeader_menuList_item'
+                      onClick={() => props.userLogout()}
+                    >
+                      {t('common.logout')}
+                    </span>
+                  </>
                 ) : (
                   <>
                     <NavLink
