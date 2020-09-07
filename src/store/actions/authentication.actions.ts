@@ -48,7 +48,7 @@ export const initApp = () => (dispatch) => {
   getAppSettings()
     .then(response => {
       if (response.data && response.data.data) {
-        setAppSetting(response.data.data);
+        dispatch(setAppSetting(response.data.data));
 
         if (!LOCALIZATION_DEV && localePhrases && userLang === localeLang) {
           dispatch(setLocaleLang(userLang));
