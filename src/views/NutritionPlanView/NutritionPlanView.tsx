@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { getTranslate, getScrollbarSize } from 'utils';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 import { changeSetting } from 'store/actions';
 
 // Components
@@ -75,8 +75,8 @@ const NutritionPlanView = (props: any) => {
         <Breadcrumb
           routes={[
             {
-              url: routes[MAIN],
-              name: MAIN,
+              url: routes.main.url,
+              name: routes.main.title,
             },
           ]}
           currentPage={t('nutrition.title')}
@@ -89,19 +89,19 @@ const NutritionPlanView = (props: any) => {
           localePhrases={localePhrases}
         />
       ) : (
-        <Advantages
-          icon1={CookCutIcon}
-          icon2={MealIcon}
-          icon3={DumbbellIcon}
-          mainTitle={t('nutrition.plan.title')}
-          advantage1Title={t('nutrition.plan.feat1_title')}
-          advantage1Desc={t('nutrition.plan.feat1_desc')}
-          advantage2Title={t('nutrition.plan.feat2_title')}
-          advantage2Desc={t('nutrition.plan.feat2_desc')}
-          advantage3Title={t('nutrition.plan.feat3_title')}
-          advantage3Desc={t('nutrition.plan.feat3_desc')}
-        />
-      )}
+          <Advantages
+            icon1={CookCutIcon}
+            icon2={MealIcon}
+            icon3={DumbbellIcon}
+            mainTitle={t('nutrition.plan.title')}
+            advantage1Title={t('nutrition.plan.feat1_title')}
+            advantage1Desc={t('nutrition.plan.feat1_desc')}
+            advantage2Title={t('nutrition.plan.feat2_title')}
+            advantage2Desc={t('nutrition.plan.feat2_desc')}
+            advantage3Title={t('nutrition.plan.feat3_title')}
+            advantage3Desc={t('nutrition.plan.feat3_desc')}
+          />
+        )}
 
       {(tourStep > 0 || afterSignUp) && <div className='hint_sect_backdrop' />}
 

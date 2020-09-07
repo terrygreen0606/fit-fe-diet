@@ -23,7 +23,7 @@ import Spinner from 'components/common/Spinner';
 import SiteTour from 'components/SiteTour/SiteTour';
 import Button from 'components/common/Forms/Button';
 import Breadcrumb from 'components/Breadcrumb';
-import { MAIN, routes } from 'constants/routes';
+import { routes } from 'constants/routes';
 
 import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.svg';
 import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
@@ -260,8 +260,8 @@ const ShoppingListView: React.FC = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main.url,
+                name: routes.main.title,
               },
             ]}
             currentPage='Shopping list'
@@ -323,7 +323,7 @@ const ShoppingListView: React.FC = (props: any) => {
                           disabled={!items || !items.length}
                           onClick={() => openShareLink(
                             `https://www.facebook.com/sharer/sharer.php?u=${publicShopListUrl}&t=${
-                              t('shop_list.sharing')
+                            t('shop_list.sharing')
                             }`,
                           )}
                         >
@@ -356,7 +356,7 @@ const ShoppingListView: React.FC = (props: any) => {
               </div>
 
               <div className='shopping_list_body'>
-                { items.length ? renderItems() : t('shopping_list.empty') }
+                {items.length ? renderItems() : t('shopping_list.empty')}
               </div>
 
               <div className='shopping_list_footer'>

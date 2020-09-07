@@ -7,7 +7,7 @@ import {
 import classNames from 'classnames';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
@@ -71,8 +71,8 @@ const ChangeMealPlanView = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main.url,
+                name: routes.main.title,
               },
             ]}
             currentPage={t('mp.change.title')}
@@ -156,10 +156,10 @@ const ChangeMealPlanView = (props: any) => {
                         />
                       </div>
                     ) : (
-                      <span className='change-meal_stats-item_text'>
-                        {t('register.form_male')}
-                      </span>
-                    )}
+                        <span className='change-meal_stats-item_text'>
+                          {t('register.form_male')}
+                        </span>
+                      )}
                   </div>
                   <div className='change-meal_stats-item'>
                     {t('register.form_age')}
@@ -175,8 +175,8 @@ const ChangeMealPlanView = (props: any) => {
                         height='xs'
                       />
                     ) : (
-                      <span className='change-meal_stats-item_text'>30</span>
-                    )}
+                        <span className='change-meal_stats-item_text'>30</span>
+                      )}
                   </div>
 
                   <div className='change-meal_stats-item'>
@@ -193,10 +193,10 @@ const ChangeMealPlanView = (props: any) => {
                         height='xs'
                       />
                     ) : (
-                      <span className='change-meal_stats-item_text'>
-                        180 {t('common.cm')}
-                      </span>
-                    )}
+                        <span className='change-meal_stats-item_text'>
+                          180 {t('common.cm')}
+                        </span>
+                      )}
                   </div>
                   <div className='change-meal_stats-item'>
                     {t('common.weight')}
@@ -213,10 +213,10 @@ const ChangeMealPlanView = (props: any) => {
                         height='xs'
                       />
                     ) : (
-                      <span className='change-meal_stats-item_text'>
-                        66 {t('common.kg')}
-                      </span>
-                    )}
+                        <span className='change-meal_stats-item_text'>
+                          66 {t('common.kg')}
+                        </span>
+                      )}
                   </div>
                 </div>
                 {isEditing ? (
@@ -230,16 +230,16 @@ const ChangeMealPlanView = (props: any) => {
                     Save
                   </Button>
                 ) : (
-                  <Button
-                    color='secondary'
-                    outline
-                    size='lg'
-                    className='mt-3 mb-3 bttn_wide'
-                    onClick={() => changeInfo()}
-                  >
-                    {t('mp.change.change_info')}
-                  </Button>
-                )}
+                    <Button
+                      color='secondary'
+                      outline
+                      size='lg'
+                      className='mt-3 mb-3 bttn_wide'
+                      onClick={() => changeInfo()}
+                    >
+                      {t('mp.change.change_info')}
+                    </Button>
+                  )}
               </div>
             </div>
           </div>
@@ -284,49 +284,49 @@ const ChangeMealPlanView = (props: any) => {
                         </div>
                       </>
                     ) : (
-                      <>
-                        <div className='col-6'>
-                          <div className='meal-block_row-item'>
-                            <BreakfastIcon />
-                            <p>{t('meal.breakfast')}</p>
+                        <>
+                          <div className='col-6'>
+                            <div className='meal-block_row-item'>
+                              <BreakfastIcon />
+                              <p>{t('meal.breakfast')}</p>
+                            </div>
                           </div>
-                        </div>
-                        {i > 1 && (
+                          {i > 1 && (
+                            <div className='col-6'>
+                              <div className='meal-block_row-item'>
+                                <SnackIcon />
+                                <p>{t('meal.snack')}</p>
+                              </div>
+                            </div>
+                          )}
+                          <div className='col-6'>
+                            <div className='meal-block_row-item'>
+                              <LunchIcon />
+                              <p>{t('meal.lunch')}</p>
+                            </div>
+                          </div>
                           <div className='col-6'>
                             <div className='meal-block_row-item'>
                               <SnackIcon />
                               <p>{t('meal.snack')}</p>
                             </div>
                           </div>
-                        )}
-                        <div className='col-6'>
-                          <div className='meal-block_row-item'>
-                            <LunchIcon />
-                            <p>{t('meal.lunch')}</p>
-                          </div>
-                        </div>
-                        <div className='col-6'>
-                          <div className='meal-block_row-item'>
-                            <SnackIcon />
-                            <p>{t('meal.snack')}</p>
-                          </div>
-                        </div>
-                        <div className='col-6'>
-                          <div className='meal-block_row-item'>
-                            <DinnerIcon />
-                            <p>{t('meal.dinner')}</p>
-                          </div>
-                        </div>
-                        {i === 3 && (
                           <div className='col-6'>
                             <div className='meal-block_row-item'>
-                              <SnackIcon />
-                              <p>{t('meal.snack')}</p>
+                              <DinnerIcon />
+                              <p>{t('meal.dinner')}</p>
                             </div>
                           </div>
-                        )}
-                      </>
-                    )}
+                          {i === 3 && (
+                            <div className='col-6'>
+                              <div className='meal-block_row-item'>
+                                <SnackIcon />
+                                <p>{t('meal.snack')}</p>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
                   </div>
                   <Button color='primary' outline block>
                     {t('mp.change.choose_it')}

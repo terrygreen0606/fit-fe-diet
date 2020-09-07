@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 import { getTranslate, getImagePath } from 'utils';
 
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -59,8 +59,8 @@ const WaterTrackerView = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main.url,
+                name: routes.main.title,
               },
             ]}
             currentPage={t('wt.head_title')}

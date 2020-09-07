@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -121,8 +121,8 @@ const SettingsFamilyView = (props: any) => {
         <Breadcrumb
           routes={[
             {
-              url: routes[MAIN],
-              name: MAIN,
+              url: routes.main.url,
+              name: routes.main.title,
             },
           ]}
           currentPage={t('app.title.family')}
@@ -198,8 +198,8 @@ const SettingsFamilyView = (props: any) => {
                     {member.image ? (
                       <img src={member.image} alt='' />
                     ) : (
-                      <ManPlugIcon />
-                    )}
+                        <ManPlugIcon />
+                      )}
                   </div>
                   <div className='family__list-item-desc'>
                     <div className='family__list-item-desc-name'>

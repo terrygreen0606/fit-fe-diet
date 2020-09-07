@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
@@ -45,8 +45,8 @@ const SettingsFaqView = (props: any) => {
         <Breadcrumb
           routes={[
             {
-              url: routes[MAIN],
-              name: MAIN,
+              url: routes.main.url,
+              name: routes.main.title,
             },
           ]}
           currentPage={t('app.title.faq')}

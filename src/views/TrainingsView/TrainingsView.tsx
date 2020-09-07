@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN, MEAL_PLAN_LIST } from 'constants/routes';
+import { routes } from 'constants/routes';
 
 import WeekDays from 'components/WeekDays';
 import TrainingCard from 'components/TrainingCard';
@@ -61,12 +61,12 @@ const TrainingsView: React.FC = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main.url,
+                name: routes.main.title,
               },
               {
-                url: routes[MEAL_PLAN_LIST],
-                name: MEAL_PLAN_LIST,
+                url: routes.mealPlanList.url,
+                name: routes.mealPlanList.title,
               },
             ]}
             currentPage={t('app.title.trainings')}
@@ -251,28 +251,28 @@ const TrainingsView: React.FC = (props: any) => {
                   <button
                     type='button'
                     className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => {}}
+                    onClick={() => { }}
                   >
                     <TwitterLogo />
                   </button>
                   <button
                     type='button'
                     className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => {}}
+                    onClick={() => { }}
                   >
                     <FacebookLogo />
                   </button>
                   <button
                     type='button'
                     className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => {}}
+                    onClick={() => { }}
                   >
                     <WhatsappLogo />
                   </button>
                   <button
                     type='button'
                     className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => {}}
+                    onClick={() => { }}
                   >
                     <TelegramLogo />
                   </button>
