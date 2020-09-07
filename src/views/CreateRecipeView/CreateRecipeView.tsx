@@ -272,10 +272,19 @@ const CreateRecipeView = (props: any) => {
 
     setCreateRecipeErrors([...errors]);
 
+    if (errors.length > 0) {
+      const itemWithError = document.querySelector(`[name='${errors[0].field}']`);
+      itemWithError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
     if (createRecipeForm.ingredients.length === 0) {
       toast.error(t('recipe.create.ingredients_error'), {
         autoClose: 3000,
       });
+
+      const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
+      ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
