@@ -17,7 +17,6 @@ import {
   searchIngredients,
   createRecipe,
   getIngredient,
-  getUserSettings,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -47,7 +46,8 @@ import {
 } from './selectsDatas';
 
 const CreateRecipeView = (props: any) => {
-  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
+  const { localePhrases, settings } = props;
+  const t = (code: string, placeholders?: any) => getTranslate(localePhrases, code, placeholders);
 
   const [unit, setUnit] = useState(t('common.gr'));
 
@@ -66,9 +66,7 @@ const CreateRecipeView = (props: any) => {
   });
 
   useEffect(() => {
-    getUserSettings().then((response) => {
-      setCreateRecipeForm({ ...createRecipeForm, measurement: response.data.data.measurement });
-    });
+    setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
   }, []);
 
   const [composition, setComposition] = useState([
@@ -838,4 +836,10 @@ const CreateRecipeView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(CreateRecipeView));
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      settings: state.settings,
+    }),
+  )(CreateRecipeView),
+);
