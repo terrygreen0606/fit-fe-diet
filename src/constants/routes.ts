@@ -42,4 +42,8 @@ export const routes = {
   [CANCELLATION]: '/cancellation',
   [LOGIN]: '/login',
   [REGISTER]: '/register',
+  recipeFullView: {
+    url: '/recipe',
+    title: 'Recipe',
+  },
 };

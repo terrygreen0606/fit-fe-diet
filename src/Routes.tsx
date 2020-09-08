@@ -38,15 +38,15 @@ import NutritionPlanView from './views/NutritionPlanView';
 import TrainingsView from './views/TrainingsView';
 import ShoppingListView from './views/ShoppingListView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
-import RecipesView from './views/RecipesView';
+import RecipesView from './views/Recipes/RecipesView';
 import FoodPlanView from './views/FoodPlanView';
-import CreateRecipeView from './views/CreateRecipeView';
+import CreateRecipeView from './views/Recipes/CreateRecipeView';
 import WaterTrackerView from './views/WaterTrackerView';
 import ChangeMealPlanView from './views/ChangeMealPlanView';
 import SettingsPersonalView from './views/Settings/SettingsPersonalView';
 import NotFound from './views/NotFound';
-import SavedRecipesView from './views/SavedRecipesView';
-import FavouriteRecipesView from './views/FavouriteRecipesView';
+import SavedRecipesView from './views/Recipes/SavedRecipesView';
+import FavouriteRecipesView from './views/Recipes/FavouriteRecipesView';
 import DashboardView from './views/DashboardView';
 import SettingsFaqView from './views/Settings/SettingsFaqView';
 import SettingsFamilyView from './views/Settings/SettingsFamilyView';
@@ -54,6 +54,7 @@ import ReferralView from './views/ReferralView';
 import MainView from './views/MainView';
 import TestimonialsFormView from './views/Forms/TestimonialsFormView';
 import CancellationFormView from './views/Forms/CancellationFormView';
+import RecipeFullView from './views/Recipes/RecipeFullView';
 
 const Routes = () => (
   <Switch>
@@ -242,6 +243,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <CancellationFormView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path={routes.recipeFullView.url}
+      component={(props: any) => (
+        <Layout {...props}>
+          <RecipeFullView {...props} />
         </Layout>
       )}
       exact
