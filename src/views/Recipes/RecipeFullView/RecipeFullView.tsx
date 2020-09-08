@@ -6,13 +6,19 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
+import { useHistory } from 'react-router-dom';
 
 import { routes } from 'constants/routes';
-import { getTranslate, getWeigthUnit } from 'utils';
+import {
+  getTranslate,
+  getWeigthUnit,
+  getVideo,
+} from 'utils';
 import {
   getRecipeData,
   likeRecipe,
   preparedRecipe,
+  deleteRecipe,
 } from 'api';
 
 // Components
@@ -20,6 +26,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import Button from 'components/common/Forms/Button';
 import Spinner from 'components/common/Spinner';
+import Modal from 'components/common/Modal/Modal';
 
 import './RecipeFullView.sass';
 
@@ -47,9 +54,13 @@ const RecipeFullView = (props: any) => {
 
   const recipeId = window.location.pathname.split('/')[2];
 
+  const history = useHistory();
+
   const [isAvailabilityRecipe, setAvailabilityRecipe] = useState<boolean>(false);
 
   const [isSpinnerActive, setSpinnerActive] = useState<boolean>(true);
+
+  const [isActiveDeleteModal, setActiveDeleteModal] = useState<boolean>(false);
 
   const costLevelLabel = {
     1: '$',
@@ -79,13 +90,12 @@ const RecipeFullView = (props: any) => {
     weight: null,
     id: null,
     videoUrl: null,
+    isOwner: null,
   });
 
   useEffect(() => {
     getRecipeData(recipeId).then((response) => {
       const { data } = response.data;
-
-      console.log('data', data);
 
       setRecipeData({
         ...recipeData,
@@ -110,6 +120,7 @@ const RecipeFullView = (props: any) => {
         weight: data.weight,
         id: data._id,
         videoUrl: data.video_url,
+        isOwner: data.is_owner,
       });
 
       setAvailabilityRecipe(true);
@@ -160,7 +171,10 @@ const RecipeFullView = (props: any) => {
               <div className='col-xl-8'>
                 <div className='recipe__main-info card-bg'>
                   <div className='recipe__main-info-media'>
-                    <img src={recipeData.images[0].url} alt='' />
+                    {/* need to add plug */}
+                    {recipeData.images.length > 0 && (
+                      <img src={recipeData.images[0].url} alt='' />
+                    )}
                   </div>
                   <div className='recipe__main-info-desc'>
                     <div className='recipe__main-info-desc-date'>
@@ -247,14 +261,15 @@ const RecipeFullView = (props: any) => {
                       </span>
                     </div>
                     <div className='recipe__manufacture-video'>
-                      {/* Add video from recipe after add prop in object on BE */}
-                      <iframe
-                        title='video'
-                        width='100%'
-                        height='400px'
-                        src='https://www.youtube.com/embed/xH777TiUF90'
-                        allowFullScreen
-                      />
+                      {recipeData.videoUrl && (
+                        <iframe
+                          title='video'
+                          width='100%'
+                          height='400px'
+                          src={getVideo(recipeData.videoUrl)}
+                          allowFullScreen
+                        />
+                      )}
                     </div>
                     <div className='recipe__manufacture-desc'>
                       {recipeData.preparation}
@@ -297,17 +312,51 @@ const RecipeFullView = (props: any) => {
                       <CheckedIcon className='recipe__actions-button-checked-icon' />
                     </div>
                   </button>
-                  <button type='button' className='recipe__actions-button card-bg'>
-                    <div className='recipe__actions-button-media'>
-                      <TrashIcon />
-                    </div>
-                    <div className='recipe__actions-button-desc'>
-                      {t('recipe.delete')}
-                    </div>
-                    <div className='recipe__actions-button-checked'>
-                      <CheckedIcon className='recipe__actions-button-checked-icon' />
-                    </div>
-                  </button>
+                  {recipeData.isOwner && (
+                    <button
+                      type='button'
+                      onClick={() => setActiveDeleteModal(true)}
+                      className='recipe__actions-button card-bg'
+                    >
+                      <div className='recipe__actions-button-media'>
+                        <TrashIcon />
+                      </div>
+                      <div className='recipe__actions-button-desc'>
+                        {t('recipe.delete')}
+                      </div>
+                      <div className='recipe__actions-button-checked'>
+                        <CheckedIcon className='recipe__actions-button-checked-icon' />
+                      </div>
+                    </button>
+                  )}
+                  {isActiveDeleteModal && (
+                    <Modal
+                      withCloseBtn
+                      shouldCloseOnOverlayClick
+                      onClose={() => setActiveDeleteModal(false)}
+                      className='recipe__delete-modal'
+                    >
+                      <div className='recipe__delete-modal-title'>
+                        {t('recipe.delete.confirmation')}
+                      </div>
+                      <div className='recipe__delete-modal-btn-wrap'>
+                        <Button
+                          color='primary'
+                          onClick={() => deleteRecipe(recipeId).then(() => history.push(routes.recipes))}
+                          className='recipe__delete-modal-btn'
+                        >
+                          {t('common.yes')}
+                        </Button>
+                        <Button
+                          color='cancel'
+                          onClick={() => setActiveDeleteModal(false)}
+                          className='recipe__delete-modal-btn'
+                        >
+                          {t('common.no')}
+                        </Button>
+                      </div>
+                    </Modal>
+                  )}
                 </div>
                 <div className='recipe__vegetables'>
                   <SproutIcon className='recipe__vegetables-media' />
@@ -467,7 +516,8 @@ const RecipeFullView = (props: any) => {
             </div>
           </div>
         </div>
-      )}
+      )
+      }
     </>
   );
 };
