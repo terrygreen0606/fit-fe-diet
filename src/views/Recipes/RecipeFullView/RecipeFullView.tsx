@@ -165,7 +165,7 @@ const RecipeFullView = (props: any) => {
                   name: t('app.title.recipes'),
                 },
               ]}
-              currentPage={t('app.title.recipe')}
+              currentPage={recipeData.name}
             />
             <div className='row'>
               <div className='col-xl-8'>
@@ -516,8 +516,7 @@ const RecipeFullView = (props: any) => {
             </div>
           </div>
         </div>
-      )
-      }
+      )}
     </>
   );
 };
