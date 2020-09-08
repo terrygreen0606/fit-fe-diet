@@ -3,7 +3,7 @@ import { getTranslate } from 'utils';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import WeekDays from 'components/WeekDays';
@@ -75,8 +75,8 @@ const FoodPlanView = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
             ]}
             currentPage={t('app.title.food_plan')}

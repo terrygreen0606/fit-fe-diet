@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { fetchUserProfile, userUpdateProfile } from 'api';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 
 // Components
 import ProfileLayout from 'components/hoc/ProfileLayout';
@@ -197,8 +197,8 @@ const SettingsPersonalView = (props: any) => {
         <Breadcrumb
           routes={[
             {
-              url: routes[MAIN],
-              name: MAIN,
+              url: routes.main,
+              name: t('breadcrumb.main'),
             },
           ]}
           currentPage={t('app.title.settings_personal')}
