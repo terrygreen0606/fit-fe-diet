@@ -260,11 +260,11 @@ const ShoppingListView: React.FC = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes.main.url,
-                name: routes.main.title,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
             ]}
-            currentPage='Shopping list'
+            currentPage={t('app.title.shopping_list')}
           />
 
           <div className='row'>

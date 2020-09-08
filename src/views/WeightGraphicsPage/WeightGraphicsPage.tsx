@@ -73,12 +73,12 @@ const WeightGraphicsPage = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes.main.url,
-                name: routes.main.title,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
               {
-                url: routes.nutritionPlan.url,
-                name: routes.nutritionPlan.title,
+                url: routes.nutritionPlan,
+                name: t('app.title.nutrition_plan'),
               },
             ]}
             currentPage={t('nutrition_weights.title')}

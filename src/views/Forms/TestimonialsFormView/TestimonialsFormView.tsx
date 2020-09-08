@@ -122,8 +122,8 @@ const TestimonialsFormView = (props: any) => {
         <Breadcrumb
           routes={[
             {
-              url: routes.main.url,
-              name: routes.main.title,
+              url: routes.main,
+              name: t('breadcrumb.main'),
             },
           ]}
           currentPage={t('app.title.testimonials.add')}

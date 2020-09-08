@@ -44,12 +44,12 @@ const SavedRecipesView = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes.main.url,
-                name: routes.main.title,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
               {
-                url: routes.recipes.url,
-                name: routes.recipes.title,
+                url: routes.recipes,
+                name: t('app.title.recipes'),
               },
             ]}
             currentPage={t('app.title.saved_recipes')}

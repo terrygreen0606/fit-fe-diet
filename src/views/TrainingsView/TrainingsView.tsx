@@ -61,12 +61,12 @@ const TrainingsView: React.FC = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes.main.url,
-                name: routes.main.title,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
               {
-                url: routes.mealPlanList.url,
-                name: routes.mealPlanList.title,
+                url: routes.mealPlanList,
+                name: t('app.title.meal_plan'),
               },
             ]}
             currentPage={t('app.title.trainings')}
