@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN, NUTRITION_PLAN } from 'constants/routes';
+import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
@@ -73,12 +73,12 @@ const WeightGraphicsPage = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
               {
-                url: routes[NUTRITION_PLAN],
-                name: NUTRITION_PLAN,
+                url: routes.nutritionPlan,
+                name: t('app.title.nutrition_plan'),
               },
             ]}
             currentPage={t('nutrition_weights.title')}

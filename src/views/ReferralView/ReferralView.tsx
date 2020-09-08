@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -100,8 +100,8 @@ const ReferralView = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
             ]}
             currentPage={t('app.title.referral')}

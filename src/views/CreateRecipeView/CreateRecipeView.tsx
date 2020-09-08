@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
 
-import { routes, MAIN, RECIPES } from 'constants/routes';
+import { routes } from 'constants/routes';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -367,12 +367,12 @@ const CreateRecipeView = (props: any) => {
         <Breadcrumb
           routes={[
             {
-              url: routes[MAIN],
-              name: MAIN,
+              url: routes.main,
+              name: t('breadcrumb.main'),
             },
             {
-              url: routes[RECIPES],
-              name: RECIPES,
+              url: routes.recipes,
+              name: t('app.title.recipes'),
             },
           ]}
           currentPage={t('app.title.recipe_create')}
