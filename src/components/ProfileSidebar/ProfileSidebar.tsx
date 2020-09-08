@@ -1,13 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { getTranslate } from 'utils';
-import {
-  routes,
-  SETTINGS_FAMILY,
-  SETTINGS_PERSONAL,
-  SETTINGS_FAQ,
-  SETTINGS_CHANGE_MEAL_PLAN,
-} from 'constants/routes';
+import { routes } from 'constants/routes';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 
@@ -34,7 +28,7 @@ const ProfileSidebar = (props: any) => {
         <ul className='profile-menu-list'>
           <li>
             <NavLink
-              to={routes[SETTINGS_PERSONAL]}
+              to={routes.personalSettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
@@ -46,7 +40,7 @@ const ProfileSidebar = (props: any) => {
 
           <li>
             <NavLink
-              to={routes[SETTINGS_CHANGE_MEAL_PLAN]}
+              to={routes.changeMealSettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
@@ -58,7 +52,7 @@ const ProfileSidebar = (props: any) => {
 
           <li>
             <NavLink
-              to={routes[SETTINGS_FAMILY]}
+              to={routes.familySettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
@@ -110,7 +104,7 @@ const ProfileSidebar = (props: any) => {
         <ul className='profile-menu-list'>
           <li>
             <NavLink
-              to={routes[SETTINGS_FAQ]}
+              to={routes.faqSettings}
               className='profile-menu-list-item'
             >
               <QuestionIcon className='profile-menu-list-icon' />

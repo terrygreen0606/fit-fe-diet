@@ -14,10 +14,17 @@
     transform: translateX(-50%)
     width: calc(100% - 70px)
     height: 8px
-    background: $steel-blue
+    background-color: #f3f3f3
 
     @media (max-width: 767px)
       top: 10px
+
+    &-painted
+      position: absolute
+      top: 0
+      left: 0
+      height: 8px
+      background: linear-gradient(to right, #3282E9, #f3f3f3)
 
   &-item
     max-width: 100px
@@ -50,7 +57,7 @@
         transform: translate(-50%, -50%)
         width: 32px
         height: 32px
-        background-color: $steel-blue
+        background-color: $ghost-white
         border-radius: 50%
 
       svg
@@ -58,14 +65,24 @@
         max-width: 14px
         
         path
-          fill: $white
+          fill: $ghost-white
     
     &-desc
       font-size: 20px
       line-height: 1.2
-      color: $black
+      color: #CDCDCD
       
       @media (max-width: 767px)
         max-width: 60px
         font-size: 12px
-        
+  &-item.active
+    .progress__list-item-media
+      &::before
+        background-color: $steel-blue
+
+      svg
+        path
+          fill: $white
+
+    .progress__list-item-desc
+      color: $black

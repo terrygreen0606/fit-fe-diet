@@ -7,7 +7,7 @@ import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import { toast } from 'react-toastify';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -28,9 +28,9 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import Button from 'components/common/Forms/Button';
 import Progress from './Progress';
-import SelectInput from 'components/common/Forms/SelectInput';
 import InputField from 'components/common/Forms/InputField';
 import CustomSwitch from 'components/common/Forms/CustomSwitch';
+import CustomRadio from 'components/common/Forms/CustomRadio';
 
 import './SettingsChangeMealPlanView.sass';
 
@@ -42,23 +42,14 @@ import { ReactComponent as BreakfastIcon } from 'assets/img/icons/breakfast-icon
 import { ReactComponent as LunchIcon } from 'assets/img/icons/lunch-icon.svg';
 import { ReactComponent as DinnerIcon } from 'assets/img/icons/dinner-icon.svg';
 import { ReactComponent as SnackIcon } from 'assets/img/icons/snack-icon.svg';
+import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
+import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
 
 const SettingsChangeMealPlanView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
   const { userSettings } = props;
-
-  const [gender] = useState([
-    {
-      value: 'm',
-      label: t('mp.form.male'),
-    },
-    {
-      value: 'f',
-      label: t('mp.form.female'),
-    },
-  ]);
 
   const [activeStep, setActiveStep] = useState(steps.goal);
 
@@ -72,6 +63,7 @@ const SettingsChangeMealPlanView = (props: any) => {
     age: null,
     height: '',
     weight: null,
+    weight_goal: null,
     goal: null,
     ignore_cuisine_ids: [],
     diseases: [],
@@ -112,6 +104,7 @@ const SettingsChangeMealPlanView = (props: any) => {
         updateChangeMealForm.age,
         updateChangeMealForm.height,
         updateChangeMealForm.weight,
+        updateChangeMealForm.weight_goal,
         updateChangeMealForm.goal,
         updateChangeMealForm.ignore_cuisine_ids,
         updateChangeMealForm.diseases,
@@ -175,7 +168,8 @@ const SettingsChangeMealPlanView = (props: any) => {
         gender: data.gender,
         age: data.age,
         height: data.height,
-        weight: data.weight / 1000,
+        weight: data.weight,
+        weight_goal: data.weight_goal,
         ignore_cuisine_ids: [...data.ignore_cuisine_ids],
         diseases: [...data.diseases],
       });
@@ -185,17 +179,17 @@ const SettingsChangeMealPlanView = (props: any) => {
   return (
     <>
       <Helmet>
-        <title>{t('app.title.family')}</title>
+        <title>{t('app.title.change_meal_plan')}</title>
       </Helmet>
       <div className='container'>
         <Breadcrumb
           routes={[
             {
-              url: routes[MAIN],
-              name: MAIN,
+              url: routes.main,
+              name: t('breadcrumb.main'),
             },
           ]}
-          currentPage={t('app.title.family')}
+          currentPage={t('app.title.change_meal_plan')}
         />
       </div>
       <ProfileLayout>
@@ -204,11 +198,31 @@ const SettingsChangeMealPlanView = (props: any) => {
           className='change-meal-plan card-bg'
         >
           <Progress
+            goal={activeStep === steps.goal
+              || activeStep === steps.metrics
+              || activeStep === steps.notEating
+              || activeStep === steps.desiases
+              || activeStep === steps.meals}
             goalText={t('mp.progress.goal')}
+            metrics={activeStep === steps.metrics
+              || activeStep === steps.notEating
+              || activeStep === steps.desiases
+              || activeStep === steps.meals}
             metricsText={t('mp.progress.metrics')}
+            notEating={activeStep === steps.notEating
+              || activeStep === steps.desiases
+              || activeStep === steps.meals}
             notEatingText={t('mp.progress.not_eating')}
+            desiases={activeStep === steps.desiases
+              || activeStep === steps.meals}
             desiasesText={t('mp.progress.desiases')}
+            meals={activeStep === steps.meals}
             mealsText={t('mp.progress.meals')}
+            percent={activeStep === steps.goal && 20
+              || activeStep === steps.metrics && 40
+              || activeStep === steps.notEating && 60
+              || activeStep === steps.desiases && 80
+              || activeStep === steps.meals && 100}
             onClickGoal={() => setActiveStep(steps.goal)}
             onClickMetrics={() => setActiveStep(steps.metrics)}
             onClickNotEating={() => {
@@ -295,79 +309,134 @@ const SettingsChangeMealPlanView = (props: any) => {
             <div>
               <div className='change-meal-plan__title'>{t('mp.metrics.title')}</div>
               <div className='change-meal-plan__metrics'>
-                <div className='change-meal-plan__metrics-item'>
-                  <div className='change-meal-plan__metrics-item-desc'>
-                    {t('mp.metrics.sex')}
-                  </div>
-                  <div className='change-meal-plan__metrics-item-value'>
-                    <SelectInput
-                      value={gender.find((option) => option.value === updateChangeMealForm.gender)}
-                      options={gender}
-                      placeholder=''
-                      onChange={(option, e) => validateOnChange('gender', option.value, e)}
-                    />
-                  </div>
+                <div className='change-meal-plan__metrics-switch'>
+                  <CustomSwitch
+                    label1={t('mp.imperial')}
+                    label2={t('mp.metric')}
+                    checked={updateChangeMealForm.measurement === 'si'}
+                    onChange={() => {
+                      setUpdateChangeMealForm({
+                        ...updateChangeMealForm,
+                        measurement: updateChangeMealForm.measurement === 'si' ? 'us' : 'si',
+                      });
+                    }}
+                  />
                 </div>
-                <div className='change-meal-plan__metrics-item'>
-                  <div className='change-meal-plan__metrics-item-desc'>
-                    {t('mp.metrics.age')}
-                  </div>
-                  <div className='change-meal-plan__metrics-item-value'>
-                    <InputField
-                      type='number'
-                      name='age'
-                      errors={getFieldErrors('age')}
-                      data-param='12, 100'
-                      data-validate='["min-max"]'
-                      value={updateChangeMealForm.age}
-                      onChange={(e) => validateOnChange('age', +e.target.value, e)}
-                      min={12}
-                      max={100}
-                    />
-                  </div>
-                </div>
-                <div className='change-meal-plan__metrics-item'>
-                  <div className='change-meal-plan__metrics-item-desc'>
-                    {t('mp.metrics.height')}
-                  </div>
-                  <div className='change-meal-plan__metrics-item-value'>
-                    <InputField
-                      name='height'
-                      errors={getFieldErrors('height')}
-                      value={updateChangeMealForm.height}
-                      onChange={(e) => validateOnChange('height', e.target.value, e)}
-                    />
-                    {updateChangeMealForm.measurement === 'si' ? t('common.cm') : t('common.pound')}
-                  </div>
-                </div>
-                <div className='change-meal-plan__metrics-item'>
-                  <div className='change-meal-plan__metrics-item-desc'>
-                    {t('mp.metrics.weight')}
-                  </div>
-                  <div className='change-meal-plan__metrics-item-value'>
-                    <InputField
-                      type='number'
-                      name='weight'
-                      step={0.1}
-                      data-param='30, 999'
-                      data-validate='["min-max"]'
-                      errors={getFieldErrors('weight')}
-                      value={updateChangeMealForm.weight}
-                      onChange={(e) => validateOnChange('weight', +e.target.value, e)}
-                      min={30}
-                      max={999}
-                    />
-                    <CustomSwitch
-                      label1={t('common.pound')}
-                      label2={t('common.kg')}
-                      checked={updateChangeMealForm.measurement === 'si'}
-                      onChange={() => {
-                        setUpdateChangeMealForm({
+                <div className='change-meal-plan__metrics-wrap'>
+                  <div className='change-meal-plan__metrics-gender'>
+                    <div className='change-meal-plan__metrics-gender-desc'>
+                      {t('mp.metrics.sex')}
+                    </div>
+                    <div
+                      className={classnames('change-meal-plan__metrics-gender-item', {
+                        active: updateChangeMealForm.gender === 'm',
+                      })}
+                    >
+                      <CustomRadio
+                        name='gender'
+                        label={(
+                          <>
+                            <MaleIcon className='change-meal-plan__metrics-gender-item-icon' />
+                            <div className='change-meal-plan__metrics-gender-item-text'>
+                              {t('mp.form.male')}
+                            </div>
+                          </>
+                        )}
+                        value='m'
+                        checked={updateChangeMealForm.gender === 'm'}
+                        onChange={(e) => setUpdateChangeMealForm({
                           ...updateChangeMealForm,
-                          measurement: updateChangeMealForm.measurement === 'si' ? 'us' : 'si',
-                        });
-                      }}
-                    />
+                          gender: e.target.value,
+                        })}
+                      />
+                    </div>
+                    <div
+                      className={classnames('change-meal-plan__metrics-gender-item', {
+                        active: updateChangeMealForm.gender === 'f',
+                      })}
+                    >
+                      <CustomRadio
+                        name='gender'
+                        label={(
+                          <>
+                            <FemaleIcon className='change-meal-plan__metrics-gender-item-icon' />
+                            <div className='change-meal-plan__metrics-gender-item-text'>
+                              {t('mp.form.female')}
+                            </div>
+                          </>
+                        )}
+                        value='f'
+                        checked={updateChangeMealForm.gender === 'f'}
+                        onChange={(e) => setUpdateChangeMealForm({
+                          ...updateChangeMealForm,
+                          gender: e.target.value,
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div className='change-meal-plan__metrics-row'>
+                    <div className='change-meal-plan__metrics-item'>
+                      <InputField
+                        type='number'
+                        name='age'
+                        errors={getFieldErrors('age')}
+                        data-param='12, 100'
+                        data-validate='["min-max"]'
+                        value={updateChangeMealForm.age}
+                        onChange={(e) => validateOnChange('age', e.target.value, e)}
+                        min={12}
+                        max={100}
+                        label={t('mp.metrics.age')}
+                      />
+                    </div>
+                    <div className='change-meal-plan__metrics-item'>
+                      <InputField
+                        name='height'
+                        errors={getFieldErrors('height')}
+                        value={updateChangeMealForm.height}
+                        onChange={(e) => validateOnChange('height', e.target.value, e)}
+                        label={t('mp.metrics.height')}
+                      />
+                      <div className='change-meal-plan__metrics-item-unit'>
+                        {updateChangeMealForm.measurement === 'si' ? t('common.cm') : t('common.foot')}
+                      </div>
+                    </div>
+                    <div className='change-meal-plan__metrics-item'>
+                      <InputField
+                        label={t('mp.metrics.weight_now')}
+                        type='number'
+                        name='weight'
+                        step={0.1}
+                        data-param='30, 999'
+                        data-validate='["min-max"]'
+                        errors={getFieldErrors('weight')}
+                        value={updateChangeMealForm.weight}
+                        onChange={(e) => validateOnChange('weight', e.target.value, e)}
+                        min={30}
+                        max={999}
+                      />
+                      <div className='change-meal-plan__metrics-item-unit'>
+                        {updateChangeMealForm.measurement === 'si' ? t('common.kg') : t('common.pound')}
+                      </div>
+                    </div>
+                    <div className='change-meal-plan__metrics-item'>
+                      <InputField
+                        label={t('mp.metrics.weight_want')}
+                        type='number'
+                        name='weight_goal'
+                        step={0.1}
+                        data-param='30, 999'
+                        data-validate='["min-max"]'
+                        errors={getFieldErrors('weight_goal')}
+                        value={updateChangeMealForm.weight_goal}
+                        onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
+                        min={30}
+                        max={999}
+                      />
+                      <div className='change-meal-plan__metrics-item-unit'>
+                        {updateChangeMealForm.measurement === 'si' ? t('common.kg') : t('common.pound')}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

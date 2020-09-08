@@ -125,7 +125,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.changeMeal}
+      path={routes.changeMealSettings}
       component={(props: any) => (
         <Layout {...props}>
           <SettingsChangeMealPlanView {...props} />

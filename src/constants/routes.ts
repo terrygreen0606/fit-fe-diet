@@ -8,7 +8,7 @@ export const routes = {
   mealPlanList: '/meal-plan/list',
   recipes: '/recipes',
   waterTracker: '/water-tracker',
-  changeMeal: '/plan/change-meal',
+  changeMealSettings: '/settings/change-meal-plan',
   personalSettings: '/settings/personal',
   savedRecipes: '/recipes/saved',
   favouritesRecipes: '/recipes/favourites',
