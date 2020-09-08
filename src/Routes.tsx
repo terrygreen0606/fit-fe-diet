@@ -226,7 +226,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.recipeFullView.url}
+      path={routes.recipeFullView}
       component={(props: any) => (
         <Layout {...props}>
           <RecipeFullView {...props} />

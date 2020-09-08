@@ -245,7 +245,7 @@ const TrainingsView: React.FC = (props: any) => {
               </div>
               <div className='training-plan-adherence-diet-card-socials card-bg'>
                 <div className='training-plan-adherence-diet-card-socials-title'>
-                  {t('trainings.socails_title')}
+                  {t('trainings.socials_title')}
                 </div>
                 <div className='training-plan-adherence-diet-card-socials-list'>
                   <button

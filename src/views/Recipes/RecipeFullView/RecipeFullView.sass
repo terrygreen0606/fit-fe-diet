@@ -48,6 +48,23 @@
         padding-bottom: 10px
         border-bottom: 1px solid $steel-blue
 
+      &-row
+        display: flex
+        align-items: center
+
+      &-time
+        display: flex
+        align-items: center
+        margin-right: 10px
+
+        &::after
+          content: ''
+          width: 8px
+          height: 8px
+          margin-left: 10px
+          border-radius: 50%
+          background-color: $mint-green
+
       &-heart
         position: absolute
         top: 40px
@@ -149,28 +166,9 @@
         align-items: center
         justify-content: space-between
         margin-bottom: 40px
-
-        &-desc
-          flex: 1
-          padding-right: 20px
-          font-size: 20px
-          line-height: 1.5
-
-        &-button
-          width: 40px
-          height: 40px
-          padding: 0
-          background-color: transparent
-          border: none
-          cursor: pointer
-
-          path
-            stroke: $steel-blue
-            transition: 0.2s stroke ease
-
-        &-button:hover
-          path
-            stroke: darken($steel-blue, 10%)
+        padding-right: 20px
+        font-size: 20px
+        line-height: 1.5
 
   &__manufacture
     &-title
@@ -334,5 +332,198 @@
         font-weight: 600
         color: $white
 
+  &__nutrients
+    margin-bottom: 30px
+    padding: 40px 34px
+    background-color: $caribbean-green
 
+    &-media
+      margin-bottom: 13px
+      text-align: center
+
+      svg
+        max-width: 84px
+
+    &-title
+      margin-bottom: 30px
+      text-align: center
+      font-size: 34px
+      line-height: 1.2
+      font-weight: bold
+      color: $white
+
+    &-calories
+      display: flex
+      justify-content: space-between
+      align-items: center
+      margin-bottom: 50px
+      padding: 30px 10px
+      font-size: 35px
+      line-height: 1.2
+      font-weight: bold
+      color: $white
+      border-top: 1px solid $white
+      border-bottom: 1px solid $white
+
+    &-composition-list
+      padding: 0 30px
+
+    &-composition-item
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-bottom: 40px
+      font-size: 24px
+      line-height: 1.2
+      font-weight: 600
+      color: $white
+
+  &__share
+    margin-bottom: 40px
+    padding: 30px
+
+    &-title
+      margin-bottom: 40px
+      font-size: 24px
+      line-height: 1.2
+      font-weight: bold
+
+    &-list
+      display: flex
+      align-items: center
+      justify-content: space-between
+
+    &-button
+      width: 57px
+      height: 57px
+      transition: 0.2s opacity ease
+
+      svg
+        width: 100%
+        height: auto
+
+    &-button:hover
+      opacity: 0.7
+
+  &__advertising
+    margin-bottom: 30px
+    padding: 26px 34px
+
+    &-title
+      margin-bottom: 30px
+      font-size: 24px
+      line-height: 1.2
+      font-weight: bold
+
+    &-wrap
+      display: flex
+      align-items: flex-start
+
+    &-media
+      width: 95px
+      height: 95px
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: flex-end
+      border: 1px solid #E8E8E8
+      border-radius: 20px
+      background-color: $white
+
+      img
+        max-width: 100%
+        height: auto
+    
+    &-text
+      flex: 1
+      padding-left: 50px
+
+      &-title
+        margin-bottom: 10px
+        font-size: 24px
+        line-height: 1.2
+        font-weight: bold
+
+      &-desc
+        margin-bottom: 30px
+        font-size: 18px
+        line-height: 1.2
+
+      &-btn
+        width: 100%
+
+  &__similar-recipes
+    padding: 22px 25px 36px
+
+    &-title
+      margin-bottom: 56px
+      font-size: 24px
+      line-height: 1.2
+      font-weight: bold
+
+    &-item
+      display: flex
+      align-items: flex-start
+
+      &:not(:first-child)
+        margin-top: 54px
+
+      &-media
+        position: relative
+        width: 95px
+        overflow: hidden
+        line-height: 0
+        border-radius: 27px
+
+        & > *
+          line-height: initial
+
+        img
+          max-width: 100%
+          height: auto
+
+        &-icon
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+          opacity: 0
+          transition: 0.2s opacity ease
+      
+      &-media:hover
+        .recipe__similar-recipes-item-media-icon
+          opacity: 1
+
+      &-text
+        flex: 1
+        padding-left: 24px
+
+        &-title
+          margin-bottom: 6px
+          font-size: 24px
+          line-height: 1.2
+          font-weight: bold
+        
+        &-desc
+          margin-bottom: 8px
+          padding-bottom: 8px
+          font-size: 16px
+          border-bottom: 1px solid $steel-blue
+
+        &-info
+          display: flex
+          align-items: center
+
+          &-time
+            display: flex
+            align-items: center
+            margin-right: 10px
+
+            &::after
+              content: ''
+              width: 8px
+              height: 8px
+              margin-left: 10px
+              border-radius: 50%
+              background-color: #CBFFCE
 
