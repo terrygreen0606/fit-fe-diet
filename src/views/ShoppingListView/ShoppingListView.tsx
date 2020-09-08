@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import AsyncSelect from 'react-select/async';
+import Select from 'react-select';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
 
 import { getTranslate, openShareLink } from 'utils';
 import {
@@ -11,9 +12,7 @@ import {
   searchIngredients,
   addIngredientInShoppingList,
   deleteFromShoppingList,
-  getUserSettings,
   getPublicShopListUrl,
-  fetchUserProfile,
 } from 'api';
 
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -39,8 +38,7 @@ import './ShoppingListView.sass';
 import { colourStylesSelect, mockData } from './dataForShoppingList';
 
 const ShoppingListView: React.FC = (props: any) => {
-  const { localePhrases } = props;
-  const [userName, setUserName] = useState(null);
+  const { localePhrases, settings } = props;
   const [measurement, setMeasurement] = useState(null);
   const [publicShopListUrl, setPublicShopListUrl] = useState(null);
   const [items, setItems] = useState(null);
@@ -49,6 +47,7 @@ const ShoppingListView: React.FC = (props: any) => {
   const [quantity, setQuantity] = useState(null);
   const [slideStep, setSlideStep] = useState(1);
   const [shareListPopup, setShareListPopup] = useState(false);
+  const [ingredientsArray, setIngredientsArray] = useState([]);
 
   const t = (code: string, placeholders?: any) => getTranslate(
     localePhrases,
@@ -67,6 +66,7 @@ const ShoppingListView: React.FC = (props: any) => {
   };
 
   const filterIngredients = async (inputValue: string) => {
+    if (inputValue.length < 2) return;
     const filteredListOfIngredients: Array<any> = [];
     try {
       const response = await searchIngredients(inputValue);
@@ -83,9 +83,22 @@ const ShoppingListView: React.FC = (props: any) => {
     }
   };
 
-  const inputValueIngredient = (inputValue: string) => new Promise((resolve) => {
-    resolve(filterIngredients(inputValue));
+  const inputValueIngredient = (ingredientValue: string) => new Promise((resolve) => {
+    resolve(filterIngredients(ingredientValue));
   });
+
+  const changeHandler = (ingredient, { action }) => {
+    if (action === 'select-option') {
+      setIngredientId(ingredient.value);
+    }
+  };
+
+  const inputChangeHandler = (inputValue, { action }) => {
+    if ((action === 'set-value' || action === 'input-change') && inputValue.length !== 0) {
+      inputValueIngredient(inputValue).then((res: Array<any>) =>
+        res && res.length !== 0 && setIngredientsArray([...res]));
+    }
+  };
 
   const addIngredient = async () => {
     if (!ingredientWeight || !ingredientId) toast.warn('Product name and quantity should be filled');
@@ -229,13 +242,8 @@ const ShoppingListView: React.FC = (props: any) => {
   useEffect(() => {
     getShoppingList(2)
       .then((res) => setItems(res.data.data.list));
-    getUserSettings()
-      .then((res) => {
-        setMeasurement(res.data.data.measurement);
-        setQuantity(quantityOptions(res.data.data.measurement)[0]);
-      });
-    fetchUserProfile()
-      .then((res) => setUserName(res.data.data.name));
+    setMeasurement(settings.measurement);
+    setQuantity(quantityOptions(settings.measurement)[0]);
     getPublicShopListUrl()
       .then((res) => setPublicShopListUrl(res.data.data.url));
   }, []);
@@ -247,6 +255,14 @@ const ShoppingListView: React.FC = (props: any) => {
       item.querySelector('input').setAttribute('checked', 'checked');
     });
   });
+
+  // if (document.querySelector('.shopping_list_body_title_sect_text')) {
+  //   document.querySelector('.shopping_list_body_title_sect_text').innerHTML = document
+  //     .querySelector('.shopping_list_body_title_sect_text').innerHTML
+  //     .replace(/(\d+)/, `${
+  //       document.querySelectorAll('input[type="checkbox"]:not(:checked)').length
+  //     }`);
+  // }
 
   if (!items) return <Spinner color='#0FC1A1' />;
 
@@ -267,26 +283,13 @@ const ShoppingListView: React.FC = (props: any) => {
             currentPage={t('app.title.shopping_list')}
           />
 
-          <div className='row'>
-            <ul className='page-tabs mx-4 mx-md-0'>
-              <li
-                role='presentation'
-                className='page-tabs-item active'
-              >
-                {t('recipe.saved.shopping_list')}
-              </li>
-            </ul>
-          </div>
+          <h1 className='training-plan-title'>
+            <span className='training-plan-title-text'>
+              {t('recipe.saved.shopping_list')}
+            </span>
+          </h1>
           <div className='row px-3 px-md-0'>
             <div className='shopping_list_container'>
-              <div className='shopping_list_header'>
-                <h3 className='shopping_list_header_title'>
-                  {t('recipe.saved.shopping_list')}
-                </h3>
-                <p className='shopping_list_header_text'>
-                  {t('shop_list.subtitle', { name: userName })}
-                </p>
-              </div>
               <div className='shopping_list_body_title_sect'>
                 <h4 className='shopping_list_body_title_sect_text'>
                   {t('shop_list.to_buy', { number: items.filter((item) => !item.is_bought).length })}
@@ -323,7 +326,7 @@ const ShoppingListView: React.FC = (props: any) => {
                           disabled={!items || !items.length}
                           onClick={() => openShareLink(
                             `https://www.facebook.com/sharer/sharer.php?u=${publicShopListUrl}&t=${
-                            t('shop_list.sharing')
+                              t('shop_list.sharing')
                             }`,
                           )}
                         >
@@ -365,13 +368,18 @@ const ShoppingListView: React.FC = (props: any) => {
                     {t('ingr.add')}
                   </span>
                   <div className='shopping_list_footer_ingredient_input_sect'>
-                    <AsyncSelect
-                      cacheOptions
-                      loadOptions={inputValueIngredient}
+                    <Select
+                      isClearable
                       placeholder={t('common.product_name')}
-                      onChange={(e) => setIngredientId(e.value)}
+                      options={ingredientsArray}
+                      onInputChange={inputChangeHandler}
+                      onChange={changeHandler}
                       styles={colourStylesSelect}
-                      noOptionsMessage={() => t('shop_list.no_ingredient')}
+                      noOptionsMessage={
+                        ingredientsArray.length > 0
+                          ? () => t('shop_list.no_ingredient')
+                          : () => t('shop_list.emty_field')
+                      }
                     />
                   </div>
                 </div>
@@ -422,4 +430,10 @@ const ShoppingListView: React.FC = (props: any) => {
   );
 };
 
-export default WithTranslate(ShoppingListView);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      settings: state.settings,
+    }),
+  )(ShoppingListView),
+);

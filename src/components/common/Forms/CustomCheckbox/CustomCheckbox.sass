@@ -2,6 +2,8 @@
 
 
 .customCheckbox
+	-webkit-print-color-adjust: exact
+	color-adjust: exact
 	display: block
 	position: relative
 	padding-left: 35px
@@ -46,15 +48,14 @@
 	height: 23px
 	border: 1px solid $grey-light
 	border-radius: 4px
-	&::after
-		content: ''
-		position: absolute
-		left: 8px
-		top: 3px
-		width: 7px
-		height: 11px
-		border: solid $caribbean-green
-		border-width: 0 2px 2px 0
-		transform: rotate(45deg)
-		opacity: 0
-		
+ &::after
+   content: ''
+   position: absolute
+   left: 8px
+   top: 3px
+   width: 7px
+   height: 11px
+   border: solid $caribbean-green
+   border-width: 0 2px 2px 0
+   transform: rotate(45deg)
+   opacity: 0
