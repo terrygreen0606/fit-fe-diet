@@ -20,5 +20,5 @@ export const routes = {
   cancellation: '/cancellation',
   login: '/login',
   register: '/register',
-  recipeFullView: '/recipe',
+  recipeFullView: '/recipe/:recipeId',
 };

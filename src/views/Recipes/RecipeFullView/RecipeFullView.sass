@@ -3,6 +3,12 @@
 .recipe
   margin-bottom: 50px
 
+  &__error
+    text-align: center
+    font-size: 36px
+    line-height: 1.2
+    font-weight: bold
+
   &__main-info
     position: relative
     display: flex
@@ -123,12 +129,12 @@
           height: auto
 
           path
-            fill: #F27C7C
+            fill: #c7c7c7
             transition: 0.2s fill ease
 
-      &-heart:hover
+      &-heart.active
         svg path
-          fill: $indiang-red
+          fill: #F27C7C
 
       &-button
         position: absolute
@@ -161,7 +167,7 @@
             content: ''
             width: 26px
             height: 26px
-            background-color: $caribbean-green
+            background-color: #f2f2f2
             border-radius: 50%
             transition: background-color 0.2s ease
 
@@ -172,19 +178,19 @@
           transform: translate(-50%, -50%)
           width: 14px
 
-      &-button:hover
+          path
+            fill: $black
+            transition: fill 0.2s ease
+
+      &-button.active
         .recipe__main-info-desc-button-wrap::before
-          background-color: darken($caribbean-green, 5%)
+          background-color: $caribbean-green
+
+        .recipe__main-info-desc-button-icon path
+          fill: $white
 
       &-button_cart
         right: 88px
-
-        .recipe__main-info-desc-button-wrap::before
-          background-color: #f2f2f2
-
-      &-button_cart:hover
-        .recipe__main-info-desc-button-wrap::before
-          background-color: darken(#f2f2f2, 10%)
 
   &__additional-info
     padding-left: 100px
@@ -253,17 +259,11 @@
 
     &-video
       margin-bottom: 66px
-      width: 100%
-      height: 200px
-      background-color: #C4C4C4
 
       @media (max-width: 767px)
         margin-bottom: 40px
     
-    &-list
-      padding-left: 15px
-
-    &-list-item
+    &-desc
       margin-bottom: 40px
       font-size: 20px
       line-height: 1.5

@@ -30,3 +30,11 @@ export const createRecipe = (
     },
     {},
   );
+
+export const getRecipeCuisines = () => axios.get('/recipe/cuisines-list');
+
+export const getRecipeData = (id: string) => axios.get(`/recipe/${id}`);
+
+export const likeRecipe = (recipeId: string) => axios.put(`/recipe/like/${recipeId}`);
+
+export const preparedRecipe = (recipeId: string) => axios.put(`/recipe/prepared/${recipeId}`);

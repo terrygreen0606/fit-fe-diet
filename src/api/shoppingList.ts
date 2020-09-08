@@ -8,13 +8,15 @@ export const setShoppingRowBought = (id: string, is_bought: boolean) => axios.pu
   is_bought,
 });
 
-export const addIngredientInShoppingList = (id: string, weight: number = 1) => axios.put(`/shopping-list/ingredient/${id}`, {
-  weight,
-});
+export const addIngredientInShoppingList = (id: string, weight: number = 1) =>
+  axios.put(`/shopping-list/ingredient/${id}`, {
+    weight,
+  });
 
-export const addToShoppingListByRecipes = (recipe_ids: string[], servings_cnt: number = 1) => axios.put('/shopping-list/recipes', {
-  recipe_ids,
-  servings_cnt,
-});
+export const addToShoppingListByRecipes = (recipe_ids: string[], servings_cnt: number = 1) =>
+  axios.put('/shopping-list/recipes', {
+    recipe_ids,
+    servings_cnt,
+  });
 
 export const deleteFromShoppingList = (id: string) => axios.delete(`/shopping-list/${id}`);
