@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN } from 'constants/routes';
+import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
@@ -122,8 +122,8 @@ const TestimonialsFormView = (props: any) => {
         <Breadcrumb
           routes={[
             {
-              url: routes[MAIN],
-              name: MAIN,
+              url: routes.main,
+              name: t('breadcrumb.main'),
             },
           ]}
           currentPage={t('app.title.testimonials.add')}
@@ -166,7 +166,7 @@ const TestimonialsFormView = (props: any) => {
                         updateCount.isActive = false;
                         if (updateCount.value <= count.value) {
                           updateCount.isActive = true;
-                          activeCount++;
+                          activeCount += 1;
                         }
 
                         return setLikeCounter([...updatedLikeCounter]);

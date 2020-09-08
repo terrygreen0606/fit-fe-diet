@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN, RECIPES } from 'constants/routes';
+import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
@@ -42,12 +42,12 @@ const SavedRecipesView = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
               {
-                url: routes[RECIPES],
-                name: RECIPES,
+                url: routes.recipes,
+                name: t('app.title.recipes'),
               },
             ]}
             currentPage={t('app.title.saved_recipes')}

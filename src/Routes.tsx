@@ -6,30 +6,7 @@ import Layout from 'components/hoc/Layout';
 import PrivateRoute from 'components/common/PrivateRoute';
 import AuthRoute from 'components/common/AuthRoute';
 
-import {
-  routes,
-  MAIN,
-  TRAININGS,
-  NUTRITION_PLAN,
-  NUTRITION_PLAN_WEIGHTS,
-  SHOPPING_LIST,
-  RECIPE_CREATE,
-  MEAL_PLAN_LIST,
-  RECIPES,
-  WATER_TRACKER,
-  PLAN_CHANGE_MEAL,
-  SETTINGS_PERSONAL,
-  RECIPES_SAVED,
-  RECIPES_FAVOURITES,
-  DASHBOARD,
-  SETTINGS_FAQ,
-  REFERRAL,
-  SETTINGS_FAMILY,
-  ADD_TESTIMONIALS,
-  CANCELLATION,
-  LOGIN,
-  REGISTER,
-} from 'constants/routes';
+import { routes } from 'constants/routes';
 
 // Views
 import LoginView from './views/LoginView';
@@ -59,7 +36,7 @@ import RecipeFullView from './views/Recipes/RecipeFullView';
 const Routes = () => (
   <Switch>
     <PrivateRoute
-      path={routes[MAIN]}
+      path={routes.main}
       component={(props: any) => (
         <Layout {...props}>
           <MainView {...props} />
@@ -69,7 +46,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[SHOPPING_LIST]}
+      path={routes.shoppingList}
       component={(props: any) => (
         <Layout {...props}>
           <ShoppingListView {...props} />
@@ -79,7 +56,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[TRAININGS]}
+      path={routes.trainings}
       component={(props: any) => (
         <Layout {...props}>
           <TrainingsView {...props} />
@@ -89,7 +66,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[NUTRITION_PLAN]}
+      path={routes.nutritionPlan}
       component={(props: any) => (
         <Layout {...props}>
           <NutritionPlanView {...props} />
@@ -99,7 +76,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[NUTRITION_PLAN_WEIGHTS]}
+      path={routes.nutritionPlanWeight}
       component={(props: any) => (
         <Layout {...props}>
           <WeightGraphicsPage {...props} />
@@ -109,7 +86,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[RECIPE_CREATE]}
+      path={routes.createRecipe}
       component={(props: any) => (
         <Layout {...props}>
           <CreateRecipeView {...props} />
@@ -119,7 +96,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[MEAL_PLAN_LIST]}
+      path={routes.mealPlanList}
       component={(props: any) => (
         <Layout {...props}>
           <FoodPlanView {...props} />
@@ -129,7 +106,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[RECIPES]}
+      path={routes.recipes}
       component={(props: any) => (
         <Layout {...props}>
           <RecipesView {...props} />
@@ -139,7 +116,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[WATER_TRACKER]}
+      path={routes.waterTracker}
       component={(props: any) => (
         <Layout {...props}>
           <WaterTrackerView {...props} />
@@ -149,7 +126,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[PLAN_CHANGE_MEAL]}
+      path={routes.changeMeal}
       component={(props: any) => (
         <Layout {...props}>
           <ChangeMealPlanView {...props} />
@@ -159,7 +136,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[SETTINGS_PERSONAL]}
+      path={routes.personalSettings}
       component={(props: any) => (
         <Layout {...props}>
           <SettingsPersonalView {...props} />
@@ -169,7 +146,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[RECIPES_SAVED]}
+      path={routes.savedRecipes}
       component={(props: any) => (
         <Layout {...props}>
           <SavedRecipesView {...props} />
@@ -179,7 +156,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[RECIPES_FAVOURITES]}
+      path={routes.favouritesRecipes}
       component={(props: any) => (
         <Layout {...props}>
           <FavouriteRecipesView {...props} />
@@ -189,7 +166,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[DASHBOARD]}
+      path={routes.dashboard}
       component={(props: any) => (
         <Layout {...props}>
           <DashboardView {...props} />
@@ -199,7 +176,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[SETTINGS_FAQ]}
+      path={routes.faqSettings}
       component={(props: any) => (
         <Layout {...props}>
           <SettingsFaqView {...props} />
@@ -209,7 +186,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[REFERRAL]}
+      path={routes.referral}
       component={(props: any) => (
         <Layout {...props}>
           <ReferralView {...props} />
@@ -219,7 +196,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[SETTINGS_FAMILY]}
+      path={routes.familySettings}
       component={(props: any) => (
         <Layout {...props}>
           <SettingsFamilyView {...props} />
@@ -229,7 +206,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[ADD_TESTIMONIALS]}
+      path={routes.addTestimonial}
       component={(props: any) => (
         <Layout {...props}>
           <TestimonialsFormView {...props} />
@@ -239,7 +216,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes[CANCELLATION]}
+      path={routes.cancellation}
       component={(props: any) => (
         <Layout {...props}>
           <CancellationFormView {...props} />
@@ -259,7 +236,7 @@ const Routes = () => (
     />
 
     <AuthRoute
-      path={routes[LOGIN]}
+      path={routes.login}
       component={(props: any) => (
         <BasePage {...props}>
           <LoginView {...props} />
@@ -269,7 +246,7 @@ const Routes = () => (
     />
 
     <AuthRoute
-      path={routes[REGISTER]}
+      path={routes.register}
       component={(props: any) => (
         <BasePage {...props}>
           <RegisterView {...props} />
