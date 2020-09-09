@@ -203,10 +203,10 @@ const RecipeFullView = (props: any) => {
                     )}
                   </div>
                   <div className='recipe__main-info-desc'>
-                    <div className='recipe__main-info-desc-eating'>Breakfast</div>
                     <div className='recipe__main-info-desc-name'>
                       {recipeData.name}
                     </div>
+                    <div className='recipe__main-info-desc-eating'>Breakfast</div>
                     <div className='recipe__main-info-desc-row'>
                       <div className='recipe__main-info-desc-time'>{`${recipeData.time} ${t('common.min')}`}</div>
                       <div className='recipe__main-info-desc-cost-level'>{costLevelLabel[recipeData.costLevel]}</div>
