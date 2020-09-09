@@ -29,6 +29,7 @@ const Header = (props: any) => {
 
   const outsideCLickListener = (e) => {
     const popupEl = document.querySelector('.popup');
+    const linkToShoppingListEl = document.querySelector('.popup_cart_empty_link');
     const shoppingCartEl = document.querySelector('.shopping_cart');
     let targetElement = e.target; // clicked element
 
@@ -37,6 +38,9 @@ const Header = (props: any) => {
         // This is a click inside. Do nothing, just return.
         return;
       }
+      if (targetElement === linkToShoppingListEl) setPopup(false);
+      // If user click on link at popup to go to the shopping list
+
       // Go up the DOM
       targetElement = targetElement.parentNode;
     } while (targetElement);
@@ -69,10 +73,10 @@ const Header = (props: any) => {
               <span className='header-controls'>
                 {isAuthenticated && (
                   <>
-                    <Button className='mobile-auth-btn' color='primary' outline>
+                    <Button className='mobile-auth-btn' color='secondary' outline>
                       {t('login.submit')}
                     </Button>
-                    <Button className='mobile-auth-btn ml-2 mr-4' color='primary'>
+                    <Button className='mobile-auth-btn ml-2 mr-4' color='secondary'>
                       {t('button.sign_up')}
                     </Button>
                   </>

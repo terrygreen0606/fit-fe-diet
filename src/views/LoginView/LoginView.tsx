@@ -14,8 +14,9 @@ import {
   userLogin as userAuthLogin,
   userGoogleSignIn,
   userFacebookSignIn,
+  getAppSettings
 } from 'api';
-import { userLogin } from 'store/actions';
+import { userLogin, setAppSetting } from 'store/actions';
 import Helmet from 'react-helmet';
 
 // Components
@@ -75,8 +76,6 @@ const LoginView = (props: any) => {
     getTranslate(props.localePhrases, code, placeholders);
 
   const userClientLogin = (authToken: string) => {
-    localStorage.setItem('authToken', authToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
     props.userLogin(authToken);
   };
 
@@ -97,14 +96,28 @@ const LoginView = (props: any) => {
 
       userAuthLogin(loginForm.email, loginForm.password)
         .then((response) => {
-          setLoginLoading(false);
-
           const token =
             response.data && response.data.access_token
               ? response.data.access_token
               : null;
 
           if (token) {
+            localStorage.setItem('authToken', token);
+            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            
+            getAppSettings()
+              .then(response => {
+                setLoginLoading(false);
+
+                if (response.data && response.data.data) {
+                  setAppSetting(response.data.data);
+                }
+              })
+              .catch(error => {
+                toast.error(t('register.error_msg'));
+                setLoginLoading(false);
+              });
+
             userClientLogin(token);
           } else {
             toast.error('Error occurred when Sign In User');
@@ -288,4 +301,6 @@ const LoginView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null, { userLogin })(LoginView));
+export default WithTranslate(
+  connect(null, { userLogin, setAppSetting }
+)(LoginView));

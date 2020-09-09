@@ -17,7 +17,6 @@ import {
   searchIngredients,
   createRecipe,
   getIngredient,
-  getUserSettings,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -47,9 +46,8 @@ import {
 } from './selectsDatas';
 
 const CreateRecipeView = (props: any) => {
-  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
-
-  const [unit, setUnit] = useState(t('common.gr'));
+  const { localePhrases, settings } = props;
+  const t = (code: string, placeholders?: any) => getTranslate(localePhrases, code, placeholders);
 
   const [createRecipeForm, setCreateRecipeForm] = useState({
     recipeName: '',
@@ -63,12 +61,11 @@ const CreateRecipeView = (props: any) => {
     totalWeight: 0,
     costLevel: null,
     videoUrl: '',
+    mealtimeCodes: [],
   });
 
   useEffect(() => {
-    getUserSettings().then((response) => {
-      setCreateRecipeForm({ ...createRecipeForm, measurement: response.data.data.measurement });
-    });
+    setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
   }, []);
 
   const [composition, setComposition] = useState([
@@ -301,6 +298,7 @@ const CreateRecipeView = (props: any) => {
         createRecipeForm.totalWeight,
         createRecipeForm.costLevel,
         createRecipeForm.videoUrl,
+        createRecipeForm.mealtimeCodes,
       )
         .then((response) => {
           toast.success(t('recipe.create.success'), {
@@ -320,6 +318,7 @@ const CreateRecipeView = (props: any) => {
             totalWeight: 0,
             costLevel: null,
             videoUrl: '',
+            mealtimeCodes: [],
           });
 
           setFiles([]);
@@ -333,8 +332,6 @@ const CreateRecipeView = (props: any) => {
           });
 
           setComposition([...updatedComposition]);
-
-          setUnit(t('common.gr'));
 
           return response.data.data;
         })
@@ -537,8 +534,6 @@ const CreateRecipeView = (props: any) => {
                 ...createRecipeForm,
                 measurement: createRecipeForm.measurement === 'si' ? 'us' : 'si',
               });
-
-              setUnit(unit === t('common.gr') ? t('common.oz') : t('common.gr'));
             }}
             className='recipe__switch'
           />
@@ -576,7 +571,7 @@ const CreateRecipeView = (props: any) => {
                     />
                   </div>
                   <div className='recipe__chart-lines-item-description'>
-                    {`${item.value} ${unit}`}
+                    {`${item.value} ${createRecipeForm.measurement === 'si' ? t('common.gr') : t('common.oz')}`}
                   </div>
                 </div>
               ))}
@@ -754,7 +749,7 @@ const CreateRecipeView = (props: any) => {
                           <ArrowRight />
                         </button>
                         <div className='recipe__item-quantity-counter-unit'>
-                          {unit}
+                          {createRecipeForm.measurement === 'si' ? t('common.gr') : t('common.oz')}
                         </div>
                       </div>
                       <div className='recipe__item-quantity-counter-total'>
@@ -775,7 +770,8 @@ const CreateRecipeView = (props: any) => {
                       </div>
                     </button>
                     <div className='recipe__item-weight'>
-                      {`${!ingredientItem.weight ? 0 : ingredientItem.weight} ${unit}`}
+                      {`${!ingredientItem.weight ? 0 : ingredientItem.weight}
+                      ${createRecipeForm.measurement === 'si' ? t('common.gr') : t('common.oz')}`}
                     </div>
                   </div>
                   <div className='recipe__item-opt'>
@@ -805,7 +801,7 @@ const CreateRecipeView = (props: any) => {
               border='light'
             />
             <div className='recipe__total-weight-unit'>
-              {unit}
+              {createRecipeForm.measurement === 'si' ? t('common.gr') : t('common.oz')}
             </div>
           </div>
           <div className='instructions'>
@@ -838,4 +834,10 @@ const CreateRecipeView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(CreateRecipeView));
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      settings: state.settings,
+    }),
+  )(CreateRecipeView),
+);

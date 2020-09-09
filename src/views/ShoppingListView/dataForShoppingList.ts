@@ -12,12 +12,13 @@ export const colourStylesSelect = {
     ...styles,
     display: 'none',
   }),
-  control: (styles) => ({
+  control: (styles, state) => ({
     ...styles,
     padding: '10px 25px',
     border: '1px solid #F391AA',
     borderRadius: '1px',
     transition: 'all 0.2s ease',
+    boxShadow: state.isFocused ? '0 0 0 1px #F391AA' : 'none',
     ':hover': {
       border: '1px solid #F391AA',
     },

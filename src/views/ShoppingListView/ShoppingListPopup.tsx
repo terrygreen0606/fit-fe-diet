@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { toast } from 'react-toastify';
 import uuid from 'react-uuid';
@@ -7,7 +9,6 @@ import {
   getShoppingList,
   setShoppingRowBought,
   deleteFromShoppingList,
-  getUserSettings,
   getPublicShopListUrl,
 } from 'api';
 
@@ -24,14 +25,16 @@ import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-i
 import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
 
 const ShoppingListPopup = (props: any) => {
+  const { localePhrases, settings } = props;
   const [items, setItems] = useState(null);
   const [categories, setCategories] = useState([]);
   const [measurement, setMeasurement] = useState(null);
   const [publicShopListUrl, setPublicShopListUrl] = useState(null);
   const [shareListPopup, setShareListPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const t = (code: string, placeholders?: any) => getTranslate(
-    props.localePhrases,
+    localePhrases,
     code,
     placeholders,
   );
@@ -74,9 +77,11 @@ const ShoppingListPopup = (props: any) => {
 
   useEffect(() => {
     getShoppingList()
-      .then((res) => setItems(res.data.data.list));
-    getUserSettings()
-      .then((res) => setMeasurement(res.data.data.measurement));
+      .then((res) => {
+        setIsLoading(false);
+        setItems(res.data.data.list);
+      });
+    setMeasurement(settings.measurement);
     getPublicShopListUrl()
       .then((res) => setPublicShopListUrl(res.data.data.url));
   }, []);
@@ -91,10 +96,18 @@ const ShoppingListPopup = (props: any) => {
     }
   }, [items]);
 
+  if (isLoading) {
+    return (
+      <div className='popup'>
+        <Spinner color='#0FC1A1' />
+      </div>
+    );
+  }
+
   return (
     <div className='popup'>
       {
-        items && categories.length ? (
+        items && items.length !== 0 && categories.length ? (
           <>
             <div className='popup_header'>
               <h4 className='popup_header_title'>
@@ -201,10 +214,24 @@ const ShoppingListPopup = (props: any) => {
               ))
             }
           </>
-        ) : <Spinner color='#0FC1A1' />
+        ) : (
+          <div className='popup_cart_empty'>
+            <span>{t('shop_list.empty_cart')}</span>
+            <div className='popup_cart_empty_2'>
+              <span>{`${t('shop_list.add_ingredient')} `}</span>
+              <Link to='/shopping-list' className='popup_cart_empty_link'>
+                {t('shop_list.add_ingredient_here_link')}
+              </Link>
+            </div>
+          </div>
+        )
       }
     </div>
   );
 };
 
-export default ShoppingListPopup;
+export default connect(
+  (state: any) => ({
+    settings: state.settings,
+  }),
+)(ShoppingListPopup);
