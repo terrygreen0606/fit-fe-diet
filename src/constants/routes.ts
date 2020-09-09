@@ -21,4 +21,5 @@ export const routes = {
   login: '/login',
   register: '/register',
   recipeFullView: '/recipe/:recipeId',
+  afterSignup: '/after-signup',
 };
