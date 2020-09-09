@@ -42,38 +42,16 @@
         padding-top: 0
         padding-left: 0
 
-      &-date
-        display: flex
-        align-items: center
-        margin-bottom: 40px
-        padding-right: 30px
-        font-size: 16px
-
-        @media (max-width: 767px)
-          position: absolute
-          top: 3px
-          left: 30px
-          font-size: 14px
-          margin-bottom: 0
-          padding-right: 0
-
-        svg
-          margin-right: 10px
-
-          @media (max-width: 767px)
-            width: 18px
-          
-          path
-            fill: #CDCDCD
-
       &-eating
         margin-bottom: 10px
+        padding-right: 30px
         font-size: 26px
         line-height: 1.2
         font-weight: bold
 
         @media (max-width: 767px)
           font-size: 16px
+          padding-right: 
 
       &-name
         margin-bottom: 64px
@@ -286,15 +264,11 @@
 
     &-button
       position: relative
-      flex-basis: calc(25% - 13px)
+      flex-basis: calc(33% - 13px)
       padding: 20px
       text-align: center
       cursor: pointer
       border: none
-
-      @media (max-width: 500px)
-        flex-basis: calc(50% - 15px)
-        margin-bottom: 30px
 
       &-media
         width: 54px
@@ -380,65 +354,6 @@
 
       .recipe__actions-button-checked
         visibility: visible
-
-  &__vegetables
-    margin-bottom: 30px
-    padding: 44px 36px
-    background-color: $steel-blue
-    text-align: center
-
-    &-media
-      margin-bottom: 40px
-      width: 65px
-
-      @media (max-width: 767px)
-        margin-bottom: 30px
-        width: 50px
-
-      svg
-        max-width: 100%
-
-    &-title
-      margin-bottom: 30px
-      font-size: 34px
-      line-height: 1.2
-      font-weight: bold
-      color: $white
-
-      @media (max-width: 767px)
-        font-size: 18px
-
-    &-desc
-      margin-bottom: 30px
-      font-size: 20px
-      line-height: 1.2
-      color: $white
-
-      @media (max-width: 767px)
-        font-size: 14px
-        line-height: 1.5
-
-    &-quantity
-      display: flex
-      align-items: center
-      justify-content: space-between
-      max-width: 230px
-      margin: 0 auto
-
-      &:not(:last-child)
-        margin-bottom: 44px
-
-        @media (max-width: 767px)
-          margin-bottom: 20px
-
-      &-text
-        font-size: 24px
-        line-height: 1.2
-        font-weight: 600
-        color: $white
-
-        @media (max-width: 767px)
-          font-size: 14px
 
   &__nutrients
     margin-bottom: 30px
@@ -694,7 +609,7 @@
               border-radius: 50%
               background-color: #CBFFCE
 
-  &__delete-modal
+  &__modal
     padding: 40px 50px
 
     .dialogHeader
@@ -707,10 +622,30 @@
       font-size: 22px
       font-weight: bold
 
+      @media (max-width: 767px)
+        font-size: 18px
+
     &-btn-wrap
       display: flex
       align-items: center
       justify-content: center
 
+      @media (max-width: 500px)
+        flex-wrap: wrap
+
     &-btn
       margin: 0 10px
+
+      @media (max-width: 500px)
+        width: 100%
+        margin: 10px 0
+    
+    &-textarea-wrap
+      text-align: center
+
+      .bttn
+        margin-top: 20px
+
+        &[disabled]
+          &:hover
+            box-shadow: none

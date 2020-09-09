@@ -13,10 +13,20 @@ export const addIngredientInShoppingList = (id: string, weight: number = 1) =>
     weight,
   });
 
-export const addToShoppingListByRecipes = (recipe_ids: string[], servings_cnt: number = 1) =>
-  axios.put('/shopping-list/recipes', {
-    recipe_ids,
-    servings_cnt,
+export const addToShoppingListByRecipes = (recipe_ids: string[], servings_cnt: number = 1) => {
+  let recipeIdsQuery = '';
+
+  recipe_ids.forEach((recipeId, recipeIdIndex) => {
+    if (recipeIdIndex === 0) {
+      recipeIdsQuery += `recipe_ids[]=${recipeId}`;
+    } else {
+      recipeIdsQuery += `&recipe_ids[]=${recipeId}`;
+    }
   });
+
+  const link = `/shopping-list/recipes?${recipeIdsQuery}&servings_cnt=${servings_cnt}`;
+
+  return axios.put(link);
+};
 
 export const deleteFromShoppingList = (id: string) => axios.delete(`/shopping-list/${id}`);

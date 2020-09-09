@@ -7,9 +7,12 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
 import {
+  validateFieldOnChange,
+  getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getWeigthUnit,
   getVideo,
@@ -19,6 +22,8 @@ import {
   likeRecipe,
   preparedRecipe,
   deleteRecipe,
+  addRecipeNote,
+  addToShoppingListByRecipes,
 } from 'api';
 
 // Components
@@ -31,21 +36,19 @@ import Modal from 'components/common/Modal/Modal';
 import './RecipeFullView.sass';
 
 // Icons
-import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
 import { ReactComponent as HeartFilledIcon } from 'assets/img/icons/heart-filled-icon.svg';
 import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
 import { ReactComponent as CartButtonIcon } from 'assets/img/icons/cart-button-icon.svg';
 import { ReactComponent as SaveIcon } from 'assets/img/icons/save-icon.svg';
 import { ReactComponent as NotesIcon } from 'assets/img/icons/notes-icon.svg';
-import { ReactComponent as CopyIcon } from 'assets/img/icons/copy-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
-import { ReactComponent as SproutIcon } from 'assets/img/icons/sprout-icon.svg';
 import { ReactComponent as DishIcon } from 'assets/img/icons/dish-icon.svg';
 import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
 import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
 import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
 import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 import { ReactComponent as CursorTouchLogo } from 'assets/img/icons/cursor-touch-icon.svg';
+import InputField from 'components/common/Forms/InputField';
 
 const RecipeFullView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
@@ -53,6 +56,12 @@ const RecipeFullView = (props: any) => {
   const { settings } = props;
 
   const recipeId = window.location.pathname.split('/')[2];
+
+  const costLevelLabel = {
+    1: '$',
+    2: '$$',
+    3: '$$$',
+  };
 
   const history = useHistory();
 
@@ -62,10 +71,27 @@ const RecipeFullView = (props: any) => {
 
   const [isActiveDeleteModal, setActiveDeleteModal] = useState<boolean>(false);
 
-  const costLevelLabel = {
-    1: '$',
-    2: '$$',
-    3: '$$$',
+  const [isActiveNotesModal, setActiveNotesModal] = useState<boolean>(false);
+
+  const [addNoteForm, setAddNoteForm] = useState({
+    note: '',
+  });
+
+  const [addNoteFormErrors, setAddNoteFormErrors] = useState([]);
+
+  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, addNoteFormErrors);
+
+  const validateOnChange = (name: string, value: any, event, element?) => {
+    validateFieldOnChange(
+      name,
+      value,
+      event,
+      addNoteForm,
+      setAddNoteForm,
+      addNoteFormErrors,
+      setAddNoteFormErrors,
+      element,
+    );
   };
 
   const [recipeData, setRecipeData] = useState({
@@ -114,7 +140,7 @@ const RecipeFullView = (props: any) => {
         preparation: data.preparation_i18n,
         protein: data.protein,
         salt: data.salt,
-        servingsCnt: data.servings_ctn,
+        servingsCnt: data.servings_cnt,
         sugar: data.sugar,
         time: data.time,
         weight: data.weight,
@@ -177,10 +203,6 @@ const RecipeFullView = (props: any) => {
                     )}
                   </div>
                   <div className='recipe__main-info-desc'>
-                    <div className='recipe__main-info-desc-date'>
-                      <CalendarIcon />
-                      Monday, June 22 / Breakfast
-                    </div>
                     <div className='recipe__main-info-desc-eating'>Breakfast</div>
                     <div className='recipe__main-info-desc-name'>
                       {recipeData.name}
@@ -207,6 +229,12 @@ const RecipeFullView = (props: any) => {
                     </button>
                     <button
                       type='button'
+                      onClick={() => {
+                        addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then(() =>
+                          toast.success(t('recipe.update_shopping_list.success'), {
+                            autoClose: 3000,
+                          }));
+                      }}
                       className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
                     >
                       <div className='recipe__main-info-desc-button-wrap'>
@@ -290,7 +318,11 @@ const RecipeFullView = (props: any) => {
                       <CheckedIcon className='recipe__actions-button-checked-icon' />
                     </div>
                   </button>
-                  <button type='button' className='recipe__actions-button card-bg'>
+                  <button
+                    type='button'
+                    onClick={() => setActiveNotesModal(true)}
+                    className='recipe__actions-button card-bg'
+                  >
                     <div className='recipe__actions-button-media'>
                       <NotesIcon />
                     </div>
@@ -301,17 +333,57 @@ const RecipeFullView = (props: any) => {
                       <CheckedIcon className='recipe__actions-button-checked-icon' />
                     </div>
                   </button>
-                  <button type='button' className='recipe__actions-button card-bg'>
-                    <div className='recipe__actions-button-media'>
-                      <CopyIcon />
-                    </div>
-                    <div className='recipe__actions-button-desc'>
-                      {t('recipe.copy')}
-                    </div>
-                    <div className='recipe__actions-button-checked'>
-                      <CheckedIcon className='recipe__actions-button-checked-icon' />
-                    </div>
-                  </button>
+                  {isActiveNotesModal && (
+                    <Modal
+                      withCloseBtn
+                      shouldCloseOnOverlayClick
+                      onClose={() => setActiveNotesModal(false)}
+                      className='recipe__modal'
+                    >
+                      <div className='recipe__modal-title'>
+                        {t('recipe.add_note.desc')}
+                      </div>
+                      <div className='recipe__modal-textarea-wrap'>
+                        <InputField
+                          block
+                          type='textarea'
+                          name='note'
+                          data-validate='["required"]'
+                          errors={getFieldErrors('note')}
+                          value={addNoteForm.note}
+                          onChange={(e) => validateOnChange('note', e.target.value, e)}
+                          className='recipe__modal-textarea'
+                        />
+                        <Button
+                          color='primary'
+                          disabled={!addNoteForm.note}
+                          onClick={() => {
+                            addRecipeNote(recipeId, addNoteForm.note).then((response) => {
+                              if (response.data.success) {
+                                toast.success(t('recipe.add_note.success'), {
+                                  autoClose: 3000,
+                                });
+
+                                setAddNoteForm({ ...addNoteForm, note: '' });
+
+                                setActiveNotesModal(false);
+                              } else {
+                                toast.error(t('recipe.add_note.availability_error'), {
+                                  autoClose: 3000,
+                                });
+                              }
+                            }).catch(() => {
+                              toast.error(t('recipe.add_note.error'), {
+                                autoClose: 3000,
+                              });
+                            });
+                          }}
+                        >
+                          {t('recipe.add_note.confirm')}
+                        </Button>
+                      </div>
+                    </Modal>
+                  )}
                   {recipeData.isOwner && (
                     <button
                       type='button'
@@ -334,56 +406,29 @@ const RecipeFullView = (props: any) => {
                       withCloseBtn
                       shouldCloseOnOverlayClick
                       onClose={() => setActiveDeleteModal(false)}
-                      className='recipe__delete-modal'
+                      className='recipe__modal'
                     >
-                      <div className='recipe__delete-modal-title'>
-                        {t('recipe.delete.confirmation')}
+                      <div className='recipe__modal-title'>
+                        {t('recipe.delete.confirm')}
                       </div>
-                      <div className='recipe__delete-modal-btn-wrap'>
+                      <div className='recipe__modal-btn-wrap'>
                         <Button
                           color='primary'
                           onClick={() => deleteRecipe(recipeId).then(() => history.push(routes.recipes))}
-                          className='recipe__delete-modal-btn'
+                          className='recipe__modal-btn'
                         >
                           {t('common.yes')}
                         </Button>
                         <Button
                           color='cancel'
                           onClick={() => setActiveDeleteModal(false)}
-                          className='recipe__delete-modal-btn'
+                          className='recipe__modal-btn'
                         >
                           {t('common.no')}
                         </Button>
                       </div>
                     </Modal>
                   )}
-                </div>
-                <div className='recipe__vegetables'>
-                  <SproutIcon className='recipe__vegetables-media' />
-                  <div className='recipe__vegetables-title'>
-                    {t('recipe.free_vegetables.title')}
-                  </div>
-                  <div className='recipe__vegetables-desc'>
-                    {t('recipe.free_vegetables.desc')}
-                  </div>
-                  <div className='recipe__vegetables-quantity'>
-                    <span className='recipe__vegetables-quantity-text'>
-                      {t('common.grams', { number: 200 })}
-                    </span>
-                    <span className='recipe__vegetables-quantity-text'>Broccoli</span>
-                  </div>
-                  <div className='recipe__vegetables-quantity'>
-                    <span className='recipe__vegetables-quantity-text'>
-                      {t('common.grams', { number: 100 })}
-                    </span>
-                    <span className='recipe__vegetables-quantity-text'>Carrots</span>
-                  </div>
-                  <div className='recipe__vegetables-quantity'>
-                    <span className='recipe__vegetables-quantity-text'>
-                      {t('common.grams', { number: 300 })}
-                    </span>
-                    <span className='recipe__vegetables-quantity-text'>Avocado</span>
-                  </div>
                 </div>
                 <div className='recipe__nutrients'>
                   <div className='recipe__nutrients-media'>

@@ -40,3 +40,14 @@ export const likeRecipe = (recipeId: string) => axios.put(`/recipe/like/${recipe
 export const preparedRecipe = (recipeId: string) => axios.put(`/recipe/prepared/${recipeId}`);
 
 export const deleteRecipe = (recipeId: string) => axios.delete(`/recipe/${recipeId}`);
+
+export const addRecipeNote = (
+  recipeId: string,
+  noteText: string,
+) =>
+  axios.post(
+    `/recipe/note/${recipeId}`,
+    {
+      note: noteText,
+    },
+  );
