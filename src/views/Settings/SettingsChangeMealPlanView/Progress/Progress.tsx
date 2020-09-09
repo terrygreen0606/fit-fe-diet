@@ -14,15 +14,15 @@ type ProgressProps = {
   metricsText?: string;
   notEating?: boolean;
   notEatingText?: string;
-  desiases?: boolean;
-  desiasesText?: string;
+  diseases?: boolean;
+  diseasesText?: string;
   meals?: boolean;
   mealsText?: string;
   percent?: number;
   onClickGoal?: () => void;
   onClickMetrics?: () => void;
   onClickNotEating?: () => void;
-  onClickDesiases?: () => void;
+  onClickdiseases?: () => void;
   onClickMeals?: () => void;
 };
 
@@ -33,15 +33,15 @@ const Progress = ({
   metricsText,
   notEating,
   notEatingText,
-  desiases,
-  desiasesText,
+  diseases,
+  diseasesText,
   meals,
   mealsText,
   percent,
   onClickGoal,
   onClickMetrics,
   onClickNotEating,
-  onClickDesiases,
+  onClickdiseases,
   onClickMeals,
 }: ProgressProps) => (
     <div className='progress__list'>
@@ -92,14 +92,14 @@ const Progress = ({
       <button
         type='button'
         className={classnames('progress__list-item', {
-          active: desiases,
+          active: diseases,
         })}
-        onClick={onClickDesiases}
+        onClick={onClickdiseases}
       >
         <div className='progress__list-item-media'>
           <CheckedIcon />
         </div>
-        <div className='progress__list-item-desc'>{desiasesText}</div>
+        <div className='progress__list-item-desc'>{diseasesText}</div>
       </button>
       <button
         type='button'

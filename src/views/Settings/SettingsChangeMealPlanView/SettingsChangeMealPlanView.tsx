@@ -201,27 +201,27 @@ const SettingsChangeMealPlanView = (props: any) => {
             goal={activeStep === steps.goal
               || activeStep === steps.metrics
               || activeStep === steps.notEating
-              || activeStep === steps.desiases
+              || activeStep === steps.diseases
               || activeStep === steps.meals}
             goalText={t('mp.progress.goal')}
             metrics={activeStep === steps.metrics
               || activeStep === steps.notEating
-              || activeStep === steps.desiases
+              || activeStep === steps.diseases
               || activeStep === steps.meals}
             metricsText={t('mp.progress.metrics')}
             notEating={activeStep === steps.notEating
-              || activeStep === steps.desiases
+              || activeStep === steps.diseases
               || activeStep === steps.meals}
             notEatingText={t('mp.progress.not_eating')}
-            desiases={activeStep === steps.desiases
+            diseases={activeStep === steps.diseases
               || activeStep === steps.meals}
-            desiasesText={t('mp.progress.desiases')}
+            diseasesText={t('mp.progress.diseases')}
             meals={activeStep === steps.meals}
             mealsText={t('mp.progress.meals')}
             percent={activeStep === steps.goal && 20
               || activeStep === steps.metrics && 40
               || activeStep === steps.notEating && 60
-              || activeStep === steps.desiases && 80
+              || activeStep === steps.diseases && 80
               || activeStep === steps.meals && 100}
             onClickGoal={() => setActiveStep(steps.goal)}
             onClickMetrics={() => setActiveStep(steps.metrics)}
@@ -238,7 +238,7 @@ const SettingsChangeMealPlanView = (props: any) => {
 
               setActiveStep(steps.notEating);
             }}
-            onClickDesiases={() => {
+            onClickdiseases={() => {
               const updatedDiseasesList = [...diseasesList];
 
               if (updatedDiseasesList.length > 0) {
@@ -248,7 +248,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                 setDiseasesList([...updatedDiseasesList]);
               }
 
-              setActiveStep(steps.desiases);
+              setActiveStep(steps.diseases);
             }}
             onClickMeals={() => setActiveStep(steps.meals)}
           />
@@ -518,7 +518,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                       setDiseasesList([...updatedDiseasesList]);
                     }
 
-                    setActiveStep(steps.desiases);
+                    setActiveStep(steps.diseases);
                   }}
                 >
                   {t('mp.next')}
@@ -526,12 +526,12 @@ const SettingsChangeMealPlanView = (props: any) => {
               </div>
             </div>
           )}
-          {activeStep === steps.desiases && (
+          {activeStep === steps.diseases && (
             <div>
               <div className='change-meal-plan__title'>
-                {t('mp.desiases.title')}
+                {t('mp.diseases.title')}
               </div>
-              <div className='change-meal-plan__desiases'>
+              <div className='change-meal-plan__diseases'>
                 {diseasesList.map((item, itemIndex) => (
                   <button
                     key={item.code}
@@ -552,7 +552,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         });
                       }
                     }}
-                    className={classnames('change-meal-plan__desiases-item', {
+                    className={classnames('change-meal-plan__diseases-item', {
                       active: item.isActive,
                     })}
                   >
