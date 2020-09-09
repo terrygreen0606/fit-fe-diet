@@ -19,5 +19,6 @@ module.exports = {
     'no-param-reassign': 'off',
     'consistent-return': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    'array-callback-return': 'off',
   },
 };

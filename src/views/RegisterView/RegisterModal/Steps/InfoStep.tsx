@@ -201,7 +201,7 @@ const InfoStep = (props: any) => {
                 placeholder=""
               />
               <FormLabel>
-                {registerData.measurement === 'us' && t('common.foot')}
+                {registerData.measurement === 'us' && t('common.ft')}
                 {registerData.measurement === 'si' && t('common.cm')}
               </FormLabel>
             </FormGroup>

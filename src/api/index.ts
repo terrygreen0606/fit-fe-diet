@@ -3,6 +3,7 @@ export * from './ingredients';
 export * from './imageCreate';
 export * from './uploadImageAWS';
 export * from './shoppingList';
+export * from './getDiseases';
 export * from './getAppSettings';
 export * from './recipe';
 export * from './user';
