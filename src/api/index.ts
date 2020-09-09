@@ -22,3 +22,4 @@ export * from './user/getUserWeightPrediction';
 export * from './user/deleteFamilyMembers';
 export * from './shoppingList';
 export * from './getAppSettings';
+export * from './getAppPublicSettings';
