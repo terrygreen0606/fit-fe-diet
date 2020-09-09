@@ -294,7 +294,7 @@ const RecipeFullView = (props: any) => {
                           className='recipe__composition-list-item'
                         >
                           {`${ingredient.weight}
-                          ${t(`common.${getWeigthUnit(settings.measurement)}`)}.
+                          ${t(getWeigthUnit(settings.measurement))}.
                           ${ingredient.name_i18n}`}
                         </div>
                       ))}
@@ -463,36 +463,31 @@ const RecipeFullView = (props: any) => {
                     <div className='recipe__nutrients-composition-item'>
                       <span>{t('common.salt')}</span>
                       <span>
-                        {`${recipeData.salt}
-                        ${t(`common.${getWeigthUnit(settings.measurement)}`)}`}
+                        {`${recipeData.salt} ${t(getWeigthUnit(settings.measurement))}`}
                       </span>
                     </div>
                     <div className='recipe__nutrients-composition-item'>
                       <span>{t('common.fats')}</span>
                       <span>
-                        {`${recipeData.fat}
-                        ${t(`common.${getWeigthUnit(settings.measurement)}`)}`}
+                        {`${recipeData.fat} ${t(getWeigthUnit(settings.measurement))}`}
                       </span>
                     </div>
                     <div className='recipe__nutrients-composition-item'>
                       <span>{t('common.sugar')}</span>
                       <span>
-                        {`${recipeData.sugar}
-                        ${t(`common.${getWeigthUnit(settings.measurement)}`)}`}
+                        {`${recipeData.sugar} ${t(getWeigthUnit(settings.measurement))}`}
                       </span>
                     </div>
                     <div className='recipe__nutrients-composition-item'>
                       <span>{t('common.proteins')}</span>
                       <span>
-                        {`${recipeData.protein}
-                        ${t(`common.${getWeigthUnit(settings.measurement)}`)}`}
+                        {`${recipeData.protein} ${t(getWeigthUnit(settings.measurement))}`}
                       </span>
                     </div>
                     <div className='recipe__nutrients-composition-item'>
                       <span>{t('common.carbohydrates')}</span>
                       <span>
-                        {`${recipeData.carbohydrate}
-                        ${t(`common.${getWeigthUnit(settings.measurement)}`)}`}
+                        {`${recipeData.carbohydrate} ${t(getWeigthUnit(settings.measurement))}`}
                       </span>
                     </div>
                   </div>

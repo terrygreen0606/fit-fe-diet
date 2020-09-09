@@ -85,18 +85,18 @@ const InfoStep = (props: any) => {
   return (
     <div className="register_info">
       <h6 className="register_title mb-xl-5 mb-45">
-        <AngleLeftIcon 
-          className="register-back-icon mr-3" 
+        <AngleLeftIcon
+          className="register-back-icon mr-3"
           onClick={e => props.setRegisterView('GOAL')}
-        /> 
+        />
         {t('register.fill_details_text')}
       </h6>
 
       <div className="text-center">
-        <CustomSwitch 
+        <CustomSwitch
           label1={t('common.us_metric')}
-          label2={t('common.metric')} 
-          checked={props.registerData.measurement === 'si'} 
+          label2={t('common.metric')}
+          checked={props.registerData.measurement === 'si'}
           onChange={e => props.setRegisterData({
             ...props.registerData,
             measurement: e.target.checked ? 'si' : 'us'
@@ -159,7 +159,7 @@ const InfoStep = (props: any) => {
 
         <div className="row">
           <div className="col-sm-6 mb-45">
-            
+
             <FormGroup className="register_info_fg_age mb-0" inline>
               <FormLabel>{t('register.form_age')}</FormLabel>
               <InputField
@@ -185,7 +185,7 @@ const InfoStep = (props: any) => {
 
           </div>
           <div className="col-sm-6 mb-45">
-            
+
             <FormGroup className="register_info_fg_height mb-0" inline>
               <FormLabel>{t('register.form_height')}</FormLabel>
               <InputField
@@ -215,7 +215,7 @@ const InfoStep = (props: any) => {
             "col-sm-6 offset-sm-3 mb-45": registerData.goal === 0,
             "col-sm-6 mb-45": registerData.goal !== 0,
           })}>
-            
+
             <FormGroup className="register_info_fg_weight mb-0" inline>
               <FormLabel>{t('register.form_weight_now')}</FormLabel>
               <InputField
@@ -231,7 +231,7 @@ const InfoStep = (props: any) => {
                 placeholder=""
               />
               <FormLabel>
-                {registerData.measurement === 'us' && t('common.pound')}
+                {registerData.measurement === 'us' && t('common.lbs')}
                 {registerData.measurement === 'si' && t('common.kg')}
               </FormLabel>
             </FormGroup>
@@ -243,7 +243,7 @@ const InfoStep = (props: any) => {
           </div>
           {registerData.goal !== 0 && (
             <div className="col-sm-6 mb-45">
-              
+
               <FormGroup className="register_info_fg_weight mb-0" inline>
                 <FormLabel>{t('register.form_weight_want')}</FormLabel>
                 <InputField
@@ -259,7 +259,7 @@ const InfoStep = (props: any) => {
                   placeholder=""
                 />
                 <FormLabel>
-                  {registerData.measurement === 'us' && t('common.pound')}
+                  {registerData.measurement === 'us' && t('common.lbs')}
                   {registerData.measurement === 'si' && t('common.kg')}
                 </FormLabel>
               </FormGroup>

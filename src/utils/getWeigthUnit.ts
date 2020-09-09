@@ -1,1 +1,1 @@
-export const getWeigthUnit = (measurement: string) => (measurement === 'si' ? 'gr' : 'pound');
+export const getWeigthUnit = (measurement: string) => (measurement === 'si' ? 'common.gr' : 'common.lbs');

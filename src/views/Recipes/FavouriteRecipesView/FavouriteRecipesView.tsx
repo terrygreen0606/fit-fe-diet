@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
-import { getTranslate, getImagePath } from 'utils';
+import { getTranslate } from 'utils';
 
 // Components
 import DayPicker from 'react-day-picker';
@@ -43,8 +43,6 @@ const FavouriteRecipesView = (props: any) => {
       </Helmet>
       <div className='saved-recipes'>
         <div className='container'>
-          <img src={getImagePath('icons/arrow-left-calendar-icon.svg')} alt='' />
-          <img src={getImagePath('icons/arrow-right-calendar-icon.svg')} alt='' />
           <Breadcrumb
             routes={[
               {
