@@ -209,6 +209,13 @@
 		margin-left: 120px
 		margin-bottom: 0
 
+		@media (max-width: 1199px)
+			margin-left: 150px
+
+		@media (max-width: 767px)
+			margin-top: 7px
+			margin-left: 0
+
 .recipe__label
 	position: relative
 	display: flex
@@ -289,6 +296,57 @@
 		position: absolute
 		top: 100%
 		left: 0
+
+.recipe__meal-time
+	margin-top: 50px
+
+	@media (max-width: 768px)
+		margin-top: 0
+
+	&-title
+		margin-bottom: 20px
+		font-size: 24px
+		line-height: 1.5
+		font-weight: bold
+
+		@media (max-width: 768px)
+			font-size: 18px
+
+	&-list
+		display: flex
+		align-items: center
+
+	&-btn
+		min-width: 100px
+		margin-right: 10px
+		padding: 16px 10px
+		text-align: center
+		background-color: $caribbean-green
+		border: none
+		border-radius: 5px
+		cursor: pointer
+
+		&-media
+			display: grid
+			place-items: center
+			margin-bottom: 10px
+			min-height: 48px
+
+			svg
+				path
+					fill: $white
+
+		&-text
+			font-size: 18px
+			color: $white
+
+
+.recipe__switch-wrap
+	display: flex
+	justify-content: flex-end
+
+	@media (max-width: 767px)
+		justify-content: flex-start
 
 .recipe__switch
 	display: flex
@@ -486,8 +544,11 @@
 			justify-content: flex-end
 			margin-bottom: 34px
 
-			@media (max-width: 600px)
+			@media (max-width: 1024px)
+				margin-top: 30px
 				justify-content: flex-start
+
+			@media (max-width: 600px)
 				margin-bottom: 20px
 
 			&-input
@@ -524,7 +585,7 @@
 				text-align: right
 				margin-bottom: 20px
 
-				@media (max-width: 600px)
+				@media (max-width: 1024px)
 					text-align: left
 
 				span
@@ -608,26 +669,28 @@
 			border-radius: 20px
 
 		.recipe__item-name 
-			flex-basis: 33.33%
+			flex-basis: 30%
 			padding-right: 30px
 
 			@media (max-width: 1024px)
 				flex-basis: 100%
 				margin-bottom: 30px
+				padding-right: 0
 
 		.recipe__item-counting
-			flex-basis: 33.33%
+			flex-basis: 30%
 			padding-right: 30px
 			padding-left: 20px
 
 			@media (max-width: 1024px)
 				flex-basis: 50%
 				padding-left: 0
-				padding-right: 0
+				padding-right: 30px
 
 			@media (max-width: 600px)
 				flex-basis: 100%
 				margin-bottom: 30px
+				padding-right: 0
 
 			div + div
 				margin-top: 35px
@@ -635,13 +698,19 @@
 				@media (max-width: 1024px)
 					margin-top: 20px
 
-		.recipe__item-quantity
-			flex-basis: 33.33%
+		.recipe__item-media
+			flex-basis: 20%
 
 			@media (max-width: 1024px)
 				flex-basis: 50%
 
 			@media (max-width: 600px)
+				flex-basis: 100%
+
+		.recipe__item-quantity
+			flex-basis: 20%
+
+			@media (max-width: 1024px)
 				flex-basis: 100%
 
 		.recipe__item-weight 
@@ -655,6 +724,9 @@
 			display: none
 
 		.recipe__item-quantity
+			display: none
+		
+		.recipe__item-media
 			display: none
 			
 		.recipe__item-delete

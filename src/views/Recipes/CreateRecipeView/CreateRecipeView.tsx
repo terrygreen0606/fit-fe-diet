@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 import { routes } from 'constants/routes';
 import {
@@ -38,6 +39,10 @@ import { ReactComponent as ClockIcon } from 'assets/img/icons/clock-icon.svg';
 import { ReactComponent as ArrowLeft } from 'assets/img/icons/arrow-left-gray-icon.svg';
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
+import { ReactComponent as BreakfastIcon } from 'assets/img/icons/breakfast-icon.svg';
+import { ReactComponent as LunchIcon } from 'assets/img/icons/lunch-icon.svg';
+import { ReactComponent as SnackIcon } from 'assets/img/icons/snack-icon.svg';
+import { ReactComponent as DinnerIcon } from 'assets/img/icons/dinner-icon.svg';
 
 import {
   colourStylesSelect,
@@ -47,7 +52,10 @@ import {
 
 const CreateRecipeView = (props: any) => {
   const { localePhrases, settings } = props;
+
   const t = (code: string, placeholders?: any) => getTranslate(localePhrases, code, placeholders);
+
+  const history = useHistory();
 
   const [createRecipeForm, setCreateRecipeForm] = useState({
     recipeName: '',
@@ -305,6 +313,8 @@ const CreateRecipeView = (props: any) => {
             autoClose: 3000,
           });
 
+          // history.push(`recipe/${response.data.data.id}`);
+
           setCreateRecipeForm({
             ...createRecipeForm,
             recipeName: '',
@@ -521,22 +531,77 @@ const CreateRecipeView = (props: any) => {
                   max={4320}
                   border='light'
                 />
-                <span className='recipe__label-description ml-xl-3'>min</span>
+                <span className='recipe__label-description ml-xl-3'>
+                  {t('common.min')}
+                </span>
               </label>
             </div>
           </div>
-          <CustomSwitch
-            label1={t('common.gr')}
-            label2={t('common.oz')}
-            checked={createRecipeForm.measurement === 'us'}
-            onChange={() => {
-              setCreateRecipeForm({
-                ...createRecipeForm,
-                measurement: createRecipeForm.measurement === 'si' ? 'us' : 'si',
-              });
-            }}
-            className='recipe__switch'
-          />
+          <div className='recipe__meal-time'>
+            <div className='recipe__meal-time-title'>
+              {t('recipe.choose_meal_plan')}
+            </div>
+            <div className='recipe__meal-time-list'>
+              <button
+                type='button'
+                className='recipe__meal-time-btn'
+              >
+                <div className='recipe__meal-time-btn-media'>
+                  <BreakfastIcon />
+                </div>
+                <div className='recipe__meal-time-btn-text'>
+                  {t('meal.breakfast')}
+                </div>
+              </button>
+              <button
+                type='button'
+                className='recipe__meal-time-btn'
+              >
+                <div className='recipe__meal-time-btn-media'>
+                  <LunchIcon />
+                </div>
+                <div className='recipe__meal-time-btn-text'>
+                  {t('meal.lunch')}
+                </div>
+              </button>
+              <button
+                type='button'
+                className='recipe__meal-time-btn'
+              >
+                <div className='recipe__meal-time-btn-media'>
+                  <SnackIcon />
+                </div>
+                <div className='recipe__meal-time-btn-text'>
+                  {t('meal.snack')}
+                </div>
+              </button>
+              <button
+                type='button'
+                className='recipe__meal-time-btn'
+              >
+                <div className='recipe__meal-time-btn-media'>
+                  <DinnerIcon />
+                </div>
+                <div className='recipe__meal-time-btn-text'>
+                  {t('meal.dinner')}
+                </div>
+              </button>
+            </div>
+          </div>
+          <div className='recipe__switch-wrap'>
+            <CustomSwitch
+              label1={t('common.gr')}
+              label2={t('common.oz')}
+              checked={createRecipeForm.measurement === 'us'}
+              onChange={() => {
+                setCreateRecipeForm({
+                  ...createRecipeForm,
+                  measurement: createRecipeForm.measurement === 'si' ? 'us' : 'si',
+                });
+              }}
+              className='recipe__switch'
+            />
+          </div>
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
               {composition.map((item) => (
@@ -552,7 +617,12 @@ const CreateRecipeView = (props: any) => {
                 </div>
               ))}
               <div className='recipe__chart-progress-value'>
-                {t('common.grams', { number: createRecipeForm.totalWeight })}
+                {`${createRecipeForm.totalWeight} ${
+                  createRecipeForm.measurement === 'si' ? (
+                    t('common.gr'))
+                    : (
+                      t('common.oz')
+                    )}`}
               </div>
             </div>
             <div className='recipe__chart-lines'>
@@ -639,6 +709,10 @@ const CreateRecipeView = (props: any) => {
                       <div>
                         {`${t('common.proteins')}: ${(ingredientItem.protein * ingredientItem.weight).toFixed(2)}`}
                       </div>
+                    </div>
+
+                    <div className='recipe__item-media'>
+                      {/* add image after BE implemation */}
                     </div>
 
                     <div className='recipe__item-quantity'>

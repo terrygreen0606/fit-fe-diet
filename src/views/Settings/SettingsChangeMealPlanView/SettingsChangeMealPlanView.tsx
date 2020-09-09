@@ -170,8 +170,8 @@ const SettingsChangeMealPlanView = (props: any) => {
         height: data.height,
         weight: data.weight,
         weight_goal: data.weight_goal,
-        ignore_cuisine_ids: [...data.ignore_cuisine_ids],
-        diseases: [...data.diseases],
+        ignore_cuisine_ids: data.ignore_cuisine_ids ? [...data.ignore_cuisine_ids] : [],
+        diseases: data.diseases ? [...data.diseases] : [],
       });
     });
   }, []);
