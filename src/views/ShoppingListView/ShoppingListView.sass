@@ -180,9 +180,14 @@
         padding: 19px 28px
         flex: 0 1 calc(100% - 270px)
         max-width: calc(100% - 270px)
-        border: 1px solid #F391AA
+        border: 1px solid #c6c6c6
+        border-radius: 4px
+        transition: all 0.2s ease
         &:focus
-          outline: 1px auto #F391AA
+          border: 1px solid lighten($black, 30%) !important
+          outline: none !important
+        &:hover
+          border: 1px solid lighten($black, 30%) !important
         @media (max-width: 767px)
           flex: 0 1 calc(100% - 120px)
           max-width: calc(100% - 120px)
