@@ -214,7 +214,16 @@ const RecipeFullView = (props: any) => {
                     <button
                       type='button'
                       onClick={() => {
-                        likeRecipe(recipeId).then(() => {
+                        setRecipeData({
+                          ...recipeData,
+                          isLiked: !recipeData.isLiked,
+                        });
+                        likeRecipe(recipeId).then((response) => {
+                          setRecipeData({
+                            ...recipeData,
+                            isLiked: response.data.data.is_liked,
+                          });
+                        }).catch(() => {
                           setRecipeData({
                             ...recipeData,
                             isLiked: !recipeData.isLiked,
@@ -247,7 +256,16 @@ const RecipeFullView = (props: any) => {
                         active: recipeData.isPrepared,
                       })}
                       onClick={() => {
-                        preparedRecipe(recipeId).then(() => {
+                        setRecipeData({
+                          ...recipeData,
+                          isPrepared: !recipeData.isPrepared,
+                        });
+                        preparedRecipe(recipeId).then((response) => {
+                          setRecipeData({
+                            ...recipeData,
+                            isPrepared: response.data.data.is_prepared,
+                          });
+                        }).catch(() => {
                           setRecipeData({
                             ...recipeData,
                             isPrepared: !recipeData.isPrepared,
