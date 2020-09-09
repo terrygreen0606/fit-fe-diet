@@ -224,7 +224,7 @@ const DashboardView = (props: any) => {
                   </div>
                   <div className='dashboard__cards-item_shopping-notifications-item-description'>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-title'>
-                      {t('common.snack')}
+                      {t('meal.snack')}
                     </div>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-content'>
                       {t('common.products', { number: 20 })}
@@ -237,7 +237,7 @@ const DashboardView = (props: any) => {
                   </div>
                   <div className='dashboard__cards-item_shopping-notifications-item-description'>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-title'>
-                      {t('common.snack')}
+                      {t('meal.snack')}
                     </div>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-content'>
                       {t('common.products', { number: 20 })}

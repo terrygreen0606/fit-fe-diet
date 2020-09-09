@@ -9,7 +9,7 @@ import './Button.sass';
 interface ButtonProps {
   type?: 'submit' | 'button' | 'reset';
   size?: 'md' | 'sm' | 'lg';
-  color?: 'primary' | 'default' | 'secondary' | 'raw' | 'info' | 'gray';
+  color?: 'primary' | 'default' | 'secondary' | 'raw' | 'info' | 'gray' | 'cancel';
   weight?: 'medium' | 'default';
   icon?: any;
   outline?: boolean;
@@ -63,7 +63,7 @@ const Button = (props: ButtonProps) => {
     ...attributes
   } = props;
 
-  const ButtonComponent = (ButtonComponentProps: any) => 
+  const ButtonComponent = (ButtonComponentProps: any) =>
     spanBtn ? <span {...ButtonComponentProps} /> : <button {...ButtonComponentProps} />;
 
   return (

@@ -19,3 +19,4 @@ export * from './openShareLink';
 export * from './validateFieldOnChange';
 export * from './wait';
 export * from './getVideo';
+export * from './getWeigthUnit';
