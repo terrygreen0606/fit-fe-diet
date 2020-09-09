@@ -23,3 +23,4 @@ export * from './user/deleteFamilyMembers';
 export * from './user/getUserSettings';
 export * from './shoppingList';
 export * from './getAppSettings';
+export * from './getAppPublicSettings';

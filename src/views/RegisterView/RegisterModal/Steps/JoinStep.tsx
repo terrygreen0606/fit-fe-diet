@@ -4,10 +4,17 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
+import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import { UserAuthProfileType } from 'types/auth';
-import { userSignup, userGoogleSignUp, userFacebookSignUp } from 'api';
+import { setAppSetting } from 'store/actions';
+import { 
+  userSignup, 
+  userGoogleSignUp, 
+  userFacebookSignUp,
+  getAppSettings
+} from 'api';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -66,9 +73,6 @@ const JoinStep = (props: any) => {
       }));
 
   const finalWelcomeStep = (authToken: string) => {
-    localStorage.setItem('authToken', authToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
-
     props.setRegisterData({
       ...registerData,
       token: authToken
@@ -182,14 +186,28 @@ const JoinStep = (props: any) => {
       password: props.registerData.password,
       ...getRegisterProfilePayload()
     }).then(response => {
-      setRegisterJoinLoading(false);
-
         const token =
           response.data && response.data.access_token
             ? response.data.access_token
             : null;
 
         if (token) {
+          localStorage.setItem('authToken', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+          getAppSettings()
+            .then(response => {
+              setRegisterJoinLoading(false);
+
+              if (response.data && response.data.data) {
+                setAppSetting(response.data.data);
+              }
+            })
+            .catch(error => {
+              toast.error(t('register.error_msg'));
+              setRegisterJoinLoading(false);
+            });
+
           finalWelcomeStep(token);
         } else {
           toast.error(t('register.error_msg'));
@@ -351,4 +369,7 @@ const JoinStep = (props: any) => {
   );
 };
 
-export default JoinStep;
+export default connect(
+  null,
+  { setAppSetting }
+)(JoinStep);
