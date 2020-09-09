@@ -28,6 +28,7 @@ const Header = (props: any) => {
 
   const outsideCLickListener = (e) => {
     const popupEl = document.querySelector('.popup');
+    const linkToShoppingListEl = document.querySelector('.popup_cart_empty_link');
     const shoppingCartEl = document.querySelector('.shopping_cart');
     let targetElement = e.target; // clicked element
 
@@ -36,6 +37,9 @@ const Header = (props: any) => {
         // This is a click inside. Do nothing, just return.
         return;
       }
+      if (targetElement === linkToShoppingListEl) setPopup(false);
+      // If user click on link at popup to go to the shopping list
+
       // Go up the DOM
       targetElement = targetElement.parentNode;
     } while (targetElement);

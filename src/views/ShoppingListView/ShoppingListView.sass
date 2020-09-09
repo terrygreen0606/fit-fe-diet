@@ -6,23 +6,10 @@
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
     border-radius: 20px
     padding: 55px 35px
-    margin-top: 45px
     margin-bottom: 30px
     width: 100%
     @media (max-width: 768px)
       padding: 27px 20px
-
-  &_header
-    display: flex
-    flex-direction: column
-    margin-bottom: 36px
-
-    &_title
-      margin: 0
-
-    &_text
-      font-size: 16px
-      line-height: 20px
 
   &_body
     display: flex
@@ -229,6 +216,19 @@
   width: auto
   height: auto
   border-top: 1px solid $caribbean-green
+
+  &_cart_empty
+    display: flex
+    flex-direction: column
+
+    &_link
+      color: #106EE8
+      text-decoration-color: #106EE8
+      text-decoration: underline
+      margin-top: 5px
+      &:hover
+        color: #106EE8
+        text-decoration-color: #106EE8
 
   &_header
     display: flex

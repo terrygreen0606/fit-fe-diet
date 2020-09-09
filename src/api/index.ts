@@ -20,6 +20,6 @@ export * from './user/getUserWeightChart';
 export * from './getRecipeCuisines';
 export * from './user/getUserWeightPrediction';
 export * from './user/deleteFamilyMembers';
-export * from './user/getUserSettings';
 export * from './shoppingList';
 export * from './getAppSettings';
+export * from './getAppPublicSettings';
