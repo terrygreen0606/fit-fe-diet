@@ -33,6 +33,8 @@ import Breadcrumb from 'components/Breadcrumb';
 import Button from 'components/common/Forms/Button';
 import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal/Modal';
+import InputField from 'components/common/Forms/InputField';
+import ShareButtons from 'components/ShareButtons';
 
 import './RecipeFullView.sass';
 
@@ -44,12 +46,7 @@ import { ReactComponent as SaveIcon } from 'assets/img/icons/save-icon.svg';
 import { ReactComponent as NotesIcon } from 'assets/img/icons/notes-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as DishIcon } from 'assets/img/icons/dish-icon.svg';
-import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
-import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
-import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
-import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 import { ReactComponent as CursorTouchLogo } from 'assets/img/icons/cursor-touch-icon.svg';
-import InputField from 'components/common/Forms/InputField';
 
 const RecipeFullView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
@@ -208,10 +205,7 @@ const RecipeFullView = (props: any) => {
               <div className='col-xl-8'>
                 <div className='recipe__main-info card-bg'>
                   <div className='recipe__main-info-media'>
-                    {/* need to add plug */}
-                    {recipeData.images.length > 0 && (
-                      <img src={recipeData.images[0].url} alt='' />
-                    )}
+                    <img src={recipeData.images[0].url} alt='' />
                   </div>
                   <div className='recipe__main-info-desc'>
                     <div className='recipe__main-info-desc-name'>
@@ -517,20 +511,7 @@ const RecipeFullView = (props: any) => {
                   <div className='recipe__share-title'>
                     {t('recipe.share.title')}
                   </div>
-                  <div className='recipe__share-list'>
-                    <a href='/' className='recipe__share-button'>
-                      <TwitterLogo />
-                    </a>
-                    <a href='/' className='recipe__share-button'>
-                      <WhatsappLogo />
-                    </a>
-                    <a href='/' className='recipe__share-button'>
-                      <FacebookLogo />
-                    </a>
-                    <a href='/' className='recipe__share-button'>
-                      <TelegramLogo />
-                    </a>
-                  </div>
+                  <ShareButtons shareLink={window.location.href} classes='recipe__share-buttons' />
                 </div>
                 <div className='recipe__advertising card-bg'>
                   <div className='recipe__advertising-title'>
@@ -559,8 +540,8 @@ const RecipeFullView = (props: any) => {
                   <div className='recipe__similar-recipes-list'>
                     {recipeData.similar.map((similarRecipe) => (
                       <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
-                        <button
-                          type='button'
+                        <Link
+                          to={routes.getRecipeFullView(similarRecipe.id)}
                           onClick={() => {
                             setRecipeId(similarRecipe.id);
                             const recipeInfoBlock = document.querySelector('.recipe__main-info');
@@ -570,10 +551,10 @@ const RecipeFullView = (props: any) => {
                         >
                           <img src={similarRecipe.image_url} alt='' />
                           <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
-                        </button>
+                        </Link>
                         <div className='recipe__similar-recipes-item-text'>
-                          <button
-                            type='button'
+                          <Link
+                            to={routes.getRecipeFullView(similarRecipe.id)}
                             onClick={() => {
                               setRecipeId(similarRecipe.id);
                               const recipeInfoBlock = document.querySelector('.recipe__main-info');
@@ -582,7 +563,7 @@ const RecipeFullView = (props: any) => {
                             className='recipe__similar-recipes-item-text-name'
                           >
                             {similarRecipe.name_i18n}
-                          </button>
+                          </Link>
                           <div className='recipe__similar-recipes-item-text-meal-time'>
                             {similarRecipe.mealtime_codes.map((mealTimeItem) => (
                               <span

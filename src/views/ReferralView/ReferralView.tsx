@@ -1,7 +1,5 @@
-/* eslint-disable react/jsx-curly-newline */
-/* eslint-disable function-paren-newline */
-/* eslint-disable comma-dangle */
-import React, { useState } from 'react';
+/* eslint-disable no-return-assign */
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import Helmet from 'react-helmet';
@@ -12,7 +10,6 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   copyTextInBuffer,
-  openShareLink,
 } from 'utils';
 import FormValidator from 'utils/FormValidator';
 import { userInviteFriendByEmail, getUserInviteLink } from 'api';
@@ -22,15 +19,12 @@ import InputField from 'components/common/Forms/InputField';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 import Breadcrumb from 'components/Breadcrumb';
+import ShareButtons from 'components/ShareButtons';
 
 import './ReferralView.sass';
 
 // Icons
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
-import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
-import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
-import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
-import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 
 const ReferralView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
@@ -53,7 +47,7 @@ const ReferralView = (props: any) => {
       inviteFriendsForm,
       setInviteFriendsForm,
       inviteFriendsErrors,
-      setInviteFriendsErrors
+      setInviteFriendsErrors,
     );
   };
 
@@ -65,9 +59,7 @@ const ReferralView = (props: any) => {
 
     const form = e.target;
 
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -86,9 +78,14 @@ const ReferralView = (props: any) => {
     }
   };
 
-  getUserInviteLink().then((response) => {
-    setInviteLink(response.data.data.url);
-  });
+  useEffect(() => {
+    let cleanComponent = false;
+    getUserInviteLink().then((response) => {
+      if (!cleanComponent) setInviteLink(response.data.data.url);
+    });
+
+    return () => cleanComponent = true;
+  }, []);
 
   return (
     <>
@@ -152,9 +149,7 @@ const ReferralView = (props: any) => {
                     data-validate='["email"]'
                     errors={getFieldErrors('email')}
                     value={inviteFriendsForm.email}
-                    onChange={(e) =>
-                      validateOnChange('email', e.target.value, e)
-                    }
+                    onChange={(e) => validateOnChange('email', e.target.value, e)}
                     block
                     placeholder={t('referral.enter_email')}
                     height='lg'
@@ -182,44 +177,7 @@ const ReferralView = (props: any) => {
             </div>
           </div>
           <div className='referral__socials'>
-            <button
-              type='button'
-              className='referral__socials-item'
-              onClick={() =>
-                openShareLink(
-                  `https://twitter.com/intent/tweet?text=${inviteLink}`
-                )
-              }
-            >
-              <TwitterLogo />
-            </button>
-            <button
-              type='button'
-              className='referral__socials-item'
-              onClick={() =>
-                openShareLink(
-                  `https://www.facebook.com/sharer/sharer.php?u=${inviteLink}`
-                )
-              }
-            >
-              <FacebookLogo />
-            </button>
-            <button
-              type='button'
-              className='referral__socials-item'
-              onClick={() =>
-                openShareLink(`https://t.me/share/url?url=${inviteLink}`)
-              }
-            >
-              <TelegramLogo />
-            </button>
-            <button
-              type='button'
-              className='referral__socials-item'
-              onClick={() => openShareLink(`https://wa.me/?text=${inviteLink}`)}
-            >
-              <WhatsappLogo />
-            </button>
+            <ShareButtons shareLink={inviteLink} />
           </div>
         </div>
       </section>
