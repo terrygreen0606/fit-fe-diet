@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */
@@ -120,41 +121,47 @@ const RecipeFullView = (props: any) => {
   });
 
   useEffect(() => {
+    let cleanComponent = false;
+
     getRecipeData(recipeId).then((response) => {
       const { data } = response.data;
 
-      setRecipeData({
-        ...recipeData,
-        calorie: data.calorie,
-        carbohydrate: data.carbohydrate,
-        costLevel: data.cost_level,
-        cuisineIds: data.cuisine_ids,
-        fat: data.fat,
-        imageIds: data.image_ids,
-        images: data.images,
-        ingredients: data.ingredients,
-        isLiked: data.is_liked,
-        isPrepared: data.is_prepared,
-        isPublic: data.is_public,
-        name: data.name_i18n,
-        preparation: data.preparation_i18n,
-        protein: data.protein,
-        salt: data.salt,
-        servingsCnt: data.servings_cnt,
-        sugar: data.sugar,
-        time: data.time,
-        weight: data.weight,
-        id: data._id,
-        videoUrl: data.video_url,
-        isOwner: data.is_owner,
-      });
+      if (!cleanComponent) {
+        setRecipeData({
+          ...recipeData,
+          calorie: data.calorie,
+          carbohydrate: data.carbohydrate,
+          costLevel: data.cost_level,
+          cuisineIds: data.cuisine_ids,
+          fat: data.fat,
+          imageIds: data.image_ids,
+          images: data.images,
+          ingredients: data.ingredients,
+          isLiked: data.is_liked,
+          isPrepared: data.is_prepared,
+          isPublic: data.is_public,
+          name: data.name_i18n,
+          preparation: data.preparation_i18n,
+          protein: data.protein,
+          salt: data.salt,
+          servingsCnt: data.servings_cnt,
+          sugar: data.sugar,
+          time: data.time,
+          weight: data.weight,
+          id: data._id,
+          videoUrl: data.video_url,
+          isOwner: data.is_owner,
+        });
 
-      setAvailabilityRecipe(true);
+        setAvailabilityRecipe(true);
+      }
     }).catch(() => {
-      setAvailabilityRecipe(false);
+      if (!cleanComponent) setAvailabilityRecipe(false);
     }).finally(() => {
-      setSpinnerActive(false);
+      if (!cleanComponent) setSpinnerActive(false);
     });
+
+    return () => cleanComponent = true;
   }, []);
 
   return (

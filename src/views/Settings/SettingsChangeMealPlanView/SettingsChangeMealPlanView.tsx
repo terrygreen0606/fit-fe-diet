@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable import/order */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -155,25 +156,34 @@ const SettingsChangeMealPlanView = (props: any) => {
   };
 
   useEffect(() => {
-    getRecipeCuisines().then((response) => setIgnoreCuisinesList(response.data.data));
-    getDiseases().then((response) => setDiseasesList(response.data.data));
+    let cleanComponent = false;
+    getRecipeCuisines().then((response) => {
+      if (!cleanComponent) setIgnoreCuisinesList(response.data.data);
+    });
+    getDiseases().then((response) => {
+      if (!cleanComponent) setDiseasesList(response.data.data);
+    });
 
     fetchUserProfile().then((response) => {
       const { data } = response.data;
 
-      setUpdateChangeMealForm({
-        ...updateChangeMealForm,
-        measurement: userSettings.measurement,
-        goal: data.goal,
-        gender: data.gender,
-        age: data.age,
-        height: data.height,
-        weight: data.weight,
-        weight_goal: data.weight_goal,
-        ignore_cuisine_ids: data.ignore_cuisine_ids ? [...data.ignore_cuisine_ids] : [],
-        diseases: data.diseases ? [...data.diseases] : [],
-      });
+      if (!cleanComponent) {
+        setUpdateChangeMealForm({
+          ...updateChangeMealForm,
+          measurement: userSettings.measurement,
+          goal: data.goal,
+          gender: data.gender,
+          age: data.age,
+          height: data.height,
+          weight: data.weight,
+          weight_goal: data.weight_goal,
+          ignore_cuisine_ids: data.ignore_cuisine_ids ? [...data.ignore_cuisine_ids] : [],
+          diseases: data.diseases ? [...data.diseases] : [],
+        });
+      }
     });
+
+    return () => cleanComponent = true;
   }, []);
 
   return (

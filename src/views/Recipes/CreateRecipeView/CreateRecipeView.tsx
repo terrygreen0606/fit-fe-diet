@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 import React, { useState, useCallback, useEffect } from 'react';
@@ -18,6 +19,7 @@ import {
   searchIngredients,
   createRecipe,
   getIngredient,
+  getMealTimes,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -39,10 +41,10 @@ import { ReactComponent as ClockIcon } from 'assets/img/icons/clock-icon.svg';
 import { ReactComponent as ArrowLeft } from 'assets/img/icons/arrow-left-gray-icon.svg';
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
-import { ReactComponent as BreakfastIcon } from 'assets/img/icons/breakfast-icon.svg';
-import { ReactComponent as LunchIcon } from 'assets/img/icons/lunch-icon.svg';
-import { ReactComponent as SnackIcon } from 'assets/img/icons/snack-icon.svg';
-import { ReactComponent as DinnerIcon } from 'assets/img/icons/dinner-icon.svg';
+import { ReactComponent as breakfast } from 'assets/img/icons/breakfast-icon.svg';
+import { ReactComponent as lunch } from 'assets/img/icons/lunch-icon.svg';
+import { ReactComponent as snack } from 'assets/img/icons/snack-icon.svg';
+import { ReactComponent as dinner } from 'assets/img/icons/dinner-icon.svg';
 
 import {
   colourStylesSelect,
@@ -69,11 +71,21 @@ const CreateRecipeView = (props: any) => {
     totalWeight: 0,
     costLevel: null,
     videoUrl: '',
-    mealtimeCodes: [],
+    mealtimes: [],
   });
 
+  const [mealTimes, setMealTimes] = useState([]);
+
   useEffect(() => {
+    let cleanComponent = false;
     setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
+    getMealTimes().then((response) => {
+      if (!cleanComponent) {
+        setMealTimes(response.data.data.list);
+      }
+    });
+
+    return () => cleanComponent = true;
   }, []);
 
   const [composition, setComposition] = useState([
@@ -217,6 +229,7 @@ const CreateRecipeView = (props: any) => {
         sugar: data.sugar / 100,
         salt: data.salt / 100,
         isFullBlock: true,
+        imageUrl: data.image_url,
       };
 
       setCreateRecipeForm({
@@ -306,14 +319,14 @@ const CreateRecipeView = (props: any) => {
         createRecipeForm.totalWeight,
         createRecipeForm.costLevel,
         createRecipeForm.videoUrl,
-        createRecipeForm.mealtimeCodes,
+        createRecipeForm.mealtimes,
       )
         .then((response) => {
           toast.success(t('recipe.create.success'), {
             autoClose: 3000,
           });
 
-          // history.push(`recipe/${response.data.data.id}`);
+          history.push(`/recipe/${response.data.data._id}`);
 
           setCreateRecipeForm({
             ...createRecipeForm,
@@ -328,7 +341,7 @@ const CreateRecipeView = (props: any) => {
             totalWeight: 0,
             costLevel: null,
             videoUrl: '',
-            mealtimeCodes: [],
+            mealtimes: [],
           });
 
           setFiles([]);
@@ -542,50 +555,38 @@ const CreateRecipeView = (props: any) => {
               {t('recipe.choose_meal_plan')}
             </div>
             <div className='recipe__meal-time-list'>
-              <button
-                type='button'
-                className='recipe__meal-time-btn'
-              >
-                <div className='recipe__meal-time-btn-media'>
-                  <BreakfastIcon />
-                </div>
-                <div className='recipe__meal-time-btn-text'>
-                  {t('meal.breakfast')}
-                </div>
-              </button>
-              <button
-                type='button'
-                className='recipe__meal-time-btn'
-              >
-                <div className='recipe__meal-time-btn-media'>
-                  <LunchIcon />
-                </div>
-                <div className='recipe__meal-time-btn-text'>
-                  {t('meal.lunch')}
-                </div>
-              </button>
-              <button
-                type='button'
-                className='recipe__meal-time-btn'
-              >
-                <div className='recipe__meal-time-btn-media'>
-                  <SnackIcon />
-                </div>
-                <div className='recipe__meal-time-btn-text'>
-                  {t('meal.snack')}
-                </div>
-              </button>
-              <button
-                type='button'
-                className='recipe__meal-time-btn'
-              >
-                <div className='recipe__meal-time-btn-media'>
-                  <DinnerIcon />
-                </div>
-                <div className='recipe__meal-time-btn-text'>
-                  {t('meal.dinner')}
-                </div>
-              </button>
+              {mealTimes.map((mealTime, mealTimeIndex) => (
+                <button
+                  key={mealTime.code}
+                  type='button'
+                  className={classnames('recipe__meal-time-btn card-bg', {
+                    active: mealTime.isActive,
+                  })}
+                  onClick={() => {
+                    const updatedMealTimes = [...mealTimes];
+                    if (!mealTime.isActive) {
+                      updatedMealTimes[mealTimeIndex].isActive = true;
+                      setMealTimes([...updatedMealTimes]);
+                      createRecipeForm.mealtimes.push(mealTime.code);
+                    } else {
+                      updatedMealTimes[mealTimeIndex].isActive = false;
+                      setMealTimes([...updatedMealTimes]);
+                      createRecipeForm.mealtimes.find((item, itemIndex) => {
+                        if (item === mealTime.id) {
+                          createRecipeForm.mealtimes.splice(itemIndex, 1);
+                        }
+                      });
+                    }
+                  }}
+                >
+                  <div className='recipe__meal-time-btn-media'>
+                    {mealTime.icon}
+                  </div>
+                  <div className='recipe__meal-time-btn-text'>
+                    {t(mealTime.i18n_code)}
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
           <div className='recipe__switch-wrap'>
@@ -712,7 +713,7 @@ const CreateRecipeView = (props: any) => {
                     </div>
 
                     <div className='recipe__item-media'>
-                      {/* add image after BE implemation */}
+                      <img src={ingredientItem.imageUrl} alt='' />
                     </div>
 
                     <div className='recipe__item-quantity'>
