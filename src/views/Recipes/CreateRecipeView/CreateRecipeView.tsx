@@ -539,7 +539,7 @@ const CreateRecipeView = (props: any) => {
                       updatedMealTimes[mealTimeIndex].isActive = false;
                       setMealTimes([...updatedMealTimes]);
                       createRecipeForm.mealtimes.find((item, itemIndex) => {
-                        if (item === mealTime.id) {
+                        if (item === mealTime.code) {
                           createRecipeForm.mealtimes.splice(itemIndex, 1);
                         }
                       });
