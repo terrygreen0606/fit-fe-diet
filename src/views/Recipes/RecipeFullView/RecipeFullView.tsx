@@ -118,12 +118,13 @@ const RecipeFullView = (props: any) => {
     videoUrl: null,
     isOwner: null,
     similar: [],
+    wines: [],
   });
 
   useEffect(() => {
     let cleanComponent = false;
 
-    getRecipeData(recipeId, true).then((response) => {
+    getRecipeData(recipeId, true, true, true).then((response) => {
       const { data } = response.data;
 
       console.log('data', data);
@@ -155,7 +156,10 @@ const RecipeFullView = (props: any) => {
           videoUrl: data.video_url,
           isOwner: data.is_owner,
           similar: data.similar,
+          wines: data.wines,
         });
+
+        setAddNoteForm({ ...addNoteForm, note: data.note });
 
         setAvailabilityRecipe(true);
       }
@@ -536,21 +540,32 @@ const RecipeFullView = (props: any) => {
                   <div className='recipe__advertising-title'>
                     {t('recipe.matching_wines')}
                   </div>
-                  <div className='recipe__advertising-wrap'>
-                    <div className='recipe__advertising-media'>
-                      <img src='https://fitstg.s3.eu-central-1.amazonaws.com/wine.png' alt='' />
+                  {recipeData.wines.map((wine) => (
+                    <div
+                      key={wine.name_i18n}
+                      className='recipe__advertising-wrap'
+                    >
+                      <div className='recipe__advertising-media'>
+                        <img src='https://fitdev.s3.amazonaws.com/assets/pub/images/wine1.png' alt='' />
+                      </div>
+                      <div className='recipe__advertising-text'>
+                        <div className='recipe__advertising-text-title'>
+                          {wine.name_i18n}
+                        </div>
+                        <div className='recipe__advertising-text-desc'>
+                          {wine.description_i18n}
+                        </div>
+                        <a
+                          href={wine.url}
+                          className='recipe__advertising-text-btn'
+                          rel='noreferrer'
+                          target='_blank'
+                        >
+                          {t('recipe.buy_here')}
+                        </a>
+                      </div>
                     </div>
-                    <div className='recipe__advertising-text'>
-                      <div className='recipe__advertising-text-title'>Wine Chardone 1983</div>
-                      <div className='recipe__advertising-text-desc'>1.0l, France</div>
-                      <Button
-                        color='primary'
-                        className='recipe__advertising-text-btn'
-                      >
-                        {t('recipe.buy_here')}
-                      </Button>
-                    </div>
-                  </div>
+                  ))}
                 </div>
                 {recipeData.similar?.length > 0 && (
                   <div className='recipe__similar-recipes card-bg'>

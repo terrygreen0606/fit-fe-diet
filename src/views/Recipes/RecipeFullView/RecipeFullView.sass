@@ -477,6 +477,9 @@
       display: flex
       align-items: flex-start
 
+      & + .recipe__advertising-wrap
+        margin-top: 50px
+
     &-media
       width: 95px
       height: 95px
@@ -512,15 +515,30 @@
           font-size: 18px
 
       &-desc
-        margin-bottom: 30px
+        margin-bottom: 20px
         font-size: 18px
         line-height: 1.2
+        max-height: 65px
+        overflow: hidden
 
         @media (max-width: 767px)
           font-size: 14px
+          max-height: 50px
 
       &-btn
-        width: 100%
+        display: block
+        padding: 17px 20px
+        text-align: center
+        font-size: 16px
+        font-weight: bold
+        color: $white
+        background-color: $bright-green
+        border-radius: 5px
+        text-decoration: none
+        transition: 0.2s box-shadow ease
+
+        &:hover
+          box-shadow: 0 5px 15px #1CC637
 
   &__similar-recipes
     padding: 22px 25px 36px
