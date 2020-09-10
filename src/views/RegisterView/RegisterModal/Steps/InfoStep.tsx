@@ -5,6 +5,8 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
+import { toast } from 'react-toastify';
+import { userValidate } from 'api';
 
 // Components
 import CustomRadio from 'components/common/Forms/CustomRadio';
@@ -24,7 +26,7 @@ import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-ico
 
 const InfoStep = (props: any) => {
   const { registerData } = props;
-  const [registerInfoErrors, setRegisterInfoErrors] = useState([]);
+
   const [weightPredictionLoading, setWeightPredictionLoading] = useState(false);
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
@@ -47,14 +49,14 @@ const InfoStep = (props: any) => {
       event,
       registerData,
       props.setRegisterData,
-      registerInfoErrors,
-      setRegisterInfoErrors,
+      props.registerDataErrors,
+      props.setRegisterDataErrors,
       element
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerInfoErrors)
+    getFieldErrorsUtil(field, props.registerDataErrors)
       .map(msg => ({
         ...msg,
         message: t('api.ecode.invalid_value')
@@ -70,15 +72,52 @@ const InfoStep = (props: any) => {
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    setRegisterInfoErrors([...errors]);
+    props.setRegisterDataErrors([...errors]);
 
     if (!hasError) {
       setWeightPredictionLoading(true);
 
-      setTimeout(() => {
-        setWeightPredictionLoading(false);
-        props.setRegisterView('NOT_EATING');
-      }, 500);
+      const {
+        age,
+        height,
+        weight,
+        weight_goal
+      } = registerData;
+
+      userValidate({
+        age,
+        height,
+        weight,
+        weight_goal
+      })
+        .then(response => {
+          setWeightPredictionLoading(false);
+          props.setRegisterView('NOT_EATING');
+        })
+        .catch(error => {
+          setWeightPredictionLoading(false);
+
+          if (error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
+
+              let registerDataErrorsTemp = [...props.registerDataErrors];
+
+              Object.keys(validateErrors).map(field => {
+                registerDataErrorsTemp.push({
+                  field,
+                  message: validateErrors[field]
+                })
+              })
+
+              props.setRegisterDataErrors(registerDataErrorsTemp);
+            } catch {
+              toast.error(t('register.error_msg'));
+            }
+          } else {
+            toast.error(t('register.error_msg'));
+          }
+        });
     }
   };
 

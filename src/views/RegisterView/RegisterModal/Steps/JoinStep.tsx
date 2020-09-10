@@ -13,7 +13,8 @@ import {
   userSignup, 
   userGoogleSignUp, 
   userFacebookSignUp,
-  getAppSettings
+  getAppSettings,
+  userValidate
 } from 'api';
 
 // Components
@@ -27,9 +28,8 @@ import '../RegisterModal.sass';
 
 const JoinStep = (props: any) => {
   const { registerData } = props;
-  const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const [registerJoinErrors, setRegisterJoinErrors] = useState([]);
+  const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const [socialRegister, setSocialRegister] = useState<string>(null);
 
@@ -59,14 +59,14 @@ const JoinStep = (props: any) => {
       event,
       registerData,
       props.setRegisterData,
-      registerJoinErrors,
-      setRegisterJoinErrors,
+      props.registerDataErrors,
+      props.setRegisterDataErrors,
       element
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerJoinErrors)
+    getFieldErrorsUtil(field, props.registerDataErrors)
       .map(msg => ({
         ...msg,
         message: t('api.ecode.invalid_value')
@@ -184,7 +184,8 @@ const JoinStep = (props: any) => {
     userSignup({
       email: props.registerData.email,
       password: props.registerData.password,
-      ...getRegisterProfilePayload()
+      ...getRegisterProfilePayload(),
+      weight: 1800
     }).then(response => {
         const token =
           response.data && response.data.access_token
@@ -215,7 +216,36 @@ const JoinStep = (props: any) => {
       })
       .catch((error) => {
         setRegisterJoinLoading(false);
-        toast.error(t('register.error_msg'));
+
+        if (error.response.status >= 400 && error.response.status < 500) {
+          try {
+            const validateErrors = JSON.parse(error.response.data.message);
+
+            let registerDataErrorsTemp = [...props.registerDataErrors];
+
+            Object.keys(validateErrors).map(field => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field]
+              })
+            })
+
+            props.setRegisterDataErrors(registerDataErrorsTemp);
+
+            if (
+              validateErrors.age || 
+              validateErrors.height || 
+              validateErrors.weight || 
+              validateErrors.weight_goal
+            ) {
+              props.setRegisterView('INFO');
+            }
+          } catch {
+            toast.error(t('register.error_msg'));
+          }
+        } else {
+          toast.error(t('register.error_msg'));
+        }
       });
   };
 
@@ -229,7 +259,7 @@ const JoinStep = (props: any) => {
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    setRegisterJoinErrors([...errors]);
+    props.setRegisterDataErrors([...errors]);
 
     if (!appRulesAccepted) {
       setAppRulesAccepted(false);
