@@ -127,8 +127,6 @@ const RecipeFullView = (props: any) => {
     getRecipeData(recipeId, true, true, true).then((response) => {
       const { data } = response.data;
 
-      console.log('data', data);
-
       if (!cleanComponent) {
         setRecipeData({
           ...recipeData,
