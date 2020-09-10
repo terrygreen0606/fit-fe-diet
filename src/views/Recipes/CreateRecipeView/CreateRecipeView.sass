@@ -291,6 +291,9 @@
 
 			& > div
 				padding: 0
+		
+		.fgSelectControl:hover:not(.fgSelectControl_readonly):not(.fgSelectControl_disabled)
+			border-color: #4d4d4d
 
 	.fgInvalidMsg
 		position: absolute
@@ -516,6 +519,10 @@
 		.fgSelectControl,
 		.fgSelectMenu
 			width: 100%
+			transition: 0.2s border-color ease
+
+		.fgSelectControl:hover:not(.fgSelectControl_readonly):not(.fgSelectControl_disabled)
+			border-color: #4d4d4d
 
 .recipe__item
 	display: flex

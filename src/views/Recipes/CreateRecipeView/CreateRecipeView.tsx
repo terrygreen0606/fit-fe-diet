@@ -303,6 +303,19 @@ const CreateRecipeView = (props: any) => {
       return;
     }
 
+    const checkIngredientsWeight = createRecipeForm.ingredients.filter((ingredientItem) => !ingredientItem.weight);
+
+    if (checkIngredientsWeight.length > 0) {
+      toast.error(t('recipe.create.ingredient_weight_error'), {
+        autoClose: 3000,
+      });
+
+      const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
+      ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      return;
+    }
+
     if (!hasError) {
       createRecipe(
         createRecipeForm.recipeName,
