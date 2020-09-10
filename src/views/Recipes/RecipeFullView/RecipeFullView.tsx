@@ -534,37 +534,39 @@ const RecipeFullView = (props: any) => {
                   </div>
                   <ShareButtons shareLink={window.location.href} classes='recipe__share-buttons' />
                 </div>
-                <div className='recipe__advertising card-bg'>
-                  <div className='recipe__advertising-title'>
-                    {t('recipe.matching_wines')}
-                  </div>
-                  {recipeData.wines.map((wine) => (
-                    <div
-                      key={wine.name_i18n}
-                      className='recipe__advertising-wrap'
-                    >
-                      <div className='recipe__advertising-media'>
-                        <img src='https://fitdev.s3.amazonaws.com/assets/pub/images/wine1.png' alt='' />
-                      </div>
-                      <div className='recipe__advertising-text'>
-                        <div className='recipe__advertising-text-title'>
-                          {wine.name_i18n}
-                        </div>
-                        <div className='recipe__advertising-text-desc'>
-                          {wine.description_i18n}
-                        </div>
-                        <a
-                          href={wine.url}
-                          className='recipe__advertising-text-btn'
-                          rel='noreferrer'
-                          target='_blank'
-                        >
-                          {t('recipe.buy_here')}
-                        </a>
-                      </div>
+                {recipeData.wines.length > 0 && (
+                  <div className='recipe__advertising card-bg'>
+                    <div className='recipe__advertising-title'>
+                      {t('recipe.matching_wines')}
                     </div>
-                  ))}
-                </div>
+                    {recipeData.wines.map((wine) => (
+                      <div
+                        key={wine.name_i18n}
+                        className='recipe__advertising-wrap'
+                      >
+                        <div className='recipe__advertising-media'>
+                          <img src='https://fitdev.s3.amazonaws.com/assets/pub/images/wine1.png' alt='' />
+                        </div>
+                        <div className='recipe__advertising-text'>
+                          <div className='recipe__advertising-text-title'>
+                            {wine.name_i18n}
+                          </div>
+                          <div className='recipe__advertising-text-desc'>
+                            {wine.description_i18n}
+                          </div>
+                          <a
+                            href={wine.url}
+                            className='recipe__advertising-text-btn'
+                            rel='noreferrer'
+                            target='_blank'
+                          >
+                            {t('recipe.buy_here')}
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {recipeData.similar?.length > 0 && (
                   <div className='recipe__similar-recipes card-bg'>
                     <div className='recipe__similar-recipes-title'>
