@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
@@ -56,7 +56,7 @@ const RecipeFullView = (props: any) => {
 
   const { settings } = props;
 
-  const recipeId = window.location.pathname.split('/')[2];
+  const [recipeId, setRecipeId] = useState(window.location.pathname.split('/')[2]);
 
   const costLevelLabel = {
     1: '$',
@@ -107,6 +107,7 @@ const RecipeFullView = (props: any) => {
     isLiked: null,
     isPrepared: null,
     isPublic: null,
+    mealtimeCodes: [],
     name: null,
     preparation: null,
     protein: null,
@@ -141,6 +142,7 @@ const RecipeFullView = (props: any) => {
           isLiked: data.is_liked,
           isPrepared: data.is_prepared,
           isPublic: data.is_public,
+          mealtimeCodes: data.mealtime_codes,
           name: data.name_i18n,
           preparation: data.preparation_i18n,
           protein: data.protein,
@@ -164,7 +166,7 @@ const RecipeFullView = (props: any) => {
     });
 
     return () => cleanComponent = true;
-  }, []);
+  }, [recipeId]);
 
   return (
     <>
@@ -215,9 +217,19 @@ const RecipeFullView = (props: any) => {
                     <div className='recipe__main-info-desc-name'>
                       {recipeData.name}
                     </div>
-                    <div className='recipe__main-info-desc-eating'>Breakfast</div>
+                    <div className='recipe__main-info-desc-eating'>
+                      {recipeData.mealtimeCodes.map((item) => (
+                        <div key={item.code}>
+                          {item.code}
+                        </div>
+                      ))}
+                    </div>
                     <div className='recipe__main-info-desc-row'>
-                      <div className='recipe__main-info-desc-time'>{`${recipeData.time} ${t('common.min')}`}</div>
+                      <div className='recipe__main-info-desc-time'>
+                        {recipeData.time && (
+                          `${recipeData.time} ${t('common.min')}`
+                        )}
+                      </div>
                       <div className='recipe__main-info-desc-cost-level'>{costLevelLabel[recipeData.costLevel]}</div>
                     </div>
                     <button
@@ -547,15 +559,36 @@ const RecipeFullView = (props: any) => {
                   <div className='recipe__similar-recipes-list'>
                     {recipeData.similar.map((similarRecipe) => (
                       <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
-                        <a href='/' className='recipe__similar-recipes-item-media'>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            setRecipeId(similarRecipe.id);
+                            const recipeInfoBlock = document.querySelector('.recipe__main-info');
+                            recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }}
+                          className='recipe__similar-recipes-item-media'
+                        >
                           <img src={similarRecipe.image_url} alt='' />
                           <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
-                        </a>
+                        </button>
                         <div className='recipe__similar-recipes-item-text'>
-                          <div className='recipe__similar-recipes-item-text-name'>{similarRecipe.name_i18n}</div>
+                          <button
+                            type='button'
+                            onClick={() => {
+                              setRecipeId(similarRecipe.id);
+                              const recipeInfoBlock = document.querySelector('.recipe__main-info');
+                              recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }}
+                            className='recipe__similar-recipes-item-text-name'
+                          >
+                            {similarRecipe.name_i18n}
+                          </button>
                           <div className='recipe__similar-recipes-item-text-meal-time'>
                             {similarRecipe.mealtime_codes.map((mealTimeItem) => (
-                              <span className='recipe__similar-recipes-item-text-meal-time-block'>
+                              <span
+                                key={mealTimeItem.code}
+                                className='recipe__similar-recipes-item-text-meal-time-block'
+                              >
                                 {mealTimeItem.code}
                               </span>
                             ))}
