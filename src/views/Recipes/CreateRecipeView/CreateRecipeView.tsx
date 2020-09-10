@@ -327,36 +327,6 @@ const CreateRecipeView = (props: any) => {
           });
 
           history.push(`/recipe/${response.data.data._id}`);
-
-          setCreateRecipeForm({
-            ...createRecipeForm,
-            recipeName: '',
-            recipePreparation: '',
-            ingredients: [],
-            measurement: 'si',
-            cuisine: [],
-            imageIds: [],
-            servingsCnt: null,
-            time: 1,
-            totalWeight: 0,
-            costLevel: null,
-            videoUrl: '',
-            mealtimes: [],
-          });
-
-          setFiles([]);
-
-          setVideoLinkIframe('');
-
-          const updatedComposition = composition;
-
-          updatedComposition.map((item) => {
-            item.value = 0;
-          });
-
-          setComposition([...updatedComposition]);
-
-          return response.data.data;
         })
         .catch(() => {
           toast.error(t('recipe.create.error'), {
