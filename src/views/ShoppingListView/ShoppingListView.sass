@@ -357,31 +357,13 @@
   background-color: #ffffff
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.08)
 
-  &_item
-    display: inline-block
-    line-height: 0
-    border: none
-    background-color: transparent
-    cursor: pointer
-    transition: opacity 0.2s ease
-    &:not(:last-child)
-      margin: 5px 5px
+  .share-button
+    width: 52px
+    height: 52px
+    padding: 0 5px
 
-    &[disabled]
-      opacity: 0.4
-      cursor: not-allowed
-      &:hover
-        opacity: 0.4
-
-    svg, img
-      max-width: 40px
-      height: auto
-
-    & > *
-      line-height: initial
-
-    &:hover
-      opacity: 0.8
+    @media (max-width: 767px)
+      margin: 0
 
 
 @media print

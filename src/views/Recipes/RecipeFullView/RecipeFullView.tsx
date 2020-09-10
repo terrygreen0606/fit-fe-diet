@@ -533,26 +533,14 @@ const RecipeFullView = (props: any) => {
                     </div>
                   </div>
                 </div>
-                <div className='recipe__similar-recipes card-bg'>
-                  <div className='recipe__similar-recipes-title'>
-                    {t('recipe.similar_recipes')}
-                  </div>
-                  <div className='recipe__similar-recipes-list'>
-                    {recipeData.similar.map((similarRecipe) => (
-                      <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
-                        <Link
-                          to={routes.getRecipeFullView(similarRecipe.id)}
-                          onClick={() => {
-                            setRecipeId(similarRecipe.id);
-                            const recipeInfoBlock = document.querySelector('.recipe__main-info');
-                            recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                          }}
-                          className='recipe__similar-recipes-item-media'
-                        >
-                          <img src={similarRecipe.image_url} alt='' />
-                          <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
-                        </Link>
-                        <div className='recipe__similar-recipes-item-text'>
+                {recipeData.similar.length > 0 && (
+                  <div className='recipe__similar-recipes card-bg'>
+                    <div className='recipe__similar-recipes-title'>
+                      {t('recipe.similar_recipes')}
+                    </div>
+                    <div className='recipe__similar-recipes-list'>
+                      {recipeData.similar.map((similarRecipe) => (
+                        <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
                           <Link
                             to={routes.getRecipeFullView(similarRecipe.id)}
                             onClick={() => {
@@ -560,37 +548,51 @@ const RecipeFullView = (props: any) => {
                               const recipeInfoBlock = document.querySelector('.recipe__main-info');
                               recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             }}
-                            className='recipe__similar-recipes-item-text-name'
+                            className='recipe__similar-recipes-item-media'
                           >
-                            {similarRecipe.name_i18n}
+                            <img src={similarRecipe.image_url} alt='' />
+                            <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
                           </Link>
-                          <div className='recipe__similar-recipes-item-text-meal-time'>
-                            {similarRecipe.mealtime_codes.map((mealTimeItem) => (
-                              <span
-                                key={mealTimeItem.code}
-                                className='recipe__similar-recipes-item-text-meal-time-block'
-                              >
-                                {mealTimeItem.code}
-                              </span>
-                            ))}
-                          </div>
-                          <div className='recipe__similar-recipes-item-text-info'>
-                            {similarRecipe.time && (
-                              <div className='recipe__similar-recipes-item-text-info-time'>
-                                {`${similarRecipe.time} ${t('common.min')}`}
-                              </div>
-                            )}
-                            <div className='recipe__similar-recipes-item-text-info-cost-level'>
-                              {similarRecipe.cost_level && (
-                                costLevelLabel[similarRecipe.cost_level]
+                          <div className='recipe__similar-recipes-item-text'>
+                            <Link
+                              to={routes.getRecipeFullView(similarRecipe.id)}
+                              onClick={() => {
+                                setRecipeId(similarRecipe.id);
+                                const recipeInfoBlock = document.querySelector('.recipe__main-info');
+                                recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                              }}
+                              className='recipe__similar-recipes-item-text-name'
+                            >
+                              {similarRecipe.name_i18n}
+                            </Link>
+                            <div className='recipe__similar-recipes-item-text-meal-time'>
+                              {similarRecipe.mealtime_codes.map((mealTimeItem) => (
+                                <span
+                                  key={mealTimeItem.code}
+                                  className='recipe__similar-recipes-item-text-meal-time-block'
+                                >
+                                  {mealTimeItem.code}
+                                </span>
+                              ))}
+                            </div>
+                            <div className='recipe__similar-recipes-item-text-info'>
+                              {similarRecipe.time && (
+                                <div className='recipe__similar-recipes-item-text-info-time'>
+                                  {`${similarRecipe.time} ${t('common.min')}`}
+                                </div>
                               )}
+                              <div className='recipe__similar-recipes-item-text-info-cost-level'>
+                                {similarRecipe.cost_level && (
+                                  costLevelLabel[similarRecipe.cost_level]
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
