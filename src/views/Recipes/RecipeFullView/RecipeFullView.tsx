@@ -118,6 +118,7 @@ const RecipeFullView = (props: any) => {
     id: null,
     videoUrl: null,
     isOwner: null,
+    similar: [],
   });
 
   useEffect(() => {
@@ -151,6 +152,7 @@ const RecipeFullView = (props: any) => {
           id: data._id,
           videoUrl: data.video_url,
           isOwner: data.is_owner,
+          similar: data.similar,
         });
 
         setAvailabilityRecipe(true);
@@ -543,38 +545,36 @@ const RecipeFullView = (props: any) => {
                     {t('recipe.similar_recipes')}
                   </div>
                   <div className='recipe__similar-recipes-list'>
-                    <div className='recipe__similar-recipes-item'>
-                      <a href='/' className='recipe__similar-recipes-item-media'>
-                        <img src='https://fitstg.s3.eu-central-1.amazonaws.com/recipe-preview.png' alt='' />
-                        <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
-                      </a>
-                      <div className='recipe__similar-recipes-item-text'>
-                        <div className='recipe__similar-recipes-item-text-title'>Breakfast</div>
-                        <div className='recipe__similar-recipes-item-text-desc'>Õuna-rosina kohupiimavorm</div>
-                        <div className='recipe__similar-recipes-item-text-info'>
-                          <div className='recipe__similar-recipes-item-text-info-time'>40 min</div>
-                          <div className='recipe__similar-recipes-item-text-info-cost-level'>
-                            $$
+                    {recipeData.similar.map((similarRecipe) => (
+                      <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
+                        <a href='/' className='recipe__similar-recipes-item-media'>
+                          <img src={similarRecipe.image_url} alt='' />
+                          <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
+                        </a>
+                        <div className='recipe__similar-recipes-item-text'>
+                          <div className='recipe__similar-recipes-item-text-name'>{similarRecipe.name_i18n}</div>
+                          <div className='recipe__similar-recipes-item-text-meal-time'>
+                            {similarRecipe.mealtime_codes.map((mealTimeItem) => (
+                              <span className='recipe__similar-recipes-item-text-meal-time-block'>
+                                {mealTimeItem.code}
+                              </span>
+                            ))}
+                          </div>
+                          <div className='recipe__similar-recipes-item-text-info'>
+                            {similarRecipe.time && (
+                              <div className='recipe__similar-recipes-item-text-info-time'>
+                                {`${similarRecipe.time} ${t('common.min')}`}
+                              </div>
+                            )}
+                            <div className='recipe__similar-recipes-item-text-info-cost-level'>
+                              {similarRecipe.cost_level && (
+                                costLevelLabel[similarRecipe.cost_level]
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className='recipe__similar-recipes-item'>
-                      <a href='/' className='recipe__similar-recipes-item-media'>
-                        <img src='https://fitstg.s3.eu-central-1.amazonaws.com/recipe-preview.png' alt='' />
-                        <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
-                      </a>
-                      <div className='recipe__similar-recipes-item-text'>
-                        <div className='recipe__similar-recipes-item-text-title'>Breakfast</div>
-                        <div className='recipe__similar-recipes-item-text-desc'>Õuna-rosina kohupiimavorm</div>
-                        <div className='recipe__similar-recipes-item-text-info'>
-                          <div className='recipe__similar-recipes-item-text-info-time'>40 min</div>
-                          <div className='recipe__similar-recipes-item-text-info-cost-level'>
-                            $$
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
