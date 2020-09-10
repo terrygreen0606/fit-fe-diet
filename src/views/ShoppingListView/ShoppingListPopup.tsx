@@ -14,15 +14,12 @@ import {
 
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import Spinner from 'components/common/Spinner';
+import ShareButtons from 'components/ShareButtons';
 
 import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.svg';
 import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
 import { ReactComponent as ShareIcon } from 'assets/img/icons/share-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
-import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
-import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
-import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
-import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
 
 const ShoppingListPopup = (props: any) => {
   const { localePhrases, settings } = props;
@@ -127,50 +124,7 @@ const ShoppingListPopup = (props: any) => {
                   onClick={() => setShareListPopup(!shareListPopup)}
                 />
                 {
-                  shareListPopup && (
-                    <div className='sharing_socials'>
-                      <button
-                        type='button'
-                        className='sharing_socials_item'
-                        disabled={!items || !items.length}
-                        onClick={() => openShareLink(
-                          `https://twitter.com/intent/tweet?text=${t('shop_list.sharing')} ${publicShopListUrl}`,
-                        )}
-                      >
-                        <TwitterLogo />
-                      </button>
-                      <button
-                        type='button'
-                        className='sharing_socials_item'
-                        disabled={!items || !items.length}
-                        onClick={() => openShareLink(
-                          `https://www.facebook.com/sharer/sharer.php?u=${publicShopListUrl}&t=${t('shop_list.sharing')}`,
-                        )}
-                      >
-                        <FacebookLogo />
-                      </button>
-                      <button
-                        type='button'
-                        className='sharing_socials_item'
-                        disabled={!items || !items.length}
-                        onClick={() => openShareLink(
-                          `https://t.me/share/url?url=${publicShopListUrl}&text=${t('shop_list.sharing')}`,
-                        )}
-                      >
-                        <TelegramLogo />
-                      </button>
-                      <button
-                        type='button'
-                        className='sharing_socials_item'
-                        disabled={!items || !items.length}
-                        onClick={() => openShareLink(
-                          `https://wa.me/?text=${t('shop_list.sharing')} ${publicShopListUrl}`,
-                        )}
-                      >
-                        <WhatsappLogo />
-                      </button>
-                    </div>
-                  )
+                  shareListPopup && <ShareButtons shareLink={publicShopListUrl} classes='sharing_socials' />
                 }
               </div>
             </div>
@@ -215,16 +169,16 @@ const ShoppingListPopup = (props: any) => {
             }
           </>
         ) : (
-          <div className='popup_cart_empty'>
-            <span>{t('shop_list.empty_cart')}</span>
-            <div className='popup_cart_empty_2'>
-              <span>{`${t('shop_list.add_ingredient')} `}</span>
-              <Link to='/shopping-list' className='popup_cart_empty_link'>
-                {t('shop_list.add_ingredient_here_link')}
-              </Link>
+            <div className='popup_cart_empty'>
+              <span>{t('shop_list.empty_cart')}</span>
+              <div className='popup_cart_empty_2'>
+                <span>{`${t('shop_list.add_ingredient')} `}</span>
+                <Link to='/shopping-list' className='popup_cart_empty_link'>
+                  {t('shop_list.add_ingredient_here_link')}
+                </Link>
+              </div>
             </div>
-          </div>
-        )
+          )
       }
     </div>
   );

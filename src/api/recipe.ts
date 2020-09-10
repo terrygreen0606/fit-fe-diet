@@ -12,7 +12,7 @@ export const createRecipe = (
   total_weight?: number,
   cost_level?: number,
   video_url?: string,
-  mealtime_i18n_codes?: Array<string>,
+  mealtimes?: Array<string>,
 ) =>
   axios.post(
     '/recipe/create',
@@ -28,7 +28,7 @@ export const createRecipe = (
       weight: total_weight,
       cost_level,
       video_url,
-      mealtimeCodes: mealtime_i18n_codes,
+      mealtimes,
     },
     {},
   );
@@ -53,3 +53,5 @@ export const addRecipeNote = (
       note: noteText,
     },
   );
+
+export const getMealTimes = () => axios.get('recipe/mealtimes');

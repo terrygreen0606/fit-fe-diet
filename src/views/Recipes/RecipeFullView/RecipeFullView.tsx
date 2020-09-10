@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */
@@ -6,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
@@ -32,6 +33,8 @@ import Breadcrumb from 'components/Breadcrumb';
 import Button from 'components/common/Forms/Button';
 import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal/Modal';
+import InputField from 'components/common/Forms/InputField';
+import ShareButtons from 'components/ShareButtons';
 
 import './RecipeFullView.sass';
 
@@ -43,19 +46,14 @@ import { ReactComponent as SaveIcon } from 'assets/img/icons/save-icon.svg';
 import { ReactComponent as NotesIcon } from 'assets/img/icons/notes-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as DishIcon } from 'assets/img/icons/dish-icon.svg';
-import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
-import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
-import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
-import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 import { ReactComponent as CursorTouchLogo } from 'assets/img/icons/cursor-touch-icon.svg';
-import InputField from 'components/common/Forms/InputField';
 
 const RecipeFullView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
   const { settings } = props;
 
-  const recipeId = window.location.pathname.split('/')[2];
+  const [recipeId, setRecipeId] = useState(window.location.pathname.split('/')[2]);
 
   const costLevelLabel = {
     1: '$',
@@ -106,6 +104,7 @@ const RecipeFullView = (props: any) => {
     isLiked: null,
     isPrepared: null,
     isPublic: null,
+    mealtimeCodes: [],
     name: null,
     preparation: null,
     protein: null,
@@ -117,45 +116,54 @@ const RecipeFullView = (props: any) => {
     id: null,
     videoUrl: null,
     isOwner: null,
+    similar: [],
   });
 
   useEffect(() => {
+    let cleanComponent = false;
+
     getRecipeData(recipeId).then((response) => {
       const { data } = response.data;
 
-      setRecipeData({
-        ...recipeData,
-        calorie: data.calorie,
-        carbohydrate: data.carbohydrate,
-        costLevel: data.cost_level,
-        cuisineIds: data.cuisine_ids,
-        fat: data.fat,
-        imageIds: data.image_ids,
-        images: data.images,
-        ingredients: data.ingredients,
-        isLiked: data.is_liked,
-        isPrepared: data.is_prepared,
-        isPublic: data.is_public,
-        name: data.name_i18n,
-        preparation: data.preparation_i18n,
-        protein: data.protein,
-        salt: data.salt,
-        servingsCnt: data.servings_cnt,
-        sugar: data.sugar,
-        time: data.time,
-        weight: data.weight,
-        id: data._id,
-        videoUrl: data.video_url,
-        isOwner: data.is_owner,
-      });
+      if (!cleanComponent) {
+        setRecipeData({
+          ...recipeData,
+          calorie: data.calorie,
+          carbohydrate: data.carbohydrate,
+          costLevel: data.cost_level,
+          cuisineIds: data.cuisine_ids,
+          fat: data.fat,
+          imageIds: data.image_ids,
+          images: data.images,
+          ingredients: data.ingredients,
+          isLiked: data.is_liked,
+          isPrepared: data.is_prepared,
+          isPublic: data.is_public,
+          mealtimeCodes: data.mealtime_codes,
+          name: data.name_i18n,
+          preparation: data.preparation_i18n,
+          protein: data.protein,
+          salt: data.salt,
+          servingsCnt: data.servings_cnt,
+          sugar: data.sugar,
+          time: data.time,
+          weight: data.weight,
+          id: data._id,
+          videoUrl: data.video_url,
+          isOwner: data.is_owner,
+          similar: data.similar,
+        });
 
-      setAvailabilityRecipe(true);
+        setAvailabilityRecipe(true);
+      }
     }).catch(() => {
-      setAvailabilityRecipe(false);
+      if (!cleanComponent) setAvailabilityRecipe(false);
     }).finally(() => {
-      setSpinnerActive(false);
+      if (!cleanComponent) setSpinnerActive(false);
     });
-  }, []);
+
+    return () => cleanComponent = true;
+  }, [recipeId]);
 
   return (
     <>
@@ -197,18 +205,25 @@ const RecipeFullView = (props: any) => {
               <div className='col-xl-8'>
                 <div className='recipe__main-info card-bg'>
                   <div className='recipe__main-info-media'>
-                    {/* need to add plug */}
-                    {recipeData.images.length > 0 && (
-                      <img src={recipeData.images[0].url} alt='' />
-                    )}
+                    <img src={recipeData.images[0].url} alt='' />
                   </div>
                   <div className='recipe__main-info-desc'>
                     <div className='recipe__main-info-desc-name'>
                       {recipeData.name}
                     </div>
-                    <div className='recipe__main-info-desc-eating'>Breakfast</div>
+                    <div className='recipe__main-info-desc-eating'>
+                      {recipeData.mealtimeCodes.map((item) => (
+                        <div key={item.code}>
+                          {item.code}
+                        </div>
+                      ))}
+                    </div>
                     <div className='recipe__main-info-desc-row'>
-                      <div className='recipe__main-info-desc-time'>{`${recipeData.time} ${t('common.min')}`}</div>
+                      <div className='recipe__main-info-desc-time'>
+                        {recipeData.time && (
+                          `${recipeData.time} ${t('common.min')}`
+                        )}
+                      </div>
                       <div className='recipe__main-info-desc-cost-level'>{costLevelLabel[recipeData.costLevel]}</div>
                     </div>
                     <button
@@ -496,20 +511,7 @@ const RecipeFullView = (props: any) => {
                   <div className='recipe__share-title'>
                     {t('recipe.share.title')}
                   </div>
-                  <div className='recipe__share-list'>
-                    <a href='/' className='recipe__share-button'>
-                      <TwitterLogo />
-                    </a>
-                    <a href='/' className='recipe__share-button'>
-                      <WhatsappLogo />
-                    </a>
-                    <a href='/' className='recipe__share-button'>
-                      <FacebookLogo />
-                    </a>
-                    <a href='/' className='recipe__share-button'>
-                      <TelegramLogo />
-                    </a>
-                  </div>
+                  <ShareButtons shareLink={window.location.href} classes='recipe__share-buttons' />
                 </div>
                 <div className='recipe__advertising card-bg'>
                   <div className='recipe__advertising-title'>
@@ -531,45 +533,66 @@ const RecipeFullView = (props: any) => {
                     </div>
                   </div>
                 </div>
-                <div className='recipe__similar-recipes card-bg'>
-                  <div className='recipe__similar-recipes-title'>
-                    {t('recipe.similar_recipes')}
-                  </div>
-                  <div className='recipe__similar-recipes-list'>
-                    <div className='recipe__similar-recipes-item'>
-                      <a href='/' className='recipe__similar-recipes-item-media'>
-                        <img src='https://fitstg.s3.eu-central-1.amazonaws.com/recipe-preview.png' alt='' />
-                        <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
-                      </a>
-                      <div className='recipe__similar-recipes-item-text'>
-                        <div className='recipe__similar-recipes-item-text-title'>Breakfast</div>
-                        <div className='recipe__similar-recipes-item-text-desc'>Õuna-rosina kohupiimavorm</div>
-                        <div className='recipe__similar-recipes-item-text-info'>
-                          <div className='recipe__similar-recipes-item-text-info-time'>40 min</div>
-                          <div className='recipe__similar-recipes-item-text-info-cost-level'>
-                            $$
+                {recipeData.similar.length > 0 && (
+                  <div className='recipe__similar-recipes card-bg'>
+                    <div className='recipe__similar-recipes-title'>
+                      {t('recipe.similar_recipes')}
+                    </div>
+                    <div className='recipe__similar-recipes-list'>
+                      {recipeData.similar.map((similarRecipe) => (
+                        <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
+                          <Link
+                            to={routes.getRecipeFullView(similarRecipe.id)}
+                            onClick={() => {
+                              setRecipeId(similarRecipe.id);
+                              const recipeInfoBlock = document.querySelector('.recipe__main-info');
+                              recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }}
+                            className='recipe__similar-recipes-item-media'
+                          >
+                            <img src={similarRecipe.image_url} alt='' />
+                            <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
+                          </Link>
+                          <div className='recipe__similar-recipes-item-text'>
+                            <Link
+                              to={routes.getRecipeFullView(similarRecipe.id)}
+                              onClick={() => {
+                                setRecipeId(similarRecipe.id);
+                                const recipeInfoBlock = document.querySelector('.recipe__main-info');
+                                recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                              }}
+                              className='recipe__similar-recipes-item-text-name'
+                            >
+                              {similarRecipe.name_i18n}
+                            </Link>
+                            <div className='recipe__similar-recipes-item-text-meal-time'>
+                              {similarRecipe.mealtime_codes.map((mealTimeItem) => (
+                                <span
+                                  key={mealTimeItem.code}
+                                  className='recipe__similar-recipes-item-text-meal-time-block'
+                                >
+                                  {mealTimeItem.code}
+                                </span>
+                              ))}
+                            </div>
+                            <div className='recipe__similar-recipes-item-text-info'>
+                              {similarRecipe.time && (
+                                <div className='recipe__similar-recipes-item-text-info-time'>
+                                  {`${similarRecipe.time} ${t('common.min')}`}
+                                </div>
+                              )}
+                              <div className='recipe__similar-recipes-item-text-info-cost-level'>
+                                {similarRecipe.cost_level && (
+                                  costLevelLabel[similarRecipe.cost_level]
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className='recipe__similar-recipes-item'>
-                      <a href='/' className='recipe__similar-recipes-item-media'>
-                        <img src='https://fitstg.s3.eu-central-1.amazonaws.com/recipe-preview.png' alt='' />
-                        <CursorTouchLogo className='recipe__similar-recipes-item-media-icon' />
-                      </a>
-                      <div className='recipe__similar-recipes-item-text'>
-                        <div className='recipe__similar-recipes-item-text-title'>Breakfast</div>
-                        <div className='recipe__similar-recipes-item-text-desc'>Õuna-rosina kohupiimavorm</div>
-                        <div className='recipe__similar-recipes-item-text-info'>
-                          <div className='recipe__similar-recipes-item-text-info-time'>40 min</div>
-                          <div className='recipe__similar-recipes-item-text-info-cost-level'>
-                            $$
-                          </div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

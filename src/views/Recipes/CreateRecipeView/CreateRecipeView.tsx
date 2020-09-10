@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 import React, { useState, useCallback, useEffect } from 'react';
@@ -5,6 +6,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 import { routes } from 'constants/routes';
 import {
@@ -12,11 +14,13 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getVideo,
+  getMealIcon,
 } from 'utils';
 import {
   searchIngredients,
   createRecipe,
   getIngredient,
+  getMealTimes,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -47,7 +51,10 @@ import {
 
 const CreateRecipeView = (props: any) => {
   const { localePhrases, settings } = props;
+
   const t = (code: string, placeholders?: any) => getTranslate(localePhrases, code, placeholders);
+
+  const history = useHistory();
 
   const [createRecipeForm, setCreateRecipeForm] = useState({
     recipeName: '',
@@ -61,14 +68,24 @@ const CreateRecipeView = (props: any) => {
     totalWeight: 0,
     costLevel: null,
     videoUrl: '',
-    mealtimeCodes: [],
+    mealtimes: [],
   });
 
+  const [mealTimes, setMealTimes] = useState([]);
+
   useEffect(() => {
+    let cleanComponent = false;
     setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
+    getMealTimes().then((response) => {
+      if (!cleanComponent) {
+        setMealTimes(response.data.data.list);
+      }
+    });
+
+    return () => cleanComponent = true;
   }, []);
 
-  const [composition, setComposition] = useState([
+  const [composition] = useState([
     {
       name: 'fat',
       namePlural: t('common.fats'),
@@ -209,6 +226,7 @@ const CreateRecipeView = (props: any) => {
         sugar: data.sugar / 100,
         salt: data.salt / 100,
         isFullBlock: true,
+        imageUrl: data.image_url,
       };
 
       setCreateRecipeForm({
@@ -285,6 +303,19 @@ const CreateRecipeView = (props: any) => {
       return;
     }
 
+    const checkIngredientsWeight = createRecipeForm.ingredients.filter((ingredientItem) => !ingredientItem.weight);
+
+    if (checkIngredientsWeight.length > 0) {
+      toast.error(t('recipe.create.ingredient_weight_error'), {
+        autoClose: 3000,
+      });
+
+      const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
+      ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      return;
+    }
+
     if (!hasError) {
       createRecipe(
         createRecipeForm.recipeName,
@@ -298,42 +329,14 @@ const CreateRecipeView = (props: any) => {
         createRecipeForm.totalWeight,
         createRecipeForm.costLevel,
         createRecipeForm.videoUrl,
-        createRecipeForm.mealtimeCodes,
+        createRecipeForm.mealtimes,
       )
         .then((response) => {
           toast.success(t('recipe.create.success'), {
             autoClose: 3000,
           });
 
-          setCreateRecipeForm({
-            ...createRecipeForm,
-            recipeName: '',
-            recipePreparation: '',
-            ingredients: [],
-            measurement: 'si',
-            cuisine: [],
-            imageIds: [],
-            servingsCnt: null,
-            time: 1,
-            totalWeight: 0,
-            costLevel: null,
-            videoUrl: '',
-            mealtimeCodes: [],
-          });
-
-          setFiles([]);
-
-          setVideoLinkIframe('');
-
-          const updatedComposition = composition;
-
-          updatedComposition.map((item) => {
-            item.value = 0;
-          });
-
-          setComposition([...updatedComposition]);
-
-          return response.data.data;
+          history.push(`/recipe/${response.data.data._id}`);
         })
         .catch(() => {
           toast.error(t('recipe.create.error'), {
@@ -521,22 +524,65 @@ const CreateRecipeView = (props: any) => {
                   max={4320}
                   border='light'
                 />
-                <span className='recipe__label-description ml-xl-3'>min</span>
+                <span className='recipe__label-description ml-xl-3'>
+                  {t('common.min')}
+                </span>
               </label>
             </div>
           </div>
-          <CustomSwitch
-            label1={t('common.gr')}
-            label2={t('common.oz')}
-            checked={createRecipeForm.measurement === 'us'}
-            onChange={() => {
-              setCreateRecipeForm({
-                ...createRecipeForm,
-                measurement: createRecipeForm.measurement === 'si' ? 'us' : 'si',
-              });
-            }}
-            className='recipe__switch'
-          />
+          <div className='recipe__meal-time'>
+            <div className='recipe__meal-time-title'>
+              {t('recipe.choose_meal_plan')}
+            </div>
+            <div className='recipe__meal-time-list'>
+              {mealTimes.map((mealTime, mealTimeIndex) => (
+                <button
+                  key={mealTime.code}
+                  type='button'
+                  className={classnames('recipe__meal-time-btn card-bg', {
+                    active: mealTime.isActive,
+                  })}
+                  onClick={() => {
+                    const updatedMealTimes = [...mealTimes];
+                    if (!mealTime.isActive) {
+                      updatedMealTimes[mealTimeIndex].isActive = true;
+                      setMealTimes([...updatedMealTimes]);
+                      createRecipeForm.mealtimes.push(mealTime.code);
+                    } else {
+                      updatedMealTimes[mealTimeIndex].isActive = false;
+                      setMealTimes([...updatedMealTimes]);
+                      createRecipeForm.mealtimes.find((item, itemIndex) => {
+                        if (item === mealTime.code) {
+                          createRecipeForm.mealtimes.splice(itemIndex, 1);
+                        }
+                      });
+                    }
+                  }}
+                >
+                  <div className='recipe__meal-time-btn-media'>
+                    {getMealIcon(mealTime.code)}
+                  </div>
+                  <div className='recipe__meal-time-btn-text'>
+                    {t(mealTime.i18n_code)}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className='recipe__switch-wrap'>
+            <CustomSwitch
+              label1={t('common.gr')}
+              label2={t('common.oz')}
+              checked={createRecipeForm.measurement === 'us'}
+              onChange={() => {
+                setCreateRecipeForm({
+                  ...createRecipeForm,
+                  measurement: createRecipeForm.measurement === 'si' ? 'us' : 'si',
+                });
+              }}
+              className='recipe__switch'
+            />
+          </div>
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
               {composition.map((item) => (
@@ -552,7 +598,12 @@ const CreateRecipeView = (props: any) => {
                 </div>
               ))}
               <div className='recipe__chart-progress-value'>
-                {t('common.grams', { number: createRecipeForm.totalWeight })}
+                {`${createRecipeForm.totalWeight} ${
+                  createRecipeForm.measurement === 'si' ? (
+                    t('common.gr'))
+                    : (
+                      t('common.oz')
+                    )}`}
               </div>
             </div>
             <div className='recipe__chart-lines'>
@@ -639,6 +690,10 @@ const CreateRecipeView = (props: any) => {
                       <div>
                         {`${t('common.proteins')}: ${(ingredientItem.protein * ingredientItem.weight).toFixed(2)}`}
                       </div>
+                    </div>
+
+                    <div className='recipe__item-media'>
+                      <img src={ingredientItem.imageUrl} alt='' />
                     </div>
 
                     <div className='recipe__item-quantity'>
