@@ -14,6 +14,7 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getVideo,
+  getMealIcon,
 } from 'utils';
 import {
   searchIngredients,
@@ -41,10 +42,6 @@ import { ReactComponent as ClockIcon } from 'assets/img/icons/clock-icon.svg';
 import { ReactComponent as ArrowLeft } from 'assets/img/icons/arrow-left-gray-icon.svg';
 import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
-import { ReactComponent as breakfast } from 'assets/img/icons/breakfast-icon.svg';
-import { ReactComponent as lunch } from 'assets/img/icons/lunch-icon.svg';
-import { ReactComponent as snack } from 'assets/img/icons/snack-icon.svg';
-import { ReactComponent as dinner } from 'assets/img/icons/dinner-icon.svg';
 
 import {
   colourStylesSelect,
@@ -88,7 +85,7 @@ const CreateRecipeView = (props: any) => {
     return () => cleanComponent = true;
   }, []);
 
-  const [composition, setComposition] = useState([
+  const [composition] = useState([
     {
       name: 'fat',
       namePlural: t('common.fats'),
@@ -550,7 +547,7 @@ const CreateRecipeView = (props: any) => {
                   }}
                 >
                   <div className='recipe__meal-time-btn-media'>
-                    {mealTime.icon}
+                    {getMealIcon(mealTime.code)}
                   </div>
                   <div className='recipe__meal-time-btn-text'>
                     {t(mealTime.i18n_code)}
