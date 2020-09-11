@@ -47,6 +47,7 @@ import { ReactComponent as NotesIcon } from 'assets/img/icons/notes-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as DishIcon } from 'assets/img/icons/dish-icon.svg';
 import { ReactComponent as CursorTouchLogo } from 'assets/img/icons/cursor-touch-icon.svg';
+import { ReactComponent as CloseIconLogo } from 'assets/img/icons/close-icon.svg';
 
 const RecipeFullView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
@@ -117,12 +118,13 @@ const RecipeFullView = (props: any) => {
     videoUrl: null,
     isOwner: null,
     similar: [],
+    wines: [],
   });
 
   useEffect(() => {
     let cleanComponent = false;
 
-    getRecipeData(recipeId).then((response) => {
+    getRecipeData(recipeId, true, true, true).then((response) => {
       const { data } = response.data;
 
       if (!cleanComponent) {
@@ -152,7 +154,10 @@ const RecipeFullView = (props: any) => {
           videoUrl: data.video_url,
           isOwner: data.is_owner,
           similar: data.similar,
+          wines: data.wines,
         });
+
+        setAddNoteForm({ ...addNoteForm, note: data.note });
 
         setAvailabilityRecipe(true);
       }
@@ -321,8 +326,8 @@ const RecipeFullView = (props: any) => {
                         {t('recipe.manufacture')}
                       </span>
                     </div>
-                    <div className='recipe__manufacture-video'>
-                      {recipeData.videoUrl && (
+                    {recipeData.videoUrl && (
+                      <div className='recipe__manufacture-video'>
                         <iframe
                           title='video'
                           width='100%'
@@ -330,8 +335,8 @@ const RecipeFullView = (props: any) => {
                           src={getVideo(recipeData.videoUrl)}
                           allowFullScreen
                         />
-                      )}
-                    </div>
+                      </div>
+                    )}
                     <div className='recipe__manufacture-desc'>
                       {recipeData.preparation}
                     </div>
@@ -353,8 +358,10 @@ const RecipeFullView = (props: any) => {
                   </button>
                   <button
                     type='button'
-                    onClick={() => setActiveNotesModal(true)}
-                    className='recipe__actions-button card-bg'
+                    onClick={() => setActiveNotesModal(!isActiveNotesModal)}
+                    className={classnames('recipe__actions-button card-bg', {
+                      active: isActiveNotesModal,
+                    })}
                   >
                     <div className='recipe__actions-button-media'>
                       <NotesIcon />
@@ -367,25 +374,21 @@ const RecipeFullView = (props: any) => {
                     </div>
                   </button>
                   {isActiveNotesModal && (
-                    <Modal
-                      withCloseBtn
-                      shouldCloseOnOverlayClick
-                      onClose={() => setActiveNotesModal(false)}
-                      className='recipe__modal'
-                    >
-                      <div className='recipe__modal-title'>
-                        {t('recipe.add_note.desc')}
-                      </div>
-                      <div className='recipe__modal-textarea-wrap'>
+                    <div className='recipe__notes-modal'>
+                      <div className='recipe__notes-modal-wrap card-bg'>
+                        <div className='recipe__notes-modal-title'>
+                          {t('recipe.add_note.desc')}
+                        </div>
                         <InputField
                           block
                           type='textarea'
                           name='note'
-                          data-validate='["required"]'
                           errors={getFieldErrors('note')}
                           value={addNoteForm.note}
                           onChange={(e) => validateOnChange('note', e.target.value, e)}
-                          className='recipe__modal-textarea'
+                          className='recipe__notes-modal-textarea'
+                          border='light'
+                          rows={10}
                         />
                         <Button
                           color='primary'
@@ -411,17 +414,27 @@ const RecipeFullView = (props: any) => {
                               });
                             });
                           }}
+                          className='recipe__notes-modal-btn'
                         >
-                          {t('recipe.add_note.confirm')}
+                          {t('recipe.add_note.save')}
                         </Button>
                       </div>
-                    </Modal>
+                      <button
+                        type='button'
+                        onClick={() => setActiveNotesModal(false)}
+                        className='recipe__notes-modal-close'
+                      >
+                        <CloseIconLogo />
+                      </button>
+                    </div>
                   )}
                   {recipeData.isOwner && (
                     <button
                       type='button'
                       onClick={() => setActiveDeleteModal(true)}
-                      className='recipe__actions-button card-bg'
+                      className={classnames('recipe__actions-button card-bg', {
+                        active: isActiveDeleteModal,
+                      })}
                     >
                       <div className='recipe__actions-button-media'>
                         <TrashIcon />
@@ -475,36 +488,46 @@ const RecipeFullView = (props: any) => {
                     <span>{t('common.calories', { number: (recipeData.calorie / 1000).toFixed(0) })}</span>
                   </div>
                   <div className='recipe__nutrients-composition-list'>
-                    <div className='recipe__nutrients-composition-item'>
-                      <span>{t('common.salt')}</span>
-                      <span>
-                        {`${recipeData.salt} ${t(getWeigthUnit(settings.measurement))}`}
-                      </span>
-                    </div>
-                    <div className='recipe__nutrients-composition-item'>
-                      <span>{t('common.fats')}</span>
-                      <span>
-                        {`${recipeData.fat} ${t(getWeigthUnit(settings.measurement))}`}
-                      </span>
-                    </div>
-                    <div className='recipe__nutrients-composition-item'>
-                      <span>{t('common.sugar')}</span>
-                      <span>
-                        {`${recipeData.sugar} ${t(getWeigthUnit(settings.measurement))}`}
-                      </span>
-                    </div>
-                    <div className='recipe__nutrients-composition-item'>
-                      <span>{t('common.proteins')}</span>
-                      <span>
-                        {`${recipeData.protein} ${t(getWeigthUnit(settings.measurement))}`}
-                      </span>
-                    </div>
-                    <div className='recipe__nutrients-composition-item'>
-                      <span>{t('common.carbohydrates')}</span>
-                      <span>
-                        {`${recipeData.carbohydrate} ${t(getWeigthUnit(settings.measurement))}`}
-                      </span>
-                    </div>
+                    {recipeData.salt && (
+                      <div className='recipe__nutrients-composition-item'>
+                        <span>{t('common.salt')}</span>
+                        <span>
+                          {`${recipeData.salt} ${t(getWeigthUnit(settings.measurement))}`}
+                        </span>
+                      </div>
+                    )}
+                    {recipeData.fat && (
+                      <div className='recipe__nutrients-composition-item'>
+                        <span>{t('common.fats')}</span>
+                        <span>
+                          {`${recipeData.fat} ${t(getWeigthUnit(settings.measurement))}`}
+                        </span>
+                      </div>
+                    )}
+                    {recipeData.sugar && (
+                      <div className='recipe__nutrients-composition-item'>
+                        <span>{t('common.sugar')}</span>
+                        <span>
+                          {`${recipeData.sugar} ${t(getWeigthUnit(settings.measurement))}`}
+                        </span>
+                      </div>
+                    )}
+                    {recipeData.protein && (
+                      <div className='recipe__nutrients-composition-item'>
+                        <span>{t('common.proteins')}</span>
+                        <span>
+                          {`${recipeData.protein} ${t(getWeigthUnit(settings.measurement))}`}
+                        </span>
+                      </div>
+                    )}
+                    {recipeData.carbohydrate && (
+                      <div className='recipe__nutrients-composition-item'>
+                        <span>{t('common.carbohydrates')}</span>
+                        <span>
+                          {`${recipeData.carbohydrate} ${t(getWeigthUnit(settings.measurement))}`}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className='recipe__share card-bg'>
@@ -513,27 +536,40 @@ const RecipeFullView = (props: any) => {
                   </div>
                   <ShareButtons shareLink={window.location.href} classes='recipe__share-buttons' />
                 </div>
-                <div className='recipe__advertising card-bg'>
-                  <div className='recipe__advertising-title'>
-                    {t('recipe.matching_wines')}
-                  </div>
-                  <div className='recipe__advertising-wrap'>
-                    <div className='recipe__advertising-media'>
-                      <img src='https://fitstg.s3.eu-central-1.amazonaws.com/wine.png' alt='' />
+                {recipeData.wines.length > 0 && (
+                  <div className='recipe__advertising card-bg'>
+                    <div className='recipe__advertising-title'>
+                      {t('recipe.matching_wines')}
                     </div>
-                    <div className='recipe__advertising-text'>
-                      <div className='recipe__advertising-text-title'>Wine Chardone 1983</div>
-                      <div className='recipe__advertising-text-desc'>1.0l, France</div>
-                      <Button
-                        color='primary'
-                        className='recipe__advertising-text-btn'
+                    {recipeData.wines.map((wine) => (
+                      <div
+                        key={wine.name_i18n}
+                        className='recipe__advertising-wrap'
                       >
-                        {t('recipe.buy_here')}
-                      </Button>
-                    </div>
+                        <div className='recipe__advertising-media'>
+                          <img src='https://fitdev.s3.amazonaws.com/assets/pub/images/wine1.png' alt='' />
+                        </div>
+                        <div className='recipe__advertising-text'>
+                          <div className='recipe__advertising-text-title'>
+                            {wine.name_i18n}
+                          </div>
+                          <div className='recipe__advertising-text-desc'>
+                            {wine.description_i18n}
+                          </div>
+                          <a
+                            href={wine.url}
+                            className='recipe__advertising-text-btn'
+                            rel='noreferrer'
+                            target='_blank'
+                          >
+                            {t('recipe.buy_here')}
+                          </a>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-                {recipeData.similar.length > 0 && (
+                )}
+                {recipeData.similar?.length > 0 && (
                   <div className='recipe__similar-recipes card-bg'>
                     <div className='recipe__similar-recipes-title'>
                       {t('recipe.similar_recipes')}
