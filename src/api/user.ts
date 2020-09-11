@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import axios from 'utils/axios';
+import { UserValidateParams } from 'types';
 
 export const deleteFamilyMembers = (email: string) => axios.delete(`/user/family/${email}`);
 
@@ -73,3 +74,6 @@ export const userUpdateMeasurement = (measurement: string) =>
   axios.put('/user/measurement', {
     measurement,
   });
+
+export const userValidate = (params: any) =>
+  axios.post('/user/validate', { ...params });
