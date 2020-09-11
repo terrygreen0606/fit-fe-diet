@@ -70,5 +70,10 @@ export const userUpdateMealSettings = (
   },
 );
 
+export const userUpdateMeasurement = (measurement: string) =>
+  axios.put('/user/measurement', {
+    measurement,
+  });
+
 export const userValidate = (params: any) =>
-  axios.post('/user/validate', {...params});
+  axios.post('/user/validate', { ...params });
