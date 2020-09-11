@@ -3,6 +3,7 @@ import { getTranslate } from 'utils';
 import { Link } from 'react-router-dom';
 import getRegisterStepViewUtil from './getRegisterStepView';
 import { RegisterViewType, RegisterStepTitlesType } from './types';
+import { InputError } from 'types';
 
 // Components
 import Modal from 'components/common/Modal';
@@ -15,6 +16,8 @@ type RegisterModalProps = {
   isOpen: boolean,
   registerData: any,
   setRegisterData: (any) => void,
+  registerDataErrors: InputError[],
+  setRegisterDataErrors: (any) => void,
   cuisinesLoading: boolean,
   cuisinesLoadingError: boolean,
   fetchRecipeCuisines: () => void,
@@ -28,7 +31,7 @@ const RegisterModal = (props: RegisterModalProps) => {
 
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
   const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
-  const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
+  const [registerView, setRegisterView] = useState<RegisterViewType>('JOIN');
 
   useEffect(() => {
     let currentRegisterStep: 0 | 1 | 2 = null;
@@ -56,6 +59,8 @@ const RegisterModal = (props: RegisterModalProps) => {
     registerView,
     props.registerData,
     props.setRegisterData,
+    props.registerDataErrors,
+    props.setRegisterDataErrors,
     props.cuisinesLoading,
     props.cuisinesLoadingError,
     props.fetchRecipeCuisines,

@@ -51,6 +51,7 @@ const RegisterView = (props: any) => {
   );
 
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
+  const [registerDataErrors, setRegisterDataErrors] = useState([]);
 
   const [registerGoogleInitLoading, setRegisterGoogleInitLoading] = useState<boolean>(false);
   const [registerGoogleLoadingError, setRegisterGoogleLoadingError] = useState(false);
@@ -113,6 +114,8 @@ const RegisterView = (props: any) => {
           isOpen
           registerData={registerData}
           setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
           facebookInitLoading={registerFacebookInitLoading}
           googleLoadingError={registerGoogleLoadingError}
           googleInitLoading={registerGoogleInitLoading}
