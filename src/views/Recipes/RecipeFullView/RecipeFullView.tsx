@@ -347,7 +347,13 @@ const RecipeFullView = (props: any) => {
               </div>
               <div className='col-xl-4'>
                 <div className='recipe__actions'>
-                  <button type='button' className='recipe__actions-button card-bg'>
+                  <Link
+                    to={{
+                      pathname: routes.createRecipe,
+                      propsRecipeId: recipeId,
+                    }}
+                    className='recipe__actions-button card-bg'
+                  >
                     <div className='recipe__actions-button-media'>
                       <SaveIcon />
                     </div>
@@ -357,7 +363,7 @@ const RecipeFullView = (props: any) => {
                     <div className='recipe__actions-button-checked'>
                       <CheckedIcon className='recipe__actions-button-checked-icon' />
                     </div>
-                  </button>
+                  </Link>
                   <button
                     type='button'
                     onClick={() => setActiveNotesModal(!isActiveNotesModal)}
@@ -396,18 +402,12 @@ const RecipeFullView = (props: any) => {
                           color='primary'
                           disabled={!addNoteForm.note}
                           onClick={() => {
-                            addRecipeNote(recipeId, addNoteForm.note).then((response) => {
-                              if (response.data.success) {
-                                toast.success(t('recipe.add_note.success'), {
-                                  autoClose: 3000,
-                                });
+                            addRecipeNote(recipeId, addNoteForm.note).then(() => {
+                              toast.success(t('recipe.add_note.success'), {
+                                autoClose: 3000,
+                              });
 
-                                setActiveNotesModal(false);
-                              } else {
-                                toast.error(t('recipe.add_note.availability_error'), {
-                                  autoClose: 3000,
-                                });
-                              }
+                              setActiveNotesModal(false);
                             }).catch(() => {
                               toast.error(t('recipe.add_note.error'), {
                                 autoClose: 3000,
@@ -485,7 +485,7 @@ const RecipeFullView = (props: any) => {
                   </div>
                   <div className='recipe__nutrients-calories'>
                     <span>{t('recipe.calories')}</span>
-                    <span>{t('common.calories', { number: (recipeData.calorie / 1000).toFixed(0) })}</span>
+                    <span>{t('common.calories', { number: recipeData.calorie })}</span>
                   </div>
                   <div className='recipe__nutrients-composition-list'>
                     {recipeData.salt && (
