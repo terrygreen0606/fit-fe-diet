@@ -68,3 +68,8 @@ export const userUpdateMealSettings = (
     meals_cnt,
   },
 );
+
+export const userUpdateMeasurement = (measurement: string) =>
+  axios.put('/user/measurement', {
+    measurement,
+  });

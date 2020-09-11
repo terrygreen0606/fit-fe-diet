@@ -21,6 +21,7 @@ import {
   createRecipe,
   getIngredient,
   getMealTimes,
+  userUpdateMeasurement,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -34,6 +35,7 @@ import DonutChart from 'components/common/charts/DonutChart';
 import ImagesFileInput from 'components/common/Forms/ImagesFileInput';
 import Breadcrumb from 'components/Breadcrumb';
 import CustomSwitch from 'components/common/Forms/CustomSwitch';
+import Modal from 'components/common/Modal/Modal';
 
 import './CreateRecipeView.sass';
 
@@ -85,7 +87,7 @@ const CreateRecipeView = (props: any) => {
     return () => cleanComponent = true;
   }, []);
 
-  const [composition] = useState([
+  const [composition, setComposition] = useState([
     {
       name: 'fat',
       namePlural: t('common.fats'),
@@ -139,8 +141,11 @@ const CreateRecipeView = (props: any) => {
 
   const [files, setFiles] = useState([]);
 
+  const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState(false);
+
   const calcComposition = (ingredientsList: Array<any>) => {
-    composition.map((item) => {
+    const updatedComposition = [...composition];
+    updatedComposition.map((item) => {
       item.value = 0;
       switch (item.name) {
         case 'fat':
@@ -182,6 +187,7 @@ const CreateRecipeView = (props: any) => {
           return null;
       }
     });
+    setComposition([...updatedComposition]);
   };
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -357,6 +363,8 @@ const CreateRecipeView = (props: any) => {
     ids.forEach((item) => pushedIds.push(item.image_id));
     setCreateRecipeForm({ ...createRecipeForm, imageIds: pushedIds });
   }, [createRecipeForm]);
+
+  const checkingMeasurement = (measurement: string) => (measurement === 'si' ? 'us' : 'si');
 
   return (
     <>
@@ -575,14 +583,79 @@ const CreateRecipeView = (props: any) => {
               label2={t('common.oz')}
               checked={createRecipeForm.measurement === 'us'}
               onChange={() => {
-                setCreateRecipeForm({
-                  ...createRecipeForm,
-                  measurement: createRecipeForm.measurement === 'si' ? 'us' : 'si',
-                });
+                if (createRecipeForm.ingredients.length > 0) {
+                  setActiveDeleteIngrModal(true);
+                } else {
+                  const newMeasurement = checkingMeasurement(createRecipeForm.measurement);
+
+                  setCreateRecipeForm({
+                    ...createRecipeForm,
+                    measurement: newMeasurement,
+                  });
+
+                  userUpdateMeasurement(newMeasurement).catch(() => {
+                    setCreateRecipeForm({
+                      ...createRecipeForm,
+                      measurement: checkingMeasurement(newMeasurement),
+                    });
+                  });
+                }
               }}
               className='recipe__switch'
             />
           </div>
+          {isActiveDeleteIngrModal && (
+            <Modal
+              withCloseBtn
+              shouldCloseOnOverlayClick
+              onClose={() => setActiveDeleteIngrModal(false)}
+              className='recipe__delete-ingr-modal'
+            >
+              <div className='recipe__delete-ingr-modal-title'>
+                {t('recipe.delete_ingr.desc')}
+              </div>
+              <div className='recipe__delete-ingr-modal-btn-wrap'>
+                <Button
+                  color='primary'
+                  onClick={() => {
+                    const newMeasurement = checkingMeasurement(createRecipeForm.measurement);
+
+                    const prevIngredients = createRecipeForm.ingredients;
+
+                    const prevTotalWeight = createRecipeForm.totalWeight;
+
+                    setCreateRecipeForm({
+                      ...createRecipeForm,
+                      ingredients: [],
+                      measurement: newMeasurement,
+                      totalWeight: 0,
+                    });
+
+                    calcComposition([]);
+
+                    userUpdateMeasurement(newMeasurement).catch(() => {
+                      setCreateRecipeForm({
+                        ...createRecipeForm,
+                        ingredients: prevIngredients,
+                        measurement: checkingMeasurement(newMeasurement),
+                        totalWeight: prevTotalWeight,
+                      });
+
+                      calcComposition(prevIngredients);
+
+                      toast.error(t('recipe.update_measurement.error', {
+                        autoClose: 3000,
+                      }));
+                    });
+
+                    setActiveDeleteIngrModal(false);
+                  }}
+                >
+                  {t('recipe.delete_ingr.confirm')}
+                </Button>
+              </div>
+            </Modal>
+          )}
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
               {composition.map((item) => (

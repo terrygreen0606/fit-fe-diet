@@ -224,12 +224,14 @@ const RecipeFullView = (props: any) => {
                       ))}
                     </div>
                     <div className='recipe__main-info-desc-row'>
-                      <div className='recipe__main-info-desc-time'>
-                        {recipeData.time && (
-                          `${recipeData.time} ${t('common.min')}`
-                        )}
-                      </div>
-                      <div className='recipe__main-info-desc-cost-level'>{costLevelLabel[recipeData.costLevel]}</div>
+                      {recipeData.time && (
+                        <div className='recipe__main-info-desc-time'>
+                          {`${recipeData.time} ${t('common.min')}`}
+                        </div>
+                      )}
+                      {recipeData.costLevel && (
+                        <div className='recipe__main-info-desc-cost-level'>{costLevelLabel[recipeData.costLevel]}</div>
+                      )}
                     </div>
                     <button
                       type='button'
@@ -399,8 +401,6 @@ const RecipeFullView = (props: any) => {
                                 toast.success(t('recipe.add_note.success'), {
                                   autoClose: 3000,
                                 });
-
-                                setAddNoteForm({ ...addNoteForm, note: '' });
 
                                 setActiveNotesModal(false);
                               } else {
