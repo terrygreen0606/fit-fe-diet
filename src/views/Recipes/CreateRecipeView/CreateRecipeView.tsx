@@ -98,6 +98,24 @@ const CreateRecipeView = (props: any) => {
       getRecipeData(props.location.propsRecipeId, false, false, false, true).then((response) => {
         const { data } = response.data;
 
+        const updatedImages = [];
+
+        const pushedIdsImages = [];
+
+        data.images.forEach((imageItem) => {
+          pushedIdsImages.push(imageItem.image_id);
+
+          updatedImages.push({
+            id: imageItem.id,
+            image_id: imageItem.id,
+            url: imageItem.url,
+            isFailed: false,
+            isLoaded: true,
+          });
+        });
+
+        setFiles(updatedImages);
+
         if (data.video_url) {
           setVideoLinkIframe(getVideo(data.video_url));
         }
@@ -121,35 +139,13 @@ const CreateRecipeView = (props: any) => {
           ingredients: updatedIngredients,
           measurement: settings.measurement,
           cuisine: data.cuisine_ids,
+          imageIds: pushedIdsImages,
           servingsCnt: data.servings_cnt,
           time: data.time,
           totalWeight: data.weight,
           costLevel: data.cost_level,
           videoUrl: data.video_url,
           mealtimes: data.mealtime_codes,
-        });
-
-        const updatedImages = [];
-
-        const pushedIdsImages = [];
-
-        data.images.forEach((imageItem) => {
-          pushedIdsImages.push(imageItem.image_id);
-
-          updatedImages.push({
-            id: imageItem.id,
-            image_id: imageItem.id,
-            url: imageItem.url,
-            isFailed: false,
-            isLoaded: true,
-          });
-        });
-
-        setFiles(updatedImages);
-
-        setCreateRecipeForm({
-          ...createRecipeForm,
-          imageIds: pushedIdsImages,
         });
       });
     }
