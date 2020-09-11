@@ -18,7 +18,7 @@
     top: 47px !important
     right: 47px !important
   &_steps_content
-    max-width: 520px
+    width: 570px
     max-height: calc(100% - 50px - 37px)
     margin: 50px auto 0
     padding-bottom: 37px
@@ -44,6 +44,27 @@
     line-height: 41px
     color: #000
     text-align: center
+
+  &_gender_radio
+    padding-left: 80px !important
+    font-size: 40px
+    line-height: 54px !important
+    font-weight: bold
+    .radiomark
+      width: 54px
+      height: 54px
+      border-width: 12px !important
+    .genderIcon
+      width: 23px
+      height: 54px
+      margin-right: 16px
+
+  &_info
+    &_form
+      margin-top: 180px
+      &_submit
+        margin-top: 200px
+        text-align: center
 
   &_expectation_chart
     padding: 10px
@@ -176,31 +197,24 @@
         color: #fff
         border-color: $steel-blue
         background-color: $steel-blue
-  &_info
-    &_form
-      .fgLabel
-        font-size: 20px
-    &_fg_age, &_fg_height
-      .fg-input
-        flex: 0 0 100px
-        margin: 0 10px
-      .fgLabel
-        flex: 0 0 auto
-        margin: 0
-        padding: 0
-        &:last-child
-          flex: 0 0 50px
-    &_fg_weight
-      .fgLabel
-        margin: 0
-        flex: 0 0 20%
-        &:first-child
-          flex: 0 0 100%
-          margin-bottom: 15px
-      .fg-input
-        margin-right: 10px
-        flex-grow: 1
-
+  &_info_fg
+    display: flex
+    flex-wrap: nowrap
+    max-width: 350px
+    margin: 0 auto
+    & ~ .fgInvalidMsg
+      max-width: 350px
+      margin-left: auto
+      margin-right: auto
+    .fg-input
+      border: none
+      border-bottom: 1px solid #000
+      border-radius: 0
+    .fgLabel
+      margin: 0
+      margin-left: 10px
+      font-size: 18px
+      line-height: 22px
   &_join
     &_or
       border-bottom: 1px dashed #106EE8
