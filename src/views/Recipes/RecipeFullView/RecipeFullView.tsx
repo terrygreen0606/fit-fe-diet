@@ -432,7 +432,9 @@ const RecipeFullView = (props: any) => {
                     <button
                       type='button'
                       onClick={() => setActiveDeleteModal(true)}
-                      className='recipe__actions-button card-bg'
+                      className={classnames('recipe__actions-button card-bg', {
+                        active: isActiveDeleteModal,
+                      })}
                     >
                       <div className='recipe__actions-button-media'>
                         <TrashIcon />
