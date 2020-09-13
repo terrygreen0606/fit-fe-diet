@@ -84,7 +84,7 @@
   
   &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):hover,
   &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):focus
-      border-color: darken($steel-blue, 10%) !important
+    border-color: darken($steel-blue, 10%) !important
 
   &__invite-button
     position: absolute
@@ -125,29 +125,18 @@
   &__socials
     position: relative
     display: flex
-    align-items: center
     justify-content: center
     margin-top: 40px
     z-index: 2
 
-    &-item
-      display: inline-block
+    @media (max-width: 767px)
+      margin-top: 220px
+
+    .share-button
       margin: 0 17px
-      line-height: 0
-      border: none
-      background-color: transparent
-      cursor: pointer
-      transition: opacity 0.2s ease
 
-      svg, img
-        max-width: 100%
-        height: auto
-
-      & > *
-        line-height: initial
-
-      &:hover
-        opacity: 0.8
+      @media (max-width: 500px)
+        margin: 0 6px
 
   &__container-media
     position: relative
@@ -200,10 +189,16 @@
 
     &__invite-link
       &-input
-        padding: 30px 15px
-        text-align: left
-        font-size: 10px
+        position: absolute
+        left: 50%
+        transform: translateX(-50%)
+        bottom: 250px
+        padding: 30px 15px 30px 40px
+        max-width: 540px
+        justify-content: flex-start
+        font-size: 14px
         overflow: hidden
+        z-index: 3
 
     &__separator
       display: none
@@ -217,8 +212,8 @@
 
     &__container-media
       &::before
-       top: -20px
-       height: calc(100% + 40px)
+        top: -20px
+        height: calc(100% + 40px)
 
       &::after
         width: 115px
@@ -229,14 +224,6 @@
 
     &__media
       max-width: 450px
-
-    &__socials
-      margin-top: 200px
-      justify-content: space-between
-
-      &-item
-        margin: 0 6px
-        width: 56px
     
     &__container-input
       position: absolute

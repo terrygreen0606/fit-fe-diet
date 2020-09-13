@@ -1,0 +1,29 @@
+.share-buttons-list
+  display: flex
+  align-items: center
+  justify-content: center
+
+.share-button
+  width: 72px
+  height: 72px
+  display: inline-block
+  padding: 0
+  line-height: 0
+  border: none
+  background-color: transparent
+  cursor: pointer
+  transition: opacity 0.2s ease
+
+  @media (max-width: 767px)
+    margin: 0 6px
+    width: 56px
+
+  svg, img
+    max-width: 100%
+    height: auto
+
+  & > *
+    line-height: initial
+
+  &:hover
+    opacity: 0.8

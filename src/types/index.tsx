@@ -1,5 +1,1 @@
-export type InputError = {
-  code?: string,
-  field?: string,
-  message: string
-};
+export * from './user';

@@ -12,7 +12,7 @@ import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 
-import './FavouriteRecipesView.sass';
+import '../SavedRecipesView/SavedRecipesView.sass';
 
 // Icons
 import { ReactComponent as CursorTouchIcon } from 'assets/img/icons/cursor-touch-icon.svg';

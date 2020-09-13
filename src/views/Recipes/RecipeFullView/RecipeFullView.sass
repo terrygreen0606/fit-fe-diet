@@ -58,6 +58,7 @@
         line-height: 1.2
         padding-bottom: 10px
         border-bottom: 1px solid $steel-blue
+        text-transform: capitalize
         
         @media (max-width: 767px)
           margin-bottom: 14px
@@ -251,8 +252,8 @@
         font-size: 14px
 
   &__actions
+    position: relative
     display: flex
-    justify-content: space-between
     margin-bottom: 54px
 
     @media (max-width: 767px)
@@ -264,11 +265,20 @@
 
     &-button
       position: relative
-      flex-basis: calc(33% - 13px)
+      flex-basis: calc(33% - 14px)
       padding: 20px
       text-align: center
       cursor: pointer
       border: none
+
+      @media (max-width: 500px)
+        flex-basis: calc(33.33% - 6px)
+
+      &:not(:first-child)
+        margin-left: 21px
+
+        @media (max-width: 500px)
+          margin-left: 9px
 
       &-media
         width: 54px
@@ -339,7 +349,7 @@
           transform: translate(-50%, -50%)
           width: 14px
           z-index: 2
-
+      
     &-button:hover,
     &-button.active
       .recipe__actions-button-media
@@ -439,26 +449,16 @@
         font-size: 18px
         margin-bottom: 30px
 
-    &-list
-      display: flex
-      align-items: center
+    &-buttons
       justify-content: space-between
+      
+      .share-button
+        width: 57px
+        height: 57px
 
-    &-button
-      width: 57px
-      height: 57px
-      transition: 0.2s opacity ease
-
-      @media (max-width: 767px)
-        width: 45px
-        height: 45px
-
-      svg
-        width: 100%
-        height: auto
-
-    &-button:hover
-      opacity: 0.7
+        @media (max-width: 767px)
+          width: 45px
+          height: 45px
 
   &__advertising
     margin-bottom: 30px
@@ -476,6 +476,9 @@
     &-wrap
       display: flex
       align-items: flex-start
+
+      & + .recipe__advertising-wrap
+        margin-top: 50px
 
     &-media
       width: 95px
@@ -512,15 +515,30 @@
           font-size: 18px
 
       &-desc
-        margin-bottom: 30px
+        margin-bottom: 20px
         font-size: 18px
         line-height: 1.2
+        max-height: 65px
+        overflow: hidden
 
         @media (max-width: 767px)
           font-size: 14px
+          max-height: 50px
 
       &-btn
-        width: 100%
+        display: block
+        padding: 17px 20px
+        text-align: center
+        font-size: 16px
+        font-weight: bold
+        color: $white
+        background-color: $bright-green
+        border-radius: 5px
+        text-decoration: none
+        transition: 0.2s box-shadow ease
+
+        &:hover
+          box-shadow: 0 5px 15px #1CC637
 
   &__similar-recipes
     padding: 22px 25px 36px
@@ -544,9 +562,13 @@
       &-media
         position: relative
         width: 95px
+        padding: 0
         overflow: hidden
         line-height: 0
+        background-color: transparent
+        border: none
         border-radius: 27px
+        cursor: pointer
 
         & > *
           line-height: initial
@@ -571,16 +593,27 @@
         flex: 1
         padding-left: 24px
 
-        &-title
+        &-name
+          display: block
           margin-bottom: 6px
+          padding: 0
           font-size: 24px
           line-height: 1.2
           font-weight: bold
+          border: none
+          background-color: transparent
+          color: $black
+          text-decoration: none
+          transition: 0.2s color ease
+          cursor: pointer
+
+          &:hover
+            color: $grey-medium
           
           @media (max-width: 767px)
             font-size: 18px
         
-        &-desc
+        &-meal-time
           margin-bottom: 8px
           padding-bottom: 8px
           font-size: 16px
@@ -588,6 +621,10 @@
 
           @media (max-width: 767px)
             font-size: 14px
+
+          &-block
+            display: block
+            text-transform: capitalize
 
         &-info
           display: flex
@@ -649,3 +686,68 @@
         &[disabled]
           &:hover
             box-shadow: none
+
+  &__notes-modal
+    position: absolute
+    top: calc(100% + 10px)
+    left: 50%
+    transform: translateX(-50%)
+
+    &::before
+      content: ''
+      position: absolute
+      top: -7px
+      left: 50%
+      transform: translateX(-50%) rotate(45deg)
+      width: 20px
+      height: 20px
+      box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+      background-color: $white
+
+    &-wrap
+      position: relative
+      width: 440px
+      padding: 50px 25px 25px
+      text-align: center
+      border-radius: 5px
+
+      @media (max-width: 1366px)
+        width: 320px
+
+    &-title
+      margin-bottom: 18px
+      font-size: 14px
+      color: #474747
+
+    &-textarea
+      margin-bottom: 25px
+
+    &-btn
+      font-size: 18px
+      padding: 8px 63px
+
+      &[disabled]:hover
+        box-shadow: none
+
+    &-close
+      position: absolute
+      top: 12px
+      right: 12px
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 26px
+      height: 26px
+      padding: 0
+      background-color: #F2F2F2
+      border: none
+      border-radius: 50%
+      cursor: pointer
+      transition: 0.2s background-color ease
+
+      &:hover
+        background-color: darken(#f2f2f2, 10%)
+
+      svg
+        width: 14px
+        height: 14px

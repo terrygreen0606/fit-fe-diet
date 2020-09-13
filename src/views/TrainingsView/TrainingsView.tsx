@@ -11,14 +11,11 @@ import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import { getTranslate, getImagePath } from 'utils';
 import Breadcrumb from 'components/Breadcrumb';
+import ShareButtons from 'components/ShareButtons';
 
 import { ReactComponent as RewardImage } from 'assets/img/reward-img.svg';
 import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
 import { ReactComponent as WorkoutSettingsIcon } from 'assets/img/icons/workout-settings-icon.svg';
-import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
-import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
-import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
-import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 
 import {
   dataForWeekWorkout,
@@ -247,36 +244,7 @@ const TrainingsView: React.FC = (props: any) => {
                 <div className='training-plan-adherence-diet-card-socials-title'>
                   {t('trainings.socials_title')}
                 </div>
-                <div className='training-plan-adherence-diet-card-socials-list'>
-                  <button
-                    type='button'
-                    className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => { }}
-                  >
-                    <TwitterLogo />
-                  </button>
-                  <button
-                    type='button'
-                    className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => { }}
-                  >
-                    <FacebookLogo />
-                  </button>
-                  <button
-                    type='button'
-                    className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => { }}
-                  >
-                    <WhatsappLogo />
-                  </button>
-                  <button
-                    type='button'
-                    className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => { }}
-                  >
-                    <TelegramLogo />
-                  </button>
-                </div>
+                <ShareButtons shareLink='' classes='training-plan-adherence-diet-card-socials-list' />
               </div>
             </div>
           </div>

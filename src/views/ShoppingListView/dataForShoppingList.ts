@@ -14,13 +14,14 @@ export const colourStylesSelect = {
   }),
   control: (styles, state) => ({
     ...styles,
-    padding: '10px 25px',
-    border: '1px solid #F391AA',
-    borderRadius: '1px',
+    padding: '15px',
+    border: '1px solid #c6c6c6',
+    borderColor: state.isFocused ? '#2684FF !important' : '#c6c6c6 !important',
+    borderRadius: '5px',
     transition: 'all 0.2s ease',
-    boxShadow: state.isFocused ? '0 0 0 1px #F391AA' : 'none',
+    boxShadow: 'none',
     ':hover': {
-      border: '1px solid #F391AA',
+      border: '1px solid #E8E8E8 !important',
     },
   }),
 };
