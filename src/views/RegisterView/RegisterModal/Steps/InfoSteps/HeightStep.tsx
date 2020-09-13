@@ -122,7 +122,7 @@ const HeightStep = (props: any) => {
         {t('register.height_step_title')}
       </h6>
 
-      <div className="text-center mt-5 pt-5">
+      <div className="text-center mt-5 pt-md-5">
         <CustomSwitch
           label1={t('common.us_metric')}
           label2={t('common.metric')}
@@ -134,7 +134,7 @@ const HeightStep = (props: any) => {
         />
       </div>
 
-      <form className="register_info_form mt-5 pt-5" onSubmit={(e) => registerInfoSubmit(e)}>
+      <form className="register_info_form mt-4 pt-md-5" onSubmit={(e) => registerInfoSubmit(e)}>
         <FormGroup className="register_info_fg mb-0" inline>
           <InputField
             block

@@ -128,7 +128,7 @@ const GenderStep = (props: any) => {
         <FormGroup inline className="mb-5">
           <CustomRadio
             name='register_sex'
-            className="register_gender_radio mr-5 pr-4"
+            className="register_gender_radio mr-md-5 pr-md-4"
             label={
               <>
                 <MaleIcon

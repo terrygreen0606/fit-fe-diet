@@ -31,7 +31,7 @@ const RegisterModal = (props: RegisterModalProps) => {
 
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
   const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
-  const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
+  const [registerView, setRegisterView] = useState<RegisterViewType>('INFO_HEIGHT');
 
   useEffect(() => {
     let currentRegisterStep: 0 | 1 | 2 = null;
