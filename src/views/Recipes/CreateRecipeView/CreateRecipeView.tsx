@@ -55,6 +55,7 @@ import {
 
 const CreateRecipeView = (props: any) => {
   const { localePhrases, settings } = props;
+
   const t = (code: string, placeholders?: any) => getTranslate(localePhrases, code, placeholders);
 
   const history = useHistory();
@@ -79,79 +80,6 @@ const CreateRecipeView = (props: any) => {
   const [files, setFiles] = useState([]);
 
   const [videoLinkIframe, setVideoLinkIframe] = useState('');
-
-  useEffect(() => {
-    let cleanComponent = false;
-    setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
-    getMealTimes().then((response) => {
-      if (!cleanComponent) {
-        setMealTimes(response.data.data.list);
-      }
-    });
-
-    return () => cleanComponent = true;
-  }, []);
-
-  useEffect(() => {
-    let cleanComponent = false;
-    if (props.location.propsRecipeId && !cleanComponent) {
-      getRecipeData(props.location.propsRecipeId, false, false, false, true).then((response) => {
-        const { data } = response.data;
-
-        const updatedImages = [];
-
-        const pushedIdsImages = [];
-
-        data.images.forEach((imageItem) => {
-          pushedIdsImages.push(imageItem.image_id);
-
-          updatedImages.push({
-            id: imageItem.id,
-            image_id: imageItem.id,
-            url: imageItem.url,
-            isFailed: false,
-            isLoaded: true,
-          });
-        });
-
-        setFiles(updatedImages);
-
-        if (data.video_url) {
-          setVideoLinkIframe(getVideo(data.video_url));
-        }
-
-        const updatedIngredients = [...data.ingredients];
-
-        updatedIngredients.map((ingredientItem) => {
-          ingredientItem.isFullBlock = true;
-        });
-
-        if (mealTimes.length > 0) {
-          data.mealtime_codes.map((mealItem) => {
-            mealTimes.find((findItem) => mealItem.i18n_code === findItem.i18n_code).isActive = true;
-          });
-        }
-
-        setCreateRecipeForm({
-          ...createRecipeForm,
-          recipeName: data.name_i18n,
-          recipePreparation: data.preparation_i18n,
-          ingredients: updatedIngredients,
-          measurement: settings.measurement,
-          cuisine: data.cuisine_ids,
-          imageIds: pushedIdsImages,
-          servingsCnt: data.servings_cnt,
-          time: data.time,
-          totalWeight: data.weight,
-          costLevel: data.cost_level,
-          videoUrl: data.video_url,
-          mealtimes: data.mealtime_codes,
-        });
-      });
-    }
-
-    return () => cleanComponent = true;
-  }, [mealTimes]);
 
   const [composition, setComposition] = useState([
     {
@@ -201,10 +129,6 @@ const CreateRecipeView = (props: any) => {
     },
   ]);
 
-  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
-
-  const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState(false);
-
   const calcComposition = (ingredientsList: Array<any>) => {
     const updatedComposition = [...composition];
     updatedComposition.map((item) => {
@@ -251,6 +175,87 @@ const CreateRecipeView = (props: any) => {
     });
     setComposition([...updatedComposition]);
   };
+
+  useEffect(() => {
+    let cleanComponent = false;
+    setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
+    getMealTimes().then((response) => {
+      if (!cleanComponent) {
+        setMealTimes(response.data.data.list);
+      }
+    });
+
+    return () => cleanComponent = true;
+  }, []);
+
+  useEffect(() => {
+    let cleanComponent = false;
+    if (props.location.propsRecipeId && !cleanComponent) {
+      getRecipeData(props.location.propsRecipeId, false, false, false, true)
+        .then((response) => {
+          const { data } = response.data;
+
+          const updatedImages = [];
+
+          const pushedIdsImages = [];
+
+          data.images.forEach((imageItem) => {
+            pushedIdsImages.push(imageItem.image_id);
+
+            updatedImages.push({
+              id: imageItem.id,
+              image_id: imageItem.id,
+              url: imageItem.url,
+              isFailed: false,
+              isLoaded: true,
+            });
+          });
+
+          setFiles(updatedImages);
+
+          if (data.video_url) {
+            setVideoLinkIframe(getVideo(data.video_url));
+          }
+
+          const updatedIngredients = [...data.ingredients];
+
+          updatedIngredients.map((ingredientItem) => {
+            ingredientItem.isFullBlock = true;
+          });
+
+          if (mealTimes.length > 0) {
+            data.mealtime_codes.map((mealItem) => {
+              mealTimes.find((findItem) => mealItem.i18n_code === findItem.i18n_code).isActive = true;
+            });
+          }
+          setCreateRecipeForm({
+            ...createRecipeForm,
+            recipeName: data.name_i18n,
+            recipePreparation: data.preparation_i18n,
+            ingredients: updatedIngredients,
+            measurement: settings.measurement,
+            cuisine: data.cuisine_ids,
+            imageIds: pushedIdsImages,
+            servingsCnt: data.servings_cnt,
+            time: data.time,
+            totalWeight: data.weight,
+            costLevel: data.cost_level,
+            videoUrl: data.video_url,
+            mealtimes: data.mealtime_codes,
+          });
+        });
+    }
+
+    return () => cleanComponent = true;
+  }, [mealTimes]);
+
+  useEffect(() => {
+    calcComposition(createRecipeForm.ingredients);
+  }, [createRecipeForm.ingredients]);
+
+  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
+
+  const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState(false);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -311,8 +316,6 @@ const CreateRecipeView = (props: any) => {
     let countTotalWeight: number = createRecipeForm.totalWeight;
 
     updatedListOfIngredients.splice(index, 1);
-
-    calcComposition(updatedListOfIngredients);
 
     countTotalWeight -= createRecipeForm.ingredients[index].weight;
 
@@ -693,8 +696,6 @@ const CreateRecipeView = (props: any) => {
                       totalWeight: 0,
                     });
 
-                    calcComposition([]);
-
                     userUpdateMeasurement(newMeasurement).catch(() => {
                       setCreateRecipeForm({
                         ...createRecipeForm,
@@ -702,8 +703,6 @@ const CreateRecipeView = (props: any) => {
                         measurement: checkingMeasurement(newMeasurement),
                         totalWeight: prevTotalWeight,
                       });
-
-                      calcComposition(prevIngredients);
 
                       toast.error(t('recipe.update_measurement.error', {
                         autoClose: 3000,
@@ -733,12 +732,11 @@ const CreateRecipeView = (props: any) => {
                 </div>
               ))}
               <div className='recipe__chart-progress-value'>
-                {`${createRecipeForm.totalWeight} ${
-                  createRecipeForm.measurement === 'si' ? (
-                    t('common.gr'))
-                    : (
-                      t('common.oz')
-                    )}`}
+                {`${createRecipeForm.totalWeight} ${createRecipeForm.measurement === 'si' ? (
+                  t('common.gr'))
+                  : (
+                    t('common.oz')
+                  )}`}
               </div>
             </div>
             <div className='recipe__chart-lines'>
@@ -807,10 +805,9 @@ const CreateRecipeView = (props: any) => {
 
                     <div className='recipe__item-name'>
                       <span>
-                        {`${ingredientItem.name_i18n} ${
-                          costCategoryOptions.find(
-                            (item) => item.value === ingredientItem.cost_level,
-                          )?.label}`}
+                        {`${ingredientItem.name_i18n} ${costCategoryOptions.find(
+                          (item) => item.value === ingredientItem.cost_level,
+                        )?.label}`}
                       </span>
                     </div>
 
@@ -854,8 +851,6 @@ const CreateRecipeView = (props: any) => {
                               updatedIngredients[ingredientIndex].weight -= 1;
                             }
 
-                            calcComposition(updatedIngredients);
-
                             updatedIngredients.forEach((item) => {
                               countTotalWeight += item.weight;
                             });
@@ -889,8 +884,6 @@ const CreateRecipeView = (props: any) => {
                             let countTotalWeight = 0;
 
                             updatedIngredients[ingredientIndex].weight = +e.target.value;
-
-                            calcComposition(updatedIngredients);
 
                             validateOnChange(
                               'ingredients',
@@ -927,8 +920,6 @@ const CreateRecipeView = (props: any) => {
                             let countTotalWeight = 0;
 
                             updatedIngredients[ingredientIndex].weight += 1;
-
-                            calcComposition(updatedIngredients);
 
                             updatedIngredients.forEach((item) => {
                               countTotalWeight += item.weight;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { toast } from 'react-toastify';
 import uuid from 'react-uuid';
-import { getTranslate, openShareLink } from 'utils';
+import { getTranslate } from 'utils';
 import {
   getShoppingList,
   setShoppingRowBought,
