@@ -32,7 +32,7 @@ const registerDataDefault: RegisterDataType = {
   phone: '',
   token: null,
   age: null,
-  gender: 'm',
+  gender: null,
   measurement: 'si',
   height: null,
   weight: null,

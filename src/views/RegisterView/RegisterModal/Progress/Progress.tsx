@@ -9,9 +9,10 @@ type ProgressProps = {
   step: 0 | 1 | 2;
   view: RegisterViewType;
   titles: RegisterStepTitlesType;
+  setStepPrev: () => void;
 };
 
-const Progress = ({ step, view, titles }: ProgressProps) => {
+const Progress = ({ step, view, titles, setStepPrev }: ProgressProps) => {
   return (
     <div 
       className={classNames('registerModal_steps_wrap', {
@@ -21,9 +22,11 @@ const Progress = ({ step, view, titles }: ProgressProps) => {
       })}
       style={{ backgroundImage: `url(${getRegisterStepImage(view)})` }}
     >
-      <div className={classNames('registerModal_step', {
-        'active': step === 0
-      })}
+      <div 
+        className={classNames('registerModal_step', {
+          'active': step === 0
+        })}
+        onClick={setStepPrev}
       >
         <h5 className="registerModal_step_label">{titles[0]}</h5>
         <span className="registerModal_step_mark" />
