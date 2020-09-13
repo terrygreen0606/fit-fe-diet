@@ -38,6 +38,26 @@ export default (registerView: RegisterViewType) => {
       registerStepImagePath = 'register/info_step.png';
       break;
 
+    case 'INFO_AGE':
+      registerStepImagePath = 'register/age_step.png';
+      break;
+
+    case 'INFO_WEIGHT':
+      registerStepImagePath = 'register/weight_step.png';
+      break;
+
+    case 'INFO_WEIGHT_GOAL':
+      registerStepImagePath = 'register/weight_goal_step.png';
+      break;
+
+    case 'INFO_HEIGHT':
+      registerStepImagePath = 'register/height_step.png';
+      break;
+
+    case 'INFO_GENDER':
+      registerStepImagePath = 'register/gender_step.png';
+      break;
+
     default:
       break;
   }
