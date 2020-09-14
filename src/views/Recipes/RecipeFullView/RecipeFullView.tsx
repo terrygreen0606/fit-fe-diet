@@ -293,7 +293,7 @@ const RecipeFullView = (props: any) => {
                     <div className='recipe__main-info-desc-row'>
                       {recipeData.time && (
                         <div className='recipe__main-info-desc-time'>
-                          {`${recipeData.time} ${t('common.min')}`}
+                          {t('common.min', { number: recipeData.time })}
                         </div>
                       )}
                       {recipeData.costLevel && (
@@ -681,7 +681,7 @@ const RecipeFullView = (props: any) => {
                             <div className='recipe__similar-recipes-item-text-info'>
                               {similarRecipe.time && (
                                 <div className='recipe__similar-recipes-item-text-info-time'>
-                                  {`${similarRecipe.time} ${t('common.min')}`}
+                                  {t('common.min', { number: similarRecipe.time })}
                                 </div>
                               )}
                               <div className='recipe__similar-recipes-item-text-info-cost-level'>

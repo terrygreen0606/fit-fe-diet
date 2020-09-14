@@ -598,7 +598,7 @@ const CreateRecipeView = (props: any) => {
                   border='light'
                 />
                 <span className='recipe__label-description ml-xl-3'>
-                  {t('common.min')}
+                  {t('common.min_label')}
                 </span>
               </label>
             </div>

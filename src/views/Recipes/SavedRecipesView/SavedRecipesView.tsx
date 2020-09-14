@@ -37,7 +37,7 @@ const SavedRecipesView = (props: any) => {
       <Helmet>
         <title>{t('app.title.saved_recipes')}</title>
       </Helmet>
-      <div className='saved-recipes'>
+      <section className='saved-recipes'>
         <div className='container'>
           <Breadcrumb
             routes={[
@@ -119,8 +119,7 @@ const SavedRecipesView = (props: any) => {
                           </div>
                           <div className='saved-recipes__list-item-content-head-datas'>
                             <div className='saved-recipes__list-item-content-head-datas-block'>
-                              40
-                              {t('common.min')}
+                              {t('common.min', { number: 40 })}
                             </div>
                             <div className='saved-recipes__list-item-content-head-datas-block'>
                               €€
@@ -286,7 +285,7 @@ const SavedRecipesView = (props: any) => {
             <Button color='secondary'>{t('recipe.saved.weekly_menu')}</Button>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };
