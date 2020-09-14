@@ -78,10 +78,12 @@ const HeightStep = (props: any) => {
 
       const {
         height,
+        measurement
       } = registerData;
 
       userValidate({
         height,
+        measurement
       })
         .then(response => {
           setValidateLoading(false);

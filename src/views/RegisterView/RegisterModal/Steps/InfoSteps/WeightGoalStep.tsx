@@ -76,11 +76,13 @@ const WeightGoalStep = (props: any) => {
       setValidateLoading(true);
 
       const {
-        weight_goal
+        weight_goal,
+        measurement
       } = registerData;
 
       userValidate({
-        weight_goal
+        weight_goal,
+        measurement
       })
         .then(response => {
           setValidateLoading(false);

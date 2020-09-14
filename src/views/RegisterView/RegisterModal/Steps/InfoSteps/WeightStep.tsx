@@ -77,10 +77,12 @@ const WeightStep = (props: any) => {
 
       const {
         weight,
+        measurement
       } = registerData;
 
       userValidate({
         weight,
+        measurement
       })
         .then(response => {
           setValidateLoading(false);

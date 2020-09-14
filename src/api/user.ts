@@ -70,10 +70,10 @@ export const userUpdateMealSettings = (
   },
 );
 
+export const userValidate = (params: UserValidateParams) =>
+  axios.post('/user/validate', {...params});
+
 export const userUpdateMeasurement = (measurement: string) =>
   axios.put('/user/measurement', {
     measurement,
   });
-
-export const userValidate = (params: any) =>
-  axios.post('/user/validate', { ...params });
