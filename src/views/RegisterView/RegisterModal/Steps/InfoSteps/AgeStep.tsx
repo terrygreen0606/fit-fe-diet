@@ -128,6 +128,7 @@ const AgeStep = (props: any) => {
             block
             height="md"
             type="number"
+            autoFocus 
             min={12}
             max={100}
             data-param="12,100"

@@ -29,7 +29,7 @@ const PlanReadyStep = (props: any) => {
     <div className="mt-xl-5 pt-xl-5 text-center">
       <span
         className="diet-plan-feature-icon mb-5 d-none d-md-inline-block"
-        style={{ backgroundImage: `url(${getImagePath('features/list-feature.png')})` }}
+        style={{ backgroundImage: `url(${require('assets/img/features/list-feature.png')})` }}
       />
 
       <h4 id="register_title_final_welcome" className="register_title mb-xl-4">{t('register.plan_ready_title', { first_name: props.registerData.name })},</h4>

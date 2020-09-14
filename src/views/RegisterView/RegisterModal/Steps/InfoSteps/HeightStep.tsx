@@ -144,6 +144,8 @@ const HeightStep = (props: any) => {
             block
             height="md"
             type="number"
+            min={0}
+            autoFocus 
             value={registerData.height}
             name="height"
             data-param="50,250"
