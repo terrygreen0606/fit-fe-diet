@@ -133,7 +133,7 @@ const SavedRecipesView = (props: any) => {
                               {t('common.fat')}
                             </span>
                             <span className='saved-recipes__list-item-content-head-grams-block'>
-                              {t('common.grams', { number: 32 })}
+                              {t('common.gr', { number: 32 })}
                             </span>
                           </div>
                           <div className='saved-recipes__list-item-content-head-grams'>
@@ -141,7 +141,7 @@ const SavedRecipesView = (props: any) => {
                               {t('common.protein')}
                             </span>
                             <span className='saved-recipes__list-item-content-head-grams-block'>
-                              {t('common.grams', { number: 10 })}
+                              {t('common.gr', { number: 10 })}
                             </span>
                           </div>
                           <div className='saved-recipes__list-item-content-head-grams'>
@@ -149,7 +149,7 @@ const SavedRecipesView = (props: any) => {
                               {t('common.carbohydrate')}
                             </span>
                             <span className='saved-recipes__list-item-content-head-grams-block'>
-                              {t('common.grams', { number: 24 })}
+                              {t('common.gr', { number: 24 })}
                             </span>
                           </div>
                         </div>
