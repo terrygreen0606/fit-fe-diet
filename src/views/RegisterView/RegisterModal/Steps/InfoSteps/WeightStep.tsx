@@ -139,7 +139,7 @@ const WeightStep = (props: any) => {
           />
           <FormLabel>
             {registerData.measurement === 'us' && t('common.lbs_label')}
-            {registerData.measurement === 'si' && t('common.kg')}
+            {registerData.measurement === 'si' && t('common.kg_label')}
           </FormLabel>
         </FormGroup>
 
