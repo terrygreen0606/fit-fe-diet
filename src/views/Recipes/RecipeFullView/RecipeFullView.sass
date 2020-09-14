@@ -96,7 +96,7 @@
 
         @media (max-width: 767px)
           font-size: 16px
-          padding-right: 
+          padding-right: 0
 
       &-eating
         display: flex
@@ -111,6 +111,9 @@
         @media (max-width: 767px)
           margin-bottom: 14px
           font-size: 14px
+
+        &-item:not(:first-child)::before
+          content: ', '
 
       &-row
         display: flex
@@ -684,6 +687,9 @@
           @media (max-width: 767px)
             font-size: 14px
 
+          &-block:not(:first-child)::before
+            content: ', '
+
         &-info
           display: flex
           align-items: center
@@ -703,7 +709,6 @@
               margin-left: 10px
               border-radius: 50%
               background-color: #CBFFCE
-
   &__modal
     padding: 40px 50px
 

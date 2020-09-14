@@ -284,11 +284,12 @@ const RecipeFullView = (props: any) => {
                       {recipeData.name}
                     </div>
                     <div className='recipe__main-info-desc-eating'>
-                      {recipeData.mealtimeCodes.map((mealTimeItem, mealTimeItemIndex) => (
-                        <div key={mealTimeItem.code}>
-                          {mealTimeItemIndex > 0
-                            ? `, ${t(mealTimeItem.i18n_code)}`
-                            : t(mealTimeItem.i18n_code)}
+                      {recipeData.mealtimeCodes.map((mealTimeItem) => (
+                        <div
+                          key={mealTimeItem.code}
+                          className='recipe__main-info-desc-eating-item'
+                        >
+                          {t(mealTimeItem.i18n_code)}
                         </div>
                       ))}
                     </div>
@@ -670,11 +671,12 @@ const RecipeFullView = (props: any) => {
                               {similarRecipe.name_i18n}
                             </Link>
                             <div className='recipe__similar-recipes-item-text-meal-time'>
-                              {similarRecipe.mealtime_codes.map((mealTimeItem, mealTimeItemIndex) => (
-                                <span key={mealTimeItem.code}>
-                                  {mealTimeItemIndex > 0
-                                    ? `, ${t(mealTimeItem.i18n_code)}`
-                                    : t(mealTimeItem.i18n_code)}
+                              {similarRecipe.mealtime_codes.map((mealTimeItem) => (
+                                <span
+                                  key={mealTimeItem.code}
+                                  className='recipe__similar-recipes-item-text-meal-time-block'
+                                >
+                                  {t(mealTimeItem.i18n_code)}
                                 </span>
                               ))}
                             </div>
