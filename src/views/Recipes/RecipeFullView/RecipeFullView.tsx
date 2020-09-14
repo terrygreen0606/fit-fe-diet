@@ -48,13 +48,17 @@ import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as DishIcon } from 'assets/img/icons/dish-icon.svg';
 import { ReactComponent as CursorTouchLogo } from 'assets/img/icons/cursor-touch-icon.svg';
 import { ReactComponent as CloseIconLogo } from 'assets/img/icons/close-icon.svg';
+import { ReactComponent as ArrowLeftLogo } from 'assets/img/icons/angle-left-icon.svg';
+import { ReactComponent as ArrowRightLogo } from 'assets/img/icons/angle-right-icon.svg';
 
 const RecipeFullView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
   const { settings } = props;
 
-  const [recipeId, setRecipeId] = useState(window.location.pathname.split('/')[2]);
+  const [recipeId, setRecipeId] = useState(
+    window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
+  );
 
   const costLevelLabel = {
     1: '$',
@@ -127,6 +131,10 @@ const RecipeFullView = (props: any) => {
     getRecipeData(recipeId, true, true, true).then((response) => {
       const { data } = response.data;
 
+      const updatedImages = [...data.images];
+
+      updatedImages[0].isActive = true;
+
       if (!cleanComponent) {
         setRecipeData({
           ...recipeData,
@@ -136,7 +144,7 @@ const RecipeFullView = (props: any) => {
           cuisineIds: data.cuisine_ids,
           fat: data.fat,
           imageIds: data.image_ids,
-          images: data.images,
+          images: updatedImages,
           ingredients: data.ingredients,
           isLiked: data.is_liked,
           isPrepared: data.is_prepared,
@@ -210,23 +218,84 @@ const RecipeFullView = (props: any) => {
               <div className='col-xl-8'>
                 <div className='recipe__main-info card-bg'>
                   <div className='recipe__main-info-media'>
-                    <img src={recipeData.images[0].url} alt='' />
+                    {recipeData.images.length > 0 && (
+                      <>
+                        {recipeData.images.map((image) => (
+                          <div
+                            key={image.id}
+                            className={classnames('recipe__main-info-media-slide', {
+                              active: image.isActive,
+                            })}
+                          >
+                            <img src={image.url} alt='' />
+                          </div>
+                        ))}
+                        <button
+                          type='button'
+                          onClick={() => {
+                            const updatedImages = [...recipeData.images];
+
+                            updatedImages.find((findImage, findImageIndex) => {
+                              if (findImage.isActive === true) {
+                                updatedImages[findImageIndex].isActive = false;
+                                if (findImageIndex === 0) {
+                                  updatedImages[updatedImages.length - 1].isActive = true;
+                                } else {
+                                  updatedImages[findImageIndex - 1].isActive = true;
+                                }
+                                return updatedImages;
+                              }
+                            });
+
+                            setRecipeData({ ...recipeData, images: updatedImages });
+                          }}
+                          className='recipe__main-info-media-button recipe__main-info-media-prev'
+                        >
+                          <ArrowLeftLogo />
+                        </button>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            const updatedImages = [...recipeData.images];
+
+                            updatedImages.find((findImage, findImageIndex) => {
+                              if (findImage.isActive === true) {
+                                updatedImages[findImageIndex].isActive = false;
+                                if (findImageIndex === updatedImages.length - 1) {
+                                  updatedImages[0].isActive = true;
+                                } else {
+                                  updatedImages[findImageIndex + 1].isActive = true;
+                                }
+                                return updatedImages;
+                              }
+                            });
+
+                            setRecipeData({ ...recipeData, images: updatedImages });
+                          }}
+                          className='recipe__main-info-media-button recipe__main-info-media-next'
+                        >
+                          <ArrowRightLogo />
+                        </button>
+                      </>
+                    )}
                   </div>
                   <div className='recipe__main-info-desc'>
                     <div className='recipe__main-info-desc-name'>
                       {recipeData.name}
                     </div>
                     <div className='recipe__main-info-desc-eating'>
-                      {recipeData.mealtimeCodes.map((item) => (
-                        <div key={item.code}>
-                          {item.code}
+                      {recipeData.mealtimeCodes.map((mealTimeItem, mealTimeItemIndex) => (
+                        <div key={mealTimeItem.code}>
+                          {mealTimeItemIndex > 0
+                            ? `, ${t(mealTimeItem.i18n_code)}`
+                            : t(mealTimeItem.i18n_code)}
                         </div>
                       ))}
                     </div>
                     <div className='recipe__main-info-desc-row'>
                       {recipeData.time && (
                         <div className='recipe__main-info-desc-time'>
-                          {`${recipeData.time} ${t('common.min')}`}
+                          {t('common.min', { number: recipeData.time })}
                         </div>
                       )}
                       {recipeData.costLevel && (
@@ -315,8 +384,7 @@ const RecipeFullView = (props: any) => {
                           key={ingredient.ingredient_id}
                           className='recipe__composition-list-item'
                         >
-                          {`${ingredient.weight}
-                          ${t(getWeigthUnit(settings.measurement))}.
+                          {`${t(getWeigthUnit(settings.measurement), { number: ingredient.weight })}.
                           ${ingredient.name_i18n}`}
                         </div>
                       ))}
@@ -492,7 +560,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.salt')}</span>
                         <span>
-                          {`${recipeData.salt} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.salt })}
                         </span>
                       </div>
                     )}
@@ -500,7 +568,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.fats')}</span>
                         <span>
-                          {`${recipeData.fat} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.fat })}
                         </span>
                       </div>
                     )}
@@ -508,7 +576,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.sugar')}</span>
                         <span>
-                          {`${recipeData.sugar} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.sugar })}
                         </span>
                       </div>
                     )}
@@ -516,7 +584,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.proteins')}</span>
                         <span>
-                          {`${recipeData.protein} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.protein })}
                         </span>
                       </div>
                     )}
@@ -524,7 +592,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.carbohydrates')}</span>
                         <span>
-                          {`${recipeData.carbohydrate} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.carbohydrate })}
                         </span>
                       </div>
                     )}
@@ -546,13 +614,13 @@ const RecipeFullView = (props: any) => {
                         key={wine.name_i18n}
                         className='recipe__advertising-wrap'
                       >
-                        <div className='recipe__advertising-media'>
+                        <a href={wine.url} className='recipe__advertising-media'>
                           <img src={wine.image_url} alt='' />
-                        </div>
+                        </a>
                         <div className='recipe__advertising-text'>
-                          <div className='recipe__advertising-text-title'>
+                          <a href={wine.url} className='recipe__advertising-text-title'>
                             {wine.name_i18n}
-                          </div>
+                          </a>
                           <div className='recipe__advertising-text-desc'>
                             {wine.description_i18n}
                           </div>
@@ -602,19 +670,18 @@ const RecipeFullView = (props: any) => {
                               {similarRecipe.name_i18n}
                             </Link>
                             <div className='recipe__similar-recipes-item-text-meal-time'>
-                              {similarRecipe.mealtime_codes.map((mealTimeItem) => (
-                                <span
-                                  key={mealTimeItem.code}
-                                  className='recipe__similar-recipes-item-text-meal-time-block'
-                                >
-                                  {mealTimeItem.code}
+                              {similarRecipe.mealtime_codes.map((mealTimeItem, mealTimeItemIndex) => (
+                                <span key={mealTimeItem.code}>
+                                  {mealTimeItemIndex > 0
+                                    ? `, ${t(mealTimeItem.i18n_code)}`
+                                    : t(mealTimeItem.i18n_code)}
                                 </span>
                               ))}
                             </div>
                             <div className='recipe__similar-recipes-item-text-info'>
                               {similarRecipe.time && (
                                 <div className='recipe__similar-recipes-item-text-info-time'>
-                                  {`${similarRecipe.time} ${t('common.min')}`}
+                                  {t('common.min', { number: similarRecipe.time })}
                                 </div>
                               )}
                               <div className='recipe__similar-recipes-item-text-info-cost-level'>

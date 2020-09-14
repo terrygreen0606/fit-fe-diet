@@ -54,8 +54,8 @@ const ShoppingListView: React.FC = (props: any) => {
 
   const quantityOptions = (measure) => (
     measure === 'si'
-      ? [{ value: t('common.gr'), label: t('common.gr') }]
-      : [{ value: t('common.oz'), label: t('common.oz') }]
+      ? [{ value: t('common.gr_label'), label: t('common.gr_label') }]
+      : [{ value: t('common.oz_label'), label: t('common.oz_label') }]
   );
 
   const onAction = () => {
@@ -132,8 +132,8 @@ const ShoppingListView: React.FC = (props: any) => {
 
   const namingEditor = (item) => {
     const weight = measurement === 'si'
-      ? `${item.weight} ${t('common.gr')}`
-      : `${item.weight} ${t('common.oz')}`;
+      ? `${item.weight} ${t('common.gr_label')}`
+      : `${item.weight} ${t('common.oz_label')}`;
 
     return `${item.name_i18n} (${weight})`;
   };
