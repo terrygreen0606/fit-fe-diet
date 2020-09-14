@@ -547,7 +547,7 @@ const RecipeFullView = (props: any) => {
                         className='recipe__advertising-wrap'
                       >
                         <div className='recipe__advertising-media'>
-                          <img src='https://fitdev.s3.amazonaws.com/assets/pub/images/wine1.png' alt='' />
+                          <img src={wine.image_url} alt='' />
                         </div>
                         <div className='recipe__advertising-text'>
                           <div className='recipe__advertising-text-title'>

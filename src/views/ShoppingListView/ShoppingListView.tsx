@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 
-import { getTranslate, openShareLink } from 'utils';
+import { getTranslate } from 'utils';
 import {
   getShoppingList,
   setShoppingRowBought,
