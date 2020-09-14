@@ -70,5 +70,5 @@ export const userUpdateMealSettings = (
   },
 );
 
-export const userValidate = (params: any) =>
+export const userValidate = (params: UserValidateParams) =>
   axios.post('/user/validate', {...params});
