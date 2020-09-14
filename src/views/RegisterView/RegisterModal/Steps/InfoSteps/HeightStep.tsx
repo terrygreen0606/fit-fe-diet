@@ -143,13 +143,15 @@ const HeightStep = (props: any) => {
           <InputField
             block
             height="md"
-            type="number"
+            type={registerData.measurement === 'us' ? 'text' : "number"}
             min={0}
             autoFocus 
             value={registerData.height}
             name="height"
             data-param="50,250"
-            data-validate='["required", "min-max"]'
+            data-validate={`["required"${
+              registerData.measurement === 'si' ? ', "min-max"' : ''
+            }]`}
             invalid={getFieldErrors('height').length > 0}
             onChange={(e) => validateOnChange('height', e.target.value, e)}
             placeholder=""
