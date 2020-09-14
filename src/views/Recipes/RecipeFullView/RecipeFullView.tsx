@@ -382,8 +382,7 @@ const RecipeFullView = (props: any) => {
                           key={ingredient.ingredient_id}
                           className='recipe__composition-list-item'
                         >
-                          {`${ingredient.weight}
-                          ${t(getWeigthUnit(settings.measurement))}.
+                          {`${t(getWeigthUnit(settings.measurement), { number: ingredient.weight })}.
                           ${ingredient.name_i18n}`}
                         </div>
                       ))}
@@ -559,7 +558,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.salt')}</span>
                         <span>
-                          {`${recipeData.salt} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.salt })}
                         </span>
                       </div>
                     )}
@@ -567,7 +566,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.fats')}</span>
                         <span>
-                          {`${recipeData.fat} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.fat })}
                         </span>
                       </div>
                     )}
@@ -575,7 +574,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.sugar')}</span>
                         <span>
-                          {`${recipeData.sugar} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.sugar })}
                         </span>
                       </div>
                     )}
@@ -583,7 +582,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.proteins')}</span>
                         <span>
-                          {`${recipeData.protein} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.protein })}
                         </span>
                       </div>
                     )}
@@ -591,7 +590,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.carbohydrates')}</span>
                         <span>
-                          {`${recipeData.carbohydrate} ${t(getWeigthUnit(settings.measurement))}`}
+                          {t(getWeigthUnit(settings.measurement), { number: recipeData.carbohydrate })}
                         </span>
                       </div>
                     )}

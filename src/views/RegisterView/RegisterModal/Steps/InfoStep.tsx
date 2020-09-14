@@ -114,7 +114,7 @@ const InfoStep = (props: any) => {
 
               props.setRegisterDataErrors(registerDataErrorsTemp);
             } catch {
-              
+
             }
           }
         });
@@ -270,7 +270,7 @@ const InfoStep = (props: any) => {
                 placeholder=""
               />
               <FormLabel>
-                {registerData.measurement === 'us' && t('common.lbs')}
+                {registerData.measurement === 'us' && t('common.lbs_label')}
                 {registerData.measurement === 'si' && t('common.kg')}
               </FormLabel>
             </FormGroup>
@@ -298,7 +298,7 @@ const InfoStep = (props: any) => {
                   placeholder=""
                 />
                 <FormLabel>
-                  {registerData.measurement === 'us' && t('common.lbs')}
+                  {registerData.measurement === 'us' && t('common.lbs_label')}
                   {registerData.measurement === 'si' && t('common.kg')}
                 </FormLabel>
               </FormGroup>

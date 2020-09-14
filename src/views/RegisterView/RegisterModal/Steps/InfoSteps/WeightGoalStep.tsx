@@ -106,7 +106,7 @@ const WeightGoalStep = (props: any) => {
 
               props.setRegisterDataErrors(registerDataErrorsTemp);
             } catch {
-              
+
             }
           }
         });
@@ -138,7 +138,7 @@ const WeightGoalStep = (props: any) => {
             placeholder=""
           />
           <FormLabel>
-            {registerData.measurement === 'us' && t('common.lbs')}
+            {registerData.measurement === 'us' && t('common.lbs_label')}
             {registerData.measurement === 'si' && t('common.kg')}
           </FormLabel>
         </FormGroup>
