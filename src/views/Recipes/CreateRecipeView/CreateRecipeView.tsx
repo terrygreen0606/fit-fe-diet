@@ -476,24 +476,26 @@ const CreateRecipeView = (props: any) => {
           <div className='recipe__add-video'>
             <div className='recipe__add-video-preview'>
               {videoLinkIframe ? (
-                <iframe
-                  title='video'
-                  width='100%'
-                  height='100%'
-                  src={videoLinkIframe}
-                  allowFullScreen
-                />
+                <>
+                  <iframe
+                    title='video'
+                    width='100%'
+                    height='100%'
+                    src={videoLinkIframe}
+                    allowFullScreen
+                  />
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setVideoLinkIframe('');
+                      setCreateRecipeForm({ ...createRecipeForm, videoUrl: '' });
+                    }}
+                    className='recipe__add-video-preview-btn'
+                  >
+                    <TrashIcon />
+                  </button>
+                </>
               ) : t('recipe.create.preview')}
-              <button
-                type='button'
-                onClick={() => {
-                  setVideoLinkIframe('');
-                  setCreateRecipeForm({ ...createRecipeForm, videoUrl: '' });
-                }}
-                className='recipe__add-video-preview-btn'
-              >
-                <TrashIcon />
-              </button>
             </div>
             <div className='recipe__add-video-desc'>
               <div className='recipe__add-video-desc-title'>
