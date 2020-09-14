@@ -64,7 +64,7 @@ const NotEatingStep = (props: any) => {
 
       <div className="register_eating_list">
         {props.registerData.ignore_cuisine_ids.map(({ id, name, checked, image }) => (
-          <label className="register_eating_label">
+          <label key={id} className="register_eating_label">
             <input 
               name="register_eating_item" 
               type="checkbox"
@@ -73,7 +73,7 @@ const NotEatingStep = (props: any) => {
             />
 
             <div key={id} className="register_eating_item">
-              <img src={image} className="register_eating_item_icon" />
+              {image && <img src={image} className="register_eating_item_icon" />}
               <span className="register_eating_item_label">{name}</span>
             </div>
           </label>

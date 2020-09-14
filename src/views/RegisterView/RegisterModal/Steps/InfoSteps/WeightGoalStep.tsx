@@ -131,6 +131,8 @@ const WeightGoalStep = (props: any) => {
             block
             height="md"
             type="number"
+            autoFocus 
+            min={0}
             value={registerData.weight_goal}
             data-param="30,400"
             data-validate='["required", "min-max"]'

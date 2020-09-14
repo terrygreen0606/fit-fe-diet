@@ -65,7 +65,7 @@ const HealthProblems = (props: any) => {
 
       <div className="register_health_problem_list">
         {props.registerData.diseases.map(({ code, checked, i18n_code }) => (
-          <label className="register_health_problem_item">
+          <label key={code} className="register_health_problem_item">
             <input 
               name="register_health_problem" 
               type="checkbox" 

@@ -131,6 +131,8 @@ const WeightStep = (props: any) => {
             block
             height="md"
             type="number"
+            min={0}
+            autoFocus 
             value={registerData.weight}
             data-param="30,400"
             data-validate='["required", "min-max"]'
