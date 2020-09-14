@@ -40,8 +40,12 @@ export const getRecipeData = (
   withSimilar: boolean = false,
   withNote: boolean = false,
   withWines: boolean = false,
+  ext_ingredients: boolean = false,
 ) =>
-  axios.get(`/recipe/${id}?with_similar=${withSimilar}&with_note=${withNote}&with_wines=${withWines}`);
+  axios.get(
+    `/recipe/${id}?with_similar=${withSimilar}&with_note=${withNote}&with_wines=${withWines}
+    &ext_ingredients=${ext_ingredients}`,
+  );
 
 export const likeRecipe = (recipeId: string) => axios.put(`/recipe/like/${recipeId}`);
 

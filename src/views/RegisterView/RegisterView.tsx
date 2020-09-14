@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { connect } from 'react-redux';
 import {
   initGoogleAuth,
   initFacebookAuth,
@@ -31,7 +32,7 @@ const registerDataDefault: RegisterDataType = {
   phone: '',
   token: null,
   age: null,
-  gender: 'm',
+  gender: null,
   measurement: 'si',
   height: null,
   weight: null,
@@ -96,6 +97,15 @@ const RegisterView = (props: any) => {
     loadRegisterSettings();
   }, []);
 
+  useEffect(() => {
+    if (props.measurement) {
+      setRegisterData({
+        ...registerData,
+        measurement: props.measurement
+      });
+    }
+  }, [props.measurement]);
+
   return (
     <>
       <Helmet>
@@ -125,4 +135,11 @@ const RegisterView = (props: any) => {
   );
 };
 
-export default WithTranslate(RegisterView);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      measurement: state.settings.measurement
+    }),
+    null
+  )
+(RegisterView));

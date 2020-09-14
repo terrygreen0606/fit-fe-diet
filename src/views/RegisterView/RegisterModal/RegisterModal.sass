@@ -18,7 +18,7 @@
     top: 47px !important
     right: 47px !important
   &_steps_content
-    max-width: 520px
+    width: 570px
     max-height: calc(100% - 50px - 37px)
     margin: 50px auto 0
     padding-bottom: 37px
@@ -44,6 +44,27 @@
     line-height: 41px
     color: #000
     text-align: center
+
+  &_gender_radio
+    padding-left: 80px !important
+    font-size: 40px
+    line-height: 54px !important
+    font-weight: bold
+    .radiomark
+      width: 54px
+      height: 54px
+      border-width: 12px !important
+    .genderIcon
+      width: 23px
+      height: 54px
+      margin-right: 16px
+
+  &_info
+    &_form
+      margin-top: 180px
+      &_submit
+        margin-top: 200px
+        text-align: center
 
   &_expectation_chart
     padding: 10px
@@ -105,6 +126,7 @@
         display: block
         width: calc(50% - 12px)
         margin-bottom: 29px
+        background-color: #fff
         &:nth-child(2n + 1)
           margin-right: 24px
         input
@@ -148,8 +170,8 @@
         &:checked ~ .register_eating_item
           font-weight: bold
           color: #fff
-          border-color: $steel-blue
-          background-color: $steel-blue
+          border-color: $seashell-pink
+          background-color: $seashell-pink
     &_item
       display: inline-flex
       align-items: center
@@ -176,31 +198,26 @@
         color: #fff
         border-color: $steel-blue
         background-color: $steel-blue
-  &_info
-    &_form
-      .fgLabel
-        font-size: 20px
-    &_fg_age, &_fg_height
-      .fg-input
-        flex: 0 0 100px
-        margin: 0 10px
-      .fgLabel
-        flex: 0 0 auto
-        margin: 0
-        padding: 0
-        &:last-child
-          flex: 0 0 50px
-    &_fg_weight
-      .fgLabel
-        margin: 0
-        flex: 0 0 20%
-        &:first-child
-          flex: 0 0 100%
-          margin-bottom: 15px
-      .fg-input
-        margin-right: 10px
-        flex-grow: 1
-
+  &_info_fg
+    display: flex
+    flex-wrap: nowrap
+    max-width: 350px
+    margin: 0 auto
+    & ~ .fgInvalidMsg
+      max-width: 350px
+      margin-left: auto
+      margin-right: auto
+    .fg-input
+      flex: 0 0 80%
+      border: none
+      border-bottom: 1px solid #000
+      border-radius: 0
+    .fgLabel
+      flex: 0 0 calc(20% - 10px)
+      margin: 0
+      margin-left: 10px
+      font-size: 18px
+      line-height: 22px
   &_join
     &_or
       border-bottom: 1px dashed #106EE8
@@ -242,12 +259,31 @@
     &_title
       font-size: 24px
       line-height: 36px
+    &_gender_radio
+      padding-left: 55px !important
+      font-size: 30px
+      line-height: 34px !important
+      .radiomark
+        width: 34px
+        height: 34px
+        border-width: 7px !important
+      .genderIcon
+        width: 15px
+        height: 30px
+        margin-right: 8px
+    &_info
+      &_form
+        margin-top: 130px
+        &_submit
+          margin-top: 150px
 
   .registerModal
     overflow: hidden
     height: 100%
     &_wrap
       align-items: flex-end
+    &_steps_wrap
+      background-position: calc(50% + 31px) 0 !important
     &_main
       flex-wrap: wrap
       justify-content: center
@@ -274,6 +310,7 @@
       padding: 0 !important
     &_steps_content
       padding-top: 0
+      width: auto
 
   .register
     &_eating
@@ -291,36 +328,18 @@
 
 @media only screen and (max-width : 576px)
   .register
-    &_info
-      &_fg_age, &_fg_height, &_fg_weight
-        flex-wrap: nowrap
-        .fg-input
-          flex: 0 0 calc(100% - 40% - 20px)
-          margin: 0
-        .fgLabel
-          &:first-child
-            flex: 0 0 30%
-            margin-right: 10px
-          &:last-child
-            flex: 0 0 10%
-            margin-left: 10px
 
 
 @media only screen and (max-width : 480px)
   .register
+    &_gender_radio
+      &.customRadio
+        margin-bottom: 15px !important
     &_info
-      &_fg_age, &_fg_height, &_fg_weight
-        flex-wrap: wrap
-        .fg-input
-          flex: 0 0 calc(100% - 80px)
-          margin: 0
-        .fgLabel
-          &:first-child
-            flex: 0 0 100%
-            margin-bottom: 15px
-          &:last-child
-            flex: 0 0 70px
-            margin-left: 10px
+      &_form
+        margin-top: 50px
+        &_submit
+          margin-top: 50px
     &_health_problem
       &_list
         .register_health_problem_item

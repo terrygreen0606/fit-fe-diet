@@ -57,7 +57,7 @@ const NotEatingStep = (props: any) => {
       <h6 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon 
           className="register-back-icon mr-5" 
-          onClick={e => props.setRegisterView('INFO')}
+          onClick={e => props.setRegisterView('INFO_WEIGHT_GOAL')}
         />
         {t('register.not_eating')}
       </h6>

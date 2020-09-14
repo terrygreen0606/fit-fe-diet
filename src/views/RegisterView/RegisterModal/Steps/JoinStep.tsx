@@ -31,7 +31,7 @@ const JoinStep = (props: any) => {
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const [socialRegister, setSocialRegister] = useState<string>(null);
+  const [socialRegister, setSocialRegister] = useState<string>('email');
 
   const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(false);
   const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
@@ -184,8 +184,7 @@ const JoinStep = (props: any) => {
     userSignup({
       email: props.registerData.email,
       password: props.registerData.password,
-      ...getRegisterProfilePayload(),
-      weight: 1800
+      ...getRegisterProfilePayload()
     }).then(response => {
         const token =
           response.data && response.data.access_token
@@ -217,6 +216,8 @@ const JoinStep = (props: any) => {
       .catch((error) => {
         setRegisterJoinLoading(false);
 
+        toast.error(t('register.error_msg'));
+
         if (error.response.status >= 400 && error.response.status < 500) {
           try {
             const validateErrors = JSON.parse(error.response.data.message);
@@ -232,19 +233,20 @@ const JoinStep = (props: any) => {
 
             props.setRegisterDataErrors(registerDataErrorsTemp);
 
-            if (
-              validateErrors.age || 
-              validateErrors.height || 
-              validateErrors.weight || 
-              validateErrors.weight_goal
-            ) {
-              props.setRegisterView('INFO');
+            if (validateErrors.gender) {
+              props.setRegisterView('INFO_GENDER');
+            } else if (validateErrors.age) {
+              props.setRegisterView('INFO_AGE');
+            } else if (validateErrors.height) {
+              props.setRegisterView('INFO_HEIGHT');
+            } else if (validateErrors.weight) {
+              props.setRegisterView('INFO_WEIGHT');
+            } else if (validateErrors.weight_goal) {
+              props.setRegisterView('INFO_WEIGHT_GOAL');
             }
           } catch {
-            toast.error(t('register.error_msg'));
+            
           }
-        } else {
-          toast.error(t('register.error_msg'));
         }
       });
   };

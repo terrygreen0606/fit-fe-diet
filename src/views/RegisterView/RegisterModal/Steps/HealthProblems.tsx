@@ -60,7 +60,7 @@ const HealthProblems = (props: any) => {
           className="register-back-icon mr-5" 
           onClick={e => props.setRegisterView('NOT_EATING')}
         />
-        I have following problems with health:
+        {t('register.diseases_title')}:
       </h6>
 
       <div className="register_health_problem_list">
