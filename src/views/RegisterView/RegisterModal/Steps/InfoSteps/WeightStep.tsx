@@ -29,7 +29,9 @@ const WeightStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[2] = t('register.weight_step');
+    currStepTitles[0] = t('register.height_step');
+    currStepTitles[1] = t('register.weight_step');
+    currStepTitles[2] = t('register.weight_goal_step');
 
     props.setStepTitles([...currStepTitles]);
 

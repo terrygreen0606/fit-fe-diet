@@ -69,7 +69,16 @@ const GenderStep = (props: any) => {
       ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
     );
 
-    const { errors, hasError } = FormValidator.bulkValidate(inputs);
+    let { errors, hasError } = FormValidator.bulkValidate(inputs);
+
+    if (!registerData.gender) {
+      errors.push({
+        field: 'gender',
+        message: t('api.ecode.invalid_value')
+      });
+
+      hasError = true;
+    }
 
     props.setRegisterDataErrors([...errors]);
 
@@ -85,7 +94,7 @@ const GenderStep = (props: any) => {
       })
         .then(response => {
           setValidateLoading(false);
-          props.setRegisterView('GOAL');
+          props.setRegisterView('INFO_AGE');
         })
         .catch(error => {
           setValidateLoading(false);
@@ -127,7 +136,7 @@ const GenderStep = (props: any) => {
       <form className="register_info_form" onSubmit={(e) => registerInfoSubmit(e)}>
         <FormGroup inline className="mb-5">
           <CustomRadio
-            name='register_sex'
+            name='gender'
             className="register_gender_radio mr-md-5 pr-md-4"
             label={
               <>
@@ -142,17 +151,13 @@ const GenderStep = (props: any) => {
             }
             value='m'
             checked={registerData.gender === 'm'}
+            invalid={getFieldErrors('gender').length > 0}
             inline
-            onChange={(e) =>
-              props.setRegisterData({
-                ...registerData,
-                gender: e.target.value,
-              })
-            }
+            onChange={e => validateOnChange('gender', e.target.value, e)}
           />
 
           <CustomRadio
-            name='register_sex'
+            name='gender'
             className="register_gender_radio"
             label={
               <>
@@ -167,13 +172,9 @@ const GenderStep = (props: any) => {
             }
             value='f'
             checked={registerData.gender === 'f'}
+            invalid={getFieldErrors('gender').length > 0}
             inline
-            onChange={(e) =>
-              props.setRegisterData({
-                ...registerData,
-                gender: e.target.value,
-              })
-            }
+            onChange={e => validateOnChange('gender', e.target.value, e)}
           />
         </FormGroup>
 

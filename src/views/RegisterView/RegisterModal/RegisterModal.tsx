@@ -25,13 +25,28 @@ type RegisterModalProps = {
   localePhrases: any
 };
 
+const registerViewsList: RegisterViewType[] = [
+  'GOAL', 
+  'INFO_GENDER', 
+  'INFO_AGE', 
+  'INFO_HEIGHT', 
+  'INFO_WEIGHT', 
+  'INFO_WEIGHT_GOAL', 
+  'NOT_EATING', 
+  'PLAN_PROGRESS', 
+  'HEALTH_PROBLEMS', 
+  'EXPECTATIONS', 
+  'JOIN', 
+  'READY'
+];
+
 const RegisterModal = (props: RegisterModalProps) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
   const registerStepTitlesDefault: RegisterStepTitlesType = [t('register.step_goal'), t('register.step_info'), t('register.step_join')];
 
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
   const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
-  const [registerView, setRegisterView] = useState<RegisterViewType>('INFO_HEIGHT');
+  const [registerView, setRegisterView] = useState<RegisterViewType>(registerViewsList[0]);
 
   useEffect(() => {
     let currentRegisterStep: 0 | 1 | 2 = null;
@@ -70,6 +85,14 @@ const RegisterModal = (props: RegisterModalProps) => {
     setRegisterView
   );
 
+  const setStepPrev = () => {
+    const curStepIndex = registerViewsList.findIndex(view => view === registerView);
+
+    if (curStepIndex > 0) {
+      setRegisterView(registerViewsList[curStepIndex - 1]);
+    }
+  };
+
   return (
     <Modal
       isOpen={props.isOpen}
@@ -83,6 +106,7 @@ const RegisterModal = (props: RegisterModalProps) => {
           step={registerStep} 
           view={registerView}
           titles={registerStepTitles} 
+          setStepPrev={setStepPrev}
         />
 
         <div className="registerModal_steps_content_wrap">
