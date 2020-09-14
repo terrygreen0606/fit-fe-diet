@@ -156,7 +156,7 @@ const ExpectationsStep = (props: any) => {
     <div className="text-center">
       <h5 className="mb-xl-4 mb-2 fw-regular">{t('register.expect_title')}</h5>
 
-      <h4 className="mb-xl-5 mb-3 text-steel-blue">{weight_goal} {t('common.kg')} {t('register.expect_date_by')} {getPredictedDate()}</h4>
+      <h4 className="mb-xl-5 mb-3 text-steel-blue">{weight_goal} {t('common.kg_label')} {t('register.expect_date_by')} {getPredictedDate()}</h4>
 
       <div className="register_expectation_chart">
         <LineChart 
@@ -186,7 +186,7 @@ const ExpectationsStep = (props: any) => {
                 },
                 label: function(tooltipItem, data) {
                   if (tooltipItem.index === 1 || tooltipItem.index === 3) {
-                    return `${tooltipItem.value} ${t('common.kg')}`;
+                    return `${tooltipItem.value} ${t('common.kg_label')}`;
                   } else {
                     return null;
                   }

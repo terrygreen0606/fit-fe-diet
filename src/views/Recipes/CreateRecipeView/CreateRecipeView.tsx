@@ -598,7 +598,7 @@ const CreateRecipeView = (props: any) => {
                   border='light'
                 />
                 <span className='recipe__label-description ml-xl-3'>
-                  {t('common.min')}
+                  {t('common.min_label')}
                 </span>
               </label>
             </div>
@@ -644,8 +644,8 @@ const CreateRecipeView = (props: any) => {
           </div>
           <div className='recipe__switch-wrap'>
             <CustomSwitch
-              label1={t('common.gr')}
-              label2={t('common.oz')}
+              label1={t('common.gr_label')}
+              label2={t('common.oz_label')}
               checked={createRecipeForm.measurement === 'us'}
               onChange={() => {
                 if (createRecipeForm.ingredients.length > 0) {
@@ -733,9 +733,9 @@ const CreateRecipeView = (props: any) => {
               ))}
               <div className='recipe__chart-progress-value'>
                 {`${createRecipeForm.totalWeight} ${createRecipeForm.measurement === 'si' ? (
-                  t('common.gr'))
+                  t('common.gr_label'))
                   : (
-                    t('common.oz')
+                    t('common.oz_label')
                   )}`}
               </div>
             </div>
@@ -755,7 +755,7 @@ const CreateRecipeView = (props: any) => {
                     />
                   </div>
                   <div className='recipe__chart-lines-item-description'>
-                    {`${item.value} ${createRecipeForm.measurement === 'si' ? t('common.gr') : t('common.oz')}`}
+                    {`${item.value} ${createRecipeForm.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}`}
                   </div>
                 </div>
               ))}
@@ -937,7 +937,7 @@ const CreateRecipeView = (props: any) => {
                           <ArrowRight />
                         </button>
                         <div className='recipe__item-quantity-counter-unit'>
-                          {createRecipeForm.measurement === 'si' ? t('common.gr') : t('common.oz')}
+                          {createRecipeForm.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}
                         </div>
                       </div>
                       <div className='recipe__item-quantity-counter-total'>
@@ -959,7 +959,7 @@ const CreateRecipeView = (props: any) => {
                     </button>
                     <div className='recipe__item-weight'>
                       {`${!ingredientItem.weight ? 0 : ingredientItem.weight}
-                      ${createRecipeForm.measurement === 'si' ? t('common.gr') : t('common.oz')}`}
+                      ${createRecipeForm.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}`}
                     </div>
                   </div>
                   <div className='recipe__item-opt'>
@@ -989,7 +989,7 @@ const CreateRecipeView = (props: any) => {
               border='light'
             />
             <div className='recipe__total-weight-unit'>
-              {createRecipeForm.measurement === 'si' ? t('common.gr') : t('common.oz')}
+              {createRecipeForm.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}
             </div>
           </div>
           <div className='instructions'>

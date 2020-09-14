@@ -338,6 +338,7 @@ const JoinStep = (props: any) => {
           <InputField
             block
             name='name'
+            autoFocus 
             isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
             value={registerData.name}
             data-validate='["required"]'

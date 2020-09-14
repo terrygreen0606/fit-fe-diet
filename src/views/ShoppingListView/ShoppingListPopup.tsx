@@ -61,8 +61,8 @@ const ShoppingListPopup = (props: any) => {
 
   const namingEditor = (item) => {
     const weight = measurement === 'si'
-      ? `${item.weight} ${t('common.gr')}`
-      : `${item.weight} ${t('common.oz')}`;
+      ? `${item.weight} ${t('common.gr_label')}`
+      : `${item.weight} ${t('common.oz_label')}`;
 
     return `${item.name_i18n} (${weight})`;
   };

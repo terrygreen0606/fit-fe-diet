@@ -108,7 +108,7 @@ const WeightGoalStep = (props: any) => {
 
               props.setRegisterDataErrors(registerDataErrorsTemp);
             } catch {
-              
+
             }
           }
         });
@@ -130,18 +130,22 @@ const WeightGoalStep = (props: any) => {
           <InputField
             block
             height="md"
-            type="number"
+            type={registerData.measurement === 'us' ? 'text' : "number"}
+            autoFocus 
+            min={0}
             value={registerData.weight_goal}
             data-param="30,400"
-            data-validate='["required", "min-max"]'
+            data-validate={`["required"${
+              registerData.measurement === 'si' ? ', "min-max"' : ''
+            }]`}
             name="weight_goal"
             invalid={getFieldErrors('weight_goal').length > 0}
             onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
             placeholder=""
           />
           <FormLabel>
-            {registerData.measurement === 'us' && t('common.lbs')}
-            {registerData.measurement === 'si' && t('common.kg')}
+            {registerData.measurement === 'us' && t('common.lbs_label')}
+            {registerData.measurement === 'si' && t('common.kg_label')}
           </FormLabel>
         </FormGroup>
 
