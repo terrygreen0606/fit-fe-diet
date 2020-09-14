@@ -27,8 +27,6 @@ export const loadLocales = () => {
 
     const userLang = window.navigator.language;
 
-    dispatch(setAuthChecking(true));
-
     if (!LOCALIZATION_DEV && localePhrases && userLang === localeLang) {
       dispatch(setLocaleLang(userLang));
       dispatch(setLocalePhrases(localePhrases));
@@ -51,13 +49,9 @@ export const loadLocales = () => {
 
 export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true) => {
   return dispatch => {
-    dispatch(setAuthChecking(true));
-
     if (isAuthenticated) {
       getAppSettings()
         .then(response => {
-          dispatch(setAuthChecking(false));
-
           if (response.data && response.data.data) {
             dispatch(setAppSetting(response.data.data));
 
@@ -72,8 +66,6 @@ export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true
     } else {
       getAppPublicSettings()
         .then(response => {
-          dispatch(setAuthChecking(false));
-
           if (response.data && response.data.data) {
             dispatch(setAppSetting(response.data.data));
             
