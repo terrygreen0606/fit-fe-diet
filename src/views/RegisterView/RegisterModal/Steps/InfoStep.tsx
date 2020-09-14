@@ -114,7 +114,7 @@ const InfoStep = (props: any) => {
 
               props.setRegisterDataErrors(registerDataErrorsTemp);
             } catch {
-              
+
             }
           }
         });
@@ -240,8 +240,8 @@ const InfoStep = (props: any) => {
                 placeholder=""
               />
               <FormLabel>
-                {registerData.measurement === 'us' && t('common.ft')}
-                {registerData.measurement === 'si' && t('common.cm')}
+                {registerData.measurement === 'us' && t('common.ft_label')}
+                {registerData.measurement === 'si' && t('common.cm_label')}
               </FormLabel>
             </FormGroup>
 
@@ -270,8 +270,8 @@ const InfoStep = (props: any) => {
                 placeholder=""
               />
               <FormLabel>
-                {registerData.measurement === 'us' && t('common.lbs')}
-                {registerData.measurement === 'si' && t('common.kg')}
+                {registerData.measurement === 'us' && t('common.lbs_label')}
+                {registerData.measurement === 'si' && t('common.kg_label')}
               </FormLabel>
             </FormGroup>
 
@@ -298,8 +298,8 @@ const InfoStep = (props: any) => {
                   placeholder=""
                 />
                 <FormLabel>
-                  {registerData.measurement === 'us' && t('common.lbs')}
-                  {registerData.measurement === 'si' && t('common.kg')}
+                  {registerData.measurement === 'us' && t('common.lbs_label')}
+                  {registerData.measurement === 'si' && t('common.kg_label')}
                 </FormLabel>
               </FormGroup>
 

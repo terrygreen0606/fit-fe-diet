@@ -78,10 +78,12 @@ const HeightStep = (props: any) => {
 
       const {
         height,
+        measurement
       } = registerData;
 
       userValidate({
         height,
+        measurement
       })
         .then(response => {
           setValidateLoading(false);
@@ -151,8 +153,8 @@ const HeightStep = (props: any) => {
             placeholder=""
           />
           <FormLabel>
-            {registerData.measurement === 'us' && t('common.ft')}
-            {registerData.measurement === 'si' && t('common.cm')}
+            {registerData.measurement === 'us' && t('common.ft_label')}
+            {registerData.measurement === 'si' && t('common.cm_label')}
           </FormLabel>
         </FormGroup>
 

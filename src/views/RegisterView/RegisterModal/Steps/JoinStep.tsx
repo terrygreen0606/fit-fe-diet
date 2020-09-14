@@ -31,7 +31,7 @@ const JoinStep = (props: any) => {
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const [socialRegister, setSocialRegister] = useState<string>(null);
+  const [socialRegister, setSocialRegister] = useState<string>('email');
 
   const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(false);
   const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
@@ -184,8 +184,7 @@ const JoinStep = (props: any) => {
     userSignup({
       email: props.registerData.email,
       password: props.registerData.password,
-      ...getRegisterProfilePayload(),
-      weight: 1800
+      ...getRegisterProfilePayload()
     }).then(response => {
         const token =
           response.data && response.data.access_token

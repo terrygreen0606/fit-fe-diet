@@ -76,11 +76,13 @@ const WeightGoalStep = (props: any) => {
       setValidateLoading(true);
 
       const {
-        weight_goal
+        weight_goal,
+        measurement
       } = registerData;
 
       userValidate({
-        weight_goal
+        weight_goal,
+        measurement
       })
         .then(response => {
           setValidateLoading(false);
@@ -106,7 +108,7 @@ const WeightGoalStep = (props: any) => {
 
               props.setRegisterDataErrors(registerDataErrorsTemp);
             } catch {
-              
+
             }
           }
         });
@@ -138,8 +140,8 @@ const WeightGoalStep = (props: any) => {
             placeholder=""
           />
           <FormLabel>
-            {registerData.measurement === 'us' && t('common.lbs')}
-            {registerData.measurement === 'si' && t('common.kg')}
+            {registerData.measurement === 'us' && t('common.lbs_label')}
+            {registerData.measurement === 'si' && t('common.kg_label')}
           </FormLabel>
         </FormGroup>
 

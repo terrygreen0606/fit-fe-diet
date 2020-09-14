@@ -88,7 +88,7 @@ const RegisterModal = (props: RegisterModalProps) => {
   const setStepPrev = () => {
     const curStepIndex = registerViewsList.findIndex(view => view === registerView);
 
-    if (curStepIndex > 0) {
+    if (curStepIndex > 0 && curStepIndex !== (registerViewsList.length - 1)) {
       setRegisterView(registerViewsList[curStepIndex - 1]);
     }
   };

@@ -408,7 +408,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         label={t('mp.metrics.height')}
                       />
                       <div className='change-meal-plan__metrics-item-unit'>
-                        {updateChangeMealForm.measurement === 'si' ? t('common.cm') : t('common.ft')}
+                        {updateChangeMealForm.measurement === 'si' ? t('common.cm_label') : t('common.ft_label')}
                       </div>
                     </div>
                     <div className='change-meal-plan__metrics-item'>
@@ -426,7 +426,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         max={999}
                       />
                       <div className='change-meal-plan__metrics-item-unit'>
-                        {updateChangeMealForm.measurement === 'si' ? t('common.kg') : t('common.lbs')}
+                        {updateChangeMealForm.measurement === 'si' ? t('common.kg_label') : t('common.lbs_label')}
                       </div>
                     </div>
                     <div className='change-meal-plan__metrics-item'>
@@ -444,7 +444,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         max={999}
                       />
                       <div className='change-meal-plan__metrics-item-unit'>
-                        {updateChangeMealForm.measurement === 'si' ? t('common.kg') : t('common.lbs')}
+                        {updateChangeMealForm.measurement === 'si' ? t('common.kg_label') : t('common.lbs_label')}
                       </div>
                     </div>
                   </div>
