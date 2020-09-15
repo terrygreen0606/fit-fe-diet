@@ -357,6 +357,7 @@ const JoinStep = (props: any) => {
             block
             name='email'
             value={registerData.email}
+            autoComplete="email"
             isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
             data-validate={`["email"${
               socialRegister === 'email' ? ', "required"' : ''
@@ -373,6 +374,7 @@ const JoinStep = (props: any) => {
             block
             name='password'
             type='password'
+            autoComplete="new-password"
             isValid={getFieldErrors('password').length === 0 && registerData.password.length > 0}
             value={registerData.password}
             data-validate={`[${
@@ -383,6 +385,9 @@ const JoinStep = (props: any) => {
             placeholder=''
           />
         </FormGroup>
+
+        <input type="text" name="email" className="d-none" />
+        <input type="password" name="pass" className="d-none" />
 
         <div className='text-center mt-xl-5 mt-45'>
           <Button
