@@ -187,7 +187,7 @@ const SettingsFamilyView = (props: any) => {
             <h2 className='family__title'>{t('family.invite.title')}</h2>
             <div className='family__user'>
               <span className='family__user-name'>
-                {`${userInfo.name} ${userInfo.surname}`}
+                {`${userInfo.name} ${userInfo.surname || ''}`}
               </span>
               {t('common.you')}
             </div>
@@ -195,11 +195,9 @@ const SettingsFamilyView = (props: any) => {
               {userFamily.map((member, memberIndex) => (
                 <div key={member.email} className='family__list-item'>
                   <div className='family__list-item-media'>
-                    {member.image ? (
-                      <img src={member.image} alt='' />
-                    ) : (
-                        <ManPlugIcon />
-                      )}
+                    {member.image
+                      ? <img src={member.image} alt='' />
+                      : <ManPlugIcon />}
                   </div>
                   <div className='family__list-item-desc'>
                     <div className='family__list-item-desc-name'>
