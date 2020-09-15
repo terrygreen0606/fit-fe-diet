@@ -187,7 +187,7 @@ const SettingsFamilyView = (props: any) => {
             <h2 className='family__title'>{t('family.invite.title')}</h2>
             <div className='family__user'>
               <span className='family__user-name'>
-                {`${userInfo.name} ${userInfo.surname ? userInfo.surname : ''}`}
+                {`${userInfo.name} ${userInfo.surname || ''}`}
               </span>
               {t('common.you')}
             </div>
