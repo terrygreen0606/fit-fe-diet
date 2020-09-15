@@ -292,7 +292,7 @@ const CreateRecipeView = (props: any) => {
         name_i18n: data.name_i18n,
         weight: null,
         is_opt: false,
-        calorie: data.calorie,
+        calorie: data.calorie / 100,
         fat: data.fat / 100,
         carbohydrate: data.carbohydrate / 100,
         protein: data.protein / 100,
@@ -476,24 +476,26 @@ const CreateRecipeView = (props: any) => {
           <div className='recipe__add-video'>
             <div className='recipe__add-video-preview'>
               {videoLinkIframe ? (
-                <iframe
-                  title='video'
-                  width='100%'
-                  height='100%'
-                  src={videoLinkIframe}
-                  allowFullScreen
-                />
+                <>
+                  <iframe
+                    title='video'
+                    width='100%'
+                    height='100%'
+                    src={videoLinkIframe}
+                    allowFullScreen
+                  />
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setVideoLinkIframe('');
+                      setCreateRecipeForm({ ...createRecipeForm, videoUrl: '' });
+                    }}
+                    className='recipe__add-video-preview-btn'
+                  >
+                    <TrashIcon />
+                  </button>
+                </>
               ) : t('recipe.create.preview')}
-              <button
-                type='button'
-                onClick={() => {
-                  setVideoLinkIframe('');
-                  setCreateRecipeForm({ ...createRecipeForm, videoUrl: '' });
-                }}
-                className='recipe__add-video-preview-btn'
-              >
-                <TrashIcon />
-              </button>
             </div>
             <div className='recipe__add-video-desc'>
               <div className='recipe__add-video-desc-title'>
@@ -732,11 +734,9 @@ const CreateRecipeView = (props: any) => {
                 </div>
               ))}
               <div className='recipe__chart-progress-value'>
-                {`${createRecipeForm.totalWeight} ${createRecipeForm.measurement === 'si' ? (
-                  t('common.gr_label'))
-                  : (
-                    t('common.oz_label')
-                  )}`}
+                {createRecipeForm.measurement === 'si'
+                  ? t('common.gr', { number: createRecipeForm.totalWeight })
+                  : t('common.oz', { number: createRecipeForm.totalWeight })}
               </div>
             </div>
             <div className='recipe__chart-lines'>
@@ -755,7 +755,9 @@ const CreateRecipeView = (props: any) => {
                     />
                   </div>
                   <div className='recipe__chart-lines-item-description'>
-                    {`${item.value} ${createRecipeForm.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}`}
+                    {createRecipeForm.measurement === 'si'
+                      ? t('common.gr', { number: item.value })
+                      : t('common.oz', { number: item.value })}
                   </div>
                 </div>
               ))}
@@ -842,13 +844,11 @@ const CreateRecipeView = (props: any) => {
 
                             let countTotalWeight = 0;
 
-                            if (currentWeight === 0) {
-                              return;
-                            }
-                            if (currentWeight === 1) {
-                              updatedIngredients[ingredientIndex].weight = null;
+                            if (currentWeight - 1 < 0) {
+                              updatedIngredients[ingredientIndex].weight = 0;
                             } else {
-                              updatedIngredients[ingredientIndex].weight -= 1;
+                              updatedIngredients[ingredientIndex].weight = +(updatedIngredients[ingredientIndex].weight
+                                - 1).toFixed(2);
                             }
 
                             updatedIngredients.forEach((item) => {
@@ -873,23 +873,14 @@ const CreateRecipeView = (props: any) => {
                           value={createRecipeForm.ingredients[ingredientIndex].weight}
                           step={0.01}
                           onChange={(e) => {
-                            if (e.target.value === '0') {
-                              e.target.value = null;
-                              return;
-                            }
-
                             const updatedIngredients = [
                               ...createRecipeForm.ingredients,
                             ];
                             let countTotalWeight = 0;
 
-                            updatedIngredients[ingredientIndex].weight = +e.target.value;
+                            updatedIngredients[ingredientIndex].weight = e.target.value;
 
-                            validateOnChange(
-                              'ingredients',
-                              updatedIngredients,
-                              e,
-                            );
+                            validateOnChange('ingredients', updatedIngredients, e);
 
                             updatedIngredients.forEach((item) => {
                               countTotalWeight += +item.weight;
@@ -919,7 +910,8 @@ const CreateRecipeView = (props: any) => {
 
                             let countTotalWeight = 0;
 
-                            updatedIngredients[ingredientIndex].weight += 1;
+                            updatedIngredients[ingredientIndex].weight = +(+updatedIngredients[ingredientIndex].weight
+                              + 1).toFixed(2);
 
                             updatedIngredients.forEach((item) => {
                               countTotalWeight += item.weight;
