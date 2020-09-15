@@ -13,13 +13,15 @@ import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-i
 type ShareButtonsProps = {
   shareLink: string;
   classes?: string;
+  disabled?: boolean,
 };
 
-const ShareButtons = ({ shareLink, classes }: ShareButtonsProps) => (
+const ShareButtons = ({ shareLink, classes, disabled }: ShareButtonsProps) => (
   <div className={classnames('share-buttons-list', classes)}>
     <button
       type='button'
       className='share-button'
+      disabled={disabled}
       onClick={() => openShareLink(`https://twitter.com/intent/tweet?text=${shareLink}`)}
     >
       <TwitterLogo />
@@ -27,6 +29,7 @@ const ShareButtons = ({ shareLink, classes }: ShareButtonsProps) => (
     <button
       type='button'
       className='share-button'
+      disabled={disabled}
       onClick={() => openShareLink(`https://www.facebook.com/sharer/sharer.php?u=${shareLink}`)}
     >
       <FacebookLogo />
@@ -34,6 +37,7 @@ const ShareButtons = ({ shareLink, classes }: ShareButtonsProps) => (
     <button
       type='button'
       className='share-button'
+      disabled={disabled}
       onClick={() => openShareLink(`https://t.me/share/url?url=${shareLink}`)}
     >
       <TelegramLogo />
@@ -41,6 +45,7 @@ const ShareButtons = ({ shareLink, classes }: ShareButtonsProps) => (
     <button
       type='button'
       className='share-button'
+      disabled={disabled}
       onClick={() => openShareLink(`https://wa.me/?text=${shareLink}`)}
     >
       <WhatsappLogo />

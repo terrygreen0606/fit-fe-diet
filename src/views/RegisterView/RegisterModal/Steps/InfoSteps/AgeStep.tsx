@@ -29,6 +29,7 @@ const AgeStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[0] = t('register.gender_step');
     currStepTitles[1] = t('register.age_step');
     currStepTitles[2] = t('register.height_step');
 

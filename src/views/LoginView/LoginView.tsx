@@ -52,8 +52,8 @@ const LoginView = (props: any) => {
   const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
 
   useEffect(() => {
-    initGoogleAuth(setLoginGoogleInitLoading, setLoginGoogleLoadingError);
-    initFacebookAuth(setLoginFacebookInitLoading);
+    // initGoogleAuth(setLoginGoogleInitLoading, setLoginGoogleLoadingError);
+    // initFacebookAuth(setLoginFacebookInitLoading);
   }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -212,7 +212,7 @@ const LoginView = (props: any) => {
         <title>{t('app.title.login')}</title>
       </Helmet>
 
-      <AuthSocialHelmet />
+      {/*<AuthSocialHelmet />*/}
 
       <div className='loginScreen mt-3 mt-md-5'>
         <h3 className='loginScreen_title d-none d-lg-inline-block'>
@@ -229,6 +229,8 @@ const LoginView = (props: any) => {
               data-validate='["required", "email"]'
               errors={getFieldErrors('email')}
               value={loginForm.email}
+              autoComplete="email"
+              autoFocus={1}
               onChange={(e) => validateOnChange('email', e.target.value, e)}
               placeholder={t('login.email_placeholder')}
               block
@@ -238,17 +240,20 @@ const LoginView = (props: any) => {
           <FormGroup>
             <InputField
               name='password'
+              type="password"
               label={t('login.form_password')}
-              type='password'
-              autocomplate='current-password'
               data-validate='["required"]'
               errors={getFieldErrors('password')}
+              autoComplete="new-password"
               value={loginForm.password}
               onChange={(e) => validateOnChange('password', e.target.value, e)}
               placeholder={t('login.password_placeholder')}
               block
             />
           </FormGroup>
+
+          <input type="text" name="email" className="d-none" />
+          <input type="password" name="pass" className="d-none" />
 
           <Button
             className='loginScreen_btn'

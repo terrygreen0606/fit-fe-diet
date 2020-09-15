@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import Select from 'react-select';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
@@ -13,6 +17,7 @@ import {
   addIngredientInShoppingList,
   deleteFromShoppingList,
   getPublicShopListUrl,
+  syncShoppingList,
 } from 'api';
 
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -45,6 +50,8 @@ const ShoppingListView: React.FC = (props: any) => {
   const [slideStep, setSlideStep] = useState(1);
   const [shareListPopup, setShareListPopup] = useState(false);
   const [ingredientsArray, setIngredientsArray] = useState([]);
+
+  const [dateFromShopList, setDateFromShopList] = useState(null);
 
   const t = (code: string, placeholders?: any) => getTranslate(
     localePhrases,
@@ -97,25 +104,56 @@ const ShoppingListView: React.FC = (props: any) => {
     }
   };
 
+  const SyncShopListCallback = useCallback(() => {
+    syncShoppingList(dateFromShopList).then((res) => {
+      if (res && res.data && res.data.data.date_sync !== dateFromShopList) {
+        // shopping list need update
+        const { list, date_sync: dateSync } = res.data.data;
+        if (list.length > 0) {
+          const newItems = items.map((item) => {
+            const syncEl = list.filter((syncItem) => syncItem[0] === item.id);
+            if (syncEl[0]) {
+              const [id, weight, isBought] = syncEl[0];
+              item.is_bought = isBought;
+              item.weight = weight;
+              return item;
+            }
+          });
+          setItems(newItems.filter((item) => item));
+          props.setShoppingListCount(newItems.filter((item) => item).length);
+        } else {
+          setItems([]);
+          props.setShoppingListCount(0);
+        }
+        setDateFromShopList(dateSync);
+      }
+    });
+  }, [items, dateFromShopList]);
+
   const addIngredient = async () => {
     if (!ingredientWeight || !ingredientId) toast.warn('Product name and quantity should be filled');
     else {
       await addIngredientInShoppingList(
         ingredientId,
         ingredientWeight ? +ingredientWeight : undefined,
-      );
+      ).then((res) => {
+        setDateFromShopList(res.data.data.date_sync);
+        SyncShopListCallback();
+      });
       await getShoppingList(2)
-        .then((res) => setItems(res.data.data.list));
+        .then((res) => {
+          setItems(res.data.data.list);
+          props.setShoppingListCount(res.data.data.list.length);
+        });
     }
   };
 
   const deleteIngredient = (item) => {
-    setItems((prev) => [
-      ...prev.splice(0, prev.indexOf(item)),
-      ...prev.splice(prev.indexOf(item) + 1),
-    ]);
-
-    deleteFromShoppingList(item.id)
+    deleteFromShoppingList(item.id, dateFromShopList)
+      .then((res) => {
+        setDateFromShopList(res.data.data.date_sync);
+        SyncShopListCallback();
+      })
       .catch((error) => toast.error(error.message));
   };
 
@@ -126,7 +164,11 @@ const ShoppingListView: React.FC = (props: any) => {
       e.target.parentElement.parentElement.classList.remove('active');
     }
 
-    setShoppingRowBought(item.id, e.target.checked)
+    setShoppingRowBought(item.id, e.target.checked, dateFromShopList)
+      .then((res) => {
+        setDateFromShopList(res.data.data.date_sync);
+        SyncShopListCallback();
+      })
       .catch((error) => toast.error(error.message));
   };
 
@@ -238,11 +280,13 @@ const ShoppingListView: React.FC = (props: any) => {
 
   useEffect(() => {
     getShoppingList(2)
-      .then((res) => setItems(res.data.data.list));
+      .then((res) => {
+        const { date_sync: dateSync, list } = res.data.data;
+        setDateFromShopList(dateSync);
+        setItems(list);
+      });
     setMeasurement(settings.measurement);
     setQuantity(quantityOptions(settings.measurement)[0]);
-    getPublicShopListUrl()
-      .then((res) => setPublicShopListUrl(res.data.data.url));
   }, []);
 
   useEffect(() => {
@@ -253,13 +297,11 @@ const ShoppingListView: React.FC = (props: any) => {
     });
   });
 
-  // if (document.querySelector('.shopping_list_body_title_sect_text')) {
-  //   document.querySelector('.shopping_list_body_title_sect_text').innerHTML = document
-  //     .querySelector('.shopping_list_body_title_sect_text').innerHTML
-  //     .replace(/(\d+)/, `${
-  //       document.querySelectorAll('input[type="checkbox"]:not(:checked)').length
-  //     }`);
-  // }
+  useEffect(() => {
+    const interval = setInterval(() => SyncShopListCallback(), (10000));
+    // destroy interval on unmount
+    return () => clearInterval(interval);
+  });
 
   if (!items) return <Spinner color='#0FC1A1' />;
 
@@ -302,18 +344,28 @@ const ShoppingListView: React.FC = (props: any) => {
                   />
                   <ShareIcon
                     className='page-sub-tabs-controls-icon'
-                    onClick={() => setShareListPopup(!shareListPopup)}
+                    onClick={() => {
+                      setShareListPopup(!shareListPopup);
+                      if (!publicShopListUrl) {
+                        getPublicShopListUrl()
+                          .then((res) => setPublicShopListUrl(res.data.data.url));
+                      }
+                    }}
                   />
                   {
                     shareListPopup && (
-                      <ShareButtons shareLink={publicShopListUrl} classes='sharing_socials' />
+                      <ShareButtons
+                        shareLink={publicShopListUrl}
+                        classes='sharing_socials'
+                        disabled={!items || !items.length}
+                      />
                     )
                   }
                 </div>
               </div>
 
               <div className='shopping_list_body'>
-                {items.length ? renderItems() : t('shopping_list.empty')}
+                {items.length ? renderItems() : t('shop_list.empty')}
               </div>
 
               <div className='shopping_list_footer'>

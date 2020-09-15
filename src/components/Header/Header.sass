@@ -61,6 +61,27 @@
   justify-content: flex-end
   align-items: center
 
+.shopping_cart
+  position: relative
+  .mainHeader_menuList_item_icon
+    width: 36px
+    height: 36px
+  &_icon_count
+    visibility: hidden
+    width: 29px
+    height: 29px
+    border-radius: 50%
+    background-color: #FF3D00
+    position: absolute
+    right: -50%
+    top: -10%
+    display: flex
+    justify-content: center
+    align-items: center
+    color: #ffffff
+    font-weight: bold
+    &.visible
+      visibility: visible
 
 @media only screen and (max-width : 1400px)
   .mainHeader

@@ -92,7 +92,7 @@ const SettingsChangeMealPlanView = (props: any) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs = [...form.elements || []].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -110,44 +110,7 @@ const SettingsChangeMealPlanView = (props: any) => {
         updateChangeMealForm.ignore_cuisine_ids,
         updateChangeMealForm.diseases,
         updateChangeMealForm.meals_cnt,
-      ).then((response) => {
-        toast.success(t('mp.form.success'), {
-          autoClose: 3000,
-        });
-
-        setUpdateChangeMealForm({
-          ...updateChangeMealForm,
-          measurement: null,
-          gender: '',
-          age: null,
-          height: '',
-          weight: null,
-          goal: null,
-          ignore_cuisine_ids: [],
-          diseases: [],
-          meals_cnt: null,
-        });
-
-        const updatedDiseasesList = [];
-
-        diseasesList.map((item) => {
-          item.isActive = false;
-          updatedDiseasesList.push(item);
-        });
-
-        setDiseasesList(updatedDiseasesList);
-
-        const updatedignoreCuisinesList = [];
-
-        ignoreCuisinesList.map((item) => {
-          item.isActive = false;
-          updatedignoreCuisinesList.push(item);
-        });
-
-        setIgnoreCuisinesList(updatedignoreCuisinesList);
-
-        return response.data.data;
-      }).catch(() => {
+      ).catch(() => {
         toast.error(t('mp.form.error'), {
           autoClose: 3000,
         });
@@ -157,9 +120,11 @@ const SettingsChangeMealPlanView = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
+
     getRecipeCuisines().then((response) => {
       if (!cleanComponent) setIgnoreCuisinesList(response.data.data);
     });
+
     getDiseases().then((response) => {
       if (!cleanComponent) setDiseasesList(response.data.data);
     });
@@ -203,8 +168,7 @@ const SettingsChangeMealPlanView = (props: any) => {
         />
       </div>
       <ProfileLayout>
-        <form
-          onSubmit={(e) => updateChangeMealSubmit(e)}
+        <div
           className='change-meal-plan card-bg'
         >
           <Progress
@@ -308,7 +272,10 @@ const SettingsChangeMealPlanView = (props: any) => {
                   type='button'
                   color='primary'
                   className='change-meal-plan__btn'
-                  onClick={() => setActiveStep(steps.metrics)}
+                  onClick={(e) => {
+                    setActiveStep(steps.metrics);
+                    updateChangeMealSubmit(e);
+                  }}
                 >
                   {t('mp.next')}
                 </Button>
@@ -455,7 +422,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                   type='button'
                   color='primary'
                   className='change-meal-plan__btn'
-                  onClick={() => {
+                  onClick={(e) => {
                     const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
 
                     if (ignoreCuisinesList.length > 0) {
@@ -467,6 +434,8 @@ const SettingsChangeMealPlanView = (props: any) => {
                     }
 
                     setActiveStep(steps.notEating);
+
+                    updateChangeMealSubmit(e);
                   }}
                 >
                   {t('mp.next')}
@@ -518,7 +487,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                   type='button'
                   color='primary'
                   className='change-meal-plan__btn'
-                  onClick={() => {
+                  onClick={(e) => {
                     const updatedDiseasesList = [...diseasesList];
 
                     if (updatedDiseasesList.length > 0) {
@@ -529,6 +498,8 @@ const SettingsChangeMealPlanView = (props: any) => {
                     }
 
                     setActiveStep(steps.diseases);
+
+                    updateChangeMealSubmit(e);
                   }}
                 >
                   {t('mp.next')}
@@ -575,7 +546,10 @@ const SettingsChangeMealPlanView = (props: any) => {
                   type='button'
                   color='primary'
                   className='change-meal-plan__btn'
-                  onClick={() => setActiveStep(steps.meals)}
+                  onClick={(e) => {
+                    setActiveStep(steps.meals);
+                    updateChangeMealSubmit(e);
+                  }}
                 >
                   {t('mp.next')}
                 </Button>
@@ -715,8 +689,9 @@ const SettingsChangeMealPlanView = (props: any) => {
               </div>
               <div className='change-meal-plan__btn-wrap'>
                 <Button
-                  type='submit'
+                  type='button'
                   color='primary'
+                  onClick={(e) => updateChangeMealSubmit(e)}
                   className='change-meal-plan__btn'
                 >
                   {t('mp.save')}
@@ -724,7 +699,7 @@ const SettingsChangeMealPlanView = (props: any) => {
               </div>
             </div>
           )}
-        </form>
+        </div>
       </ProfileLayout>
     </>
   );

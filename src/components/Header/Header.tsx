@@ -17,6 +17,7 @@ import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-ca
 const Header = (props: any) => {
   const {
     isAuthenticated,
+    shoppingListCount,
     popup,
     setPopup,
     location,
@@ -139,6 +140,9 @@ const Header = (props: any) => {
                       onClick={openShopListPopupHandler}
                     >
                       <ShoppingCartIcon className='mainHeader_menuList_item_icon' />
+                      <span className={`shopping_cart_icon_count ${shoppingListCount !== 0 ? 'visible' : ''}`}>
+                        {shoppingListCount}
+                      </span>
                     </span>
 
                     <span
@@ -150,20 +154,20 @@ const Header = (props: any) => {
                     </span>
                   </>
                 ) : (
-                    <>
-                      <NavLink
-                        to='/login'
-                        className='mainHeader_menuList_item'
-                        activeClassName='mainHeader_menuList_item_active'
-                      >
-                        {t('login.submit')}
-                      </NavLink>
+                  <>
+                    <NavLink
+                      to='/login'
+                      className='mainHeader_menuList_item'
+                      activeClassName='mainHeader_menuList_item_active'
+                    >
+                      {t('login.submit')}
+                    </NavLink>
 
-                      <NavLink to='/register' className='link-raw'>
-                        <Button color='primary'>{t('button.register')}</Button>
-                      </NavLink>
-                    </>
-                  )}
+                    <NavLink to='/register' className='link-raw'>
+                      <Button color='primary'>{t('button.register')}</Button>
+                    </NavLink>
+                  </>
+                )}
               </nav>
 
             </div>
@@ -179,6 +183,6 @@ export default WithTranslate(
     (state: any) => ({
       isAuthenticated: state.auth.isAuthenticated,
     }),
-    { userLogout }
-  )(Header)
+    { userLogout },
+  )(Header),
 );
