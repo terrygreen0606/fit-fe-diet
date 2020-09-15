@@ -6,7 +6,8 @@ const initialSettings = {
   paid_until: null,
   google_id: null,
   fb_app_id: null,
-  checksum: null
+  checksum: null,
+  shopping_list_count: null,
 };
 
 const settingsReducer = (state = initialSettings, action) => {
@@ -14,7 +15,7 @@ const settingsReducer = (state = initialSettings, action) => {
     case SET_APP_SETTING:
       return {
         ...state,
-        ...action.settings
+        ...action.settings,
       };
 
     default:

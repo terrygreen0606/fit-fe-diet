@@ -1,9 +1,9 @@
 import axios from 'utils/axios';
 import { 
-  userAcknowledge, 
-  loadPhrases, 
+  userAcknowledge,
+  loadPhrases,
   getAppSettings,
-  getAppPublicSettings
+  getAppPublicSettings,
 } from 'api';
 import { setLocaleLang, setLocalePhrases, setAppSetting } from 'store/actions';
 
@@ -62,13 +62,13 @@ export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true
         })
         .catch(error => {
           dispatch(setAuthChecking(false));
-        })
+        });
     } else {
       getAppPublicSettings()
         .then(response => {
           if (response.data && response.data.data) {
             dispatch(setAppSetting(response.data.data));
-            
+
             if (localesLoad) {
               dispatch(loadLocales());
             }

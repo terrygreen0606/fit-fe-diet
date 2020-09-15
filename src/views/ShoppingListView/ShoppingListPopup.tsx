@@ -79,8 +79,6 @@ const ShoppingListPopup = (props: any) => {
         setItems(res.data.data.list);
       });
     setMeasurement(settings.measurement);
-    getPublicShopListUrl()
-      .then((res) => setPublicShopListUrl(res.data.data.url));
   }, []);
 
   useEffect(() => {
@@ -121,7 +119,13 @@ const ShoppingListPopup = (props: any) => {
                 />
                 <ShareIcon
                   className='page-sub-tabs-controls-icon'
-                  onClick={() => setShareListPopup(!shareListPopup)}
+                  onClick={() => {
+                    setShareListPopup(!shareListPopup);
+                    if (!publicShopListUrl) {
+                      getPublicShopListUrl()
+                        .then((res) => setPublicShopListUrl(res.data.data.url));
+                    }
+                  }}
                 />
                 {
                   shareListPopup && <ShareButtons shareLink={publicShopListUrl} classes='sharing_socials' />
@@ -129,56 +133,60 @@ const ShoppingListPopup = (props: any) => {
               </div>
             </div>
             {
-              categories.map((category) => (
-                <div
-                  className='popup_body'
-                  key={uuid()}
-                >
-                  <div className='popup_body_category'>
-                    {category}
-                  </div>
-                  {
-                    items
-                      .filter((item) => item.cuisine_name_i18n === category)
-                      .map((item) => (
-                        <div
-                          className={classnames('popup_body_item', {
-                            active: item.is_bought,
-                          })}
-                          key={item.id}
-                        >
-                          <CustomCheckbox
-                            label={namingEditor(item)}
-                            checked={item.is_bought}
-                            onChange={(e) => onChangeHandler(e, item)}
-                            className='popup_body_item_checkbox'
-                            inline
-                          />
-                          <span
-                            role='presentation'
-                            className='popup_body_item_trash'
-                            onClick={() => deleteIngredient(item)}
-                          >
-                            <TrashIcon />
-                          </span>
-                        </div>
-                      ))
-                  }
-                </div>
-              ))
+              categories.map((category) => {
+                if (items.filter((item) => item.cuisine_name_i18n === category).length) {
+                  return (
+                    <div
+                      className='popup_body'
+                      key={uuid()}
+                    >
+                      <div className='popup_body_category'>
+                        {category}
+                      </div>
+                      {
+                        items
+                          .filter((item) => item.cuisine_name_i18n === category)
+                          .map((item) => (
+                            <div
+                              className={classnames('popup_body_item', {
+                                active: item.is_bought,
+                              })}
+                              key={item.id}
+                            >
+                              <CustomCheckbox
+                                label={namingEditor(item)}
+                                checked={item.is_bought}
+                                onChange={(e) => onChangeHandler(e, item)}
+                                className='popup_body_item_checkbox'
+                                inline
+                              />
+                              <span
+                                role='presentation'
+                                className='popup_body_item_trash'
+                                onClick={() => deleteIngredient(item)}
+                              >
+                                <TrashIcon />
+                              </span>
+                            </div>
+                          ))
+                      }
+                    </div>
+                  );
+                }
+              })
             }
           </>
         ) : (
-            <div className='popup_cart_empty'>
-              <span>{t('shop_list.empty_cart')}</span>
-              <div className='popup_cart_empty_2'>
-                <span>{`${t('shop_list.add_ingredient')} `}</span>
-                <Link to='/shopping-list' className='popup_cart_empty_link'>
-                  {t('shop_list.add_ingredient_here_link')}
-                </Link>
-              </div>
+          <div className='popup_cart_empty'>
+            <span>{t('shop_list.empty_cart')}</span>
+            <div className='popup_cart_empty_2'>
+              <span>{`${t('shop_list.add_ingredient')} `}</span>
+              <Link to='/shopping-list' className='popup_cart_empty_link'>
+                {t('shop_list.add_ingredient_here_link')}
+              </Link>
             </div>
-          )
+          </div>
+        )
       }
     </div>
   );
