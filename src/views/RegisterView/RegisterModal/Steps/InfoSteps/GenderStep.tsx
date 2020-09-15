@@ -32,6 +32,7 @@ const GenderStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[1] = t('register.gender_step');
     currStepTitles[2] = t('register.not_eating_step');
 
     props.setStepTitles([...currStepTitles]);

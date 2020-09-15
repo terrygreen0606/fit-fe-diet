@@ -13,6 +13,7 @@ const NotEatingStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
+    currStepTitles[0] = t('register.weight_goal_step');
     currStepTitles[1] = t('register.not_eating_step');
     currStepTitles[2] = t('register.plan_create_step');
 
