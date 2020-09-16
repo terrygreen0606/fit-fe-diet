@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable react/jsx-indent */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable import/order */
@@ -28,10 +30,11 @@ import ProfileLayout from 'components/hoc/ProfileLayout';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import Button from 'components/common/Forms/Button';
-import Progress from './Progress';
+import ProgressLine from 'components/ProgressLine';
 import InputField from 'components/common/Forms/InputField';
 import CustomSwitch from 'components/common/Forms/CustomSwitch';
 import CustomRadio from 'components/common/Forms/CustomRadio';
+import Spinner from 'components/common/Spinner';
 
 import './SettingsChangeMealPlanView.sass';
 
@@ -51,6 +54,8 @@ const SettingsChangeMealPlanView = (props: any) => {
     getTranslate(props.localePhrases, code, placeholders);
 
   const { userSettings } = props;
+
+  const [isSpinnerActive, setSpinnerActive] = useState(true);
 
   const [activeStep, setActiveStep] = useState(steps.goal);
 
@@ -146,6 +151,8 @@ const SettingsChangeMealPlanView = (props: any) => {
           diseases: data.diseases ? [...data.diseases] : [],
         });
       }
+
+      setSpinnerActive(false);
     });
 
     return () => cleanComponent = true;
@@ -171,534 +178,516 @@ const SettingsChangeMealPlanView = (props: any) => {
         <div
           className='change-meal-plan card-bg'
         >
-          <Progress
-            goal={activeStep === steps.goal
-              || activeStep === steps.metrics
-              || activeStep === steps.notEating
-              || activeStep === steps.diseases
-              || activeStep === steps.meals}
-            goalText={t('mp.progress.goal')}
-            metrics={activeStep === steps.metrics
-              || activeStep === steps.notEating
-              || activeStep === steps.diseases
-              || activeStep === steps.meals}
-            metricsText={t('mp.progress.metrics')}
-            notEating={activeStep === steps.notEating
-              || activeStep === steps.diseases
-              || activeStep === steps.meals}
-            notEatingText={t('mp.progress.not_eating')}
-            diseases={activeStep === steps.diseases
-              || activeStep === steps.meals}
-            diseasesText={t('mp.progress.diseases')}
-            meals={activeStep === steps.meals}
-            mealsText={t('mp.progress.meals')}
-            percent={activeStep === steps.goal && 20
-              || activeStep === steps.metrics && 40
-              || activeStep === steps.notEating && 60
-              || activeStep === steps.diseases && 80
-              || activeStep === steps.meals && 100}
-            onClickGoal={() => setActiveStep(steps.goal)}
-            onClickMetrics={() => setActiveStep(steps.metrics)}
-            onClickNotEating={() => {
-              const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
-
-              if (ignoreCuisinesList.length > 0) {
-                updateChangeMealForm.ignore_cuisine_ids.forEach((ignoreCuisineItem) => {
-                  updatedIgnoreCuisinesList.find((findItem) => ignoreCuisineItem === findItem.id).isActive = true;
-                });
-
-                setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
-              }
-
-              setActiveStep(steps.notEating);
-            }}
-            onClickdiseases={() => {
-              const updatedDiseasesList = [...diseasesList];
-
-              if (updatedDiseasesList.length > 0) {
-                updateChangeMealForm.diseases.forEach((diseasesItem) => {
-                  updatedDiseasesList.find((findItem) => diseasesItem === findItem.code).isActive = true;
-                });
-                setDiseasesList([...updatedDiseasesList]);
-              }
-
-              setActiveStep(steps.diseases);
-            }}
-            onClickMeals={() => setActiveStep(steps.meals)}
-          />
-          {activeStep === steps.goal && (
-            <div>
-              <div className='change-meal-plan__title'>{t('mp.goal.title')}</div>
-              <div className='change-meal-plan__goals'>
-                <Button
-                  type='button'
-                  onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: -1 })}
-                  className={classnames('change-meal-plan__goals-item', {
-                    active: updateChangeMealForm.goal === -1,
-                  })}
-                >
-                  <div className='change-meal-plan__goals-item-media'>
-                    <LoseWeightIcon />
-                  </div>
-                  <span>{t('mp.goal.lose')}</span>
-                </Button>
-                <Button
-                  type='button'
-                  onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: 0 })}
-                  className={classnames('change-meal-plan__goals-item', {
-                    active: updateChangeMealForm.goal === 0,
-                  })}
-                >
-                  <div className='change-meal-plan__goals-item-media'>
-                    <KeepWeightIcon />
-                  </div>
-                  <span>{t('mp.goal.keep')}</span>
-                </Button>
-                <Button
-                  type='button'
-                  onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: 1 })}
-                  className={classnames('change-meal-plan__goals-item', {
-                    active: updateChangeMealForm.goal === 1,
-                  })}
-                >
-                  <div className='change-meal-plan__goals-item-media'>
-                    <LiftWeightIcon />
-                  </div>
-                  <span>{t('mp.goal.lift')}</span>
-                </Button>
-              </div>
-              <div className='change-meal-plan__btn-wrap'>
-                <Button
-                  type='button'
-                  color='primary'
-                  className='change-meal-plan__btn'
-                  onClick={(e) => {
-                    setActiveStep(steps.metrics);
-                    updateChangeMealSubmit(e);
-                  }}
-                >
-                  {t('mp.next')}
-                </Button>
-              </div>
+          {isSpinnerActive ? (
+            <div className='container text-center'>
+              <Spinner
+                size='lg'
+                color='#0FC1A1'
+              />
             </div>
-          )}
-          {activeStep === steps.metrics && (
-            <div>
-              <div className='change-meal-plan__title'>{t('mp.metrics.title')}</div>
-              <div className='change-meal-plan__metrics'>
-                <div className='change-meal-plan__metrics-switch'>
-                  <CustomSwitch
-                    label1={t('mp.imperial')}
-                    label2={t('mp.metric')}
-                    checked={updateChangeMealForm.measurement === 'si'}
-                    onChange={() => {
-                      setUpdateChangeMealForm({
-                        ...updateChangeMealForm,
-                        measurement: updateChangeMealForm.measurement === 'si' ? 'us' : 'si',
-                      });
-                    }}
-                  />
-                </div>
-                <div className='change-meal-plan__metrics-wrap'>
-                  <div className='change-meal-plan__metrics-gender'>
-                    <div className='change-meal-plan__metrics-gender-desc'>
-                      {t('mp.metrics.sex')}
-                    </div>
-                    <div
-                      className={classnames('change-meal-plan__metrics-gender-item', {
-                        active: updateChangeMealForm.gender === 'm',
-                      })}
-                    >
-                      <CustomRadio
-                        name='gender'
-                        label={(
-                          <>
-                            <MaleIcon className='change-meal-plan__metrics-gender-item-icon' />
-                            <div className='change-meal-plan__metrics-gender-item-text'>
-                              {t('mp.form.male')}
-                            </div>
-                          </>
-                        )}
-                        value='m'
-                        checked={updateChangeMealForm.gender === 'm'}
-                        onChange={(e) => setUpdateChangeMealForm({
-                          ...updateChangeMealForm,
-                          gender: e.target.value,
+          ) : (
+              <>
+                <ProgressLine
+                  activeStepIndex={activeStep}
+                  steps={[
+                    {
+                      text: t('mp.progress.goal'),
+                      onClick: () => setActiveStep(steps.goal),
+                    },
+                    {
+                      text: t('mp.progress.metrics'),
+                      onClick: () => setActiveStep(steps.metrics),
+                    },
+                    {
+                      text: t('mp.progress.not_eating'),
+                      onClick: () => setActiveStep(steps.notEating),
+                    },
+                    {
+                      text: t('mp.progress.diseases'),
+                      onClick: () => setActiveStep(steps.diseases),
+                    },
+                    {
+                      text: t('mp.progress.meals'),
+                      onClick: () => setActiveStep(steps.meals),
+                    },
+                  ]}
+                />
+                {activeStep === steps.goal && (
+                  <div>
+                    <div className='change-meal-plan__title'>{t('mp.goal.title')}</div>
+                    <div className='change-meal-plan__goals'>
+                      <Button
+                        type='button'
+                        onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: -1 })}
+                        className={classnames('change-meal-plan__goals-item', {
+                          active: updateChangeMealForm.goal === -1,
                         })}
-                      />
-                    </div>
-                    <div
-                      className={classnames('change-meal-plan__metrics-gender-item', {
-                        active: updateChangeMealForm.gender === 'f',
-                      })}
-                    >
-                      <CustomRadio
-                        name='gender'
-                        label={(
-                          <>
-                            <FemaleIcon className='change-meal-plan__metrics-gender-item-icon' />
-                            <div className='change-meal-plan__metrics-gender-item-text'>
-                              {t('mp.form.female')}
-                            </div>
-                          </>
-                        )}
-                        value='f'
-                        checked={updateChangeMealForm.gender === 'f'}
-                        onChange={(e) => setUpdateChangeMealForm({
-                          ...updateChangeMealForm,
-                          gender: e.target.value,
+                      >
+                        <div className='change-meal-plan__goals-item-media'>
+                          <LoseWeightIcon />
+                        </div>
+                        <span>{t('mp.goal.lose')}</span>
+                      </Button>
+                      <Button
+                        type='button'
+                        onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: 0 })}
+                        className={classnames('change-meal-plan__goals-item', {
+                          active: updateChangeMealForm.goal === 0,
                         })}
-                      />
+                      >
+                        <div className='change-meal-plan__goals-item-media'>
+                          <KeepWeightIcon />
+                        </div>
+                        <span>{t('mp.goal.keep')}</span>
+                      </Button>
+                      <Button
+                        type='button'
+                        onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, goal: 1 })}
+                        className={classnames('change-meal-plan__goals-item', {
+                          active: updateChangeMealForm.goal === 1,
+                        })}
+                      >
+                        <div className='change-meal-plan__goals-item-media'>
+                          <LiftWeightIcon />
+                        </div>
+                        <span>{t('mp.goal.lift')}</span>
+                      </Button>
+                    </div>
+                    <div className='change-meal-plan__btn-wrap'>
+                      <Button
+                        type='button'
+                        color='primary'
+                        className='change-meal-plan__btn'
+                        onClick={(e) => {
+                          setActiveStep(steps.metrics);
+                          updateChangeMealSubmit(e);
+                        }}
+                      >
+                        {t('mp.next')}
+                      </Button>
                     </div>
                   </div>
-                  <div className='change-meal-plan__metrics-row'>
-                    <div className='change-meal-plan__metrics-item'>
-                      <InputField
-                        type='number'
-                        name='age'
-                        errors={getFieldErrors('age')}
-                        data-param='12, 100'
-                        data-validate='["min-max"]'
-                        value={updateChangeMealForm.age}
-                        onChange={(e) => validateOnChange('age', e.target.value, e)}
-                        min={12}
-                        max={100}
-                        label={t('mp.metrics.age')}
-                      />
-                    </div>
-                    <div className='change-meal-plan__metrics-item'>
-                      <InputField
-                        name='height'
-                        errors={getFieldErrors('height')}
-                        value={updateChangeMealForm.height}
-                        onChange={(e) => validateOnChange('height', e.target.value, e)}
-                        label={t('mp.metrics.height')}
-                      />
-                      <div className='change-meal-plan__metrics-item-unit'>
-                        {updateChangeMealForm.measurement === 'si' ? t('common.cm_label') : t('common.ft_label')}
+                )}
+                {activeStep === steps.metrics && (
+                  <div>
+                    <div className='change-meal-plan__title'>{t('mp.metrics.title')}</div>
+                    <div className='change-meal-plan__metrics'>
+                      <div className='change-meal-plan__metrics-switch'>
+                        <CustomSwitch
+                          label1={t('mp.imperial')}
+                          label2={t('mp.metric')}
+                          checked={updateChangeMealForm.measurement === 'si'}
+                          onChange={() => {
+                            setUpdateChangeMealForm({
+                              ...updateChangeMealForm,
+                              measurement: updateChangeMealForm.measurement === 'si' ? 'us' : 'si',
+                            });
+                          }}
+                        />
+                      </div>
+                      <div className='change-meal-plan__metrics-wrap'>
+                        <div className='change-meal-plan__metrics-gender'>
+                          <div className='change-meal-plan__metrics-gender-desc'>
+                            {t('mp.metrics.sex')}
+                          </div>
+                          <div
+                            className={classnames('change-meal-plan__metrics-gender-item', {
+                              active: updateChangeMealForm.gender === 'm',
+                            })}
+                          >
+                            <CustomRadio
+                              name='gender'
+                              label={(
+                                <>
+                                  <MaleIcon className='change-meal-plan__metrics-gender-item-icon' />
+                                  <div className='change-meal-plan__metrics-gender-item-text'>
+                                    {t('mp.form.male')}
+                                  </div>
+                                </>
+                              )}
+                              value='m'
+                              checked={updateChangeMealForm.gender === 'm'}
+                              onChange={(e) => setUpdateChangeMealForm({
+                                ...updateChangeMealForm,
+                                gender: e.target.value,
+                              })}
+                            />
+                          </div>
+                          <div
+                            className={classnames('change-meal-plan__metrics-gender-item', {
+                              active: updateChangeMealForm.gender === 'f',
+                            })}
+                          >
+                            <CustomRadio
+                              name='gender'
+                              label={(
+                                <>
+                                  <FemaleIcon className='change-meal-plan__metrics-gender-item-icon' />
+                                  <div className='change-meal-plan__metrics-gender-item-text'>
+                                    {t('mp.form.female')}
+                                  </div>
+                                </>
+                              )}
+                              value='f'
+                              checked={updateChangeMealForm.gender === 'f'}
+                              onChange={(e) => setUpdateChangeMealForm({
+                                ...updateChangeMealForm,
+                                gender: e.target.value,
+                              })}
+                            />
+                          </div>
+                        </div>
+                        <div className='change-meal-plan__metrics-row'>
+                          <div className='change-meal-plan__metrics-item'>
+                            <InputField
+                              type='number'
+                              name='age'
+                              errors={getFieldErrors('age')}
+                              data-param='12, 100'
+                              data-validate='["min-max"]'
+                              value={updateChangeMealForm.age}
+                              onChange={(e) => validateOnChange('age', e.target.value, e)}
+                              min={12}
+                              max={100}
+                              label={t('mp.metrics.age')}
+                            />
+                          </div>
+                          <div className='change-meal-plan__metrics-item'>
+                            <InputField
+                              name='height'
+                              errors={getFieldErrors('height')}
+                              value={updateChangeMealForm.height}
+                              onChange={(e) => validateOnChange('height', e.target.value, e)}
+                              label={t('mp.metrics.height')}
+                            />
+                            <div className='change-meal-plan__metrics-item-unit'>
+                              {updateChangeMealForm.measurement === 'si' ? t('common.cm_label') : t('common.ft_label')}
+                            </div>
+                          </div>
+                          <div className='change-meal-plan__metrics-item'>
+                            <InputField
+                              label={t('mp.metrics.weight_now')}
+                              type='number'
+                              name='weight'
+                              step={0.1}
+                              data-param='30, 999'
+                              data-validate='["min-max"]'
+                              errors={getFieldErrors('weight')}
+                              value={updateChangeMealForm.weight}
+                              onChange={(e) => validateOnChange('weight', e.target.value, e)}
+                              min={30}
+                              max={999}
+                            />
+                            <div className='change-meal-plan__metrics-item-unit'>
+                              {updateChangeMealForm.measurement === 'si' ? t('common.kg_label') : t('common.lbs_label')}
+                            </div>
+                          </div>
+                          <div className='change-meal-plan__metrics-item'>
+                            <InputField
+                              label={t('mp.metrics.weight_want')}
+                              type='number'
+                              name='weight_goal'
+                              step={0.1}
+                              data-param='30, 999'
+                              data-validate='["min-max"]'
+                              errors={getFieldErrors('weight_goal')}
+                              value={updateChangeMealForm.weight_goal}
+                              onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
+                              min={30}
+                              max={999}
+                            />
+                            <div className='change-meal-plan__metrics-item-unit'>
+                              {updateChangeMealForm.measurement === 'si' ? t('common.kg_label') : t('common.lbs_label')}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className='change-meal-plan__metrics-item'>
-                      <InputField
-                        label={t('mp.metrics.weight_now')}
-                        type='number'
-                        name='weight'
-                        step={0.1}
-                        data-param='30, 999'
-                        data-validate='["min-max"]'
-                        errors={getFieldErrors('weight')}
-                        value={updateChangeMealForm.weight}
-                        onChange={(e) => validateOnChange('weight', e.target.value, e)}
-                        min={30}
-                        max={999}
-                      />
-                      <div className='change-meal-plan__metrics-item-unit'>
-                        {updateChangeMealForm.measurement === 'si' ? t('common.kg_label') : t('common.lbs_label')}
-                      </div>
-                    </div>
-                    <div className='change-meal-plan__metrics-item'>
-                      <InputField
-                        label={t('mp.metrics.weight_want')}
-                        type='number'
-                        name='weight_goal'
-                        step={0.1}
-                        data-param='30, 999'
-                        data-validate='["min-max"]'
-                        errors={getFieldErrors('weight_goal')}
-                        value={updateChangeMealForm.weight_goal}
-                        onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
-                        min={30}
-                        max={999}
-                      />
-                      <div className='change-meal-plan__metrics-item-unit'>
-                        {updateChangeMealForm.measurement === 'si' ? t('common.kg_label') : t('common.lbs_label')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='change-meal-plan__btn-wrap'>
-                <Button
-                  type='button'
-                  color='primary'
-                  className='change-meal-plan__btn'
-                  onClick={(e) => {
-                    const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
+                    <div className='change-meal-plan__btn-wrap'>
+                      <Button
+                        type='button'
+                        color='primary'
+                        className='change-meal-plan__btn'
+                        onClick={(e) => {
+                          const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
 
-                    if (ignoreCuisinesList.length > 0) {
-                      updateChangeMealForm.ignore_cuisine_ids.forEach((ignoreCuisineItem) => {
-                        updatedIgnoreCuisinesList.find((findItem) => ignoreCuisineItem === findItem.id).isActive = true;
-                      });
+                          if (ignoreCuisinesList.length > 0) {
+                            updateChangeMealForm.ignore_cuisine_ids.forEach((ignoreCuisineItem) => {
+                              updatedIgnoreCuisinesList.find((findItem) =>
+                                ignoreCuisineItem === findItem.id).isActive = true;
+                            });
 
-                      setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
-                    }
-
-                    setActiveStep(steps.notEating);
-
-                    updateChangeMealSubmit(e);
-                  }}
-                >
-                  {t('mp.next')}
-                </Button>
-              </div>
-            </div>
-          )}
-          {activeStep === steps.notEating && (
-            <div>
-              <div className='change-meal-plan__title'>
-                {t('mp.not_eating.title')}
-              </div>
-              <div className='change-meal-plan__not-eating'>
-                {ignoreCuisinesList.map((item, itemIndex) => (
-                  <button
-                    key={item.id}
-                    type='button'
-                    onClick={() => {
-                      const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
-                      if (!item.isActive) {
-                        updatedIgnoreCuisinesList[itemIndex].isActive = true;
-                        setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
-                        updateChangeMealForm.ignore_cuisine_ids.push(item.id);
-                      } else {
-                        updatedIgnoreCuisinesList[itemIndex].isActive = false;
-                        setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
-                        updateChangeMealForm.ignore_cuisine_ids.find((cuisineItem, cuisineItemIndex) => {
-                          if (cuisineItem === item.id) {
-                            updateChangeMealForm.ignore_cuisine_ids.splice(cuisineItemIndex, 1);
+                            setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
                           }
-                        });
-                      }
-                    }}
-                    className={classnames('change-meal-plan__not-eating-item', {
-                      active: item.isActive,
-                    })}
-                  >
-                    <div className='change-meal-plan__not-eating-item-media'>
-                      <img src={item.image} alt='icon' />
+
+                          setActiveStep(steps.notEating);
+
+                          updateChangeMealSubmit(e);
+                        }}
+                      >
+                        {t('mp.next')}
+                      </Button>
                     </div>
-                    <div className='change-meal-plan__not-eating-item-desc'>
-                      {item.name}
+                  </div>
+                )}
+                {activeStep === steps.notEating && (
+                  <div>
+                    <div className='change-meal-plan__title'>
+                      {t('mp.not_eating.title')}
                     </div>
-                  </button>
-                ))}
-              </div>
-              <div className='change-meal-plan__btn-wrap'>
-                <Button
-                  type='button'
-                  color='primary'
-                  className='change-meal-plan__btn'
-                  onClick={(e) => {
-                    const updatedDiseasesList = [...diseasesList];
+                    <div className='change-meal-plan__not-eating'>
+                      {ignoreCuisinesList.map((item, itemIndex) => (
+                        <button
+                          key={item.id}
+                          type='button'
+                          onClick={() => {
+                            const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
+                            if (!item.isActive) {
+                              updatedIgnoreCuisinesList[itemIndex].isActive = true;
+                              setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
+                              updateChangeMealForm.ignore_cuisine_ids.push(item.id);
+                            } else {
+                              updatedIgnoreCuisinesList[itemIndex].isActive = false;
+                              setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
+                              updateChangeMealForm.ignore_cuisine_ids.find((cuisineItem, cuisineItemIndex) => {
+                                if (cuisineItem === item.id) {
+                                  updateChangeMealForm.ignore_cuisine_ids.splice(cuisineItemIndex, 1);
+                                }
+                              });
+                            }
+                          }}
+                          className={classnames('change-meal-plan__not-eating-item', {
+                            active: item.isActive,
+                          })}
+                        >
+                          <div className='change-meal-plan__not-eating-item-media'>
+                            <img src={item.image} alt='icon' />
+                          </div>
+                          <div className='change-meal-plan__not-eating-item-desc'>
+                            {item.name}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    <div className='change-meal-plan__btn-wrap'>
+                      <Button
+                        type='button'
+                        color='primary'
+                        className='change-meal-plan__btn'
+                        onClick={(e) => {
+                          const updatedDiseasesList = [...diseasesList];
 
-                    if (updatedDiseasesList.length > 0) {
-                      updateChangeMealForm.diseases.forEach((diseasesItem) => {
-                        updatedDiseasesList.find((findItem) => diseasesItem === findItem.code).isActive = true;
-                      });
-                      setDiseasesList([...updatedDiseasesList]);
-                    }
-
-                    setActiveStep(steps.diseases);
-
-                    updateChangeMealSubmit(e);
-                  }}
-                >
-                  {t('mp.next')}
-                </Button>
-              </div>
-            </div>
-          )}
-          {activeStep === steps.diseases && (
-            <div>
-              <div className='change-meal-plan__title'>
-                {t('mp.diseases.title')}
-              </div>
-              <div className='change-meal-plan__diseases'>
-                {diseasesList.map((item, itemIndex) => (
-                  <button
-                    key={item.code}
-                    type='button'
-                    onClick={() => {
-                      const updatedDiseasesList = [...diseasesList];
-                      if (!item.isActive) {
-                        updatedDiseasesList[itemIndex].isActive = true;
-                        setDiseasesList([...updatedDiseasesList]);
-                        updateChangeMealForm.diseases.push(item.code);
-                      } else {
-                        updatedDiseasesList[itemIndex].isActive = false;
-                        setDiseasesList([...updatedDiseasesList]);
-                        updateChangeMealForm.diseases.find((cuisineItem, cuisineItemIndex) => {
-                          if (cuisineItem === item.code) {
-                            updateChangeMealForm.diseases.splice(cuisineItemIndex, 1);
+                          if (updatedDiseasesList.length > 0) {
+                            updateChangeMealForm.diseases.forEach((diseasesItem) => {
+                              updatedDiseasesList.find((findItem) => diseasesItem === findItem.code).isActive = true;
+                            });
+                            setDiseasesList([...updatedDiseasesList]);
                           }
-                        });
-                      }
-                    }}
-                    className={classnames('change-meal-plan__diseases-item', {
-                      active: item.isActive,
-                    })}
-                  >
-                    {t(item.i18n_code)}
-                  </button>
-                ))}
-              </div>
-              <div className='change-meal-plan__btn-wrap'>
-                <Button
-                  type='button'
-                  color='primary'
-                  className='change-meal-plan__btn'
-                  onClick={(e) => {
-                    setActiveStep(steps.meals);
-                    updateChangeMealSubmit(e);
-                  }}
-                >
-                  {t('mp.next')}
-                </Button>
-              </div>
-            </div>
-          )}
-          {activeStep === steps.meals && (
-            <div>
-              <div className='change-meal-plan__title'>{t('mp.meals.title')}</div>
-              <div className='change-meal-plan__meals'>
-                <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
-                  active: updateChangeMealForm.meals_cnt === 3,
-                })}
-                >
-                  <div className='change-meal-plan__meals-item-count'>3</div>
-                  <div className='change-meal-plan__meals-item-desc'>
-                    {t('mp.meals.desc')}
-                  </div>
-                  <div className='change-meal-plan__meals-item-content'>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <BreakfastIcon />
-                      </div>
-                      {t('meal.breakfast')}
-                    </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <LunchIcon />
-                      </div>
-                      {t('meal.lunch')}
-                    </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <DinnerIcon />
-                      </div>
-                      {t('meal.dinner')}
+
+                          setActiveStep(steps.diseases);
+
+                          updateChangeMealSubmit(e);
+                        }}
+                      >
+                        {t('mp.next')}
+                      </Button>
                     </div>
                   </div>
-                  <Button
-                    type='button'
-                    onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 3 })}
-                    className='change-meal-plan__meals-item-btn'
-                  >
-                    {t('mp.meals.choose')}
-                  </Button>
-                </div>
-                <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
-                  active: updateChangeMealForm.meals_cnt === 4,
-                })}
-                >
-                  <div className='change-meal-plan__meals-item-count'>4</div>
-                  <div className='change-meal-plan__meals-item-desc'>
-                    {t('mp.meals.desc')}
-                  </div>
-                  <div className='change-meal-plan__meals-item-content'>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <BreakfastIcon />
-                      </div>
-                      {t('meal.breakfast')}
+                )}
+                {activeStep === steps.diseases && (
+                  <div>
+                    <div className='change-meal-plan__title'>
+                      {t('mp.diseases.title')}
                     </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <LunchIcon />
-                      </div>
-                      {t('meal.lunch')}
+                    <div className='change-meal-plan__diseases'>
+                      {diseasesList.map((item, itemIndex) => (
+                        <button
+                          key={item.code}
+                          type='button'
+                          onClick={() => {
+                            const updatedDiseasesList = [...diseasesList];
+                            if (!item.isActive) {
+                              updatedDiseasesList[itemIndex].isActive = true;
+                              setDiseasesList([...updatedDiseasesList]);
+                              updateChangeMealForm.diseases.push(item.code);
+                            } else {
+                              updatedDiseasesList[itemIndex].isActive = false;
+                              setDiseasesList([...updatedDiseasesList]);
+                              updateChangeMealForm.diseases.find((cuisineItem, cuisineItemIndex) => {
+                                if (cuisineItem === item.code) {
+                                  updateChangeMealForm.diseases.splice(cuisineItemIndex, 1);
+                                }
+                              });
+                            }
+                          }}
+                          className={classnames('change-meal-plan__diseases-item', {
+                            active: item.isActive,
+                          })}
+                        >
+                          {t(item.i18n_code)}
+                        </button>
+                      ))}
                     </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <SnackIcon />
-                      </div>
-                      {t('meal.snack')}
-                    </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <DinnerIcon />
-                      </div>
-                      {t('meal.dinner')}
-                    </div>
-                  </div>
-                  <Button
-                    type='button'
-                    onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 4 })}
-                    className='change-meal-plan__meals-item-btn'
-                  >
-                    {t('mp.meals.choose')}
-                  </Button>
-                </div>
-                <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
-                  active: updateChangeMealForm.meals_cnt === 5,
-                })}
-                >
-                  <div className='change-meal-plan__meals-item-count'>5</div>
-                  <div className='change-meal-plan__meals-item-desc'>
-                    {t('mp.meals.desc')}
-                  </div>
-                  <div className='change-meal-plan__meals-item-content'>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <BreakfastIcon />
-                      </div>
-                      {t('meal.breakfast')}
-                    </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <SnackIcon />
-                      </div>
-                      {t('meal.snack')}
-                    </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <LunchIcon />
-                      </div>
-                      {t('meal.lunch')}
-                    </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <SnackIcon />
-                      </div>
-                      {t('meal.snack')}
-                    </div>
-                    <div className='change-meal-plan__meals-item-content-block'>
-                      <div className='change-meal-plan__meals-item-content-block-media'>
-                        <DinnerIcon />
-                      </div>
-                      {t('meal.dinner')}
+                    <div className='change-meal-plan__btn-wrap'>
+                      <Button
+                        type='button'
+                        color='primary'
+                        className='change-meal-plan__btn'
+                        onClick={(e) => {
+                          setActiveStep(steps.meals);
+                          updateChangeMealSubmit(e);
+                        }}
+                      >
+                        {t('mp.next')}
+                      </Button>
                     </div>
                   </div>
-                  <Button
-                    type='button'
-                    onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 5 })}
-                    className='change-meal-plan__meals-item-btn'
-                  >
-                    {t('mp.meals.choose')}
-                  </Button>
-                </div>
-              </div>
-              <div className='change-meal-plan__btn-wrap'>
-                <Button
-                  type='button'
-                  color='primary'
-                  onClick={(e) => updateChangeMealSubmit(e)}
-                  className='change-meal-plan__btn'
-                >
-                  {t('mp.save')}
-                </Button>
-              </div>
-            </div>
-          )}
+                )}
+                {activeStep === steps.meals && (
+                  <div>
+                    <div className='change-meal-plan__title'>{t('mp.meals.title')}</div>
+                    <div className='change-meal-plan__meals'>
+                      <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
+                        active: updateChangeMealForm.meals_cnt === 3,
+                      })}
+                      >
+                        <div className='change-meal-plan__meals-item-count'>3</div>
+                        <div className='change-meal-plan__meals-item-desc'>
+                          {t('mp.meals.desc')}
+                        </div>
+                        <div className='change-meal-plan__meals-item-content'>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <BreakfastIcon />
+                            </div>
+                            {t('meal.breakfast')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <LunchIcon />
+                            </div>
+                            {t('meal.lunch')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <DinnerIcon />
+                            </div>
+                            {t('meal.dinner')}
+                          </div>
+                        </div>
+                        <Button
+                          type='button'
+                          onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 3 })}
+                          className='change-meal-plan__meals-item-btn'
+                        >
+                          {t('mp.meals.choose')}
+                        </Button>
+                      </div>
+                      <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
+                        active: updateChangeMealForm.meals_cnt === 4,
+                      })}
+                      >
+                        <div className='change-meal-plan__meals-item-count'>4</div>
+                        <div className='change-meal-plan__meals-item-desc'>
+                          {t('mp.meals.desc')}
+                        </div>
+                        <div className='change-meal-plan__meals-item-content'>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <BreakfastIcon />
+                            </div>
+                            {t('meal.breakfast')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <LunchIcon />
+                            </div>
+                            {t('meal.lunch')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <SnackIcon />
+                            </div>
+                            {t('meal.snack')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <DinnerIcon />
+                            </div>
+                            {t('meal.dinner')}
+                          </div>
+                        </div>
+                        <Button
+                          type='button'
+                          onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 4 })}
+                          className='change-meal-plan__meals-item-btn'
+                        >
+                          {t('mp.meals.choose')}
+                        </Button>
+                      </div>
+                      <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
+                        active: updateChangeMealForm.meals_cnt === 5,
+                      })}
+                      >
+                        <div className='change-meal-plan__meals-item-count'>5</div>
+                        <div className='change-meal-plan__meals-item-desc'>
+                          {t('mp.meals.desc')}
+                        </div>
+                        <div className='change-meal-plan__meals-item-content'>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <BreakfastIcon />
+                            </div>
+                            {t('meal.breakfast')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <SnackIcon />
+                            </div>
+                            {t('meal.snack')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <LunchIcon />
+                            </div>
+                            {t('meal.lunch')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <SnackIcon />
+                            </div>
+                            {t('meal.snack')}
+                          </div>
+                          <div className='change-meal-plan__meals-item-content-block'>
+                            <div className='change-meal-plan__meals-item-content-block-media'>
+                              <DinnerIcon />
+                            </div>
+                            {t('meal.dinner')}
+                          </div>
+                        </div>
+                        <Button
+                          type='button'
+                          onClick={() => setUpdateChangeMealForm({ ...updateChangeMealForm, meals_cnt: 5 })}
+                          className='change-meal-plan__meals-item-btn'
+                        >
+                          {t('mp.meals.choose')}
+                        </Button>
+                      </div>
+                    </div>
+                    <div className='change-meal-plan__btn-wrap'>
+                      <Button
+                        type='button'
+                        color='primary'
+                        onClick={(e) => updateChangeMealSubmit(e)}
+                        className='change-meal-plan__btn'
+                      >
+                        {t('mp.save')}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
         </div>
       </ProfileLayout>
     </>

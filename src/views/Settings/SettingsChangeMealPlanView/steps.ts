@@ -1,7 +1,7 @@
 export const steps = {
-  goal: 'goal',
-  metrics: 'metrics',
-  notEating: 'notEating',
-  diseases: 'diseases',
-  meals: 'meals',
+  goal: 1,
+  metrics: 2,
+  notEating: 3,
+  diseases: 4,
+  meals: 5,
 };

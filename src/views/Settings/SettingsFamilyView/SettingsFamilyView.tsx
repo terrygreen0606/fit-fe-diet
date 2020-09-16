@@ -164,7 +164,7 @@ const SettingsFamilyView = (props: any) => {
             <div className='family__invite-email-input-wrap'>
               <InputField
                 name='email'
-                data-validate='["email"]'
+                data-validate='["email", "required"]'
                 errors={getFieldErrors('email')}
                 value={inviteEmailForm.email}
                 onChange={(e) => validateOnChange('email', e.target.value, e)}
