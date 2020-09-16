@@ -146,7 +146,7 @@ const ReferralView = (props: any) => {
                 >
                   <InputField
                     name='email'
-                    data-validate='["email"]'
+                    data-validate='["email", "required"]'
                     errors={getFieldErrors('email')}
                     value={inviteFriendsForm.email}
                     onChange={(e) => validateOnChange('email', e.target.value, e)}
