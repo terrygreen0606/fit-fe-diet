@@ -9,29 +9,29 @@ import AuthRoute from 'components/common/AuthRoute';
 import { routes } from 'constants/routes';
 
 // Views
-import LoginView from './views/LoginView';
-import RegisterView from './views/RegisterView';
-import NutritionPlanView from './views/NutritionPlanView';
-import TrainingsView from './views/TrainingsView';
-import ShoppingListView from './views/ShoppingListView';
-import WeightGraphicsPage from './views/WeightGraphicsPage';
-import RecipesView from './views/Recipes/RecipesView';
-import FoodPlanView from './views/FoodPlanView';
-import CreateRecipeView from './views/Recipes/CreateRecipeView';
-import WaterTrackerView from './views/WaterTrackerView';
-import SettingsChangeMealPlanView from './views/Settings/SettingsChangeMealPlanView';
-import SettingsPersonalView from './views/Settings/SettingsPersonalView';
-import NotFound from './views/NotFound';
-import SavedRecipesView from './views/Recipes/SavedRecipesView';
-import FavouriteRecipesView from './views/Recipes/FavouriteRecipesView';
-import DashboardView from './views/DashboardView';
-import SettingsFaqView from './views/Settings/SettingsFaqView';
-import SettingsFamilyView from './views/Settings/SettingsFamilyView';
-import ReferralView from './views/ReferralView';
-import MainView from './views/MainView';
-import TestimonialsFormView from './views/Forms/TestimonialsFormView';
-import CancellationFormView from './views/Forms/CancellationFormView';
-import RecipeFullView from './views/Recipes/RecipeFullView';
+const LoginView = React.lazy(() => import('./views/LoginView'));
+const RegisterView = React.lazy(() => import('./views/RegisterView'));
+const NutritionPlanView = React.lazy(() => import('./views/NutritionPlanView'));
+const TrainingsView = React.lazy(() => import('./views/TrainingsView'));
+const ShoppingListView = React.lazy(() => import('./views/ShoppingListView'));
+const WeightGraphicsPage = React.lazy(() => import('./views/WeightGraphicsPage'));
+const RecipesView = React.lazy(() => import('./views/Recipes/RecipesView'));
+const FoodPlanView = React.lazy(() => import('./views/FoodPlanView'));
+const CreateRecipeView = React.lazy(() => import('./views/Recipes/CreateRecipeView'));
+const WaterTrackerView = React.lazy(() => import('./views/WaterTrackerView'));
+const SettingsChangeMealPlanView = React.lazy(() => import('./views/Settings/SettingsChangeMealPlanView'));
+const SettingsPersonalView = React.lazy(() => import('./views/Settings/SettingsPersonalView'));
+const NotFound = React.lazy(() => import('./views/NotFound'));
+const SavedRecipesView = React.lazy(() => import('./views/Recipes/SavedRecipesView'));
+const FavouriteRecipesView = React.lazy(() => import('./views/Recipes/FavouriteRecipesView'));
+const DashboardView = React.lazy(() => import('./views/DashboardView'));
+const SettingsFaqView = React.lazy(() => import('./views/Settings/SettingsFaqView'));
+const SettingsFamilyView = React.lazy(() => import('./views/Settings/SettingsFamilyView'));
+const ReferralView = React.lazy(() => import('./views/ReferralView'));
+const MainView = React.lazy(() => import('./views/MainView'));
+const TestimonialsFormView = React.lazy(() => import('./views/Forms/TestimonialsFormView'));
+const CancellationFormView = React.lazy(() => import('./views/Forms/CancellationFormView'));
+const RecipeFullView = React.lazy(() => import('./views/Recipes/RecipeFullView'));
 
 const Routes = () => (
   <Switch>
