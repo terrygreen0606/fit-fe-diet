@@ -46,7 +46,7 @@ export const userUpdateProfile = (params: userUpdateProfileParams) => axios.put(
 export const userUpdateMealSettings = (
   measurement: 'si' | 'us', // allowed values 'si', 'us'
   gender?: 'm' | 'f', // allowed values 'm', 'f'
-  age?: number, // size range: 12..100
+  age?: number, // size range: 16..100
   height?: string, // centimeters/feet,inch
   weight?: number, // kilograms/pounds 30..999
   weight_goal?: number, // kilograms/pounds 30..999
@@ -71,7 +71,7 @@ export const userUpdateMealSettings = (
 );
 
 export const userValidate = (params: UserValidateParams) =>
-  axios.post('/user/validate', {...params});
+  axios.post('/user/validate', { ...params });
 
 export const userUpdateMeasurement = (measurement: string) =>
   axios.put('/user/measurement', {
