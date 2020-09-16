@@ -20,7 +20,6 @@ import { userLogin, setAppSetting } from 'store/actions';
 import Helmet from 'react-helmet';
 
 // Components
-import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
@@ -211,8 +210,6 @@ const LoginView = (props: any) => {
       <Helmet>
         <title>{t('app.title.login')}</title>
       </Helmet>
-
-      {/*<AuthSocialHelmet />*/}
 
       <div className='loginScreen mt-3 mt-md-5'>
         <h3 className='loginScreen_title d-none d-lg-inline-block'>
