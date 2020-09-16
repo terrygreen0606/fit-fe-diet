@@ -343,11 +343,11 @@ const SettingsChangeMealPlanView = (props: any) => {
                               type='number'
                               name='age'
                               errors={getFieldErrors('age')}
-                              data-param='12, 100'
+                              data-param='16, 100'
                               data-validate='["min-max"]'
                               value={updateChangeMealForm.age}
                               onChange={(e) => validateOnChange('age', e.target.value, e)}
-                              min={12}
+                              min={16}
                               max={100}
                               label={t('mp.metrics.age')}
                             />
