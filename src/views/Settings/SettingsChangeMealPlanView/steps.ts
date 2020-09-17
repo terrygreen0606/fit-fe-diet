@@ -4,4 +4,5 @@ export const steps = {
   notEating: 3,
   diseases: 4,
   meals: 5,
+  workout: 6,
 };
