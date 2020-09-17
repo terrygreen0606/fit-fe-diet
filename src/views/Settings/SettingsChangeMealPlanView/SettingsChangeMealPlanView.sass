@@ -395,6 +395,46 @@
           border: 2px solid $steel-blue 
           background-color: $steel-blue
           color: $white
+
+  &__works-out
+    &-list
+      display: flex
+      justify-content: center
+      flex-wrap: wrap
+
+    &-btn
+      flex-basis: calc(50% - 16px)
+      margin: 0 8px 22px
+      padding: 14px 10px
+      text-align: center
+      border: 1px solid #878787
+      border-radius: 5px
+      background-color: transparent
+      transition: 0.2s background-color, 0.2s border-color ease
+      cursor: pointer
+
+      @media (max-width: 600px)
+        flex-basis: 100%
+        margin: 0 0 20px
+
+      &-desc
+        max-width: 230px
+        margin: 0 auto
+        font-size: 20px
+        line-height: 1.2
+        transition: 0.2s color ease
+
+        @media (max-width: 767px)
+          font-size: 14px
+
+    &-btn:hover,
+    &-btn.active
+      border-color: $steel-blue
+      background-color: $steel-blue
+
+      .change-meal-plan__works-out-btn-desc
+        color: $white
+
     
 
 

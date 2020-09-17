@@ -54,6 +54,7 @@ export const userUpdateMealSettings = (
   ignore_cuisine_ids?: Array<string>, // Ignorable cuisine ids
   diseases?: Array<string>, // Diseases codes
   meals_cnt?: 3 | 4 | 5, // size range: 3..5
+  act_level?: any,
 ) => axios.put(
   '/user/meal-settings',
   {
@@ -67,6 +68,7 @@ export const userUpdateMealSettings = (
     ignore_cuisine_ids,
     diseases,
     meals_cnt,
+    act_level,
   },
 );
 

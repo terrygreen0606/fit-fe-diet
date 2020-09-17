@@ -57,7 +57,7 @@ const SettingsChangeMealPlanView = (props: any) => {
 
   const [isSpinnerActive, setSpinnerActive] = useState(true);
 
-  const [activeStep, setActiveStep] = useState(steps.goal);
+  const [activeStep, setActiveStep] = useState(steps.worksOut);
 
   const [ignoreCuisinesList, setIgnoreCuisinesList] = useState([]);
 
@@ -147,8 +147,8 @@ const SettingsChangeMealPlanView = (props: any) => {
           height: data.height,
           weight: data.weight,
           weight_goal: data.weight_goal,
-          ignore_cuisine_ids: data.ignore_cuisine_ids ? [...data.ignore_cuisine_ids] : [],
-          diseases: data.diseases ? [...data.diseases] : [],
+          ignore_cuisine_ids: data.ignore_cuisine_ids || [],
+          diseases: data.diseases || [],
         });
       }
 
@@ -210,6 +210,10 @@ const SettingsChangeMealPlanView = (props: any) => {
                       text: t('mp.progress.meals'),
                       onClick: () => setActiveStep(steps.meals),
                     },
+                    {
+                      text: t('mp.progress.works_out'),
+                      onClick: () => setActiveStep(steps.worksOut),
+                    },
                   ]}
                 />
                 {activeStep === steps.goal && (
@@ -263,7 +267,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                           updateChangeMealSubmit(e);
                         }}
                       >
-                        {t('mp.next')}
+                        {t('mp.save_next')}
                       </Button>
                     </div>
                   </div>
@@ -344,7 +348,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                               name='age'
                               errors={getFieldErrors('age')}
                               data-param='16, 100'
-                              data-validate='["min-max"]'
+                              data-validate='["min-max", "required"]'
                               value={updateChangeMealForm.age}
                               onChange={(e) => validateOnChange('age', e.target.value, e)}
                               min={16}
@@ -356,6 +360,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                             <InputField
                               name='height'
                               errors={getFieldErrors('height')}
+                              data-validate='["required"]'
                               value={updateChangeMealForm.height}
                               onChange={(e) => validateOnChange('height', e.target.value, e)}
                               label={t('mp.metrics.height')}
@@ -371,7 +376,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                               name='weight'
                               step={0.1}
                               data-param='30, 999'
-                              data-validate='["min-max"]'
+                              data-validate='["min-max", "required"]'
                               errors={getFieldErrors('weight')}
                               value={updateChangeMealForm.weight}
                               onChange={(e) => validateOnChange('weight', e.target.value, e)}
@@ -389,7 +394,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                               name='weight_goal'
                               step={0.1}
                               data-param='30, 999'
-                              data-validate='["min-max"]'
+                              data-validate='["min-max", "required"]'
                               errors={getFieldErrors('weight_goal')}
                               value={updateChangeMealForm.weight_goal}
                               onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
@@ -420,12 +425,12 @@ const SettingsChangeMealPlanView = (props: any) => {
                             setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
                           }
 
-                          setActiveStep(steps.notEating);
+                          // setActiveStep(steps.notEating);
 
                           updateChangeMealSubmit(e);
                         }}
                       >
-                        {t('mp.next')}
+                        {t('mp.save_next')}
                       </Button>
                     </div>
                   </div>
@@ -489,7 +494,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                           updateChangeMealSubmit(e);
                         }}
                       >
-                        {t('mp.next')}
+                        {t('mp.save_next')}
                       </Button>
                     </div>
                   </div>
@@ -538,7 +543,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                           updateChangeMealSubmit(e);
                         }}
                       >
-                        {t('mp.next')}
+                        {t('mp.save_next')}
                       </Button>
                     </div>
                   </div>
@@ -673,6 +678,65 @@ const SettingsChangeMealPlanView = (props: any) => {
                           {t('mp.meals.choose')}
                         </Button>
                       </div>
+                    </div>
+                    <div className='change-meal-plan__btn-wrap'>
+                      <Button
+                        type='button'
+                        color='primary'
+                        onClick={(e) => updateChangeMealSubmit(e)}
+                        className='change-meal-plan__btn'
+                      >
+                        {t('mp.save_next')}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                {activeStep === steps.worksOut && (
+                  <div>
+                    <div className='change-meal-plan__title'>
+                      {t('mp.works_out.title')}
+                    </div>
+                    <div className='change-meal-plan__works-out-list'>
+                      <button
+                        type='button'
+                        className='change-meal-plan__works-out-btn'
+                      >
+                        <div className='change-meal-plan__works-out-btn-desc'>
+                          {t('mp.works_out.little_activities')}
+                        </div>
+                      </button>
+                      <button
+                        type='button'
+                        className='change-meal-plan__works-out-btn'
+                      >
+                        <div className='change-meal-plan__works-out-btn-desc'>
+                          {t('mp.works_out.light_activities')}
+                        </div>
+                      </button>
+                      <button
+                        type='button'
+                        className='change-meal-plan__works-out-btn'
+                      >
+                        <div className='change-meal-plan__works-out-btn-desc'>
+                          {t('mp.works_out.moderate_activities')}
+                        </div>
+                      </button>
+                      <button
+                        type='button'
+                        className='change-meal-plan__works-out-btn'
+                      >
+                        <div className='change-meal-plan__works-out-btn-desc'>
+                          {t('mp.works_out.active')}
+                        </div>
+                      </button>
+                      <button
+                        type='button'
+                        className='change-meal-plan__works-out-btn'
+                      >
+                        <div className='change-meal-plan__works-out-btn-desc'>
+                          {t('mp.works_out.very_active')}
+                        </div>
+                      </button>
                     </div>
                     <div className='change-meal-plan__btn-wrap'>
                       <Button
