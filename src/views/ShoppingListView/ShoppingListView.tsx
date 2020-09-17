@@ -152,9 +152,9 @@ const ShoppingListView: React.FC = (props: any) => {
     document.querySelector('.shopping_list_footer_quantity_input')?.classList.remove('validate_error');
   };
 
-  const SyncShopListCallback = useCallback((test: any = dateFromShopList) => {
-    syncShoppingList(test).then((res) => {
-      if (items.length === 0 || res.data.data.date_sync) {
+  const SyncShopListCallback = useCallback((sync_date: any = dateFromShopList) => {
+    syncShoppingList(sync_date).then((res) => {
+      if (items.length === 0 || res.data.data.date_sync !== sync_date) {
         getShoppingList(2)
           .then((resp) => {
             setItems(resp.data.data.list);
@@ -162,7 +162,7 @@ const ShoppingListView: React.FC = (props: any) => {
             props.setShoppingListCount(resp.data.data.list.length);
           });
       }
-      if (res.data.data.date_sync !== test) {
+      if (res.data.data.date_sync !== sync_date) {
         // shopping list need update
         const { list, date_sync: dateSync } = res.data.data;
         if (list.length) {
