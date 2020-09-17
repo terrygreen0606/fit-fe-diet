@@ -32,13 +32,11 @@ export const userInviteFriendByEmail = (email: string) => axios.put(`user/invite
 
 type userUpdateProfileParams = {
   name: string,
-  surname: string,
-  phone: string,
-  birthdate: number, // timestamp
-  gender: 'm' | 'f',
   measurement: 'si' | 'us',
-  height: number, // height in centimeters/feet,inch
-  goal: -1 | 0 | 1, // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight
+  gender: 'm' | 'f',
+  surname?: string,
+  phone?: string,
+  is_mailing?: boolean,
 };
 
 export const userUpdateProfile = (params: userUpdateProfileParams) => axios.put('/user/update-profile', params);
