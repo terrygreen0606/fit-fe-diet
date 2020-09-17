@@ -134,15 +134,14 @@ const ShoppingListView: React.FC = (props: any) => {
   };
 
   const inputChangeHandlerWithDelay = (timer) => {
-    console.log(1);
     let timerId;
-    if (!ingredientId) {
-      document.querySelector('.shopping_list_footer_ingredient_input_sect')?.classList.remove('validate_error');
-    }
 
     return (inputValue, options) => {
       clearTimeout(timerId);
       timerId = setTimeout(() => {
+        if (!ingredientId) {
+          document.querySelector('.shopping_list_footer_ingredient_input_sect')?.classList.remove('validate_error');
+        }
         inputChangeHandler(inputValue, options);
       }, timer);
     };
