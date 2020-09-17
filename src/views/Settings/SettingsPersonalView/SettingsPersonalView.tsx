@@ -177,6 +177,20 @@ const SettingsPersonalView = (props: any) => {
             >
 
               <FormGroup inline>
+                <FormLabel>{t('register.form_name')}</FormLabel>
+                <InputField
+                  name='name'
+                  data-validate='["required"]'
+                  errors={getFieldErrors('name')}
+                  value={personalDataForm.name}
+                  onChange={(e) => validateOnChange('name', e.target.value, e)}
+                  block
+                  height='md'
+                  placeholder=''
+                />
+              </FormGroup>
+
+              <FormGroup inline>
                 <FormLabel>{t('register.form_surname')}</FormLabel>
                 <InputField
                   name='surname'
@@ -185,20 +199,6 @@ const SettingsPersonalView = (props: any) => {
                   value={personalDataForm.surname}
                   onChange={(e) =>
                     validateOnChange('surname', e.target.value, e)}
-                  block
-                  height='md'
-                  placeholder=''
-                />
-              </FormGroup>
-
-              <FormGroup inline>
-                <FormLabel>{t('register.form_name')}</FormLabel>
-                <InputField
-                  name='name'
-                  data-validate='["required"]'
-                  errors={getFieldErrors('name')}
-                  value={personalDataForm.name}
-                  onChange={(e) => validateOnChange('name', e.target.value, e)}
                   block
                   height='md'
                   placeholder=''
