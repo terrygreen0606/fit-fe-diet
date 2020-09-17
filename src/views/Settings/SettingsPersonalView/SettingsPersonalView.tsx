@@ -226,12 +226,11 @@ const SettingsPersonalView = (props: any) => {
                     label={t('register.form_receive_news')}
                     inline
                     checked={personalDataForm.is_mailing}
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setPersonalDataForm({
                         ...personalDataForm,
                         is_mailing: e.target.checked,
-                      });
-                    }}
+                      })}
                   />
                 </FormGroup>
 
