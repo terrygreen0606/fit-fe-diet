@@ -55,7 +55,8 @@ type userUpdateMealSettingsParams = {
   act_level: number, // size range: 1000..2000
 };
 
-export const userUpdateMealSettings = (params: userUpdateMealSettingsParams) => axios.put('/user/meal-settings', params);
+export const userUpdateMealSettings = (params: userUpdateMealSettingsParams) =>
+  axios.put('/user/meal-settings', params);
 
 export const userValidate = (params: UserValidateParams) =>
   axios.post('/user/validate', { ...params });
