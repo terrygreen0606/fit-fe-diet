@@ -57,7 +57,7 @@ const SettingsChangeMealPlanView = (props: any) => {
 
   const [isSpinnerActive, setSpinnerActive] = useState(true);
 
-  const [activeStep, setActiveStep] = useState(steps.worksOut);
+  const [activeStep, setActiveStep] = useState(steps.goal);
 
   const [ignoreCuisinesList, setIgnoreCuisinesList] = useState([]);
 
@@ -67,61 +67,15 @@ const SettingsChangeMealPlanView = (props: any) => {
     measurement: null,
     gender: null,
     age: null,
-    height: '',
+    height: null,
     weight: null,
     weight_goal: null,
     goal: null,
     ignore_cuisine_ids: [],
     diseases: [],
     meals_cnt: null,
+    act_level: null,
   });
-
-  const [updateChangeMeal, setUpdateChangeMealErrors] = useState([]);
-
-  const validateOnChange = (name: string, value: any, event, element?) => {
-    validateFieldOnChange(
-      name,
-      value,
-      event,
-      updateChangeMealForm,
-      setUpdateChangeMealForm,
-      updateChangeMeal,
-      setUpdateChangeMealErrors,
-      element,
-    );
-  };
-
-  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, updateChangeMeal);
-
-  const updateChangeMealSubmit = (e) => {
-    e.preventDefault();
-
-    const form = e.target;
-    const inputs = [...form.elements || []].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
-
-    const { errors, hasError } = FormValidator.bulkValidate(inputs);
-
-    setUpdateChangeMealErrors([...errors]);
-
-    if (!hasError) {
-      userUpdateMealSettings(
-        updateChangeMealForm.measurement,
-        updateChangeMealForm.gender,
-        updateChangeMealForm.age,
-        updateChangeMealForm.height,
-        updateChangeMealForm.weight,
-        updateChangeMealForm.weight_goal,
-        updateChangeMealForm.goal,
-        updateChangeMealForm.ignore_cuisine_ids,
-        updateChangeMealForm.diseases,
-        updateChangeMealForm.meals_cnt,
-      ).catch(() => {
-        toast.error(t('mp.form.error'), {
-          autoClose: 3000,
-        });
-      });
-    }
-  };
 
   useEffect(() => {
     let cleanComponent = false;
@@ -141,14 +95,16 @@ const SettingsChangeMealPlanView = (props: any) => {
         setUpdateChangeMealForm({
           ...updateChangeMealForm,
           measurement: userSettings.measurement,
-          goal: data.goal,
           gender: data.gender,
           age: data.age,
           height: data.height,
           weight: data.weight,
           weight_goal: data.weight_goal,
+          goal: data.goal,
           ignore_cuisine_ids: data.ignore_cuisine_ids || [],
           diseases: data.diseases || [],
+          meals_cnt: data.meals_cnt,
+          act_level: data.act_level,
         });
       }
 
@@ -157,6 +113,81 @@ const SettingsChangeMealPlanView = (props: any) => {
 
     return () => cleanComponent = true;
   }, []);
+
+  useEffect(() => {
+    const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
+
+    if (ignoreCuisinesList.length > 0) {
+      updateChangeMealForm.ignore_cuisine_ids.forEach((ignoreCuisineItem) => {
+        updatedIgnoreCuisinesList.find((findItem) =>
+          ignoreCuisineItem === findItem.id).isActive = true;
+      });
+
+      setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
+    }
+  }, [updateChangeMealForm.ignore_cuisine_ids.length, ignoreCuisinesList.length]);
+
+  useEffect(() => {
+    const updatedDiseasesList = [...diseasesList];
+
+    if (updatedDiseasesList.length > 0) {
+      updateChangeMealForm.diseases.forEach((diseasesItem) => {
+        updatedDiseasesList.find((findItem) => diseasesItem === findItem.code).isActive = true;
+      });
+      setDiseasesList([...updatedDiseasesList]);
+    }
+  }, [updateChangeMealForm.diseases.length, diseasesList.length]);
+
+  const [updateChangeMealErrors, setUpdateChangeMealErrors] = useState([]);
+
+  const validateOnChange = (name: string, value: any, event, element?) => {
+    validateFieldOnChange(
+      name,
+      value,
+      event,
+      updateChangeMealForm,
+      setUpdateChangeMealForm,
+      updateChangeMealErrors,
+      setUpdateChangeMealErrors,
+      element,
+    );
+  };
+
+  const getFieldErrors = (field: string) => getFieldErrorsUtil(field, updateChangeMealErrors);
+
+  const getMealSettingsUpdatePayload = () => ({
+    measurement: updateChangeMealForm.measurement,
+    gender: updateChangeMealForm.gender,
+    age: updateChangeMealForm.age,
+    height: updateChangeMealForm.height,
+    weight: updateChangeMealForm.weight,
+    weight_goal: updateChangeMealForm.weight_goal,
+    goal: updateChangeMealForm.goal,
+    ignore_cuisine_ids: updateChangeMealForm.ignore_cuisine_ids,
+    diseases: updateChangeMealForm.diseases,
+    meals_cnt: updateChangeMealForm.meals_cnt,
+    act_level: updateChangeMealForm.act_level,
+  });
+
+  const updateChangeMealSubmit = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const inputs = [...form.elements || []].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+
+    const { errors, hasError } = FormValidator.bulkValidate(inputs);
+
+    setUpdateChangeMealErrors([...errors]);
+
+    if (!hasError) {
+      userUpdateMealSettings(getMealSettingsUpdatePayload())
+        .catch(() => {
+          toast.error(t('mp.form.error'), {
+            autoClose: 3000,
+          });
+        });
+    }
+  };
 
   return (
     <>
@@ -414,20 +445,8 @@ const SettingsChangeMealPlanView = (props: any) => {
                         color='primary'
                         className='change-meal-plan__btn'
                         onClick={(e) => {
-                          const updatedIgnoreCuisinesList = [...ignoreCuisinesList];
-
-                          if (ignoreCuisinesList.length > 0) {
-                            updateChangeMealForm.ignore_cuisine_ids.forEach((ignoreCuisineItem) => {
-                              updatedIgnoreCuisinesList.find((findItem) =>
-                                ignoreCuisineItem === findItem.id).isActive = true;
-                            });
-
-                            setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
-                          }
-
-                          // setActiveStep(steps.notEating);
-
                           updateChangeMealSubmit(e);
+                          setActiveStep(steps.notEating);
                         }}
                       >
                         {t('mp.save_next')}
@@ -480,15 +499,6 @@ const SettingsChangeMealPlanView = (props: any) => {
                         color='primary'
                         className='change-meal-plan__btn'
                         onClick={(e) => {
-                          const updatedDiseasesList = [...diseasesList];
-
-                          if (updatedDiseasesList.length > 0) {
-                            updateChangeMealForm.diseases.forEach((diseasesItem) => {
-                              updatedDiseasesList.find((findItem) => diseasesItem === findItem.code).isActive = true;
-                            });
-                            setDiseasesList([...updatedDiseasesList]);
-                          }
-
                           setActiveStep(steps.diseases);
 
                           updateChangeMealSubmit(e);
@@ -699,7 +709,15 @@ const SettingsChangeMealPlanView = (props: any) => {
                     <div className='change-meal-plan__works-out-list'>
                       <button
                         type='button'
-                        className='change-meal-plan__works-out-btn'
+                        className={classnames('change-meal-plan__works-out-btn', {
+                          active: updateChangeMealForm.act_level === 1200,
+                        })}
+                        onClick={() => {
+                          setUpdateChangeMealForm({
+                            ...updateChangeMealForm,
+                            act_level: 1200,
+                          });
+                        }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
                           {t('mp.works_out.little_activities')}
@@ -707,7 +725,15 @@ const SettingsChangeMealPlanView = (props: any) => {
                       </button>
                       <button
                         type='button'
-                        className='change-meal-plan__works-out-btn'
+                        className={classnames('change-meal-plan__works-out-btn', {
+                          active: updateChangeMealForm.act_level === 1375,
+                        })}
+                        onClick={() => {
+                          setUpdateChangeMealForm({
+                            ...updateChangeMealForm,
+                            act_level: 1375,
+                          });
+                        }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
                           {t('mp.works_out.light_activities')}
@@ -715,7 +741,15 @@ const SettingsChangeMealPlanView = (props: any) => {
                       </button>
                       <button
                         type='button'
-                        className='change-meal-plan__works-out-btn'
+                        className={classnames('change-meal-plan__works-out-btn', {
+                          active: updateChangeMealForm.act_level === 1550,
+                        })}
+                        onClick={() => {
+                          setUpdateChangeMealForm({
+                            ...updateChangeMealForm,
+                            act_level: 1550,
+                          });
+                        }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
                           {t('mp.works_out.moderate_activities')}
@@ -723,7 +757,15 @@ const SettingsChangeMealPlanView = (props: any) => {
                       </button>
                       <button
                         type='button'
-                        className='change-meal-plan__works-out-btn'
+                        className={classnames('change-meal-plan__works-out-btn', {
+                          active: updateChangeMealForm.act_level === 1725,
+                        })}
+                        onClick={() => {
+                          setUpdateChangeMealForm({
+                            ...updateChangeMealForm,
+                            act_level: 1725,
+                          });
+                        }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
                           {t('mp.works_out.active')}
@@ -731,7 +773,15 @@ const SettingsChangeMealPlanView = (props: any) => {
                       </button>
                       <button
                         type='button'
-                        className='change-meal-plan__works-out-btn'
+                        className={classnames('change-meal-plan__works-out-btn', {
+                          active: updateChangeMealForm.act_level === 1900,
+                        })}
+                        onClick={() => {
+                          setUpdateChangeMealForm({
+                            ...updateChangeMealForm,
+                            act_level: 1900,
+                          });
+                        }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
                           {t('mp.works_out.very_active')}
