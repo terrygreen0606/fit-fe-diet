@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/style-prop-object */
 import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
+import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -18,7 +18,6 @@ import ProfileLayout from 'components/hoc/ProfileLayout';
 import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
-import CustomRadio from 'components/common/Forms/CustomRadio';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import FormValidator from 'utils/FormValidator';
 import Button from 'components/common/Forms/Button';
@@ -28,57 +27,27 @@ import Breadcrumb from 'components/Breadcrumb';
 
 import './SettingsPersonalView.sass';
 
-import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
-import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
-
-type GoalType = -1 | 0 | 1; // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight
-
-type GoalOptionsType = {
-  value: GoalType;
-  label: string;
-};
-
-const goalOptions: GoalOptionsType[] = [
-  { value: 1, label: 'Lift weight' },
-  { value: 0, label: 'Keep weight' },
-  { value: -1, label: 'Lose weight' },
-];
-
-// const calorieOptions = [
-//   { value: 100, label: '1000' },
-//   { value: 2000, label: '2000' },
-//   { value: 3000, label: '3000' },
-// ];
-
 type UserUpdateProfileParams = {
   name: string;
+  measurement: 'si' | 'us';
+  gender: 'm' | 'f';
   surname: string;
   phone: string;
-  birthdate: Date; // date
-  height: number; // millimeters
   is_mailing: boolean;
-  measurement: 'si' | 'us';
-  password: string;
-  image: string;
-  gender: 'm' | 'f';
-  goal: GoalType;
 };
 
 const SettingsPersonalView = (props: any) => {
+  const { userSettings } = props;
+
   const [personalDataForm, setPersonalDataForm] = useState<
     UserUpdateProfileParams
   >({
     name: '',
+    measurement: 'si',
+    gender: 'm',
     surname: '',
     phone: '',
-    birthdate: null,
-    height: null,
     is_mailing: false,
-    measurement: 'si',
-    password: '',
-    image: null,
-    gender: 'm',
-    goal: goalOptions[2].value,
   });
 
   const [personalDataFormErrors, setPersonalDataFormErrors] = useState([]);
@@ -105,14 +74,11 @@ const SettingsPersonalView = (props: any) => {
           setPersonalDataForm({
             ...personalDataForm,
             name: profileResponse.name,
+            measurement: userSettings.measurement,
+            gender: profileResponse.gender,
             surname: profileResponse.surname,
             phone: profileResponse.phone,
-            gender: profileResponse.gender,
-            height: profileResponse.height,
             is_mailing: profileResponse.is_mailing,
-            goal: profileResponse.goal,
-            image: profileResponse.image,
-            birthdate: new Date(new Date().setTime(profileResponse.birthdate)),
           });
         }
       })
@@ -147,14 +113,11 @@ const SettingsPersonalView = (props: any) => {
 
   const getPersonalDataUpdatePayload = () => ({
     name: personalDataForm.name,
+    measurement: personalDataForm.measurement,
+    gender: personalDataForm.gender,
     surname: personalDataForm.surname,
     phone: personalDataForm.phone,
-    birthdate: new Date(personalDataForm.birthdate).getTime(),
-    gender: personalDataForm.gender,
     is_mailing: personalDataForm.is_mailing,
-    measurement: personalDataForm.measurement,
-    height: personalDataForm.height,
-    goal: personalDataForm.goal,
   });
 
   const personalDataFormSubmit = (e) => {
@@ -212,55 +175,6 @@ const SettingsPersonalView = (props: any) => {
               className='profile-settings-personal-form'
               onSubmit={(e) => personalDataFormSubmit(e)}
             >
-              <FormGroup inline className='mb-5'>
-                <FormLabel>{t('register.form_sex')}</FormLabel>
-
-                <CustomRadio
-                  name='register_sex'
-                  label={(
-                    <>
-                      <MaleIcon
-                        className={classNames('genderIcon', {
-                          genderIcon_active: personalDataForm.gender === 'm',
-                        })}
-                      />
-
-                      {t('register.form_male')}
-                    </>
-                  )}
-                  value='m'
-                  checked={personalDataForm.gender === 'm'}
-                  inline
-                  onChange={(e) =>
-                    setPersonalDataForm({
-                      ...personalDataForm,
-                      gender: e.target.value,
-                    })}
-                />
-
-                <CustomRadio
-                  name='register_sex'
-                  label={(
-                    <>
-                      <FemaleIcon
-                        className={classNames('genderIcon', {
-                          genderIcon_active: personalDataForm.gender === 'f',
-                        })}
-                      />
-
-                      {t('register.form_female')}
-                    </>
-                  )}
-                  value='f'
-                  checked={personalDataForm.gender === 'f'}
-                  inline
-                  onChange={(e) =>
-                    setPersonalDataForm({
-                      ...personalDataForm,
-                      gender: e.target.value,
-                    })}
-                />
-              </FormGroup>
 
               <FormGroup inline>
                 <FormLabel>{t('register.form_surname')}</FormLabel>
@@ -306,32 +220,18 @@ const SettingsPersonalView = (props: any) => {
                 />
               </FormGroup>
 
-              {/* <FormGroup inline>
-                <FormLabel>Password</FormLabel>
-                <InputField
-                  name="password"
-                  type="password"
-                  data-validate='["required"]'
-                  errors={getFieldErrors('password')}
-                  value={personalDataForm.password}
-                  onChange={e => validateOnChange('password', e.target.value, e)}
-                  block
-                  height="md"
-                  placeholder=""
-                />
-              </FormGroup> */}
-
               <div className='pl-xs-5'>
                 <FormGroup className='mt-5'>
                   <CustomCheckbox
                     label={t('register.form_receive_news')}
                     inline
                     checked={personalDataForm.is_mailing}
-                    onChange={(e) =>
+                    onChange={(e) => {
                       setPersonalDataForm({
                         ...personalDataForm,
                         is_mailing: e.target.checked,
-                      })}
+                      });
+                    }}
                   />
                 </FormGroup>
 
@@ -352,4 +252,8 @@ const SettingsPersonalView = (props: any) => {
   );
 };
 
-export default WithTranslate(SettingsPersonalView);
+export default WithTranslate(connect(
+  (state: any) => ({
+    userSettings: state.settings,
+  }),
+)(SettingsPersonalView));

@@ -956,7 +956,7 @@ const CreateRecipeView = (props: any) => {
                   </div>
                   <div className='recipe__item-opt'>
                     <CustomCheckbox
-                      label='Optional'
+                      label={t('recipe.create.optional')}
                       className='recipe__item-opt-checkbox'
                       onChange={(e) => {
                         createRecipeForm.ingredients[ingredientIndex].is_opt = e.target.checked;
