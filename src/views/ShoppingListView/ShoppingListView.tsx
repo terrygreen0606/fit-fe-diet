@@ -154,7 +154,7 @@ const ShoppingListView: React.FC = (props: any) => {
 
   const SyncShopListCallback = useCallback((sync_date: any = dateFromShopList) => {
     syncShoppingList(sync_date).then((res) => {
-      if (items.length === 0 || res.data.data.date_sync !== sync_date) {
+      if (items.length === 0 && res.data.data.date_sync !== sync_date) {
         getShoppingList(2)
           .then((resp) => {
             setItems(resp.data.data.list);
