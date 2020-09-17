@@ -22,6 +22,7 @@ export const colourStylesSelect = {
     boxShadow: 'none',
     ':hover': {
       border: '1px solid #E8E8E8 !important',
+      cursor: 'text',
     },
   }),
 };

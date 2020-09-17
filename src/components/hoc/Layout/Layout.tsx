@@ -8,24 +8,23 @@ import SideMenu from 'components/SideMenu';
 import MainContent from 'components/hoc/MainContent';
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import ShoppingListPopup from 'views/ShoppingListView/ShoppingListPopup';
-
 import './Layout.sass';
 
 // fixme: remove default
 const Layout = ({
-  children, localePhrases, location, shopping_list_count,
+  children, location, shopping_list_count,
 }: any) => {
-  const [popup, setPopup] = useState(false);
   const [shoppingListCount, setShoppingListCount] = useState(shopping_list_count);
 
   return (
     <div className='layoutMainWrapper'>
-      <Header setPopup={setPopup} popup={popup} location={location} shoppingListCount={shoppingListCount} />
+      <Header
+        location={location}
+        shoppingListCount={shoppingListCount}
+      />
       <SideMenu />
       <MainContent>
         {React.cloneElement(children, { setShoppingListCount })}
-        { popup && <ShoppingListPopup localePhrases={localePhrases} />}
       </MainContent>
       <Footer />
     </div>

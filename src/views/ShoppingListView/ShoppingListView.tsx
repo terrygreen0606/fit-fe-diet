@@ -2,6 +2,7 @@ import React, {
   useCallback,
   useEffect,
   useState,
+  useRef,
 } from 'react';
 import Select from 'react-select';
 import classnames from 'classnames';
@@ -45,13 +46,37 @@ const ShoppingListView: React.FC = (props: any) => {
   const [publicShopListUrl, setPublicShopListUrl] = useState(null);
   const [items, setItems] = useState(null);
   const [ingredientId, setIngredientId] = useState<string>('');
-  const [ingredientWeight, setIngredientWeight] = useState('');
+  const [ingredientWeight, setIngredientWeight] = useState('1');
   const [quantity, setQuantity] = useState(null);
   const [slideStep, setSlideStep] = useState(1);
   const [shareListPopup, setShareListPopup] = useState(false);
   const [ingredientsArray, setIngredientsArray] = useState([]);
 
+  const ingredientSelectEl = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [dateFromShopList, setDateFromShopList] = useState(null);
+
+  useEffect(() => {
+    getShoppingList(2)
+      .then((res) => {
+        const { date_sync: dateSync, list } = res.data.data;
+        setDateFromShopList(dateSync);
+        setItems(list);
+      })
+      .catch((error) => {
+        setItems(null);
+        toast.error(error.message);
+      });
+    setMeasurement(settings.measurement);
+  }, []);
+
+  useEffect(() => {
+    const actives = document.querySelectorAll('.shopping_list_body_sect_item.active');
+
+    actives.forEach((item) => {
+      item.querySelector('input').setAttribute('checked', 'checked');
+    });
+  });
 
   const t = (code: string, placeholders?: any) => getTranslate(
     localePhrases,
@@ -64,6 +89,10 @@ const ShoppingListView: React.FC = (props: any) => {
       ? [{ value: t('common.gr_label'), label: t('common.gr_label') }]
       : [{ value: t('common.oz_label'), label: t('common.oz_label') }]
   );
+
+  useEffect(() => {
+    setQuantity(quantityOptions(settings.measurement)[0]);
+  }, [localePhrases]);
 
   const onAction = () => {
     setSlideStep(0);
@@ -104,16 +133,44 @@ const ShoppingListView: React.FC = (props: any) => {
     }
   };
 
-  const SyncShopListCallback = useCallback(() => {
-    syncShoppingList(dateFromShopList).then((res) => {
-      if (res && res.data && res.data.data.date_sync !== dateFromShopList) {
+  const inputChangeHandlerWithDelay = (timer) => {
+    console.log(1);
+    let timerId;
+    if (!ingredientId) {
+      document.querySelector('.shopping_list_footer_ingredient_input_sect')?.classList.remove('validate_error');
+    }
+
+    return (inputValue, options) => {
+      clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        inputChangeHandler(inputValue, options);
+      }, timer);
+    };
+  };
+
+  const ingredientWeightChangeHandler = (e) => {
+    setIngredientWeight(e.target.value);
+    document.querySelector('.shopping_list_footer_quantity_input')?.classList.remove('validate_error');
+  };
+
+  const SyncShopListCallback = useCallback((test: any = dateFromShopList) => {
+    syncShoppingList(test).then((res) => {
+      if (items.length === 0 || res.data.data.date_sync) {
+        getShoppingList(2)
+          .then((resp) => {
+            setItems(resp.data.data.list);
+            setDateFromShopList(resp.data.data.date_sync);
+            props.setShoppingListCount(resp.data.data.list.length);
+          });
+      }
+      if (res.data.data.date_sync !== test) {
         // shopping list need update
         const { list, date_sync: dateSync } = res.data.data;
-        if (list.length > 0) {
+        if (list.length) {
           const newItems = items.map((item) => {
-            const syncEl = list.filter((syncItem) => syncItem[0] === item.id);
-            if (syncEl[0]) {
-              const [id, weight, isBought] = syncEl[0];
+            const syncEl = list.filter((syncItem) => syncItem[0] === item.id)[0];
+            if (syncEl) {
+              const [id, weight, isBought] = syncEl;
               item.is_bought = isBought;
               item.weight = weight;
               return item;
@@ -127,28 +184,62 @@ const ShoppingListView: React.FC = (props: any) => {
         }
         setDateFromShopList(dateSync);
       }
+      setIsLoading(false);
     });
   }, [items, dateFromShopList]);
 
   const addIngredient = async () => {
-    if (!ingredientWeight || !ingredientId) toast.warn('Product name and quantity should be filled');
-    else {
+    if (!ingredientWeight || !ingredientId) {
+      toast.warn('Product name and quantity should be filled');
+      if (!ingredientId) {
+        document.querySelector('.shopping_list_footer_ingredient_input_sect').classList.add('validate_error');
+      }
+      if (!ingredientWeight) {
+        document.querySelector('.shopping_list_footer_quantity_input').classList.add('validate_error');
+      }
+    } else if (items.map((item) => item.ingredient_id).includes(ingredientId)) {
+      setIsLoading(true);
+      setItems((prev) => {
+        const updateItem = prev.filter((prevItem) => prevItem.ingredient_id === ingredientId)[0];
+        return [
+          ...prev.splice(0, prev.indexOf(updateItem)),
+          {
+            ...updateItem,
+            weight: updateItem.weight + +ingredientWeight,
+          },
+          ...prev.splice(prev.indexOf(updateItem) + 1),
+        ];
+      });
       await addIngredientInShoppingList(
         ingredientId,
         ingredientWeight ? +ingredientWeight : undefined,
       ).then((res) => {
         setDateFromShopList(res.data.data.date_sync);
-        SyncShopListCallback();
+        SyncShopListCallback(res.data.data.date_sync);
+        ingredientSelectEl.current.state.value = {};
+        setIngredientWeight('');
+      });
+    } else {
+      setIsLoading(true);
+      await addIngredientInShoppingList(
+        ingredientId,
+        ingredientWeight ? +ingredientWeight : undefined,
+      ).then((res) => {
+        setDateFromShopList(res.data.data.date_sync);
+        SyncShopListCallback(res.data.data.date_sync);
       });
       await getShoppingList(2)
         .then((res) => {
           setItems(res.data.data.list);
           props.setShoppingListCount(res.data.data.list.length);
+          ingredientSelectEl.current.state.value = {};
+          setIngredientWeight('');
         });
     }
   };
 
-  const deleteIngredient = (item) => {
+  const deleteIngredient = (item, e) => {
+    e.currentTarget.classList.add('disabled');
     deleteFromShoppingList(item.id, dateFromShopList)
       .then((res) => {
         setDateFromShopList(res.data.data.date_sync);
@@ -180,8 +271,8 @@ const ShoppingListView: React.FC = (props: any) => {
     return `${item.name_i18n} (${weight})`;
   };
 
-  const saveShopList = async () => {
-    await getPublicShopListUrl(1)
+  const saveShopList = () => {
+    getPublicShopListUrl(1)
       .then((res) => window.location.assign(res.data.data.url));
   };
 
@@ -223,7 +314,7 @@ const ShoppingListView: React.FC = (props: any) => {
               <span
                 role='presentation'
                 className='shopping_list_body_sect_item_trash'
-                onClick={() => deleteIngredient(item)}
+                onClick={(e) => deleteIngredient(item, e)}
               >
                 <TrashIcon />
               </span>
@@ -256,7 +347,7 @@ const ShoppingListView: React.FC = (props: any) => {
               <span
                 role='presentation'
                 className='shopping_list_body_sect_item_trash'
-                onClick={() => deleteIngredient(item)}
+                onClick={(e) => deleteIngredient(item, e)}
               >
                 <TrashIcon />
               </span>
@@ -278,32 +369,48 @@ const ShoppingListView: React.FC = (props: any) => {
     );
   };
 
+  const sharingHandler = () => {
+    setShareListPopup(!shareListPopup);
+    if (!publicShopListUrl) {
+      getPublicShopListUrl()
+        .then((res) => setPublicShopListUrl(res.data.data.url));
+    }
+  };
+
+  const outsideSocialsCLickListener = (e) => {
+    const socialsEl = document.querySelector('.sharing_socials');
+    const sharingEl = document.querySelector('.sharing_icon');
+    let targetElement = e.target; // clicked element
+
+    do {
+      if (targetElement === socialsEl || targetElement === sharingEl) {
+        // This is a click inside. Do nothing, just return.
+        return;
+      }
+      // If user click on link at popup to go to the shopping list
+
+      // Go up the DOM
+      targetElement = targetElement.parentNode;
+    } while (targetElement);
+
+    // This is a click outside.
+    setShareListPopup(false);
+  };
+
   useEffect(() => {
-    getShoppingList(2)
-      .then((res) => {
-        const { date_sync: dateSync, list } = res.data.data;
-        setDateFromShopList(dateSync);
-        setItems(list);
-      });
-    setMeasurement(settings.measurement);
-    setQuantity(quantityOptions(settings.measurement)[0]);
+    document.addEventListener('click', outsideSocialsCLickListener, true);
+    return () => {
+      document.removeEventListener('click', outsideSocialsCLickListener, true);
+    };
   }, []);
 
   useEffect(() => {
-    const actives = document.querySelectorAll('.shopping_list_body_sect_item.active');
-
-    actives.forEach((item) => {
-      item.querySelector('input').setAttribute('checked', 'checked');
-    });
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => SyncShopListCallback(), (10000));
+    const interval = setInterval(() => SyncShopListCallback(), (5000));
     // destroy interval on unmount
     return () => clearInterval(interval);
   });
 
-  if (!items) return <Spinner color='#0FC1A1' />;
+  if (!items) return <Spinner color='#0FC1A1' className='d-flex mx-auto' />;
 
   return (
     <>
@@ -343,14 +450,8 @@ const ShoppingListView: React.FC = (props: any) => {
                     onClick={() => window.print()}
                   />
                   <ShareIcon
-                    className='page-sub-tabs-controls-icon'
-                    onClick={() => {
-                      setShareListPopup(!shareListPopup);
-                      if (!publicShopListUrl) {
-                        getPublicShopListUrl()
-                          .then((res) => setPublicShopListUrl(res.data.data.url));
-                      }
-                    }}
+                    className='page-sub-tabs-controls-icon sharing_icon'
+                    onClick={sharingHandler}
                   />
                   {
                     shareListPopup && (
@@ -374,17 +475,21 @@ const ShoppingListView: React.FC = (props: any) => {
                     {t('ingr.add')}
                   </span>
                   <div className='shopping_list_footer_ingredient_input_sect'>
+                    <div className='shopping_list_footer_ingredient_input_sect_error'>
+                      {t('common.required_field')}
+                    </div>
                     <Select
                       isClearable
+                      ref={ingredientSelectEl}
                       placeholder={t('common.product_name')}
                       options={ingredientsArray}
-                      onInputChange={inputChangeHandler}
+                      onInputChange={inputChangeHandlerWithDelay(1e3)}
                       onChange={changeHandler}
                       styles={colourStylesSelect}
                       noOptionsMessage={
                         ingredientsArray.length > 0
                           ? () => t('shop_list.no_ingredient')
-                          : () => t('shop_list.emty_field')
+                          : () => t('shop_list.empty_field')
                       }
                     />
                   </div>
@@ -399,9 +504,13 @@ const ShoppingListView: React.FC = (props: any) => {
                       type='number'
                       min={1}
                       value={ingredientWeight}
-                      onChange={(e) => setIngredientWeight(e.target.value)}
+                      onChange={ingredientWeightChangeHandler}
                     />
+                    <div className='shopping_list_footer_quantity_input_error'>
+                      {t('common.required_field')}
+                    </div>
                     <SelectInput
+                      placeholder=''
                       value={quantity}
                       options={quantityOptions(measurement)}
                       onChange={setQuantity}
@@ -412,6 +521,7 @@ const ShoppingListView: React.FC = (props: any) => {
                       type='button'
                       color='primary'
                       onClick={addIngredient}
+                      isLoading={isLoading}
                     >
                       {t('common.add')}
                     </Button>
