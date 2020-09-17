@@ -242,8 +242,8 @@ const SettingsChangeMealPlanView = (props: any) => {
                       onClick: () => setActiveStep(steps.meals),
                     },
                     {
-                      text: t('mp.progress.works_out'),
-                      onClick: () => setActiveStep(steps.worksOut),
+                      text: t('mp.progress.workout'),
+                      onClick: () => setActiveStep(steps.workout),
                     },
                   ]}
                 />
@@ -701,10 +701,10 @@ const SettingsChangeMealPlanView = (props: any) => {
                     </div>
                   </div>
                 )}
-                {activeStep === steps.worksOut && (
+                {activeStep === steps.workout && (
                   <div>
                     <div className='change-meal-plan__title'>
-                      {t('mp.works_out.title')}
+                      {t('mp.workout.title')}
                     </div>
                     <div className='change-meal-plan__works-out-list'>
                       <button
