@@ -75,13 +75,13 @@ const CreateRecipeView = (props: any) => {
     mealtimes: [],
   });
 
-  const [mealTimes, setMealTimes] = useState([]);
+  const [mealTimes, setMealTimes] = useState<Array<any>>([]);
 
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<Array<any>>([]);
 
-  const [videoLinkIframe, setVideoLinkIframe] = useState('');
+  const [videoLinkIframe, setVideoLinkIframe] = useState<string>('');
 
-  const [composition, setComposition] = useState([
+  const [composition, setComposition] = useState<Array<any>>([
     {
       name: 'fat',
       namePlural: t('common.fats'),
@@ -130,7 +130,7 @@ const CreateRecipeView = (props: any) => {
   ]);
 
   const calcComposition = (ingredientsList: Array<any>) => {
-    const updatedComposition = [...composition];
+    const updatedComposition: Array<any> = [...composition];
     updatedComposition.map((item) => {
       item.value = 0;
       switch (item.name) {
@@ -177,7 +177,7 @@ const CreateRecipeView = (props: any) => {
   };
 
   useEffect(() => {
-    let cleanComponent = false;
+    let cleanComponent: boolean = false;
     setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
     getMealTimes().then((response) => {
       if (!cleanComponent) {
@@ -189,15 +189,15 @@ const CreateRecipeView = (props: any) => {
   }, []);
 
   useEffect(() => {
-    let cleanComponent = false;
+    let cleanComponent: boolean = false;
     if (props.location.propsRecipeId && !cleanComponent) {
       getRecipeData(props.location.propsRecipeId, false, false, false, true)
         .then((response) => {
           const { data } = response.data;
 
-          const updatedImages = [];
+          const updatedImages: Array<any> = [];
 
-          const pushedIdsImages = [];
+          const pushedIdsImages: Array<any> = [];
 
           data.images.forEach((imageItem) => {
             pushedIdsImages.push(imageItem.image_id);
@@ -217,7 +217,7 @@ const CreateRecipeView = (props: any) => {
             setVideoLinkIframe(getVideo(data.video_url));
           }
 
-          const updatedIngredients = [...data.ingredients];
+          const updatedIngredients: Array<any> = [...data.ingredients];
 
           updatedIngredients.map((ingredientItem) => {
             ingredientItem.isFullBlock = true;
@@ -253,9 +253,9 @@ const CreateRecipeView = (props: any) => {
     calcComposition(createRecipeForm.ingredients);
   }, [createRecipeForm.ingredients]);
 
-  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
+  const [createRecipeErrors, setCreateRecipeErrors] = useState<Array<any>>([]);
 
-  const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState(false);
+  const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState<boolean>(false);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -273,7 +273,7 @@ const CreateRecipeView = (props: any) => {
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, createRecipeErrors);
 
-  const addIndgredient = (e) => {
+  const addIndgredient = (e: any) => {
     getIngredient(e.value).then((response) => {
       const { data } = response.data;
       if (
@@ -327,6 +327,7 @@ const CreateRecipeView = (props: any) => {
   };
 
   const filterIngredients = async (inputValue: string) => {
+    if (inputValue.length < 2) return;
     const filteredListOfIngredients: Array<any> = [];
     try {
       const response = await searchIngredients(inputValue);
@@ -348,11 +349,26 @@ const CreateRecipeView = (props: any) => {
       resolve(filterIngredients(inputValue));
     });
 
+  const getCreateRecipePayload = () => ({
+    name_i18n: createRecipeForm.recipeName,
+    preparation_i18n: createRecipeForm.recipePreparation,
+    ingredients: createRecipeForm.ingredients,
+    measurement: createRecipeForm.measurement,
+    servings_cnt: createRecipeForm.servingsCnt,
+    cuisine_ids: createRecipeForm.cuisine,
+    image_ids: createRecipeForm.imageIds,
+    time: createRecipeForm.time,
+    weight: createRecipeForm.totalWeight,
+    cost_level: createRecipeForm.costLevel,
+    video_url: createRecipeForm.videoUrl,
+    mealtimes: createRecipeForm.mealtimes,
+  });
+
   const createRecipeSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs: Array<any> = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -374,7 +390,9 @@ const CreateRecipeView = (props: any) => {
       return;
     }
 
-    const checkIngredientsWeight = createRecipeForm.ingredients.filter((ingredientItem) => !ingredientItem.weight);
+    const checkIngredientsWeight: Array<any> = createRecipeForm.ingredients.filter(
+      (ingredientItem) => !ingredientItem.weight,
+    );
 
     if (checkIngredientsWeight.length > 0) {
       toast.error(t('recipe.create.ingredient_weight_error'), {
@@ -388,20 +406,7 @@ const CreateRecipeView = (props: any) => {
     }
 
     if (!hasError) {
-      createRecipe(
-        createRecipeForm.recipeName,
-        createRecipeForm.recipePreparation,
-        createRecipeForm.ingredients,
-        createRecipeForm.measurement,
-        createRecipeForm.servingsCnt,
-        createRecipeForm.cuisine,
-        createRecipeForm.imageIds,
-        createRecipeForm.time,
-        createRecipeForm.totalWeight,
-        createRecipeForm.costLevel,
-        createRecipeForm.videoUrl,
-        createRecipeForm.mealtimes,
-      )
+      createRecipe(getCreateRecipePayload())
         .then((response) => {
           toast.success(t('recipe.create.success'), {
             autoClose: 3000,

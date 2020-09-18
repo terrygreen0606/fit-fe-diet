@@ -230,52 +230,56 @@ const RecipeFullView = (props: any) => {
                             <img src={image.url} alt='' />
                           </div>
                         ))}
-                        <button
-                          type='button'
-                          onClick={() => {
-                            const updatedImages = [...recipeData.images];
+                        {recipeData.images.length > 1 && (
+                          <>
+                            <button
+                              type='button'
+                              onClick={() => {
+                                const updatedImages = [...recipeData.images];
 
-                            updatedImages.find((findImage, findImageIndex) => {
-                              if (findImage.isActive === true) {
-                                updatedImages[findImageIndex].isActive = false;
-                                if (findImageIndex === 0) {
-                                  updatedImages[updatedImages.length - 1].isActive = true;
-                                } else {
-                                  updatedImages[findImageIndex - 1].isActive = true;
-                                }
-                                return updatedImages;
-                              }
-                            });
+                                updatedImages.find((findImage, findImageIndex) => {
+                                  if (findImage.isActive === true) {
+                                    updatedImages[findImageIndex].isActive = false;
+                                    if (findImageIndex === 0) {
+                                      updatedImages[updatedImages.length - 1].isActive = true;
+                                    } else {
+                                      updatedImages[findImageIndex - 1].isActive = true;
+                                    }
+                                    return updatedImages;
+                                  }
+                                });
 
-                            setRecipeData({ ...recipeData, images: updatedImages });
-                          }}
-                          className='recipe__main-info-media-button recipe__main-info-media-prev'
-                        >
-                          <ArrowLeftLogo />
-                        </button>
-                        <button
-                          type='button'
-                          onClick={() => {
-                            const updatedImages = [...recipeData.images];
+                                setRecipeData({ ...recipeData, images: updatedImages });
+                              }}
+                              className='recipe__main-info-media-button recipe__main-info-media-prev'
+                            >
+                              <ArrowLeftLogo />
+                            </button>
+                            <button
+                              type='button'
+                              onClick={() => {
+                                const updatedImages = [...recipeData.images];
 
-                            updatedImages.find((findImage, findImageIndex) => {
-                              if (findImage.isActive === true) {
-                                updatedImages[findImageIndex].isActive = false;
-                                if (findImageIndex === updatedImages.length - 1) {
-                                  updatedImages[0].isActive = true;
-                                } else {
-                                  updatedImages[findImageIndex + 1].isActive = true;
-                                }
-                                return updatedImages;
-                              }
-                            });
+                                updatedImages.find((findImage, findImageIndex) => {
+                                  if (findImage.isActive === true) {
+                                    updatedImages[findImageIndex].isActive = false;
+                                    if (findImageIndex === updatedImages.length - 1) {
+                                      updatedImages[0].isActive = true;
+                                    } else {
+                                      updatedImages[findImageIndex + 1].isActive = true;
+                                    }
+                                    return updatedImages;
+                                  }
+                                });
 
-                            setRecipeData({ ...recipeData, images: updatedImages });
-                          }}
-                          className='recipe__main-info-media-button recipe__main-info-media-next'
-                        >
-                          <ArrowRightLogo />
-                        </button>
+                                setRecipeData({ ...recipeData, images: updatedImages });
+                              }}
+                              className='recipe__main-info-media-button recipe__main-info-media-next'
+                            >
+                              <ArrowRightLogo />
+                            </button>
+                          </>
+                        )}
                       </>
                     )}
                   </div>
