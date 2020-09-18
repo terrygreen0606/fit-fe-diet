@@ -48,7 +48,6 @@ import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
 import {
-  colourStylesSelect,
   servingOptions,
   costCategoryOptions,
 } from './selectsDatas';
@@ -781,7 +780,6 @@ const CreateRecipeView = (props: any) => {
                 loadOptions={inputValueIngredient}
                 placeholder={t('recipe.create.ingredient_search')}
                 onChange={addIndgredient}
-                styles={colourStylesSelect}
               />
             </div>
           </div>

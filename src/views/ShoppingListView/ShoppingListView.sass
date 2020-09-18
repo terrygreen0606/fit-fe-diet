@@ -1,342 +1,332 @@
-@import '../../assets/sass/vars'
+@import '../../assets/sass/_vars'
 
-.shopping_list
-  &_container
-    background-color: #FFFFFF
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
-    border-radius: 20px
-    padding: 55px 35px
-    margin-bottom: 30px
-    width: 100%
+.shop-list
+  margin-bottom: 75px
+  padding: 50px 40px 70px
+
+  @media (max-width: 768px)
+    &.card-bg
+      padding: 0
+      box-shadow: none
+      border-radius: 0
+
+
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 66px
+
     @media (max-width: 768px)
-      padding: 27px 20px
+      margin-bottom: 10px
 
-  &_body
+    &-title
+      margin-bottom: 0
+
+    &-buttons
+      display: flex
+      align-items: center
+
+      &-item
+        margin-left: 15px
+        padding: 0
+        background-color: transparent
+        border: none
+        cursor: pointer
+
+        svg path
+          fill: $black
+          transition: 0.2s fill ease
+
+      &-item:hover
+        svg path
+          fill: $caribbean-green
+
+  &__body
     display: flex
     justify-content: space-between
-    margin-bottom: 70px
+    flex-wrap: wrap
 
-    &_title_sect
-      display: flex
-      flex-direction: row
-      justify-content: space-between
-      margin-bottom: 32px
+    @media (max-width: 768px)
+      margin-bottom: 50px
 
-      &_text
-        color: $caribbean-green
-        margin: 0
-        font-size: 24px
-        line-height: 29px
-        @media (max-width: 768px)
-          font-size: 18px
-          line-height: 22px
+  &__item
+    margin-bottom: 54px
+    flex-basis: 45%
 
-      &_icons
-        position: relative
-        display: flex
-        justify-content: space-between
-        align-items: center
-        min-width: 110px
+    @media (max-width: 768px)
+      flex-basis: 100%
+      margin-bottom: 0
+      padding: 30px 0
+      border-bottom: 1px solid #E8E8E8
+      
+    &-category
+      margin-bottom: 4px
+      font-size: 18px
+      line-height: 1.2
+      font-weight: bold
 
-    &_sect
-      flex: 0 1 100%
-      display: flex
-      flex-direction: row
-      justify-content: space-between
       @media (max-width: 768px)
-        flex-direction: column
-        &:not(:last-child)
-          padding-bottom: 20px
-          border-bottom: 1px solid #C4C4C4
-        &:not(:first-child)
-          margin-top: 10px
+        margin-bottom: 14px
 
-      &_1, &_2
-        flex: 0 1 45%
-        max-width: 45%
-        @media (max-width: 768px)
-          flex: 0 1 100%
-          max-width: 100%
+    &-ingr
+      display: flex
+      align-items: flex-end
+      justify-content: space-between
+      margin-bottom: 20px
 
-      &_1
-        .shopping_list_body_sect_category
-          &:not(:first-child)
-            @media (max-width: 768px)
-              padding-top: 10px
-              border-top: 1px solid #C4C4C4
-
-      &_2
-        .shopping_list_body_sect_category
-          @media (max-width: 768px)
-            padding-top: 10px
-            border-top: 1px solid #C4C4C4
-
-      &_category
-        font-weight: bold
-        font-size: 18px
-        line-height: 40px
-        color: #000000
-        @media (max-width: 768px)
-          white-space: nowrap
-          overflow-x: hidden
-          text-overflow: ellipsis
-
-      &_item
-        position: relative
-        height: auto
-        background-color: #FFFFFF
-        display: flex
-        justify-content: space-between
+      @media (max-width: 768px)
         align-items: center
-        margin-bottom: 10px
 
-        span.checkmark
+      .customCheckbox
+        margin-bottom: 0
+        padding-right: 20px
+        flex: 1
+
+        @media (max-width: 768px)
+          font-size: 16px
+
+        .checkmark
+          top: initial
+          bottom: 0
+
+          @media (max-width: 768px)
+            bottom: 50%
+            transform: translateY(50%)
+
           &::after
-            border-color: #ffffff
+            border-color: $white
 
-        &.active
-          span.checkmark
-            background-color: $caribbean-green
-            border-color: $caribbean-green
-            &::after
-              border-color: #ffffff
+      .customCheckbox input:checked ~ .checkmark
+        background-color: $caribbean-green
+        border-color: $caribbean-green
 
-        &_checkbox
-          margin-right: 0 !important
+      &-delete
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 38px
+        height: 38px
+        padding: 0
+        border: none
+        background-color: #FF3D00
+        border-radius: 50%
+        cursor: pointer
+        transition: 0.2s background-color ease
 
-        &_trash
-          background-color: #FF3D00
-          display: inline-flex
-          justify-content: center
-          align-items: center
-          width: 37px
-          height: 37px
-          border-radius: 50%
-          cursor: pointer
-          &:hover
-            background-color: darken(#FF3D00, 10)
+        &:hover
+          background-color: darken(#FF3D00, 10%)
 
-          &.disabled
-            pointer-events: none
-            opacity: .4
-
-  &_footer
+  &__footer
     display: flex
-    flex-direction: row
     align-items: center
     justify-content: space-between
     flex-wrap: wrap
-    margin-bottom: 70px
-    @media (max-width: 1200px)
-      flex-direction: column
-      align-items: normal
-      margin-bottom: 20px
-    @media (max-width: 767px)
-      flex-wrap: nowrap
-      margin-bottom: 70px
 
-    &_ingredient
-      position: relative
-      flex: 0 1 50%
-      display: flex
-      justify-content: space-between
-      align-items: center
-      @media (max-width: 1200px)
-        margin-bottom: 40px
-      @media (max-width: 767px)
-        flex-direction: column
-        align-items: normal
-
-      &_text
-        font-size: 16px
-        font-weight: bold
-        line-height: 20px
-        @media (max-width: 767px)
-          margin-bottom: 18px
-
-      &_input
-        padding: 19px 28px
-        flex: 0 1 100%
-
-        &_sect
-          position: relative
-          display: inline-flex
-          flex: 0 1 70%
-          &:focus
-            outline: 1px auto #F391AA
-
-          &.validate_error
-            [class*="-control"]
-              border: 1px solid #F391AA !important
-            .shopping_list_footer_ingredient_input_sect_error
-              display: block
-
-          &_error
-            display: none
-            position: absolute
-            margin-top: 10px
-            top: 100%
-            left: 0
-            color: red
-            font-size: 16px
-
-    &_quantity
-      position: relative
-      flex: 0 1 45%
-      display: flex
-      justify-content: space-between
-      align-items: center
-      @media (max-width: 767px)
-        flex-direction: column
-        align-items: normal
-
-      &_text
-        font-size: 16px
-        font-weight: bold
-        line-height: 20px
-        @media (max-width: 767px)
-          margin-bottom: 18px
-
-      &_input
-        padding: 19px 28px
-        flex: 0 1 calc(100% - 270px)
-        max-width: calc(100% - 270px)
-        border: 1px solid #c6c6c6
-        border-radius: 4px
-        transition: all 0.2s ease
-        &:focus
-          border: 1px solid lighten($black, 30%) !important
-          outline: none !important
-        &:hover
-          border: 1px solid lighten($black, 30%) !important
-        @media (max-width: 767px)
-          flex: 0 1 calc(100% - 120px)
-          max-width: calc(100% - 120px)
-
-        &.validate_error
-          border: 1px solid #F391AA
-          &:hover
-            border: 1px solid #F391AA !important
-
-        &.validate_error ~ .shopping_list_footer_quantity_input_error
-          display: block
-
-        &_error
-          display: none
-          position: absolute
-          margin-top: 10px
-          top: 100%
-          left: 0
-          color: red
-          font-size: 16px
-
-        &_sect
-          position: relative
-          display: inline-flex
-          flex: 0 1 70%
-          justify-content: space-between
-          @media (max-width: 767px)
-            flex: 0 1 100%
-            flex-wrap: wrap
-
-      &_button
-        max-width: 130px
-        @media (max-width: 767px)
-          position: absolute
-          top: 100%
-          left: 50%
-          transform: translateX(-50%)
-          max-width: 200px
-          margin: 30px auto 0
-
-.shopping_tour
-  z-index: 100
-  height: 280px
-  padding: 0
-  margin-bottom: 90px
-
-  @media (max-width: 768px)
-    height: 500px
-
-  .quick_tour_col
-    padding: 58px 55px
-    max-width: 100% !important
-    text-align: left
-    align-items: flex-start
     @media (max-width: 768px)
-      padding: 60px 26px
+      align-items: flex-end
 
-    &_1, &_2, &_3
-      background-size: contain
-      background-position: 70% center
-      @media (max-width: 768px)
-        background-size: 70%
-        background-position: center bottom
-      @media (max-width: 500px)
-        background-size: 80%
+    &-search
+      display: flex
+      align-items: center
+      flex-basis: calc(66% - 167px)
 
-    .quick_tour_title, .quick_tour_text
-      max-width: 55%
+      @media (max-width: 1200px)
+        flex-basis: 100%
+        margin-bottom: 20px
+
       @media (max-width: 768px)
-        max-width: 100%
+        flex-wrap: wrap
+
+      .fgLabel
+        margin-right: 32px
+        margin-bottom: 0
+        padding-left: 0
+        font-size: 16px
+        font-weight: bold
+
+        @media (max-width: 768px)
+          margin-right: 0
+          margin-bottom: 10px
+          flex-basis: 100%
+          font-size: 14px
+
+      .fgSelectContainer
+        flex: 1
+
+        .fgSelectControl
+          width: 100%
+          border-radius: 0 !important
+          transition: 0.2s border-color ease
+
+          @media (max-width: 400px)
+            font-size: 12px
+
+          &:hover
+            border-color: #4d4d4d !important
+
+        .fgSelectMenu
+          width: 100%
+
+    &-quantity
+      display: flex
+      align-items: center
+      flex-basis: calc(34% - 167px)
+
+      @media (max-width: 1200px)
+        flex-basis: calc(33.33% - 20px)
+
+      @media (max-width: 768px)
+        flex-wrap: wrap
+        flex-basis: calc(75% - 10px)
+
+      @media (max-width: 400px)
+        flex-basis: calc(60% - 10px)
+
+      .fgLabel
+        margin-right: 20px
+        margin-bottom: 0
+        padding-left: 0
+        font-size: 16px
+        font-weight: bold
+
+        @media (max-width: 768px)
+          margin-bottom: 10px
+          flex-basis: 100%
+          font-size: 14px
+
+      .fg-input
+        flex: 1
+        width: 100%
+        border-radius: 0
+
+    &-measurement
+      flex-basis: 100px
+
+      @media (max-width: 1200px)
+        flex-basis: calc(33.33% - 20px)
+
+      @media (max-width: 768px)
+        flex-basis: calc(25% - 10px)
+      
+      @media (max-width: 400px)
+        flex-basis: calc(40% - 10px)
+
+      .fgSelectContainer
+        width: 100%
+
+        .fgSelectControl
+          width: 100%
+          border-radius: 0 !important
+          transition: 0.2s border-color ease
+
+          &:hover
+            border-color: #4d4d4d !important
+
+        .fgSelectMenu
+          width: 100%
+
+    &-btn
+      flex-basis: 134px
+      width: 100%
+      padding: 18px 20px 17px
+      font-size: 26px
+
+      @media (max-width: 1200px)
+        flex-basis: calc(33.33% - 20px)
+
+      @media (max-width: 768px)
+        flex-basis: 100%
+        margin-top: 20px
+        font-weight: normal
+
+  &__banner
+    position: relative
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    padding: 0 125px 0 55px
+    margin-bottom: 80px
+
+    @media (max-width: 1200px)
+      padding: 60px 30px 0
+
+    &-text
+      flex-basis: calc(63% - 115px)
+      padding: 10px 20px 10px 0
+
+      @media (max-width: 768px)
+        padding: 0
+
+      @media (max-width: 1200px)
+        flex-basis: 100%
+        margin-bottom: 30px
         text-align: center
 
-    .quick_tour_title
-      @media (min-width: 768px) and (max-width: 1200px)
-        font-size: 24px
-        line-height: 32px
+      &-title
+        margin-bottom: 26px
+        font-size: 36px
+        line-height: 1.2
 
-    .quick_tour_button
-      right: 7%
-      left: unset
-      top: 50%
-      bottom: unset
-      transform: translateY(-50%)
-      padding: 12px 70px
-      @media (max-width: 768px)
+        @media (max-width: 768px)
+          font-size: 24px
+
+      &-desc
+        font-size: 18px
+        line-height: 1.2
+        font-weight: bold
+
+        @media (max-width: 768px)
+          font-size: 16px
+
+    &-media
+      flex-basis: calc(37% - 115px)
+      line-height: 0
+
+      @media (max-width: 1200px)
+        flex-basis: 100%
+        text-align: center
+
+      & > *
+        line-height: initial
+
+      img
+        max-width: 100%
+        height: auto
+
+    &-btn
+      flex-basis: 200px
+      margin-left: 30px
+
+      @media (max-width: 1200px)
+        position: absolute
         bottom: 45px
-        top: unset
-        right: unset
         left: 50%
         transform: translateX(-50%)
+        margin-left: 0
 
-  .quick_tour_skip
-    z-index: 1
+      @media (max-width: 768px)
+        font-weight: normal
 
-.sharing_socials
-  position: absolute
-  bottom: 110%
-  right: 0
-  display: flex
-  align-items: center
-  justify-content: center
-  z-index: 2
-  background-color: #ffffff
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.08)
+    &-btn-skip
+      position: absolute
+      top: 20px
+      right: 20px
+      padding: 0
+      font-size: 18px
+      font-family: Montserrat
+      color: #878787
+      background-color: transparent
+      border: none
+      border-bottom: 1px solid
+      cursor: pointer
+      transition: 0.2s border-color ease
 
-  .share-button
-    width: 52px
-    height: 52px
-    padding: 0 5px
+      @media (max-width: 768px)
+        top: 15px
+        right: 15px
 
-    @media (max-width: 767px)
-      margin: 0
+      &:hover
+        border-color: transparent
 
 
-@media print
-  body *
-    visibility: hidden
-  *::-webkit-scrollbar
-    display: none
-  .shopping_list_body, .shopping_list_body *, .shopping_list_body_title_sect, .shopping_list_body_title_sect *
-    visibility: visible
-  .shopping_list_body_title_sect_icons, .shopping_list_body_sect_item_trash, .shopping_list_header
-    display: none !important
-  .shopping_list_container
-    margin: 20px
-    padding: 0
-    position: fixed
-    top: 0
-    left: 0
-  .shopping_list_body_title_sect
-    margin-bottom: 10px
