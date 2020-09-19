@@ -14,6 +14,7 @@ import {
   searchIngredients,
   getIngredient,
   getShoppingList,
+  getPublicShopListUrl,
 } from 'api';
 
 // Components
@@ -71,6 +72,11 @@ const ShoppingListView = (props: any) => {
     new Promise((resolve) => {
       resolve(filterIngredients(inputValue));
     });
+
+  const saveFileShoppingList = () => {
+    getPublicShopListUrl(1)
+      .then((response) => window.location.assign(response.data.data.url));
+  };
 
   const addIndgredient = (e: any) => {
     getIngredient(e.value).then((response) => {
@@ -186,12 +192,14 @@ const ShoppingListView = (props: any) => {
                 <div className='shop-list__header-buttons'>
                   <button
                     type='button'
+                    onClick={() => saveFileShoppingList()}
                     className='shop-list__header-buttons-item'
                   >
                     <FileDyskIcon />
                   </button>
                   <button
                     type='button'
+                    onClick={() => window.print()}
                     className='shop-list__header-buttons-item'
                   >
                     <PrintIcon />
