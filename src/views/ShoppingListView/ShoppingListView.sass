@@ -24,6 +24,7 @@
       margin-bottom: 0
 
     &-buttons
+      position: relative
       display: flex
       align-items: center
 
@@ -41,6 +42,22 @@
       &-item:hover
         svg path
           fill: $caribbean-green
+
+      &-share
+        position: absolute
+        bottom: calc(100% + 10px)
+        right: 0
+        display: flex
+        align-items: center
+        padding: 10px
+        background-color: $white
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        border-radius: 5px
+
+        .share-button
+          width: 40px
+          height: 40px
+          margin: 0 4px
 
   &__body
     display: flex
@@ -142,37 +159,11 @@
       @media (max-width: 768px)
         flex-wrap: wrap
 
-      .fgLabel
-        margin-right: 32px
-        margin-bottom: 0
-        padding-left: 0
-        font-size: 16px
-        font-weight: bold
-
-        @media (max-width: 768px)
-          margin-right: 0
-          margin-bottom: 10px
-          flex-basis: 100%
-          font-size: 14px
-
-      .fgSelectContainer
-        flex: 1
-
-        .fgSelectControl
-          width: 100%
-          border-radius: 0 !important
-          transition: 0.2s border-color ease
-
-          @media (max-width: 400px)
-            font-size: 12px
-
-          &:hover
-            border-color: #4d4d4d !important
-
-        .fgSelectMenu
-          width: 100%
+      & > div
+        width: 100%
 
     &-quantity
+      position: relative
       display: flex
       align-items: center
       flex-basis: calc(34% - 167px)
@@ -204,6 +195,16 @@
         width: 100%
         border-radius: 0
 
+      .fgInvalidMsg
+        position: absolute
+        top: 100%
+        right: 0
+
+        @media (max-width: 768px)
+          left: 0
+          right: initial
+          margin-bottom: 20px
+
     &-measurement
       flex-basis: 100px
 
@@ -221,11 +222,19 @@
 
         .fgSelectControl
           width: 100%
+          padding-right: 7px
           border-radius: 0 !important
           transition: 0.2s border-color ease
 
           &:hover
             border-color: #4d4d4d !important
+
+          .fgSelectSeprator + div svg path
+            fill: #cccccc
+            transition: 0.2s fill ease
+
+          .fgSelectSeprator + div:hover svg path
+            fill: #999999
 
         .fgSelectMenu
           width: 100%
@@ -241,7 +250,7 @@
 
       @media (max-width: 768px)
         flex-basis: 100%
-        margin-top: 20px
+        margin-top: 40px
         font-weight: normal
 
   &__banner
