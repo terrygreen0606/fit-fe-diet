@@ -45,7 +45,10 @@ export const addToShoppingListByRecipes = (
   return axios.put(link);
 };
 
-export const deleteFromShoppingList = (id: string, date_sync: number = 0) =>
+export const deleteFromShoppingList = (
+  id: string,
+  date_sync: number = 0,
+) =>
   axios.delete(
     `/shopping-list/${id}?date_sync=${date_sync}`,
   );

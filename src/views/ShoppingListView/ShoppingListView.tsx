@@ -28,7 +28,7 @@ import Spinner from 'components/common/Spinner';
 import './ShoppingListView.sass';
 
 // Icons
-import { ReactComponent as SaveIcon } from 'assets/img/icons/save-icon.svg';
+import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.svg';
 import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
 import { ReactComponent as ShareIcon } from 'assets/img/icons/share-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
@@ -45,8 +45,9 @@ const ShoppingListView = (props: any) => {
 
   const [isSpinnerActive, setSpinnerActive] = useState<boolean>(true);
 
-  const [shoppingListFromResponse, setShoppingListFromResponse] = useState<Array<any>>([]);
-  const [shoppingListRender, setShoppingListRender] = useState<Array<any>>([]);
+  const [shoppingList, setShoppingList] = useState<Array<any>>([]);
+
+  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
 
   const filterIngredients = async (inputValue: string) => {
     if (inputValue.length < 2) return;
@@ -110,42 +111,44 @@ const ShoppingListView = (props: any) => {
   };
 
   useEffect(() => {
-    getShoppingList(2).then((response) =>
-      setShoppingListFromResponse(response.data.data.list));
-  }, []);
+    getShoppingList(2).then((response) => {
+      const { list } = response.data.data;
 
-  useEffect(() => {
-    const sortedShoppingList = [];
-    if (
-      sortedShoppingList.length === 0
-      && shoppingListFromResponse.length > 0
-    ) {
-      sortedShoppingList.push({
-        category: shoppingListFromResponse[0]?.cuisine_name_i18n,
-        ingredientsList: [shoppingListFromResponse[0]],
+      setShoppingListLength(list.length);
+
+      const sortedShoppingList = [];
+      if (
+        sortedShoppingList.length === 0
+        && list.length > 0
+      ) {
+        sortedShoppingList.push({
+          category: list[0]?.cuisine_name_i18n,
+          column: list[0].column,
+          ingredientsList: [list[0]],
+        });
+      }
+
+      list.forEach((item, itemIndex) => {
+        if (itemIndex === 0) return;
+        sortedShoppingList.find((findItem, findItemIndex) => {
+          if (findItem.category === item.cuisine_name_i18n) {
+            findItem.ingredientsList = [...findItem.ingredientsList, item];
+            return;
+          }
+
+          if (findItemIndex === sortedShoppingList.length - 1) {
+            sortedShoppingList.push({
+              category: item.cuisine_name_i18n,
+              column: item.column,
+              ingredientsList: [item],
+            });
+          }
+        });
       });
-    }
-
-    shoppingListFromResponse.forEach((item, itemIndex) => {
-      if (itemIndex === 0) return;
-      sortedShoppingList.find((findItem, findItemIndex) => {
-        if (findItem.category === item.cuisine_name_i18n) {
-          findItem.ingredientsList = [...findItem.ingredientsList, item];
-          return;
-        }
-
-        if (findItemIndex === sortedShoppingList.length - 1) {
-          sortedShoppingList.push({
-            category: item.cuisine_name_i18n,
-            ingredientsList: [item],
-          });
-        }
-      });
+      setShoppingList([...sortedShoppingList]);
+      setSpinnerActive(false);
     });
-
-    setShoppingListRender([...sortedShoppingList]);
-    setSpinnerActive(false);
-  }, [shoppingListFromResponse]);
+  }, []);
 
   return (
     <>
@@ -178,14 +181,14 @@ const ShoppingListView = (props: any) => {
             <div className='shop-list card-bg'>
               <div className='shop-list__header'>
                 <h5 className='shop-list__header-title'>
-                  {t('shop_list.to_buy', { number: shoppingListFromResponse.length })}
+                  {t('shop_list.to_buy', { number: shoppingListLength })}
                 </h5>
                 <div className='shop-list__header-buttons'>
                   <button
                     type='button'
                     className='shop-list__header-buttons-item'
                   >
-                    <SaveIcon />
+                    <FileDyskIcon />
                   </button>
                   <button
                     type='button'
@@ -202,33 +205,70 @@ const ShoppingListView = (props: any) => {
                 </div>
               </div>
               <div className='shop-list__body'>
-                {shoppingListRender.map((item, itemIndex) => (
-                  <div
-                    key={item.category}
-                    className='shop-list__item'
-                  >
-                    <div className='shop-list__item-category'>
-                      {item.category}
-                    </div>
-                    {shoppingListRender[itemIndex].ingredientsList.map((ingredient) => (
+                <div className='shop-list__column'>
+                  {shoppingList.map((item, itemIndex) => {
+                    if (item.column !== 1) return;
+                    return (
                       <div
-                        key={ingredient.id}
-                        className='shop-list__item-ingr'
+                        key={item.category}
+                        className='shop-list__item'
                       >
-                        <CustomCheckbox
-                          label={`${t(getWeigthUnit(settings.measurement),
-                            { number: ingredient.weight })} ${ingredient.name_i18n}`}
-                        />
-                        <button
-                          type='button'
-                          className='shop-list__item-ingr-delete'
-                        >
-                          <TrashIcon />
-                        </button>
+                        <div className='shop-list__item-category'>
+                          {item.category}
+                        </div>
+                        {shoppingList[itemIndex].ingredientsList.map((ingredient) => (
+                          <div
+                            key={ingredient.id}
+                            className='shop-list__item-ingr'
+                          >
+                            <CustomCheckbox
+                              label={`${t(getWeigthUnit(settings.measurement),
+                                { number: ingredient.weight })} ${ingredient.name_i18n}`}
+                            />
+                            <button
+                              type='button'
+                              className='shop-list__item-ingr-delete'
+                            >
+                              <TrashIcon />
+                            </button>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                ))}
+                    );
+                  })}
+                </div>
+                <div className='shop-list__column'>
+                  {shoppingList.map((item, itemIndex) => {
+                    if (item.column !== 2) return;
+                    return (
+                      <div
+                        key={item.category}
+                        className='shop-list__item'
+                      >
+                        <div className='shop-list__item-category'>
+                          {item.category}
+                        </div>
+                        {shoppingList[itemIndex].ingredientsList.map((ingredient) => (
+                          <div
+                            key={ingredient.id}
+                            className='shop-list__item-ingr'
+                          >
+                            <CustomCheckbox
+                              label={`${t(getWeigthUnit(settings.measurement),
+                                { number: ingredient.weight })} ${ingredient.name_i18n}`}
+                            />
+                            <button
+                              type='button'
+                              className='shop-list__item-ingr-delete'
+                            >
+                              <TrashIcon />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
               <div className='shop-list__footer'>
                 <div className='shop-list__footer-search'>
