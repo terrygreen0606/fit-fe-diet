@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable operator-linebreak */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable @typescript-eslint/indent */
@@ -99,9 +100,10 @@ const ShoppingListView = (props: any) => {
 
   const getIndgredientFunc = (e: any) => {
     getIngredient(e.value).then((response) => {
-      const { data } = response.data;
-
-      console.log('data', data);
+      setAddIngredientForm({
+        ...addIngredientForm,
+        ingredientId: response.data.data._id,
+      });
     });
   };
 
@@ -410,7 +412,7 @@ const ShoppingListView = (props: any) => {
                     type='number'
                     name='weight'
                     data-param='0'
-                    data-validate='["min"]'
+                    data-validate='["min", "required"]'
                     errors={getFieldErrors('weight')}
                     value={addIngredientForm.weight}
                     onChange={(e) => validateOnChange('weight', e.target.value, e)}
