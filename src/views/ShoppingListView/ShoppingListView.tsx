@@ -3,7 +3,11 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/no-danger */
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
@@ -19,11 +23,12 @@ import {
 import {
   searchIngredients,
   getIngredient,
-  getShoppingList,
   getPublicShopListUrl,
+  getShoppingList,
   setShoppingRowBought,
   deleteFromShoppingList,
   addIngredientInShoppingList,
+  syncShoppingList,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -59,7 +64,8 @@ const ShoppingListView = (props: any) => {
 
   const [isShareButtonActive, setShareButtonActive] = useState<boolean>(false);
 
-  const [shoppingList, setShoppingList] = useState<Array<any>>([]);
+  const [shoppingListFromResponse, setShoppingListFromResponse] = useState<Array<any>>([]);
+  const [shoppingListRender, setShoppingListRender] = useState<Array<any>>([]);
   const [shoppingListLength, setShoppingListLength] = useState<number>(0);
 
   const [addIngredientForm, setAddIngredientForm] = useState({
@@ -67,6 +73,8 @@ const ShoppingListView = (props: any) => {
     weight: null,
   });
   const [addIngredientErrors, setAddIngredientErrors] = useState<Array<any>>([]);
+
+  const [dateSync, setDateSync] = useState<number>(0);
 
   const filterIngredients = async (inputValue: string) => {
     if (inputValue.length < 2) return;
@@ -105,49 +113,79 @@ const ShoppingListView = (props: any) => {
     });
   };
 
-  const getShoppingListFunc = () => {
-    getShoppingList(2).then((response) => {
+  useEffect(() => {
+    getShoppingList(2, dateSync).then((response) => {
       const { list } = response.data.data;
+
+      console.log('list', list)
+
+      setShoppingListFromResponse(list);
+
+      if (dateSync === 0) setDateSync(response.data.data.date_sync);
 
       setShoppingListLength(list.length);
 
-      const sortedShoppingList = [];
-      if (
-        sortedShoppingList.length === 0
-        && list.length > 0
-      ) {
-        sortedShoppingList.push({
-          category: list[0]?.cuisine_name_i18n,
-          column: list[0].column,
-          ingredientsList: [list[0]],
-        });
-      }
-
-      list?.forEach((item, itemIndex) => {
-        if (itemIndex === 0) return;
-        sortedShoppingList.find((findItem, findItemIndex) => {
-          if (findItem.category === item.cuisine_name_i18n) {
-            findItem.ingredientsList = [...findItem.ingredientsList, item];
-            return;
-          }
-
-          if (findItemIndex === sortedShoppingList.length - 1) {
-            sortedShoppingList.push({
-              category: item.cuisine_name_i18n,
-              column: item.column,
-              ingredientsList: [item],
-            });
-          }
-        });
-      });
-      setShoppingList([...sortedShoppingList]);
       setSpinnerActive(false);
     });
-  };
+  }, []);
 
   useEffect(() => {
-    getShoppingListFunc();
-  }, []);
+    const sortedShoppingList = [];
+    if (shoppingListFromResponse.length > 0) {
+      sortedShoppingList.push({
+        category: shoppingListFromResponse[0]?.cuisine_name_i18n,
+        column: shoppingListFromResponse[0].column,
+        ingredientsList: [shoppingListFromResponse[0]],
+      });
+    }
+
+    shoppingListFromResponse?.forEach((item, itemIndex) => {
+      if (itemIndex === 0) return;
+      sortedShoppingList.find((findItem, findItemIndex) => {
+        if (findItem.category === item.cuisine_name_i18n) {
+          findItem.ingredientsList = [...findItem.ingredientsList, item];
+          return;
+        }
+
+        if (findItemIndex === sortedShoppingList.length - 1) {
+          sortedShoppingList.push({
+            category: item.cuisine_name_i18n,
+            column: item.column,
+            ingredientsList: [item],
+          });
+        }
+      });
+    });
+
+    setShoppingListRender([...sortedShoppingList]);
+  }, [shoppingListFromResponse]);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     syncShoppingList(dateSync)
+  //       .then((response) => {
+  //         const { list } = response.data.data;
+
+  //         setDateSync(response.data.data.date_sync);
+
+  //         if (list.length > 0) {
+  //           const updatedShoppingList = [...shoppingListFromResponse];
+  //           console.log(shoppingListFromResponse);
+  //           list.forEach((item) => {
+  //             updatedShoppingList.find((findItem) => {
+  //               if (item[0] === findItem.id) {
+  //                 findItem.weight = item[1];
+  //                 findItem.is_bought = item[3];
+  //               }
+  //             })
+  //           });
+  //           setShoppingListFromResponse([...updatedShoppingList]);
+  //           convertShoppingListToRender(updatedShoppingList);
+  //         }
+  //       })
+  //   }, (5000));
+  //   return () => clearInterval(interval);
+  // });
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -183,8 +221,16 @@ const ShoppingListView = (props: any) => {
     }
 
     if (!hasError) {
-      addIngredientInShoppingList(addIngredientForm.id, addIngredientForm.weight)
-        .then(() => getShoppingListFunc());
+      addIngredientInShoppingList(
+        addIngredientForm.id,
+        addIngredientForm.weight,
+        dateSync,
+      )
+        .catch(() => {
+          toast.error(t('shop_list.update.error'), {
+            autoClose: 3000,
+          });
+        });
     }
   };
 
@@ -252,7 +298,7 @@ const ShoppingListView = (props: any) => {
               </div>
               <div className='shop-list__body'>
                 <div className='shop-list__column'>
-                  {shoppingList.map((item, itemIndex) => {
+                  {shoppingListRender.map((item, itemIndex) => {
                     if (item.column !== 1) return;
                     return (
                       <div
@@ -262,7 +308,7 @@ const ShoppingListView = (props: any) => {
                         <div className='shop-list__item-category'>
                           {item.category}
                         </div>
-                        {shoppingList[itemIndex].ingredientsList.map((ingredient, ingredientIndex) => (
+                        {shoppingListRender[itemIndex].ingredientsList.map((ingredient, ingredientIndex) => (
                           <div
                             key={ingredient.id}
                             className='shop-list__item-ingr'
@@ -272,19 +318,32 @@ const ShoppingListView = (props: any) => {
                                 { number: ingredient.weight })} ${ingredient.name_i18n}`}
                               checked={ingredient.is_bought}
                               onChange={() => {
-                                const updatedShoppingList = [...shoppingList];
+                                const updatedShoppingList = [...shoppingListFromResponse];
 
-                                updatedShoppingList[itemIndex].ingredientsList[ingredientIndex].is_bought =
-                                  !updatedShoppingList[itemIndex].ingredientsList[ingredientIndex].is_bought;
+                                let updatedElementIndex = null;
 
-                                setShoppingList([...updatedShoppingList]);
+                                updatedShoppingList.find((findItem, findItemIndex) => {
+                                  if (findItem.id === ingredient.id) {
+                                    updatedElementIndex = findItemIndex;
+                                    findItem.is_bought = !findItem.is_bought;
+                                  }
+                                });
 
-                                setShoppingRowBought(ingredient.id, !ingredient.is_bought)
+                                setShoppingListFromResponse(updatedShoppingList);
+
+                                setShoppingRowBought(
+                                  ingredient.id,
+                                  updatedShoppingList[updatedElementIndex].is_bought,
+                                  dateSync,
+                                )
                                   .catch(() => {
-                                    updatedShoppingList[itemIndex].ingredientsList[ingredientIndex].is_bought =
-                                      !updatedShoppingList[itemIndex].ingredientsList[ingredientIndex].is_bought;
+                                    updatedShoppingList.find((findItem) => {
+                                      if (findItem.id === ingredient.id) {
+                                        findItem.is_bought = !findItem.is_bought;
+                                      }
+                                    });
 
-                                    setShoppingList([...updatedShoppingList]);
+                                    setShoppingListFromResponse([...updatedShoppingList]);
 
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
@@ -295,7 +354,7 @@ const ShoppingListView = (props: any) => {
                             <button
                               type='button'
                               onClick={() => {
-                                const updatedShoppingList = [...shoppingList];
+                                const updatedShoppingList = [...shoppingListRender];
 
                                 if (updatedShoppingList[itemIndex].ingredientsList.length === 1) {
                                   updatedShoppingList.splice(itemIndex, 1);
@@ -303,16 +362,15 @@ const ShoppingListView = (props: any) => {
                                   updatedShoppingList[itemIndex].ingredientsList.splice(ingredientIndex, 1);
                                 }
 
-                                setShoppingList([...updatedShoppingList]);
+                                setShoppingListRender([...updatedShoppingList]);
 
                                 setShoppingListLength((prev) => prev - 1);
 
-                                deleteFromShoppingList(ingredient.id)
+                                deleteFromShoppingList(ingredient.id, dateSync)
                                   .catch(() => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
-                                    getShoppingListFunc();
 
                                     setShoppingListLength((prev) => prev + 1);
                                   });
@@ -328,7 +386,7 @@ const ShoppingListView = (props: any) => {
                   })}
                 </div>
                 <div className='shop-list__column'>
-                  {shoppingList.map((item, itemIndex) => {
+                  {shoppingListRender.map((item, itemIndex) => {
                     if (item.column !== 2) return;
                     return (
                       <div
@@ -338,7 +396,7 @@ const ShoppingListView = (props: any) => {
                         <div className='shop-list__item-category'>
                           {item.category}
                         </div>
-                        {shoppingList[itemIndex].ingredientsList.map((ingredient, ingredientIndex) => (
+                        {shoppingListRender[itemIndex].ingredientsList.map((ingredient, ingredientIndex) => (
                           <div
                             key={ingredient.id}
                             className='shop-list__item-ingr'
@@ -348,19 +406,32 @@ const ShoppingListView = (props: any) => {
                                 { number: ingredient.weight })} ${ingredient.name_i18n}`}
                               checked={ingredient.is_bought}
                               onChange={() => {
-                                const updatedShoppingList = [...shoppingList];
+                                const updatedShoppingList = [...shoppingListFromResponse];
 
-                                updatedShoppingList[itemIndex].ingredientsList[ingredientIndex].is_bought =
-                                  !updatedShoppingList[itemIndex].ingredientsList[ingredientIndex].is_bought;
+                                let updatedElementIndex = null;
 
-                                setShoppingList([...updatedShoppingList]);
+                                updatedShoppingList.find((findItem, findItemIndex) => {
+                                  if (findItem.id === ingredient.id) {
+                                    updatedElementIndex = findItemIndex;
+                                    findItem.is_bought = !findItem.is_bought;
+                                  }
+                                });
 
-                                setShoppingRowBought(ingredient.id, !ingredient.is_bought)
+                                setShoppingListFromResponse(updatedShoppingList);
+
+                                setShoppingRowBought(
+                                  ingredient.id,
+                                  updatedShoppingList[updatedElementIndex].is_bought,
+                                  dateSync,
+                                )
                                   .catch(() => {
-                                    updatedShoppingList[itemIndex].ingredientsList[ingredientIndex].is_bought =
-                                      !updatedShoppingList[itemIndex].ingredientsList[ingredientIndex].is_bought;
+                                    updatedShoppingList.find((findItem) => {
+                                      if (findItem.id === ingredient.id) {
+                                        findItem.is_bought = !findItem.is_bought;
+                                      }
+                                    });
 
-                                    setShoppingList([...updatedShoppingList]);
+                                    setShoppingListFromResponse([...updatedShoppingList]);
 
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
@@ -371,7 +442,7 @@ const ShoppingListView = (props: any) => {
                             <button
                               type='button'
                               onClick={() => {
-                                const updatedShoppingList = [...shoppingList];
+                                const updatedShoppingList = [...shoppingListRender];
 
                                 if (updatedShoppingList[itemIndex].ingredientsList.length === 1) {
                                   updatedShoppingList.splice(itemIndex, 1);
@@ -379,16 +450,15 @@ const ShoppingListView = (props: any) => {
                                   updatedShoppingList[itemIndex].ingredientsList.splice(ingredientIndex, 1);
                                 }
 
-                                setShoppingList([...updatedShoppingList]);
+                                setShoppingListRender([...updatedShoppingList]);
 
                                 setShoppingListLength((prev) => prev - 1);
 
-                                deleteFromShoppingList(ingredient.id)
+                                deleteFromShoppingList(ingredient.id, dateSync)
                                   .catch(() => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
-                                    getShoppingListFunc();
 
                                     setShoppingListLength((prev) => prev + 1);
                                   });

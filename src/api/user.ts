@@ -65,3 +65,6 @@ export const userUpdateMeasurement = (measurement: string) =>
   axios.put('/user/measurement', {
     measurement,
   });
+
+export const getPublicShopListUrl = (txt: number = 0) =>
+  axios.get(`/user/shopping-list-url?txt=${txt}`);
