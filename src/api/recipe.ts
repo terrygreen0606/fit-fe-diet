@@ -18,7 +18,10 @@ type CreateRecipeParams = {
 export const createRecipe = (params: CreateRecipeParams) =>
   axios.post('/recipe/create', params);
 
-export const getRecipeCuisines = () => axios.get('/recipe/cuisines-list');
+export const getRecipeCuisines = (
+  primary: number,
+  ignorable: number,
+) => axios.get(`/recipe/cuisines-list?primary=${primary}&ignorable=${ignorable}`);
 
 export const getRecipeData = (
   id: string,
