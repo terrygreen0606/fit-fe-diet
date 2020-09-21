@@ -6,7 +6,6 @@
 import React, {
   useState,
   useEffect,
-  useCallback,
 } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
@@ -64,9 +63,7 @@ const ShoppingListView = (props: any) => {
 
   const [isShareButtonActive, setShareButtonActive] = useState<boolean>(false);
 
-  const [shoppingListFromResponse, setShoppingListFromResponse] = useState<Array<any>>([]);
-  const [shoppingListRender, setShoppingListRender] = useState<Array<any>>([]);
-  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
+  const [shoppingList, setShoppingList] = useState<Array<any>>([]);
 
   const [addIngredientForm, setAddIngredientForm] = useState({
     id: '',
@@ -100,8 +97,8 @@ const ShoppingListView = (props: any) => {
     });
 
   const saveFileShoppingList = () => {
-    getPublicShopListUrl(1)
-      .then((response) => window.location.assign(response.data.data.url));
+    getPublicShopListUrl(1).then((response) =>
+      window.location.assign(response.data.data.url));
   };
 
   const setIndgredient = (e: any) => {
@@ -113,79 +110,56 @@ const ShoppingListView = (props: any) => {
     });
   };
 
-  useEffect(() => {
+  const getShoppingListFunc = () => {
     getShoppingList(2, dateSync).then((response) => {
       const { list } = response.data.data;
 
-      console.log('list', list)
-
-      setShoppingListFromResponse(list);
+      setShoppingList(list);
 
       if (dateSync === 0) setDateSync(response.data.data.date_sync);
 
-      setShoppingListLength(list.length);
-
       setSpinnerActive(false);
     });
+  };
+
+  useEffect(() => {
+    getShoppingListFunc();
   }, []);
 
   useEffect(() => {
-    const sortedShoppingList = [];
-    if (shoppingListFromResponse.length > 0) {
-      sortedShoppingList.push({
-        category: shoppingListFromResponse[0]?.cuisine_name_i18n,
-        column: shoppingListFromResponse[0].column,
-        ingredientsList: [shoppingListFromResponse[0]],
-      });
-    }
+    const interval = setInterval(() => {
+      syncShoppingList(dateSync).then((response) => {
+        const { list } = response.data.data;
 
-    shoppingListFromResponse?.forEach((item, itemIndex) => {
-      if (itemIndex === 0) return;
-      sortedShoppingList.find((findItem, findItemIndex) => {
-        if (findItem.category === item.cuisine_name_i18n) {
-          findItem.ingredientsList = [...findItem.ingredientsList, item];
-          return;
+        const syncFromResponse = response.data.data.data_sync;
+
+        setDateSync(response.data.data.date_sync);
+
+        if (syncFromResponse !== dateSync) {
+          const updatedShoppingList = [...shoppingList];
+
+          if (list.length === updatedShoppingList.length) {
+            list.forEach((item) => {
+              updatedShoppingList.find((findItem) => {
+                if (item[0] === findItem.id) {
+                  const newWeight = item[1];
+                  const newIsBought = item[2];
+
+                  findItem.weight = newWeight;
+                  findItem.is_bought = newIsBought;
+                }
+              });
+            });
+          } else {
+            getShoppingListFunc();
+          }
+
+          setShoppingList([...updatedShoppingList]);
         }
-
-        if (findItemIndex === sortedShoppingList.length - 1) {
-          sortedShoppingList.push({
-            category: item.cuisine_name_i18n,
-            column: item.column,
-            ingredientsList: [item],
-          });
-        }
       });
-    });
-
-    setShoppingListRender([...sortedShoppingList]);
-  }, [shoppingListFromResponse]);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     syncShoppingList(dateSync)
-  //       .then((response) => {
-  //         const { list } = response.data.data;
-
-  //         setDateSync(response.data.data.date_sync);
-
-  //         if (list.length > 0) {
-  //           const updatedShoppingList = [...shoppingListFromResponse];
-  //           console.log(shoppingListFromResponse);
-  //           list.forEach((item) => {
-  //             updatedShoppingList.find((findItem) => {
-  //               if (item[0] === findItem.id) {
-  //                 findItem.weight = item[1];
-  //                 findItem.is_bought = item[3];
-  //               }
-  //             })
-  //           });
-  //           setShoppingListFromResponse([...updatedShoppingList]);
-  //           convertShoppingListToRender(updatedShoppingList);
-  //         }
-  //       })
-  //   }, (5000));
-  //   return () => clearInterval(interval);
-  // });
+    }, (5000));
+    return () => clearInterval(interval);
+  });
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -225,12 +199,13 @@ const ShoppingListView = (props: any) => {
         addIngredientForm.id,
         addIngredientForm.weight,
         dateSync,
-      )
-        .catch(() => {
-          toast.error(t('shop_list.update.error'), {
-            autoClose: 3000,
-          });
+      ).then(() => {
+        getShoppingListFunc();
+      }).catch(() => {
+        toast.error(t('shop_list.update.error'), {
+          autoClose: 3000,
         });
+      });
     }
   };
 
@@ -265,7 +240,7 @@ const ShoppingListView = (props: any) => {
             <div className='shop-list card-bg'>
               <div className='shop-list__header'>
                 <h5 className='shop-list__header-title'>
-                  {t('shop_list.to_buy', { number: shoppingListLength })}
+                  {t('shop_list.to_buy', { number: shoppingList.length })}
                 </h5>
                 <div className='shop-list__header-buttons'>
                   <button
@@ -298,81 +273,71 @@ const ShoppingListView = (props: any) => {
               </div>
               <div className='shop-list__body'>
                 <div className='shop-list__column'>
-                  {shoppingListRender.map((item, itemIndex) => {
-                    if (item.column !== 1) return;
-                    return (
-                      <div
-                        key={item.category}
-                        className='shop-list__item'
-                      >
-                        <div className='shop-list__item-category'>
-                          {item.category}
-                        </div>
-                        {shoppingListRender[itemIndex].ingredientsList.map((ingredient, ingredientIndex) => (
+                  {shoppingList.map((item, itemIndex) => (
+                    <React.Fragment key={item.id}>
+                      {item.column === 1 && (
+                        <div
+                          className='shop-list__item'
+                        >
+                          {itemIndex === 0 ? (
+                            <div className='shop-list__item-category'>
+                              {item.cuisine_name_i18n}
+                            </div>
+                          ) : (
+                              shoppingList[itemIndex].cuisine_name_i18n !==
+                              shoppingList[itemIndex - 1].cuisine_name_i18n
+                              && (
+                                <div className='shop-list__item-category'>
+                                  {item.cuisine_name_i18n}
+                                </div>
+                              )
+                            )}
                           <div
-                            key={ingredient.id}
                             className='shop-list__item-ingr'
                           >
                             <CustomCheckbox
                               label={`${t(getWeigthUnit(settings.measurement),
-                                { number: ingredient.weight })} ${ingredient.name_i18n}`}
-                              checked={ingredient.is_bought}
+                                { number: item.weight })} ${item.name_i18n}`}
+                              checked={item.is_bought}
                               onChange={() => {
-                                const updatedShoppingList = [...shoppingListFromResponse];
+                                const updatedShoppingList = [...shoppingList];
 
-                                let updatedElementIndex = null;
+                                updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
 
-                                updatedShoppingList.find((findItem, findItemIndex) => {
-                                  if (findItem.id === ingredient.id) {
-                                    updatedElementIndex = findItemIndex;
-                                    findItem.is_bought = !findItem.is_bought;
-                                  }
-                                });
-
-                                setShoppingListFromResponse(updatedShoppingList);
+                                setShoppingList([...updatedShoppingList]);
 
                                 setShoppingRowBought(
-                                  ingredient.id,
-                                  updatedShoppingList[updatedElementIndex].is_bought,
+                                  item.id,
+                                  updatedShoppingList[itemIndex].is_bought,
                                   dateSync,
-                                )
-                                  .catch(() => {
-                                    updatedShoppingList.find((findItem) => {
-                                      if (findItem.id === ingredient.id) {
-                                        findItem.is_bought = !findItem.is_bought;
-                                      }
-                                    });
+                                ).catch(() => {
+                                  updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
 
-                                    setShoppingListFromResponse([...updatedShoppingList]);
+                                  setShoppingList([...updatedShoppingList]);
 
-                                    toast.error(t('shop_list.update.error'), {
-                                      autoClose: 3000,
-                                    });
+                                  toast.error(t('shop_list.update.error'), {
+                                    autoClose: 3000,
                                   });
+                                });
                               }}
                             />
                             <button
                               type='button'
                               onClick={() => {
-                                const updatedShoppingList = [...shoppingListRender];
+                                const updatedShoppingList = [...shoppingList];
+                                const prevShoppingList = [...shoppingList];
 
-                                if (updatedShoppingList[itemIndex].ingredientsList.length === 1) {
-                                  updatedShoppingList.splice(itemIndex, 1);
-                                } else {
-                                  updatedShoppingList[itemIndex].ingredientsList.splice(ingredientIndex, 1);
-                                }
+                                updatedShoppingList.splice(itemIndex, 1);
 
-                                setShoppingListRender([...updatedShoppingList]);
+                                setShoppingList([...updatedShoppingList]);
 
-                                setShoppingListLength((prev) => prev - 1);
-
-                                deleteFromShoppingList(ingredient.id, dateSync)
+                                deleteFromShoppingList(item.id, dateSync)
                                   .catch(() => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
 
-                                    setShoppingListLength((prev) => prev + 1);
+                                    setShoppingList([...prevShoppingList]);
                                   });
                               }}
                               className='shop-list__item-ingr-delete'
@@ -380,87 +345,71 @@ const ShoppingListView = (props: any) => {
                               <TrashIcon />
                             </button>
                           </div>
-                        ))}
-                      </div>
-                    );
-                  })}
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
                 </div>
                 <div className='shop-list__column'>
-                  {shoppingListRender.map((item, itemIndex) => {
-                    if (item.column !== 2) return;
-                    return (
-                      <div
-                        key={item.category}
-                        className='shop-list__item'
-                      >
-                        <div className='shop-list__item-category'>
-                          {item.category}
-                        </div>
-                        {shoppingListRender[itemIndex].ingredientsList.map((ingredient, ingredientIndex) => (
+                  {shoppingList.map((item, itemIndex) => (
+                    <React.Fragment key={item.id}>
+                      {item.column === 2 && (
+                        <div
+                          className='shop-list__item'
+                        >
+                          {shoppingList[itemIndex].cuisine_name_i18n !==
+                            shoppingList[itemIndex - 1].cuisine_name_i18n
+                            && (
+                              <div className='shop-list__item-category'>
+                                {item.cuisine_name_i18n}
+                              </div>
+                            )}
                           <div
-                            key={ingredient.id}
                             className='shop-list__item-ingr'
                           >
                             <CustomCheckbox
                               label={`${t(getWeigthUnit(settings.measurement),
-                                { number: ingredient.weight })} ${ingredient.name_i18n}`}
-                              checked={ingredient.is_bought}
+                                { number: item.weight })} ${item.name_i18n}`}
+                              checked={item.is_bought}
                               onChange={() => {
-                                const updatedShoppingList = [...shoppingListFromResponse];
+                                const updatedShoppingList = [...shoppingList];
 
-                                let updatedElementIndex = null;
+                                updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
 
-                                updatedShoppingList.find((findItem, findItemIndex) => {
-                                  if (findItem.id === ingredient.id) {
-                                    updatedElementIndex = findItemIndex;
-                                    findItem.is_bought = !findItem.is_bought;
-                                  }
-                                });
-
-                                setShoppingListFromResponse(updatedShoppingList);
+                                setShoppingList([...updatedShoppingList]);
 
                                 setShoppingRowBought(
-                                  ingredient.id,
-                                  updatedShoppingList[updatedElementIndex].is_bought,
+                                  item.id,
+                                  updatedShoppingList[itemIndex].is_bought,
                                   dateSync,
-                                )
-                                  .catch(() => {
-                                    updatedShoppingList.find((findItem) => {
-                                      if (findItem.id === ingredient.id) {
-                                        findItem.is_bought = !findItem.is_bought;
-                                      }
-                                    });
+                                ).catch(() => {
+                                  updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
 
-                                    setShoppingListFromResponse([...updatedShoppingList]);
+                                  setShoppingList([...updatedShoppingList]);
 
-                                    toast.error(t('shop_list.update.error'), {
-                                      autoClose: 3000,
-                                    });
+                                  toast.error(t('shop_list.update.error'), {
+                                    autoClose: 3000,
                                   });
+                                });
                               }}
                             />
                             <button
                               type='button'
                               onClick={() => {
-                                const updatedShoppingList = [...shoppingListRender];
+                                const updatedShoppingList = [...shoppingList];
+                                const prevShoppingList = [...shoppingList];
 
-                                if (updatedShoppingList[itemIndex].ingredientsList.length === 1) {
-                                  updatedShoppingList.splice(itemIndex, 1);
-                                } else {
-                                  updatedShoppingList[itemIndex].ingredientsList.splice(ingredientIndex, 1);
-                                }
+                                updatedShoppingList.splice(itemIndex, 1);
 
-                                setShoppingListRender([...updatedShoppingList]);
+                                setShoppingList([...updatedShoppingList]);
 
-                                setShoppingListLength((prev) => prev - 1);
-
-                                deleteFromShoppingList(ingredient.id, dateSync)
+                                deleteFromShoppingList(item.id, dateSync)
                                   .catch(() => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
 
-                                    setShoppingListLength((prev) => prev + 1);
+                                    setShoppingList([...prevShoppingList]);
                                   });
                               }}
                               className='shop-list__item-ingr-delete'
@@ -468,10 +417,10 @@ const ShoppingListView = (props: any) => {
                               <TrashIcon />
                             </button>
                           </div>
-                        ))}
-                      </div>
-                    );
-                  })}
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
                 </div>
               </div>
               <form

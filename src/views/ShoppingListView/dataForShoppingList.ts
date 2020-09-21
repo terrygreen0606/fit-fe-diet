@@ -27,6 +27,7 @@ export const colourStylesSelect = {
   option: (styles) => ({
     ...styles,
     backgroundColor: '#fff',
+    color: '#000',
     transition: 'all 0.2s ease',
     ':hover': {
       backgroundColor: '#CBFFCE',
