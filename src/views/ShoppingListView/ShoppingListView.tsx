@@ -63,11 +63,9 @@ const ShoppingListView = (props: any) => {
   const [shoppingListLength, setShoppingListLength] = useState<number>(0);
 
   const [addIngredientForm, setAddIngredientForm] = useState({
-    ingredientId: '',
+    id: '',
     weight: '',
-    measurement: '',
   });
-
   const [addIngredientErrors, setAddIngredientErrors] = useState<Array<any>>([]);
 
   const filterIngredients = async (inputValue: string) => {
@@ -98,11 +96,11 @@ const ShoppingListView = (props: any) => {
       .then((response) => window.location.assign(response.data.data.url));
   };
 
-  const getIndgredientFunc = (e: any) => {
+  const setIndgredient = (e: any) => {
     getIngredient(e.value).then((response) => {
       setAddIngredientForm({
         ...addIngredientForm,
-        ingredientId: response.data.data._id,
+        id: response.data.data._id,
       });
     });
   };
@@ -177,7 +175,17 @@ const ShoppingListView = (props: any) => {
 
     setAddIngredientErrors([...errors]);
 
-    // if (!hasError) { };
+    if (!addIngredientForm.id) {
+      toast.error(t('shop_list.ingr.empty_error'), {
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    if (!hasError) {
+      addIngredientInShoppingList(addIngredientForm.id, addIngredientForm.weight)
+        .then(() => getShoppingListFunc());
+    }
   };
 
   return (
@@ -396,12 +404,15 @@ const ShoppingListView = (props: any) => {
                   })}
                 </div>
               </div>
-              <div className='shop-list__footer'>
+              <form
+                onSubmit={(e) => createRecipeSubmit(e)}
+                className='shop-list__footer'
+              >
                 <div className='shop-list__footer-search'>
                   <AsyncSelect
                     async
                     loadOptions={inputValueIngredient}
-                    onChange={getIndgredientFunc}
+                    onChange={(e) => setIndgredient(e)}
                     label={t('ingr.add')}
                     placeholder={t('recipe.create.ingredient_search')}
                     styles={colourStylesSelect}
@@ -426,19 +437,21 @@ const ShoppingListView = (props: any) => {
                   <SelectInput
                     options={[
                       {
-                        label: t('common.kg_label'),
-                        value: t('common.kg_label'),
+                        label: settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label'),
+                        value: settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label'),
                       },
                     ]}
+                    placeholder={settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}
                   />
                 </div>
                 <Button
+                  type='submit'
                   color='primary'
                   className='shop-list__footer-btn'
                 >
                   {t('common.add')}
                 </Button>
-              </div>
+              </form>
             </div>
             {isBannerActive && (
               <div className='shop-list__banner card-bg'>
