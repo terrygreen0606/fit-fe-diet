@@ -64,7 +64,7 @@ const ShoppingListView = (props: any) => {
 
   const [addIngredientForm, setAddIngredientForm] = useState({
     id: '',
-    weight: '',
+    weight: null,
   });
   const [addIngredientErrors, setAddIngredientErrors] = useState<Array<any>>([]);
 
