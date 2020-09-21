@@ -35,7 +35,7 @@
     justify-content: space-between
     margin-bottom: 50px 
 
-    @media (max-width: 767px)
+    @media (max-width: 991px)
       flex-wrap: wrap
       margin-bottom: 0
 
@@ -54,7 +54,7 @@
       border-radius: 5px
       cursor: pointer
 
-      @media (max-width: 767px)
+      @media (max-width: 991px)
         flex-basis: 100%
         margin-bottom: 30px
         font-size: 16px
@@ -87,7 +87,6 @@
             fill: $white
             transition: fill 0.2s, stroke 0.2s ease
 
-      
   &__metrics
     &-switch
       margin-bottom: 50px
@@ -226,7 +225,7 @@
       align-items: center
       margin-right: 20px
       margin-bottom: 30px
-      padding: 10px
+      padding: 5px 10px
       background-color: transparent
       border: 1px solid $steel-blue
       border-radius: 5px
@@ -291,7 +290,7 @@
   &__meals
     padding: 0 30px
 
-    @media (max-width: 767px)
+    @media (max-width: 991px)
       padding: 0
 
     &-item
@@ -303,7 +302,7 @@
       border: 1px solid transparent
       transition: border 0.2s ease
 
-      @media (max-width: 767px)
+      @media (max-width: 991px)
         flex-direction: column
         justify-content: initial
         flex-wrap: wrap
@@ -333,8 +332,14 @@
         color: $white
         background-color: $steel-blue
         border-radius: 50%
+
+        @media (max-width: 1366px)
+          width: 80px
+          height: 80px
+          flex-basis: 80px
+          transform: translate(-50%, 0)
         
-        @media (max-width: 767px)
+        @media (max-width: 991px)
           width: 76px
           height: 76px
           flex-basis: 76px
@@ -344,7 +349,7 @@
         flex-basis: 55px
         font-size: 14px
 
-        @media (max-width: 767px)
+        @media (max-width: 991px)
           flex-basis: initial
           margin-top: -20px
 
@@ -353,7 +358,11 @@
         flex-wrap: wrap
         flex-basis: 300px
 
-        @media (max-width: 767px)
+        @media (max-width: 1366px)
+          flex-basis: 150px
+          justify-content: space-between
+
+        @media (max-width: 991px)
           flex-basis: initial
           width: 100%
           justify-content: center
