@@ -21,7 +21,8 @@ export const createRecipe = (params: CreateRecipeParams) =>
 export const getRecipeCuisines = (
   primary: number,
   ignorable: number,
-) => axios.get(`/recipe/cuisines-list?primary=${primary}&ignorable=${ignorable}`);
+) =>
+  axios.get(`/recipe/cuisines-list?primary=${primary}&ignorable=${ignorable}`);
 
 export const getRecipeData = (
   id: string,
