@@ -10,7 +10,6 @@ import { UserAuthProfileType } from 'types/auth';
 import { getSignUpData } from 'api';
 
 // Components
-import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import RegisterModal from './RegisterModal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -118,7 +117,6 @@ const RegisterView = (props: any) => {
         fetchData={() => loadRegisterSettings()}
         spinSize='lg'
       >
-        <AuthSocialHelmet />
 
         <RegisterModal
           isOpen

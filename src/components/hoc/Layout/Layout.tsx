@@ -9,8 +9,6 @@ import SideMenu from 'components/SideMenu';
 import MainContent from 'components/hoc/MainContent';
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import ShoppingListPopup from 'views/ShoppingListView/ShoppingListPopup';
-
 import './Layout.sass';
 
 type LayoutProps = {
@@ -20,14 +18,13 @@ type LayoutProps = {
 
 // fixme: remove default
 const Layout = ({
-  children, 
-  localePhrases, 
-  location, 
   headerType,
+  children, 
+  location, 
   shopping_list_count
 }: LayoutProps) => {
   
-  const [popup, setPopup] = useState(false);
+  const [popup, setPopup] = useState(false);  
   const [shoppingListCount, setShoppingListCount] = useState(shopping_list_count);
 
   const getHeader = () => {
@@ -36,8 +33,6 @@ const Layout = ({
     } else {
       return (
         <Header
-          setPopup={setPopup}
-          popup={popup}
           location={location}
           shoppingListCount={shoppingListCount}
         />
@@ -51,7 +46,6 @@ const Layout = ({
       <SideMenu />
       <MainContent>
         {React.cloneElement(children, { setShoppingListCount })}
-        { popup && <ShoppingListPopup localePhrases={localePhrases} />}
       </MainContent>
       <Footer />
     </div>

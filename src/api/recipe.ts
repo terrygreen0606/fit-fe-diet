@@ -1,39 +1,28 @@
 import axios from 'utils/axios';
 
-export const createRecipe = (
-  name: string,
-  preparation: string,
+type CreateRecipeParams = {
+  name_i18n: string,
+  preparation_i18n: string,
   ingredients: Array<object>,
   measurement: 'si' | 'us' | string,
   servings_cnt: number,
-  cuisine?: Array<string>,
+  cuisine_ids?: Array<string>,
   image_ids?: Array<string>,
   time?: number,
-  total_weight?: number,
+  weight?: number,
   cost_level?: number,
   video_url?: string,
   mealtimes?: Array<string>,
-) =>
-  axios.post(
-    '/recipe/create',
-    {
-      name_i18n: name,
-      preparation_i18n: preparation,
-      ingredients,
-      measurement,
-      servings_cnt,
-      cuisine_ids: cuisine,
-      image_ids,
-      time,
-      weight: total_weight,
-      cost_level,
-      video_url,
-      mealtimes,
-    },
-    {},
-  );
+};
 
-export const getRecipeCuisines = () => axios.get('/recipe/cuisines-list');
+export const createRecipe = (params: CreateRecipeParams) =>
+  axios.post('/recipe/create', params);
+
+export const getRecipeCuisines = (
+  primary: number,
+  ignorable: number,
+) =>
+  axios.get(`/recipe/cuisines-list?primary=${primary}&ignorable=${ignorable}`);
 
 export const getRecipeData = (
   id: string,

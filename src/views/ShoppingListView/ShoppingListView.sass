@@ -90,13 +90,16 @@
         align-items: center
         margin-bottom: 10px
 
+        span.checkmark
+          &::after
+            border-color: #ffffff
+
         &.active
           span.checkmark
             background-color: $caribbean-green
             border-color: $caribbean-green
             &::after
-              border-color: #FFFFFF
-              opacity: 1
+              border-color: #ffffff
 
         &_checkbox
           margin-right: 0 !important
@@ -113,6 +116,10 @@
           &:hover
             background-color: darken(#FF3D00, 10)
 
+          &.disabled
+            pointer-events: none
+            opacity: .4
+
   &_footer
     display: flex
     flex-direction: row
@@ -126,6 +133,7 @@
       margin-bottom: 20px
     @media (max-width: 767px)
       flex-wrap: nowrap
+      margin-bottom: 70px
 
     &_ingredient
       position: relative
@@ -134,7 +142,7 @@
       justify-content: space-between
       align-items: center
       @media (max-width: 1200px)
-        margin-bottom: 25px
+        margin-bottom: 40px
       @media (max-width: 767px)
         flex-direction: column
         align-items: normal
@@ -150,15 +158,27 @@
         padding: 19px 28px
         flex: 0 1 100%
 
-        &.invalid
-          border: 1px solid #F391AA
-
         &_sect
           position: relative
           display: inline-flex
           flex: 0 1 70%
           &:focus
             outline: 1px auto #F391AA
+
+          &.validate_error
+            [class*="-control"]
+              border: 1px solid #F391AA !important
+            .shopping_list_footer_ingredient_input_sect_error
+              display: block
+
+          &_error
+            display: none
+            position: absolute
+            margin-top: 10px
+            top: 100%
+            left: 0
+            color: red
+            font-size: 16px
 
     &_quantity
       position: relative
@@ -193,8 +213,22 @@
           flex: 0 1 calc(100% - 120px)
           max-width: calc(100% - 120px)
 
-        &.invalid
+        &.validate_error
           border: 1px solid #F391AA
+          &:hover
+            border: 1px solid #F391AA !important
+
+        &.validate_error ~ .shopping_list_footer_quantity_input_error
+          display: block
+
+        &_error
+          display: none
+          position: absolute
+          margin-top: 10px
+          top: 100%
+          left: 0
+          color: red
+          font-size: 16px
 
         &_sect
           position: relative
@@ -208,96 +242,12 @@
       &_button
         max-width: 130px
         @media (max-width: 767px)
+          position: absolute
+          top: 100%
+          left: 50%
+          transform: translateX(-50%)
           max-width: 200px
           margin: 30px auto 0
-
-.popup
-  position: absolute
-  z-index: 99
-  top: 130px
-  right: 10%
-  background: #FBFBFB
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
-  padding: 32px 26px
-  width: auto
-  height: auto
-  border-top: 1px solid $caribbean-green
-
-  &_cart_empty
-    display: flex
-    flex-direction: column
-
-    &_link
-      color: #106EE8
-      text-decoration-color: #106EE8
-      text-decoration: underline
-      margin-top: 5px
-      &:hover
-        color: #106EE8
-        text-decoration-color: #106EE8
-
-  &_header
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-    align-items: center
-    margin-bottom: 60px
-
-    &_title
-      font-size: 24px
-      line-height: 29px
-      color: $caribbean-green
-      margin: 0 20px 0 0
-
-    &_icons
-      position: relative
-      display: flex
-      justify-content: space-between
-      align-items: center
-      width: 110px
-      .sharing_socials
-        bottom: unset
-        top: 110%
-
-  &_body
-    &:not(:last-child)
-      border-bottom: 1px solid #C4C4C4
-    &:not(:first-child)
-      margin-top: 10px
-
-    &_category
-      font-weight: bold
-      font-size: 18px
-      line-height: 40px
-      color: #000000
-
-    &_item
-      position: relative
-      margin-bottom: 20px
-      display: flex
-      flex-direction: row
-      justify-content: space-between
-      align-items: center
-
-      &.active
-        span.checkmark
-          background-color: $caribbean-green
-          border-color: $caribbean-green
-          &::after
-            border-color: #FFFFFF
-            opacity: 1
-
-      &_trash
-        background-color: #FF3D00
-        display: inline-flex
-        justify-content: center
-        align-items: center
-        width: 37px
-        height: 37px
-        border-radius: 50%
-        cursor: pointer
-        &:hover
-          background-color: darken(#FF3D00, 10)
 
 .shopping_tour
   z-index: 100
@@ -378,9 +328,9 @@
     visibility: hidden
   *::-webkit-scrollbar
     display: none
-  .shopping_list_body, .shopping_list_body *, .shopping_list_body_title_sect, .shopping_list_body_title_sect *, .popup_header_title, .popup_body, .popup_body *
+  .shopping_list_body, .shopping_list_body *, .shopping_list_body_title_sect, .shopping_list_body_title_sect *
     visibility: visible
-  .shopping_list_body_title_sect_icons, .shopping_list_body_sect_item_trash, .popup_body_item_trash, .shopping_list_header
+  .shopping_list_body_title_sect_icons, .shopping_list_body_sect_item_trash, .shopping_list_header
     display: none !important
   .shopping_list_container
     margin: 20px
@@ -388,9 +338,5 @@
     position: fixed
     top: 0
     left: 0
-  .popup
-    position: fixed
-    top: 0
-    left: 0
-  .shopping_list_body_title_sect, .popup_header
+  .shopping_list_body_title_sect
     margin-bottom: 10px

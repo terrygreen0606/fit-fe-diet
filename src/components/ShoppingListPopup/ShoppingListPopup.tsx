@@ -21,56 +21,21 @@ import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
 import { ReactComponent as ShareIcon } from 'assets/img/icons/share-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
+import './ShoppingListPopup.sass';
+
 const ShoppingListPopup = (props: any) => {
-  const { localePhrases, settings } = props;
-  const [items, setItems] = useState(null);
+  const {
+    localePhrases,
+    settings,
+    setShoppingListPopup,
+    isAuthenticated,
+  } = props;
+  const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [measurement, setMeasurement] = useState(null);
   const [publicShopListUrl, setPublicShopListUrl] = useState(null);
   const [shareListPopup, setShareListPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const t = (code: string, placeholders?: any) => getTranslate(
-    localePhrases,
-    code,
-    placeholders,
-  );
-
-  const deleteIngredient = async (item) => {
-    await deleteFromShoppingList(item.id)
-      .catch((error) => toast.error(error.message));
-    await getShoppingList()
-      .then((res) => setItems(res.data.data.list))
-      .catch((error) => toast.error(error.message));
-  };
-
-  const onChangeHandler = async (e, item) => {
-    e.persist();
-    e.target.parentElement.style.cursor = 'wait';
-    document.body.style.cursor = 'wait';
-
-    await setShoppingRowBought(item.id, e.target.checked)
-      .catch((error) => toast.error(error.message));
-    await getShoppingList()
-      .then((res) => setItems(res.data.data.list))
-      .catch((error) => toast.error(error.message));
-
-    e.target.parentElement.style.cursor = 'pointer';
-    document.body.style.cursor = 'auto';
-  };
-
-  const namingEditor = (item) => {
-    const weight = measurement === 'si'
-      ? `${item.weight} ${t('common.gr_label')}`
-      : `${item.weight} ${t('common.oz_label')}`;
-
-    return `${item.name_i18n} (${weight})`;
-  };
-
-  const saveShopList = async () => {
-    await getPublicShopListUrl(1)
-      .then((res) => window.location.assign(res.data.data.url));
-  };
 
   useEffect(() => {
     getShoppingList()
@@ -91,9 +56,119 @@ const ShoppingListPopup = (props: any) => {
     }
   }, [items]);
 
+  const t = (code: string, placeholders?: any) => getTranslate(
+    localePhrases,
+    code,
+    placeholders,
+  );
+
+  const deleteIngredient = (item, e) => {
+    e.currentTarget.classList.add('disabled');
+    deleteFromShoppingList(item.id)
+      .then(() => getShoppingList()
+        .then((res) => setItems(res.data.data?.list))
+        .catch((error) => toast.error(error.message)))
+      .catch((error) => toast.error(error.message));
+  };
+
+  const onChangeHandler = (e, item) => {
+    e.persist();
+    e.target.parentElement.style.cursor = 'wait';
+    document.body.style.cursor = 'wait';
+
+    setShoppingRowBought(item.id, e.target.checked)
+      .then(() => {
+        getShoppingList()
+          .then((res) => setItems(res.data.data.list))
+          .catch((error) => toast.error(error.message));
+        e.target.parentElement.style.cursor = 'pointer';
+        document.body.style.cursor = 'auto';
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        e.target.parentElement.style.cursor = 'pointer';
+        document.body.style.cursor = 'auto';
+      });
+  };
+
+  const namingEditor = (item) => {
+    const weight = measurement === 'si'
+      ? `${item.weight} ${t('common.gr_label')}`
+      : `${item.weight} ${t('common.oz_label')}`;
+
+    return `${item.name_i18n} (${weight})`;
+  };
+
+  const saveShopList = () => {
+    getPublicShopListUrl(1)
+      .then((res) => window.location.assign(res.data.data.url))
+      .catch((error) => toast.error(error.message));
+  };
+
+  const outsideCLickListener = (e) => {
+    const popupEl = document.querySelector('.popup');
+    const linkToShoppingListEl = document.querySelector('.popup_cart_empty_link');
+    const shoppingCartEl = document.querySelector('.shopping_cart');
+    let targetElement = e.target; // clicked element
+
+    do {
+      if (targetElement === popupEl || targetElement === shoppingCartEl) {
+        // This is a click inside. Do nothing, just return.
+        return;
+      }
+      if (targetElement === linkToShoppingListEl) {
+        setTimeout(() => setShoppingListPopup(false), 0);
+      }
+      // If user click on link at popup to go to the shopping list
+
+      // Go up the DOM
+      targetElement = targetElement.parentNode;
+    } while (targetElement);
+
+    // This is a click outside.
+    if (isAuthenticated) setShoppingListPopup(false);
+  };
+
+  const outsideSocialsCLickListener = (e) => {
+    const socialsEl = document.querySelector('.sharing_socials');
+    const sharingEl = document.querySelector('.sharing_icon');
+    let targetElement = e.target; // clicked element
+
+    do {
+      if (targetElement === socialsEl || targetElement === sharingEl) {
+        // This is a click inside. Do nothing, just return.
+        return;
+      }
+      // If user click on link at popup to go to the shopping list
+
+      // Go up the DOM
+      targetElement = targetElement.parentNode;
+    } while (targetElement);
+
+    // This is a click outside.
+    setShareListPopup(false);
+  };
+
+  const sharingHandler = () => {
+    setShareListPopup(!shareListPopup);
+    if (!publicShopListUrl) {
+      getPublicShopListUrl()
+        .then((res) => setPublicShopListUrl(res.data.data.url));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', outsideCLickListener, true);
+    document.addEventListener('click', outsideSocialsCLickListener, true);
+    return () => {
+      document.removeEventListener('click', outsideCLickListener, true);
+      document.removeEventListener('click', outsideSocialsCLickListener, true);
+    };
+  }, []);
+
   if (isLoading) {
     return (
-      <div className='popup'>
+      <div className='popup popup-loading'>
         <Spinner color='#0FC1A1' />
       </div>
     );
@@ -102,7 +177,7 @@ const ShoppingListPopup = (props: any) => {
   return (
     <div className='popup'>
       {
-        items && items.length !== 0 && categories.length ? (
+        items.length && categories.length ? (
           <>
             <div className='popup_header'>
               <h4 className='popup_header_title'>
@@ -118,14 +193,8 @@ const ShoppingListPopup = (props: any) => {
                   onClick={() => window.print()}
                 />
                 <ShareIcon
-                  className='page-sub-tabs-controls-icon'
-                  onClick={() => {
-                    setShareListPopup(!shareListPopup);
-                    if (!publicShopListUrl) {
-                      getPublicShopListUrl()
-                        .then((res) => setPublicShopListUrl(res.data.data.url));
-                    }
-                  }}
+                  className='page-sub-tabs-controls-icon sharing_icon'
+                  onClick={sharingHandler}
                 />
                 {
                   shareListPopup && <ShareButtons shareLink={publicShopListUrl} classes='sharing_socials' />
@@ -163,7 +232,7 @@ const ShoppingListPopup = (props: any) => {
                               <span
                                 role='presentation'
                                 className='popup_body_item_trash'
-                                onClick={() => deleteIngredient(item)}
+                                onClick={(e) => deleteIngredient(item, e)}
                               >
                                 <TrashIcon />
                               </span>
@@ -180,7 +249,10 @@ const ShoppingListPopup = (props: any) => {
           <div className='popup_cart_empty'>
             <span>{t('shop_list.empty_cart')}</span>
             <div className='popup_cart_empty_2'>
-              <span>{`${t('shop_list.add_ingredient')} `}</span>
+              <span>
+                {t('shop_list.add_ingredient')}
+                &nbsp;
+              </span>
               <Link to='/shopping-list' className='popup_cart_empty_link'>
                 {t('shop_list.add_ingredient_here_link')}
               </Link>
@@ -195,5 +267,6 @@ const ShoppingListPopup = (props: any) => {
 export default connect(
   (state: any) => ({
     settings: state.settings,
+    isAuthenticated: state.auth.isAuthenticated,
   }),
 )(ShoppingListPopup);
