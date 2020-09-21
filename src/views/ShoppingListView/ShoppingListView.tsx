@@ -116,7 +116,7 @@ const ShoppingListView = (props: any) => {
 
       setShoppingList(list);
 
-      if (dateSync === 0) setDateSync(response.data.data.date_sync);
+      setDateSync(response.data.data.date_sync);
 
       setSpinnerActive(false);
     });
@@ -131,11 +131,11 @@ const ShoppingListView = (props: any) => {
       syncShoppingList(dateSync).then((response) => {
         const { list } = response.data.data;
 
-        const syncFromResponse = response.data.data.data_sync;
-
-        setDateSync(response.data.data.date_sync);
+        const syncFromResponse = response.data.data.date_sync;
 
         if (syncFromResponse !== dateSync) {
+          setDateSync(response.data.data.date_sync);
+
           const updatedShoppingList = [...shoppingList];
 
           if (list.length === updatedShoppingList.length) {
@@ -159,7 +159,7 @@ const ShoppingListView = (props: any) => {
       });
     }, (5000));
     return () => clearInterval(interval);
-  });
+  }, [dateSync]);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -312,7 +312,8 @@ const ShoppingListView = (props: any) => {
                                     updatedShoppingList[itemIndex].is_bought,
                                     dateSync,
                                   ).catch(() => {
-                                    updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+                                    updatedShoppingList[itemIndex].is_bought =
+                                      !updatedShoppingList[itemIndex].is_bought;
 
                                     setShoppingList([...updatedShoppingList]);
 
@@ -384,7 +385,8 @@ const ShoppingListView = (props: any) => {
                                     updatedShoppingList[itemIndex].is_bought,
                                     dateSync,
                                   ).catch(() => {
-                                    updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+                                    updatedShoppingList[itemIndex].is_bought =
+                                      !updatedShoppingList[itemIndex].is_bought;
 
                                     setShoppingList([...updatedShoppingList]);
 
