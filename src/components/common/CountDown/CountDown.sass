@@ -1,0 +1,106 @@
+@import '../../../assets/sass/vars'
+
+
+$halfHeight: 45px
+$borderRadius: 0.15em
+
+.flip-clock 
+  display: inline-block
+  text-align: center
+  perspective: 400px
+  margin: 20px auto
+  &__piece 
+    display: inline-block
+    margin: 0 5px
+    &.flip
+      .flip-clock__card
+        &__back
+          &::before
+            animation: flipTop 0.3s cubic-bezier(.37,.01,.94,.35)
+            animation-fill-mode: both
+            transform-origin: center bottom
+          > .flip-clock__card__bottom      
+            transform-origin: center top
+            animation-fill-mode: both
+            animation: flipBottom 0.6s cubic-bezier(.15,.45,.28,1)// 0.3s 
+  &__slot 
+    display: block
+    margin-top: 20px
+    font-weight: normal
+    font-size: 18px
+    line-height: 22px
+    text-transform: uppercase
+  &__card
+    display: block
+    position: relative 
+    padding-bottom: $halfHeight
+    font-size: 64px
+    line-height: 78px
+    &__top,
+    &__bottom,
+    &__back::before,
+    &__back::after 
+      display: block
+      height: $halfHeight
+      color: darken($caribbean-green, 5%)
+      background: #fff
+      padding: 5px
+      padding-left: 12px
+      border-radius: $borderRadius $borderRadius 0 0
+      backface-visiblity: hidden
+      transform-style: preserve-3d
+      width: 120px
+      letter-spacing: 11px
+      transform: translateZ(0)
+      box-shadow: inset 0px 0px 2px 2px rgba(0, 0, 0, 0.07)
+    &__bottom  
+      color: $caribbean-green
+      position: absolute
+      top: 50%
+      left: 0
+      border-top: solid 1px #fff
+      background: darken(#fff, 0%)
+      border-radius: 0 0 $borderRadius $borderRadius 
+      pointer-events: none
+      overflow: hidden
+      &::after 
+        display: block
+        margin-top: -$halfHeight
+    &__back::before,
+    &__bottom::after 
+      content: attr(data-value)
+    &__back 
+      position: absolute
+      top: 0
+      height: 100%
+      left: 0%
+      pointer-events: none
+      &::before 
+        position: relative
+        z-index: -1
+        overflow: hidden
+  
+
+@keyframes flipTop 
+  0% 
+    transform: rotateX(0deg)
+    z-index: 2
+  0%, 99% 
+    opacity: 0.99
+  100% 
+    transform: rotateX(-90deg)
+    opacity: 0
+  
+
+@keyframes flipBottom 
+  0%, 50% 
+    z-index: -1
+    transform: rotateX(90deg)
+    opacity: 0
+  51% 
+    opacity: 0.99
+  100% 
+    opacity: 0.99
+    transform: rotateX(0deg)
+    z-index: 5
+  

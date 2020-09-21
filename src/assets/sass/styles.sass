@@ -36,4 +36,64 @@
     background-color: $caribbean-green
 
 
+// Adanatges list
+.app-advantages-list
+  &__item
+    padding-left: 105px
+    background-image: url('../img/icons/arrow-right-highlight-circle.svg')
+    background-size: 46px
+    background-repeat: no-repeat
+    background-position: top left
+    font-weight: normal
+    font-size: 24px
+    line-height: 29px
+    color: #000000
+    &:not(:last-child)
+      margin-bottom: 45px
+
+// Money back block
+.money-back-guarantee-block
+  padding: 20px
+  padding-left: 165px
+  border: 1px solid $steel-blue
+  border-radius: 20px
+  background-image: url('../img/money-back-img.svg')
+  background-position: 45px 25px
+  background-size: 75px
+  background-repeat: no-repeat
+  &__title
+    font-weight: 400
+    font-size: 22px
+    line-height: 24px
+    text-transform: uppercase
+    color: #000000
+  &__descr
+    font-weight: 400
+    font-size: 16px
+    line-height: 20px
+    color: #000000
+
+// Partners
+.app-partners-list
+  &__item
+    display: inline-block
+    width: 135px
+    height: 45px
+    margin-bottom: 35px
+    background-size: contain
+    background-repeat: no-repeat
+    background-position: center center
+    &:not(:last-child)
+      margin-right: 50px
+
+// STars list
+.rate-stars
+  &_list
+  &_item
+    width: 23px
+    fill: $orange-accent
+    &:not(:last-child)
+      margin-right: 5px
+
+
 @import "media"

@@ -49,7 +49,7 @@ const Routes = () => (
     <PrivateRoute
       path={routes.afterSignup}
       component={(props: any) => (
-        <Layout {...props}>
+        <Layout {...props} headerType="promo">
           <AfterSignupPage {...props} />
         </Layout>
       )}

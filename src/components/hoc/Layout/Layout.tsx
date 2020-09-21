@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 // Components
 import Header from 'components/Header';
+import HeaderPromo from 'components/HeaderPromo';
 import Footer from 'components/Footer';
 import SideMenu from 'components/SideMenu';
 import MainContent from 'components/hoc/MainContent';
@@ -12,16 +13,41 @@ import ShoppingListPopup from 'views/ShoppingListView/ShoppingListPopup';
 
 import './Layout.sass';
 
+type LayoutProps = {
+  headerType: 'default' | 'promo';
+  [propName: string]: any;
+};
+
 // fixme: remove default
 const Layout = ({
-  children, localePhrases, location, shopping_list_count,
-}: any) => {
+  children, 
+  localePhrases, 
+  location, 
+  headerType,
+  shopping_list_count
+}: LayoutProps) => {
+  
   const [popup, setPopup] = useState(false);
   const [shoppingListCount, setShoppingListCount] = useState(shopping_list_count);
 
+  const getHeader = () => {
+    if (headerType === 'promo') {
+      return <HeaderPromo />;
+    } else {
+      return (
+        <Header
+          setPopup={setPopup}
+          popup={popup}
+          location={location}
+          shoppingListCount={shoppingListCount}
+        />
+      );
+    }
+  };
+
   return (
     <div className='layoutMainWrapper'>
-      <Header setPopup={setPopup} popup={popup} location={location} shoppingListCount={shoppingListCount} />
+      {getHeader()}
       <SideMenu />
       <MainContent>
         {React.cloneElement(children, { setShoppingListCount })}

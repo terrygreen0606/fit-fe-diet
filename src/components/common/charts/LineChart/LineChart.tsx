@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createRef } from 'react';
 import Chart from 'chart.js';
+import classNames from 'classnames';
 
 import './LineChart.sass';
 
@@ -33,9 +34,10 @@ const optionsDefault = {
 type LineChartProps = {
   options?: any;
   data: any;
+  className?: any;
 };
 
-const LineChart = ({ options = optionsDefault, data }: LineChartProps) => {
+const LineChart = ({ options = optionsDefault, data, className }: LineChartProps) => {
   const [chartRef] = useState(createRef<HTMLCanvasElement>());
 
   useEffect(() => {
@@ -47,7 +49,14 @@ const LineChart = ({ options = optionsDefault, data }: LineChartProps) => {
     // eslint-disable-next-line
   }, [data]);
 
-  return <canvas ref={chartRef} />;
+  return (
+    <canvas 
+      ref={chartRef} 
+      className={classNames({
+        [className]: className
+      })} 
+    />
+  );
 };
 
 export default LineChart;
