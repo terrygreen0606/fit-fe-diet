@@ -99,6 +99,7 @@
 
       @media (max-width: 768px)
         align-items: center
+        margin-bottom: 0
 
       .customCheckbox
         margin-bottom: 0
@@ -343,4 +344,21 @@
       &:hover
         border-color: transparent
 
+@media print
+  body *
+    visibility: hidden
+  
+  ::-webkit-scrollbar
+    display: none
+
+  .shop-list__body
+    position: fixed
+    top: 0
+    left: 0
+
+  .shop-list__body *
+    visibility: visible
+
+  .shop-list__item
+    padding: 20px 0
 

@@ -211,305 +211,307 @@ const ShoppingListView = (props: any) => {
 
   return (
     <>
-      <Helmet>
-        <title>{t('app.title.shopping_list')}</title>
-      </Helmet>
-      {isSpinnerActive ? (
-        <div className='container text-center mb-5'>
-          <Spinner
-            size='lg'
-            color='#0FC1A1'
-          />
-        </div>
-      ) : (
-          <div className='container'>
-            <Breadcrumb
-              routes={[
-                {
-                  url: routes.main,
-                  name: t('breadcrumb.main'),
-                },
-              ]}
-              currentPage={t('app.title.shopping_list')}
+      <section>
+        <Helmet>
+          <title>{t('app.title.shopping_list')}</title>
+        </Helmet>
+        {isSpinnerActive ? (
+          <div className='container text-center mb-5'>
+            <Spinner
+              size='lg'
+              color='#0FC1A1'
             />
-            <div>
-              <span className='sect-subtitle'>
-                {t('app.title.shopping_list')}
-              </span>
-            </div>
-            <div className='shop-list card-bg'>
-              <div className='shop-list__header'>
-                <h5 className='shop-list__header-title'>
-                  {t('shop_list.to_buy', { number: shoppingList.length })}
-                </h5>
-                <div className='shop-list__header-buttons'>
-                  <button
-                    type='button'
-                    onClick={() => saveFileShoppingList()}
-                    className='shop-list__header-buttons-item'
-                  >
-                    <FileDyskIcon />
-                  </button>
-                  <button
-                    type='button'
-                    onClick={() => window.print()}
-                    className='shop-list__header-buttons-item'
-                  >
-                    <PrintIcon />
-                  </button>
-                  <button
-                    type='button'
-                    onClick={() => setShareButtonActive(!isShareButtonActive)}
-                    className='shop-list__header-buttons-item'
-                  >
-                    <ShareIcon />
-                  </button>
-                  {isShareButtonActive && (
-                    <div className='shop-list__header-buttons-share'>
-                      <ShareButtons shareLink={window.location.href} />
-                    </div>
-                  )}
-                </div>
+          </div>
+        ) : (
+            <div className='container'>
+              <Breadcrumb
+                routes={[
+                  {
+                    url: routes.main,
+                    name: t('breadcrumb.main'),
+                  },
+                ]}
+                currentPage={t('app.title.shopping_list')}
+              />
+              <div>
+                <span className='sect-subtitle'>
+                  {t('app.title.shopping_list')}
+                </span>
               </div>
-              <div className='shop-list__body'>
-                <div className='shop-list__column'>
-                  {shoppingList.map((item, itemIndex) => (
-                    <React.Fragment key={item.id}>
-                      {item.column === 1 && (
-                        <div
-                          className='shop-list__item'
-                        >
-                          {itemIndex === 0 ? (
-                            <div className='shop-list__item-category'>
-                              {item.cuisine_name_i18n}
+              <div className='shop-list card-bg'>
+                <div className='shop-list__header'>
+                  <h5 className='shop-list__header-title'>
+                    {t('shop_list.to_buy', { number: shoppingList.length })}
+                  </h5>
+                  <div className='shop-list__header-buttons'>
+                    <button
+                      type='button'
+                      onClick={() => saveFileShoppingList()}
+                      className='shop-list__header-buttons-item'
+                    >
+                      <FileDyskIcon />
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => window.print()}
+                      className='shop-list__header-buttons-item'
+                    >
+                      <PrintIcon />
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => setShareButtonActive(!isShareButtonActive)}
+                      className='shop-list__header-buttons-item'
+                    >
+                      <ShareIcon />
+                    </button>
+                    {isShareButtonActive && (
+                      <div className='shop-list__header-buttons-share'>
+                        <ShareButtons shareLink={window.location.href} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className='shop-list__body'>
+                  <div className='shop-list__column'>
+                    {shoppingList.map((item, itemIndex) => (
+                      <React.Fragment key={item.id}>
+                        {item.column === 1 && (
+                          <div
+                            className='shop-list__item'
+                          >
+                            {itemIndex === 0 ? (
+                              <div className='shop-list__item-category'>
+                                {item.cuisine_name_i18n}
+                              </div>
+                            ) : (
+                                shoppingList[itemIndex].cuisine_name_i18n !==
+                                shoppingList[itemIndex - 1].cuisine_name_i18n
+                                && (
+                                  <div className='shop-list__item-category'>
+                                    {item.cuisine_name_i18n}
+                                  </div>
+                                )
+                              )}
+                            <div
+                              className='shop-list__item-ingr'
+                            >
+                              <CustomCheckbox
+                                label={`${t(getWeigthUnit(settings.measurement),
+                                  { number: item.weight })} ${item.name_i18n}`}
+                                checked={item.is_bought}
+                                onChange={() => {
+                                  const updatedShoppingList = [...shoppingList];
+
+                                  updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+
+                                  setShoppingList([...updatedShoppingList]);
+
+                                  setShoppingRowBought(
+                                    item.id,
+                                    updatedShoppingList[itemIndex].is_bought,
+                                    dateSync,
+                                  ).catch(() => {
+                                    updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+
+                                    setShoppingList([...updatedShoppingList]);
+
+                                    toast.error(t('shop_list.update.error'), {
+                                      autoClose: 3000,
+                                    });
+                                  });
+                                }}
+                              />
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  const updatedShoppingList = [...shoppingList];
+                                  const prevShoppingList = [...shoppingList];
+
+                                  updatedShoppingList.splice(itemIndex, 1);
+
+                                  setShoppingList([...updatedShoppingList]);
+
+                                  deleteFromShoppingList(item.id, dateSync)
+                                    .catch(() => {
+                                      toast.error(t('shop_list.update.error'), {
+                                        autoClose: 3000,
+                                      });
+
+                                      setShoppingList([...prevShoppingList]);
+                                    });
+                                }}
+                                className='shop-list__item-ingr-delete'
+                              >
+                                <TrashIcon />
+                              </button>
                             </div>
-                          ) : (
-                              shoppingList[itemIndex].cuisine_name_i18n !==
+                          </div>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  <div className='shop-list__column'>
+                    {shoppingList.map((item, itemIndex) => (
+                      <React.Fragment key={item.id}>
+                        {item.column === 2 && (
+                          <div
+                            className='shop-list__item'
+                          >
+                            {shoppingList[itemIndex].cuisine_name_i18n !==
                               shoppingList[itemIndex - 1].cuisine_name_i18n
                               && (
                                 <div className='shop-list__item-category'>
                                   {item.cuisine_name_i18n}
                                 </div>
-                              )
-                            )}
-                          <div
-                            className='shop-list__item-ingr'
-                          >
-                            <CustomCheckbox
-                              label={`${t(getWeigthUnit(settings.measurement),
-                                { number: item.weight })} ${item.name_i18n}`}
-                              checked={item.is_bought}
-                              onChange={() => {
-                                const updatedShoppingList = [...shoppingList];
+                              )}
+                            <div
+                              className='shop-list__item-ingr'
+                            >
+                              <CustomCheckbox
+                                label={`${t(getWeigthUnit(settings.measurement),
+                                  { number: item.weight })} ${item.name_i18n}`}
+                                checked={item.is_bought}
+                                onChange={() => {
+                                  const updatedShoppingList = [...shoppingList];
 
-                                updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
-
-                                setShoppingList([...updatedShoppingList]);
-
-                                setShoppingRowBought(
-                                  item.id,
-                                  updatedShoppingList[itemIndex].is_bought,
-                                  dateSync,
-                                ).catch(() => {
                                   updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
 
                                   setShoppingList([...updatedShoppingList]);
 
-                                  toast.error(t('shop_list.update.error'), {
-                                    autoClose: 3000,
-                                  });
-                                });
-                              }}
-                            />
-                            <button
-                              type='button'
-                              onClick={() => {
-                                const updatedShoppingList = [...shoppingList];
-                                const prevShoppingList = [...shoppingList];
+                                  setShoppingRowBought(
+                                    item.id,
+                                    updatedShoppingList[itemIndex].is_bought,
+                                    dateSync,
+                                  ).catch(() => {
+                                    updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
 
-                                updatedShoppingList.splice(itemIndex, 1);
+                                    setShoppingList([...updatedShoppingList]);
 
-                                setShoppingList([...updatedShoppingList]);
-
-                                deleteFromShoppingList(item.id, dateSync)
-                                  .catch(() => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
-
-                                    setShoppingList([...prevShoppingList]);
                                   });
-                              }}
-                              className='shop-list__item-ingr-delete'
-                            >
-                              <TrashIcon />
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-                <div className='shop-list__column'>
-                  {shoppingList.map((item, itemIndex) => (
-                    <React.Fragment key={item.id}>
-                      {item.column === 2 && (
-                        <div
-                          className='shop-list__item'
-                        >
-                          {shoppingList[itemIndex].cuisine_name_i18n !==
-                            shoppingList[itemIndex - 1].cuisine_name_i18n
-                            && (
-                              <div className='shop-list__item-category'>
-                                {item.cuisine_name_i18n}
-                              </div>
-                            )}
-                          <div
-                            className='shop-list__item-ingr'
-                          >
-                            <CustomCheckbox
-                              label={`${t(getWeigthUnit(settings.measurement),
-                                { number: item.weight })} ${item.name_i18n}`}
-                              checked={item.is_bought}
-                              onChange={() => {
-                                const updatedShoppingList = [...shoppingList];
+                                }}
+                              />
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  const updatedShoppingList = [...shoppingList];
+                                  const prevShoppingList = [...shoppingList];
 
-                                updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
-
-                                setShoppingList([...updatedShoppingList]);
-
-                                setShoppingRowBought(
-                                  item.id,
-                                  updatedShoppingList[itemIndex].is_bought,
-                                  dateSync,
-                                ).catch(() => {
-                                  updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+                                  updatedShoppingList.splice(itemIndex, 1);
 
                                   setShoppingList([...updatedShoppingList]);
 
-                                  toast.error(t('shop_list.update.error'), {
-                                    autoClose: 3000,
-                                  });
-                                });
-                              }}
-                            />
-                            <button
-                              type='button'
-                              onClick={() => {
-                                const updatedShoppingList = [...shoppingList];
-                                const prevShoppingList = [...shoppingList];
+                                  deleteFromShoppingList(item.id, dateSync)
+                                    .catch(() => {
+                                      toast.error(t('shop_list.update.error'), {
+                                        autoClose: 3000,
+                                      });
 
-                                updatedShoppingList.splice(itemIndex, 1);
-
-                                setShoppingList([...updatedShoppingList]);
-
-                                deleteFromShoppingList(item.id, dateSync)
-                                  .catch(() => {
-                                    toast.error(t('shop_list.update.error'), {
-                                      autoClose: 3000,
+                                      setShoppingList([...prevShoppingList]);
                                     });
-
-                                    setShoppingList([...prevShoppingList]);
-                                  });
-                              }}
-                              className='shop-list__item-ingr-delete'
-                            >
-                              <TrashIcon />
-                            </button>
+                                }}
+                                className='shop-list__item-ingr-delete'
+                              >
+                                <TrashIcon />
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-              <form
-                onSubmit={(e) => createRecipeSubmit(e)}
-                className='shop-list__footer'
-              >
-                <div className='shop-list__footer-search'>
-                  <AsyncSelect
-                    async
-                    loadOptions={inputValueIngredient}
-                    onChange={(e) => setIndgredient(e)}
-                    label={t('ingr.add')}
-                    placeholder={t('recipe.create.ingredient_search')}
-                    styles={colourStylesSelect}
-                  />
-                </div>
-                <div className='shop-list__footer-quantity'>
-                  <InputField
-                    type='number'
-                    name='weight'
-                    data-param='0'
-                    data-validate='["min", "required"]'
-                    errors={getFieldErrors('weight')}
-                    value={addIngredientForm.weight}
-                    onChange={(e) => validateOnChange('weight', e.target.value, e)}
-                    min={0}
-                    label={t('common.quantity')}
-                    height='md'
-                    border='light'
-                  />
-                </div>
-                <div className='shop-list__footer-measurement'>
-                  <SelectInput
-                    options={[
-                      {
-                        label: settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label'),
-                        value: settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label'),
-                      },
-                    ]}
-                    placeholder={settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}
-                  />
-                </div>
-                <Button
-                  type='submit'
-                  color='primary'
-                  className='shop-list__footer-btn'
-                >
-                  {t('common.add')}
-                </Button>
-              </form>
-            </div>
-            {isBannerActive && (
-              <div className='shop-list__banner card-bg'>
-                <div className='shop-list__banner-text'>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: t(mockData[bannerStep].title) }}
-                    className='shop-list__banner-text-title'
-                  />
-                  <div className='shop-list__banner-text-desc'>
-                    {t(mockData[bannerStep].text)}
+                        )}
+                      </React.Fragment>
+                    ))}
                   </div>
                 </div>
-                <div className='shop-list__banner-media'>
-                  <img src={mockData[bannerStep].image} alt='' />
-                </div>
-                <Button
-                  color='primary'
-                  className='shop-list__banner-btn'
-                  onClick={() => {
-                    if (mockData.length - 1 === bannerStep) {
-                      setBannerActive(false);
-                      return;
-                    }
-                    setBannerStep((prev) => prev + 1);
-                  }}
+                <form
+                  onSubmit={(e) => createRecipeSubmit(e)}
+                  className='shop-list__footer'
                 >
-                  {t('banner.next')}
-                </Button>
-                <button
-                  type='button'
-                  onClick={() => setBannerActive(false)}
-                  className='shop-list__banner-btn-skip'
-                >
-                  {t('common.skip')}
-                </button>
+                  <div className='shop-list__footer-search'>
+                    <AsyncSelect
+                      async
+                      loadOptions={inputValueIngredient}
+                      onChange={(e) => setIndgredient(e)}
+                      label={t('ingr.add')}
+                      placeholder={t('recipe.create.ingredient_search')}
+                      styles={colourStylesSelect}
+                    />
+                  </div>
+                  <div className='shop-list__footer-quantity'>
+                    <InputField
+                      type='number'
+                      name='weight'
+                      data-param='0'
+                      data-validate='["min", "required"]'
+                      errors={getFieldErrors('weight')}
+                      value={addIngredientForm.weight}
+                      onChange={(e) => validateOnChange('weight', e.target.value, e)}
+                      min={0}
+                      label={t('common.quantity')}
+                      height='md'
+                      border='light'
+                    />
+                  </div>
+                  <div className='shop-list__footer-measurement'>
+                    <SelectInput
+                      options={[
+                        {
+                          label: settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label'),
+                          value: settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label'),
+                        },
+                      ]}
+                      placeholder={settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}
+                    />
+                  </div>
+                  <Button
+                    type='submit'
+                    color='primary'
+                    className='shop-list__footer-btn'
+                  >
+                    {t('common.add')}
+                  </Button>
+                </form>
               </div>
-            )}
-          </div>
-        )}
+              {isBannerActive && (
+                <div className='shop-list__banner card-bg'>
+                  <div className='shop-list__banner-text'>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: t(mockData[bannerStep].title) }}
+                      className='shop-list__banner-text-title'
+                    />
+                    <div className='shop-list__banner-text-desc'>
+                      {t(mockData[bannerStep].text)}
+                    </div>
+                  </div>
+                  <div className='shop-list__banner-media'>
+                    <img src={mockData[bannerStep].image} alt='' />
+                  </div>
+                  <Button
+                    color='primary'
+                    className='shop-list__banner-btn'
+                    onClick={() => {
+                      if (mockData.length - 1 === bannerStep) {
+                        setBannerActive(false);
+                        return;
+                      }
+                      setBannerStep((prev) => prev + 1);
+                    }}
+                  >
+                    {t('banner.next')}
+                  </Button>
+                  <button
+                    type='button'
+                    onClick={() => setBannerActive(false)}
+                    className='shop-list__banner-btn-skip'
+                  >
+                    {t('common.skip')}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+      </section>
     </>
   );
 };
