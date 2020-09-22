@@ -195,12 +195,12 @@ const AfterSignupPage = (props: any) => {
       <section className="after-signup-header-sect">
         <div className="container">
           <div className="row">
-            <div className="col-6 after-signup-header-content-col">
+            <div className="col-xl-6 after-signup-header-content-col">
               
               <h3>{t('lp.welcome_title', { first_name: afterSignupName })}</h3>
-              {isAfterSignup && <h4 className="mt-5">{t('lp.welcome_descr_first')} <span className="text-malachite-green">{getWelcomeDescrGoal()}, {t('lp.welcome_descr_last')}</span></h4>}
+              {isAfterSignup && <h4 className="mt-xl-5 mt-4">{t('lp.welcome_descr_first')} <span className="text-malachite-green">{getWelcomeDescrGoal()}, {t('lp.welcome_descr_last')}</span></h4>}
 
-              <div className="text-center mt-5">
+              <div className="text-center mt-xl-5 mt-4">
                 <CountDown seconds={900} />
                 
                 <ContentLoading
@@ -209,7 +209,7 @@ const AfterSignupPage = (props: any) => {
                   fetchData={() => getUserTariff()}
                 >
                   <h4 
-                    className="fw-regular mt-5" 
+                    className="fw-regular mt-xl-5 mt-4" 
                     dangerouslySetInnerHTML={{ 
                       __html: t('lp.selling_text', { 
                         OLD_VALUE: tariffData.price_old_text, 
@@ -224,7 +224,7 @@ const AfterSignupPage = (props: any) => {
               </div>
 
             </div>
-            <div className="col-6 after-signup-header-chart-col">
+            <div className="col-xl-6 mt-5 mt-xl-0 after-signup-header-chart-col">
 
               <div className="after-signup-header-chart-col_content">
                 {isAfterSignup && (
@@ -271,12 +271,12 @@ const AfterSignupPage = (props: any) => {
       <section className="after-signup-intro-sect">
         <div className="container">
           <div className="row">
-            <div className="col-6 text-right">
+            <div className="col-6 d-none d-xl-block text-right">
               
               <img src={getImagePath('register/expectations_step.png')} alt="" className="img-fluid flip-x" />
 
             </div>
-            <div className="col-6 after-signup-intro-content-col">
+            <div className="col-xl-6 mt-xl-0 after-signup-intro-content-col">
 
               <h5>{t('lp.partners_list_title')}</h5>
 
@@ -288,7 +288,7 @@ const AfterSignupPage = (props: any) => {
 
               <img className="after-signup-intro-arrow" src={getImagePath('point-arrow-black.png')} alt="" />
 
-              <div dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
+              <div className="mt-4 mt-xl-5" dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
               
             </div>
           </div>
@@ -298,12 +298,12 @@ const AfterSignupPage = (props: any) => {
       <section className="after-signup-reviews-sect">
         <div className="container">
           <div className="row">
-            <div className="col-4 offset-2 py-5">
+            <div className="col-xl-4 offset-xl-2 py-xl-5">
               
               <div dangerouslySetInnerHTML={{ __html: t('lp.reviews_sect_content') }}></div>
 
             </div>
-            <div className="col-5 offset-1">
+            <div className="col-xl-5 offset-xl-1 mt-5 mt-xl-0">
 
               <ContentLoading
                 isLoading={reviewsLoading}
@@ -335,7 +335,7 @@ const AfterSignupPage = (props: any) => {
       <section className="after-signup-faq-sect">
         <div className="container">
           <div className="row">
-            <div className="col-5">
+            <div className="col-xl-5">
 
               <ContentLoading
                 isLoading={reviewsLoading}
@@ -358,7 +358,7 @@ const AfterSignupPage = (props: any) => {
               </ContentLoading>
 
             </div>
-            <div className="col-6 offset-1">
+            <div className="col-xl-6 offset-xl-1">
               
               <h4 className="mb-45">{t('lp.faq.title')}</h4>
 
@@ -387,7 +387,7 @@ const AfterSignupPage = (props: any) => {
       <section className="after-signup-expect-sect">
         <div className="container">
           <div className="row">
-            <div className="col-6">
+            <div className="col-xl-6">
               
               <h4 className="mb-5">{t('lp.advantages_title')}</h4>
 
@@ -398,7 +398,7 @@ const AfterSignupPage = (props: any) => {
               </div>
 
             </div>
-            <div className="col-6">
+            <div className="col-xl-6">
               
               {isAfterSignup && (
                 <div className="after-signup__expectations_chart-wrap">
@@ -414,10 +414,10 @@ const AfterSignupPage = (props: any) => {
               )}
 
             </div>
-            <div className="col-12 mt-5 pt-5">
+            <div className="col-12 mt-5 pt-xl-5">
               
               <div className="row">
-                <div className="col-6">
+                <div className="col-xl-6">
                   
                   <div className="money-back-guarantee-block">
                     <h5 className="money-back-guarantee-block__title">{t('lp.money_back_title')}</h5>
@@ -425,7 +425,7 @@ const AfterSignupPage = (props: any) => {
                   </div>
 
                 </div>
-                <div className="col-6">
+                <div className="col-xl-6 mt-4 mt-xl-0 text-center">
                   
                   <img src={getImagePath('safe-checkout-img.png')} className="img-fluid" alt="" />
 
@@ -440,7 +440,7 @@ const AfterSignupPage = (props: any) => {
       <section className="after-signup-start-today-sect">
         <div className="container pb-5">
           <div className="row">
-            <div className="col-6 offset-3 after-signup-start-today-col text-center">
+            <div className="col-xl-6 offset-xl-3 after-signup-start-today-col text-center">
               
               <h4 className="sect-title title-center">{t('lp.start_today_title')}</h4>
 
@@ -450,7 +450,7 @@ const AfterSignupPage = (props: any) => {
                 fetchData={() => getUserTariff()}
               >
                 <h4 
-                  className="fw-regular mt-5" 
+                  className="fw-regular mt-xl-5 mt-4" 
                   dangerouslySetInnerHTML={{ 
                     __html: t('lp.selling_text', { 
                       OLD_VALUE: tariffData.price_old_text, 
@@ -460,7 +460,7 @@ const AfterSignupPage = (props: any) => {
                 />
               </ContentLoading>
 
-              <Button color="primary-shadow" className="mt-5">{t('button.reveal_plan')}</Button>
+              <Button color="primary-shadow" className="mt-xl-5 mt-4">{t('button.reveal_plan')}</Button>
 
               <img className="after-signup-start-today-arrow" src={getImagePath('point-arrow-yellow.png')} alt="" />
 
