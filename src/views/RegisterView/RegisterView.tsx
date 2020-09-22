@@ -127,6 +127,7 @@ const RegisterView = (props: any) => {
           facebookInitLoading={registerFacebookInitLoading}
           googleLoadingError={registerGoogleLoadingError}
           googleInitLoading={registerGoogleInitLoading}
+          history={props.history}
         />
       </ContentLoading>
     </>

@@ -1,15 +1,47 @@
 import React, { useRef } from 'react';
 import classNames from 'classnames';
+import { getTranslate } from 'utils';
 import uuid from 'react-uuid';
+
+// Components
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './CountDown.sass';
 
 type CountDownProps = {
   seconds: number;
   className?: string;
+  localePhrases: any;
 };
 
-const CountDown = ({ seconds, className }: CountDownProps) => {
+const CountDown = ({ seconds, localePhrases, className }: CountDownProps) => {
+
+  const t = (code: string, placeholders?: any) => 
+    getTranslate(localePhrases, code, placeholders);
+
+  const getTimeLabel = (label: string) => {
+    let timeLabel = '';
+
+    switch (label) {
+      case 'Days':
+        timeLabel = t('common.days_label');
+        break;
+
+      case 'Hours':
+        timeLabel = t('common.hours_label');
+        break;
+
+      case 'Minutes':
+        timeLabel = t('common.minutes_label');
+        break;
+
+      case 'Seconds':
+        timeLabel = t('common.seconds_label');
+        break;
+    }
+
+    return timeLabel;
+  };
 
   function CountdownTracker (label, value) {
     let isFlip = false;
@@ -24,7 +56,7 @@ const CountDown = ({ seconds, className }: CountDownProps) => {
           <b className="flip-clock__card__bottom"></b>
           <b className="flip-clock__card__back"><b className="flip-clock__card__bottom"></b></b>
         </b> 
-        <span className="flip-clock__slot">{label}</span>
+        <span className="flip-clock__slot">{getTimeLabel(label)}</span>
       </span>
     );
 
@@ -132,4 +164,4 @@ const CountDown = ({ seconds, className }: CountDownProps) => {
   return Clock(new Date(Date.parse(new Date().toISOString()) + seconds * 1000))
 };
 
-export default CountDown;
+export default WithTranslate(CountDown);

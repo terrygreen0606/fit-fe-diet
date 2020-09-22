@@ -17,10 +17,8 @@ const ANIMATE_TIME = 400;
 
 const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }: SliderSimpleProps) => {
 
-  const [slidesList, setSlidesList] = useState<any[]>(slides.map(slide => ({
-    id: uuid(),
-    item: slide
-  })));
+  const [slidesList, setSlidesList] = useState<any[]>([]);
+  const [slidesListRender, setSlidesListRender] = useState<boolean>(false);
   
   const [slidesMove, setSlidesMove] = useState<boolean>(false);
   const [slidesNum, setSlidesNum] = useState<number>(0);
@@ -42,24 +40,38 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
   const [sliderLeft, setSliderLeft] = useState<number>(null);
 
   useEffect(() => {
-    const slideCount = slides.length;
-    const sliderItem: HTMLElement = sliderRef.current.querySelector('.slider-simple-item');
-    let sliderContainerWidth = null;
+    if (slides.length && slides.length > 0) {
+      setSlidesListRender(true);
 
-    if (sliderItem) {
-      sliderContainerWidth = sliderRef.current.offsetWidth + 1;
+      setSlidesList(slides.map(slide => ({
+        id: uuid(),
+        item: slide
+      })));
     }
+  }, [slides]);
 
-    const sliderUlWidth = slideCount * sliderContainerWidth;
-    
-    setSliderDimensions({
-      ...sliderDimensions,
-      containerWidth: sliderContainerWidth,
-      listWidth: sliderUlWidth,
-      itemWidth: sliderContainerWidth,
-      marginLeft: -sliderContainerWidth
-    });
-  }, []);
+  useEffect(() => {
+    const slideCount = slides.length;
+
+    if (slidesListRender && slideCount > 0) {
+      const sliderItem: HTMLElement = sliderRef.current.querySelector('.slider-simple-item');
+      let sliderContainerWidth = null;
+
+      if (sliderItem) {
+        sliderContainerWidth = sliderRef.current.offsetWidth + 1;
+      }
+
+      const sliderUlWidth = slideCount * sliderContainerWidth;
+      
+      setSliderDimensions({
+        ...sliderDimensions,
+        containerWidth: sliderContainerWidth,
+        listWidth: sliderUlWidth,
+        itemWidth: sliderContainerWidth,
+        marginLeft: -sliderContainerWidth
+      });
+    }
+  }, [slidesListRender]);
 
   const moveSlideLeft = () => {
     if (slidesNum === 0) {
@@ -118,14 +130,14 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
   useEffect(() => {
     let timer = null;
 
-    if (autoplay) {
+    if (autoplay && slidesList.length > 0) {
       timer = setInterval(() => {
         moveSlideRight();
       }, autoplaySpeed || 2000);
     }
 
     return () => {
-      if (autoplay) {
+      if (autoplay && slidesList.length > 0) {
         clearInterval(timer);
       }
     };
@@ -155,9 +167,9 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
             left: sliderDimensions.left 
           }}
         >
-          {slidesList.map(({ id, item }) => (
-            <div key={id} className="slider-simple-item" style={{ width: sliderDimensions.itemWidth }}>
-              {item}
+          {slidesList.map(slide => (
+            <div key={slide.id} className="slider-simple-item" style={{ width: sliderDimensions.itemWidth }}>
+              {slide.item}
             </div>
           ))}
         </div>
@@ -165,8 +177,8 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
 
       {dots && (
         <div className="slider-simple-dots">
-          {slidesList.map(({ id }, index) => (
-            <span key={id} className={classNames("slider-simple-dot", {
+          {slidesList.map((slide, index) => (
+            <span key={slide.id} className={classNames("slider-simple-dot", {
               'active': index === slidesNum
             })}></span>
           ))}

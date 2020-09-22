@@ -65,3 +65,9 @@ export const userUpdateMeasurement = (measurement: string) =>
   axios.put('/user/measurement', {
     measurement,
   });
+
+export const getAppTariff = (id: string) =>
+  axios.get(`/app/tariff/${id}`);
+
+export const getAppReviews = () =>
+  axios.get('/app/reviews');

@@ -32,7 +32,8 @@ export default (
   localePhrases: any,
   registerStepTitlesDefault: RegisterStepTitlesType,
   setRegisterStepTitles: (any) => void,
-  setRegisterView: (any) => void
+  setRegisterView: (any) => void,
+  history: any
 ) => {
   let registerStepView = null;
 
@@ -93,6 +94,7 @@ export default (
           stepTitlesDefault={registerStepTitlesDefault}
           setStepTitles={setRegisterStepTitles}
           setRegisterView={setRegisterView}
+          history={history}
           localePhrases={localePhrases || {}}
         />
       );
