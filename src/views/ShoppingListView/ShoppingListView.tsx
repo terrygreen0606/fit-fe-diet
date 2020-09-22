@@ -134,12 +134,10 @@ const ShoppingListView = (props: any) => {
   useInterval(() => {
     syncShoppingList(dateSync).then((response) => {
       const { list } = response.data.data;
-
       const syncFromResponse = response.data.data.date_sync;
-      if (dateSync === 0) setDateSync(response.data.data.date_sync);
+
       if (syncFromResponse !== dateSync) {
         setDateSync(response.data.data.date_sync);
-
         let updatedShoppingList = [...shoppingList];
 
         if (list.length === updatedShoppingList.length) {
@@ -343,7 +341,9 @@ const ShoppingListView = (props: any) => {
                                     item.id,
                                     updatedShoppingList[itemIndex].is_bought,
                                     dateSync,
-                                  ).catch(() => {
+                                  ).then((response) => {
+                                    setDateSync(response.data.data.date_sync);
+                                  }).catch(() => {
                                     updatedShoppingList[itemIndex].is_bought =
                                       !updatedShoppingList[itemIndex].is_bought;
 
@@ -368,6 +368,7 @@ const ShoppingListView = (props: any) => {
                                   setIsSyncResponseActive(false);
 
                                   deleteFromShoppingList(item.id, dateSync)
+                                    .then((response) => setDateSync(response.data.data.date_sync))
                                     .catch(() => {
                                       toast.error(t('shop_list.update.error'), {
                                         autoClose: 3000,
@@ -420,7 +421,9 @@ const ShoppingListView = (props: any) => {
                                     item.id,
                                     updatedShoppingList[itemIndex].is_bought,
                                     dateSync,
-                                  ).catch(() => {
+                                  ).then((response) => {
+                                    setDateSync(response.data.data.date_sync);
+                                  }).catch(() => {
                                     updatedShoppingList[itemIndex].is_bought =
                                       !updatedShoppingList[itemIndex].is_bought;
 
@@ -445,13 +448,15 @@ const ShoppingListView = (props: any) => {
                                   setIsSyncResponseActive(false);
 
                                   deleteFromShoppingList(item.id, dateSync)
+                                    .then((response) => setDateSync(response.data.data.date_sync))
                                     .catch(() => {
                                       toast.error(t('shop_list.update.error'), {
                                         autoClose: 3000,
                                       });
 
                                       setShoppingList([...prevShoppingList]);
-                                    }).finally(() => setIsSyncResponseActive(true));
+                                    })
+                                    .finally(() => setIsSyncResponseActive(true));
                                 }}
                                 className='shop-list__item-ingr-delete'
                               >
