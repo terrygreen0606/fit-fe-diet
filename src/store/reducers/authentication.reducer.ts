@@ -9,6 +9,9 @@ const initialState = {
   isAuthenticated: false,
   userToken: '',
   userData: {
+    isAfterSignup: true,
+    afterSignupName: 'User name',
+    afterSignupGoal: -1,
     afterSignupWeight: 89,
     afterSignupWeightGoal: 77,
     afterSignupPredictDate: 1612742400

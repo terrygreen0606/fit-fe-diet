@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { getTranslate } from 'utils';
-import { getImagePath } from 'utils';
+import { getTranslate, getImagePath } from 'utils';
+import { getAppTariff, getAppReviews } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
+import ContentLoading from 'components/hoc/ContentLoading';
 import Button from 'components/common/Forms/Button';
 import CountDown from 'components/common/CountDown';
 import RawCountDown from 'components/common/RawCountDown';
@@ -21,9 +22,73 @@ import { ReactComponent as StarFillIcon } from 'assets/img/icons/star-fill-icon.
 
 const AfterSignupPage = (props: any) => {
 
-  const { afterSignupWeight, afterSignupWeightGoal, afterSignupPredictDate } = props;
+  const { 
+    isAfterSignup,
+    afterSignupName, 
+    afterSignupGoal, 
+    afterSignupWeight, 
+    afterSignupWeightGoal, 
+    afterSignupPredictDate 
+  } = props;
 
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+  const [tariffLoading, setTariffLoading] = useState<boolean>(false);
+  const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
+  
+  const [reviewsLoading, setReviewsLoading] = useState<boolean>(false);
+  const [reviewsLoadingError, setReviewsLoadingError] = useState<boolean>(false);
+
+  const [reviewsList, setReviewsList] = useState<any[]>([]);
+  const [tariffData, setTariffData] = useState<any>({
+    price_text: null,
+    price_old_text: null
+  });
+
+  const getUserTariff = () => {
+    setTariffLoading(true);
+    setReviewsLoadingError(false);
+
+    getAppTariff('d7')
+      .then(response => {
+        setTariffLoading(false);
+
+        if (response.data) {
+          setTariffData({
+            price_text: response.data.price_text || null,
+            price_old_text: response.data.price_old_text || null
+          });
+        }
+      })
+      .catch(error => {
+        setTariffLoading(false);
+        setReviewsLoadingError(true);
+      });
+  };
+
+  const getUserReviews = () => {
+    setReviewsLoading(true);
+    setReviewsLoadingError(false);
+
+    getAppReviews()
+      .then(response => {
+        setReviewsLoading(false);
+
+        if (response.data.data && response.data.data.length) {
+          setReviewsList(response.data.data);
+        }
+      })
+      .catch(error => {
+        setReviewsLoading(false);
+        setReviewsLoadingError(true);
+      });
+  };
+
+  useEffect(() =>  {
+    getUserTariff();
+    getUserReviews();
+  }, []);
+
+  const t = (code: string, placeholders?: any) => 
+    getTranslate(props.localePhrases, code, placeholders);
 
   const getChartLabels = () => {
     return [
@@ -107,6 +172,24 @@ const AfterSignupPage = (props: any) => {
     return `${moment(new Date(dateStr)).format('DD')} ${monthLocale}`;
   };
 
+  const getWelcomeDescrGoal = () => {
+    let welcomeDescrGoalText = '';
+
+    switch (afterSignupGoal) {
+      case -1:
+        welcomeDescrGoalText = t('lp.welcome_descr_goal_lose', { number: afterSignupWeight - afterSignupWeightGoal });
+        break;
+      case 0:
+        welcomeDescrGoalText = t('lp.welcome_descr_goal_keep');
+        break;
+      case 1:
+        welcomeDescrGoalText = t('lp.welcome_descr_goal_gain', { number: afterSignupWeightGoal - afterSignupWeight });
+        break;
+    }
+
+    return welcomeDescrGoalText;
+  };
+
   return (
     <>
       <section className="after-signup-header-sect">
@@ -114,50 +197,70 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-6 after-signup-header-content-col">
               
-              <h3>Good news #Name#!</h3>
-              <h4 className="mt-5">We have created a custom diet plan to help you <span className="text-malachite-green">lose up to 25kg, with no effort at all. It has been reserved for</span></h4>
+              <h3>{t('lp.welcome_title', { first_name: afterSignupName })}</h3>
+              {isAfterSignup && <h4 className="mt-5">{t('lp.welcome_descr_first')} <span className="text-malachite-green">{getWelcomeDescrGoal()}, {t('lp.welcome_descr_last')}</span></h4>}
 
               <div className="text-center mt-5">
                 <CountDown seconds={900} />
-                <h4 className="fw-regular mt-5">Discover your personaliezed Fitlope plan for <del>$29/mon</del> <b>only 1$ for 14 days!</b></h4>
-                <Button color="primary-shadow" className="mt-3">Reveal my plan now!</Button>
+                
+                <ContentLoading
+                  isLoading={tariffLoading}
+                  isError={tariffLoadingError}
+                  fetchData={() => getUserTariff()}
+                >
+                  <h4 
+                    className="fw-regular mt-5" 
+                    dangerouslySetInnerHTML={{ 
+                      __html: t('lp.selling_text', { 
+                        OLD_VALUE: tariffData.price_old_text, 
+                        AMOUNT: tariffData.price_text 
+                      }) 
+                    }}
+                  />
+                </ContentLoading>
+
+                <Button color="primary-shadow" className="mt-3">{t('button.reveal_plan')}</Button>
                 <img className="after-signup-header-arrow" src={getImagePath('point-arrow-yellow.png')} alt="" />
               </div>
 
             </div>
             <div className="col-6 after-signup-header-chart-col">
 
-              <div>
-                <div className="after-signup__expectations_chart-wrap">
-                  <span className="after-signup__expectations_chart-standart-plan-label">Standart diet plan</span>
-                  <span className="after-signup__expectations_chart-fitlope-plan-label">Your custom <span className="text-steel-blue">Fitlope</span> plan</span>
+              <div className="after-signup-header-chart-col_content">
+                {isAfterSignup && (
+                  <div className="after-signup__expectations_chart-wrap">
+                    <span className="after-signup__expectations_chart-standart-plan-label">{t('signup.chart.standart_plan_label')}</span>
+                    <span className="after-signup__expectations_chart-fitlope-plan-label" dangerouslySetInnerHTML={{ __html: t('signup.chart.fitlope_plan_label') }}></span>
 
-                  <LineChart 
-                    className="after-signup__expectations_chart"
-                    data={getChartCommonData()} 
-                    options={getChartCommonOptions()}
-                  />
-                </div>
-                
-                <div className="app-review-single-item">
-                  <div className="app-review-single-item_img_wrap">
-                    <span className="app-review-single-item_img" style={{ backgroundImage: `url(${getImagePath('review-author-img.png')})` }} />
+                    <LineChart 
+                      className="after-signup__expectations_chart"
+                      data={getChartCommonData()} 
+                      options={getChartCommonOptions()}
+                    />
                   </div>
-                  
-                  <div className="app-review-single-item_content">
-                    <p className="app-review-single-item_descr">“Fitlope is the best way to gat in shape without disturbing your natural metabolic processes.”</p>
-                    <div className="app-review-single-item_footer">
-                      <div className="rate-stars_list">
-                        <StarFillIcon className="rate-stars_item" />
-                        <StarFillIcon className="rate-stars_item" />
-                        <StarFillIcon className="rate-stars_item" />
-                        <StarFillIcon className="rate-stars_item" />
-                        <StarFillIcon className="rate-stars_item" />
+                )}
+                
+                {reviewsList.length > 0 && !reviewsLoading && !reviewsLoadingError ? (
+                  <div className="app-review-single-item">
+                    <div className="app-review-single-item_img_wrap">
+                      <span className="app-review-single-item_img" style={{ backgroundImage: `url(${reviewsList[0].image || null})` }} />
+                    </div>
+                    
+                    <div className="app-review-single-item_content">
+                      <p className="app-review-single-item_descr">{reviewsList[0].text || null}</p>
+                      <div className="app-review-single-item_footer">
+                        <div className="rate-stars_list">
+                          <StarFillIcon className="rate-stars_item" />
+                          <StarFillIcon className="rate-stars_item" />
+                          <StarFillIcon className="rate-stars_item" />
+                          <StarFillIcon className="rate-stars_item" />
+                          <StarFillIcon className="rate-stars_item" />
+                        </div>
+                        <h6 className="app-review-single-item_author"><b>- {reviewsList[0].name || null}</b>, Fitlope user</h6>
                       </div>
-                      <h6 className="app-review-single-item_author"><b>- Jenna Wlkins</b>, Fitlope user</h6>
                     </div>
                   </div>
-                </div>
+                ) : null}
               </div>
 
             </div>
@@ -175,25 +278,18 @@ const AfterSignupPage = (props: any) => {
             </div>
             <div className="col-6 after-signup-intro-content-col">
 
-              <h5>As seen on</h5>
+              <h5>{t('lp.partners_list_title')}</h5>
 
               <div className="app-partners-list">
                 <span className="app-partners-list__item" style={{ backgroundImage: `url(${getImagePath('partners/daily-mirror.png')})` }} />
                 <span className="app-partners-list__item" style={{ backgroundImage: `url(${getImagePath('partners/forbes.png')})` }} />
                 <span className="app-partners-list__item" style={{ backgroundImage: `url(${getImagePath('partners/modesto.png')})` }} />
               </div>
-              
-              <h4>What if you could drop excess kilos without difficult exercises or rigorous diets?</h4>
-              <p className="mt-3">Exercising takes so much energy. And expensive gym equipment.</p>
-              <p className="mt-3">The other way to lose afterSignupWeight is with rigorous diets, that often give you on results all. Plus, not everyone can afford to the time it takes to train or plan what to eat next.</p>
 
               <img className="after-signup-intro-arrow" src={getImagePath('point-arrow-black.png')} alt="" />
 
-              <h4 className="mt-5">With Fitlope, there’s no training, no dieting, no planning.</h4>
-              <p className="mt-3">Just easy improvement in your lifestyle that’ll help you get <b>fitter and healthier.</b></p>
-              <p className="mt-3">Your <b>personalized</b> fitness program was designed by an Artifical Intelligence software, with years of natrional and medical experience built into it.</p>
-              <p className="mt-3">That means you can <b>achieve the same (if not better) results with Fitlope</b> that you’d achieve training and dieting combined.</p>
-
+              <div dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
+              
             </div>
           </div>
         </div>
@@ -204,51 +300,32 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-4 offset-2 py-5">
               
-              <h4>Build your dream body-Without getting off your couch</h4>
-
-              <h5 className="fw-regular mt-5">If you could carve out body, what would it like?</h5>
-              <h5 className="fw-regular mt-4">Would you be the guy catching attention of all the women in th room?</h5>
-              <h5 className="fw-regular mt-4">Would you be the girl all guys turn around for?</h5>
-
-              <h5 className="mt-4">Fitlope gives you nutritional habits you need to acheve that body.</h5>
+              <div dangerouslySetInnerHTML={{ __html: t('lp.reviews_sect_content') }}></div>
 
             </div>
             <div className="col-5 offset-1">
 
-              <SliderSimple
-                className="app-reviews-slider app-reviews-slider--1"
-                dots
-                autoplay
-                slides={[
-                  (
+              <ContentLoading
+                isLoading={reviewsLoading}
+                isError={reviewsLoadingError}
+                fetchData={() => getUserReviews()}
+              >
+                <SliderSimple
+                  className="app-reviews-slider app-reviews-slider--1"
+                  dots
+                  autoplay
+                  autoplaySpeed={2000}
+                  slides={reviewsList.map(review => (
                     <div className="app-reviews-slider__item">
-                      <div className="app-reviews-slider__item_img" style={{ backgroundImage: `url(${getImagePath('review-img.png')})` }} />
+                      <div className="app-reviews-slider__item_img" style={{ backgroundImage: `url(${review.image || null})` }} />
                       <div className="app-reviews-slider__item_content">
-                        <p className="app-reviews-slider__item_descr">1 I’m realised with my Fitlope transformation. I lost 30kgin 3 month just by changing my eating habbits.</p>
-                        <h6 className="app-reviews-slider__item_author">Janet K., Fitlope user</h6>
+                        <p className="app-reviews-slider__item_descr">{review.text || null}</p>
+                        <h6 className="app-reviews-slider__item_author">{review.name || null}, Fitlope user</h6>
                       </div>
                     </div>
-                  ),
-                  (
-                    <div className="app-reviews-slider__item">
-                      <div className="app-reviews-slider__item_img" style={{ backgroundImage: `url(${getImagePath('review-img.png')})` }} />
-                      <div className="app-reviews-slider__item_content">
-                        <p className="app-reviews-slider__item_descr">2 I’m realised with my Fitlope transformation. I lost 30kgin 3 month just by changing my eating habbits.</p>
-                        <h6 className="app-reviews-slider__item_author">Janet K., Fitlope user</h6>
-                      </div>
-                    </div>
-                  ),
-                  (
-                    <div className="app-reviews-slider__item">
-                      <div className="app-reviews-slider__item_img" style={{ backgroundImage: `url(${getImagePath('review-img.png')})` }} />
-                      <div className="app-reviews-slider__item_content">
-                        <p className="app-reviews-slider__item_descr">3 I’m realised with my Fitlope transformation. I lost 30kgin 3 month just by changing my eating habbits.</p>
-                        <h6 className="app-reviews-slider__item_author">Janet K., Fitlope user</h6>
-                      </div>
-                    </div>
-                  )
-                ]}
-              />  
+                  ))}
+                />                  
+              </ContentLoading>
 
             </div>
           </div>
@@ -260,53 +337,44 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-5">
 
-              <SliderSimple
-                className="app-reviews-slider app-reviews-slider--2"
-                nav
-                autoplay
-                slides={[
-                  (
+              <ContentLoading
+                isLoading={reviewsLoading}
+                isError={reviewsLoadingError}
+                fetchData={() => getUserReviews()}
+              >
+                <SliderSimple
+                  className="app-reviews-slider app-reviews-slider--2"
+                  nav
+                  autoplay
+                  autoplaySpeed={3000}
+                  slides={reviewsList.map(review => (
                     <div className="app-reviews-slider__item">
-                      <div className="app-reviews-slider__item_img" style={{ backgroundImage: `url(${getImagePath('review-author-img.png')})` }} />
-                      <p className="app-reviews-slider__item_descr">1 Fitlope is the best way to gat in shape without disturbing your natural metabolic processes.</p>
-                      <h6 className="app-reviews-slider__item_author">Janet K., Fitlope user</h6>
+                      <div className="app-reviews-slider__item_img" style={{ backgroundImage: `url(${review.image || null})` }} />
+                      <p className="app-reviews-slider__item_descr">{review.text || null}</p>
+                      <h6 className="app-reviews-slider__item_author">{review.name || null}, Fitlope user</h6>
                     </div>
-                  ),
-                  (
-                    <div className="app-reviews-slider__item">
-                      <div className="app-reviews-slider__item_img" style={{ backgroundImage: `url(${getImagePath('review-author-img.png')})` }} />
-                      <p className="app-reviews-slider__item_descr">2 Fitlope is the best way to gat in shape without disturbing your natural metabolic processes.</p>
-                      <h6 className="app-reviews-slider__item_author">Janet K., Fitlope user</h6>
-                    </div>
-                  ),
-                  (
-                    <div className="app-reviews-slider__item">
-                      <div className="app-reviews-slider__item_img" style={{ backgroundImage: `url(${getImagePath('review-author-img.png')})` }} />
-                      <p className="app-reviews-slider__item_descr">3 Fitlope is the best way to gat in shape without disturbing your natural metabolic processes.</p>
-                      <h6 className="app-reviews-slider__item_author">Janet K., Fitlope user</h6>
-                    </div>
-                  )
-                ]}
-              />
+                  ))}
+                />                
+              </ContentLoading>
 
             </div>
             <div className="col-6 offset-1">
               
-              <h4 className="mb-45">Programs vetted by word’s top nutricionists & medical experts</h4>
+              <h4 className="mb-45">{t('lp.faq.title')}</h4>
 
               <Accordeon
                 items={[
                   {
-                    title: 'Frequantly asked question 1',
-                    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum eum, velit nesciunt assumenda, soluta enim, tempore, quae veniam ipsum et a excepturi laboriosam. Veritatis molestiae tenetur soluta quos ipsum necessitatibus!'
+                    title: t('lp.faq.q1'),
+                    content: <div dangerouslySetInnerHTML={{ __html: t('lp.faq.a1') }}></div>
                   },
                   {
-                    title: 'Frequantly asked question 2',
-                    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum eum, velit nesciunt assumenda, soluta enim, tempore, quae veniam ipsum et a excepturi laboriosam. Veritatis molestiae tenetur soluta quos ipsum necessitatibus!'
+                    title: t('lp.faq.q2'),
+                    content: <div dangerouslySetInnerHTML={{ __html: t('lp.faq.a2') }}></div>
                   },
                   {
-                    title: 'Frequantly asked question 3',
-                    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum eum, velit nesciunt assumenda, soluta enim, tempore, quae veniam ipsum et a excepturi laboriosam. Veritatis molestiae tenetur soluta quos ipsum necessitatibus!'
+                    title: t('lp.faq.q3'),
+                    content: <div dangerouslySetInnerHTML={{ __html: t('lp.faq.a3') }}></div>
                   },
                 ]}
               />
@@ -321,27 +389,29 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-6">
               
-              <h4 className="mb-5">Transform your body with little to no work at all</h4>
+              <h4 className="mb-5">{t('lp.advantages_title')}</h4>
 
               <div className="app-advantages-list">
-                <div className="app-advantages-list__item">Discover your personal Fitlope nutritional  program</div>
-                <div className="app-advantages-list__item">Follow your personalprogram and track progress with the mobile app</div>
-                <div className="app-advantages-list__item">Sustain afterSignupWeight by maintaining your new healthy eating habits</div>
+                <div className="app-advantages-list__item">{t('lp.advantage_1')}</div>
+                <div className="app-advantages-list__item">{t('lp.advantage_2')}</div>
+                <div className="app-advantages-list__item">{t('lp.advantage_3')}</div>
               </div>
 
             </div>
             <div className="col-6">
               
-              <div className="after-signup__expectations_chart-wrap">
-                <span className="after-signup__expectations_chart-standart-plan-label">Standart diet plan</span>
-                <span className="after-signup__expectations_chart-fitlope-plan-label">Your custom <span className="text-steel-blue">Fitlope</span> plan</span>
+              {isAfterSignup && (
+                <div className="after-signup__expectations_chart-wrap">
+                  <span className="after-signup__expectations_chart-standart-plan-label">{t('signup.chart.standart_plan_label')}</span>
+                  <span className="after-signup__expectations_chart-fitlope-plan-label" dangerouslySetInnerHTML={{ __html: t('signup.chart.fitlope_plan_label') }}></span>
 
-                <LineChart 
-                  className="after-signup__expectations_chart"
-                  data={getChartCommonData()} 
-                  options={getChartCommonOptions()}
-                />
-              </div>
+                  <LineChart 
+                    className="after-signup__expectations_chart"
+                    data={getChartCommonData()} 
+                    options={getChartCommonOptions()}
+                  />
+                </div>
+              )}
 
             </div>
             <div className="col-12 mt-5 pt-5">
@@ -350,8 +420,8 @@ const AfterSignupPage = (props: any) => {
                 <div className="col-6">
                   
                   <div className="money-back-guarantee-block">
-                    <h5 className="money-back-guarantee-block__title">You are safe: 100% Money Back guarantee</h5>
-                    <p className="money-back-guarantee-block__descr">You're about to order something on the Internet, so, let us put you at ease. We've put an incredible amount of time and effort into ensuring the safest and most effective way to help you change their</p>
+                    <h5 className="money-back-guarantee-block__title">{t('lp.money_back_title')}</h5>
+                    <p className="money-back-guarantee-block__descr">{t('lp.money_back_descr')}</p>
                   </div>
 
                 </div>
@@ -372,16 +442,30 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-6 offset-3 after-signup-start-today-col text-center">
               
-              <h4 className="sect-title title-center">Start building your dream body today! </h4>
+              <h4 className="sect-title title-center">{t('lp.start_today_title')}</h4>
 
-              <h4 className="fw-regular mt-5">Discover your personalized Fitlope plan for <del>$29/mon</del><b>only 1$ for 14 days!</b></h4>
+              <ContentLoading
+                isLoading={tariffLoading}
+                isError={tariffLoadingError}
+                fetchData={() => getUserTariff()}
+              >
+                <h4 
+                  className="fw-regular mt-5" 
+                  dangerouslySetInnerHTML={{ 
+                    __html: t('lp.selling_text', { 
+                      OLD_VALUE: tariffData.price_old_text, 
+                      AMOUNT: tariffData.price_text 
+                    }) 
+                  }}
+                />
+              </ContentLoading>
 
-              <Button color="primary-shadow" className="mt-5">Reveal my plan now!</Button>
+              <Button color="primary-shadow" className="mt-5">{t('button.reveal_plan')}</Button>
 
               <img className="after-signup-start-today-arrow" src={getImagePath('point-arrow-yellow.png')} alt="" />
 
               <div className="product-plants-one-tree-block mt-5">
-                <p>With te purchaise of this product we will plant one thee to secure the future. <b>One month- One more tree</b></p>
+                <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
               </div>
 
             </div>
@@ -393,7 +477,13 @@ const AfterSignupPage = (props: any) => {
             <div className="row">
               <div className="col-12">
                 
-                <h4 className="after-signup-reserved-block__title">Custom plan reserved for <span className="after-signup__bottom_countdown"><RawCountDown seconds={900} /></span></h4>
+                <h4 className="after-signup-reserved-block__title">
+                  {t('lp.bottom_countdown_title')} {' '}
+                  
+                  <span className="after-signup__bottom_countdown">
+                    <RawCountDown seconds={900} />
+                  </span>
+                </h4>
 
               </div>
             </div>
@@ -407,6 +497,9 @@ const AfterSignupPage = (props: any) => {
 export default WithTranslate(
   connect(
     (state: any) => ({
+      isAfterSignup: state.auth.userData.isAfterSignup,
+      afterSignupName: state.auth.userData.afterSignupName,
+      afterSignupGoal: state.auth.userData.afterSignupGoal,
       afterSignupWeight: state.auth.userData.afterSignupWeight,
       afterSignupWeightGoal: state.auth.userData.afterSignupWeightGoal,
       afterSignupPredictDate: state.auth.userData.afterSignupPredictDate

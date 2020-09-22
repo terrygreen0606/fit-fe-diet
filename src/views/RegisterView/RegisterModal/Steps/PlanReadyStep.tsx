@@ -42,7 +42,10 @@ const PlanReadyStep = (props: any) => {
           type="submit"
           size="lg"
           block
-          onClick={e => props.userLogin(props.registerData.token)}
+          onClick={e => {
+            props.userLogin(props.registerData.token);
+            props.history.push('/after-signup');
+          }}
         >
           <MealIcon className="mr-3" /> {t('register.check_btn')}
         </Button>

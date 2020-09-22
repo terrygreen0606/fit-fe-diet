@@ -79,6 +79,9 @@ const JoinStep = (props: any) => {
     });
 
     props.setUserData({
+      isAfterSignup: true,
+      afterSignupName: registerData.name,
+      afterSignupGoal: registerData.goal,
       afterSignupWeight: registerData.weight,
       afterSignupWeightGoal: registerData.weight_goal,
       afterSignupPredictDate: registerData.predicted_date

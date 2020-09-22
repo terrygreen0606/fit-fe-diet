@@ -1,5 +1,6 @@
 .layoutMainWrapper
-  @media (max-width: 767px)
-    padding-bottom: 80px
-  @media (max-width: 1400px)
-    padding-top: 80px
+  &:not(.layout-promo)
+    @media (max-width: 767px)
+      padding-bottom: 80px
+    @media (max-width: 1400px)
+      padding-top: 80px

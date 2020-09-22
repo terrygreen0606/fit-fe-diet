@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 // Components
 import Header from 'components/Header';
@@ -41,7 +42,9 @@ const Layout = ({
   };
 
   return (
-    <div className='layoutMainWrapper'>
+    <div className={classNames('layoutMainWrapper', {
+      'layout-promo': headerType === 'promo'
+    })}>
       {getHeader()}
       <SideMenu />
       <MainContent>
