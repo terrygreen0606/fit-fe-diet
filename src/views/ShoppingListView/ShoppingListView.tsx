@@ -119,6 +119,10 @@ const ShoppingListView = (props: any) => {
     getShoppingList(2, dateSync).then((response) => {
       const { list } = response.data.data;
 
+      list.map((item) => {
+        item.is_disable = false;
+      });
+
       setShoppingList(list);
 
       setDateSync(response.data.data.date_sync);
@@ -328,10 +332,13 @@ const ShoppingListView = (props: any) => {
                                 label={`${t(getWeigthUnit(settings.measurement),
                                   { number: item.weight })} ${item.name_i18n}`}
                                 checked={item.is_bought}
+                                disabled={item.is_disable}
                                 onChange={() => {
                                   const updatedShoppingList = [...shoppingList];
 
                                   updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+
+                                  updatedShoppingList[itemIndex].is_disable = true;
 
                                   setShoppingList([...updatedShoppingList]);
 
@@ -352,7 +359,14 @@ const ShoppingListView = (props: any) => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
-                                  }).finally(() => setIsSyncResponseActive(true));
+                                  }).finally(() => {
+                                    setIsSyncResponseActive(true);
+
+                                    setTimeout(() => {
+                                      updatedShoppingList[itemIndex].is_disable = false;
+                                      setShoppingList([...updatedShoppingList]);
+                                    }, 500);
+                                  });
                                 }}
                               />
                               <button
@@ -408,10 +422,13 @@ const ShoppingListView = (props: any) => {
                                 label={`${t(getWeigthUnit(settings.measurement),
                                   { number: item.weight })} ${item.name_i18n}`}
                                 checked={item.is_bought}
+                                disabled={item.is_disable}
                                 onChange={() => {
                                   const updatedShoppingList = [...shoppingList];
 
                                   updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+
+                                  updatedShoppingList[itemIndex].is_disable = true;
 
                                   setShoppingList([...updatedShoppingList]);
 
@@ -432,7 +449,14 @@ const ShoppingListView = (props: any) => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
-                                  }).finally(() => setIsSyncResponseActive(true));
+                                  }).finally(() => {
+                                    setIsSyncResponseActive(true);
+
+                                    setTimeout(() => {
+                                      updatedShoppingList[itemIndex].is_disable = false;
+                                      setShoppingList([...updatedShoppingList]);
+                                    }, 500);
+                                  });
                                 }}
                               />
                               <button
