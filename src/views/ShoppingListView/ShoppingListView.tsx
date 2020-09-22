@@ -40,6 +40,8 @@ import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
 import Spinner from 'components/common/Spinner';
 import ShareButtons from 'components/ShareButtons';
+import useOutsideClick from 'components/hooks/useOutsideClick';
+import useInterval from 'components/hooks/useInterval';
 
 import './ShoppingListView.sass';
 
@@ -57,11 +59,9 @@ const ShoppingListView = (props: any) => {
   const { settings } = props;
 
   const [bannerStep, setBannerStep] = useState<number>(0);
-  const [isBannerActive, setBannerActive] = useState<boolean>(true);
+  const [isBannerActive, setIsBannerActive] = useState<boolean>(true);
 
-  const [isSpinnerActive, setSpinnerActive] = useState<boolean>(true);
-
-  const [isShareButtonActive, setShareButtonActive] = useState<boolean>(false);
+  const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
   const [shoppingList, setShoppingList] = useState<Array<any>>([]);
 
@@ -72,6 +72,9 @@ const ShoppingListView = (props: any) => {
   const [addIngredientErrors, setAddIngredientErrors] = useState<Array<any>>([]);
 
   const [dateSync, setDateSync] = useState<number>(0);
+  const [isSyncResponseActive, setIsSyncResponseActive] = useState<boolean>(true);
+
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
   const filterIngredients = async (inputValue: string) => {
     if (inputValue.length < 2) return;
@@ -112,6 +115,7 @@ const ShoppingListView = (props: any) => {
   };
 
   const getShoppingListFunc = () => {
+    setIsSyncResponseActive(false);
     getShoppingList(2, dateSync).then((response) => {
       const { list } = response.data.data;
 
@@ -119,7 +123,9 @@ const ShoppingListView = (props: any) => {
 
       setDateSync(response.data.data.date_sync);
 
-      setSpinnerActive(false);
+      setIsSyncResponseActive(true);
+
+      setIsSpinnerActive(false);
     });
   };
 
@@ -127,49 +133,46 @@ const ShoppingListView = (props: any) => {
     getShoppingListFunc();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      syncShoppingList(dateSync).then((response) => {
-        const { list } = response.data.data;
+  useInterval(() => {
+    syncShoppingList(dateSync).then((response) => {
+      const { list } = response.data.data;
 
-        const syncFromResponse = response.data.data.date_sync;
+      const syncFromResponse = response.data.data.date_sync;
+      if (dateSync === 0) setDateSync(response.data.data.date_sync);
+      if (syncFromResponse !== dateSync) {
+        setDateSync(response.data.data.date_sync);
 
-        if (syncFromResponse !== dateSync) {
-          setDateSync(response.data.data.date_sync);
+        let updatedShoppingList = [...shoppingList];
 
-          let updatedShoppingList = [...shoppingList];
+        if (list.length === updatedShoppingList.length) {
+          list.forEach((item) => {
+            updatedShoppingList.find((findItem) => {
+              if (item[0] === findItem.id) {
+                const newWeight = item[1];
+                const newIsBought = item[2];
 
-          if (list.length === updatedShoppingList.length) {
-            list.forEach((item) => {
-              updatedShoppingList.find((findItem) => {
-                if (item[0] === findItem.id) {
-                  const newWeight = item[1];
-                  const newIsBought = item[2];
-
-                  findItem.weight = newWeight;
-                  findItem.is_bought = newIsBought;
-                }
-              });
+                findItem.weight = newWeight;
+                findItem.is_bought = newIsBought;
+              }
             });
-          } else if (list.length < updatedShoppingList.length) {
-            const filteredShoppingList = [];
-            list.forEach((item) => {
-              updatedShoppingList.find((findItem) => {
-                if (item[0] === findItem.id) {
-                  filteredShoppingList.push(findItem);
-                }
-              });
+          });
+        } else if (list.length < updatedShoppingList.length) {
+          const filteredShoppingList = [];
+          list.forEach((item) => {
+            updatedShoppingList.find((findItem) => {
+              if (item[0] === findItem.id) {
+                filteredShoppingList.push(findItem);
+              }
             });
-            updatedShoppingList = [...filteredShoppingList];
-          } else {
-            getShoppingListFunc();
-          }
-          setShoppingList([...updatedShoppingList]);
+          });
+          updatedShoppingList = [...filteredShoppingList];
+        } else {
+          getShoppingListFunc();
         }
-      });
-    }, (5000));
-    return () => clearInterval(interval);
-  }, [dateSync]);
+        setShoppingList([...updatedShoppingList]);
+      }
+    });
+  }, isSyncResponseActive ? 5000 : null);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -279,18 +282,20 @@ const ShoppingListView = (props: any) => {
                     >
                       <PrintIcon />
                     </button>
-                    <button
-                      type='button'
-                      onClick={() => setShareButtonActive(!isShareButtonActive)}
-                      className='shop-list__header-buttons-item'
-                    >
-                      <ShareIcon />
-                    </button>
-                    {isShareButtonActive && (
-                      <div className='shop-list__header-buttons-share'>
-                        <ShareButtons shareLink={window.location.href} />
-                      </div>
-                    )}
+                    <div ref={changedBlockRef}>
+                      <button
+                        type='button'
+                        onClick={() => setIsBlockActive(!isBlockActive)}
+                        className='shop-list__header-buttons-item'
+                      >
+                        <ShareIcon />
+                      </button>
+                      {isBlockActive && (
+                        <div className='shop-list__header-buttons-share'>
+                          <ShareButtons shareLink={window.location.href} />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className='shop-list__body'>
@@ -328,11 +333,15 @@ const ShoppingListView = (props: any) => {
 
                                   setShoppingList([...updatedShoppingList]);
 
+                                  setIsSyncResponseActive(false);
+
                                   setShoppingRowBought(
                                     item.id,
                                     updatedShoppingList[itemIndex].is_bought,
                                     dateSync,
-                                  ).catch(() => {
+                                  ).then(() => {
+                                    setIsSyncResponseActive(true);
+                                  }).catch(() => {
                                     updatedShoppingList[itemIndex].is_bought =
                                       !updatedShoppingList[itemIndex].is_bought;
 
@@ -354,8 +363,12 @@ const ShoppingListView = (props: any) => {
 
                                   setShoppingList([...updatedShoppingList]);
 
+                                  setIsSyncResponseActive(false);
+
                                   deleteFromShoppingList(item.id, dateSync)
-                                    .catch(() => {
+                                    .then(() => {
+                                      setIsSyncResponseActive(true);
+                                    }).catch(() => {
                                       toast.error(t('shop_list.update.error'), {
                                         autoClose: 3000,
                                       });
@@ -401,11 +414,15 @@ const ShoppingListView = (props: any) => {
 
                                   setShoppingList([...updatedShoppingList]);
 
+                                  setIsSyncResponseActive(false);
+
                                   setShoppingRowBought(
                                     item.id,
                                     updatedShoppingList[itemIndex].is_bought,
                                     dateSync,
-                                  ).catch(() => {
+                                  ).then(() => {
+                                    setIsSyncResponseActive(true);
+                                  }).catch(() => {
                                     updatedShoppingList[itemIndex].is_bought =
                                       !updatedShoppingList[itemIndex].is_bought;
 
@@ -427,8 +444,12 @@ const ShoppingListView = (props: any) => {
 
                                   setShoppingList([...updatedShoppingList]);
 
+                                  setIsSyncResponseActive(false);
+
                                   deleteFromShoppingList(item.id, dateSync)
-                                    .catch(() => {
+                                    .then(() => {
+                                      setIsSyncResponseActive(true);
+                                    }).catch(() => {
                                       toast.error(t('shop_list.update.error'), {
                                         autoClose: 3000,
                                       });
@@ -518,7 +539,7 @@ const ShoppingListView = (props: any) => {
                     className='shop-list__banner-btn'
                     onClick={() => {
                       if (mockData.length - 1 === bannerStep) {
-                        setBannerActive(false);
+                        setIsBannerActive(false);
                         return;
                       }
                       setBannerStep((prev) => prev + 1);
@@ -528,7 +549,7 @@ const ShoppingListView = (props: any) => {
                   </Button>
                   <button
                     type='button'
-                    onClick={() => setBannerActive(false)}
+                    onClick={() => setIsBannerActive(false)}
                     className='shop-list__banner-btn-skip'
                   >
                     {t('common.skip')}
