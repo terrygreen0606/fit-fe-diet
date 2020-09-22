@@ -82,10 +82,10 @@ const ShoppingListView = (props: any) => {
     try {
       const response = await searchIngredients(inputValue);
       const listOfIngredients = response.data.data;
-      Object.entries(listOfIngredients).forEach((prop) => {
+      Object.entries(listOfIngredients).forEach(([value, label]) => {
         filteredListOfIngredients.push({
-          value: prop[0],
-          label: prop[1],
+          value,
+          label,
         });
       });
       return filteredListOfIngredients;
