@@ -51,10 +51,10 @@ const AfterSignupPage = (props: any) => {
       .then(response => {
         setTariffLoading(false);
 
-        if (response.data) {
+        if (response.data.data) {
           setTariffData({
-            price_text: response.data.price_text || null,
-            price_old_text: response.data.price_old_text || null
+            price_text: response.data.data.price_text || null,
+            price_old_text: response.data.data.price_old_text || null
           });
         }
       })
@@ -177,13 +177,13 @@ const AfterSignupPage = (props: any) => {
 
     switch (afterSignupGoal) {
       case -1:
-        welcomeDescrGoalText = t('lp.welcome_descr_goal_lose', { number: afterSignupWeight - afterSignupWeightGoal });
+        welcomeDescrGoalText = t('lp.welcome_descr_goal_lose', { number: t('common.kg', { NUMBER: afterSignupWeight - afterSignupWeightGoal }) });
         break;
       case 0:
         welcomeDescrGoalText = t('lp.welcome_descr_goal_keep');
         break;
       case 1:
-        welcomeDescrGoalText = t('lp.welcome_descr_goal_gain', { number: afterSignupWeightGoal - afterSignupWeight });
+        welcomeDescrGoalText = t('lp.welcome_descr_goal_gain', { number: t('common.kg', { NUMBER: afterSignupWeightGoal - afterSignupWeight }) });
         break;
     }
 
