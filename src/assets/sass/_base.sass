@@ -96,7 +96,6 @@ section
 
 h1, h2, h3, h4, h5, h6
   margin: 14px 0
-  color: $black
   font-weight: 400
   &:first-child
     margin-top: 0
@@ -112,9 +111,9 @@ h2
   line-height: 98px
   font-weight: bold // styled
 h3
-  font-size: 24px // !!
-  line-height: 28px
-  font-weight: 500
+  font-size: 64px // !!
+  line-height: 78px
+  font-weight: bold
 h4
   font-size: 32px
   line-height: 39px
@@ -149,6 +148,8 @@ img
   &.img-fluid
     display: inline-block
     max-width: 100%
+  &.flip-x
+    transform: scaleX(-1)
 
 b
   font-weight: 700
@@ -703,6 +704,8 @@ a
   color: $red
 .text-yellow-accent
   color: $yellow-accent
+.text-malachite-green
+  color: $malachite-green
 
 
 // Text

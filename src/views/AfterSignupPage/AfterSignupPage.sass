@@ -1,0 +1,178 @@
+@import '../../assets/sass/_vars'
+
+
+.after-signup
+  &__expectations
+    &_chart
+      background-color: #fff
+      border-radius: 20px
+      &-wrap
+        position: relative
+      &-standart-plan-label
+        position: absolute
+        top: 40%
+        right: 20px
+        font-weight: 400
+        font-size: 14px
+        line-height: 16px
+        color: #BAC2D2
+      &-fitlope-plan-label
+        position: absolute
+        bottom: 50px
+        left: 50px
+        max-width: 150px
+        font-weight: bold
+        font-size: 16px
+        line-height: 17px
+        color: #000000
+
+.after-signup-header-sect
+  position: relative
+  background-color: $steel-blue
+  color: #fff
+  &::before
+    content: ''
+    position: absolute
+    bottom: 0
+    right: 0
+    width: 0
+    height: 0
+    border-style: solid
+    border-width: 0 0 70vw 45vw
+    border-color: transparent transparent #fff transparent
+  .after-signup-header-chart-col
+    position: relative
+    padding-left: 70px
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    .app-review-single-item
+      position: relative
+      right: 60px
+      bottom: 15px
+  .after-signup-header-arrow
+    position: absolute
+    bottom: -60px
+    right: -105px
+
+.after-signup-header-content-col
+  position: relative
+
+.after-signup-intro-sect
+  padding: 80px 0 120px
+
+.after-signup-intro-content-col
+  position: relative
+  padding-right: 100px
+  .after-signup-intro-arrow
+    position: absolute
+    right: 0
+
+.after-signup-reviews-sect
+  position: relative
+  padding: 112px 0 70px
+  background-image: url('../../assets/img/dream-body-bg.png')
+  background-repeat: no-repeat
+  background-position: top center
+  background-size: cover
+  color: #fff
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: linear-gradient(89.58deg, #106EE8 20.09%, rgba(16, 110, 232, 0.35) 99.63%)
+
+.after-signup-faq-sect
+  padding: 150px 0 45px
+
+.after-signup-expect-sect
+  padding: 45px 0 85px
+
+.after-signup-start-today-sect
+  position: relative
+  padding-bottom: calc(97px + 50px)
+  background-image: url('../../assets/img/plan-today-bg.png')
+  background-size: cover
+  background-repeat: no-repeat
+  background-position: top center
+  .after-signup-reserved-block
+    position: absolute
+    width: 100%
+    bottom: 0
+    left: 0
+  
+.after-signup-start-today-col
+  .after-signup-start-today-arrow
+    position: absolute
+    right: -120px
+    bottom: 40px
+
+.after-signup-reserved-block
+  padding: 19px
+  background: linear-gradient(180deg, rgba(252, 196, 113, 0.8) 0%, rgba(218, 121, 8, 0.8) 68.23%)
+  text-align: center
+  &__title
+    font-weight: bold
+    font-size: 48px
+    line-height: 59px
+    color: #FFFFFF
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+
+.product-plants-one-tree-block
+  display: flex
+  align-items: center
+  min-height: 80px
+  padding-left: 113px
+  background-image: url('../../assets/img/plants-one-tree-img.png')
+  background-repeat: no-repeat
+  background-size: 82px
+  background-position: top left
+  font-weight: 400
+  font-size: 18px
+  line-height: 22px
+  color: #000000
+
+.app-review-single-item
+  display: flex
+  align-items: flex-start
+  width: 580px
+  padding: 25px
+  padding-right: 10px
+  background-color: #fff
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+  border-radius: 20px
+  &_content
+    margin-left: 15px
+    padding: 10px 0
+  &_img
+    display: inline-block
+    width: 98px
+    height: 98px
+    border-radius: 100%
+    background-size: cover
+    background-repeat: no-repeat
+    background-position: top center
+  &_descr
+    font-weight: 400
+    font-size: 18px
+    line-height: 22px
+    color: #000000
+  &_author
+    margin: 0
+    margin-left: 17px 
+    font-weight: 400
+    font-size: 18px
+    line-height: 22px
+    color: $steel-blue
+  &_footer
+    display: flex
+    align-items: center
+    margin-top: 15px
+
+.after-signup__bottom_countdown
+  display: inline-block
+  width: 150px
+  text-align: left
