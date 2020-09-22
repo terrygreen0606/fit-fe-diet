@@ -82,6 +82,14 @@ $reviews-slider-class: '.app-reviews-slider'
             background-color: $mint-green
           &:not(:last-child)
             margin-right: 26px
+
+        @media only screen and (max-width : 768px)
+          &_item
+            width: 30px
+            height: 30px
+            &:not(:last-child)
+              margin-right: 21px
+
       &__item
         background-color: #fff
         border-radius: 20px
@@ -105,6 +113,19 @@ $reviews-slider-class: '.app-reviews-slider'
           line-height: 26px
           color: #000
           font-weight: 400
+
+        @media only screen and (max-width : 768px)
+          &_img
+            height: 230px
+          &_content
+            padding: 18px 19px
+          &_descr
+            font-size: 16px
+            line-height: 20px
+          &_author
+            margin-top: 15px
+            font-size: 18px
+            line-height: 22px
   &--2
     .slider-simple-prev, .slider-simple-next
       position: absolute
@@ -161,14 +182,15 @@ $reviews-slider-class: '.app-reviews-slider'
             color: #fff
       &__item
         padding: 81px
+        padding-top: 40px
         margin: 15px
         text-align: center
         background: #FFFFFF
         box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
         border-radius: 20px
         &_img
-          margin-top: -70px
           display: inline-block
+          margin-bottom: 20px
           width: 235px
           height: 235px
           border-radius: 100%
@@ -186,3 +208,17 @@ $reviews-slider-class: '.app-reviews-slider'
           line-height: 32px
           color: #000
           font-weight: 400
+
+        @media only screen and (max-width : 768px)
+          padding: 40px 20px 80px
+
+          &_img
+            width: 150px
+            height: 150px
+          &_descr
+            font-size: 20px
+            line-height: 24px
+          &_author
+            font-size: 22px
+            line-height: 27px
+

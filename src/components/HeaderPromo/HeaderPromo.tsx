@@ -17,14 +17,14 @@ const HeaderPromo = (props: any) => {
     <header className="main-promo-header">
       <div className='container'>
         <div className='row'>
-          <div className='col-6'>
+          <div className='col-xs-4'>
             
             <Link to='/' className='mainHeader_logo' />
 
           </div>
-          <div className='col-6 text-right'>
+          <div className='col-xs-8 mt-2 mt-xs-0 text-xs-right'>
             
-            <Button color="primary-shadow">{t('button.reveal_plan')}</Button>
+            <Button className="main-promo-header__btn" color="primary-shadow">{t('button.reveal_plan')}</Button>
 
           </div>
         </div>  

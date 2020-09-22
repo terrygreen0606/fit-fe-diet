@@ -18,13 +18,14 @@
         color: #BAC2D2
       &-fitlope-plan-label
         position: absolute
-        bottom: 50px
-        left: 50px
+        bottom: 10%
+        left: 5%
         max-width: 150px
         font-weight: bold
         font-size: 16px
         line-height: 17px
         color: #000000
+
 
 .after-signup-header-sect
   position: relative
@@ -40,20 +41,27 @@
     border-style: solid
     border-width: 0 0 70vw 45vw
     border-color: transparent transparent #fff transparent
+
   .after-signup-header-chart-col
     position: relative
-    padding-left: 70px
     display: flex
     align-items: center
     flex-wrap: wrap
+
+    @media only screen and (min-width : 1200px)
+      padding-left: 70px
+      .app-review-single-item
+        width: 580px
+        right: 60px
+        bottom: 20px
+
     .app-review-single-item
       position: relative
-      right: 60px
-      bottom: 15px
   .after-signup-header-arrow
     position: absolute
     bottom: -60px
     right: -105px
+
 
 .after-signup-header-chart-col_content
   display: block
@@ -62,8 +70,13 @@
 .after-signup-header-content-col
   position: relative
 
+
 .after-signup-intro-sect
   padding: 80px 0 120px
+
+  @media only screen and (max-width : 1200px)
+    padding: 60px 0 80px
+
 
 .after-signup-intro-content-col
   position: relative
@@ -72,6 +85,7 @@
     position: absolute
     right: -50px
     top: 0
+
 
 .after-signup-reviews-sect
   position: relative
@@ -90,11 +104,23 @@
     height: 100%
     background: linear-gradient(89.58deg, #106EE8 20.09%, rgba(16, 110, 232, 0.35) 99.63%)
 
+  @media only screen and (max-width : 1200px)
+    padding: 57px 0 28px
+
+
 .after-signup-faq-sect
   padding: 150px 0 45px
 
+  @media only screen and (max-width : 1200px)
+    padding: 76px 0 38px
+
+
 .after-signup-expect-sect
   padding: 45px 0 85px
+
+  @media only screen and (max-width : 1200px)
+    padding-bottom: 45px
+
 
 .after-signup-start-today-sect
   position: relative
@@ -126,6 +152,10 @@
     color: #FFFFFF
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
 
+    @media only screen and (max-width : 768px)
+      font-size: 29px
+      line-height: 35px
+
 .product-plants-one-tree-block
   display: flex
   align-items: center
@@ -140,44 +170,10 @@
   line-height: 22px
   color: #000000
 
-.app-review-single-item
-  display: flex
-  align-items: flex-start
-  width: 580px
-  padding: 25px
-  padding-right: 10px
-  background-color: #fff
-  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
-  border-radius: 20px
-  &_content
-    margin-left: 15px
-    padding: 10px 0
-  &_img
-    display: inline-block
-    width: 98px
-    height: 98px
-    border-radius: 100%
-    background-size: cover
-    background-repeat: no-repeat
-    background-position: top center
-  &_descr
-    font-weight: 400
-    font-size: 18px
-    line-height: 22px
-    color: #000000
-  &_author
-    margin: 0
-    margin-left: 17px 
-    font-weight: 400
-    font-size: 18px
-    line-height: 22px
-    color: $steel-blue
-  &_footer
-    display: flex
-    align-items: center
-    margin-top: 15px
-
 .after-signup__bottom_countdown
   display: inline-block
   width: 150px
   text-align: left
+
+  @media only screen and (max-width : 768px)
+    width: 92px
