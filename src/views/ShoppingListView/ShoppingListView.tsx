@@ -103,9 +103,10 @@ const ShoppingListView = (props: any) => {
 
   const setIndgredient = (e: any) => {
     getIngredient(e.value).then((response) => {
+      const { data } = response.data;
       setAddIngredientForm({
         ...addIngredientForm,
-        id: response.data.data._id,
+        id: data._id,
       });
     });
   };
@@ -136,7 +137,7 @@ const ShoppingListView = (props: any) => {
         if (syncFromResponse !== dateSync) {
           setDateSync(response.data.data.date_sync);
 
-          const updatedShoppingList = [...shoppingList];
+          let updatedShoppingList = [...shoppingList];
 
           if (list.length === updatedShoppingList.length) {
             list.forEach((item) => {
@@ -150,10 +151,19 @@ const ShoppingListView = (props: any) => {
                 }
               });
             });
+          } else if (list.length < updatedShoppingList.length) {
+            const filteredShoppingList = [];
+            list.forEach((item) => {
+              updatedShoppingList.find((findItem) => {
+                if (item[0] === findItem.id) {
+                  filteredShoppingList.push(findItem);
+                }
+              });
+            });
+            updatedShoppingList = [...filteredShoppingList];
           } else {
             getShoppingListFunc();
           }
-
           setShoppingList([...updatedShoppingList]);
         }
       });
@@ -200,7 +210,18 @@ const ShoppingListView = (props: any) => {
         addIngredientForm.weight,
         dateSync,
       ).then(() => {
-        getShoppingListFunc();
+        const isFound = shoppingList.find((findItem, findItemIndex) => {
+          if (findItem.ingredient_id === addIngredientForm.id) {
+            const updatedShoppingList = [...shoppingList];
+            updatedShoppingList[findItemIndex].weight += +addIngredientForm.weight;
+            setShoppingList([...updatedShoppingList]);
+
+            return findItem;
+          }
+        });
+        if (!isFound) {
+          getShoppingListFunc();
+        }
       }).catch(() => {
         toast.error(t('shop_list.update.error'), {
           autoClose: 3000,
@@ -241,7 +262,7 @@ const ShoppingListView = (props: any) => {
               <div className='shop-list card-bg'>
                 <div className='shop-list__header'>
                   <h5 className='shop-list__header-title'>
-                    {t('shop_list.to_buy', { number: shoppingList.length })}
+                    {t('shop_list.to_buy', { number: shoppingList.filter((item) => !item.is_bought).length })}
                   </h5>
                   <div className='shop-list__header-buttons'>
                     <button
@@ -285,8 +306,8 @@ const ShoppingListView = (props: any) => {
                                 {item.cuisine_name_i18n}
                               </div>
                             ) : (
-                                shoppingList[itemIndex].cuisine_name_i18n !==
-                                shoppingList[itemIndex - 1].cuisine_name_i18n
+                                shoppingList[itemIndex]?.cuisine_name_i18n !==
+                                shoppingList[itemIndex - 1]?.cuisine_name_i18n
                                 && (
                                   <div className='shop-list__item-category'>
                                     {item.cuisine_name_i18n}
@@ -359,11 +380,11 @@ const ShoppingListView = (props: any) => {
                           <div
                             className='shop-list__item'
                           >
-                            {shoppingList[itemIndex].cuisine_name_i18n !==
-                              shoppingList[itemIndex - 1].cuisine_name_i18n
+                            {shoppingList[itemIndex]?.cuisine_name_i18n !==
+                              shoppingList[itemIndex - 1]?.cuisine_name_i18n
                               && (
                                 <div className='shop-list__item-category'>
-                                  {item.cuisine_name_i18n}
+                                  {item?.cuisine_name_i18n}
                                 </div>
                               )}
                             <div
@@ -434,7 +455,9 @@ const ShoppingListView = (props: any) => {
                     <AsyncSelect
                       async
                       loadOptions={inputValueIngredient}
-                      onChange={(e) => setIndgredient(e)}
+                      onChange={(e) => {
+                        setIndgredient(e);
+                      }}
                       label={t('ingr.add')}
                       placeholder={t('recipe.create.ingredient_search')}
                       styles={colourStylesSelect}
@@ -464,6 +487,7 @@ const ShoppingListView = (props: any) => {
                         },
                       ]}
                       placeholder={settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}
+                      isSearchable={false}
                     />
                   </div>
                   <Button

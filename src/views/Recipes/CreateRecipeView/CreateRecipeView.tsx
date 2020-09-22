@@ -776,7 +776,6 @@ const CreateRecipeView = (props: any) => {
             <div className='recipe__add-ingredients-field'>
               <SelectInput
                 async
-                value=''
                 loadOptions={inputValueIngredient}
                 placeholder={t('recipe.create.ingredient_search')}
                 onChange={addIndgredient}
