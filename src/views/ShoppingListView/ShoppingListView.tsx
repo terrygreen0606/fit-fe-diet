@@ -145,23 +145,29 @@ const ShoppingListView = (props: any) => {
         let updatedShoppingList = [...shoppingList];
 
         if (list.length === updatedShoppingList.length) {
-          list.forEach((item) => {
-            updatedShoppingList.find((findItem) => {
-              if (item[0] === findItem.id) {
-                const newWeight = item[1];
-                const newIsBought = item[2];
+          updatedShoppingList.forEach((item) => {
+            list.find((findItem) => {
+              if (findItem[0] === item.id) {
+                const newWeight = findItem[1];
+                const newIsBought = findItem[2];
 
-                findItem.weight = newWeight;
-                findItem.is_bought = newIsBought;
+                item.weight = newWeight;
+                item.is_bought = newIsBought;
               }
             });
           });
         } else if (list.length < updatedShoppingList.length) {
           const filteredShoppingList = [];
-          list.forEach((item) => {
-            updatedShoppingList.find((findItem) => {
-              if (item[0] === findItem.id) {
-                filteredShoppingList.push(findItem);
+          updatedShoppingList.forEach((item) => {
+            list.find((findItem) => {
+              if (findItem[0] === item.id) {
+                const newWeight = findItem[1];
+                const newIsBought = findItem[2];
+
+                item.weight = newWeight;
+                item.is_bought = newIsBought;
+
+                filteredShoppingList.push(item);
               }
             });
           });
