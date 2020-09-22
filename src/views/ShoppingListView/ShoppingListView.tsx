@@ -123,10 +123,8 @@ const ShoppingListView = (props: any) => {
 
       setDateSync(response.data.data.date_sync);
 
-      setIsSyncResponseActive(true);
-
       setIsSpinnerActive(false);
-    });
+    }).finally(() => setIsSyncResponseActive(true));
   };
 
   useEffect(() => {
@@ -345,9 +343,7 @@ const ShoppingListView = (props: any) => {
                                     item.id,
                                     updatedShoppingList[itemIndex].is_bought,
                                     dateSync,
-                                  ).then(() => {
-                                    setIsSyncResponseActive(true);
-                                  }).catch(() => {
+                                  ).catch(() => {
                                     updatedShoppingList[itemIndex].is_bought =
                                       !updatedShoppingList[itemIndex].is_bought;
 
@@ -356,7 +352,7 @@ const ShoppingListView = (props: any) => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
-                                  });
+                                  }).finally(() => setIsSyncResponseActive(true));
                                 }}
                               />
                               <button
@@ -372,15 +368,13 @@ const ShoppingListView = (props: any) => {
                                   setIsSyncResponseActive(false);
 
                                   deleteFromShoppingList(item.id, dateSync)
-                                    .then(() => {
-                                      setIsSyncResponseActive(true);
-                                    }).catch(() => {
+                                    .catch(() => {
                                       toast.error(t('shop_list.update.error'), {
                                         autoClose: 3000,
                                       });
 
                                       setShoppingList([...prevShoppingList]);
-                                    });
+                                    }).finally(() => setIsSyncResponseActive(true));
                                 }}
                                 className='shop-list__item-ingr-delete'
                               >
@@ -426,9 +420,7 @@ const ShoppingListView = (props: any) => {
                                     item.id,
                                     updatedShoppingList[itemIndex].is_bought,
                                     dateSync,
-                                  ).then(() => {
-                                    setIsSyncResponseActive(true);
-                                  }).catch(() => {
+                                  ).catch(() => {
                                     updatedShoppingList[itemIndex].is_bought =
                                       !updatedShoppingList[itemIndex].is_bought;
 
@@ -437,7 +429,7 @@ const ShoppingListView = (props: any) => {
                                     toast.error(t('shop_list.update.error'), {
                                       autoClose: 3000,
                                     });
-                                  });
+                                  }).finally(() => setIsSyncResponseActive(true));
                                 }}
                               />
                               <button
@@ -453,15 +445,13 @@ const ShoppingListView = (props: any) => {
                                   setIsSyncResponseActive(false);
 
                                   deleteFromShoppingList(item.id, dateSync)
-                                    .then(() => {
-                                      setIsSyncResponseActive(true);
-                                    }).catch(() => {
+                                    .catch(() => {
                                       toast.error(t('shop_list.update.error'), {
                                         autoClose: 3000,
                                       });
 
                                       setShoppingList([...prevShoppingList]);
-                                    });
+                                    }).finally(() => setIsSyncResponseActive(true));
                                 }}
                                 className='shop-list__item-ingr-delete'
                               >
