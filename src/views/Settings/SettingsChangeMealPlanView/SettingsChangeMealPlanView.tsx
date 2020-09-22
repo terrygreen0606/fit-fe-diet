@@ -720,7 +720,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('mp.works_out.little_activities')}
+                          {t('workout.level.little')}
                         </div>
                       </button>
                       <button
@@ -736,7 +736,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('mp.works_out.light_activities')}
+                          {t('workout.level.light')}
                         </div>
                       </button>
                       <button
@@ -752,7 +752,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('mp.works_out.moderate_activities')}
+                          {t('workout.level.moderate')}
                         </div>
                       </button>
                       <button
@@ -768,7 +768,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('mp.works_out.active')}
+                          {t('workout.level.active')}
                         </div>
                       </button>
                       <button
@@ -784,7 +784,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                         }}
                       >
                         <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('mp.works_out.very_active')}
+                          {t('workout.level.very_active')}
                         </div>
                       </button>
                     </div>

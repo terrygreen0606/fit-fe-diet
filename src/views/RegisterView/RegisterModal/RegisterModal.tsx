@@ -22,6 +22,7 @@ type RegisterModalProps = {
   cuisinesLoadingError: boolean,
   fetchRecipeCuisines: () => void,
   onClose?: (e: React.SyntheticEvent) => void,
+  history: any,
   localePhrases: any
 };
 
@@ -82,7 +83,8 @@ const RegisterModal = (props: RegisterModalProps) => {
     props.localePhrases,
     registerStepTitlesDefault,
     setRegisterStepTitles,
-    setRegisterView
+    setRegisterView,
+    props.history
   );
 
   const setStepPrev = () => {

@@ -68,3 +68,9 @@ export const userUpdateMeasurement = (measurement: string) =>
 
 export const getPublicShopListUrl = (txt: number = 0) =>
   axios.get(`/user/shopping-list-url?txt=${txt}`);
+
+export const getAppTariff = (id: string) =>
+  axios.get(`/app/tariff/${id}`);
+
+export const getAppReviews = () =>
+  axios.get('/app/reviews');

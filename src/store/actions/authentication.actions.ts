@@ -12,6 +12,8 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 export const SET_AUTH_CHECKING = 'SET_AUTH_CHECKING';
 export const SET_USER_DATA = 'SET_USER_DATA';
 
+export const setUserData = (userData: any) => ({ type: SET_USER_DATA, userData });
+
 export const setAuthChecking = (isAuthChecking: boolean) => (
   { type: SET_AUTH_CHECKING, isAuthChecking }
 );

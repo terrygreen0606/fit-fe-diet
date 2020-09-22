@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import { UserAuthProfileType } from 'types/auth';
-import { setAppSetting } from 'store/actions';
+import { setAppSetting, setUserData } from 'store/actions';
 import { 
   userSignup, 
   userGoogleSignUp, 
@@ -76,6 +76,15 @@ const JoinStep = (props: any) => {
     props.setRegisterData({
       ...registerData,
       token: authToken
+    });
+
+    props.setUserData({
+      isAfterSignup: true,
+      afterSignupName: registerData.name,
+      afterSignupGoal: registerData.goal,
+      afterSignupWeight: registerData.weight,
+      afterSignupWeightGoal: registerData.weight_goal,
+      afterSignupPredictDate: registerData.predicted_date
     });
 
     props.setRegisterView('READY');
@@ -409,5 +418,5 @@ const JoinStep = (props: any) => {
 
 export default connect(
   null,
-  { setAppSetting }
+  { setAppSetting, setUserData }
 )(JoinStep);
