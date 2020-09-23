@@ -80,6 +80,8 @@ const ExpectationsStep = (props: any) => {
   };
 
   const getChartCommonOptions = () => {
+    const { weight, weight_goal } = props.registerData;
+
     return {
       ...chartOptions,
       tooltips: {
@@ -107,8 +109,10 @@ const ExpectationsStep = (props: any) => {
               return null;
             }
 
-            if (tooltipItem.index === 1 || tooltipItem.index === 3) {
-              return t(i18n_measurement, { COUNT: tooltipItem.value });
+            if (tooltipItem.index === 1) {
+              return t(i18n_measurement, { COUNT: weight });
+            } else if (tooltipItem.index === 3) {
+              return t(i18n_measurement, { COUNT: weight_goal });
             } else {
               return null;
             }
