@@ -204,7 +204,7 @@ const AfterSignupPage = (props: any) => {
 
               <div className="text-center mt-xl-5 mt-4">
                 <CountDown seconds={900} />
-                
+
                 <ContentLoading
                   isLoading={tariffLoading}
                   isError={tariffLoadingError}
@@ -242,27 +242,35 @@ const AfterSignupPage = (props: any) => {
                   </div>
                 )}
                 
-                {reviewsList.length > 0 && !reviewsLoading && !reviewsLoadingError ? (
                   <div className="app-review-single-item">
-                    <div className="app-review-single-item_img_wrap">
-                      <span className="app-review-single-item_img" style={{ backgroundImage: `url(${reviewsList[0].image || null})` }} />
-                    </div>
-                    
-                    <div className="app-review-single-item_content">
-                      <p className="app-review-single-item_descr">{reviewsList[0].text || null}</p>
-                      <div className="app-review-single-item_footer">
-                        <div className="rate-stars_list">
-                          <StarFillIcon className="rate-stars_item" />
-                          <StarFillIcon className="rate-stars_item" />
-                          <StarFillIcon className="rate-stars_item" />
-                          <StarFillIcon className="rate-stars_item" />
-                          <StarFillIcon className="rate-stars_item" />
-                        </div>
-                        <h6 className="app-review-single-item_author"><b>- {reviewsList[0].name || null}</b>, Fitlope user</h6>
-                      </div>
-                    </div>
+                    <ContentLoading
+                      isLoading={reviewsLoading}
+                      isError={reviewsLoadingError}
+                      fetchData={() => getUserReviews()}
+                    >
+                      {reviewsList.slice(0, 1).map(review => (
+                        <>
+                          <div className="app-review-single-item_img_wrap">
+                            <span className="app-review-single-item_img" style={{ backgroundImage: `url(${review.image || null})` }} />
+                          </div>
+                          
+                          <div className="app-review-single-item_content">
+                            <p className="app-review-single-item_descr">{review.text || null}</p>
+                            <div className="app-review-single-item_footer">
+                              <div className="rate-stars_list">
+                                <StarFillIcon className="rate-stars_item" />
+                                <StarFillIcon className="rate-stars_item" />
+                                <StarFillIcon className="rate-stars_item" />
+                                <StarFillIcon className="rate-stars_item" />
+                                <StarFillIcon className="rate-stars_item" />
+                              </div>
+                              <h6 className="app-review-single-item_author"><b>- {review.name || null}</b>, Fitlope user</h6>
+                            </div>
+                          </div>
+                        </>
+                      ))}             
+                    </ContentLoading>
                   </div>
-                ) : null}
               </div>
 
             </div>
@@ -283,9 +291,9 @@ const AfterSignupPage = (props: any) => {
               <h5>{t('lp.partners_list_title')}</h5>
 
               <div className="app-partners-list">
-                <span className="app-partners-list__item" style={{ backgroundImage: `url(${getImagePath('partners/daily-mirror.png')})` }} />
-                <span className="app-partners-list__item" style={{ backgroundImage: `url(${getImagePath('partners/forbes.png')})` }} />
-                <span className="app-partners-list__item" style={{ backgroundImage: `url(${getImagePath('partners/modesto.png')})` }} />
+                <span className="app-partners-list__item" style={{ backgroundImage: `url(${require('assets/img/partners/daily-mirror.png')})` }} />
+                <span className="app-partners-list__item" style={{ backgroundImage: `url(${require('assets/img/partners/forbes.png')})` }} />
+                <span className="app-partners-list__item" style={{ backgroundImage: `url(${require('assets/img/partners/modesto.png')})` }} />
               </div>
 
               <img className="after-signup-intro-arrow" src={getImagePath('point-arrow-black.png')} alt="" />

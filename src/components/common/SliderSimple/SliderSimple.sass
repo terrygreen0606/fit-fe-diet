@@ -11,8 +11,10 @@
     overflow: hidden
     border-radius: 20px
   &-list
+    display: flex
     position: relative
-    padding-bottom: 88px
+    justify-content: center
+    padding-bottom: 50px
     border-radius: 20px
     &.slides-move
       transition: .4s left ease
@@ -35,8 +37,8 @@
   &-item
     position: relative
     display: block
+    flex: 1
     width: 100%
-    float: left
   &-prev, &-next
     position: absolute
     top: 40%
@@ -91,6 +93,7 @@ $reviews-slider-class: '.app-reviews-slider'
               margin-right: 21px
 
       &__item
+        height: 100%
         background-color: #fff
         border-radius: 20px
         &_img
@@ -132,26 +135,28 @@ $reviews-slider-class: '.app-reviews-slider'
       top: unset
       display: inline-block
       background-color: #fff
-      width: 60px
-      height: 60px
+      width: 80px
+      height: 80px
+      bottom: 10px
+      border: 20px solid #fff
       border-radius: 100%
-      box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
       &:hover
         background-color: $caribbean-green
         color: #fff
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.08)
       &::before
         position: absolute
-        top: 22px
-        left: 27px
+        top: -20px
+        left: -20px
         content: ''
         display: inline-block
-        width: 15px
-        height: 15px
-        background-size: contain
+        width: 80px
+        height: 80px
+        background-size: 13px
         background-repeat: no-repeat
+        background-position: center center
     .slider-simple-prev
-      bottom: 0
-      right: 120px
+      right: 110px
       left: unset
       &::before
         background-image: url('../../../assets/img/icons/angle-left-green-icon.svg')
@@ -159,8 +164,7 @@ $reviews-slider-class: '.app-reviews-slider'
         &::before
           background-image: url('../../../assets/img/icons/angle-left-icon.svg')
     .slider-simple-next
-      bottom: 0
-      right: 50px
+      right: 40px
       &::before
         background-image: url('../../../assets/img/icons/angle-right-green-icon.svg')
       &:hover
@@ -181,8 +185,8 @@ $reviews-slider-class: '.app-reviews-slider'
             background-color: $caribbean-green
             color: #fff
       &__item
-        padding: 81px
-        padding-top: 40px
+        height: 100%
+        padding: 40px 80px
         margin: 15px
         text-align: center
         background: #FFFFFF
