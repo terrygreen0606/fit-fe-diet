@@ -145,7 +145,7 @@ const ShoppingListPopup = (props: any) => {
                   >
                     <CustomCheckbox
                       label={`${t(getWeigthUnit(settings.measurement),
-                        { count: item.weight })} ${item.name_i18n}`}
+                        { COUNT: item.weight })} ${item.name_i18n}`}
                       checked={item.is_bought}
                       disabled={item.is_disable}
                       onChange={() => {
