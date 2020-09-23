@@ -300,7 +300,7 @@ const RecipeFullView = (props: any) => {
                     <div className='recipe__main-info-desc-row'>
                       {recipeData.time && (
                         <div className='recipe__main-info-desc-time'>
-                          {t('common.min', { number: recipeData.time })}
+                          {t('common.min', { COUNT: recipeData.time })}
                         </div>
                       )}
                       {recipeData.costLevel && (
@@ -389,7 +389,7 @@ const RecipeFullView = (props: any) => {
                           key={ingredient.ingredient_id}
                           className='recipe__composition-list-item'
                         >
-                          {`${t(getWeigthUnit(settings.measurement), { number: ingredient.weight })}.
+                          {`${t(getWeigthUnit(settings.measurement), { COUNT: ingredient.weight })}.
                           ${ingredient.name_i18n}`}
                         </div>
                       ))}
@@ -558,14 +558,14 @@ const RecipeFullView = (props: any) => {
                   </div>
                   <div className='recipe__nutrients-calories'>
                     <span>{t('recipe.calories')}</span>
-                    <span>{t('common.calories', { number: recipeData.calorie })}</span>
+                    <span>{t('common.kcal', { COUNT: recipeData.calorie })}</span>
                   </div>
                   <div className='recipe__nutrients-composition-list'>
                     {recipeData.salt && (
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.salt')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.salt })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.salt })}
                         </span>
                       </div>
                     )}
@@ -573,7 +573,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.fats')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.fat })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.fat })}
                         </span>
                       </div>
                     )}
@@ -581,7 +581,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.sugar')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.sugar })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.sugar })}
                         </span>
                       </div>
                     )}
@@ -589,7 +589,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.proteins')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.protein })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.protein })}
                         </span>
                       </div>
                     )}
@@ -597,7 +597,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.carbohydrates')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.carbohydrate })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.carbohydrate })}
                         </span>
                       </div>
                     )}
@@ -687,7 +687,7 @@ const RecipeFullView = (props: any) => {
                             <div className='recipe__similar-recipes-item-text-info'>
                               {similarRecipe.time && (
                                 <div className='recipe__similar-recipes-item-text-info-time'>
-                                  {t('common.min', { number: similarRecipe.time })}
+                                  {t('common.min', { COUNT: similarRecipe.time })}
                                 </div>
                               )}
                               <div className='recipe__similar-recipes-item-text-info-cost-level'>

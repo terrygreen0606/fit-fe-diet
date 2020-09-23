@@ -235,7 +235,7 @@ const NutritionPlanView = (props: any) => {
                 <div className='nutrition-plan-adherence-diet-card-content'>
                   <p
                     dangerouslySetInnerHTML={
-                      { __html: t('trainings.plan.completed', { number: 0 }) }
+                      { __html: t('workout.plan.completed', { COUNT: 0 }) }
                     }
                   />
                   <a href='/' className='link'>
@@ -255,7 +255,7 @@ const NutritionPlanView = (props: any) => {
                   </h5>
                   <p
                     dangerouslySetInnerHTML={
-                      { __html: t('nutrition.days_use', { number: 4 }) }
+                      { __html: t('nutrition.days_use', { COUNT: 4 }) }
                     }
                   />
                   <Button className='mt-3' color='primary'>

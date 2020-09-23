@@ -94,7 +94,7 @@ const DashboardView = (props: any) => {
                       {`${t('common.subscription_title')}:`}
                     </div>
                     <div className='dashboard__user-personal-data-activity-subscription-date'>
-                      {t('dashboard.subscription_description', { number: 20 })}
+                      {t('dashboard.tariff.end', { COUNT: 20 })}
                     </div>
                   </div>
                 </div>
@@ -118,7 +118,7 @@ const DashboardView = (props: any) => {
                 </div>
                 <div className='dashboard__user-rewards-item-text'>
                   <div className='dashboard__user-rewards-item-text-title'>
-                    {t('dashboard.trophy', { number: 1 })}
+                    {t('dashboard.trophy')}
                   </div>
                   <div className='dashboard__user-rewards-item-text-description'>
                     {t('dashboard.rewards_description')}
@@ -131,7 +131,7 @@ const DashboardView = (props: any) => {
                 </div>
                 <div className='dashboard__user-rewards-item-text'>
                   <div className='dashboard__user-rewards-item-text-title'>
-                    {t('dashboard.trophy', { number: 2 })}
+                    {t('dashboard.trophy')}
                   </div>
                   <div className='dashboard__user-rewards-item-text-description'>
                     {t('dashboard.rewards_description')}
@@ -156,7 +156,7 @@ const DashboardView = (props: any) => {
                 </div>
               </div>
               <div className='dashboard__cards-item_diet-description'>
-                {t('dashboard.diet_description', { number: 12.05 })}
+                {t('dashboard.diet_description', { PERIOD: 12.05 })}
               </div>
             </div>
             <div
@@ -183,7 +183,7 @@ const DashboardView = (props: any) => {
                 <div className='dashboard__cards-item_workout-description-time'>
                   <ClockTimeIcon />
                   <span className='dashboard__cards-item_workout-description-time-quantity'>
-                    {t('common.minutes', { number: 16 })}
+                    {t('common.minutes', { COUNT: 16 })}
                   </span>
                 </div>
                 <div className='dashboard__cards-item_workout-description-play'>
@@ -227,7 +227,7 @@ const DashboardView = (props: any) => {
                       {t('meal.snack')}
                     </div>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-content'>
-                      {t('common.products', { number: 20 })}
+                      {t('common.products', { COUNT: 20 })}
                     </div>
                   </div>
                 </div>
@@ -240,7 +240,7 @@ const DashboardView = (props: any) => {
                       {t('meal.snack')}
                     </div>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-content'>
-                      {t('common.products', { number: 20 })}
+                      {t('common.products', { COUNT: 20 })}
                     </div>
                   </div>
                 </div>
@@ -274,7 +274,7 @@ const DashboardView = (props: any) => {
                     <HeartIcon className='dashboard__cards-item_blood-datas-item-media-img' />
                   </div>
                   <div className='dashboard__cards-item_blood-datas-item-description'>
-                    {t('common.bpm', { number: 70 })}
+                    {t('common.bpm', { COUNT: 70 })}
                   </div>
                 </div>
               </div>

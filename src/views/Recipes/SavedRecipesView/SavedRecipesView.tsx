@@ -119,7 +119,7 @@ const SavedRecipesView = (props: any) => {
                           </div>
                           <div className='saved-recipes__list-item-content-head-datas'>
                             <div className='saved-recipes__list-item-content-head-datas-block'>
-                              {t('common.min', { number: 40 })}
+                              {t('common.min', { COUNT: 40 })}
                             </div>
                             <div className='saved-recipes__list-item-content-head-datas-block'>
                               €€
@@ -132,7 +132,7 @@ const SavedRecipesView = (props: any) => {
                               {t('common.fat')}
                             </span>
                             <span className='saved-recipes__list-item-content-head-grams-block'>
-                              {t('common.gr', { number: 32 })}
+                              {t('common.gr', { COUNT: 32 })}
                             </span>
                           </div>
                           <div className='saved-recipes__list-item-content-head-grams'>
@@ -140,7 +140,7 @@ const SavedRecipesView = (props: any) => {
                               {t('common.protein')}
                             </span>
                             <span className='saved-recipes__list-item-content-head-grams-block'>
-                              {t('common.gr', { number: 10 })}
+                              {t('common.gr', { COUNT: 10 })}
                             </span>
                           </div>
                           <div className='saved-recipes__list-item-content-head-grams'>
@@ -148,7 +148,7 @@ const SavedRecipesView = (props: any) => {
                               {t('common.carbohydrate')}
                             </span>
                             <span className='saved-recipes__list-item-content-head-grams-block'>
-                              {t('common.gr', { number: 24 })}
+                              {t('common.gr', { COUNT: 24 })}
                             </span>
                           </div>
                         </div>

@@ -177,13 +177,13 @@ const AfterSignupPage = (props: any) => {
 
     switch (afterSignupGoal) {
       case -1:
-        welcomeDescrGoalText = t('lp.welcome_descr_goal_lose', { number: t('common.kg', { NUMBER: afterSignupWeight - afterSignupWeightGoal }) });
+        welcomeDescrGoalText = t('lp.welcome_descr_goal_lose', { COUNT: t('common.kg', { COUNT: afterSignupWeight - afterSignupWeightGoal }) });
         break;
       case 0:
         welcomeDescrGoalText = t('lp.welcome_descr_goal_keep');
         break;
       case 1:
-        welcomeDescrGoalText = t('lp.welcome_descr_goal_gain', { number: t('common.kg', { NUMBER: afterSignupWeightGoal - afterSignupWeight }) });
+        welcomeDescrGoalText = t('lp.welcome_descr_goal_gain', { COUNT: t('common.kg', { COUNT: afterSignupWeightGoal - afterSignupWeight }) });
         break;
     }
 
@@ -197,7 +197,7 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-xl-6 after-signup-header-content-col">
               
-              <h3>{t('lp.welcome_title', { first_name: afterSignupName })}</h3>
+              <h3>{t('lp.welcome_title', { NAME: afterSignupName })}</h3>
               {isAfterSignup && <h4 className="mt-xl-5 mt-4">{t('lp.welcome_descr_first')} <span className="text-malachite-green">{getWelcomeDescrGoal()}, {t('lp.welcome_descr_last')}</span></h4>}
 
               <div className="text-center mt-xl-5 mt-4">

@@ -181,7 +181,7 @@ const ShoppingListPopup = (props: any) => {
           <>
             <div className='popup_header'>
               <h4 className='popup_header_title'>
-                {t('shop_list.to_buy', { number: items.filter((item) => !item.is_bought).length })}
+                {t('shop_list.to_buy', { COUNT: items.filter((item) => !item.is_bought).length })}
               </h4>
               <div className='popup_header_icons'>
                 <FileDyskIcon

@@ -271,7 +271,7 @@ const ShoppingListView = (props: any) => {
               <div className='shop-list card-bg'>
                 <div className='shop-list__header'>
                   <h5 className='shop-list__header-title'>
-                    {t('shop_list.to_buy', { number: shoppingList.filter((item) => !item.is_bought).length })}
+                    {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
                   </h5>
                   <div className='shop-list__header-buttons'>
                     <button
@@ -330,7 +330,7 @@ const ShoppingListView = (props: any) => {
                             >
                               <CustomCheckbox
                                 label={`${t(getWeigthUnit(settings.measurement),
-                                  { number: item.weight })} ${item.name_i18n}`}
+                                  { COUNT: item.weight })} ${item.name_i18n}`}
                                 checked={item.is_bought}
                                 disabled={item.is_disable}
                                 onChange={() => {
@@ -420,7 +420,7 @@ const ShoppingListView = (props: any) => {
                             >
                               <CustomCheckbox
                                 label={`${t(getWeigthUnit(settings.measurement),
-                                  { number: item.weight })} ${item.name_i18n}`}
+                                  { COUNT: item.weight })} ${item.name_i18n}`}
                                 checked={item.is_bought}
                                 disabled={item.is_disable}
                                 onChange={() => {
