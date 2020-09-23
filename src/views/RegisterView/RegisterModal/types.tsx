@@ -6,6 +6,7 @@ export type RegisterViewType =
   'EXPECTATIONS' | 
   'INFO' |
   'INFO_AGE' | 
+  'WORKOUT' |
   'INFO_GENDER' | 
   'INFO_HEIGHT' | 
   'INFO_WEIGHT' | 

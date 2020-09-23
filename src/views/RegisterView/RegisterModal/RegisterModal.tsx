@@ -27,18 +27,19 @@ type RegisterModalProps = {
 };
 
 const registerViewsList: RegisterViewType[] = [
-  'GOAL', 
-  'INFO_GENDER', 
-  'INFO_AGE', 
-  'INFO_HEIGHT', 
-  'INFO_WEIGHT', 
-  'INFO_WEIGHT_GOAL', 
-  'NOT_EATING', 
-  'PLAN_PROGRESS', 
-  'HEALTH_PROBLEMS', 
-  'EXPECTATIONS', 
-  'JOIN', 
-  'READY'
+  'GOAL',             // 0
+  'INFO_GENDER',      // 1
+  'INFO_AGE',         // 2
+  'INFO_HEIGHT',      // 3
+  'INFO_WEIGHT',      // 4
+  'INFO_WEIGHT_GOAL', // 5
+  'NOT_EATING',       // 6
+  'PLAN_PROGRESS',    // 7
+  'HEALTH_PROBLEMS',  // 8
+  'WORKOUT',          // 9
+  'EXPECTATIONS',     // 10
+  'JOIN',             // 11
+  'READY',            // 12
 ];
 
 const RegisterModal = (props: RegisterModalProps) => {

@@ -15,6 +15,7 @@ import WeightGoalStep from './Steps/InfoSteps/WeightGoalStep';
 import WeightStep from './Steps/InfoSteps/WeightStep';
 import NotEatingStep from './Steps/NotEatingStep';
 import PlanProgressStep from './Steps/PlanProgressStep';
+import Workout from './Steps/Workout';
 import ExpectationsStep from './Steps/ExpectationsStep';
 import PlanReadyStep from './Steps/PlanReadyStep';
 import HealthProblems from './Steps/HealthProblems';
@@ -69,6 +70,19 @@ export default (
           stepTitlesDefault={registerStepTitlesDefault}
           setStepTitles={setRegisterStepTitles}
           setRegisterView={setRegisterView}
+          localePhrases={localePhrases || {}}
+        />
+      );
+      break;
+
+    case 'WORKOUT':
+      registerStepView = (
+        <Workout 
+          registerData={registerData}
+          setRegisterData={setRegisterData}
+          setRegisterView={setRegisterView}
+          stepTitlesDefault={registerStepTitlesDefault}
+          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );
