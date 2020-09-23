@@ -156,12 +156,20 @@ const CountDown = ({ seconds, localePhrases, className }: CountDownProps) => {
       <div className={classNames("flip-clock", {
         [className]: className
       })}>
-        {flipClockPieceList.map(piece => piece)}
+        {flipClockPieceList.map((piece, index) => (
+          <>
+            {piece}
+            
+            {index !== flipClockPieceList.length - 1 && (
+              <span className="flip-clock__separator">:</span>
+            )}
+          </>
+        ))}
       </div>
     );
   };
 
-  return Clock(new Date(Date.parse(new Date().toISOString()) + seconds * 1000))
+  return Clock(new Date(Date.parse(new Date().toISOString()) + (seconds) * 1000))
 };
 
 export default WithTranslate(CountDown);
