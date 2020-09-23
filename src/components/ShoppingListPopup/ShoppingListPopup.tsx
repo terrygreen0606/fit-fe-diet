@@ -62,6 +62,8 @@ const ShoppingListPopup = (props: any) => {
     });
   }, []);
 
+  console.log(props.updateShoppingListLength);
+
   return (
     <div className='shop-list-popup'>
       {isSpinnerActive ? (

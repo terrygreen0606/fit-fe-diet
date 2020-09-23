@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
 import { routes } from 'constants/routes';
-
-import { getShoppingList } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -30,13 +28,13 @@ const Header = (props: any) => {
     document.body.classList.toggle('mobile-menu-opened');
   };
 
-  const [shoppingList, setShoppingList] = useState<Array<any>>([]);
-
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
-  useEffect(() => {
-    getShoppingList().then((response) => setShoppingList([...response.data.data.list]));
-  }, []);
+  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
+
+  const updateShoppingListLength = (value) => {
+    setShoppingListLength(value);
+  };
 
   return (
     <>
@@ -126,11 +124,11 @@ const Header = (props: any) => {
                       >
                         <ShoppingCartIcon />
                         <div className='mainHeader_menuList_shopping_cart_count'>
-                          {shoppingList.length}
+                          {shoppingListLength}
                         </div>
                       </button>
                       {isBlockActive && (
-                        <ShoppingListPopup />
+                        <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
                       )}
                     </div>
 
