@@ -121,7 +121,7 @@ const TrainingsView: React.FC = (props: any) => {
                       key={index}
                       image={getImagePath('woman_ball_gym.png')}
                       text='Intermediate level 1'
-                      time={t('common.minutes', { number: 16 })}
+                      time={t('common.minutes', { COUNT: 16 })}
                     />
                   ))}
                 </div>
@@ -143,7 +143,7 @@ const TrainingsView: React.FC = (props: any) => {
                   <RewardImage />
                 </div>
                 <div className='training-plan-adherence-diet-card-content'>
-                  <p dangerouslySetInnerHTML={{ __html: t('trainings.plan.completed', { number: 0 }) }} />
+                  <p dangerouslySetInnerHTML={{ __html: t('workout.plan.completed', { COUNT: 0 }) }} />
                 </div>
                 <div className='training-plan-adherence-diet-card-progress'>
                   <div className='training-plan-adherence-diet-card-progress-desc'>

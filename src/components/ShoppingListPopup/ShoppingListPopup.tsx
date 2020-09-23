@@ -84,7 +84,7 @@ const ShoppingListPopup = (props: any) => {
           <>
             <div className='shop-list-popup__header'>
               <h5 className='shop-list-popup__header-title'>
-                {t('shop_list.to_buy', { number: shoppingList.filter((item) => !item.is_bought).length })}
+                {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
               </h5>
               <div className='shop-list-popup__header-buttons'>
                 <button

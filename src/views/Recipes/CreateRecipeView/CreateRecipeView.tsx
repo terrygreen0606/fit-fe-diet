@@ -739,8 +739,8 @@ const CreateRecipeView = (props: any) => {
               ))}
               <div className='recipe__chart-progress-value'>
                 {createRecipeForm.measurement === 'si'
-                  ? t('common.gr', { number: createRecipeForm.totalWeight })
-                  : t('common.oz', { number: createRecipeForm.totalWeight })}
+                  ? t('common.gr', { COUNT: createRecipeForm.totalWeight })
+                  : t('common.oz', { COUNT: createRecipeForm.totalWeight })}
               </div>
             </div>
             <div className='recipe__chart-lines'>
@@ -760,8 +760,8 @@ const CreateRecipeView = (props: any) => {
                   </div>
                   <div className='recipe__chart-lines-item-description'>
                     {createRecipeForm.measurement === 'si'
-                      ? t('common.gr', { number: item.value })
-                      : t('common.oz', { number: item.value })}
+                      ? t('common.gr', { COUNT: item.value })
+                      : t('common.oz', { COUNT: item.value })}
                   </div>
                 </div>
               ))}
@@ -938,7 +938,7 @@ const CreateRecipeView = (props: any) => {
                         <span>
                           {`${(
                             ingredientItem.calorie * ingredientItem.weight
-                          ).toFixed(2)} ${t('common.kcal')}`}
+                          ).toFixed(2)} ${t('common.kcal_label')}`}
                         </span>
                       </div>
                     </div>
