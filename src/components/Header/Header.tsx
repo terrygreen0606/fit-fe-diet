@@ -17,19 +17,20 @@ import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon.svg';
 import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-icon.svg';
 
 const Header = (props: any) => {
-  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
-
   const {
     isAuthenticated,
     location,
     localePhrases,
     settings,
   } = props;
+
   const t = (code: string) => getTranslate(localePhrases, code);
 
   const toggleSideMenu = () => {
     document.body.classList.toggle('mobile-menu-opened');
   };
+
+  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
@@ -38,7 +39,9 @@ const Header = (props: any) => {
   };
 
   useEffect(() => {
-    setShoppingListLength(settings.shopping_list_count);
+    let cleanComponent = false;
+    if (!cleanComponent) setShoppingListLength(settings.shopping_list_count);
+    return () => cleanComponent = true;
   }, []);
 
   return (
@@ -114,28 +117,30 @@ const Header = (props: any) => {
 
                 {isAuthenticated ? (
                   <>
-                    <div
-                      ref={changedBlockRef}
-                      className='mainHeader_menuList_shopping_cart_wrap'
-                    >
-                      <button
-                        type='button'
-                        className='mainHeader_menuList_shopping_cart'
-                        onClick={() => {
-                          if (!location.pathname.includes('shopping-list')) {
-                            setIsBlockActive(!isBlockActive);
-                          }
-                        }}
+                    {settings.paid_until > 0 && (
+                      <div
+                        ref={changedBlockRef}
+                        className='mainHeader_menuList_shopping_cart_wrap'
                       >
-                        <ShoppingCartIcon />
-                        <div className='mainHeader_menuList_shopping_cart_count'>
-                          {shoppingListLength}
-                        </div>
-                      </button>
-                      {isBlockActive && (
-                        <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
-                      )}
-                    </div>
+                        <button
+                          type='button'
+                          className='mainHeader_menuList_shopping_cart'
+                          onClick={() => {
+                            if (!location.pathname.includes('shopping-list')) {
+                              setIsBlockActive(!isBlockActive);
+                            }
+                          }}
+                        >
+                          <ShoppingCartIcon />
+                          <div className='mainHeader_menuList_shopping_cart_count'>
+                            {shoppingListLength}
+                          </div>
+                        </button>
+                        {isBlockActive && (
+                          <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
+                        )}
+                      </div>
+                    )}
 
                     <button
                       type='button'

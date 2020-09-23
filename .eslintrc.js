@@ -22,5 +22,6 @@ module.exports = {
     'array-callback-return': 'off',
     'react/jsx-indent': 'off',
     '@typescript-eslint/indent': 'off',
+    'no-return-assign': 'off',
   },
 };

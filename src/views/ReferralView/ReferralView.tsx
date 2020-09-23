@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';

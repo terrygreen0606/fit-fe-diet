@@ -50,6 +50,7 @@ const ShoppingListPopup = (props: any) => {
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
   useEffect(() => {
+    let cleanComponent = false;
     getShoppingList(2, dateSync).then((response) => {
       const { list } = response.data.data;
 
@@ -57,12 +58,13 @@ const ShoppingListPopup = (props: any) => {
         item.is_disable = false;
       });
 
-      setShoppingList(list);
+      if (!cleanComponent) setShoppingList(list);
 
-      setDateSync(response.data.data.date_sync);
+      if (!cleanComponent) setDateSync(response.data.data.date_sync);
 
-      setIsSpinnerActive(false);
+      if (!cleanComponent) setIsSpinnerActive(false);
     });
+    return () => cleanComponent = true;
   }, []);
 
   useEffect(() => {
