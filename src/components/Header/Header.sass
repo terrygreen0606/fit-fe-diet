@@ -29,7 +29,10 @@
       font-weight: 400
       cursor: pointer
       color: $black
+      font-family: "Montserrat", sans-serif
       text-decoration: none
+      background-color: transparent
+      border: none
       border-bottom: 2px solid transparent
       &:hover, &_active
         color: $steel-blue
@@ -42,6 +45,39 @@
         height: 30px
         path
           fill: #7C7C7C
+    &_shopping_cart_wrap
+      position: relative
+    &_shopping_cart
+      position: relative
+      margin-right: 30px
+      padding: 0
+      width: 36px
+      height: 33px
+      border: none
+      background-color: transparent
+      cursor: pointer
+      svg
+        width: 100%
+        height: auto
+        path
+          fill: #7C7C7C
+          transition: 0.2s fill ease
+      &_count
+        position: absolute
+        top: -5px
+        right: -12px
+        width: 30px
+        height: 30px
+        text-align: center
+        font-size: 20px
+        font-weight: bold
+        line-height: 30px
+        color: $white
+        background-color: #FF3D00
+        border-radius: 50%
+    &_shopping_cart:hover
+      svg path
+        fill: darken(#7c7c7c, 15%)
 
 .menu-toggle-icon
   width: 29px
@@ -61,28 +97,6 @@
   display: none
   justify-content: flex-end
   align-items: center
-
-.shopping_cart
-  position: relative
-  .mainHeader_menuList_item_icon
-    width: 36px
-    height: 36px
-  &_icon_count
-    visibility: hidden
-    width: 29px
-    height: 29px
-    border-radius: 50%
-    background-color: #FF3D00
-    position: absolute
-    right: -50%
-    top: -10%
-    display: flex
-    justify-content: center
-    align-items: center
-    color: #ffffff
-    font-weight: bold
-    &.visible
-      visibility: visible
 
 @media only screen and (max-width : 1400px)
   .mainHeader
