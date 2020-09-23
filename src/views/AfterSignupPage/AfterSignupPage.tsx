@@ -172,18 +172,20 @@ const AfterSignupPage = (props: any) => {
     return `${moment(new Date(dateStr)).format('DD')} ${monthLocale}`;
   };
 
-  const getWelcomeDescrGoal = () => {
+  const getWelcomeGoalText = () => {
     let welcomeDescrGoalText = '';
+
+    const i18n_measurement = props.measurement === 'si' ? 'common.kg' : 'common.lbs';
 
     switch (afterSignupGoal) {
       case -1:
-        welcomeDescrGoalText = t('lp.welcome_descr_goal_lose', { COUNT: t('common.kg', { COUNT: afterSignupWeight - afterSignupWeightGoal }) });
+        welcomeDescrGoalText = t('lp.welcome.text_lose', { COUNT: t(i18n_measurement, { COUNT: afterSignupWeight - afterSignupWeightGoal }) });
         break;
       case 0:
-        welcomeDescrGoalText = t('lp.welcome_descr_goal_keep');
+        welcomeDescrGoalText = t('lp.welcome.text_keep');
         break;
       case 1:
-        welcomeDescrGoalText = t('lp.welcome_descr_goal_gain', { COUNT: t('common.kg', { COUNT: afterSignupWeightGoal - afterSignupWeight }) });
+        welcomeDescrGoalText = t('lp.welcome.text_gain', { COUNT: t(i18n_measurement, { COUNT: afterSignupWeightGoal - afterSignupWeight }) });
         break;
     }
 
@@ -198,7 +200,7 @@ const AfterSignupPage = (props: any) => {
             <div className="col-xl-6 after-signup-header-content-col">
               
               <h3>{t('lp.welcome_title', { NAME: afterSignupName })}</h3>
-              {isAfterSignup && <h4 className="mt-xl-5 mt-4">{t('lp.welcome_descr_first')} <span className="text-malachite-green">{getWelcomeDescrGoal()}, {t('lp.welcome_descr_last')}</span></h4>}
+              {isAfterSignup && <h4 className="mt-xl-5 mt-4" dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }} />}
 
               <div className="text-center mt-xl-5 mt-4">
                 <CountDown seconds={900} />
@@ -497,6 +499,7 @@ const AfterSignupPage = (props: any) => {
 export default WithTranslate(
   connect(
     (state: any) => ({
+      measurement: state.settings.measurement,
       isAfterSignup: state.auth.userData.isAfterSignup,
       afterSignupName: state.auth.userData.afterSignupName,
       afterSignupGoal: state.auth.userData.afterSignupGoal,
