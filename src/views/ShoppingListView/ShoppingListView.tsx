@@ -74,6 +74,8 @@ const ShoppingListView = (props: any) => {
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
+  const [sharePublicUrl, setSharePublicUrl] = useState<string>('');
+
   const filterIngredients = async (inputValue: string) => {
     if (inputValue.length < 2) return;
     const filteredListOfIngredients: Array<any> = [];
@@ -131,6 +133,9 @@ const ShoppingListView = (props: any) => {
 
   useEffect(() => {
     getShoppingListFunc();
+    getPublicShopListUrl().then((response) => {
+      setSharePublicUrl(response.data.data.url);
+    });
   }, []);
 
   useInterval(() => {
@@ -296,7 +301,7 @@ const ShoppingListView = (props: any) => {
                       </button>
                       {isBlockActive && (
                         <div className='shop-list__header-buttons-share'>
-                          <ShareButtons shareLink={window.location.href} />
+                          <ShareButtons shareLink={sharePublicUrl} />
                         </div>
                       )}
                     </div>

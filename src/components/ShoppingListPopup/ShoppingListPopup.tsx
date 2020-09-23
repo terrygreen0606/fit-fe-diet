@@ -40,6 +40,8 @@ const ShoppingListPopup = (props: any) => {
 
   const [dateSync, setDateSync] = useState<number>(0);
 
+  const [sharePublicUrl, setSharePublicUrl] = useState<string>('');
+
   const saveFileShoppingList = () => {
     getPublicShopListUrl(1).then((response) =>
       window.location.assign(response.data.data.url));
@@ -62,6 +64,10 @@ const ShoppingListPopup = (props: any) => {
       setDateSync(response.data.data.date_sync);
 
       setIsSpinnerActive(false);
+    });
+
+    getPublicShopListUrl().then((response) => {
+      setSharePublicUrl(response.data.data.url);
     });
   }, []);
 
@@ -105,7 +111,7 @@ const ShoppingListPopup = (props: any) => {
                   </button>
                   {isBlockActive && (
                     <div className='shop-list-popup__header-buttons-share'>
-                      <ShareButtons shareLink={window.location.href} />
+                      <ShareButtons shareLink={sharePublicUrl} />
                     </div>
                   )}
                 </div>
