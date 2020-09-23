@@ -63,6 +63,10 @@ const Button = (props: ButtonProps) => {
     ...attributes
   } = props;
 
+  if (spanBtn) {
+    delete attributes.type;
+  }
+
   const ButtonComponent = (ButtonComponentProps: any) =>
     spanBtn ? <span {...ButtonComponentProps} /> : <button {...ButtonComponentProps} />;
 

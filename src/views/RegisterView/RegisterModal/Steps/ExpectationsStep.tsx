@@ -14,7 +14,7 @@ const ExpectationsStep = (props: any) => {
 
   useEffect(() => {
     let currStepTitles = [...props.stepTitlesDefault];
-    currStepTitles[0] = t('register.step_health');
+    currStepTitles[0] = t('register.step_workout');
     currStepTitles[1] = t('register.expect_step');
     currStepTitles[2] = t('register.step_confirm');
 

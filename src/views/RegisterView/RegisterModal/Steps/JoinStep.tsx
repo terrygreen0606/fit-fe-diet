@@ -98,10 +98,19 @@ const JoinStep = (props: any) => {
       ...userProfileData
     } = props.registerData;
 
+    let act_level = null;
+
+    const act_level_checked = userProfileData.act_levels.find(level => level.checked);
+
+    if (act_level_checked) {
+      act_level = act_level_checked.value;
+    }
+
     return {
       ...userProfileData,
       ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.filter(cuisine => cuisine.checked).map(cuisine => cuisine.id),
-      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code)
+      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code),
+      act_level
     };
   };
 
