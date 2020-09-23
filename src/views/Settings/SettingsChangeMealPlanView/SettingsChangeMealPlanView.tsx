@@ -697,7 +697,10 @@ const SettingsChangeMealPlanView = (props: any) => {
                       <Button
                         type='button'
                         color='primary'
-                        onClick={(e) => updateChangeMealSubmit(e)}
+                        onClick={(e) => {
+                          updateChangeMealSubmit(e);
+                          setActiveStep(steps.workout);
+                        }}
                         className='change-meal-plan__btn'
                       >
                         {t('mp.save_next')}
