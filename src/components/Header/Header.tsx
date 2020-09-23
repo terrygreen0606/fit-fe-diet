@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
 import { routes } from 'constants/routes';
 
+import { getShoppingList } from 'api';
+
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
+import ShoppingListPopup from 'components/ShoppingListPopup';
+import useOutsideClick from 'components/hooks/useOutsideClick';
 
 import './Header.sass';
 
@@ -17,20 +21,22 @@ import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-ca
 const Header = (props: any) => {
   const {
     isAuthenticated,
-    shoppingListCount,
     location,
     localePhrases,
   } = props;
   const t = (code: string) => getTranslate(localePhrases, code);
-  const [shoppingListPopup, setShoppingListPopup] = useState(false);
 
   const toggleSideMenu = () => {
     document.body.classList.toggle('mobile-menu-opened');
   };
 
-  const openShopListPopupHandler = () => {
-    if (!location.pathname.includes('shopping-list')) setShoppingListPopup(!shoppingListPopup);
-  };
+  const [shoppingList, setShoppingList] = useState<Array<any>>([]);
+
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
+
+  useEffect(() => {
+    getShoppingList().then((response) => setShoppingList([...response.data.data.list]));
+  }, []);
 
   return (
     <>
@@ -103,22 +109,54 @@ const Header = (props: any) => {
                   {t('nutrition.title')}
                 </NavLink>
 
-                {/* add shopping list popup */}
-                {!isAuthenticated && (
+                {isAuthenticated ? (
                   <>
-                    <NavLink
-                      to='/login'
-                      className='mainHeader_menuList_item'
-                      activeClassName='mainHeader_menuList_item_active'
+                    <div
+                      ref={changedBlockRef}
+                      className='mainHeader_menuList_shopping_cart_wrap'
                     >
-                      {t('login.submit')}
-                    </NavLink>
+                      <button
+                        type='button'
+                        className='mainHeader_menuList_shopping_cart'
+                        onClick={() => {
+                          if (!location.pathname.includes('shopping-list')) {
+                            setIsBlockActive(!isBlockActive);
+                          }
+                        }}
+                      >
+                        <ShoppingCartIcon />
+                        <div className='mainHeader_menuList_shopping_cart_count'>
+                          {shoppingList.length}
+                        </div>
+                      </button>
+                      {isBlockActive && (
+                        <ShoppingListPopup />
+                      )}
+                    </div>
 
-                    <NavLink to='/register' className='link-raw'>
-                      <Button color='primary'>{t('button.register')}</Button>
-                    </NavLink>
+                    <button
+                      type='button'
+                      className='mainHeader_menuList_item'
+                      onClick={() => props.userLogout()}
+                    >
+                      {t('common.logout')}
+                    </button>
                   </>
-                )}
+                ) : (
+                    <>
+                      <NavLink
+                        to='/login'
+                        className='mainHeader_menuList_item'
+                        activeClassName='mainHeader_menuList_item_active'
+                      >
+                        {t('login.submit')}
+                      </NavLink>
+
+                      <NavLink to='/register' className='link-raw'>
+                        <Button color='primary'>{t('button.register')}</Button>
+                      </NavLink>
+                    </>
+                  )}
               </nav>
 
             </div>

@@ -1,7 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable operator-linebreak */
-/* eslint-disable react/jsx-indent */
-/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/no-danger */
 import React, {
   useState,

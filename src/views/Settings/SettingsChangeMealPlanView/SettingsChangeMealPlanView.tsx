@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
-/* eslint-disable react/jsx-indent */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable import/order */
@@ -22,6 +20,7 @@ import {
   getRecipeCuisines,
   getDiseases,
   fetchUserProfile,
+  getActivityLevels,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -63,6 +62,8 @@ const SettingsChangeMealPlanView = (props: any) => {
 
   const [diseasesList, setDiseasesList] = useState([]);
 
+  const [activeLevelsList, setActiveLevelsList] = useState([]);
+
   const [updateChangeMealForm, setUpdateChangeMealForm] = useState({
     measurement: null,
     gender: null,
@@ -87,6 +88,9 @@ const SettingsChangeMealPlanView = (props: any) => {
     getDiseases().then((response) => {
       if (!cleanComponent) setDiseasesList(response.data.data);
     });
+
+    getActivityLevels().then((response) =>
+      setActiveLevelsList([...response.data.data]));
 
     fetchUserProfile().then((response) => {
       const { data } = response.data;
@@ -707,86 +711,25 @@ const SettingsChangeMealPlanView = (props: any) => {
                       {t('mp.workout.title')}
                     </div>
                     <div className='change-meal-plan__works-out-list'>
-                      <button
-                        type='button'
-                        className={classnames('change-meal-plan__works-out-btn', {
-                          active: updateChangeMealForm.act_level === 1200,
-                        })}
-                        onClick={() => {
-                          setUpdateChangeMealForm({
-                            ...updateChangeMealForm,
-                            act_level: 1200,
-                          });
-                        }}
-                      >
-                        <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('workout.level.little')}
-                        </div>
-                      </button>
-                      <button
-                        type='button'
-                        className={classnames('change-meal-plan__works-out-btn', {
-                          active: updateChangeMealForm.act_level === 1375,
-                        })}
-                        onClick={() => {
-                          setUpdateChangeMealForm({
-                            ...updateChangeMealForm,
-                            act_level: 1375,
-                          });
-                        }}
-                      >
-                        <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('workout.level.light')}
-                        </div>
-                      </button>
-                      <button
-                        type='button'
-                        className={classnames('change-meal-plan__works-out-btn', {
-                          active: updateChangeMealForm.act_level === 1550,
-                        })}
-                        onClick={() => {
-                          setUpdateChangeMealForm({
-                            ...updateChangeMealForm,
-                            act_level: 1550,
-                          });
-                        }}
-                      >
-                        <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('workout.level.moderate')}
-                        </div>
-                      </button>
-                      <button
-                        type='button'
-                        className={classnames('change-meal-plan__works-out-btn', {
-                          active: updateChangeMealForm.act_level === 1725,
-                        })}
-                        onClick={() => {
-                          setUpdateChangeMealForm({
-                            ...updateChangeMealForm,
-                            act_level: 1725,
-                          });
-                        }}
-                      >
-                        <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('workout.level.active')}
-                        </div>
-                      </button>
-                      <button
-                        type='button'
-                        className={classnames('change-meal-plan__works-out-btn', {
-                          active: updateChangeMealForm.act_level === 1900,
-                        })}
-                        onClick={() => {
-                          setUpdateChangeMealForm({
-                            ...updateChangeMealForm,
-                            act_level: 1900,
-                          });
-                        }}
-                      >
-                        <div className='change-meal-plan__works-out-btn-desc'>
-                          {t('workout.level.very_active')}
-                        </div>
-                      </button>
+                      {activeLevelsList.map((item) => (
+                        <button
+                          type='button'
+                          key={item.value}
+                          className={classnames('change-meal-plan__works-out-btn', {
+                            active: updateChangeMealForm.act_level === item.value,
+                          })}
+                          onClick={() => {
+                            setUpdateChangeMealForm({
+                              ...updateChangeMealForm,
+                              act_level: item.value,
+                            });
+                          }}
+                        >
+                          <div className='change-meal-plan__works-out-btn-desc'>
+                            {t(item.i18n_code)}
+                          </div>
+                        </button>
+                      ))}
                     </div>
                     <div className='change-meal-plan__btn-wrap'>
                       <Button
