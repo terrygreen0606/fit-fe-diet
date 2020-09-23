@@ -42,7 +42,7 @@ import './RecipeFullView.sass';
 import { ReactComponent as HeartFilledIcon } from 'assets/img/icons/heart-filled-icon.svg';
 import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
 import { ReactComponent as CartButtonIcon } from 'assets/img/icons/cart-button-icon.svg';
-import { ReactComponent as SaveIcon } from 'assets/img/icons/save-icon.svg';
+import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.svg';
 import { ReactComponent as NotesIcon } from 'assets/img/icons/notes-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as DishIcon } from 'assets/img/icons/dish-icon.svg';
@@ -428,7 +428,7 @@ const RecipeFullView = (props: any) => {
                     className='recipe__actions-button card-bg'
                   >
                     <div className='recipe__actions-button-media'>
-                      <SaveIcon />
+                      <FileDyskIcon />
                     </div>
                     <div className='recipe__actions-button-desc'>
                       {t('recipe.save')}

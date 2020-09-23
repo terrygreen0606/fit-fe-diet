@@ -48,7 +48,6 @@ import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
 import {
-  colourStylesSelect,
   servingOptions,
   costCategoryOptions,
 } from './selectsDatas';
@@ -332,10 +331,10 @@ const CreateRecipeView = (props: any) => {
     try {
       const response = await searchIngredients(inputValue);
       const listOfIngredients = response.data.data;
-      Object.entries(listOfIngredients).forEach((prop) => {
+      Object.entries(listOfIngredients).forEach(([value, label]) => {
         filteredListOfIngredients.push({
-          value: prop[0],
-          label: prop[1],
+          value,
+          label,
         });
       });
       return filteredListOfIngredients;
@@ -777,11 +776,9 @@ const CreateRecipeView = (props: any) => {
             <div className='recipe__add-ingredients-field'>
               <SelectInput
                 async
-                value=''
                 loadOptions={inputValueIngredient}
                 placeholder={t('recipe.create.ingredient_search')}
                 onChange={addIndgredient}
-                styles={colourStylesSelect}
               />
             </div>
           </div>

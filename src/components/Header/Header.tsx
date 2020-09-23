@@ -8,7 +8,6 @@ import { routes } from 'constants/routes';
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
-import ShoppingListPopup from 'components/ShoppingListPopup/ShoppingListPopup';
 
 import './Header.sass';
 
@@ -104,31 +103,8 @@ const Header = (props: any) => {
                   {t('nutrition.title')}
                 </NavLink>
 
-                {isAuthenticated ? (
-                  <>
-                    <span
-                      role='presentation'
-                      className='mainHeader_menuList_item shopping_cart'
-                      onClick={openShopListPopupHandler}
-                    >
-                      <ShoppingCartIcon className='mainHeader_menuList_item_icon' />
-                      <span className={`shopping_cart_icon_count ${shoppingListCount !== 0 ? 'visible' : ''}`}>
-                        {shoppingListCount}
-                      </span>
-                    </span>
-                    {shoppingListPopup && (
-                      <ShoppingListPopup localePhrases={localePhrases} setShoppingListPopup={setShoppingListPopup} />
-                    )}
-
-                    <span
-                      role='presentation'
-                      className='mainHeader_menuList_item'
-                      onClick={() => props.userLogout()}
-                    >
-                      {t('common.logout')}
-                    </span>
-                  </>
-                ) : (
+                {/* add shopping list popup */}
+                {!isAuthenticated && (
                   <>
                     <NavLink
                       to='/login'
