@@ -5,8 +5,6 @@ import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
 import { routes } from 'constants/routes';
 
-import { getShoppingList } from 'api';
-
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
@@ -19,10 +17,13 @@ import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon.svg';
 import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-icon.svg';
 
 const Header = (props: any) => {
+  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
+
   const {
     isAuthenticated,
     location,
     localePhrases,
+    settings,
   } = props;
   const t = (code: string) => getTranslate(localePhrases, code);
 
@@ -32,16 +33,12 @@ const Header = (props: any) => {
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
-  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
-
   const updateShoppingListLength = (value) => {
     setShoppingListLength(value);
   };
 
   useEffect(() => {
-    getShoppingList().then((response) => {
-      setShoppingListLength(response.data.data.list.length);
-    });
+    setShoppingListLength(settings.shopping_list_count);
   }, []);
 
   return (
@@ -177,6 +174,7 @@ export default WithTranslate(
   connect(
     (state: any) => ({
       isAuthenticated: state.auth.isAuthenticated,
+      settings: state.settings,
     }),
     { userLogout },
   )(Header),

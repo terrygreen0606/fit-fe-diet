@@ -50,14 +50,12 @@ const ShoppingListPopup = (props: any) => {
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
   useEffect(() => {
-    getShoppingList(1, dateSync).then((response) => {
+    getShoppingList(2, dateSync).then((response) => {
       const { list } = response.data.data;
 
       list.map((item) => {
         item.is_disable = false;
       });
-
-      props.updateShoppingListLength(list.length);
 
       setShoppingList(list);
 
@@ -65,11 +63,12 @@ const ShoppingListPopup = (props: any) => {
 
       setIsSpinnerActive(false);
     });
-
-    getPublicShopListUrl().then((response) => {
-      setSharePublicUrl(response.data.data.url);
-    });
   }, []);
+
+  useEffect(() => {
+    props.updateShoppingListLength(shoppingList.filter((item) =>
+      !item.is_bought).length || settings.shopping_list_count);
+  }, [shoppingList]);
 
   return (
     <div className='shop-list-popup'>
@@ -104,7 +103,12 @@ const ShoppingListPopup = (props: any) => {
                 <div ref={changedBlockRef}>
                   <button
                     type='button'
-                    onClick={() => setIsBlockActive(!isBlockActive)}
+                    onClick={() => {
+                      setIsBlockActive(!isBlockActive);
+                      getPublicShopListUrl().then((response) => {
+                        setSharePublicUrl(response.data.data.url);
+                      });
+                    }}
                     className='shop-list-popup__header-buttons-item'
                   >
                     <ShareIcon />
@@ -141,7 +145,7 @@ const ShoppingListPopup = (props: any) => {
                   >
                     <CustomCheckbox
                       label={`${t(getWeigthUnit(settings.measurement),
-                        { number: item.weight })} ${item.name_i18n}`}
+                        { count: item.weight })} ${item.name_i18n}`}
                       checked={item.is_bought}
                       disabled={item.is_disable}
                       onChange={() => {
