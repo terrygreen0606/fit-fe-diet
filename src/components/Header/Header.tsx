@@ -103,22 +103,29 @@ const Header = (props: any) => {
                   {t('nutrition.title')}
                 </NavLink>
 
-                {/* add shopping list popup */}
-                {!isAuthenticated && (
-                  <>
-                    <NavLink
-                      to='/login'
-                      className='mainHeader_menuList_item'
-                      activeClassName='mainHeader_menuList_item_active'
-                    >
-                      {t('login.submit')}
-                    </NavLink>
+                {isAuthenticated ? (
+                  <button
+                    type='button'
+                    className='mainHeader_menuList_item'
+                    onClick={() => props.userLogout()}
+                  >
+                    {t('common.logout')}
+                  </button>
+                ) : (
+                    <>
+                      <NavLink
+                        to='/login'
+                        className='mainHeader_menuList_item'
+                        activeClassName='mainHeader_menuList_item_active'
+                      >
+                        {t('login.submit')}
+                      </NavLink>
 
-                    <NavLink to='/register' className='link-raw'>
-                      <Button color='primary'>{t('button.register')}</Button>
-                    </NavLink>
-                  </>
-                )}
+                      <NavLink to='/register' className='link-raw'>
+                        <Button color='primary'>{t('button.register')}</Button>
+                      </NavLink>
+                    </>
+                  )}
               </nav>
 
             </div>
