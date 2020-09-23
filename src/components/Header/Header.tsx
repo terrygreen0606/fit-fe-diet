@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
 import { routes } from 'constants/routes';
+
+import { getShoppingList } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -35,6 +37,12 @@ const Header = (props: any) => {
   const updateShoppingListLength = (value) => {
     setShoppingListLength(value);
   };
+
+  useEffect(() => {
+    getShoppingList().then((response) => {
+      setShoppingListLength(response.data.data.list.length);
+    });
+  }, []);
 
   return (
     <>

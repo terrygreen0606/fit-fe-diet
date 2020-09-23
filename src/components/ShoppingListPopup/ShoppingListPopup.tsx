@@ -18,6 +18,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import ShareButtons from 'components/ShareButtons';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import Spinner from 'components/common/Spinner';
+import useOutsideClick from 'components/hooks/useOutsideClick';
 
 import './ShoppingListPopup.sass';
 
@@ -35,8 +36,6 @@ const ShoppingListPopup = (props: any) => {
 
   const [shoppingList, setShoppingList] = useState<Array<any>>([]);
 
-  const [isShareButtonsActive, setIsShareButtonActive] = useState<boolean>(false);
-
   const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
   const [dateSync, setDateSync] = useState<number>(0);
@@ -46,6 +45,8 @@ const ShoppingListPopup = (props: any) => {
       window.location.assign(response.data.data.url));
   };
 
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
+
   useEffect(() => {
     getShoppingList(1, dateSync).then((response) => {
       const { list } = response.data.data;
@@ -54,6 +55,8 @@ const ShoppingListPopup = (props: any) => {
         item.is_disable = false;
       });
 
+      props.updateShoppingListLength(list.length);
+
       setShoppingList(list);
 
       setDateSync(response.data.data.date_sync);
@@ -61,8 +64,6 @@ const ShoppingListPopup = (props: any) => {
       setIsSpinnerActive(false);
     });
   }, []);
-
-  console.log(props.updateShoppingListLength);
 
   return (
     <div className='shop-list-popup'>
@@ -94,15 +95,15 @@ const ShoppingListPopup = (props: any) => {
                 >
                   <PrintIcon />
                 </button>
-                <div>
+                <div ref={changedBlockRef}>
                   <button
                     type='button'
-                    onClick={() => setIsShareButtonActive(!isShareButtonsActive)}
+                    onClick={() => setIsBlockActive(!isBlockActive)}
                     className='shop-list-popup__header-buttons-item'
                   >
                     <ShareIcon />
                   </button>
-                  {isShareButtonsActive && (
+                  {isBlockActive && (
                     <div className='shop-list-popup__header-buttons-share'>
                       <ShareButtons shareLink={window.location.href} />
                     </div>
@@ -177,6 +178,8 @@ const ShoppingListPopup = (props: any) => {
                         updatedShoppingList.splice(itemIndex, 1);
 
                         setShoppingList([...updatedShoppingList]);
+
+                        props.updateShoppingListLength(updatedShoppingList.length);
 
                         deleteFromShoppingList(item.id, dateSync)
                           .then((response) => setDateSync(response.data.data.date_sync))
