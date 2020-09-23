@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 
@@ -15,40 +15,36 @@ import './Layout.sass';
 type LayoutProps = {
   headerType: 'default' | 'promo';
   [propName: string]: any;
+  children: Node,
+  location: any,
 };
 
 // fixme: remove default
 const Layout = ({
   headerType,
-  children, 
-  location, 
-  shopping_list_count
+  children,
+  location,
 }: LayoutProps) => {
-  
-  const [popup, setPopup] = useState(false);  
-  const [shoppingListCount, setShoppingListCount] = useState(shopping_list_count);
-
   const getHeader = () => {
     if (headerType === 'promo') {
       return <HeaderPromo />;
-    } else {
-      return (
-        <Header
-          location={location}
-          shoppingListCount={shoppingListCount}
-        />
-      );
     }
+    return (
+      <Header
+        location={location}
+      />
+    );
   };
 
   return (
     <div className={classNames('layoutMainWrapper', {
-      'layout-promo': headerType === 'promo'
-    })}>
+      'layout-promo': headerType === 'promo',
+    })}
+    >
       {getHeader()}
       <SideMenu />
       <MainContent>
-        {React.cloneElement(children, { setShoppingListCount })}
+        {children}
       </MainContent>
       <Footer />
     </div>

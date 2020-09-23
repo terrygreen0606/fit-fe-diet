@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
 import { routes } from 'constants/routes';
 
+import { getShoppingList } from 'api';
+
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
+import ShoppingListPopup from 'components/ShoppingListPopup';
+import useOutsideClick from 'components/hooks/useOutsideClick';
 
 import './Header.sass';
 
@@ -17,20 +21,28 @@ import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-ca
 const Header = (props: any) => {
   const {
     isAuthenticated,
-    shoppingListCount,
     location,
     localePhrases,
   } = props;
   const t = (code: string) => getTranslate(localePhrases, code);
-  const [shoppingListPopup, setShoppingListPopup] = useState(false);
 
   const toggleSideMenu = () => {
     document.body.classList.toggle('mobile-menu-opened');
   };
 
-  const openShopListPopupHandler = () => {
-    if (!location.pathname.includes('shopping-list')) setShoppingListPopup(!shoppingListPopup);
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
+
+  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
+
+  const updateShoppingListLength = (value) => {
+    setShoppingListLength(value);
   };
+
+  useEffect(() => {
+    getShoppingList().then((response) => {
+      setShoppingListLength(response.data.data.list.length);
+    });
+  }, []);
 
   return (
     <>
@@ -104,13 +116,38 @@ const Header = (props: any) => {
                 </NavLink>
 
                 {isAuthenticated ? (
-                  <button
-                    type='button'
-                    className='mainHeader_menuList_item'
-                    onClick={() => props.userLogout()}
-                  >
-                    {t('common.logout')}
-                  </button>
+                  <>
+                    <div
+                      ref={changedBlockRef}
+                      className='mainHeader_menuList_shopping_cart_wrap'
+                    >
+                      <button
+                        type='button'
+                        className='mainHeader_menuList_shopping_cart'
+                        onClick={() => {
+                          if (!location.pathname.includes('shopping-list')) {
+                            setIsBlockActive(!isBlockActive);
+                          }
+                        }}
+                      >
+                        <ShoppingCartIcon />
+                        <div className='mainHeader_menuList_shopping_cart_count'>
+                          {shoppingListLength}
+                        </div>
+                      </button>
+                      {isBlockActive && (
+                        <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
+                      )}
+                    </div>
+
+                    <button
+                      type='button'
+                      className='mainHeader_menuList_item'
+                      onClick={() => props.userLogout()}
+                    >
+                      {t('common.logout')}
+                    </button>
+                  </>
                 ) : (
                     <>
                       <NavLink
