@@ -34,7 +34,7 @@ const ShoppingListPopup = (props: any) => {
 
   const { settings } = props;
 
-  const [shoppingList, setShoppingList] = useState<Array<any>>([]);
+  const [shoppingList, setShoppingList] = useState<any[]>([]);
 
   const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
