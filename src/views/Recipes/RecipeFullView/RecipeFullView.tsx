@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 /* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */

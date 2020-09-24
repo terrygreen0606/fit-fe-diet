@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable import/order */
 /* eslint-disable jsx-a11y/label-has-associated-control */

@@ -17,19 +17,20 @@ import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon.svg';
 import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-icon.svg';
 
 const Header = (props: any) => {
-  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
-
   const {
     isAuthenticated,
     location,
     localePhrases,
     settings,
   } = props;
+
   const t = (code: string) => getTranslate(localePhrases, code);
 
   const toggleSideMenu = () => {
     document.body.classList.toggle('mobile-menu-opened');
   };
+
+  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
@@ -39,7 +40,7 @@ const Header = (props: any) => {
 
   useEffect(() => {
     setShoppingListLength(settings.shopping_list_count);
-  }, []);
+  }, [settings.shopping_list_count]);
 
   return (
     <>
