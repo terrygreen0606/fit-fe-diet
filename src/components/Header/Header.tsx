@@ -39,10 +39,8 @@ const Header = (props: any) => {
   };
 
   useEffect(() => {
-    let cleanComponent = false;
-    if (!cleanComponent) setShoppingListLength(settings.shopping_list_count);
-    return () => cleanComponent = true;
-  }, []);
+    setShoppingListLength(settings.shopping_list_count);
+  }, [settings.shopping_list_count]);
 
   return (
     <>
