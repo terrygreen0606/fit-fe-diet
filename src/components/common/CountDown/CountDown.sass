@@ -5,10 +5,20 @@ $halfHeight: 45px
 $borderRadius: 0.15em
 
 .flip-clock 
-  display: inline-block
+  display: inline-flex
+  align-items: center
   text-align: center
   perspective: 400px
   margin: 20px auto
+  &__separator
+    display: inline-block
+    margin: 0 15px
+    padding-bottom: 15%
+    font-weight: bold
+    font-size: 64px
+    line-height: 78px
+    text-transform: uppercase
+    color: #FFFFFF
   &__piece 
     display: inline-block
     margin: 0 5px
