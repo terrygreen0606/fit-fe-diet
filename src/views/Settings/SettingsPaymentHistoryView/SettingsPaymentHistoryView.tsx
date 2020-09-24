@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import classnames from 'classnames';
 
 import { routes } from 'constants/routes';
-import { getTranslate } from 'utils';
+import { getTranslate, convertTime } from 'utils';
 import { getPaymentHistory } from 'api';
 
 // Components
@@ -24,6 +24,7 @@ const SettingsPaymentHistoryView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
     getPaymentHistory().then((response) => {
+      console.log(response.data.data);
       if (!cleanComponent) setPaymentHistory([...response.data.data]);
     }).finally(() => {
       if (!cleanComponent) setIsSpinnerActive(false);
@@ -99,7 +100,7 @@ const SettingsPaymentHistoryView = (props: any) => {
                               {item.number}
                             </div>
                             <div className='payment-history__table-date'>
-                              15.04.2020
+                              {convertTime(item.created_at)}
                             </div>
                             <div className='payment-history__table-amount'>
                               {item.amount}
