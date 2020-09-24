@@ -248,7 +248,7 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.paymentHistory}
+      path={routes.paymentHistorySettings}
       component={(props: any) => (
         <Layout {...props}>
           <SettingsPaymentHistoryView {...props} />

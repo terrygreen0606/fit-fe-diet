@@ -84,7 +84,7 @@ const ProfileSidebar = (props: any) => {
 
           <li>
             <NavLink
-              to={routes.paymentHistory}
+              to={routes.paymentHistorySettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
