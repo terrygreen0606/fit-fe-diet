@@ -35,6 +35,15 @@ const SettingsPaymentHistoryView = (props: any) => {
           <h5 className='payment-history__title'>
             {t('app.title.payment_history')}
           </h5>
+          <div className='payment-history__table'>
+            <div
+              className='
+              payment-history__table-row
+              payment-history__table-head'
+            >
+
+            </div>
+          </div>
         </div>
       </ProfileLayout>
     </>
