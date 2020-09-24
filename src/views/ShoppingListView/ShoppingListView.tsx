@@ -282,7 +282,7 @@ const ShoppingListView = (props: any) => {
               {isNoAccess ? (
                 <div>
                   <span className='sect-subtitle'>
-                    {t('shop_list.no_access')}
+                    {t('common.no_access')}
                   </span>
                 </div>
               ) : (

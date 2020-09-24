@@ -93,7 +93,7 @@ const ShoppingListPopup = (props: any) => {
           <>
             {isNoAccess ? (
               <h5 className='shop-list-popup__header-title'>
-                {t('shop_list.no_access')}
+                {t('common.no_access')}
               </h5>
             ) : (
                 <>
