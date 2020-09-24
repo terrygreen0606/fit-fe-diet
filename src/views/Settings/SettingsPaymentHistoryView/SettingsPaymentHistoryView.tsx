@@ -59,7 +59,7 @@ const SettingsPaymentHistoryView = (props: any) => {
           ) : (
               <>
                 {paymentHistory.length === 0 ? (
-                  <h5 className='payment-history__title'>
+                  <h5 className='payment-history__title without-mg'>
                     {t('payment_history.empty')}
                   </h5>
                 ) : (
