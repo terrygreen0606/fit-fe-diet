@@ -40,6 +40,8 @@ const ShoppingListPopup = (props: any) => {
 
   const [dateSync, setDateSync] = useState<number>(0);
 
+  const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
+
   const [sharePublicUrl, setSharePublicUrl] = useState<string>('');
 
   const saveFileShoppingList = () => {
@@ -50,19 +52,27 @@ const ShoppingListPopup = (props: any) => {
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
   useEffect(() => {
-    getShoppingList(2, dateSync).then((response) => {
-      const { list } = response.data.data;
+    let cleanComponent = false;
 
-      list.map((item) => {
-        item.is_disable = false;
+    if (settings.paid_until === 0) {
+      if (!cleanComponent) setIsNoAccess(true);
+      if (!cleanComponent) setIsSpinnerActive(false);
+    } else {
+      getShoppingList(2, dateSync).then((response) => {
+        const { list } = response.data.data;
+
+        list.map((item) => {
+          item.is_disable = false;
+        });
+
+        if (!cleanComponent) setShoppingList(list);
+
+        if (!cleanComponent) setDateSync(response.data.data.date_sync);
+      }).finally(() => {
+        if (!cleanComponent) setIsSpinnerActive(false);
       });
-
-      setShoppingList(list);
-
-      setDateSync(response.data.data.date_sync);
-
-      setIsSpinnerActive(false);
-    });
+    }
+    return () => cleanComponent = true;
   }, []);
 
   useEffect(() => {
@@ -81,134 +91,142 @@ const ShoppingListPopup = (props: any) => {
         </div>
       ) : (
           <>
-            <div className='shop-list-popup__header'>
+            {isNoAccess ? (
               <h5 className='shop-list-popup__header-title'>
-                {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
+                {t('common.no_access')}
               </h5>
-              <div className='shop-list-popup__header-buttons'>
-                <button
-                  type='button'
-                  onClick={() => saveFileShoppingList()}
-                  className='shop-list-popup__header-buttons-item'
-                >
-                  <FileDyskIcon />
-                </button>
-                <button
-                  type='button'
-                  onClick={() => window.print()}
-                  className='shop-list-popup__header-buttons-item'
-                >
-                  <PrintIcon />
-                </button>
-                <div ref={changedBlockRef}>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      setIsBlockActive(!isBlockActive);
-                      getPublicShopListUrl().then((response) => {
-                        setSharePublicUrl(response.data.data.url);
-                      });
-                    }}
-                    className='shop-list-popup__header-buttons-item'
-                  >
-                    <ShareIcon />
-                  </button>
-                  {isBlockActive && (
-                    <div className='shop-list-popup__header-buttons-share'>
-                      <ShareButtons shareLink={sharePublicUrl} />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className='shop-list-popup__body'>
-              {shoppingList.map((item, itemIndex) => (
-                <div
-                  key={item.id}
-                  className='shop-list-popup__item'
-                >
-                  {itemIndex === 0 ? (
-                    <div className='shop-list-popup__item-category'>
-                      {item.cuisine_name_i18n}
-                    </div>
-                  ) : (
-                      shoppingList[itemIndex]?.cuisine_name_i18n
-                      !== shoppingList[itemIndex - 1]?.cuisine_name_i18n
-                      && (
-                        <div className='shop-list-popup__item-category'>
-                          {item.cuisine_name_i18n}
-                        </div>
-                      )
-                    )}
-                  <div
-                    className='shop-list-popup__item-ingr'
-                  >
-                    <CustomCheckbox
-                      label={`${t(getWeigthUnit(settings.measurement),
-                        { COUNT: item.weight })} ${item.name_i18n}`}
-                      checked={item.is_bought}
-                      disabled={item.is_disable}
-                      onChange={() => {
-                        const updatedShoppingList = [...shoppingList];
-
-                        updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
-
-                        updatedShoppingList[itemIndex].is_disable = true;
-
-                        setShoppingList([...updatedShoppingList]);
-
-                        setShoppingRowBought(
-                          item.id,
-                          updatedShoppingList[itemIndex].is_bought,
-                          dateSync,
-                        ).then((response) => {
-                          setDateSync(response.data.data.date_sync);
-                        }).catch(() => {
-                          updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
-
-                          setShoppingList([...updatedShoppingList]);
-
-                          toast.error(t('shop_list.update.error'), {
-                            autoClose: 3000,
-                          });
-                        }).finally(() => {
-                          setTimeout(() => {
-                            updatedShoppingList[itemIndex].is_disable = false;
-                            setShoppingList([...updatedShoppingList]);
-                          }, 500);
-                        });
-                      }}
-                    />
-                    <button
-                      type='button'
-                      onClick={() => {
-                        const updatedShoppingList = [...shoppingList];
-                        const prevShoppingList = [...shoppingList];
-
-                        updatedShoppingList.splice(itemIndex, 1);
-
-                        setShoppingList([...updatedShoppingList]);
-
-                        props.updateShoppingListLength(updatedShoppingList.length);
-
-                        deleteFromShoppingList(item.id, dateSync)
-                          .then((response) => setDateSync(response.data.data.date_sync))
-                          .catch(() => {
-                            toast.error(t('shop_list.update.error'), {
-                              autoClose: 3000,
+            ) : (
+                <>
+                  <div className='shop-list-popup__header'>
+                    <h5 className='shop-list-popup__header-title'>
+                      {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
+                    </h5>
+                    <div className='shop-list-popup__header-buttons'>
+                      <button
+                        type='button'
+                        onClick={() => saveFileShoppingList()}
+                        className='shop-list-popup__header-buttons-item'
+                      >
+                        <FileDyskIcon />
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => window.print()}
+                        className='shop-list-popup__header-buttons-item'
+                      >
+                        <PrintIcon />
+                      </button>
+                      <div ref={changedBlockRef}>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            setIsBlockActive(!isBlockActive);
+                            getPublicShopListUrl().then((response) => {
+                              setSharePublicUrl(response.data.data.url);
                             });
-
-                            setShoppingList([...prevShoppingList]);
-                          });
-                      }}
-                      className='shop-list-popup__item-ingr-delete'
-                    >
-                      <TrashIcon />
-                    </button>
+                          }}
+                          className='shop-list-popup__header-buttons-item'
+                        >
+                          <ShareIcon />
+                        </button>
+                        {isBlockActive && (
+                          <div className='shop-list-popup__header-buttons-share'>
+                            <ShareButtons shareLink={sharePublicUrl} />
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                  <div className='shop-list-popup__body'>
+                    {shoppingList.map((item, itemIndex) => (
+                      <div
+                        key={item.id}
+                        className='shop-list-popup__item'
+                      >
+                        {itemIndex === 0 ? (
+                          <div className='shop-list-popup__item-category'>
+                            {item.cuisine_name_i18n}
+                          </div>
+                        ) : (
+                            shoppingList[itemIndex]?.cuisine_name_i18n
+                            !== shoppingList[itemIndex - 1]?.cuisine_name_i18n
+                            && (
+                              <div className='shop-list-popup__item-category'>
+                                {item.cuisine_name_i18n}
+                              </div>
+                            )
+                          )}
+                        <div
+                          className='shop-list-popup__item-ingr'
+                        >
+                          <CustomCheckbox
+                            label={`${t(getWeigthUnit(settings.measurement),
+                              { COUNT: item.weight })} ${item.name_i18n}`}
+                            checked={item.is_bought}
+                            disabled={item.is_disable}
+                            onChange={() => {
+                              const updatedShoppingList = [...shoppingList];
+
+                              updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+
+                              updatedShoppingList[itemIndex].is_disable = true;
+
+                              setShoppingList([...updatedShoppingList]);
+
+                              setShoppingRowBought(
+                                item.id,
+                                updatedShoppingList[itemIndex].is_bought,
+                                dateSync,
+                              ).then((response) => {
+                                setDateSync(response.data.data.date_sync);
+                              }).catch(() => {
+                                updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+
+                                setShoppingList([...updatedShoppingList]);
+
+                                toast.error(t('shop_list.update.error'), {
+                                  autoClose: 3000,
+                                });
+                              }).finally(() => {
+                                setTimeout(() => {
+                                  updatedShoppingList[itemIndex].is_disable = false;
+                                  setShoppingList([...updatedShoppingList]);
+                                }, 500);
+                              });
+                            }}
+                          />
+                          <button
+                            type='button'
+                            onClick={() => {
+                              const updatedShoppingList = [...shoppingList];
+                              const prevShoppingList = [...shoppingList];
+
+                              updatedShoppingList.splice(itemIndex, 1);
+
+                              setShoppingList([...updatedShoppingList]);
+
+                              props.updateShoppingListLength(updatedShoppingList.length);
+
+                              deleteFromShoppingList(item.id, dateSync)
+                                .then((response) => setDateSync(response.data.data.date_sync))
+                                .catch(() => {
+                                  toast.error(t('shop_list.update.error'), {
+                                    autoClose: 3000,
+                                  });
+
+                                  setShoppingList([...prevShoppingList]);
+                                });
+                            }}
+                            className='shop-list-popup__item-ingr-delete'
+                          >
+                            <TrashIcon />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
           </>
         )}
     </div>
