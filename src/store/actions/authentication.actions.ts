@@ -54,8 +54,8 @@ export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true
     if (isAuthenticated) {
       getAppSettings()
         .then(response => {
-          if (response.data) {
-            dispatch(setAppSetting(response.data));
+          if (response.data.success && response.data.data) {
+            dispatch(setAppSetting(response.data.data));
 
             if (localesLoad) {
               dispatch(loadLocales());
@@ -68,8 +68,8 @@ export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true
     } else {
       getAppPublicSettings()
         .then(response => {
-          if (response.data) {
-            dispatch(setAppSetting(response.data));
+          if (response.data.success && response.data.data) {
+            dispatch(setAppSetting(response.data.data));
 
             if (localesLoad) {
               dispatch(loadLocales());
