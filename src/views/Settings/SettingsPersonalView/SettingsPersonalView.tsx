@@ -237,7 +237,7 @@ const SettingsPersonalView = (props: any) => {
                 <Button
                   className='mt-2 mt-xs-3 profile-settings-personal-form-btn'
                   type='submit'
-                  color='secondary'
+                  color='primary'
                   isLoading={updatePersonalDataLoading}
                 >
                   {t('button.save')}

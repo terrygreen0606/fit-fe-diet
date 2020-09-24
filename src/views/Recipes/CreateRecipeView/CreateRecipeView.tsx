@@ -519,7 +519,7 @@ const CreateRecipeView = (props: any) => {
                   />
                 </div>
                 <Button
-                  color='primary'
+                  color='caribbean'
                   onClick={() => setVideoLinkIframe(getVideo(createRecipeForm.videoUrl))}
                   className='recipe__add-video-desc-btn'
                 >
