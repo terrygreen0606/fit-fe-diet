@@ -99,7 +99,7 @@ const SettingsPaymentHistoryView = (props: any) => {
                               {item.number}
                             </div>
                             <div className='payment-history__table-date'>
-                              {convertTime(item.created_at)}
+                              {convertTime(item.created_ts)}
                             </div>
                             <div className='payment-history__table-amount'>
                               {item.amount}
