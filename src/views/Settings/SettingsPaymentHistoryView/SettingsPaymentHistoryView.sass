@@ -9,6 +9,9 @@
   &__title:first-child
     margin-bottom: 50px
 
+    @media (max-width: 450px)
+      margin-bottom: 30px
+
   &__table
     margin-bottom: 20px
 
@@ -22,10 +25,7 @@
 
       @media (max-width: 450px)
         border-bottom: 1px solid $steel-blue
-
-      &.ended
-        color: #BEBEBE
-    
+        
     &-head
       margin-bottom: 26px
       padding-bottom: 22px
@@ -44,6 +44,7 @@
 
       @media (max-width: 450px)
         flex-basis: 27.5%
+        font-size: 12px
 
     &-date
       text-align: center
@@ -51,6 +52,7 @@
 
       @media (max-width: 450px)
         flex-basis: 27.5%
+        font-size: 12px
 
     &-amount
       text-align: center
@@ -58,31 +60,27 @@
 
       @media (max-width: 450px)
         flex-basis: 20%
+        font-size: 12px
 
     &-status
       text-align: center
       flex-basis: 100px
+      font-weight: bold
 
       @media (max-width: 450px)
         flex-basis: 25%
+        font-size: 12px
 
-      &.active
-        font-weight: bold
-        color: $caribbean-green
+    &-head .payment-history__table-status
+      font-weight: normal
 
-        @media (max-width: 450px)
-          font-weight: normal
+    &-row.active .payment-history__table-status
+      color: $caribbean-green
 
-      &.canceled
-        font-weight: bold
-        color: #F94545
+    &-row.ended .payment-history__table-status
+      color: #F94545
 
-        @media (max-width: 450px)
-          font-weight: normal
+    &-row.pending
+      color: #BEBEBE
 
-      &.ended
-        font-weight: bold
-
-        @media (max-width: 450px)
-          font-weight: normal
         
