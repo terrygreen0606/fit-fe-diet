@@ -117,30 +117,28 @@ const Header = (props: any) => {
 
                 {isAuthenticated ? (
                   <>
-                    {settings.paid_until > 0 && (
-                      <div
-                        ref={changedBlockRef}
-                        className='mainHeader_menuList_shopping_cart_wrap'
+                    <div
+                      ref={changedBlockRef}
+                      className='mainHeader_menuList_shopping_cart_wrap'
+                    >
+                      <button
+                        type='button'
+                        className='mainHeader_menuList_shopping_cart'
+                        onClick={() => {
+                          if (!location.pathname.includes('shopping-list')) {
+                            setIsBlockActive(!isBlockActive);
+                          }
+                        }}
                       >
-                        <button
-                          type='button'
-                          className='mainHeader_menuList_shopping_cart'
-                          onClick={() => {
-                            if (!location.pathname.includes('shopping-list')) {
-                              setIsBlockActive(!isBlockActive);
-                            }
-                          }}
-                        >
-                          <ShoppingCartIcon />
-                          <div className='mainHeader_menuList_shopping_cart_count'>
-                            {shoppingListLength}
-                          </div>
-                        </button>
-                        {isBlockActive && (
-                          <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
-                        )}
-                      </div>
-                    )}
+                        <ShoppingCartIcon />
+                        <div className='mainHeader_menuList_shopping_cart_count'>
+                          {shoppingListLength}
+                        </div>
+                      </button>
+                      {isBlockActive && (
+                        <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
+                      )}
+                    </div>
 
                     <button
                       type='button'
