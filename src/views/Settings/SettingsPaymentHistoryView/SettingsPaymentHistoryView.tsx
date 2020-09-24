@@ -34,7 +34,7 @@ const SettingsPaymentHistoryView = (props: any) => {
   return (
     <>
       <Helmet>
-        <title>{t('app.title.payment_history')}</title>
+        <title>{t('app.title.payment.history')}</title>
       </Helmet>
       <div className='container'>
         <Breadcrumb
@@ -44,7 +44,7 @@ const SettingsPaymentHistoryView = (props: any) => {
               name: t('breadcrumb.main'),
             },
           ]}
-          currentPage={t('app.title.payment_history')}
+          currentPage={t('app.title.payment.history')}
         />
       </div>
       <ProfileLayout>
@@ -60,12 +60,12 @@ const SettingsPaymentHistoryView = (props: any) => {
               <>
                 {paymentHistory.length === 0 ? (
                   <h5 className='payment-history__title without-mg'>
-                    {t('payment_history.empty')}
+                    {t('payment.history.empty')}
                   </h5>
                 ) : (
                     <>
                       <h5 className='payment-history__title'>
-                        {t('app.title.payment_history')}
+                        {t('app.title.payment.history')}
                       </h5>
                       <div className='payment-history__table'>
                         <div
@@ -74,16 +74,16 @@ const SettingsPaymentHistoryView = (props: any) => {
                         payment-history__table-head'
                         >
                           <div className='payment-history__table-number'>
-                            {t('payment_history.number')}
+                            {t('payment.history.number')}
                           </div>
                           <div className='payment-history__table-date'>
-                            {t('payment_history.date')}
+                            {t('payment.history.date')}
                           </div>
                           <div className='payment-history__table-amount'>
-                            {t('payment_history.amount')}
+                            {t('payment.history.amount')}
                           </div>
                           <div className='payment-history__table-status'>
-                            {t('payment_history.status')}
+                            {t('payment.history.status')}
                           </div>
                         </div>
                         {paymentHistory.map((item) => (
