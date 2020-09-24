@@ -3,6 +3,9 @@
 .payment-history
   padding: 36px
 
+  @media (max-width: 450px)
+    padding: 20px 10px
+
   &__title:first-child
     margin-bottom: 50px
 
@@ -12,11 +15,74 @@
     &-row
       display: flex
       justify-content: space-between
+      margin-bottom: 16px
+      padding-bottom: 16px
+      font-size: 12px
       border-bottom: 1px solid #D6D6D6
+
+      @media (max-width: 450px)
+        border-bottom: 1px solid $steel-blue
+
+      &.ended
+        color: #BEBEBE
     
     &-head
+      margin-bottom: 26px
+      padding-bottom: 22px
+      font-size: 18px
       border-bottom: 5px solid $steel-blue
 
-    // &-number
-    //   flex-basis: 
+      @media (max-width: 450px)
+        font-size: 12px
+        margin-bottom: 16px
+        padding-bottom: 16px
+        border-bottom: none
+
+    &-number
+      text-align: center
+      flex-basis: 110px
+
+      @media (max-width: 450px)
+        flex-basis: 27.5%
+
+    &-date
+      text-align: center
+      flex-basis: 100px
+
+      @media (max-width: 450px)
+        flex-basis: 27.5%
+
+    &-amount
+      text-align: center
+      flex-basis: 100px
+
+      @media (max-width: 450px)
+        flex-basis: 20%
+
+    &-status
+      text-align: center
+      flex-basis: 100px
+
+      @media (max-width: 450px)
+        flex-basis: 25%
+
+      &.active
+        font-weight: bold
+        color: $caribbean-green
+
+        @media (max-width: 450px)
+          font-weight: normal
+
+      &.canceled
+        font-weight: bold
+        color: #F94545
+
+        @media (max-width: 450px)
+          font-weight: normal
+
+      &.ended
+        font-weight: bold
+
+        @media (max-width: 450px)
+          font-weight: normal
         

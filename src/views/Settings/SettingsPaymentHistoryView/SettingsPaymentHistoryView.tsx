@@ -41,7 +41,60 @@ const SettingsPaymentHistoryView = (props: any) => {
               payment-history__table-row
               payment-history__table-head'
             >
-
+              <div className='payment-history__table-number'>
+                {t('payment_history.number')}
+              </div>
+              <div className='payment-history__table-date'>
+                {t('payment_history.date')}
+              </div>
+              <div className='payment-history__table-amount'>
+                {t('payment_history.amount')}
+              </div>
+              <div className='payment-history__table-status'>
+                {t('payment_history.status')}
+              </div>
+            </div>
+            <div className='payment-history__table-row'>
+              <div className='payment-history__table-number'>
+                25488374
+              </div>
+              <div className='payment-history__table-date'>
+                15.04.2020
+              </div>
+              <div className='payment-history__table-amount'>
+                25$
+              </div>
+              <div className='payment-history__table-status active'>
+                Active
+              </div>
+            </div>
+            <div className='payment-history__table-row'>
+              <div className='payment-history__table-number'>
+                25488374
+              </div>
+              <div className='payment-history__table-date'>
+                15.04.2020
+              </div>
+              <div className='payment-history__table-amount'>
+                25$
+              </div>
+              <div className='payment-history__table-status canceled'>
+                Canceled
+              </div>
+            </div>
+            <div className='payment-history__table-row ended'>
+              <div className='payment-history__table-number'>
+                25488374
+              </div>
+              <div className='payment-history__table-date'>
+                15.04.2020
+              </div>
+              <div className='payment-history__table-amount'>
+                25$
+              </div>
+              <div className='payment-history__table-status ended'>
+                Ended
+              </div>
             </div>
           </div>
         </div>
