@@ -33,6 +33,7 @@ import TestimonialsFormView from './views/Forms/TestimonialsFormView';
 import CancellationFormView from './views/Forms/CancellationFormView';
 import RecipeFullView from './views/Recipes/RecipeFullView';
 import AfterSignupPage from './views/AfterSignupPage';
+import SettingsPaymentHistoryView from './views/Settings/SettingsPaymentHistoryView';
 
 const Routes = () => (
   <Switch>
@@ -49,7 +50,7 @@ const Routes = () => (
     <PrivateRoute
       path={routes.afterSignup}
       component={(props: any) => (
-        <Layout {...props} headerType="promo">
+        <Layout {...props} headerType='promo'>
           <AfterSignupPage {...props} />
         </Layout>
       )}
@@ -241,6 +242,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <RecipeFullView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path={routes.paymentHistory}
+      component={(props: any) => (
+        <Layout {...props}>
+          <SettingsPaymentHistoryView {...props} />
         </Layout>
       )}
       exact

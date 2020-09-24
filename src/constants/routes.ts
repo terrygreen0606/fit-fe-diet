@@ -23,4 +23,5 @@ export const routes = {
   recipeFullView: '/recipe/:recipeId',
   afterSignup: '/after-signup',
   getRecipeFullView: (recipeId: string) => `/recipe/${recipeId}`,
+  paymentHistory: '/payment-history',
 };
