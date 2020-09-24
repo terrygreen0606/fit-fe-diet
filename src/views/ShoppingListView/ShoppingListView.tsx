@@ -61,7 +61,7 @@ const ShoppingListView = (props: any) => {
 
   const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
-  const [shoppingList, setShoppingList] = useState<Array<any>>([]);
+  const [shoppingList, setShoppingList] = useState<any[]>([]);
 
   const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
 
@@ -69,7 +69,7 @@ const ShoppingListView = (props: any) => {
     id: '',
     weight: null,
   });
-  const [addIngredientErrors, setAddIngredientErrors] = useState<Array<any>>([]);
+  const [addIngredientErrors, setAddIngredientErrors] = useState<any[]>([]);
 
   const [dateSync, setDateSync] = useState<number>(0);
   const [isSyncResponseActive, setIsSyncResponseActive] = useState<boolean>(true);
