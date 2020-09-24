@@ -109,7 +109,7 @@ const LoginView = (props: any) => {
                 setLoginLoading(false);
 
                 if (response.data.success && response.data.data) {
-                  setAppSetting(response.data.data);
+                  props.setAppSetting(response.data.data);
                 }
               })
               .catch(error => {
