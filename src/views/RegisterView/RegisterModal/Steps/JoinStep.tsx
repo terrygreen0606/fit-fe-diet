@@ -217,8 +217,8 @@ const JoinStep = (props: any) => {
             .then(response => {
               setRegisterJoinLoading(false);
 
-              if (response.data && response.data.data) {
-                setAppSetting(response.data.data);
+              if (response.data) {
+                setAppSetting(response.data);
               }
             })
             .catch(error => {
