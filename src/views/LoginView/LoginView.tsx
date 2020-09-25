@@ -109,7 +109,10 @@ const LoginView = (props: any) => {
                 setLoginLoading(false);
 
                 if (response.data.success && response.data.data) {
-                  props.setAppSetting(response.data.data);
+                  props.setAppSetting({
+                    ...response.data.data,
+                    is_private: true,
+                  });
                 }
               })
               .catch(error => {
