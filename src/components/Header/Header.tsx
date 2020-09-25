@@ -79,16 +79,6 @@ const Header = (props: any) => {
                   {t('header.menu_trainings')}
                 </NavLink>
 
-                {isAuthenticated && (
-                  <NavLink
-                    to='/shopping-list'
-                    className='mainHeader_menuList_item'
-                    activeClassName='mainHeader_menuList_item_active'
-                  >
-                    {t('recipe.saved.shopping_list')}
-                  </NavLink>
-                )}
-
                 <NavLink
                   to='/recipes'
                   className='mainHeader_menuList_item'
@@ -133,7 +123,7 @@ const Header = (props: any) => {
                           {shoppingListLength}
                         </div>
                       </button>
-                      {isBlockActive && (
+                      {(isBlockActive && !window.location.href.includes(routes.shoppingList)) && (
                         <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
                       )}
                     </div>

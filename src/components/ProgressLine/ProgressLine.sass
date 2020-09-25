@@ -9,7 +9,7 @@
 
   @media (max-width: 450px)
     flex-wrap: wrap
-    justify-content: center
+    justify-content: space-between
 
   &-line
     position: absolute
@@ -42,6 +42,7 @@
     
     @media (max-width: 450px)
       margin-bottom: 20px
+      flex-basis: 33.33%
 
     &-media
       position: relative
@@ -90,7 +91,9 @@
       @media (max-width: 767px)
         min-height: 28px
         max-width: 60px
+        margin: 0 auto
         font-size: 12px
+
   &-item.active
     .progress__list-item-media
       &::before

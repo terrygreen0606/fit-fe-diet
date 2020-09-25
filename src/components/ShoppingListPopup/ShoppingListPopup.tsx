@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -12,6 +13,7 @@ import {
   setShoppingRowBought,
   deleteFromShoppingList,
 } from 'api';
+import { routes } from 'constants/routes';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -19,6 +21,7 @@ import ShareButtons from 'components/ShareButtons';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import Spinner from 'components/common/Spinner';
 import useOutsideClick from 'components/hooks/useOutsideClick';
+import Button from 'components/common/Forms/Button';
 
 import './ShoppingListPopup.sass';
 
@@ -137,6 +140,17 @@ const ShoppingListPopup = (props: any) => {
                       </div>
                     </div>
                   </div>
+                  <NavLink
+                    to={routes.shoppingList}
+                    className='shop-list-popup__open-page-btn'
+                  >
+                    <Button
+                      color='caribbean'
+                      size='sm'
+                    >
+                      {t('shop_list.open_page')}
+                    </Button>
+                  </NavLink>
                   <div className='shop-list-popup__body'>
                     {shoppingList.map((item, itemIndex) => (
                       <div
