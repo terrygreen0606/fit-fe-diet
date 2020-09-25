@@ -1,5 +1,9 @@
 import { getImagePath } from 'utils';
 
+import { ReactComponent as DumbbellIcon } from 'assets/img/icons/dumbbell-icon.svg';
+import { ReactComponent as WeighScaleIcon } from 'assets/img/icons/weigh-scale-icon.svg';
+import { ReactComponent as WaterGlassIcon } from 'assets/img/icons/water-glass-icon.svg';
+
 export const mockData = [
   {
     slide: 1,
@@ -50,3 +54,21 @@ export const tourStepFunction = (width, tourStep) => {
     if (tourStep === 4) { step4Element.scrollIntoView(scrollIntoViewOptions); }
   }
 };
+
+export const dataForTodayActivities = [
+  {
+    icon: DumbbellIcon,
+    text: 'Add a workout',
+    value: 'workout_add',
+  },
+  {
+    icon: WeighScaleIcon,
+    text: "Add today's weight",
+    value: 'weight_add',
+  },
+  {
+    icon: WaterGlassIcon,
+    text: 'Water tracker',
+    value: 'water_tracker',
+  },
+];

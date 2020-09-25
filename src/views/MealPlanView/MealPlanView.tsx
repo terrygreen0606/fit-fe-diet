@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
@@ -12,32 +13,35 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import useWindowSize from 'components/hooks/useWindowSize';
 import Button from 'components/common/Forms/Button';
 import NutritionPlanCard from 'components/NutritionPlanCard';
-import Advantages from 'components/Advantages';
 import SiteTour from 'components/SiteTour';
 import Breadcrumb from 'components/Breadcrumb';
+import TodayActivities from 'components/TodayActivities';
 
-import './NutritionPlanView.sass';
+import './MealPlanView.sass';
 
-import { ReactComponent as CookCutIcon } from 'assets/img/icons/cook-cut-icon.svg';
 import { ReactComponent as MealIcon } from 'assets/img/icons/meal-icon.svg';
-import { ReactComponent as DumbbellIcon } from 'assets/img/icons/dumbbell-icon.svg';
-import { ReactComponent as WeighScaleIcon } from 'assets/img/icons/weigh-scale-icon.svg';
 import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.svg';
 import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
-import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
+import { ReactComponent as ShareIcon } from 'assets/img/icons/share-icon.svg';
+import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
 import RecipePreviewImage from 'assets/img/recipe-preview-img.jpg';
 import RewardImage from 'assets/img/reward-img.svg';
 import ClockImage from 'assets/img/icons/clock-icon.svg';
 
 import HintStep from './HintStep';
-import { mockData, tourStepFunction } from './dataForNutritionPlanView';
+import {
+  mockData,
+  tourStepFunction,
+  dataForTodayActivities,
+} from './dataForMealPlanView';
 
-const NutritionPlanView = (props: any) => {
+const MealPlanView = (props: any) => {
   const { localePhrases, afterSignup } = props;
   const { width } = useWindowSize();
   const [afterSignUp, setAfterSignUp] = useState(afterSignup);
   const [tourStep, setTourStep] = useState(0);
   const { scrollbarWidth } = getScrollbarSize();
+  const [todayActivities, setTodayActivities] = useState(['workout_add']);
 
   const t = (code: string, placeholders?: any) => getTranslate(
     localePhrases,
@@ -66,6 +70,16 @@ const NutritionPlanView = (props: any) => {
     }
   }, [afterSignUp, tourStep]);
 
+  const onActivitiesChange = (e) => {
+    e.persist();
+    return e.target.checked
+      ? setTodayActivities((prev) => [...prev, e.target.value])
+      : setTodayActivities((prev) => [
+        ...prev.slice(0, prev.indexOf(e.target.value)),
+        ...prev.slice(prev.indexOf(e.target.value) + 1),
+      ]);
+  };
+
   return (
     <>
       <Helmet>
@@ -82,26 +96,13 @@ const NutritionPlanView = (props: any) => {
           currentPage={t('nutrition.title')}
         />
       </div>
-      {afterSignUp ? (
-        <SiteTour
-          data={mockData}
-          onAction={onAction}
-          localePhrases={localePhrases}
-        />
-      ) : (
-          <Advantages
-            icon1={CookCutIcon}
-            icon2={MealIcon}
-            icon3={DumbbellIcon}
-            mainTitle={t('nutrition.plan.title')}
-            advantage1Title={t('nutrition.plan.feat1_title')}
-            advantage1Desc={t('nutrition.plan.feat1_desc')}
-            advantage2Title={t('nutrition.plan.feat2_title')}
-            advantage2Desc={t('nutrition.plan.feat2_desc')}
-            advantage3Title={t('nutrition.plan.feat3_title')}
-            advantage3Desc={t('nutrition.plan.feat3_desc')}
-          />
-        )}
+      <SiteTour
+        data={mockData}
+        onAction={onAction}
+        localePhrases={localePhrases}
+      />
+      {/* {afterSignUp && (
+      )} */}
 
       {(tourStep > 0 || afterSignUp) && <div className='hint_sect_backdrop' />}
 
@@ -113,38 +114,130 @@ const NutritionPlanView = (props: any) => {
                 'nutrition-plan-card-list-col nutrition-plan-list',
                 {
                   hinted: tourStep === 3,
-                }
+                },
               )}
             >
-              <div className='row'>
-                <div className='col-8 mb-5'>
-                  <h4>
-                    <AngleLeftIcon className='mr-4' />
-                    Neljapäev, 18. juuni <span className='title-icon ml-4' />
-                  </h4>
+              <div className='nutrition-plan-card-list-controls'>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-controls-item'
+                >
+                  <FileDyskIcon />
+                </button>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-controls-item'
+                >
+                  <PrintIcon />
+                </button>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-controls-item'
+                >
+                  <ShareIcon />
+                </button>
+              </div>
+              <div className='nutrition-plan-card-list-date'>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-date-item card-bg'
+                >
+                  <div className='nutrition-plan-card-list-date-item-number'>
+                    27
+                  </div>
+                  <div className='nutrition-plan-card-list-date-item-day-week'>
+                    mon
+                  </div>
+                </button>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-date-item card-bg'
+                >
+                  <div className='nutrition-plan-card-list-date-item-number'>
+                    28
+                  </div>
+                  <div className='nutrition-plan-card-list-date-item-day-week'>
+                    tus
+                  </div>
+                </button>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-date-item card-bg'
+                >
+                  <div className='nutrition-plan-card-list-date-item-number'>
+                    29
+                  </div>
+                  <div className='nutrition-plan-card-list-date-item-day-week'>
+                    wed
+                  </div>
+                </button>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-date-item card-bg'
+                >
+                  <div className='nutrition-plan-card-list-date-item-number'>
+                    30
+                  </div>
+                  <div className='nutrition-plan-card-list-date-item-day-week'>
+                    thu
+                  </div>
+                </button>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-date-item card-bg'
+                >
+                  <div className='nutrition-plan-card-list-date-item-number'>
+                    31
+                  </div>
+                  <div className='nutrition-plan-card-list-date-item-day-week'>
+                    fri
+                  </div>
+                </button>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-date-item card-bg'
+                >
+                  <div className='nutrition-plan-card-list-date-item-number'>
+                    01
+                  </div>
+                  <div className='nutrition-plan-card-list-date-item-day-week'>
+                    sat
+                  </div>
+                </button>
+                <button
+                  type='button'
+                  className='nutrition-plan-card-list-date-item card-bg'
+                >
+                  <div className='nutrition-plan-card-list-date-item-number'>
+                    02
+                  </div>
+                  <div className='nutrition-plan-card-list-date-item-day-week'>
+                    sun
+                  </div>
+                </button>
+              </div>
+              <div className='nutrition-plan-card-list-recipes card-bg'>
+                <div className='nutrition-plan-card-list-recipes-title'>
+                  <CalendarIcon />
+                  <span>Monday, July 29th 2020</span>
                 </div>
-                <div className='col-4 mb-5'>
-                  <div className='nutrition-plan-controls-list'>
-                    <div className='nutrition-plan-controls-item'>
-                      <FileDyskIcon className='nutrition-plan-controls-icon' />
-                    </div>
-
-                    <div className='nutrition-plan-controls-item'>
-                      <PrintIcon className='nutrition-plan-controls-icon' />
-                    </div>
+                <div className='row'>
+                  <div className='col-xl-6'>
+                    <NutritionPlanCard
+                      favorite
+                      reload
+                      shopCart
+                      checked
+                    />
+                  </div>
+                  <div className='col-xl-6'>
+                    <NutritionPlanCard type='active' favorite />
+                  </div>
+                  <div className='col-xl-6'>
+                    <NutritionPlanCard type='cross' />
                   </div>
                 </div>
-                <div className='col-6'>
-                  <NutritionPlanCard />
-                </div>
-                <div className='col-6'>
-                  <NutritionPlanCard type='active' favorite />
-                </div>
-                <div className='col-6'>
-                  <NutritionPlanCard type='cross' />
-                </div>
               </div>
-
               {tourStep === 3 && (
                 <HintStep
                   hintStep={3}
@@ -185,42 +278,21 @@ const NutritionPlanView = (props: any) => {
                   hinted: tourStep === 2,
                 })}
               >
-                <h4 className='mt-5 mb-4'>{t('trainings.today_activities')}</h4>
-
-                <div className='nutrition-plan-activity-list'>
-                  <div className='nutrition-plan-activity-card card-bg active'>
-                    <span className='nutrition-plan-activity-card-checkmark' />
-
-                    <span className='nutrition-plan-activity-card-icon-wrap'>
-                      <DumbbellIcon className='nutrition-plan-activity-card-icon' />
-                    </span>
-
-                    <h6 className='nutrition-plan-activity-card-title'>
-                      {t('trainings.add.workout')}
-                    </h6>
-                  </div>
-
-                  <div className='nutrition-plan-activity-card card-bg'>
-                    <span className='nutrition-plan-activity-card-checkmark' />
-
-                    <span className='nutrition-plan-activity-card-icon-wrap'>
-                      <WeighScaleIcon className='nutrition-plan-activity-card-icon' />
-                    </span>
-
-                    <h6 className='nutrition-plan-activity-card-title'>
-                      {t('trainings.add.weight')}
-                    </h6>
-                  </div>
-
-                  {tourStep === 2 && (
-                    <HintStep
-                      hintStep={2}
-                      onClick={() => setTourStep(3)}
-                      text={t('tour.hint.step2')}
-                      closeText={t('common.understand')}
-                    />
-                  )}
-                </div>
+                <TodayActivities
+                  name={t('trainings.today_activities')}
+                  items={dataForTodayActivities}
+                  todayActivities={todayActivities}
+                  onChange={onActivitiesChange}
+                  type='checkbox'
+                />
+                {tourStep === 2 && (
+                  <HintStep
+                    hintStep={2}
+                    onClick={() => setTourStep(3)}
+                    text={t('tour.hint.step2')}
+                    closeText={t('common.understand')}
+                  />
+                )}
               </div>
 
               <div className='nutrition-plan-adherence-diet-card card-bg mt-5'>
@@ -269,7 +341,7 @@ const NutritionPlanView = (props: any) => {
                   'nutrition-plan-diet-settings-card-back',
                   {
                     hinted: tourStep === 4,
-                  }
+                  },
                 )}
               >
                 <div className='nutrition-plan-diet-settings-card card-bg mt-5'>
@@ -310,6 +382,6 @@ export default WithTranslate(
     }),
     {
       changeSetting,
-    }
-  )(NutritionPlanView)
+    },
+  )(MealPlanView),
 );

@@ -113,7 +113,7 @@ const Header = (props: any) => {
                         type='button'
                         className='mainHeader_menuList_shopping_cart'
                         onClick={() => {
-                          if (!location.pathname.includes('shopping-list')) {
+                          if (!location.pathname.includes(routes.shoppingList)) {
                             setIsBlockActive(!isBlockActive);
                           }
                         }}
