@@ -131,17 +131,25 @@ button.bttn
       path
         fill: #fff
 
-  &.bttnOutline
-    color: $steel-blue
+
+.bttn_mint
+  background-color: $caribbean-green
+  border-color: $caribbean-green
+  color: #fff
+  svg
+    fill: #fff
+    path
+      fill: #fff
+
+  &:hover
+    color: #fff
+    background-color: $caribbean-green
+    box-shadow: 0 5px 15px $caribbean-green
     svg
-      fill: $steel-blue
+      fill: #fff
       path
-        fill: $steel-blue
+        fill: #fff
 
-
-.bttn_raw
-  border-color: transparent
-  background-color: transparent
 
 .bttn_info
   color: #000000
@@ -158,6 +166,19 @@ button.bttn
   &:hover
     color: $white
     box-shadow: 0 5px 15px #FF3D00
+
+
+  &.bttnOutline
+    color: $steel-blue
+    svg
+      fill: $steel-blue
+      path
+        fill: $steel-blue
+
+
+.bttn_raw
+  border-color: transparent
+  background-color: transparent
 
 
 .google-login-btn

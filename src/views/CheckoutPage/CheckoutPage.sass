@@ -1,0 +1,227 @@
+@import '../../assets/sass/_vars'
+
+
+.checkout-tpl-container
+  display: block
+  max-width: 1050px
+  margin: 0 auto
+  .checkout-rewards-block
+    position: relative
+    margin-top: -70px
+
+.checkout-form-container
+  display: block
+  max-width: 660px
+  margin: 0 auto
+  .app-advantages-list
+    display: inline-block
+    margin: 0 auto
+
+.checkout-warning-modal
+  text-align: center
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.08)
+  border-radius: 5px
+  .dialogMain
+    padding: 45px 100px
+  .dialogHeader
+    .dialogHeaderClose
+      top: 20px
+      right: 20px
+      display: inline-block
+      width: 25px
+      height: 25px
+      border-radius: 100%
+      background-color: #F2F2F2
+      svg
+        width: 11px
+        height: 11px
+  &__title
+    margin-bottom: 45px
+    font-weight: bold
+    font-size: 26px
+    line-height: 32px
+    color: #000000
+  &__descr
+    font-weight: normal
+    font-size: 26px
+    line-height: 32px
+    text-align: center
+    color: #000000
+  &__btn
+    max-width: 450px
+    margin-top: 40px
+
+.checkout-divider
+  display: block
+  margin: 50px 0
+  padding: 0
+  width: 100%
+  height: 1px 
+  background-color: #c4c4c4
+
+.checkout-advantages__title
+  font-weight: 400
+  font-size: 18px
+  line-height: 22px
+  color: #000000
+
+.checkout-summary
+  &-list
+  &-item
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+    &:first-child
+      padding-bottom: 20px
+      border-bottom: 1px solid #C4C4C4
+    &:not(:last-child)
+      margin-bottom: 20px
+    
+    &__label
+      margin-right: 20px
+      font-weight: 400
+      font-size: 22px
+      line-height: 36px
+      color: #000000
+    &__value
+      font-weight: 400
+      font-size: 22px
+      line-height: 36px
+      color: #000000
+
+.checkout-pay-form
+  &__title
+    display: flex
+    align-items: center
+    font-weight: 400
+    font-size: 22px
+    line-height: 15px
+    color: #000000
+  &__submit
+    height: 109px
+    padding: 24px
+    font-weight: bold
+    font-size: 26px
+    line-height: 32px
+    color: #FFFFFF
+
+.checkout-discount-form
+  display: flex
+  margin-right: -9px
+  &__input
+    flex: 0 0 70%
+    height: 52px
+    padding: 15px
+    padding-right: 20px
+  &__btn
+    position: relative
+    margin-left: -9px
+    flex: 0 0 30%
+    padding: 15px 20px
+    height: 52px
+    font-weight: bold
+    font-size: 18px
+    line-height: 22px
+    color: #FFFFFF
+
+.checkout-payment-radio
+  padding: 0
+
+  &__list
+    display: flex
+    align-items: center
+    justify-content: center
+
+  &.radio-checked
+    .checkout-payment-radio__btn
+      background-color: $steel-blue
+      border-color: $steel-blue
+  &__btn
+    min-width: 270px
+    height: 82px
+    padding: 20px
+    padding-left: 95px
+    border-radius: 10px
+    border: 1px solid #C4C4C4
+    background-color: #fff
+    justify-content: flex-end
+    &:hover
+      background-color: $steel-blue
+      border-color: $steel-blue
+
+  .radiomark
+    top: 15px
+    left: 25px
+    width: 45px
+    height: 45px
+    background-color: #f0f0f0
+    border: 9px solid #fff
+    box-shadow: 0px 3px 5px #BAC2D2
+  input
+    &:checked ~ .radiomark
+      border-width: 9px
+      background-color: $steel-blue
+      background-image: url('../../assets/img/icons/check-icon.svg')
+      background-size: 15px
+      background-repeat: no-repeat
+      background-position: center center
+  
+
+.checkout-person-plan
+  &-block
+    position: relative
+    min-height: 295px
+    padding: 75px 120px
+    background: linear-gradient(2.7deg, rgba(255, 255, 255, 0.91) 17.33%, rgba(255, 255, 255, 0.24) 88.84%), url('../../assets/img/dream-body-bg.png')
+    background-size: cover
+    background-repeat: no-repeat
+    background-position: top center
+  &-title
+    font-size: 34px
+    line-height: 41px
+    color: #000
+
+.checkout-rewards-block
+  display: block
+  max-width: 830px
+  margin: 0 auto
+  padding: 50px
+  background-color: #fff
+  text-align: center
+  &__title
+    display: flex
+    align-items: center
+    justify-content: center
+    font-weight: bold
+    font-size: 34px
+    line-height: 41px
+    color: #000000
+
+.checkout-reserved-top-block
+  max-width: 589px
+  margin: 0 auto
+  padding: 50px
+  background-color: $steel-blue
+  color: #fff
+  text-align: center
+  &__title
+    font-weight: bold
+    font-size: 26px
+    line-height: 32px
+    text-align: center
+    color: #FFFFFF
+  &__descr
+    margin-top: 35px
+    font-size: 20px
+    line-height: 30px
+    font-weight: 400
+  &__countdown
+    font-size: 40px
+    line-height: 60px
+    font-weight: 700
+    &_title
+      margin-top: 45px
+      font-size: 20px
+      line-height: 34px
+      font-weight: 600
