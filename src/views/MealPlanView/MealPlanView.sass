@@ -134,10 +134,12 @@
 
         .nutrition-plan-card-list-date-item-day-week
           color: $white
-          font-weight: bold
 
     &-recipes
       padding: 36px 30px 0
+
+      @media (max-width: 768px)
+        padding: 0
 
       &-title
         display: flex
@@ -155,6 +157,11 @@
 
           path
             fill: #878787
+
+    &-recipes.card-bg
+      @media (max-width: 768px)
+        box-shadow: none
+
   &-info-col
     flex: 0 0 38%
     max-width: 38%
@@ -163,6 +170,7 @@
     @media (max-width: 768px)
       flex-basis: 100%
       max-width: 100%
+      margin-top: 50px
       margin-left: 0
       padding: 0 15px
 
@@ -217,24 +225,28 @@
     background-repeat: no-repeat
 
 .nutrition-plan
-  &-adherence-diet-card, &-usage-time-card, &-diet-settings-card
+  &-usage-time-card, &-diet-settings-card
     display: flex
-    flex-wrap: wrap
     padding: 25px 22px
 
     &-title
-      flex: 0 0 100%
       margin-bottom: 30px
 
     &-img
-      flex: 0 0 20%
+      margin-right: 22px
+      width: 58px
+      height: 58px
       text-align: center
 
-      img
-        max-width: 70%
+      @media (max-width: 576px)
+        display: none
+
+      svg
+        width: 58px
+        height: 58px
 
     &-content
-      flex: 0 0 80%
+      flex: 1
 
       .link
         color: $steel-blue
@@ -242,6 +254,12 @@
 
       strong, b
         color: $steel-blue
+
+      @media (max-width: 576px)
+        .bttn
+          width: 100%
+          padding: 20px
+          font-size: 14px
 
 
 .nutrition-plan-diet-settings-card-back, .nutrition-plan-add-recipe-card-back
@@ -259,6 +277,23 @@
       max-width: 70%
       path
         fill: #000000
+
+.nutrition-plan-socials
+  margin-top: 20px
+  padding: 40px
+
+  @media (max-width: 576px)
+    padding: 40px 22px
+
+  &-title
+    margin-bottom: 30px
+
+  .share-buttons-list
+    justify-content: space-between
+
+  .share-button
+    width: 58px
+    height: 58px
 
 .hint_sect_backdrop
   position: fixed
@@ -408,7 +443,12 @@
       color: darken(#FFFFFF, 20)
       border-bottom-color: darken(#FFFFFF, 20)
 
-.today-activities
+.nutrition-plan-info-col-today-activities
+  margin-bottom: 60px
+
+  @media (max-width: 576px)
+    margin-bottom: 20px
+  
   &.hinted
     position: relative
     background-color: #FFFFFF

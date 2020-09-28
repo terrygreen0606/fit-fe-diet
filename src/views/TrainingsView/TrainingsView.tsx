@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
@@ -13,8 +12,8 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import { getTranslate, getImagePath } from 'utils';
 import Breadcrumb from 'components/Breadcrumb';
 import ShareButtons from 'components/ShareButtons';
+import AdherenceDietPlan from 'components/AdherenceDietPlan';
 
-import { ReactComponent as RewardImage } from 'assets/img/reward-img.svg';
 import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
 import { ReactComponent as WorkoutSettingsIcon } from 'assets/img/icons/workout-settings-icon.svg';
 
@@ -136,46 +135,11 @@ const TrainingsView: React.FC = (props: any) => {
                 onChange={onActivitiesChange}
                 type='checkbox'
               />
-              <div className='training-plan-adherence-diet-card card-bg mt-5'>
-                <h4 className='training-plan-adherence-diet-card-title'>
-                  {t('trainings.diet_plan')}
-                </h4>
-                <div className='training-plan-adherence-diet-card-img'>
-                  <RewardImage />
-                </div>
-                <div className='training-plan-adherence-diet-card-content'>
-                  <p dangerouslySetInnerHTML={{ __html: t('workout.plan.completed', { COUNT: 0 }) }} />
-                </div>
-                <div className='training-plan-adherence-diet-card-progress'>
-                  <div className='training-plan-adherence-diet-card-progress-desc'>
-                    <div className='training-plan-adherence-diet-card-progress-desc-title'>
-                      {t('trainings.week_progress')}
-                    </div>
-                    <a
-                      href='/'
-                      className='training-plan-adherence-diet-card-progress-desc-link'
-                    >
-                      {t('trainings.report')}
-                    </a>
-                  </div>
-                  <div className='training-plan-adherence-diet-card-progress-line'>
-                    <div
-                      style={{
-                        left: 'calc(20% - 40px)',
-                      }}
-                      className='training-plan-adherence-diet-card-progress-line-percent'
-                    >
-                      20%
-                    </div>
-                    <div
-                      style={{
-                        width: '20%',
-                      }}
-                      className='training-plan-adherence-diet-card-progress-line-painted'
-                    />
-                  </div>
-                </div>
-              </div>
+              <AdherenceDietPlan
+                className='mb-5 mt-5'
+                todayProgress={0}
+                weekProgress={20}
+              />
               <div className='training-plan-adherence-diet-card-level'>
                 <div className='training-plan-adherence-diet-card-level-title'>
                   {t('trainings.level')}
@@ -243,7 +207,7 @@ const TrainingsView: React.FC = (props: any) => {
               </div>
               <div className='training-plan-adherence-diet-card-socials card-bg'>
                 <div className='training-plan-adherence-diet-card-socials-title'>
-                  {t('trainings.socials_title')}
+                  {t('socials.share.title')}
                 </div>
                 <ShareButtons shareLink='' classes='training-plan-adherence-diet-card-socials-list' />
               </div>

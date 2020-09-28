@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable no-underscore-dangle */
@@ -606,7 +605,7 @@ const RecipeFullView = (props: any) => {
                 </div>
                 <div className='recipe__share card-bg'>
                   <div className='recipe__share-title'>
-                    {t('recipe.share.title')}
+                    {t('socials.share.title')}
                   </div>
                   <ShareButtons shareLink={window.location.href} classes='recipe__share-buttons' />
                 </div>

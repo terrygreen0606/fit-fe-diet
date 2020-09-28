@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
@@ -16,6 +15,8 @@ import NutritionPlanCard from 'components/NutritionPlanCard';
 import SiteTour from 'components/SiteTour';
 import Breadcrumb from 'components/Breadcrumb';
 import TodayActivities from 'components/TodayActivities';
+import AdherenceDietPlan from 'components/AdherenceDietPlan';
+import ShareButtons from 'components/ShareButtons';
 
 import './MealPlanView.sass';
 
@@ -24,9 +25,7 @@ import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.
 import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
 import { ReactComponent as ShareIcon } from 'assets/img/icons/share-icon.svg';
 import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
-import RecipePreviewImage from 'assets/img/recipe-preview-img.jpg';
-import RewardImage from 'assets/img/reward-img.svg';
-import ClockImage from 'assets/img/icons/clock-icon.svg';
+import { ReactComponent as ClockIcon } from 'assets/img/icons/clock-icon.svg';
 
 import HintStep from './HintStep';
 import {
@@ -249,21 +248,7 @@ const MealPlanView = (props: any) => {
             </div>
             <div className='nutrition-plan-info-col'>
               <div
-                className='nutrition-plan-add-recipe-card-back'
-              >
-                <div className='nutrition-plan-add-recipe-card card-bg'>
-                  <h4>{t('nutrition.add.recipes')}</h4>
-                  <img
-                    src={RecipePreviewImage}
-                    className='nutrition-plan-add-recipe-card-img'
-                    alt=''
-                  />
-                  <span className='nutrition-plan-add-recipe-card-btn' />
-                </div>
-              </div>
-
-              <div
-                className={classnames('today-activities', {
+                className={classnames('nutrition-plan-info-col-today-activities', {
                   hinted: tourStep === 1,
                 })}
               >
@@ -284,30 +269,21 @@ const MealPlanView = (props: any) => {
                 )}
               </div>
 
-              <div className='nutrition-plan-adherence-diet-card card-bg mt-5'>
-                <h4 className='nutrition-plan-adherence-diet-card-title'>
-                  {t('trainings.diet_plan')}
-                </h4>
+              <AdherenceDietPlan
+                todayProgress={0}
+                weekProgress={20}
+              />
 
-                <div className='nutrition-plan-adherence-diet-card-img'>
-                  <img src={RewardImage} alt='' />
-                </div>
-
-                <div className='nutrition-plan-adherence-diet-card-content'>
-                  <p
-                    dangerouslySetInnerHTML={
-                      { __html: t('workout.plan.completed', { COUNT: 0 }) }
-                    }
-                  />
-                  <a href='/' className='link'>
-                    {t('trainings.report.week')}
-                  </a>
-                </div>
+              <div className='nutrition-plan-socials card-bg'>
+                <h5 className='nutrition-plan-socials-title'>
+                  {t('socials.share.title')}
+                </h5>
+                <ShareButtons shareLink={window.location.href} />
               </div>
 
               <div className='nutrition-plan-usage-time-card card-bg mt-5'>
                 <div className='nutrition-plan-usage-time-card-img text-left'>
-                  <img src={ClockImage} alt='' />
+                  <ClockIcon />
                 </div>
 
                 <div className='nutrition-plan-usage-time-card-content'>

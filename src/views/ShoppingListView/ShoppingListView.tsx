@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable operator-linebreak */
-/* eslint-disable react/no-danger */
 import React, {
   useState,
   useEffect,
