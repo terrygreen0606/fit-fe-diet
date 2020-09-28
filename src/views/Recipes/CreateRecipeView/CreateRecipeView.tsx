@@ -218,6 +218,12 @@ const CreateRecipeView = (props: any) => {
           const updatedIngredients: Array<any> = [...data.ingredients];
 
           updatedIngredients.map((ingredientItem) => {
+            ingredientItem.calorie /= 100;
+            ingredientItem.carbohydrate /= 100;
+            ingredientItem.fat /= 100;
+            ingredientItem.protein /= 100;
+            ingredientItem.salt /= 100;
+            ingredientItem.sugar /= 100;
             ingredientItem.isFullBlock = true;
           });
 
