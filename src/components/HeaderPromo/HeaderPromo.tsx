@@ -24,7 +24,7 @@ const HeaderPromo = (props: any) => {
           </div>
           <div className='col-xs-8 mt-2 mt-xs-0 text-xs-right'>
             
-            <Button className="main-promo-header__btn" color="primary-shadow">{t('button.reveal_plan')}</Button>
+            <Link to="/checkout" className="link-raw"><Button className="main-promo-header__btn" color="primary-shadow">{t('button.reveal_plan')}</Button></Link>
 
           </div>
         </div>  

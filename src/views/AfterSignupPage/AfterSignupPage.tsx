@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getTranslate, getImagePath } from 'utils';
 import { getAppTariff, getAppReviews } from 'api';
 
@@ -221,7 +222,7 @@ const AfterSignupPage = (props: any) => {
                   />
                 </ContentLoading>
 
-                <Button color="primary-shadow" className="mt-3">{t('button.reveal_plan')}</Button>
+                <Link to="/checkout" className="link-raw"><Button color="primary-shadow" className="mt-3">{t('button.reveal_plan')}</Button></Link>
                 <img className="after-signup-header-arrow" src={getImagePath('point-arrow-yellow.png')} alt="" />
               </div>
 
@@ -437,7 +438,7 @@ const AfterSignupPage = (props: any) => {
                 </div>
                 <div className="col-xl-6 mt-4 mt-xl-0 text-center">
                   
-                  <img src={getImagePath('safe-checkout-img.png')} className="img-fluid" alt="" />
+                  <img src={getImagePath('checkout/safe-checkout-img.png')} className="img-fluid" alt="" />
 
                 </div>
               </div>
@@ -470,7 +471,7 @@ const AfterSignupPage = (props: any) => {
                 />
               </ContentLoading>
 
-              <Button color="primary-shadow" className="mt-xl-5 mt-4">{t('button.reveal_plan')}</Button>
+              <Link to="/checkout" className="link-raw"><Button color="primary-shadow" className="mt-xl-5 mt-4">{t('button.reveal_plan')}</Button></Link>
 
               <img className="after-signup-start-today-arrow" src={getImagePath('point-arrow-yellow.png')} alt="" />
 
@@ -482,15 +483,15 @@ const AfterSignupPage = (props: any) => {
           </div>
         </div>
 
-        <section className="after-signup-reserved-block">
+        <section className="checkout-reserved-block">
           <div className="container">
             <div className="row">
               <div className="col-12">
                 
-                <h4 className="after-signup-reserved-block__title">
+                <h4 className="checkout-reserved-block__title">
                   {t('lp.bottom_countdown_title')} {' '}
                   
-                  <span className="after-signup__bottom_countdown">
+                  <span className="checkout-reserved-block__countdown">
                     <RawCountDown seconds={900} />
                   </span>
                 </h4>

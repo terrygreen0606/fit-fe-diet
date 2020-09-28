@@ -9,7 +9,7 @@ import './Button.sass';
 interface ButtonProps {
   type?: 'submit' | 'button' | 'reset';
   size?: 'md' | 'sm' | 'lg';
-  color?: 'primary' | 'primary-shadow' | 'default' | 'secondary' | 'raw' | 'info' | 'gray' | 'cancel' | 'caribbean';
+  color?: 'primary' | 'primary-shadow' | 'default' | 'mint' | 'caribbean' | 'secondary' | 'raw' | 'info' | 'gray' | 'cancel';
   weight?: 'medium' | 'default';
   icon?: any;
   outline?: boolean;

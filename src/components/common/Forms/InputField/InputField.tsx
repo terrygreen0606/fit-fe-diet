@@ -12,12 +12,12 @@ import FormInvalidMessage from '../FormInvalidMessage';
 
 import './InputField.sass';
 
-interface InputFieldProps {
+export type InputFieldProps = {
   type?: 'text' | 'number' | 'password' | 'money' | 'percent' | 'textarea' | 'radio',
   name?: string,
   label?: string,
   value?: string | number,
-  mask?: string, // https://github.com/insin/inputmask-core#pattern
+  mask?: any, // https://github.com/insin/inputmask-core#pattern
   className?: string,
   invalid?: boolean,
   isValid?: boolean,

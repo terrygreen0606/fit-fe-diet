@@ -22,6 +22,7 @@ export const routes = {
   register: '/register',
   recipeFullView: '/recipe/:recipeId',
   afterSignup: '/after-signup',
+  checkout: '/checkout',
   getRecipeFullView: (recipeId: string) => `/recipe/${recipeId}`,
   paymentHistorySettings: '/settings/payment-history',
 };
