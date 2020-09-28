@@ -153,7 +153,7 @@ const ShoppingListView = (props: any) => {
     if (settings.is_private) {
       if (settings.paid_until > 0) {
         getShoppingListFunc();
-        setIsNoAccess(false);
+        if (!cleanComponent) setIsNoAccess(false);
       } else {
         if (!cleanComponent) setIsNoAccess(true);
         if (!cleanComponent) setIsSpinnerActive(false);
@@ -161,7 +161,7 @@ const ShoppingListView = (props: any) => {
     }
 
     return () => cleanComponent = true;
-  }, [settings]);
+  }, [settings.paid_until, settings.is_private]);
 
   useInterval(() => {
     if (settings.paid_until > 0) {
