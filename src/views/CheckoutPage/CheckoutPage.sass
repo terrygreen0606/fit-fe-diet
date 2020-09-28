@@ -9,6 +9,18 @@
     position: relative
     margin-top: -70px
 
+.payment-types-img
+  display: inline-block
+  width: 40px
+  flex: 0 0 40px
+  margin-bottom: 3px
+  &:not(:last-child)
+    margin-right: 3px
+  &-list
+    display: inline-flex
+    flex-wrap: wrap
+    align-items: center
+
 .checkout-form-container
   display: block
   max-width: 660px
@@ -153,6 +165,7 @@
 
 
 .checkout-payment-radio
+  width: 270px
   padding: 0
 
   &__list
@@ -181,7 +194,7 @@
     border-radius: 10px
     border: 1px solid #C4C4C4
     background-color: #fff
-    justify-content: flex-end
+    justify-content: center
     &:hover
       background-color: $steel-blue
       border-color: $steel-blue
