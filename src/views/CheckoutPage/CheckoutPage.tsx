@@ -8,7 +8,7 @@ import {
   getImagePath
 } from 'utils';
 import { InputError } from 'types';
-import { getAppReviews } from 'api';
+import { getAppTariff, fetchUserProfile } from 'api';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -19,6 +19,7 @@ import CreditCardNumberField from 'components/common/Forms/CreditCardNumberField
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import RawCountDown from 'components/common/RawCountDown';
+import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import FormValidator from 'utils/FormValidator';
@@ -41,7 +42,73 @@ const CheckoutPage = (props: any) => {
   });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
 
+  const [tariffData, setTariffData] = useState<any>({
+    price_text: null,
+    price_old_text: null
+  });
+  const [tariffLoading, setTariffLoading] = useState<boolean>(true);
+  const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
+
+  const [profileData, setProfileData] = useState<any>({
+    name: 'Your'
+  });  
+  const [profileLoading, setProfileLoading] = useState<boolean>(true);
+
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
+
+  const getUserTariff = () => {
+    setTariffLoading(true);
+    setTariffLoadingError(false);
+
+    getAppTariff('d7')
+      .then(response => {
+        setTariffLoading(false);
+
+        if (response.data.success && response.data.data) {
+          setTariffData({
+            price_text: response.data.data.price_text || null,
+            price_old_text: response.data.data.price_old_text || null
+          });
+        } else {
+          setTariffLoadingError(true);
+        }
+      })
+      .catch(error => {
+        setTariffLoading(false);
+        setTariffLoadingError(true);
+      });
+  };
+
+  const getUserProfile = () => {
+    setProfileLoading(true);
+
+    fetchUserProfile()
+      .then(response => {
+        setProfileLoading(false);
+
+        if (response.data.success && response.data.data) {
+          setProfileData({
+            name: response.data.data.name || t('checkout.title.user_name')
+          });
+        } else {
+          setProfileData({
+            name: t('checkout.title.user_name')
+          });
+        }
+      })
+      .catch(error => {
+        setProfileLoading(false);
+
+        setProfileData({
+          name: t('checkout.title.user_name')
+        });
+      });
+  };
+
+  useEffect(() =>  {
+    getUserTariff();
+    getUserProfile();
+  }, []);
 
   const t = (code: string, placeholders?: any) => 
     getTranslate(props.localePhrases, code, placeholders);
@@ -111,9 +178,9 @@ const CheckoutPage = (props: any) => {
         className="checkout-warning-modal"
       >
         <Modal.Main>
-          <h5 className="checkout-warning-modal__title">Your information maybe lost!</h5>
-          <p className="checkout-warning-modal__descr">Stay on this page to preserve your plan and sign up when you are ready.</p>
-          <Button className="checkout-warning-modal__btn" block color="mint">See my plan today</Button>
+          <h5 className="checkout-warning-modal__title">{t('checkout.warning_modal.title')}</h5>
+          <p className="checkout-warning-modal__descr">{t('checkout.warning_modal.descr')}</p>
+          <Button className="checkout-warning-modal__btn" block color="mint">{t('checkout.warning_modal.btn')}</Button>
         </Modal.Main>
       </Modal>
 
@@ -124,21 +191,23 @@ const CheckoutPage = (props: any) => {
 
               <h4 className="sect-subtitle">{t('checkout.page_title')}</h4>
 
-              <div className="checkout-tpl-container mt-5 pt-5">
+              <div className="checkout-tpl-container mt-3 mt-sm-5 pt-xl-5">
                 <div className="checkout-person-plan-block">
-                  <h4 className="checkout-person-plan-title">John Dow’s<br />Personalized diet plan</h4>
+                  <h4 className="checkout-person-plan-title">
+                    {profileLoading ? <Spinner /> : <div dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }} />}
+                  </h4>
                 </div>
 
                 <div className="checkout-rewards-block">
-                  <h4 className="checkout-rewards-block__title"><RewardIcon className="mr-3" /> Loose weight for good</h4>
+                  <h4 className="checkout-rewards-block__title"><RewardIcon className="mr-3" /> {t('checkout.rewards_title')}</h4>
 
                   <div className="row mt-5">
-                    <div className="col-3 pt-2">
+                    <div className="col-lg-3 mb-3 mb-lg-0 pt-2">
                       
                       <h5>{t('lp.partners_list_title')}</h5>
 
                     </div>
-                    <div className="col-9">
+                    <div className="col-lg-9">
                       
                       <div className="app-partners-list">
                         <span className="app-partners-list__item" style={{ backgroundImage: `url(${require('assets/img/partners/daily-mirror.png')})` }} />
@@ -152,16 +221,16 @@ const CheckoutPage = (props: any) => {
 
                 <div className="checkout-form-container">
                   <div className="checkout-reserved-top-block">
-                    <h5 className="checkout-reserved-top-block__title">Your personalized plan has been reserved for the next 15 minutes!</h5>
-                    <p className="checkout-reserved-top-block__descr">Save your profile below to claim it now</p>
-                    <h6 className="checkout-reserved-top-block__countdown_title">Time remaining:</h6>
+                    <h5 className="checkout-reserved-top-block__title">{t('checkout.reserved_block.title')}</h5>
+                    <p className="checkout-reserved-top-block__descr">{t('checkout.reserved_block.descr')}</p>
+                    <h6 className="checkout-reserved-top-block__countdown_title">{t('checkout.reserved_block.title')}:</h6>
                     <span className="checkout-reserved-top-block__countdown">
                       <RawCountDown seconds={900} />
                     </span>
                   </div>
 
                   <div className="text-center mt-5">
-                    <h6 className="checkout-advantages__title mb-5">Hightlights of your costomize plan:</h6>
+                    <h6 className="checkout-advantages__title mb-5">{t('checkout.advantages_title')}:</h6>
 
                     <div className="app-advantages-list list-xs">
                       <div className="app-advantages-list__item">{t('checkout.advantage_1')}</div>
@@ -169,43 +238,52 @@ const CheckoutPage = (props: any) => {
                     </div>
                   </div>
 
-                  <div className="checkout-summary-list mt-5">
-                    <div className="checkout-summary-item">
-                      <div className="checkout-summary-item__label">Today total</div>
-                      <div className="checkout-summary-item__value"><b>1$</b></div>
-                    </div>
-
-                    <div className="checkout-summary-item">
-                      <div className="checkout-summary-item__label">Discount code:</div>
-                      <div className="checkout-summary-item__value">
-                        <form className="checkout-discount-form" onSubmit={e => checkoutDiscountFormSubmit(e)}>
-                          <InputField 
-                            className="checkout-discount-form__input"
-                            name='discount_code'
-                            invalid={getFieldErrors('discount_code').length > 0}
-                            value={checkoutForm.discount_code}
-                            data-validate='["required"]'
-                            onChange={e => validateOnChange('discount_code', e.target.value, e)}
-                            placeholder='Code'
-                          />
-
-                          <Button type="submit" className="checkout-discount-form__btn" color="mint">Save</Button>
-                        </form>
+                  <ContentLoading
+                    isLoading={tariffLoading}
+                    isError={tariffLoadingError}
+                    fetchData={() => getUserTariff()}
+                  >
+                    <div className="checkout-summary-list mt-5">
+                      <div className="checkout-summary-item">
+                        <div className="checkout-summary-item__label">{t('checkout.summary.total_title')}</div>
+                        <div className="checkout-summary-item__value"><b>{tariffData.price_text}</b></div>
                       </div>
-                    </div>
 
-                    <div className="checkout-summary-item">
-                      <div className="checkout-summary-item__label">Price after trial</div>
-                      <div className="checkout-summary-item__value"><b>25$ for 2 month</b></div>
-                    </div>
+                      <div className="checkout-summary-item">
+                        <div className="checkout-summary-item__label">{t('checkout.summary.discount_title')}:</div>
+                        <div className="checkout-summary-item__value">
+                          <form className="checkout-discount-form" onSubmit={e => checkoutDiscountFormSubmit(e)}>
+                            <InputField 
+                              className="checkout-discount-form__input"
+                              name='discount_code'
+                              invalid={getFieldErrors('discount_code').length > 0}
+                              value={checkoutForm.discount_code}
+                              data-validate='["required"]'
+                              onChange={e => validateOnChange('discount_code', e.target.value, e)}
+                              placeholder='Code'
+                            />
 
-                    <div className="checkout-summary-item">
-                      <div className="checkout-summary-item__label">14-day trial unlocked</div>
-                      <div className="checkout-summary-item__value"><del className="mr-3">5$</del><b>1$</b></div>
-                    </div>
-                  </div>
+                            <Button type="submit" className="checkout-discount-form__btn" color="mint">{t('checkout.discount_btn')}</Button>
+                          </form>
+                        </div>
+                      </div>
 
-                  <div className="pl-5">
+                      <div className="checkout-summary-item">
+                        <div className="checkout-summary-item__label">{t('checkout.summary.price_after_trial_title')}</div>
+                        <div className="checkout-summary-item__value"><b></b></div>
+                      </div>
+
+                      <div className="checkout-summary-item">
+                        <div className="checkout-summary-item__label">{t('checkout.summary.trial_title')}</div>
+                        <div className="checkout-summary-item__value">
+                          <del className="mr-3">{tariffData.price_old_text}</del>
+                          <b>{tariffData.price_text}</b>
+                        </div>
+                      </div>
+                    </div>                    
+                  </ContentLoading>
+
+                  <div className="pl-sm-5">
                     <div className="product-plants-one-tree-block mt-5">
                       <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
                     </div>
@@ -256,7 +334,7 @@ const CheckoutPage = (props: any) => {
                   </div>
 
                   <form className="checkout-pay-form mt-5" onSubmit={e => checkoutFormSubmit(e)}>
-                    <h6 className="checkout-pay-form__title mb-3">{t('checkout.form_title')} <LockIcon className="ml-3" /></h6>
+                    <h6 className="checkout-pay-form__title mb-3">{t('checkout.form_title')} <LockIcon className="ml-2" /></h6>
 
                     <FormGroup>
                       <InputField
@@ -289,7 +367,7 @@ const CheckoutPage = (props: any) => {
                     </FormGroup>
 
                     <div className="row">
-                      <div className="col-3">
+                      <div className="col-6 col-xs-3">
                         
                         <FormGroup>
                           <InputField
@@ -308,7 +386,7 @@ const CheckoutPage = (props: any) => {
                         </FormGroup>
 
                       </div>
-                      <div className="col-3">
+                      <div className="col-6 col-xs-3">
                         
                         <FormGroup>
                           <FormLabel className="text-transparent">{t('checkout.form_card_expiration')}</FormLabel>
@@ -327,7 +405,7 @@ const CheckoutPage = (props: any) => {
                         </FormGroup>
 
                       </div>
-                      <div className="col-4 offset-2">
+                      <div className="col-xs-6 col-sm-4 offset-sm-2">
                         
                         <FormGroup>
                           <InputField
@@ -348,8 +426,8 @@ const CheckoutPage = (props: any) => {
                       </div>  
                     </div>
 
-                    <div className="text-center">
-                      <Button type="submit" className="checkout-pay-form__submit mt-5" color="primary">{t('button.checkout_start')}</Button>
+                    <div className="text-center mt-3 mt-sm-5">
+                      <Button type="submit" className="checkout-pay-form__submit" color="primary">{t('button.checkout_start')}</Button>
                     </div>
                   </form>
 

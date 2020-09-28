@@ -56,6 +56,9 @@
         padding-left: 50px
         font-size: 18px
         line-height: 22px
+        &:not(:last-child)
+          margin-bottom: 15px
+          
   &__item
     min-height: 55px
     padding-left: 105px
@@ -168,6 +171,10 @@
     background-position: center center
     &:not(:last-child)
       margin-right: 50px
+
+      @media only screen and (max-width : 768px)
+        margin-right: 20px
+
 
 // STars list
 .rate-stars
