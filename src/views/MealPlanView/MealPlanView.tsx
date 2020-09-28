@@ -55,7 +55,7 @@ const MealPlanView = (props: any) => {
   };
 
   useEffect(() => {
-    if (tourStep === 4) props.changeSetting('afterSignup', false);
+    if (tourStep === 3) props.changeSetting('afterSignup', false);
 
     tourStepFunction(width, tourStep);
   }, [tourStep]);
@@ -96,13 +96,13 @@ const MealPlanView = (props: any) => {
           currentPage={t('nutrition.title')}
         />
       </div>
-      <SiteTour
-        data={mockData}
-        onAction={onAction}
-        localePhrases={localePhrases}
-      />
-      {/* {afterSignUp && (
-      )} */}
+      {afterSignUp && (
+        <SiteTour
+          data={mockData}
+          onAction={onAction}
+          localePhrases={localePhrases}
+        />
+      )}
 
       {(tourStep > 0 || afterSignUp) && <div className='hint_sect_backdrop' />}
 
@@ -113,7 +113,7 @@ const MealPlanView = (props: any) => {
               className={classnames(
                 'nutrition-plan-card-list-col nutrition-plan-list',
                 {
-                  hinted: tourStep === 3,
+                  hinted: tourStep === 2,
                 },
               )}
             >
@@ -238,20 +238,18 @@ const MealPlanView = (props: any) => {
                   </div>
                 </div>
               </div>
-              {tourStep === 3 && (
+              {tourStep === 2 && (
                 <HintStep
-                  hintStep={3}
-                  onClick={() => setTourStep(4)}
-                  text={t('tour.hint.step3')}
+                  hintStep={2}
+                  onClick={() => setTourStep(3)}
+                  text={t('tour.hint.step2')}
                   closeText={t('common.understand')}
                 />
               )}
             </div>
             <div className='nutrition-plan-info-col'>
               <div
-                className={classnames('nutrition-plan-add-recipe-card-back', {
-                  hinted: tourStep === 1,
-                })}
+                className='nutrition-plan-add-recipe-card-back'
               >
                 <div className='nutrition-plan-add-recipe-card card-bg'>
                   <h4>{t('nutrition.add.recipes')}</h4>
@@ -261,21 +259,12 @@ const MealPlanView = (props: any) => {
                     alt=''
                   />
                   <span className='nutrition-plan-add-recipe-card-btn' />
-
-                  {tourStep === 1 && (
-                    <HintStep
-                      hintStep={1}
-                      onClick={() => setTourStep(2)}
-                      text={t('tour.hint.step1')}
-                      closeText={t('common.understand')}
-                    />
-                  )}
                 </div>
               </div>
 
               <div
                 className={classnames('today-activities', {
-                  hinted: tourStep === 2,
+                  hinted: tourStep === 1,
                 })}
               >
                 <TodayActivities
@@ -285,11 +274,11 @@ const MealPlanView = (props: any) => {
                   onChange={onActivitiesChange}
                   type='checkbox'
                 />
-                {tourStep === 2 && (
+                {tourStep === 1 && (
                   <HintStep
-                    hintStep={2}
-                    onClick={() => setTourStep(3)}
-                    text={t('tour.hint.step2')}
+                    hintStep={1}
+                    onClick={() => setTourStep(2)}
+                    text={t('tour.hint.step1')}
                     closeText={t('common.understand')}
                   />
                 )}
@@ -340,7 +329,7 @@ const MealPlanView = (props: any) => {
                 className={classnames(
                   'nutrition-plan-diet-settings-card-back',
                   {
-                    hinted: tourStep === 4,
+                    hinted: tourStep === 3,
                   },
                 )}
               >
@@ -357,11 +346,11 @@ const MealPlanView = (props: any) => {
                     </Button>
                   </div>
 
-                  {tourStep === 4 && (
+                  {tourStep === 3 && (
                     <HintStep
-                      hintStep={4}
+                      hintStep={3}
                       onClick={() => setTourStep(0)}
-                      text={t('tour.hint.step4')}
+                      text={t('tour.hint.step3')}
                       closeText={t('common.understand')}
                     />
                   )}

@@ -281,29 +281,6 @@
     z-index: 510
 
     &_1
-      bottom: 35px
-      right: 0
-
-      @media (max-width: 768px)
-        right: 0
-        left: 0
-        bottom: 100%
-        max-width: unset
-        padding: 20px
-
-      &_triangle
-        bottom: -10px
-        right: 50px
-
-        @media (max-width: 768px)
-          border-top: 160px solid $steel-blue !important
-          border-right: 30px solid transparent !important
-          border-left: 30px solid transparent !important
-          bottom: unset
-          top: 100%
-          right: 35px
-
-    &_2
       top: -15%
       left: calc(38% - 82px)
       padding: 15px
@@ -312,7 +289,8 @@
       @media (max-width: 768px)
         right: 0
         left: 0
-        top: 103%
+        top: 50%
+        transform: translateY(-50%)
         max-width: unset
         width: unset
         text-align: unset
@@ -333,14 +311,15 @@
           border-top: unset !important
           border-bottom: 10px solid $steel-blue !important
 
-    &_3
-      top: 80%
+    &_2
+      top: 20%
       left: 103%
 
       @media (max-width: 768px)
         right: 0
         left: 0
-        top: 100%
+        top: 50%
+        transform: translateY(-50%)
         max-width: unset
         width: unset
         padding: 20px
@@ -366,7 +345,7 @@
           border-bottom: 30px solid $steel-blue !important
           transform: unset
 
-    &_4
+    &_3
       top: 50%
       transform: translateY(-50%)
       right: 103%
@@ -375,7 +354,8 @@
       @media (max-width: 768px)
         right: 0
         left: 0
-        top: 100%
+        top: 50%
+        transform: translateY(-50%)
         max-width: unset
         width: unset
         padding: 20px
