@@ -153,6 +153,7 @@ const ShoppingListView = (props: any) => {
     if (settings.is_private) {
       if (settings.paid_until > 0) {
         getShoppingListFunc();
+        setIsNoAccess(false);
       } else {
         if (!cleanComponent) setIsNoAccess(true);
         if (!cleanComponent) setIsSpinnerActive(false);
