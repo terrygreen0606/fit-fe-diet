@@ -17,6 +17,7 @@ import Breadcrumb from 'components/Breadcrumb';
 import TodayActivities from 'components/TodayActivities';
 import AdherenceDietPlan from 'components/AdherenceDietPlan';
 import ShareButtons from 'components/ShareButtons';
+import Advantages from 'components/Advantages';
 
 import './MealPlanView.sass';
 
@@ -26,6 +27,8 @@ import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
 import { ReactComponent as ShareIcon } from 'assets/img/icons/share-icon.svg';
 import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
 import { ReactComponent as ClockIcon } from 'assets/img/icons/clock-icon.svg';
+import { ReactComponent as CookCutIcon } from 'assets/img/icons/cook-cut-icon.svg';
+import { ReactComponent as DumbbellIcon } from 'assets/img/icons/dumbbell-icon.svg';
 
 import HintStep from './HintStep';
 import {
@@ -334,6 +337,19 @@ const MealPlanView = (props: any) => {
               </div>
             </div>
           </div>
+          <Advantages
+            icon1={CookCutIcon}
+            icon2={MealIcon}
+            icon3={DumbbellIcon}
+            mainTitle={t('nutrition.plan.title')}
+            advantage1Title={t('nutrition.plan.feat1_title')}
+            advantage1Desc={t('nutrition.plan.feat1_desc')}
+            advantage2Title={t('nutrition.plan.feat2_title')}
+            advantage2Desc={t('nutrition.plan.feat2_desc')}
+            advantage3Title={t('nutrition.plan.feat3_title')}
+            advantage3Desc={t('nutrition.plan.feat3_desc')}
+            isShowBtn
+          />
         </div>
       </section>
     </>

@@ -3,21 +3,46 @@
 .how-exercise-plan-works
   &-sect
     font-size: 16px
+
     .col-12
       display: flex
+
     .container
+      position: relative
       background-color: $steel-blue
       padding-top: 40px
       padding-bottom: 50px
       color: #fff
+
       h5, h4
         color: #fff
+  
+    &-hiding-btn
+      position: absolute
+      top: 15px
+      right: 20px
+      padding: 0
+      font-family: "Montserrat", sans-serif
+      font-size: 18px
+      line-height: 1.2
+      color: $white
+      background-color: transparent
+      border: none
+      border-bottom: 1px solid
+      cursor: pointer
+      transition: 0.2s border-bottom ease
+
+      &:hover
+        border-bottom: 1px solid transparent
+
   &-col
     flex: 0 0 20%
     max-width: 20%
+
   &-icon
     height: auto
     width: 70px
+
     &-wrap
       display: flex
       align-items: flex-end
@@ -30,9 +55,11 @@
     &-sect
       .col-12
         display: block
+
       .row
         flex-direction: column
         align-items: center
+
     &-col
       display: flex
       flex: 0 0 100%
@@ -40,17 +67,22 @@
       min-width: 100%
       flex-direction: row
       justify-items: flex-start
+
       &:not(:last-child)
         margin-bottom: 70px
+        
       h5, p
         margin-top: unset !important
         display: inline-flex
+
       h5, h4
         font-size: 18px
         line-height: 22px
+
       p
         font-size: 12px
         line-height: 15px
+
     &-icon
       &-wrap
         height: unset
@@ -58,6 +90,7 @@
         padding-left: 0
         padding-right: 35px
         align-items: flex-start
+
     &-text
       display: inline-flex
       flex-direction: column
