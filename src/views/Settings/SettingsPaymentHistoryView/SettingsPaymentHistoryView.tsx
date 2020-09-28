@@ -19,7 +19,7 @@ const SettingsPaymentHistoryView = (props: any) => {
 
   const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
-  const [paymentHistory, setPaymentHistory] = useState<Array<any>>([]);
+  const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
 
   useEffect(() => {
     let cleanComponent = false;

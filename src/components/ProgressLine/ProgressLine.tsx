@@ -10,7 +10,7 @@ import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg
 
 type ProgressProps = {
   activeStepIndex: number;
-  steps: Array<any>;
+  steps: Array<{ text?: string, onClick?: () => void }>;
 };
 
 const ProgressLine = ({

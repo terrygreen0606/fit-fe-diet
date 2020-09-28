@@ -73,13 +73,13 @@ const CreateRecipeView = (props: any) => {
     mealtimes: [],
   });
 
-  const [mealTimes, setMealTimes] = useState<Array<any>>([]);
+  const [mealTimes, setMealTimes] = useState<any[]>([]);
 
-  const [files, setFiles] = useState<Array<any>>([]);
+  const [files, setFiles] = useState<any[]>([]);
 
   const [videoLinkIframe, setVideoLinkIframe] = useState<string>('');
 
-  const [composition, setComposition] = useState<Array<any>>([
+  const [composition, setComposition] = useState<any[]>([
     {
       name: 'fat',
       namePlural: t('common.fats'),
@@ -218,6 +218,12 @@ const CreateRecipeView = (props: any) => {
           const updatedIngredients: Array<any> = [...data.ingredients];
 
           updatedIngredients.map((ingredientItem) => {
+            ingredientItem.calorie /= 100;
+            ingredientItem.carbohydrate /= 100;
+            ingredientItem.fat /= 100;
+            ingredientItem.protein /= 100;
+            ingredientItem.salt /= 100;
+            ingredientItem.sugar /= 100;
             ingredientItem.isFullBlock = true;
           });
 
@@ -251,7 +257,7 @@ const CreateRecipeView = (props: any) => {
     calcComposition(createRecipeForm.ingredients);
   }, [createRecipeForm.ingredients]);
 
-  const [createRecipeErrors, setCreateRecipeErrors] = useState<Array<any>>([]);
+  const [createRecipeErrors, setCreateRecipeErrors] = useState<any[]>([]);
 
   const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState<boolean>(false);
 
@@ -519,7 +525,7 @@ const CreateRecipeView = (props: any) => {
                   />
                 </div>
                 <Button
-                  color='primary'
+                  color='caribbean'
                   onClick={() => setVideoLinkIframe(getVideo(createRecipeForm.videoUrl))}
                   className='recipe__add-video-desc-btn'
                 >

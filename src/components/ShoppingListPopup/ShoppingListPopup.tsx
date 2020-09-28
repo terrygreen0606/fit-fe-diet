@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -12,6 +13,7 @@ import {
   setShoppingRowBought,
   deleteFromShoppingList,
 } from 'api';
+import { routes } from 'constants/routes';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -19,6 +21,7 @@ import ShareButtons from 'components/ShareButtons';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import Spinner from 'components/common/Spinner';
 import useOutsideClick from 'components/hooks/useOutsideClick';
+import Button from 'components/common/Forms/Button';
 
 import './ShoppingListPopup.sass';
 
@@ -34,7 +37,7 @@ const ShoppingListPopup = (props: any) => {
 
   const { settings } = props;
 
-  const [shoppingList, setShoppingList] = useState<Array<any>>([]);
+  const [shoppingList, setShoppingList] = useState<any[]>([]);
 
   const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
@@ -53,27 +56,28 @@ const ShoppingListPopup = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
+    if (settings.is_private) {
+      if (settings.paid_until > 0) {
+        getShoppingList(2, dateSync).then((response) => {
+          const { list } = response.data.data;
 
-    if (settings.paid_until === 0) {
-      if (!cleanComponent) setIsNoAccess(true);
-      if (!cleanComponent) setIsSpinnerActive(false);
-    } else {
-      getShoppingList(2, dateSync).then((response) => {
-        const { list } = response.data.data;
+          list.map((item) => {
+            item.is_disable = false;
+          });
 
-        list.map((item) => {
-          item.is_disable = false;
+          if (!cleanComponent) setShoppingList(list);
+
+          if (!cleanComponent) setDateSync(response.data.data.date_sync);
+        }).finally(() => {
+          if (!cleanComponent) setIsSpinnerActive(false);
         });
-
-        if (!cleanComponent) setShoppingList(list);
-
-        if (!cleanComponent) setDateSync(response.data.data.date_sync);
-      }).finally(() => {
+      } else {
+        if (!cleanComponent) setIsNoAccess(true);
         if (!cleanComponent) setIsSpinnerActive(false);
-      });
+      }
     }
     return () => cleanComponent = true;
-  }, []);
+  }, [settings]);
 
   useEffect(() => {
     props.updateShoppingListLength(shoppingList.filter((item) =>
@@ -137,6 +141,17 @@ const ShoppingListPopup = (props: any) => {
                       </div>
                     </div>
                   </div>
+                  <NavLink
+                    to={routes.shoppingList}
+                    className='shop-list-popup__open-page-btn'
+                  >
+                    <Button
+                      color='caribbean'
+                      size='sm'
+                    >
+                      {t('shop_list.open_page')}
+                    </Button>
+                  </NavLink>
                   <div className='shop-list-popup__body'>
                     {shoppingList.map((item, itemIndex) => (
                       <div
