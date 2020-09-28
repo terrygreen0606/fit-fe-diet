@@ -440,7 +440,7 @@ const RecipeFullView = (props: any) => {
                     type='button'
                     onClick={() => setActiveNotesModal(!isActiveNotesModal)}
                     className={classnames('recipe__actions-button card-bg', {
-                      active: isActiveNotesModal,
+                      active: isActiveNotesModal || addNoteForm.note,
                     })}
                   >
                     <div className='recipe__actions-button-media'>
