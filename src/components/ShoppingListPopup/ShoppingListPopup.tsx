@@ -56,27 +56,28 @@ const ShoppingListPopup = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
+    if (settings.is_private) {
+      if (settings.paid_until > 0) {
+        getShoppingList(2, dateSync).then((response) => {
+          const { list } = response.data.data;
 
-    if (settings.paid_until === 0) {
-      if (!cleanComponent) setIsNoAccess(true);
-      if (!cleanComponent) setIsSpinnerActive(false);
-    } else {
-      getShoppingList(2, dateSync).then((response) => {
-        const { list } = response.data.data;
+          list.map((item) => {
+            item.is_disable = false;
+          });
 
-        list.map((item) => {
-          item.is_disable = false;
+          if (!cleanComponent) setShoppingList(list);
+
+          if (!cleanComponent) setDateSync(response.data.data.date_sync);
+        }).finally(() => {
+          if (!cleanComponent) setIsSpinnerActive(false);
         });
-
-        if (!cleanComponent) setShoppingList(list);
-
-        if (!cleanComponent) setDateSync(response.data.data.date_sync);
-      }).finally(() => {
+      } else {
+        if (!cleanComponent) setIsNoAccess(true);
         if (!cleanComponent) setIsSpinnerActive(false);
-      });
+      }
     }
     return () => cleanComponent = true;
-  }, []);
+  }, [settings]);
 
   useEffect(() => {
     props.updateShoppingListLength(shoppingList.filter((item) =>

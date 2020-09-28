@@ -14,7 +14,7 @@ const initialState = {
     afterSignupGoal: -1,
     afterSignupWeight: 89,
     afterSignupWeightGoal: 77,
-    afterSignupPredictDate: 1612742400
+    afterSignupPredictDate: 1612742400,
   },
   isAuthChecking: true, // default true when app loads
 };

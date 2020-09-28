@@ -55,7 +55,10 @@ export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true
       getAppSettings()
         .then(response => {
           if (response.data.success && response.data.data) {
-            dispatch(setAppSetting(response.data.data));
+            dispatch(setAppSetting({
+              ...response.data.data,
+              is_private: true,
+            }));
 
             if (localesLoad) {
               dispatch(loadLocales());
