@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getTranslate, getImagePath } from 'utils';
 import { getAppTariff, getAppReviews } from 'api';
 
@@ -221,7 +222,7 @@ const AfterSignupPage = (props: any) => {
                   />
                 </ContentLoading>
 
-                <Button color="primary-shadow" className="mt-3">{t('button.reveal_plan')}</Button>
+                <Link to="/checkout" className="link-raw"><Button color="primary-shadow" className="mt-3">{t('button.reveal_plan')}</Button></Link>
                 <img className="after-signup-header-arrow" src={getImagePath('point-arrow-yellow.png')} alt="" />
               </div>
 
@@ -470,7 +471,7 @@ const AfterSignupPage = (props: any) => {
                 />
               </ContentLoading>
 
-              <Button color="primary-shadow" className="mt-xl-5 mt-4">{t('button.reveal_plan')}</Button>
+              <Link to="/checkout" className="link-raw"><Button color="primary-shadow" className="mt-xl-5 mt-4">{t('button.reveal_plan')}</Button></Link>
 
               <img className="after-signup-start-today-arrow" src={getImagePath('point-arrow-yellow.png')} alt="" />
 
