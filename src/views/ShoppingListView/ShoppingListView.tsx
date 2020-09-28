@@ -28,6 +28,7 @@ import {
   syncShoppingList,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
+import { setAppSetting } from 'store/actions';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -69,6 +70,9 @@ const ShoppingListView = (props: any) => {
     id: '',
     weight: null,
   });
+
+  const [selectedIngedient, setSelectedIngedient] = useState<any[]>([null]);
+
   const [addIngredientErrors, setAddIngredientErrors] = useState<any[]>([]);
 
   const [dateSync, setDateSync] = useState<number>(0);
@@ -116,6 +120,14 @@ const ShoppingListView = (props: any) => {
     });
   };
 
+  const syncNumberInShopCart = (array = []) => {
+    const notBoughtIngredients = (array.length > 0 ? array : shoppingList).filter((item) => !item.is_bought).length;
+    props.setAppSetting({
+      ...settings,
+      shopping_list_count: notBoughtIngredients,
+    });
+  };
+
   const getShoppingListFunc = () => {
     setIsSyncResponseActive(false);
     getShoppingList(2, dateSync).then((response) => {
@@ -124,6 +136,8 @@ const ShoppingListView = (props: any) => {
       list.map((item) => {
         item.is_disable = false;
       });
+
+      syncNumberInShopCart(list);
 
       setShoppingList(list);
 
@@ -136,18 +150,18 @@ const ShoppingListView = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
-    if (settings.paid_until === 0) {
-      if (!cleanComponent) setIsNoAccess(true);
-      if (!cleanComponent) setIsSpinnerActive(false);
-    } else {
-      getShoppingListFunc();
-      getPublicShopListUrl().then((response) => {
-        if (!cleanComponent) setSharePublicUrl(response.data.data.url);
-      });
+    if (settings.is_private) {
+      if (settings.paid_until > 0) {
+        getShoppingListFunc();
+        if (!cleanComponent) setIsNoAccess(false);
+      } else {
+        if (!cleanComponent) setIsNoAccess(true);
+        if (!cleanComponent) setIsSpinnerActive(false);
+      }
     }
 
     return () => cleanComponent = true;
-  }, []);
+  }, [settings.paid_until, settings.is_private]);
 
   useInterval(() => {
     if (settings.paid_until > 0) {
@@ -247,6 +261,11 @@ const ShoppingListView = (props: any) => {
         if (!isFound) {
           getShoppingListFunc();
         }
+        setSelectedIngedient([null]);
+        setAddIngredientForm({
+          ...addIngredientForm,
+          weight: null,
+        });
       }).catch(() => {
         toast.error(t('shop_list.update.error'), {
           autoClose: 3000,
@@ -315,7 +334,12 @@ const ShoppingListView = (props: any) => {
                           <div ref={changedBlockRef}>
                             <button
                               type='button'
-                              onClick={() => setIsBlockActive(!isBlockActive)}
+                              onClick={() => {
+                                setIsBlockActive(!isBlockActive);
+                                getPublicShopListUrl().then((response) => {
+                                  setSharePublicUrl(response.data.data.url);
+                                });
+                              }}
                               className='shop-list__header-buttons-item'
                             >
                               <ShareIcon />
@@ -391,6 +415,8 @@ const ShoppingListView = (props: any) => {
                                             updatedShoppingList[itemIndex].is_disable = false;
                                             setShoppingList([...updatedShoppingList]);
                                           }, 500);
+
+                                          syncNumberInShopCart();
                                         });
                                       }}
                                     />
@@ -407,7 +433,10 @@ const ShoppingListView = (props: any) => {
                                         setIsSyncResponseActive(false);
 
                                         deleteFromShoppingList(item.id, dateSync)
-                                          .then((response) => setDateSync(response.data.data.date_sync))
+                                          .then((response) => {
+                                            setDateSync(response.data.data.date_sync);
+                                            syncNumberInShopCart(updatedShoppingList);
+                                          })
                                           .catch(() => {
                                             toast.error(t('shop_list.update.error'), {
                                               autoClose: 3000,
@@ -482,6 +511,8 @@ const ShoppingListView = (props: any) => {
                                             updatedShoppingList[itemIndex].is_disable = false;
                                             setShoppingList([...updatedShoppingList]);
                                           }, 500);
+
+                                          syncNumberInShopCart();
                                         });
                                       }}
                                     />
@@ -498,7 +529,10 @@ const ShoppingListView = (props: any) => {
                                         setIsSyncResponseActive(false);
 
                                         deleteFromShoppingList(item.id, dateSync)
-                                          .then((response) => setDateSync(response.data.data.date_sync))
+                                          .then((response) => {
+                                            setDateSync(response.data.data.date_sync);
+                                            syncNumberInShopCart(updatedShoppingList);
+                                          })
                                           .catch(() => {
                                             toast.error(t('shop_list.update.error'), {
                                               autoClose: 3000,
@@ -525,14 +559,15 @@ const ShoppingListView = (props: any) => {
                       >
                         <div className='shop-list__footer-search'>
                           <AsyncSelect
-                            async
+                            value={selectedIngedient}
                             loadOptions={inputValueIngredient}
                             onChange={(e) => {
                               setIndgredient(e);
+                              setSelectedIngedient(e);
                             }}
                             label={t('ingr.add')}
-                            placeholder={t('recipe.create.ingredient_search')}
                             styles={colourStylesSelect}
+                            placeholder={t('recipe.create.ingredient_search')}
                           />
                         </div>
                         <div className='shop-list__footer-quantity'>
@@ -620,4 +655,4 @@ const ShoppingListView = (props: any) => {
 
 export default WithTranslate(connect((state: any) => ({
   settings: state.settings,
-}))(ShoppingListView));
+}), { setAppSetting })(ShoppingListView));

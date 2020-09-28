@@ -226,7 +226,9 @@ const RecipeFullView = (props: any) => {
                               active: image.isActive,
                             })}
                           >
-                            <img src={image.url} alt='' />
+                            <a href={image.url} target='_blank' rel='noreferrer'>
+                              <img src={image.url} alt='' />
+                            </a>
                           </div>
                         ))}
                         {recipeData.images.length > 1 && (
@@ -440,7 +442,7 @@ const RecipeFullView = (props: any) => {
                     type='button'
                     onClick={() => setActiveNotesModal(!isActiveNotesModal)}
                     className={classnames('recipe__actions-button card-bg', {
-                      active: isActiveNotesModal,
+                      active: isActiveNotesModal || addNoteForm.note,
                     })}
                   >
                     <div className='recipe__actions-button-media'>

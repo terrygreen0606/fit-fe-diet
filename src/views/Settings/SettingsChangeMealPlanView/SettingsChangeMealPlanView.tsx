@@ -172,7 +172,7 @@ const SettingsChangeMealPlanView = (props: any) => {
     act_level: updateChangeMealForm.act_level,
   });
 
-  const updateChangeMealSubmit = (e) => {
+  const updateChangeMealSubmit = (e, isShowAlert = false) => {
     e.preventDefault();
 
     const form = e.target;
@@ -184,6 +184,13 @@ const SettingsChangeMealPlanView = (props: any) => {
 
     if (!hasError) {
       userUpdateMealSettings(getMealSettingsUpdatePayload())
+        .then(() => {
+          if (isShowAlert) {
+            toast.success(t('mp.form.success'), {
+              autoClose: 3000,
+            });
+          }
+        })
         .catch(() => {
           toast.error(t('mp.form.error'), {
             autoClose: 3000,
@@ -737,7 +744,7 @@ const SettingsChangeMealPlanView = (props: any) => {
                       <Button
                         type='button'
                         color='primary'
-                        onClick={(e) => updateChangeMealSubmit(e)}
+                        onClick={(e) => updateChangeMealSubmit(e, true)}
                         className='change-meal-plan__btn'
                       >
                         {t('mp.save')}

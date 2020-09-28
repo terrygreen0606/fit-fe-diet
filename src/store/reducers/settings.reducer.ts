@@ -8,6 +8,7 @@ const initialSettings = {
   fb_app_id: null,
   checksum: null,
   shopping_list_count: null,
+  is_private: null,
 };
 
 const settingsReducer = (state = initialSettings, action) => {
