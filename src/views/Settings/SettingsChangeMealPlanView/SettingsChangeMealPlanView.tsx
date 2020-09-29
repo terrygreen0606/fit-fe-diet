@@ -186,15 +186,11 @@ const SettingsChangeMealPlanView = (props: any) => {
       userUpdateMealSettings(getMealSettingsUpdatePayload())
         .then(() => {
           if (isShowAlert) {
-            toast.success(t('mp.form.success'), {
-              autoClose: 3000,
-            });
+            toast.success(t('mp.form.success'));
           }
         })
         .catch(() => {
-          toast.error(t('mp.form.error'), {
-            autoClose: 3000,
-          });
+          toast.error(t('mp.form.error'));
         });
     }
   };

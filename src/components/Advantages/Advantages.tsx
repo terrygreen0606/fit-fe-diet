@@ -96,7 +96,7 @@ const Advantages = ({
             type='button'
             className='how-exercise-plan-works-sect-hiding-btn'
           >
-            {t('nutrition.plan.hidden')}
+            {t('mp.hidden')}
           </button>
         )}
       </div>

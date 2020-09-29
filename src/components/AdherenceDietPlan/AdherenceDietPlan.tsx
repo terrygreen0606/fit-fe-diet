@@ -32,24 +32,24 @@ const AdherenceDietPlan = ({
   return (
     <div className={`${className} adherence-diet-card card-bg`}>
       <h4 className='adherence-diet-card-title'>
-        {t('trainings.diet_plan')}
+        {t('mp.adherence.title')}
       </h4>
       <div className='adherence-diet-card-img'>
         <RewardImage />
       </div>
       <div className='adherence-diet-card-content'>
-        <p dangerouslySetInnerHTML={{ __html: t('workout.plan.completed', { COUNT: todayProgress }) }} />
+        <p dangerouslySetInnerHTML={{ __html: t('mp.completed', { COUNT: todayProgress }) }} />
       </div>
       <div className='adherence-diet-card-progress'>
         <div className='adherence-diet-card-progress-desc'>
           <div className='adherence-diet-card-progress-desc-title'>
-            {t('trainings.week_progress')}
+            {t('mp.week_progress')}
           </div>
           <a
             href='/'
             className='adherence-diet-card-progress-desc-link'
           >
-            {t('trainings.report')}
+            {t('mp.report')}
           </a>
         </div>
         <div className='adherence-diet-card-progress-line'>
