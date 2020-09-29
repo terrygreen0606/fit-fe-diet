@@ -38,6 +38,27 @@
 
 // Adanatges list
 .app-advantages-list
+  &.list-xs
+    .app-advantages-list__item
+      min-height: 32px
+      padding: 5px 0
+      padding-left: 50px
+      font-weight: 400
+      font-size: 18px
+      line-height: 22px
+      color: #000000
+      background-size: 30px
+
+      &:not(:last-child)
+        margin-bottom: 25px
+
+      @media only screen and (max-width : 768px)
+        padding-left: 50px
+        font-size: 18px
+        line-height: 22px
+        &:not(:last-child)
+          margin-bottom: 15px
+          
   &__item
     min-height: 55px
     padding-left: 105px
@@ -60,11 +81,15 @@
 
 // Money back block
 .money-back-guarantee-block
+  display: flex
+  align-items: center
+  flex-wrap: wrap
+  min-height: 145px
   padding: 20px
   padding-left: 165px
   border: 1px solid $steel-blue
   border-radius: 20px
-  background-image: url('../img/money-back-img.svg')
+  background-image: url('../img/checkout/money-back-img.svg')
   background-position: 45px 25px
   background-size: 75px
   background-repeat: no-repeat
@@ -94,6 +119,46 @@
       line-height: 18px
 
 
+// Checkout plants one tree block
+.product-plants-one-tree-block
+  display: flex
+  align-items: center
+  min-height: 80px
+  padding-left: 113px
+  background-image: url('../../assets/img/plants-one-tree-img.png')
+  background-repeat: no-repeat
+  background-size: 82px
+  background-position: top left
+  font-weight: 400
+  font-size: 18px
+  line-height: 22px
+  color: #000000
+
+
+// Checkout Rserved block
+.checkout-reserved-block
+  padding: 19px
+  background: linear-gradient(180deg, rgba(252, 196, 113, 0.8) 0%, rgba(218, 121, 8, 0.8) 68.23%)
+  text-align: center
+  &__title
+    font-weight: bold
+    font-size: 48px
+    line-height: 59px
+    color: #FFFFFF
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+
+    @media only screen and (max-width : 768px)
+      font-size: 29px
+      line-height: 35px
+  &__countdown
+    display: inline-block
+    width: 150px
+    text-align: left
+
+    @media only screen and (max-width : 768px)
+      width: 92px
+
+
 // Partners
 .app-partners-list
   &__item
@@ -106,6 +171,10 @@
     background-position: center center
     &:not(:last-child)
       margin-right: 50px
+
+      @media only screen and (max-width : 768px)
+        margin-right: 20px
+
 
 // STars list
 .rate-stars
