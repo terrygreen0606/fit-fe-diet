@@ -41,17 +41,17 @@ export const dataForWeekWorkout = [
 export const dataForTodayActivities = [
   {
     icon: DumbbellIcon,
-    text: 'Add a workout',
+    text: 'trainings.add.workout',
     value: 'workout_add',
   },
   {
     icon: WeighScaleIcon,
-    text: "Add today's weight",
+    text: 'trainings.add.weight',
     value: 'weight_add',
   },
   {
     icon: WaterGlassIcon,
-    text: 'Water tracker',
+    text: 'trainings.wt',
     value: 'water_tracker',
   },
 ];

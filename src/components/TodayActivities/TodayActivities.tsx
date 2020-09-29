@@ -1,4 +1,8 @@
 import React from 'react';
+import { getTranslate } from 'utils';
+
+// Components
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import TodayActivityItem, { ItemProps } from './TodayActivityItem';
 
@@ -9,12 +13,20 @@ type TodayActivitiesProps = {
   todayActivities: string[],
   onChange: (any) => void,
   type: 'radio' | 'checkbox',
+  localePhrases: [];
   name?: string,
 };
 
+const TodayActivitiesPropsDefault = {
+  name: '',
+};
+
 const TodayActivities = ({
-  items, todayActivities, onChange, type, name,
-}: TodayActivitiesProps) => (
+  items, todayActivities, onChange, type, localePhrases, name,
+}: TodayActivitiesProps) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
+
+  return (
     <>
       <h4 className='today-activities-activity-title'>
         {name}
@@ -34,7 +46,7 @@ const TodayActivities = ({
                 active={todayActivities.includes(item.value)}
                 value={item.value}
                 icon={item.icon}
-                text={item.text}
+                text={t(item.text)}
                 disabled={item.disabled}
               />
             </label>
@@ -43,5 +55,8 @@ const TodayActivities = ({
       </div>
     </>
   );
+};
 
-export default TodayActivities;
+TodayActivities.defaultProps = TodayActivitiesPropsDefault;
+
+export default WithTranslate(TodayActivities);
