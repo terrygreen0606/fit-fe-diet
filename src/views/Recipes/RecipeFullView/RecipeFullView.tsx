@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable no-underscore-dangle */
@@ -337,9 +336,7 @@ const RecipeFullView = (props: any) => {
                       type='button'
                       onClick={() => {
                         addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then(() =>
-                          toast.success(t('recipe.update_shopping_list.success'), {
-                            autoClose: 3000,
-                          }));
+                          toast.success(t('recipe.update_shopping_list.success')));
                       }}
                       className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
                     >
@@ -477,15 +474,11 @@ const RecipeFullView = (props: any) => {
                           disabled={!addNoteForm.note}
                           onClick={() => {
                             addRecipeNote(recipeId, addNoteForm.note).then(() => {
-                              toast.success(t('recipe.add_note.success'), {
-                                autoClose: 3000,
-                              });
+                              toast.success(t('recipe.add_note.success'));
 
                               setActiveNotesModal(false);
                             }).catch(() => {
-                              toast.error(t('recipe.add_note.error'), {
-                                autoClose: 3000,
-                              });
+                              toast.error(t('recipe.add_note.error'));
                             });
                           }}
                           className='recipe__notes-modal-btn'
@@ -606,7 +599,7 @@ const RecipeFullView = (props: any) => {
                 </div>
                 <div className='recipe__share card-bg'>
                   <div className='recipe__share-title'>
-                    {t('recipe.share.title')}
+                    {t('socials.share.title')}
                   </div>
                   <ShareButtons shareLink={window.location.href} classes='recipe__share-buttons' />
                 </div>

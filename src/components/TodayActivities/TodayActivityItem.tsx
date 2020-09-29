@@ -16,20 +16,20 @@ const TodayActivityItem = ({
   disabled,
   text,
 }: ItemProps) => (
-  <div
-    className={classnames('today-activities-activity-card', {
-      active,
-      disabled,
-    })}
-  >
-    <span className='today-activities-activity-card-checkmark' />
-    <span className='today-activities-activity-card-icon-wrap'>
-      <Icon className='today-activities-activity-card-icon' />
-    </span>
-    <h6 className='today-activities-activity-card-title'>
-      {text}
-    </h6>
-  </div>
-);
+    <div
+      className={classnames('today-activities-activity-card card-bg', {
+        active,
+        disabled,
+      })}
+    >
+      <span className='today-activities-activity-card-checkmark' />
+      <span className='today-activities-activity-card-icon-wrap'>
+        <Icon className='today-activities-activity-card-icon' />
+      </span>
+      <h6 className='today-activities-activity-card-title'>
+        {text}
+      </h6>
+    </div>
+  );
 
 export default TodayActivityItem;

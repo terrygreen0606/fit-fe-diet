@@ -23,5 +23,6 @@ module.exports = {
     'react/jsx-indent': 'off',
     '@typescript-eslint/indent': 'off',
     'no-return-assign': 'off',
+    'react/no-danger': 'off',
   },
 };

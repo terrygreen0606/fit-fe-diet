@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable operator-linebreak */
-/* eslint-disable react/no-danger */
 import React, {
   useState,
   useEffect,
@@ -210,6 +209,65 @@ const ShoppingListView = (props: any) => {
     }
   }, isSyncResponseActive ? 5000 : null);
 
+  const toggleCheckbox = (itemIndex: number, itemId: string) => {
+    const updatedShoppingList = [...shoppingList];
+
+    updatedShoppingList[itemIndex].is_bought
+      = !updatedShoppingList[itemIndex].is_bought;
+
+    updatedShoppingList[itemIndex].is_disable = true;
+
+    setShoppingList([...updatedShoppingList]);
+
+    setIsSyncResponseActive(false);
+
+    setShoppingRowBought(
+      itemId,
+      updatedShoppingList[itemIndex].is_bought,
+      dateSync,
+    ).then((response) => {
+      setDateSync(response.data.data.date_sync);
+    }).catch(() => {
+      updatedShoppingList[itemIndex].is_bought =
+        !updatedShoppingList[itemIndex].is_bought;
+
+      setShoppingList([...updatedShoppingList]);
+
+      toast.error(t('shop_list.update.error'));
+    }).finally(() => {
+      setIsSyncResponseActive(true);
+
+      setTimeout(() => {
+        updatedShoppingList[itemIndex].is_disable = false;
+        setShoppingList([...updatedShoppingList]);
+      }, 500);
+
+      syncNumberInShopCart();
+    });
+  };
+
+  const deleteIngredient = (itemIndex: number, itemId: string) => {
+    const updatedShoppingList = [...shoppingList];
+    const prevShoppingList = [...shoppingList];
+
+    updatedShoppingList.splice(itemIndex, 1);
+
+    setShoppingList([...updatedShoppingList]);
+
+    setIsSyncResponseActive(false);
+
+    deleteFromShoppingList(itemId, dateSync)
+      .then((response) => {
+        setDateSync(response.data.data.date_sync);
+        syncNumberInShopCart(updatedShoppingList);
+      })
+      .catch(() => {
+        toast.error(t('shop_list.update.error'));
+
+        setShoppingList([...prevShoppingList]);
+      }).finally(() => setIsSyncResponseActive(true));
+  };
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -237,9 +295,7 @@ const ShoppingListView = (props: any) => {
     setAddIngredientErrors([...errors]);
 
     if (!addIngredientForm.id) {
-      toast.error(t('shop_list.ingr.empty_error'), {
-        autoClose: 3000,
-      });
+      toast.error(t('shop_list.ingr.empty_error'));
       return;
     }
 
@@ -267,9 +323,7 @@ const ShoppingListView = (props: any) => {
           weight: null,
         });
       }).catch(() => {
-        toast.error(t('shop_list.update.error'), {
-          autoClose: 3000,
-        });
+        toast.error(t('shop_list.update.error'));
       });
     }
   };
@@ -381,70 +435,11 @@ const ShoppingListView = (props: any) => {
                                         { COUNT: item.weight })} ${item.name_i18n}`}
                                       checked={item.is_bought}
                                       disabled={item.is_disable}
-                                      onChange={() => {
-                                        const updatedShoppingList = [...shoppingList];
-
-                                        updatedShoppingList[itemIndex].is_bought
-                                          = !updatedShoppingList[itemIndex].is_bought;
-
-                                        updatedShoppingList[itemIndex].is_disable = true;
-
-                                        setShoppingList([...updatedShoppingList]);
-
-                                        setIsSyncResponseActive(false);
-
-                                        setShoppingRowBought(
-                                          item.id,
-                                          updatedShoppingList[itemIndex].is_bought,
-                                          dateSync,
-                                        ).then((response) => {
-                                          setDateSync(response.data.data.date_sync);
-                                        }).catch(() => {
-                                          updatedShoppingList[itemIndex].is_bought =
-                                            !updatedShoppingList[itemIndex].is_bought;
-
-                                          setShoppingList([...updatedShoppingList]);
-
-                                          toast.error(t('shop_list.update.error'), {
-                                            autoClose: 3000,
-                                          });
-                                        }).finally(() => {
-                                          setIsSyncResponseActive(true);
-
-                                          setTimeout(() => {
-                                            updatedShoppingList[itemIndex].is_disable = false;
-                                            setShoppingList([...updatedShoppingList]);
-                                          }, 500);
-
-                                          syncNumberInShopCart();
-                                        });
-                                      }}
+                                      onChange={() => toggleCheckbox(itemIndex, item.id)}
                                     />
                                     <button
                                       type='button'
-                                      onClick={() => {
-                                        const updatedShoppingList = [...shoppingList];
-                                        const prevShoppingList = [...shoppingList];
-
-                                        updatedShoppingList.splice(itemIndex, 1);
-
-                                        setShoppingList([...updatedShoppingList]);
-
-                                        setIsSyncResponseActive(false);
-
-                                        deleteFromShoppingList(item.id, dateSync)
-                                          .then((response) => {
-                                            setDateSync(response.data.data.date_sync);
-                                            syncNumberInShopCart(updatedShoppingList);
-                                          })
-                                          .catch(() => {
-                                            toast.error(t('shop_list.update.error'), {
-                                              autoClose: 3000,
-                                            });
-
-                                            setShoppingList([...prevShoppingList]);
-                                          }).finally(() => setIsSyncResponseActive(true));
-                                      }}
+                                      onClick={() => deleteIngredient(itemIndex, item.id)}
                                       className='shop-list__item-ingr-delete'
                                     >
                                       <TrashIcon />
@@ -477,71 +472,11 @@ const ShoppingListView = (props: any) => {
                                         { COUNT: item.weight })} ${item.name_i18n}`}
                                       checked={item.is_bought}
                                       disabled={item.is_disable}
-                                      onChange={() => {
-                                        const updatedShoppingList = [...shoppingList];
-
-                                        updatedShoppingList[itemIndex].is_bought
-                                          = !updatedShoppingList[itemIndex].is_bought;
-
-                                        updatedShoppingList[itemIndex].is_disable = true;
-
-                                        setShoppingList([...updatedShoppingList]);
-
-                                        setIsSyncResponseActive(false);
-
-                                        setShoppingRowBought(
-                                          item.id,
-                                          updatedShoppingList[itemIndex].is_bought,
-                                          dateSync,
-                                        ).then((response) => {
-                                          setDateSync(response.data.data.date_sync);
-                                        }).catch(() => {
-                                          updatedShoppingList[itemIndex].is_bought =
-                                            !updatedShoppingList[itemIndex].is_bought;
-
-                                          setShoppingList([...updatedShoppingList]);
-
-                                          toast.error(t('shop_list.update.error'), {
-                                            autoClose: 3000,
-                                          });
-                                        }).finally(() => {
-                                          setIsSyncResponseActive(true);
-
-                                          setTimeout(() => {
-                                            updatedShoppingList[itemIndex].is_disable = false;
-                                            setShoppingList([...updatedShoppingList]);
-                                          }, 500);
-
-                                          syncNumberInShopCart();
-                                        });
-                                      }}
+                                      onChange={() => toggleCheckbox(itemIndex, item.id)}
                                     />
                                     <button
                                       type='button'
-                                      onClick={() => {
-                                        const updatedShoppingList = [...shoppingList];
-                                        const prevShoppingList = [...shoppingList];
-
-                                        updatedShoppingList.splice(itemIndex, 1);
-
-                                        setShoppingList([...updatedShoppingList]);
-
-                                        setIsSyncResponseActive(false);
-
-                                        deleteFromShoppingList(item.id, dateSync)
-                                          .then((response) => {
-                                            setDateSync(response.data.data.date_sync);
-                                            syncNumberInShopCart(updatedShoppingList);
-                                          })
-                                          .catch(() => {
-                                            toast.error(t('shop_list.update.error'), {
-                                              autoClose: 3000,
-                                            });
-
-                                            setShoppingList([...prevShoppingList]);
-                                          })
-                                          .finally(() => setIsSyncResponseActive(true));
-                                      }}
+                                      onClick={() => deleteIngredient(itemIndex, item.id)}
                                       className='shop-list__item-ingr-delete'
                                     >
                                       <TrashIcon />

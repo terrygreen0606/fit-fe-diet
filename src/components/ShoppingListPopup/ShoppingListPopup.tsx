@@ -84,6 +84,54 @@ const ShoppingListPopup = (props: any) => {
       !item.is_bought).length || settings.shopping_list_count);
   }, [shoppingList]);
 
+  const toggleCheckbox = (itemIndex: number, itemId: string) => {
+    const updatedShoppingList = [...shoppingList];
+
+    updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+
+    updatedShoppingList[itemIndex].is_disable = true;
+
+    setShoppingList([...updatedShoppingList]);
+
+    setShoppingRowBought(
+      itemId,
+      updatedShoppingList[itemIndex].is_bought,
+      dateSync,
+    ).then((response) => {
+      setDateSync(response.data.data.date_sync);
+    }).catch(() => {
+      updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
+
+      setShoppingList([...updatedShoppingList]);
+
+      toast.error(t('shop_list.update.error'));
+    }).finally(() => {
+      setTimeout(() => {
+        updatedShoppingList[itemIndex].is_disable = false;
+        setShoppingList([...updatedShoppingList]);
+      }, 500);
+    });
+  };
+
+  const deleteIngredient = (itemIndex: number, itemId: string) => {
+    const updatedShoppingList = [...shoppingList];
+    const prevShoppingList = [...shoppingList];
+
+    updatedShoppingList.splice(itemIndex, 1);
+
+    setShoppingList([...updatedShoppingList]);
+
+    props.updateShoppingListLength(updatedShoppingList.length);
+
+    deleteFromShoppingList(itemId, dateSync)
+      .then((response) => setDateSync(response.data.data.date_sync))
+      .catch(() => {
+        toast.error(t('shop_list.update.error'));
+
+        setShoppingList([...prevShoppingList]);
+      });
+  };
+
   return (
     <div className='shop-list-popup'>
       {isSpinnerActive ? (
@@ -179,59 +227,11 @@ const ShoppingListPopup = (props: any) => {
                               { COUNT: item.weight })} ${item.name_i18n}`}
                             checked={item.is_bought}
                             disabled={item.is_disable}
-                            onChange={() => {
-                              const updatedShoppingList = [...shoppingList];
-
-                              updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
-
-                              updatedShoppingList[itemIndex].is_disable = true;
-
-                              setShoppingList([...updatedShoppingList]);
-
-                              setShoppingRowBought(
-                                item.id,
-                                updatedShoppingList[itemIndex].is_bought,
-                                dateSync,
-                              ).then((response) => {
-                                setDateSync(response.data.data.date_sync);
-                              }).catch(() => {
-                                updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
-
-                                setShoppingList([...updatedShoppingList]);
-
-                                toast.error(t('shop_list.update.error'), {
-                                  autoClose: 3000,
-                                });
-                              }).finally(() => {
-                                setTimeout(() => {
-                                  updatedShoppingList[itemIndex].is_disable = false;
-                                  setShoppingList([...updatedShoppingList]);
-                                }, 500);
-                              });
-                            }}
+                            onChange={() => toggleCheckbox(itemIndex, item.id)}
                           />
                           <button
                             type='button'
-                            onClick={() => {
-                              const updatedShoppingList = [...shoppingList];
-                              const prevShoppingList = [...shoppingList];
-
-                              updatedShoppingList.splice(itemIndex, 1);
-
-                              setShoppingList([...updatedShoppingList]);
-
-                              props.updateShoppingListLength(updatedShoppingList.length);
-
-                              deleteFromShoppingList(item.id, dateSync)
-                                .then((response) => setDateSync(response.data.data.date_sync))
-                                .catch(() => {
-                                  toast.error(t('shop_list.update.error'), {
-                                    autoClose: 3000,
-                                  });
-
-                                  setShoppingList([...prevShoppingList]);
-                                });
-                            }}
+                            onClick={() => deleteIngredient(itemIndex, item.id)}
                             className='shop-list-popup__item-ingr-delete'
                           >
                             <TrashIcon />

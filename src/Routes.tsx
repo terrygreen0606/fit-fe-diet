@@ -11,7 +11,7 @@ import { routes } from 'constants/routes';
 // Views
 import LoginView from './views/LoginView';
 import RegisterView from './views/RegisterView';
-import NutritionPlanView from './views/NutritionPlanView';
+import MealPlanView from './views/MealPlanView';
 import TrainingsView from './views/TrainingsView';
 import ShoppingListView from './views/ShoppingListView';
 import WeightGraphicsPage from './views/WeightGraphicsPage';
@@ -89,10 +89,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.nutritionPlan}
+      path={routes.mealPlan}
       component={(props: any) => (
         <Layout {...props}>
-          <NutritionPlanView {...props} />
+          <MealPlanView {...props} />
         </Layout>
       )}
       exact

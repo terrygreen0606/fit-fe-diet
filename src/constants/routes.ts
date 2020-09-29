@@ -1,7 +1,7 @@
 export const routes = {
   main: '/',
   trainings: '/trainings',
-  nutritionPlan: '/nutrition/plan',
+  mealPlan: '/meal-plan',
   nutritionPlanWeight: '/nutrition/plan/weights',
   shoppingList: '/shopping-list',
   createRecipe: '/recipe/create',

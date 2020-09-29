@@ -285,9 +285,7 @@ const CreateRecipeView = (props: any) => {
           (item) => item.ingredient_id === data._id,
         )
       ) {
-        toast.error(t('recipe.create.duplication_error'), {
-          autoClose: 3000,
-        });
+        toast.error(t('recipe.create.duplication_error'));
         return;
       }
       const filteredData = {
@@ -385,9 +383,7 @@ const CreateRecipeView = (props: any) => {
     }
 
     if (createRecipeForm.ingredients.length === 0) {
-      toast.error(t('recipe.create.ingredients_error'), {
-        autoClose: 3000,
-      });
+      toast.error(t('recipe.create.ingredients_error'));
 
       const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
       ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -399,9 +395,7 @@ const CreateRecipeView = (props: any) => {
     );
 
     if (checkIngredientsWeight.length > 0) {
-      toast.error(t('recipe.create.ingredient_weight_error'), {
-        autoClose: 3000,
-      });
+      toast.error(t('recipe.create.ingredient_weight_error'));
 
       const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
       ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -412,16 +406,12 @@ const CreateRecipeView = (props: any) => {
     if (!hasError) {
       createRecipe(getCreateRecipePayload())
         .then((response) => {
-          toast.success(t('recipe.create.success'), {
-            autoClose: 3000,
-          });
+          toast.success(t('recipe.create.success'));
 
           history.push(`/recipe/${response.data.data._id}`);
         })
         .catch(() => {
-          toast.error(t('recipe.create.error'), {
-            autoClose: 3000,
-          });
+          toast.error(t('recipe.create.error'));
         });
     }
   };
@@ -715,9 +705,7 @@ const CreateRecipeView = (props: any) => {
                         totalWeight: prevTotalWeight,
                       });
 
-                      toast.error(t('recipe.update_measurement.error', {
-                        autoClose: 3000,
-                      }));
+                      toast.error(t('recipe.update_measurement.error'));
                     });
 
                     setActiveDeleteIngrModal(false);

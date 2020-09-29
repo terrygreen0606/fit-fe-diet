@@ -18,7 +18,7 @@ chartConfig();
 ReactDOM.render(
   <Provider store={store}>
     <App />
-    <ToastContainer autoClose={1700} />
+    <ToastContainer autoClose={3000} />
   </Provider>,
   document.getElementById('root')
 );
