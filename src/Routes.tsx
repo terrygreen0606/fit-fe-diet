@@ -11,6 +11,7 @@ import { routes } from 'constants/routes';
 // Views
 import LoginView from './views/LoginView';
 import RegisterView from './views/RegisterView';
+import ResetPassword from './views/ResetPassword';
 import MealPlanView from './views/MealPlanView';
 import TrainingsView from './views/TrainingsView';
 import ShoppingListView from './views/ShoppingListView';
@@ -283,6 +284,16 @@ const Routes = () => (
       component={(props: any) => (
         <BasePage {...props}>
           <RegisterView {...props} />
+        </BasePage>
+      )}
+      exact
+    />
+
+    <AuthRoute
+      path={routes.resetPasword}
+      component={(props: any) => (
+        <BasePage {...props}>
+          <ResetPassword {...props} />
         </BasePage>
       )}
       exact

@@ -216,7 +216,7 @@ const LoginView = (props: any) => {
 
       <div className='loginScreen mt-3 mt-md-5'>
         <h3 className='loginScreen_title d-none d-lg-inline-block'>
-          {t('login.title', { product: 'TEST' })}
+          {t('login.title')}
         </h3>
 
         <span className='mainHeader_logo d-lg-none-i' />
@@ -267,7 +267,7 @@ const LoginView = (props: any) => {
             {t('login.submit')}
           </Button>
 
-          <span className='loginScreen_link link link-bold link-blue mt-md-5 mt-45'>{t('login.forgot_pass')}</span>
+          <Link to="/reset-password" className='loginScreen_link link link-bold link-blue mt-md-5 mt-45'>{t('login.forgot_pass')}</Link>
         </form>
 
         {/*<div className='loginScreen_socialBtns mt-4'>
