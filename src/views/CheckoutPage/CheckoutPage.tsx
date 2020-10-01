@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -11,7 +12,8 @@ import { InputError } from 'types';
 import { 
   getAppTariff, 
   fetchUserProfile, 
-  getPaymentMethods
+  getPaymentMethods,
+  payCreditCard
 } from 'api';
 
 // Components
@@ -33,22 +35,35 @@ import './CheckoutPage.sass';
 import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
 import { ReactComponent as LockIcon } from 'assets/img/icons/lock-icon.svg';
 
+const checkoutFormDefault = {
+  payment_type: 'credit_card',
+  payer_name: null,
+  phone: null,
+  card_number: null,
+  card_cvv: null,
+  card_month: null,
+  card_year: null,
+  discount_code: null
+};
+
 const CheckoutPage = (props: any) => {
 
-  const [checkoutForm, setCheckoutForm] = useState({
-    payment_type: 'credit_card',
-    name: '',
-    card_number: '',
-    cvv: '',
-    exp_month: '',
-    exp_year: '',
-    discount_code: ''
-  });
+  const t = (code: string, placeholders?: any) => 
+    getTranslate(props.localePhrases, code, placeholders);
+
+  const [checkoutForm, setCheckoutForm] = useState({...checkoutFormDefault});
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
 
   const [tariffData, setTariffData] = useState<any>({
     price_text: null,
-    price_old_text: null
+    currency: null,
+    tariff: null,
+    price_old_text: null,
+    next_tariff: {
+      price_text: null,
+      days: null,
+      tariff: null
+    }
   });
   const [tariffLoading, setTariffLoading] = useState<boolean>(true);
   const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
@@ -61,9 +76,11 @@ const CheckoutPage = (props: any) => {
   const [paymentMethodsLoadingError, setPaymentMethodsLoadingError] = useState<boolean>(false);
 
   const [profileData, setProfileData] = useState<any>({
-    name: 'Your'
+    name: t('checkout.title.user_name')
   });  
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
+
+  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
@@ -76,9 +93,20 @@ const CheckoutPage = (props: any) => {
         setTariffLoading(false);
 
         if (response.data.success && response.data.data) {
+          const tariff_data = response.data.data;
+          const next_tariff_data = response.data.data.next_tariff || tariffData.next_tariff;
+
           setTariffData({
-            price_text: response.data.data.price_text || null,
-            price_old_text: response.data.data.price_old_text || null
+            price_text: tariff_data.price_text || null,
+            price_old_text: tariff_data.price_old_text || null,
+            currency: tariff_data.currency || null,
+            days: tariff_data.days || null,
+            tariff: tariff_data.tariff || null,
+            next_tariff: {
+              days: next_tariff_data.days || null,
+              tariff: next_tariff_data.tariff || null,
+              price_text: next_tariff_data.price_text || null
+            }
           });
         } else {
           setTariffLoadingError(true);
@@ -147,9 +175,6 @@ const CheckoutPage = (props: any) => {
     getUserPaymentMethods();
   }, []);
 
-  const t = (code: string, placeholders?: any) => 
-    getTranslate(props.localePhrases, code, placeholders);
-
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -190,7 +215,22 @@ const CheckoutPage = (props: any) => {
     }
   };
 
-  const checkoutFormSubmit = e => {
+  const getPayCredictCardParams = () => ({
+    article_id: tariffData.tariff,
+    currency: tariffData.currency,
+    card: {
+      number: checkoutForm.card_number.replace(/ /gi, ''),
+      year: checkoutForm.card_year,
+      month: checkoutForm.card_month,
+      cvv: checkoutForm.card_cvv
+    },
+    contacts: {
+      phone: checkoutForm.phone,
+      payer_name: checkoutForm.payer_name
+    }
+  });
+
+  const checkoutFormSubmit = async e => {
     e.preventDefault();
 
     const form = e.target;
@@ -203,8 +243,54 @@ const CheckoutPage = (props: any) => {
     setCheckoutFormErrors([...errors]);
 
     if (!hasError) {
+      setPaymentLoading(true);
 
+      payCreditCard(getPayCredictCardParams())
+        .then(response => {
+          setPaymentLoading(false);
+          
+          const paymentOrder = response.data;
+
+          if (paymentOrder) {
+            if (paymentOrder.redirect_url) {
+              window.location.href = paymentOrder.redirect_url;  
+            } else if (paymentOrder.status) {
+              switch (paymentOrder.status) {
+                case 'ok':
+                  toast.success(t('checkout.payment_success'));
+                  setCheckoutForm({...checkoutFormDefault});
+                  break;
+
+                case 'pending':
+                  toast.warning(t('checkout.payment_pending'));
+                  break;
+
+                case 'fail':
+                  toast.error(t('checkout.payment_fail'));
+                  break;
+
+                default:
+              }              
+            } else {
+              toast.error(t('checkout.payment_fail'));
+            }
+          } else {
+            toast.error(t('checkout.payment_fail'));
+          }
+        })
+        .catch(error => {
+          setPaymentLoading(false);
+          toast.error(t('checkout.payment_fail'));
+        });
     }
+  };
+
+  const paymentSubmitIsDisabled = () => {
+    return paymentLoading || 
+           tariffLoading || 
+           paymentMethodsLoading || 
+           tariffLoadingError || 
+           paymentMethodsLoadingError;
   };
 
   return (
@@ -225,7 +311,6 @@ const CheckoutPage = (props: any) => {
         <div className="container">
           <div className="row">
             <div className="col-12">
-
               <h4 className="sect-subtitle">{t('checkout.page_title')}</h4>
 
               <div className="checkout-tpl-container mt-3 mt-sm-5 pt-xl-5">
@@ -269,7 +354,7 @@ const CheckoutPage = (props: any) => {
                   <div className="text-center mt-5">
                     <h6 className="checkout-advantages__title mb-5">{t('checkout.advantages_title')}:</h6>
 
-                    <div className="app-advantages-list list-xs">
+                    <div className="app-advantages-list list-xs text-left">
                       <div className="app-advantages-list__item">{t('checkout.advantage_1')}</div>
                       <div className="app-advantages-list__item">{t('checkout.advantage_2')}</div>
                     </div>
@@ -307,8 +392,8 @@ const CheckoutPage = (props: any) => {
                         </div>
 
                         <div className="checkout-summary-item">
-                          <div className="checkout-summary-item__label">{t('checkout.summary.price_after_trial_title')}</div>
-                          <div className="checkout-summary-item__value"><b></b></div>
+                          <div className="checkout-summary-item__label">{t('checkout.summary.price_after_trial_title', { COUNT: tariffData.days })}</div>
+                          <div className="checkout-summary-item__value"><b>{tariffData.next_tariff.price_text}</b></div>
                         </div>
 
                         <div className="checkout-summary-item">
@@ -332,56 +417,58 @@ const CheckoutPage = (props: any) => {
 
                   <img src={getImagePath('checkout/safe-checkout-img-2.png')} className="img-fluid" alt="" />
 
-                  <ContentLoading
-                    isLoading={paymentMethodsLoading}
-                    isError={paymentMethodsLoadingError}
-                    fetchData={() => getUserPaymentMethods()}
-                  >
-                    <div className="checkout-payment-radio__list mt-5">
-                      {paymentMethods.cards.length > 0 && (
-                        <CustomRadio 
-                          inline 
-                          className={classNames("checkout-payment-radio", {
-                            'radio-checked': checkoutForm.payment_type === 'credit_card'
-                          })}
-                          checked={checkoutForm.payment_type === 'credit_card'}
-                          value="credit_card"
-                          name="payment_type"
-                          onChange={e => validateOnChange('payment_type', e.target.value, e)}
-                          label={(
-                            <Button className="checkout-payment-radio__btn" spanBtn color="secondary">
-                              <div className="payment-types-img-list">
-                                {paymentMethods.cards.map(card => (
-                                  <img src={card.logo || null} className="payment-types-img" />  
-                                ))}
-                              </div>
-                            </Button>
-                          )}
-                        />
-                      )}
+                  <div className="mt-5">
+                    <ContentLoading
+                      isLoading={paymentMethodsLoading}
+                      isError={paymentMethodsLoadingError}
+                      fetchData={() => getUserPaymentMethods()}
+                    >
+                      <div className="checkout-payment-radio__list">
+                        {paymentMethods.cards.length > 0 && (
+                          <CustomRadio 
+                            inline 
+                            className={classNames("checkout-payment-radio", {
+                              'radio-checked': checkoutForm.payment_type === 'credit_card'
+                            })}
+                            checked={checkoutForm.payment_type === 'credit_card'}
+                            value="credit_card"
+                            name="payment_type"
+                            onChange={e => validateOnChange('payment_type', e.target.value, e)}
+                            label={(
+                              <Button className="checkout-payment-radio__btn" spanBtn color="secondary">
+                                <div className="payment-types-img-list">
+                                  {paymentMethods.cards.map((card, index) => (
+                                    <img key={index} src={card.logo || null} className="payment-types-img" />  
+                                  ))}
+                                </div>
+                              </Button>
+                            )}
+                          />
+                        )}
 
-                      {paymentMethods.others.map(method => (
-                        <CustomRadio 
-                          inline 
-                          className={classNames("checkout-payment-radio", {
-                            'radio-checked': checkoutForm.payment_type === method.id
-                          })}
-                          checked={checkoutForm.payment_type === method.id}
-                          value="method.id"
-                          name="payment_type"
-                          onChange={e => validateOnChange('payment_type', e.target.value, e)}
-                          label={(
-                            <Button className="checkout-payment-radio__btn" spanBtn color="secondary">
-                              <img 
-                                src={method.logo || null}
-                                className="img-fluid"
-                              />
-                            </Button>
-                          )}
-                        />
-                      ))}
-                    </div>
-                  </ContentLoading>
+                        {paymentMethods.others.map(method => (
+                          <CustomRadio 
+                            inline 
+                            className={classNames("checkout-payment-radio", {
+                              'radio-checked': checkoutForm.payment_type === method.id
+                            })}
+                            checked={checkoutForm.payment_type === method.id}
+                            value="method.id"
+                            name="payment_type"
+                            onChange={e => validateOnChange('payment_type', e.target.value, e)}
+                            label={(
+                              <Button className="checkout-payment-radio__btn" spanBtn color="secondary">
+                                <img 
+                                  src={method.logo || null}
+                                  className="img-fluid"
+                                />
+                              </Button>
+                            )}
+                          />
+                        ))}
+                      </div>
+                    </ContentLoading>
+                  </div>
 
                   <form className="checkout-pay-form mt-5" onSubmit={e => checkoutFormSubmit(e)}>
                     <h6 className="checkout-pay-form__title mb-3">{t('checkout.form_title')} <LockIcon className="ml-2" /></h6>
@@ -389,13 +476,27 @@ const CheckoutPage = (props: any) => {
                     <FormGroup>
                       <InputField
                         block
-                        name='name'
+                        name='payer_name'
                         label={`${t('checkout.form_name')}*:`}
-                        isValid={getFieldErrors('name').length === 0 && checkoutForm.name.length > 0}
-                        value={checkoutForm.name}
+                        isValid={checkoutForm.payer_name && getFieldErrors('payer_name').length === 0}
+                        value={checkoutForm.payer_name}
                         data-validate='["required"]'
-                        onChange={e => validateOnChange('name', e.target.value, e)}
-                        errors={getFieldErrors('name')}
+                        onChange={e => validateOnChange('payer_name', e.target.value, e)}
+                        errors={getFieldErrors('payer_name')}
+                        placeholder=''
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <InputField
+                        block
+                        name='phone'
+                        label={`${t('checkout.form_phone')}*:`}
+                        isValid={checkoutForm.phone && getFieldErrors('phone').length === 0}
+                        value={checkoutForm.phone}
+                        data-validate='["required", "number"]'
+                        onChange={e => validateOnChange('phone', e.target.value, e)}
+                        errors={getFieldErrors('phone')}
                         placeholder=''
                       />
                     </FormGroup>
@@ -405,9 +506,10 @@ const CheckoutPage = (props: any) => {
                         block
                         name='card_number'
                         label={`${t('checkout.form_card_number')}*:`}
-                        isValid={getFieldErrors('card_number').length === 0 && checkoutForm.card_number.length > 0}
-                        value={checkoutForm.name}
+                        isValid={checkoutForm.card_number && getFieldErrors('card_number').length === 0}
+                        value={checkoutForm.card_number}
                         data-param={19}
+                        placeholderChar=" "
                         data-validate='["required", "len"]'
                         mask="1111 1111 1111 1111"
                         onChange={e => validateOnChange('card_number', e.target.value, e)}
@@ -422,15 +524,15 @@ const CheckoutPage = (props: any) => {
                         <FormGroup>
                           <InputField
                             block
-                            name='exp_month'
+                            name='card_month'
                             data-param={2}
                             label={`${t('checkout.form_card_expiration')}*:`}
-                            isValid={getFieldErrors('exp_month').length === 0 && checkoutForm.exp_month.length > 0}
-                            value={checkoutForm.exp_month}
+                            isValid={checkoutForm.card_month && getFieldErrors('card_month').length === 0}
+                            value={checkoutForm.card_month}
                             data-validate='["required", "len"]'
                             mask="11"
-                            onChange={e => validateOnChange('exp_month', e.target.value, e)}
-                            errors={getFieldErrors('exp_month')}
+                            onChange={e => validateOnChange('card_month', e.target.value, e)}
+                            errors={getFieldErrors('card_month')}
                             placeholder=''
                           />
                         </FormGroup>
@@ -442,14 +544,14 @@ const CheckoutPage = (props: any) => {
                           <FormLabel className="text-transparent">{t('checkout.form_card_expiration')}</FormLabel>
                           <InputField
                             block
-                            name='exp_year'
-                            isValid={getFieldErrors('exp_year').length === 0 && checkoutForm.exp_year.length > 0}
-                            value={checkoutForm.exp_year}
+                            name='card_year'
+                            isValid={checkoutForm.card_year && getFieldErrors('card_year').length === 0}
+                            value={checkoutForm.card_year}
                             data-param={4}
                             data-validate='["required", "len"]'
                             mask="1111"
-                            onChange={e => validateOnChange('exp_year', e.target.value, e)}
-                            errors={getFieldErrors('exp_year')}
+                            onChange={e => validateOnChange('card_year', e.target.value, e)}
+                            errors={getFieldErrors('card_year')}
                             placeholder=''
                           />
                         </FormGroup>
@@ -460,15 +562,15 @@ const CheckoutPage = (props: any) => {
                         <FormGroup>
                           <InputField
                             block
-                            name='cvv'
+                            name='card_cvv'
                             label={`${t('checkout.form_card_cvv')}*:`}
-                            isValid={getFieldErrors('cvv').length === 0 && checkoutForm.cvv.length > 0}
-                            value={checkoutForm.cvv}
+                            isValid={checkoutForm.card_cvv && getFieldErrors('card_cvv').length === 0}
+                            value={checkoutForm.card_cvv}
                             data-param={3}
                             data-validate='["required", "len"]'
                             mask="111"
-                            onChange={e => validateOnChange('cvv', e.target.value, e)}
-                            errors={getFieldErrors('cvv')}
+                            onChange={e => validateOnChange('card_cvv', e.target.value, e)}
+                            errors={getFieldErrors('card_cvv')}
                             placeholder=''
                           />
                         </FormGroup>
@@ -477,7 +579,15 @@ const CheckoutPage = (props: any) => {
                     </div>
 
                     <div className="text-center mt-3 mt-sm-5">
-                      <Button type="submit" className="checkout-pay-form__submit" color="primary">{t('button.checkout_start')}</Button>
+                      <Button 
+                        type="submit" 
+                        className="checkout-pay-form__submit" 
+                        color="primary"
+                        isLoading={paymentLoading}
+                        disabled={paymentSubmitIsDisabled()}
+                      >
+                        {t('button.checkout_start')}
+                      </Button>
                     </div>
                   </form>
 
