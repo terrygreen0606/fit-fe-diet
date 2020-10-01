@@ -216,10 +216,8 @@ const CheckoutPage = (props: any) => {
   };
 
   const getPayCredictCardParams = () => ({
-    article_id: 'm3',
-    // article_id: tariffData.tariff,
-    currency: 'USD',
-    // currency: tariffData.currency,
+    article_id: tariffData.tariff,
+    currency: tariffData.currency,
     card: {
       number: checkoutForm.card_number.replace(/ /gi, ''),
       year: checkoutForm.card_year,
