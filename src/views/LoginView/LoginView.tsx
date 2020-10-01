@@ -122,12 +122,12 @@ const LoginView = (props: any) => {
 
             userClientLogin(token);
           } else {
-            toast.error('Error occurred when Sign In User');
+            toast.error(t('register.error_msg'));
           }
         })
         .catch((error) => {
           setLoginLoading(false);
-          toast.error('Error occurred when Sign In User');
+          toast.error(t('register.error_msg'));
         });
     }
   };
@@ -156,12 +156,12 @@ const LoginView = (props: any) => {
             if (token) {
               userClientLogin(token);
             } else {
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             }
           })
           .catch((error) => {
             setLoginGoogleLoading(false);
-            toast.error('Error occurred when Sign In User');
+            toast.error(t('register.error_msg'));
           });
       })
       .catch((error) => {
@@ -191,12 +191,12 @@ const LoginView = (props: any) => {
               if (token) {
                 userClientLogin(token);
               } else {
-                toast.error('Error occurred when Sign In User');
+                toast.error(t('register.error_msg'));
               }
             })
             .catch((error) => {
               setLoginFacebookLoading(false);
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             });
         } else {
           setLoginFacebookLoading(false);
