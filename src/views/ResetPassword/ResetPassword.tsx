@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
 import { toast } from 'react-toastify';
-import axios from 'utils/axios';
-import {
-  userLogin as userAuthLogin,
-  getAppSettings
-} from 'api';
-import { userLogin, setAppSetting } from 'store/actions';
 import Helmet from 'react-helmet';
 
 // Components
@@ -51,10 +44,6 @@ const ResetPassword = (props: any) => {
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
-
-  const userClientLogin = (authToken: string) => {
-    props.userLogin(authToken);
-  };
 
   const resetPassSubmit = (e) => {
     e.preventDefault();
@@ -118,6 +107,4 @@ const ResetPassword = (props: any) => {
   );
 };
 
-export default WithTranslate(
-  connect(null, { userLogin, setAppSetting }
-)(ResetPassword));
+export default WithTranslate(ResetPassword);
