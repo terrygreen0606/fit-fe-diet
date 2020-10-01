@@ -20,6 +20,7 @@ export const routes = {
   cancellation: '/cancellation',
   login: '/login',
   register: '/register',
+  resetPasword: '/reset-password',
   recipeFullView: '/recipe/:recipeId',
   afterSignup: '/after-signup',
   checkout: '/checkout',
