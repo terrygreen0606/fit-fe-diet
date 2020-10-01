@@ -10,7 +10,6 @@ import { UserAuthProfileType } from 'types/auth';
 import { getSignUpData } from 'api';
 
 // Components
-import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import RegisterModal from './RegisterModal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -41,7 +40,8 @@ const registerDataDefault: RegisterDataType = {
   tpl_signup: null,
   goal: -1,
   ignore_cuisine_ids: [],
-  diseases: []
+  diseases: [],
+  act_levels: []
 };
 
 const RegisterView = (props: any) => {
@@ -73,6 +73,10 @@ const RegisterView = (props: any) => {
           setRegisterData({
             ...registerData,
             tpl_signup: response.data.data.tpl || null,
+            act_levels: response.data.data.act_levels.map(activity => ({
+              ...activity,
+              checked: false
+            })) || [],
             ignore_cuisine_ids: response.data.data.cuisines.map(cuisine => ({
               ...cuisine,
               checked: false
@@ -118,7 +122,6 @@ const RegisterView = (props: any) => {
         fetchData={() => loadRegisterSettings()}
         spinSize='lg'
       >
-        <AuthSocialHelmet />
 
         <RegisterModal
           isOpen
@@ -129,6 +132,7 @@ const RegisterView = (props: any) => {
           facebookInitLoading={registerFacebookInitLoading}
           googleLoadingError={registerGoogleLoadingError}
           googleInitLoading={registerGoogleInitLoading}
+          history={props.history}
         />
       </ContentLoading>
     </>

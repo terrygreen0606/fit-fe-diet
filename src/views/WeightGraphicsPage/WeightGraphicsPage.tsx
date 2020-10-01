@@ -77,7 +77,7 @@ const WeightGraphicsPage = (props: any) => {
                 name: t('breadcrumb.main'),
               },
               {
-                url: routes.nutritionPlan,
+                url: routes.mealPlan,
                 name: t('app.title.nutrition_plan'),
               },
             ]}

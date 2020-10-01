@@ -32,48 +32,45 @@ export const userInviteFriendByEmail = (email: string) => axios.put(`user/invite
 
 type userUpdateProfileParams = {
   name: string,
-  surname: string,
-  phone: string,
-  birthdate: number, // timestamp
-  gender: 'm' | 'f',
   measurement: 'si' | 'us',
-  height: number, // height in centimeters/feet,inch
-  goal: -1 | 0 | 1, // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight
+  gender: 'm' | 'f',
+  surname?: string,
+  phone?: string,
+  is_mailing?: boolean,
 };
 
 export const userUpdateProfile = (params: userUpdateProfileParams) => axios.put('/user/update-profile', params);
 
-export const userUpdateMealSettings = (
+type userUpdateMealSettingsParams = {
   measurement: 'si' | 'us', // allowed values 'si', 'us'
-  gender?: 'm' | 'f', // allowed values 'm', 'f'
-  age?: number, // size range: 12..100
-  height?: string, // centimeters/feet,inch
-  weight?: number, // kilograms/pounds 30..999
-  weight_goal?: number, // kilograms/pounds 30..999
-  goal?: -1 | 0 | 1, // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight,
-  ignore_cuisine_ids?: Array<string>, // Ignorable cuisine ids
-  diseases?: Array<string>, // Diseases codes
-  meals_cnt?: 3 | 4 | 5, // size range: 3..5
-) => axios.put(
-  '/user/meal-settings',
-  {
-    measurement,
-    gender,
-    age,
-    height,
-    weight,
-    weight_goal,
-    goal,
-    ignore_cuisine_ids,
-    diseases,
-    meals_cnt,
-  },
-);
+  gender: 'm' | 'f', // allowed values 'm', 'f'
+  age: number, // size range: 16..100
+  height: string, // centimeters/feet,inch
+  weight: number, // kilograms/pounds 30..999
+  weight_goal: number, // kilograms/pounds 30..999
+  goal: -1 | 0 | 1, // -1 => Lose weight, 0 => Keep the weight, 1 => Lift the weight,
+  ignore_cuisine_ids: Array<string>, // Ignorable cuisine ids
+  diseases: Array<string>, // Diseases codes
+  meals_cnt: 3 | 4 | 5, // size range: 3..5
+  act_level: number, // size range: 1000..2000
+};
+
+export const userUpdateMealSettings = (params: userUpdateMealSettingsParams) =>
+  axios.put('/user/meal-settings', params);
 
 export const userValidate = (params: UserValidateParams) =>
-  axios.post('/user/validate', {...params});
+  axios.post('/user/validate', { ...params });
 
 export const userUpdateMeasurement = (measurement: string) =>
   axios.put('/user/measurement', {
     measurement,
   });
+
+export const getPublicShopListUrl = (txt: number = 0) =>
+  axios.get(`/user/shopping-list-url?txt=${txt}`);
+
+export const getAppTariff = (id: string) =>
+  axios.get(`/app/tariff/${id}`);
+
+export const getAppReviews = () =>
+  axios.get('/app/reviews');

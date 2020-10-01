@@ -14,6 +14,10 @@ export default (registerView: RegisterViewType) => {
       registerStepImagePath = 'register/meal_plan_step.png';
       break;
 
+    case 'WORKOUT':
+      registerStepImagePath = 'register/workout_step.png';
+      break;
+
     case 'EXPECTATIONS':
       registerStepImagePath = 'register/expectations_step.png';
       break;

@@ -11,7 +11,8 @@ import { routes } from 'constants/routes';
 // Views
 const LoginView = React.lazy(() => import('./views/LoginView'));
 const RegisterView = React.lazy(() => import('./views/RegisterView'));
-const NutritionPlanView = React.lazy(() => import('./views/NutritionPlanView'));
+const ResetPassword = React.lazy(() => import('./views/ResetPassword'));
+const MealPlanView = React.lazy(() => import('./views/MealPlanView'));
 const TrainingsView = React.lazy(() => import('./views/TrainingsView'));
 const ShoppingListView = React.lazy(() => import('./views/ShoppingListView'));
 const WeightGraphicsPage = React.lazy(() => import('./views/WeightGraphicsPage'));
@@ -32,6 +33,9 @@ const MainView = React.lazy(() => import('./views/MainView'));
 const TestimonialsFormView = React.lazy(() => import('./views/Forms/TestimonialsFormView'));
 const CancellationFormView = React.lazy(() => import('./views/Forms/CancellationFormView'));
 const RecipeFullView = React.lazy(() => import('./views/Recipes/RecipeFullView'));
+const AfterSignupPage = React.lazy(() => import('./views/AfterSignupPage'));
+const CheckoutPage = React.lazy(() => import('./views/CheckoutPage'));
+const SettingsPaymentHistoryView = React.lazy(() => import('./views/Settings/SettingsPaymentHistoryView'));
 
 const Routes = () => (
   <Switch>
@@ -40,6 +44,26 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <MainView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path={routes.afterSignup}
+      component={(props: any) => (
+        <Layout {...props} headerType='promo'>
+          <AfterSignupPage {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path={routes.checkout}
+      component={(props: any) => (
+        <Layout {...props}>
+          <CheckoutPage {...props} />
         </Layout>
       )}
       exact
@@ -66,10 +90,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.nutritionPlan}
+      path={routes.mealPlan}
       component={(props: any) => (
         <Layout {...props}>
-          <NutritionPlanView {...props} />
+          <MealPlanView {...props} />
         </Layout>
       )}
       exact
@@ -235,6 +259,16 @@ const Routes = () => (
       exact
     />
 
+    <PrivateRoute
+      path={routes.paymentHistorySettings}
+      component={(props: any) => (
+        <Layout {...props}>
+          <SettingsPaymentHistoryView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
     <AuthRoute
       path={routes.login}
       component={(props: any) => (
@@ -250,6 +284,16 @@ const Routes = () => (
       component={(props: any) => (
         <BasePage {...props}>
           <RegisterView {...props} />
+        </BasePage>
+      )}
+      exact
+    />
+
+    <AuthRoute
+      path={routes.resetPasword}
+      component={(props: any) => (
+        <BasePage {...props}>
+          <ResetPassword {...props} />
         </BasePage>
       )}
       exact

@@ -1,31 +1,50 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 
 // Components
 import Header from 'components/Header';
+import HeaderPromo from 'components/HeaderPromo';
 import Footer from 'components/Footer';
 import SideMenu from 'components/SideMenu';
 import MainContent from 'components/hoc/MainContent';
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import ShoppingListPopup from 'views/ShoppingListView/ShoppingListPopup';
-
 import './Layout.sass';
+
+type LayoutProps = {
+  headerType: 'default' | 'promo';
+  [propName: string]: any;
+  children: Node,
+  location: any,
+};
 
 // fixme: remove default
 const Layout = ({
-  children, localePhrases, location, shopping_list_count,
-}: any) => {
-  const [popup, setPopup] = useState(false);
-  const [shoppingListCount, setShoppingListCount] = useState(shopping_list_count);
+  headerType,
+  children,
+  location,
+}: LayoutProps) => {
+  const getHeader = () => {
+    if (headerType === 'promo') {
+      return <HeaderPromo />;
+    }
+    return (
+      <Header
+        location={location}
+      />
+    );
+  };
 
   return (
-    <div className='layoutMainWrapper'>
-      <Header setPopup={setPopup} popup={popup} location={location} shoppingListCount={shoppingListCount} />
+    <div className={classNames('layoutMainWrapper', {
+      'layout-promo': headerType === 'promo',
+    })}
+    >
+      {getHeader()}
       <SideMenu />
       <MainContent>
-        {React.cloneElement(children, { setShoppingListCount })}
-        { popup && <ShoppingListPopup localePhrases={localePhrases} />}
+        {children}
       </MainContent>
       <Footer />
     </div>

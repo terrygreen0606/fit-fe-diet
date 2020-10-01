@@ -80,6 +80,21 @@ section
     width: 186px
     background-color: $steel-blue
 
+.sect-subtitle
+  position: relative
+  display: inline-block
+  margin-bottom: 44px
+  padding-bottom: 16px
+  font-size: 34px
+  line-height: 41px
+  font-weight: bold
+  border-bottom: 6px solid $steel-blue
+
+  @media (max-width: 768px)
+    margin-bottom: 30px
+    padding-bottom: 3px
+    font-size: 16px
+
 .title-icon
   display: inline-block
   width: 30px
@@ -96,7 +111,6 @@ section
 
 h1, h2, h3, h4, h5, h6
   margin: 14px 0
-  color: $black
   font-weight: 400
   &:first-child
     margin-top: 0
@@ -112,9 +126,9 @@ h2
   line-height: 98px
   font-weight: bold // styled
 h3
-  font-size: 24px // !!
-  line-height: 28px
-  font-weight: 500
+  font-size: 64px // !!
+  line-height: 78px
+  font-weight: bold
 h4
   font-size: 32px
   line-height: 39px
@@ -149,6 +163,8 @@ img
   &.img-fluid
     display: inline-block
     max-width: 100%
+  &.flip-x
+    transform: scaleX(-1)
 
 b
   font-weight: 700
@@ -208,8 +224,8 @@ b
     border-color: #000
     color: #000
     &:hover, &.active
-      border-color: $caribbean-green
-      color: $caribbean-green
+      border-color: $steel-blue
+      color: $steel-blue
 
 // Site logo
 .site-logo
@@ -703,11 +719,15 @@ a
   color: $red
 .text-yellow-accent
   color: $yellow-accent
+.text-malachite-green
+  color: $malachite-green
 
 
 // Text
 .text-white
   color: #fff
+.text-transparent
+  color: transparent
 .text-beige
   color: $beige
 .text-honey-dew

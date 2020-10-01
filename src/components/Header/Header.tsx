@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
@@ -8,6 +8,8 @@ import { routes } from 'constants/routes';
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
+import ShoppingListPopup from 'components/ShoppingListPopup';
+import useOutsideClick from 'components/hooks/useOutsideClick';
 
 import './Header.sass';
 
@@ -17,49 +19,28 @@ import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-ca
 const Header = (props: any) => {
   const {
     isAuthenticated,
-    shoppingListCount,
-    popup,
-    setPopup,
     location,
+    localePhrases,
+    settings,
   } = props;
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+
+  const t = (code: string) => getTranslate(localePhrases, code);
 
   const toggleSideMenu = () => {
     document.body.classList.toggle('mobile-menu-opened');
   };
 
-  const outsideCLickListener = (e) => {
-    const popupEl = document.querySelector('.popup');
-    const linkToShoppingListEl = document.querySelector('.popup_cart_empty_link');
-    const shoppingCartEl = document.querySelector('.shopping_cart');
-    let targetElement = e.target; // clicked element
+  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
 
-    do {
-      if (targetElement === popupEl || targetElement === shoppingCartEl) {
-        // This is a click inside. Do nothing, just return.
-        return;
-      }
-      if (targetElement === linkToShoppingListEl) setPopup(false);
-      // If user click on link at popup to go to the shopping list
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
-      // Go up the DOM
-      targetElement = targetElement.parentNode;
-    } while (targetElement);
-
-    // This is a click outside.
-    if (isAuthenticated) setPopup(false);
-  };
-
-  const openShopListPopupHandler = () => {
-    if (!location.pathname.includes('shopping-list')) setPopup(!popup);
+  const updateShoppingListLength = (value) => {
+    setShoppingListLength(value);
   };
 
   useEffect(() => {
-    document.addEventListener('click', outsideCLickListener, true);
-    return () => {
-      document.removeEventListener('click', outsideCLickListener, true);
-    };
-  }, []);
+    setShoppingListLength(settings.shopping_list_count);
+  }, [settings.shopping_list_count]);
 
   return (
     <>
@@ -98,16 +79,6 @@ const Header = (props: any) => {
                   {t('header.menu_trainings')}
                 </NavLink>
 
-                {isAuthenticated && (
-                  <NavLink
-                    to='/shopping-list'
-                    className='mainHeader_menuList_item'
-                    activeClassName='mainHeader_menuList_item_active'
-                  >
-                    {t('recipe.saved.shopping_list')}
-                  </NavLink>
-                )}
-
                 <NavLink
                   to='/recipes'
                   className='mainHeader_menuList_item'
@@ -134,40 +105,52 @@ const Header = (props: any) => {
 
                 {isAuthenticated ? (
                   <>
-                    <span
-                      role='presentation'
-                      className='mainHeader_menuList_item shopping_cart'
-                      onClick={openShopListPopupHandler}
+                    <div
+                      ref={changedBlockRef}
+                      className='mainHeader_menuList_shopping_cart_wrap'
                     >
-                      <ShoppingCartIcon className='mainHeader_menuList_item_icon' />
-                      <span className={`shopping_cart_icon_count ${shoppingListCount !== 0 ? 'visible' : ''}`}>
-                        {shoppingListCount}
-                      </span>
-                    </span>
+                      <button
+                        type='button'
+                        className='mainHeader_menuList_shopping_cart'
+                        onClick={() => {
+                          if (!location.pathname.includes(routes.shoppingList)) {
+                            setIsBlockActive(!isBlockActive);
+                          }
+                        }}
+                      >
+                        <ShoppingCartIcon />
+                        <div className='mainHeader_menuList_shopping_cart_count'>
+                          {shoppingListLength}
+                        </div>
+                      </button>
+                      {(isBlockActive && !window.location.href.includes(routes.shoppingList)) && (
+                        <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
+                      )}
+                    </div>
 
-                    <span
-                      role='presentation'
+                    <button
+                      type='button'
                       className='mainHeader_menuList_item'
                       onClick={() => props.userLogout()}
                     >
                       {t('common.logout')}
-                    </span>
+                    </button>
                   </>
                 ) : (
-                  <>
-                    <NavLink
-                      to='/login'
-                      className='mainHeader_menuList_item'
-                      activeClassName='mainHeader_menuList_item_active'
-                    >
-                      {t('login.submit')}
-                    </NavLink>
+                    <>
+                      <NavLink
+                        to='/login'
+                        className='mainHeader_menuList_item'
+                        activeClassName='mainHeader_menuList_item_active'
+                      >
+                        {t('login.submit')}
+                      </NavLink>
 
-                    <NavLink to='/register' className='link-raw'>
-                      <Button color='primary'>{t('button.register')}</Button>
-                    </NavLink>
-                  </>
-                )}
+                      <NavLink to='/register' className='link-raw'>
+                        <Button color='primary'>{t('button.register')}</Button>
+                      </NavLink>
+                    </>
+                  )}
               </nav>
 
             </div>
@@ -182,6 +165,7 @@ export default WithTranslate(
   connect(
     (state: any) => ({
       isAuthenticated: state.auth.isAuthenticated,
+      settings: state.settings,
     }),
     { userLogout },
   )(Header),

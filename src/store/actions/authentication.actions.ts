@@ -12,6 +12,8 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 export const SET_AUTH_CHECKING = 'SET_AUTH_CHECKING';
 export const SET_USER_DATA = 'SET_USER_DATA';
 
+export const setUserData = (userData: any) => ({ type: SET_USER_DATA, userData });
+
 export const setAuthChecking = (isAuthChecking: boolean) => (
   { type: SET_AUTH_CHECKING, isAuthChecking }
 );
@@ -52,8 +54,11 @@ export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true
     if (isAuthenticated) {
       getAppSettings()
         .then(response => {
-          if (response.data && response.data.data) {
-            dispatch(setAppSetting(response.data.data));
+          if (response.data.success && response.data.data) {
+            dispatch(setAppSetting({
+              ...response.data.data,
+              is_private: true,
+            }));
 
             if (localesLoad) {
               dispatch(loadLocales());
@@ -66,7 +71,7 @@ export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true
     } else {
       getAppPublicSettings()
         .then(response => {
-          if (response.data && response.data.data) {
+          if (response.data.success && response.data.data) {
             dispatch(setAppSetting(response.data.data));
 
             if (localesLoad) {

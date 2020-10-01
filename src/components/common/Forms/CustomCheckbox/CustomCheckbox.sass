@@ -24,10 +24,10 @@
 			border-color: $red
 	input
 		display: none
-		.checkmark
+		&:checked ~ .checkmark
 			background-color: #fff
 			&::after
-				opacity: 0
+				opacity: 1
 
 .checkboxDisabled
 	opacity: .6
@@ -48,14 +48,16 @@
 	height: 23px
 	border: 1px solid $grey-light
 	border-radius: 4px
- &::after
-   content: ''
-   position: absolute
-   left: 8px
-   top: 3px
-   width: 7px
-   height: 11px
-   border: solid $caribbean-green
-   border-width: 0 2px 2px 0
-   transform: rotate(45deg)
-   opacity: 0
+	transition: 0.2s all ease
+	&::after
+		content: ''
+		position: absolute
+		left: 8px
+		top: 3px
+		width: 7px
+		height: 11px
+		border: solid $caribbean-green
+		border-width: 0 2px 2px 0
+		transform: rotate(45deg)
+		opacity: 0
+		transition: 0.2s opacity ease

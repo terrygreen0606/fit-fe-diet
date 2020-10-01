@@ -93,6 +93,32 @@ button.bttn
       path
         fill: $bright-green
 
+.bttn_primary-shadow
+  background-color: $bright-green
+  border-color: $bright-green
+  color: #fff
+  box-shadow: 0px 5px 15px $yellow-accent
+  svg
+    fill: #fff
+    path
+      fill: #fff
+
+  &:hover
+    color: #fff
+    background-color: $bright-green
+    box-shadow: 0 5px 15px $yellow-accent
+    svg
+      fill: #fff
+      path
+        fill: #fff
+
+  &.bttnOutline
+    color: $bright-green
+    svg
+      fill: $bright-green
+      path
+        fill: $bright-green
+
 
 .bttn_secondary
   background-color: $steel-blue
@@ -120,9 +146,31 @@ button.bttn
         fill: $steel-blue
 
 
-.bttn_raw
-  border-color: transparent
-  background-color: transparent
+.bttn_mint
+  background-color: $caribbean-green
+  border-color: $caribbean-green
+  color: #fff
+  svg
+    fill: #fff
+    path
+      fill: #fff
+
+  &:hover
+    color: #fff
+    background-color: $caribbean-green
+    box-shadow: 0 5px 15px $caribbean-green
+    svg
+      fill: #fff
+      path
+        fill: #fff
+
+  &.bttnOutline
+    color: $caribbean-green
+    svg
+      fill: $caribbean-green
+      path
+        fill: $caribbean-green
+
 
 .bttn_info
   color: #000000
@@ -139,6 +187,26 @@ button.bttn
   &:hover
     color: $white
     box-shadow: 0 5px 15px #FF3D00
+
+.bttn_caribbean
+  color: $white
+  border: 2px solid $caribbean-green
+  background-color: $caribbean-green
+
+  &:hover
+    color: $white
+
+  &.bttnOutline
+    color: $steel-blue
+    svg
+      fill: $steel-blue
+      path
+        fill: $steel-blue
+
+
+.bttn_raw
+  border-color: transparent
+  background-color: transparent
 
 
 .google-login-btn

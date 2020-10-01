@@ -1,7 +1,7 @@
 export const routes = {
   main: '/',
   trainings: '/trainings',
-  nutritionPlan: '/nutrition/plan',
+  mealPlan: '/meal-plan',
   nutritionPlanWeight: '/nutrition/plan/weights',
   shoppingList: '/shopping-list',
   createRecipe: '/recipe/create',
@@ -20,6 +20,10 @@ export const routes = {
   cancellation: '/cancellation',
   login: '/login',
   register: '/register',
+  resetPasword: '/reset-password',
   recipeFullView: '/recipe/:recipeId',
+  afterSignup: '/after-signup',
+  checkout: '/checkout',
   getRecipeFullView: (recipeId: string) => `/recipe/${recipeId}`,
+  paymentHistorySettings: '/settings/payment-history',
 };

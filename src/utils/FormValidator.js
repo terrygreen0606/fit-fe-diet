@@ -115,7 +115,7 @@ const FormValidator = {
             result[m] = value && value.length > 0 ? !validator.isLength(value, { max: param }) : false;
             break;
           case 'len':
-            result[m] = value && value.length > 0 ? !validator.isLength(value, { min: param, max: param }) : false;
+            result[m] = value && value.length > 0 ? !validator.isLength(value.replace('_', ''), { min: param, max: param }) : false;
             break;
           case 'min':
             result[m] = value && value.length > 0 ? !validator.isInt(value, { min: validator.toInt(param) }) : false;

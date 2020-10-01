@@ -1,0 +1,89 @@
+@import '../../../assets/sass/_vars'
+
+.payment-history
+  padding: 36px
+
+  @media (max-width: 450px)
+    padding: 20px 10px
+
+  &__title:first-child
+    margin-bottom: 50px
+
+    &.without-mg
+      margin-bottom: 0
+
+    @media (max-width: 450px)
+      margin-bottom: 30px
+
+  &__table
+    margin-bottom: 20px
+
+    &-row
+      display: flex
+      justify-content: space-between
+      margin-bottom: 16px
+      padding-bottom: 16px
+      font-size: 12px
+      border-bottom: 1px solid #D6D6D6
+
+      @media (max-width: 450px)
+        border-bottom: 1px solid $steel-blue
+        
+    &-head
+      margin-bottom: 26px
+      padding-bottom: 22px
+      font-size: 18px
+      border-bottom: 5px solid $steel-blue
+
+      @media (max-width: 450px)
+        font-size: 12px
+        margin-bottom: 16px
+        padding-bottom: 16px
+        border-bottom: none
+
+    &-number
+      text-align: center
+      flex-basis: 110px
+
+      @media (max-width: 450px)
+        flex-basis: 27.5%
+        font-size: 12px
+
+    &-date
+      text-align: center
+      flex-basis: 100px
+
+      @media (max-width: 450px)
+        flex-basis: 27.5%
+        font-size: 12px
+
+    &-amount
+      text-align: center
+      flex-basis: 100px
+
+      @media (max-width: 450px)
+        flex-basis: 20%
+        font-size: 12px
+
+    &-status
+      text-align: center
+      flex-basis: 100px
+      font-weight: bold
+
+      @media (max-width: 450px)
+        flex-basis: 25%
+        font-size: 12px
+
+    &-head .payment-history__table-status
+      font-weight: normal
+
+    &-row.active .payment-history__table-status
+      color: $caribbean-green
+
+    &-row.ended .payment-history__table-status
+      color: #F94545
+
+    &-row.pending
+      color: #BEBEBE
+
+        

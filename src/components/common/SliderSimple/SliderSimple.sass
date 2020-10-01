@@ -1,0 +1,228 @@
+@import '../../../assets/sass/vars'
+
+
+.slider-simple
+  &-wrap
+    position: relative
+    padding-bottom: 88px
+  &-container
+    position: relative
+    width: 100%
+    overflow: hidden
+    border-radius: 20px
+  &-list
+    display: flex
+    position: relative
+    justify-content: center
+    padding-bottom: 50px
+    border-radius: 20px
+    &.slides-move
+      transition: .4s left ease
+  &-dots
+    position: absolute
+    left: 0
+    bottom: 0
+    width: 100%
+    text-align: center
+  &-dot
+    display: inline-block
+    width: 38px
+    height: 38px
+    background-color: #fff
+    border-radius: 100%
+    &.active
+      background-color: $mint-green
+    &:not(:last-child)
+      margin-right: 26px
+  &-item
+    position: relative
+    display: block
+    flex: 1
+    width: 100%
+  &-prev, &-next
+    position: absolute
+    top: 40%
+    z-index: 999
+    display: block
+    padding: 4% 3%
+    width: auto
+    height: auto
+    background: #2a2a2a
+    color: #fff
+    text-decoration: none
+    font-weight: 600
+    font-size: 18px
+    opacity: 0.8
+    cursor: pointer
+    &:hover
+      opacity: 1
+      -webkit-transition: all 0.2s ease
+  &-prev
+    left: 0
+    border-radius: 0 2px 2px 0
+  &-next
+    right: 0
+    border-radius: 2px 0 0 2px
+
+
+// App reviews slider 
+$reviews-slider-class: '.app-reviews-slider'
+
+#{$reviews-slider-class}
+  &--1
+    #{$reviews-slider-class}
+      &__dots
+        text-align: center
+        &_item
+          display: inline-block
+          width: 38px
+          height: 38px
+          border-radius: 100%
+          background-color: #fff
+          +mt(.2s)
+          &:hover, &.active
+            background-color: $mint-green
+          &:not(:last-child)
+            margin-right: 26px
+
+        @media only screen and (max-width : 768px)
+          &_item
+            width: 30px
+            height: 30px
+            &:not(:last-child)
+              margin-right: 21px
+
+      &__item
+        height: 100%
+        background-color: #fff
+        border-radius: 20px
+        &_img
+          display: block
+          width: 100%
+          height: 318px
+          background-size: cover
+          background-repeat: no-repeat
+          background-position: top center
+        &_content
+          padding: 34px 31px
+        &_author
+          margin-top: 29px
+          color: $steel-blue
+          font-size: 22px
+          line-height: 27px
+          font-weight: 400
+        &_descr
+          font-size: 22px
+          line-height: 26px
+          color: #000
+          font-weight: 400
+
+        @media only screen and (max-width : 768px)
+          &_img
+            height: 230px
+          &_content
+            padding: 18px 19px
+          &_descr
+            font-size: 16px
+            line-height: 20px
+          &_author
+            margin-top: 15px
+            font-size: 18px
+            line-height: 22px
+  &--2
+    .slider-simple-prev, .slider-simple-next
+      position: absolute
+      top: unset
+      display: inline-block
+      background-color: #fff
+      width: 80px
+      height: 80px
+      bottom: 10px
+      border: 20px solid #fff
+      border-radius: 100%
+      &:hover
+        background-color: $caribbean-green
+        color: #fff
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.08)
+      &::before
+        position: absolute
+        top: -20px
+        left: -20px
+        content: ''
+        display: inline-block
+        width: 80px
+        height: 80px
+        background-size: 13px
+        background-repeat: no-repeat
+        background-position: center center
+    .slider-simple-prev
+      right: 110px
+      left: unset
+      &::before
+        background-image: url('../../../assets/img/icons/angle-left-green-icon.svg')
+      &:hover
+        &::before
+          background-image: url('../../../assets/img/icons/angle-left-icon.svg')
+    .slider-simple-next
+      right: 40px
+      &::before
+        background-image: url('../../../assets/img/icons/angle-right-green-icon.svg')
+      &:hover
+        &::before
+          background-image: url('../../../assets/img/icons/angle-right-icon.svg')
+    #{$reviews-slider-class}
+      &__controls
+        &_nav
+          display: inline-flex
+          justify-content: center
+          align-items: center
+          width: 60px
+          height: 60px
+          background-color: #fff
+          color: $caribbean-green
+          +mt(.2s)
+          &:hover, &.active
+            background-color: $caribbean-green
+            color: #fff
+      &__item
+        height: 100%
+        padding: 40px 80px
+        margin: 15px
+        text-align: center
+        background: #FFFFFF
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        border-radius: 20px
+        &_img
+          display: inline-block
+          margin-bottom: 20px
+          width: 235px
+          height: 235px
+          border-radius: 100%
+          background-size: cover
+          background-repeat: no-repeat
+          background-position: top center
+        &_author
+          margin-top: 23px
+          color: $steel-blue
+          font-size: 22px
+          line-height: 27px
+          font-weight: bold
+        &_descr
+          font-size: 26px
+          line-height: 32px
+          color: #000
+          font-weight: 400
+
+        @media only screen and (max-width : 768px)
+          padding: 40px 20px 80px
+
+          &_img
+            width: 150px
+            height: 150px
+          &_descr
+            font-size: 20px
+            line-height: 24px
+          &_author
+            font-size: 22px
+            line-height: 27px
+

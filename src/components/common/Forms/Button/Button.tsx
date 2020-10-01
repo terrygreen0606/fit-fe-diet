@@ -9,7 +9,7 @@ import './Button.sass';
 interface ButtonProps {
   type?: 'submit' | 'button' | 'reset';
   size?: 'md' | 'sm' | 'lg';
-  color?: 'primary' | 'default' | 'secondary' | 'raw' | 'info' | 'gray' | 'cancel';
+  color?: 'primary' | 'primary-shadow' | 'default' | 'mint' | 'caribbean' | 'secondary' | 'raw' | 'info' | 'gray' | 'cancel';
   weight?: 'medium' | 'default';
   icon?: any;
   outline?: boolean;
@@ -62,6 +62,10 @@ const Button = (props: ButtonProps) => {
     innerRef,
     ...attributes
   } = props;
+
+  if (spanBtn) {
+    delete attributes.type;
+  }
 
   const ButtonComponent = (ButtonComponentProps: any) =>
     spanBtn ? <span {...ButtonComponentProps} /> : <button {...ButtonComponentProps} />;

@@ -35,16 +35,3 @@ export const servingOptions = [
     label: 5,
   },
 ];
-
-export const colourStylesSelect = {
-  control: (styles) => ({
-    ...styles,
-    padding: '15px',
-    border: '1px solid #c6c6c6',
-    borderRadius: '5px',
-    transition: 'all 0.2s ease',
-    ':hover': {
-      border: '1px solid #474747',
-    },
-  }),
-};

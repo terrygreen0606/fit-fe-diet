@@ -30,10 +30,12 @@
     line-height: 1.67
 
   &__invite-link
+    position: relative
     margin-bottom: 44px
 
     &-input
       width: 100%
+      min-height: 82px
       padding: 30px 56px
       font-size: 20px
       color: $black
@@ -45,8 +47,12 @@
         color: $black
 
     &-copied
+      position: absolute
       margin-top: 10px
       color: $success-green
+      top: 100%
+      left: 50%
+      transform: translateX(-50%)
 
   &__separator
     position: relative
@@ -71,6 +77,12 @@
 
   &__container-input
     position: relative
+
+    .fgInvalidMsg
+      position: absolute
+      top: 100%
+      left: 50%
+      transform: translateX(-50%)
 
   &__input.fg-input
     padding: 30px 140px 30px 40px
@@ -130,7 +142,7 @@
     z-index: 2
 
     @media (max-width: 767px)
-      margin-top: 220px
+      margin-top: 270px
 
     .share-button
       margin: 0 17px
@@ -188,17 +200,22 @@
       font-size: 14px
 
     &__invite-link
+      position: initial
       &-input
         position: absolute
         left: 50%
         transform: translateX(-50%)
-        bottom: 250px
+        bottom: 300px
         padding: 30px 15px 30px 40px
         max-width: 540px
         justify-content: flex-start
         font-size: 14px
         overflow: hidden
         z-index: 3
+
+      &-copied
+        top: initial
+        bottom: 270px
 
     &__separator
       display: none
@@ -227,7 +244,7 @@
     
     &__container-input
       position: absolute
-      bottom: 150px
+      bottom: 160px
       left: 50%
       transform: translateX(-50%)
       max-width: 540px

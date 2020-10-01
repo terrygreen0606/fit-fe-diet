@@ -1,73 +1,85 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable operator-linebreak */
 import React, {
-  useCallback,
-  useEffect,
   useState,
+  useEffect,
 } from 'react';
-import Select from 'react-select';
-import classnames from 'classnames';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
-import { connect } from 'react-redux';
+import AsyncSelect from 'react-select/async';
 
-import { getTranslate } from 'utils';
+import { routes } from 'constants/routes';
 import {
+  validateFieldOnChange,
+  getFieldErrors as getFieldErrorsUtil,
+  getTranslate,
+  getWeigthUnit,
+} from 'utils';
+import {
+  searchIngredients,
+  getIngredient,
+  getPublicShopListUrl,
   getShoppingList,
   setShoppingRowBought,
-  searchIngredients,
-  addIngredientInShoppingList,
   deleteFromShoppingList,
-  getPublicShopListUrl,
+  addIngredientInShoppingList,
   syncShoppingList,
 } from 'api';
+import FormValidator from 'utils/FormValidator';
+import { setAppSetting } from 'store/actions';
 
+// Components
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 import CustomCheckbox from 'components/common/Forms/CustomCheckbox';
 import SelectInput from 'components/common/Forms/SelectInput';
-import Spinner from 'components/common/Spinner';
-import SiteTour from 'components/SiteTour/SiteTour';
+import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
-import Breadcrumb from 'components/Breadcrumb';
+import Spinner from 'components/common/Spinner';
 import ShareButtons from 'components/ShareButtons';
-import { routes } from 'constants/routes';
+import useOutsideClick from 'components/hooks/useOutsideClick';
+import useInterval from 'components/hooks/useInterval';
 
+import './ShoppingListView.sass';
+
+// Icons
 import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.svg';
 import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
 import { ReactComponent as ShareIcon } from 'assets/img/icons/share-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
-import './ShoppingListView.sass';
+import { mockData, colourStylesSelect } from './dataForShoppingList';
 
-import { colourStylesSelect, mockData } from './dataForShoppingList';
+const ShoppingListView = (props: any) => {
+  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
-const ShoppingListView: React.FC = (props: any) => {
-  const { localePhrases, settings } = props;
-  const [measurement, setMeasurement] = useState(null);
-  const [publicShopListUrl, setPublicShopListUrl] = useState(null);
-  const [items, setItems] = useState(null);
-  const [ingredientId, setIngredientId] = useState<string>('');
-  const [ingredientWeight, setIngredientWeight] = useState('');
-  const [quantity, setQuantity] = useState(null);
-  const [slideStep, setSlideStep] = useState(1);
-  const [shareListPopup, setShareListPopup] = useState(false);
-  const [ingredientsArray, setIngredientsArray] = useState([]);
+  const { settings } = props;
 
-  const [dateFromShopList, setDateFromShopList] = useState(null);
+  const [bannerStep, setBannerStep] = useState<number>(0);
+  const [isBannerActive, setIsBannerActive] = useState<boolean>(true);
 
-  const t = (code: string, placeholders?: any) => getTranslate(
-    localePhrases,
-    code,
-    placeholders,
-  );
+  const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
-  const quantityOptions = (measure) => (
-    measure === 'si'
-      ? [{ value: t('common.gr_label'), label: t('common.gr_label') }]
-      : [{ value: t('common.oz_label'), label: t('common.oz_label') }]
-  );
+  const [shoppingList, setShoppingList] = useState<any[]>([]);
 
-  const onAction = () => {
-    setSlideStep(0);
-  };
+  const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
+
+  const [addIngredientForm, setAddIngredientForm] = useState({
+    id: '',
+    weight: null,
+  });
+
+  const [selectedIngedient, setSelectedIngedient] = useState<any[]>([null]);
+
+  const [addIngredientErrors, setAddIngredientErrors] = useState<any[]>([]);
+
+  const [dateSync, setDateSync] = useState<number>(0);
+  const [isSyncResponseActive, setIsSyncResponseActive] = useState<boolean>(true);
+
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
+
+  const [sharePublicUrl, setSharePublicUrl] = useState<string>('');
 
   const filterIngredients = async (inputValue: string) => {
     if (inputValue.length < 2) return;
@@ -87,359 +99,495 @@ const ShoppingListView: React.FC = (props: any) => {
     }
   };
 
-  const inputValueIngredient = (ingredientValue: string) => new Promise((resolve) => {
-    resolve(filterIngredients(ingredientValue));
-  });
-
-  const changeHandler = (ingredient, { action }) => {
-    if (action === 'select-option') {
-      setIngredientId(ingredient.value);
-    }
-  };
-
-  const inputChangeHandler = (inputValue, { action }) => {
-    if ((action === 'set-value' || action === 'input-change') && inputValue.length !== 0) {
-      inputValueIngredient(inputValue).then((res: Array<any>) =>
-        res && res.length !== 0 && setIngredientsArray([...res]));
-    }
-  };
-
-  const SyncShopListCallback = useCallback(() => {
-    syncShoppingList(dateFromShopList).then((res) => {
-      if (res && res.data && res.data.data.date_sync !== dateFromShopList) {
-        // shopping list need update
-        const { list, date_sync: dateSync } = res.data.data;
-        if (list.length > 0) {
-          const newItems = items.map((item) => {
-            const syncEl = list.filter((syncItem) => syncItem[0] === item.id);
-            if (syncEl[0]) {
-              const [id, weight, isBought] = syncEl[0];
-              item.is_bought = isBought;
-              item.weight = weight;
-              return item;
-            }
-          });
-          setItems(newItems.filter((item) => item));
-          props.setShoppingListCount(newItems.filter((item) => item).length);
-        } else {
-          setItems([]);
-          props.setShoppingListCount(0);
-        }
-        setDateFromShopList(dateSync);
-      }
+  const inputValueIngredient = (inputValue: string) =>
+    new Promise((resolve) => {
+      resolve(filterIngredients(inputValue));
     });
-  }, [items, dateFromShopList]);
 
-  const addIngredient = async () => {
-    if (!ingredientWeight || !ingredientId) toast.warn('Product name and quantity should be filled');
-    else {
-      await addIngredientInShoppingList(
-        ingredientId,
-        ingredientWeight ? +ingredientWeight : undefined,
-      ).then((res) => {
-        setDateFromShopList(res.data.data.date_sync);
-        SyncShopListCallback();
+  const saveFileShoppingList = () => {
+    getPublicShopListUrl(1).then((response) =>
+      window.location.assign(response.data.data.url));
+  };
+
+  const setIndgredient = (e: any) => {
+    getIngredient(e.value).then((response) => {
+      const { data } = response.data;
+      setAddIngredientForm({
+        ...addIngredientForm,
+        id: data._id,
       });
-      await getShoppingList(2)
-        .then((res) => {
-          setItems(res.data.data.list);
-          props.setShoppingListCount(res.data.data.list.length);
-        });
-    }
-  };
-
-  const deleteIngredient = (item) => {
-    deleteFromShoppingList(item.id, dateFromShopList)
-      .then((res) => {
-        setDateFromShopList(res.data.data.date_sync);
-        SyncShopListCallback();
-      })
-      .catch((error) => toast.error(error.message));
-  };
-
-  const onChangeHandler = (e, item) => {
-    if (e.target.checked) {
-      e.target.parentElement.parentElement.classList.add('active');
-    } else {
-      e.target.parentElement.parentElement.classList.remove('active');
-    }
-
-    setShoppingRowBought(item.id, e.target.checked, dateFromShopList)
-      .then((res) => {
-        setDateFromShopList(res.data.data.date_sync);
-        SyncShopListCallback();
-      })
-      .catch((error) => toast.error(error.message));
-  };
-
-  const namingEditor = (item) => {
-    const weight = measurement === 'si'
-      ? `${item.weight} ${t('common.gr_label')}`
-      : `${item.weight} ${t('common.oz_label')}`;
-
-    return `${item.name_i18n} (${weight})`;
-  };
-
-  const saveShopList = async () => {
-    await getPublicShopListUrl(1)
-      .then((res) => window.location.assign(res.data.data.url));
-  };
-
-  const renderItems = () => {
-    const firstColumn = [];
-    const secondColumn = [];
-    const categories = [];
-
-    const filterCategories = (category) => {
-      if (!categories.includes(category)) {
-        categories.push(category);
-        return category;
-      } return null;
-    };
-
-    items.forEach((item) => {
-      if (item.column === 1) {
-        firstColumn.push(
-          <React.Fragment key={item.id}>
-            {
-              filterCategories(item.cuisine_name_i18n) && (
-                <div className='shopping_list_body_sect_category'>
-                  {item.cuisine_name_i18n}
-                </div>
-              )
-            }
-            <div
-              className={classnames('shopping_list_body_sect_item', {
-                active: item.is_bought,
-              })}
-            >
-              <CustomCheckbox
-                label={namingEditor(item)}
-                defaultChecked={item.is_bought}
-                onChange={(e) => onChangeHandler(e, item)}
-                className='shopping_list_body_sect_item_checkbox'
-                inline
-              />
-              <span
-                role='presentation'
-                className='shopping_list_body_sect_item_trash'
-                onClick={() => deleteIngredient(item)}
-              >
-                <TrashIcon />
-              </span>
-            </div>
-          </React.Fragment>,
-        );
-      } else {
-        secondColumn.push(
-          <React.Fragment key={item.id}>
-            {
-              filterCategories(item.cuisine_name_i18n) && (
-                <div className='shopping_list_body_sect_category'>
-                  {item.cuisine_name_i18n}
-                </div>
-              )
-            }
-            <div
-              className={classnames('shopping_list_body_sect_item', {
-                active: item.is_bought,
-              })}
-              key={item.id}
-            >
-              <CustomCheckbox
-                label={namingEditor(item)}
-                defaultChecked={item.is_bought}
-                onChange={(e) => onChangeHandler(e, item)}
-                className='shopping_list_body_sect_item_checkbox'
-                inline
-              />
-              <span
-                role='presentation'
-                className='shopping_list_body_sect_item_trash'
-                onClick={() => deleteIngredient(item)}
-              >
-                <TrashIcon />
-              </span>
-            </div>
-          </React.Fragment>,
-        );
-      }
     });
+  };
 
-    return (
-      <div className='shopping_list_body_sect'>
-        <div className='shopping_list_body_sect_1'>
-          {firstColumn.map((item) => item)}
-        </div>
-        <div className='shopping_list_body_sect_2'>
-          {secondColumn.map((item) => item)}
-        </div>
-      </div>
+  const syncNumberInShopCart = (array = []) => {
+    const notBoughtIngredients = (array.length > 0 ? array : shoppingList).filter((item) => !item.is_bought).length;
+    props.setAppSetting({
+      ...settings,
+      shopping_list_count: notBoughtIngredients,
+    });
+  };
+
+  const getShoppingListFunc = () => {
+    setIsSyncResponseActive(false);
+    getShoppingList(2, dateSync).then((response) => {
+      const { list } = response.data.data;
+
+      list.map((item) => {
+        item.is_disable = false;
+      });
+
+      syncNumberInShopCart(list);
+
+      setShoppingList(list);
+
+      setDateSync(response.data.data.date_sync);
+    }).finally(() => {
+      setIsSyncResponseActive(true);
+      setIsSpinnerActive(false);
+    });
+  };
+
+  useEffect(() => {
+    let cleanComponent = false;
+    if (settings.is_private) {
+      if (settings.paid_until > 0) {
+        getShoppingListFunc();
+        if (!cleanComponent) setIsNoAccess(false);
+      } else {
+        if (!cleanComponent) setIsNoAccess(true);
+        if (!cleanComponent) setIsSpinnerActive(false);
+      }
+    }
+
+    return () => cleanComponent = true;
+  }, [settings.paid_until, settings.is_private]);
+
+  useInterval(() => {
+    if (settings.paid_until > 0) {
+      syncShoppingList(dateSync).then((response) => {
+        const { list } = response.data.data;
+        const syncFromResponse = response.data.data.date_sync;
+
+        if (syncFromResponse !== dateSync) {
+          setDateSync(response.data.data.date_sync);
+          let updatedShoppingList = [...shoppingList];
+
+          if (list.length === updatedShoppingList.length) {
+            updatedShoppingList.forEach((item) => {
+              list.find((findItem) => {
+                if (findItem[0] === item.id) {
+                  const newWeight = findItem[1];
+                  const newIsBought = findItem[2];
+
+                  item.weight = newWeight;
+                  item.is_bought = newIsBought;
+                }
+              });
+            });
+          } else if (list.length < updatedShoppingList.length) {
+            const filteredShoppingList = [];
+            updatedShoppingList.forEach((item) => {
+              list.find((findItem) => {
+                if (findItem[0] === item.id) {
+                  const newWeight = findItem[1];
+                  const newIsBought = findItem[2];
+
+                  item.weight = newWeight;
+                  item.is_bought = newIsBought;
+
+                  filteredShoppingList.push(item);
+                }
+              });
+            });
+            updatedShoppingList = [...filteredShoppingList];
+          } else {
+            getShoppingListFunc();
+          }
+          setShoppingList([...updatedShoppingList]);
+        }
+      });
+    }
+  }, isSyncResponseActive ? 5000 : null);
+
+  const toggleCheckbox = (itemIndex: number, itemId: string) => {
+    const updatedShoppingList = [...shoppingList];
+
+    updatedShoppingList[itemIndex].is_bought
+      = !updatedShoppingList[itemIndex].is_bought;
+
+    updatedShoppingList[itemIndex].is_disable = true;
+
+    setShoppingList([...updatedShoppingList]);
+
+    setIsSyncResponseActive(false);
+
+    setShoppingRowBought(
+      itemId,
+      updatedShoppingList[itemIndex].is_bought,
+      dateSync,
+    ).then((response) => {
+      setDateSync(response.data.data.date_sync);
+    }).catch(() => {
+      updatedShoppingList[itemIndex].is_bought =
+        !updatedShoppingList[itemIndex].is_bought;
+
+      setShoppingList([...updatedShoppingList]);
+
+      toast.error(t('shop_list.update.error'));
+    }).finally(() => {
+      setIsSyncResponseActive(true);
+
+      setTimeout(() => {
+        updatedShoppingList[itemIndex].is_disable = false;
+        setShoppingList([...updatedShoppingList]);
+      }, 500);
+
+      syncNumberInShopCart();
+    });
+  };
+
+  const deleteIngredient = (itemIndex: number, itemId: string) => {
+    const updatedShoppingList = [...shoppingList];
+    const prevShoppingList = [...shoppingList];
+
+    updatedShoppingList.splice(itemIndex, 1);
+
+    setShoppingList([...updatedShoppingList]);
+
+    setIsSyncResponseActive(false);
+
+    deleteFromShoppingList(itemId, dateSync)
+      .then((response) => {
+        setDateSync(response.data.data.date_sync);
+        syncNumberInShopCart(updatedShoppingList);
+      })
+      .catch(() => {
+        toast.error(t('shop_list.update.error'));
+
+        setShoppingList([...prevShoppingList]);
+      }).finally(() => setIsSyncResponseActive(true));
+  };
+
+  const validateOnChange = (name: string, value: any, event, element?) => {
+    validateFieldOnChange(
+      name,
+      value,
+      event,
+      addIngredientForm,
+      setAddIngredientForm,
+      addIngredientErrors,
+      setAddIngredientErrors,
+      element,
     );
   };
 
-  useEffect(() => {
-    getShoppingList(2)
-      .then((res) => {
-        const { date_sync: dateSync, list } = res.data.data;
-        setDateFromShopList(dateSync);
-        setItems(list);
+  const getFieldErrors = (field: string) =>
+    getFieldErrorsUtil(field, addIngredientErrors);
+
+  const createRecipeSubmit = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const inputs: Array<any> = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+
+    const { errors, hasError } = FormValidator.bulkValidate(inputs);
+
+    setAddIngredientErrors([...errors]);
+
+    if (!addIngredientForm.id) {
+      toast.error(t('shop_list.ingr.empty_error'));
+      return;
+    }
+
+    if (!hasError) {
+      addIngredientInShoppingList(
+        addIngredientForm.id,
+        addIngredientForm.weight,
+        dateSync,
+      ).then(() => {
+        const isFound = shoppingList.find((findItem, findItemIndex) => {
+          if (findItem.ingredient_id === addIngredientForm.id) {
+            const updatedShoppingList = [...shoppingList];
+            updatedShoppingList[findItemIndex].weight += +addIngredientForm.weight;
+            setShoppingList([...updatedShoppingList]);
+
+            return findItem;
+          }
+        });
+        if (!isFound) {
+          getShoppingListFunc();
+        }
+        setSelectedIngedient([null]);
+        setAddIngredientForm({
+          ...addIngredientForm,
+          weight: null,
+        });
+      }).catch(() => {
+        toast.error(t('shop_list.update.error'));
       });
-    setMeasurement(settings.measurement);
-    setQuantity(quantityOptions(settings.measurement)[0]);
-  }, []);
-
-  useEffect(() => {
-    const actives = document.querySelectorAll('.shopping_list_body_sect_item.active');
-
-    actives.forEach((item) => {
-      item.querySelector('input').setAttribute('checked', 'checked');
-    });
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => SyncShopListCallback(), (10000));
-    // destroy interval on unmount
-    return () => clearInterval(interval);
-  });
-
-  if (!items) return <Spinner color='#0FC1A1' />;
+    }
+  };
 
   return (
     <>
       <section>
         <Helmet>
-          <title>{t('recipe.saved.shopping_list')}</title>
+          <title>{t('app.title.shopping_list')}</title>
         </Helmet>
-        <div className='container'>
-          <Breadcrumb
-            routes={[
-              {
-                url: routes.main,
-                name: t('breadcrumb.main'),
-              },
-            ]}
-            currentPage={t('app.title.shopping_list')}
-          />
-
-          <h1 className='training-plan-title'>
-            <span className='training-plan-title-text'>
-              {t('recipe.saved.shopping_list')}
-            </span>
-          </h1>
-          <div className='row px-3 px-md-0'>
-            <div className='shopping_list_container'>
-              <div className='shopping_list_body_title_sect'>
-                <h4 className='shopping_list_body_title_sect_text'>
-                  {t('shop_list.to_buy', { number: items.filter((item) => !item.is_bought).length })}
-                </h4>
-                <div className='shopping_list_body_title_sect_icons'>
-                  <FileDyskIcon
-                    className='page-sub-tabs-controls-icon'
-                    onClick={saveShopList}
-                  />
-                  <PrintIcon
-                    className='page-sub-tabs-controls-icon'
-                    onClick={() => window.print()}
-                  />
-                  <ShareIcon
-                    className='page-sub-tabs-controls-icon'
-                    onClick={() => {
-                      setShareListPopup(!shareListPopup);
-                      if (!publicShopListUrl) {
-                        getPublicShopListUrl()
-                          .then((res) => setPublicShopListUrl(res.data.data.url));
-                      }
-                    }}
-                  />
-                  {
-                    shareListPopup && (
-                      <ShareButtons
-                        shareLink={publicShopListUrl}
-                        classes='sharing_socials'
-                        disabled={!items || !items.length}
-                      />
-                    )
-                  }
-                </div>
-              </div>
-
-              <div className='shopping_list_body'>
-                {items.length ? renderItems() : t('shop_list.empty')}
-              </div>
-
-              <div className='shopping_list_footer'>
-                <div className='shopping_list_footer_ingredient'>
-                  <span className='shopping_list_footer_ingredient_text'>
-                    {t('ingr.add')}
-                  </span>
-                  <div className='shopping_list_footer_ingredient_input_sect'>
-                    <Select
-                      isClearable
-                      placeholder={t('common.product_name')}
-                      options={ingredientsArray}
-                      onInputChange={inputChangeHandler}
-                      onChange={changeHandler}
-                      styles={colourStylesSelect}
-                      noOptionsMessage={
-                        ingredientsArray.length > 0
-                          ? () => t('shop_list.no_ingredient')
-                          : () => t('shop_list.emty_field')
-                      }
-                    />
-                  </div>
-                </div>
-                <div className='shopping_list_footer_quantity'>
-                  <span className='shopping_list_footer_quantity_text'>
-                    {t('common.quantity')}
-                  </span>
-                  <div className='shopping_list_footer_quantity_input_sect'>
-                    <input
-                      className='shopping_list_footer_quantity_input'
-                      type='number'
-                      min={1}
-                      value={ingredientWeight}
-                      onChange={(e) => setIngredientWeight(e.target.value)}
-                    />
-                    <SelectInput
-                      value={quantity}
-                      options={quantityOptions(measurement)}
-                      onChange={setQuantity}
-                      width={100}
-                    />
-                    <Button
-                      className='shopping_list_footer_quantity_button'
-                      type='button'
-                      color='primary'
-                      onClick={addIngredient}
-                    >
-                      {t('common.add')}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
+        {isSpinnerActive ? (
+          <div className='container text-center mb-5'>
+            <Spinner
+              size='lg'
+              color='#0FC1A1'
+            />
           </div>
-        </div>
+        ) : (
+            <div className='container'>
+              <Breadcrumb
+                routes={[
+                  {
+                    url: routes.main,
+                    name: t('breadcrumb.main'),
+                  },
+                ]}
+                currentPage={t('app.title.shopping_list')}
+              />
+              {isNoAccess ? (
+                <div>
+                  <span className='sect-subtitle'>
+                    {t('common.no_access')}
+                  </span>
+                </div>
+              ) : (
+                  <>
+                    <div>
+                      <span className='sect-subtitle'>
+                        {t('app.title.shopping_list')}
+                      </span>
+                    </div>
+                    <div className='shop-list card-bg'>
+                      <div className='shop-list__header'>
+                        <h5 className='shop-list__header-title'>
+                          {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
+                        </h5>
+                        <div className='shop-list__header-buttons'>
+                          <button
+                            type='button'
+                            onClick={() => saveFileShoppingList()}
+                            className='shop-list__header-buttons-item'
+                          >
+                            <FileDyskIcon />
+                          </button>
+                          <button
+                            type='button'
+                            onClick={() => window.print()}
+                            className='shop-list__header-buttons-item'
+                          >
+                            <PrintIcon />
+                          </button>
+                          <div ref={changedBlockRef}>
+                            <button
+                              type='button'
+                              onClick={() => {
+                                setIsBlockActive(!isBlockActive);
+                                getPublicShopListUrl().then((response) => {
+                                  setSharePublicUrl(response.data.data.url);
+                                });
+                              }}
+                              className='shop-list__header-buttons-item'
+                            >
+                              <ShareIcon />
+                            </button>
+                            {isBlockActive && (
+                              <div className='shop-list__header-buttons-share'>
+                                <ShareButtons shareLink={sharePublicUrl} />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className='shop-list__body'>
+                        <div className='shop-list__column'>
+                          {shoppingList.map((item, itemIndex) => (
+                            <React.Fragment key={item.id}>
+                              {item.column === 1 && (
+                                <div
+                                  className='shop-list__item'
+                                >
+                                  {itemIndex === 0 ? (
+                                    <div className='shop-list__item-category'>
+                                      {item.cuisine_name_i18n}
+                                    </div>
+                                  ) : (
+                                      shoppingList[itemIndex]?.cuisine_name_i18n !==
+                                      shoppingList[itemIndex - 1]?.cuisine_name_i18n
+                                      && (
+                                        <div className='shop-list__item-category'>
+                                          {item.cuisine_name_i18n}
+                                        </div>
+                                      )
+                                    )}
+                                  <div
+                                    className='shop-list__item-ingr'
+                                  >
+                                    <CustomCheckbox
+                                      label={`${t(getWeigthUnit(settings.measurement),
+                                        { COUNT: item.weight })} ${item.name_i18n}`}
+                                      checked={item.is_bought}
+                                      disabled={item.is_disable}
+                                      onChange={() => toggleCheckbox(itemIndex, item.id)}
+                                    />
+                                    <button
+                                      type='button'
+                                      onClick={() => deleteIngredient(itemIndex, item.id)}
+                                      className='shop-list__item-ingr-delete'
+                                    >
+                                      <TrashIcon />
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </div>
+                        <div className='shop-list__column'>
+                          {shoppingList.map((item, itemIndex) => (
+                            <React.Fragment key={item.id}>
+                              {item.column === 2 && (
+                                <div
+                                  className='shop-list__item'
+                                >
+                                  {shoppingList[itemIndex]?.cuisine_name_i18n !==
+                                    shoppingList[itemIndex - 1]?.cuisine_name_i18n
+                                    && (
+                                      <div className='shop-list__item-category'>
+                                        {item?.cuisine_name_i18n}
+                                      </div>
+                                    )}
+                                  <div
+                                    className='shop-list__item-ingr'
+                                  >
+                                    <CustomCheckbox
+                                      label={`${t(getWeigthUnit(settings.measurement),
+                                        { COUNT: item.weight })} ${item.name_i18n}`}
+                                      checked={item.is_bought}
+                                      disabled={item.is_disable}
+                                      onChange={() => toggleCheckbox(itemIndex, item.id)}
+                                    />
+                                    <button
+                                      type='button'
+                                      onClick={() => deleteIngredient(itemIndex, item.id)}
+                                      className='shop-list__item-ingr-delete'
+                                    >
+                                      <TrashIcon />
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </div>
+                      </div>
+                      <form
+                        onSubmit={(e) => createRecipeSubmit(e)}
+                        className='shop-list__footer'
+                      >
+                        <div className='shop-list__footer-search'>
+                          <AsyncSelect
+                            value={selectedIngedient}
+                            loadOptions={inputValueIngredient}
+                            onChange={(e) => {
+                              setIndgredient(e);
+                              setSelectedIngedient(e);
+                            }}
+                            label={t('ingr.add')}
+                            styles={colourStylesSelect}
+                            placeholder={t('recipe.create.ingredient_search')}
+                          />
+                        </div>
+                        <div className='shop-list__footer-quantity'>
+                          <InputField
+                            type='number'
+                            name='weight'
+                            data-param='0'
+                            data-validate='["min", "required"]'
+                            errors={getFieldErrors('weight')}
+                            value={addIngredientForm.weight}
+                            onChange={(e) => validateOnChange('weight', e.target.value, e)}
+                            min={0}
+                            label={t('common.quantity')}
+                            height='md'
+                            border='light'
+                          />
+                        </div>
+                        <div className='shop-list__footer-measurement'>
+                          <SelectInput
+                            options={[
+                              {
+                                label: settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label'),
+                                value: settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label'),
+                              },
+                            ]}
+                            placeholder={settings.measurement === 'si' ? t('common.gr_label') : t('common.oz_label')}
+                            isSearchable={false}
+                          />
+                        </div>
+                        <Button
+                          type='submit'
+                          color='primary'
+                          className='shop-list__footer-btn'
+                        >
+                          {t('common.add')}
+                        </Button>
+                      </form>
+                    </div>
+                  </>
+                )}
+              {
+                isBannerActive && (
+                  <div className='shop-list__banner card-bg'>
+                    <div className='shop-list__banner-text'>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: t(mockData[bannerStep].title) }}
+                        className='shop-list__banner-text-title'
+                      />
+                      <div className='shop-list__banner-text-desc'>
+                        {t(mockData[bannerStep].text)}
+                      </div>
+                    </div>
+                    <div className='shop-list__banner-media'>
+                      <img src={mockData[bannerStep].image} alt='' />
+                    </div>
+                    <Button
+                      color='primary'
+                      className='shop-list__banner-btn'
+                      onClick={() => {
+                        if (mockData.length - 1 === bannerStep) {
+                          setIsBannerActive(false);
+                          return;
+                        }
+                        setBannerStep((prev) => prev + 1);
+                      }}
+                    >
+                      {t('banner.next')}
+                    </Button>
+                    <button
+                      type='button'
+                      onClick={() => setIsBannerActive(false)}
+                      className='shop-list__banner-btn-skip'
+                    >
+                      {t('common.skip')}
+                    </button>
+                  </div>
+                )
+              }
+            </div>
+          )}
       </section>
-      {
-        slideStep ? (
-          <SiteTour
-            className='shopping_tour'
-            data={mockData}
-            localePhrases={localePhrases}
-            onAction={onAction}
-          />
-        ) : null
-      }
     </>
   );
 };
 
-export default WithTranslate(
-  connect(
-    (state: any) => ({
-      settings: state.settings,
-    }),
-  )(ShoppingListView),
-);
+export default WithTranslate(connect((state: any) => ({
+  settings: state.settings,
+}), { setAppSetting })(ShoppingListView));

@@ -1,5 +1,4 @@
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-return-assign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 import React, { useState, useCallback, useEffect } from 'react';
@@ -48,7 +47,6 @@ import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
 import {
-  colourStylesSelect,
   servingOptions,
   costCategoryOptions,
 } from './selectsDatas';
@@ -75,13 +73,13 @@ const CreateRecipeView = (props: any) => {
     mealtimes: [],
   });
 
-  const [mealTimes, setMealTimes] = useState([]);
+  const [mealTimes, setMealTimes] = useState<any[]>([]);
 
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<any[]>([]);
 
-  const [videoLinkIframe, setVideoLinkIframe] = useState('');
+  const [videoLinkIframe, setVideoLinkIframe] = useState<string>('');
 
-  const [composition, setComposition] = useState([
+  const [composition, setComposition] = useState<any[]>([
     {
       name: 'fat',
       namePlural: t('common.fats'),
@@ -130,7 +128,7 @@ const CreateRecipeView = (props: any) => {
   ]);
 
   const calcComposition = (ingredientsList: Array<any>) => {
-    const updatedComposition = [...composition];
+    const updatedComposition: Array<any> = [...composition];
     updatedComposition.map((item) => {
       item.value = 0;
       switch (item.name) {
@@ -177,7 +175,7 @@ const CreateRecipeView = (props: any) => {
   };
 
   useEffect(() => {
-    let cleanComponent = false;
+    let cleanComponent: boolean = false;
     setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
     getMealTimes().then((response) => {
       if (!cleanComponent) {
@@ -189,15 +187,15 @@ const CreateRecipeView = (props: any) => {
   }, []);
 
   useEffect(() => {
-    let cleanComponent = false;
+    let cleanComponent: boolean = false;
     if (props.location.propsRecipeId && !cleanComponent) {
       getRecipeData(props.location.propsRecipeId, false, false, false, true)
         .then((response) => {
           const { data } = response.data;
 
-          const updatedImages = [];
+          const updatedImages: Array<any> = [];
 
-          const pushedIdsImages = [];
+          const pushedIdsImages: Array<any> = [];
 
           data.images.forEach((imageItem) => {
             pushedIdsImages.push(imageItem.image_id);
@@ -217,9 +215,15 @@ const CreateRecipeView = (props: any) => {
             setVideoLinkIframe(getVideo(data.video_url));
           }
 
-          const updatedIngredients = [...data.ingredients];
+          const updatedIngredients: Array<any> = [...data.ingredients];
 
           updatedIngredients.map((ingredientItem) => {
+            ingredientItem.calorie /= 100;
+            ingredientItem.carbohydrate /= 100;
+            ingredientItem.fat /= 100;
+            ingredientItem.protein /= 100;
+            ingredientItem.salt /= 100;
+            ingredientItem.sugar /= 100;
             ingredientItem.isFullBlock = true;
           });
 
@@ -253,9 +257,9 @@ const CreateRecipeView = (props: any) => {
     calcComposition(createRecipeForm.ingredients);
   }, [createRecipeForm.ingredients]);
 
-  const [createRecipeErrors, setCreateRecipeErrors] = useState([]);
+  const [createRecipeErrors, setCreateRecipeErrors] = useState<any[]>([]);
 
-  const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState(false);
+  const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState<boolean>(false);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -273,7 +277,7 @@ const CreateRecipeView = (props: any) => {
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, createRecipeErrors);
 
-  const addIndgredient = (e) => {
+  const addIndgredient = (e: any) => {
     getIngredient(e.value).then((response) => {
       const { data } = response.data;
       if (
@@ -281,9 +285,7 @@ const CreateRecipeView = (props: any) => {
           (item) => item.ingredient_id === data._id,
         )
       ) {
-        toast.error(t('recipe.create.duplication_error'), {
-          autoClose: 3000,
-        });
+        toast.error(t('recipe.create.duplication_error'));
         return;
       }
       const filteredData = {
@@ -327,14 +329,15 @@ const CreateRecipeView = (props: any) => {
   };
 
   const filterIngredients = async (inputValue: string) => {
+    if (inputValue.length < 2) return;
     const filteredListOfIngredients: Array<any> = [];
     try {
       const response = await searchIngredients(inputValue);
       const listOfIngredients = response.data.data;
-      Object.entries(listOfIngredients).forEach((prop) => {
+      Object.entries(listOfIngredients).forEach(([value, label]) => {
         filteredListOfIngredients.push({
-          value: prop[0],
-          label: prop[1],
+          value,
+          label,
         });
       });
       return filteredListOfIngredients;
@@ -348,11 +351,26 @@ const CreateRecipeView = (props: any) => {
       resolve(filterIngredients(inputValue));
     });
 
+  const getCreateRecipePayload = () => ({
+    name_i18n: createRecipeForm.recipeName,
+    preparation_i18n: createRecipeForm.recipePreparation,
+    ingredients: createRecipeForm.ingredients,
+    measurement: createRecipeForm.measurement,
+    servings_cnt: createRecipeForm.servingsCnt,
+    cuisine_ids: createRecipeForm.cuisine,
+    image_ids: createRecipeForm.imageIds,
+    time: createRecipeForm.time,
+    weight: createRecipeForm.totalWeight,
+    cost_level: createRecipeForm.costLevel,
+    video_url: createRecipeForm.videoUrl,
+    mealtimes: createRecipeForm.mealtimes,
+  });
+
   const createRecipeSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+    const inputs: Array<any> = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -365,21 +383,19 @@ const CreateRecipeView = (props: any) => {
     }
 
     if (createRecipeForm.ingredients.length === 0) {
-      toast.error(t('recipe.create.ingredients_error'), {
-        autoClose: 3000,
-      });
+      toast.error(t('recipe.create.ingredients_error'));
 
       const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
       ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
-    const checkIngredientsWeight = createRecipeForm.ingredients.filter((ingredientItem) => !ingredientItem.weight);
+    const checkIngredientsWeight: Array<any> = createRecipeForm.ingredients.filter(
+      (ingredientItem) => !ingredientItem.weight,
+    );
 
     if (checkIngredientsWeight.length > 0) {
-      toast.error(t('recipe.create.ingredient_weight_error'), {
-        autoClose: 3000,
-      });
+      toast.error(t('recipe.create.ingredient_weight_error'));
 
       const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
       ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -388,31 +404,14 @@ const CreateRecipeView = (props: any) => {
     }
 
     if (!hasError) {
-      createRecipe(
-        createRecipeForm.recipeName,
-        createRecipeForm.recipePreparation,
-        createRecipeForm.ingredients,
-        createRecipeForm.measurement,
-        createRecipeForm.servingsCnt,
-        createRecipeForm.cuisine,
-        createRecipeForm.imageIds,
-        createRecipeForm.time,
-        createRecipeForm.totalWeight,
-        createRecipeForm.costLevel,
-        createRecipeForm.videoUrl,
-        createRecipeForm.mealtimes,
-      )
+      createRecipe(getCreateRecipePayload())
         .then((response) => {
-          toast.success(t('recipe.create.success'), {
-            autoClose: 3000,
-          });
+          toast.success(t('recipe.create.success'));
 
           history.push(`/recipe/${response.data.data._id}`);
         })
         .catch(() => {
-          toast.error(t('recipe.create.error'), {
-            autoClose: 3000,
-          });
+          toast.error(t('recipe.create.error'));
         });
     }
   };
@@ -516,7 +515,7 @@ const CreateRecipeView = (props: any) => {
                   />
                 </div>
                 <Button
-                  color='primary'
+                  color='caribbean'
                   onClick={() => setVideoLinkIframe(getVideo(createRecipeForm.videoUrl))}
                   className='recipe__add-video-desc-btn'
                 >
@@ -706,9 +705,7 @@ const CreateRecipeView = (props: any) => {
                         totalWeight: prevTotalWeight,
                       });
 
-                      toast.error(t('recipe.update_measurement.error', {
-                        autoClose: 3000,
-                      }));
+                      toast.error(t('recipe.update_measurement.error'));
                     });
 
                     setActiveDeleteIngrModal(false);
@@ -735,8 +732,8 @@ const CreateRecipeView = (props: any) => {
               ))}
               <div className='recipe__chart-progress-value'>
                 {createRecipeForm.measurement === 'si'
-                  ? t('common.gr', { number: createRecipeForm.totalWeight })
-                  : t('common.oz', { number: createRecipeForm.totalWeight })}
+                  ? t('common.gr', { COUNT: createRecipeForm.totalWeight })
+                  : t('common.oz', { COUNT: createRecipeForm.totalWeight })}
               </div>
             </div>
             <div className='recipe__chart-lines'>
@@ -756,8 +753,8 @@ const CreateRecipeView = (props: any) => {
                   </div>
                   <div className='recipe__chart-lines-item-description'>
                     {createRecipeForm.measurement === 'si'
-                      ? t('common.gr', { number: item.value })
-                      : t('common.oz', { number: item.value })}
+                      ? t('common.gr', { COUNT: item.value })
+                      : t('common.oz', { COUNT: item.value })}
                   </div>
                 </div>
               ))}
@@ -772,11 +769,9 @@ const CreateRecipeView = (props: any) => {
             <div className='recipe__add-ingredients-field'>
               <SelectInput
                 async
-                value=''
                 loadOptions={inputValueIngredient}
                 placeholder={t('recipe.create.ingredient_search')}
                 onChange={addIndgredient}
-                styles={colourStylesSelect}
               />
             </div>
           </div>
@@ -936,7 +931,7 @@ const CreateRecipeView = (props: any) => {
                         <span>
                           {`${(
                             ingredientItem.calorie * ingredientItem.weight
-                          ).toFixed(2)} ${t('common.kcal')}`}
+                          ).toFixed(2)} ${t('common.kcal_label')}`}
                         </span>
                       </div>
                     </div>
@@ -956,7 +951,7 @@ const CreateRecipeView = (props: any) => {
                   </div>
                   <div className='recipe__item-opt'>
                     <CustomCheckbox
-                      label='Optional'
+                      label={t('recipe.create.optional')}
                       className='recipe__item-opt-checkbox'
                       onChange={(e) => {
                         createRecipeForm.ingredients[ingredientIndex].is_opt = e.target.checked;

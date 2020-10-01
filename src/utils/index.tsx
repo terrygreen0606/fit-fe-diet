@@ -21,3 +21,4 @@ export * from './wait';
 export * from './getVideo';
 export * from './getWeigthUnit';
 export * from './getMealIcon';
+export * from './convertTime';

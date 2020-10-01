@@ -101,7 +101,7 @@ const CancellationFormView = (props: any) => {
               className='cancellation-form__feedback-input'
             />
             <div className='cancellation-form__feedback-button-wrap'>
-              <Button color='secondary'>
+              <Button color='cancel'>
                 {t('cancellation.feedback.button')}
               </Button>
             </div>

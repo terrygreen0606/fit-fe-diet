@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import { UserAuthProfileType } from 'types/auth';
-import { setAppSetting } from 'store/actions';
+import { setAppSetting, setUserData } from 'store/actions';
 import { 
   userSignup, 
   userGoogleSignUp, 
@@ -78,6 +78,15 @@ const JoinStep = (props: any) => {
       token: authToken
     });
 
+    props.setUserData({
+      isAfterSignup: true,
+      afterSignupName: registerData.name,
+      afterSignupGoal: registerData.goal,
+      afterSignupWeight: registerData.weight,
+      afterSignupWeightGoal: registerData.weight_goal,
+      afterSignupPredictDate: registerData.predicted_date
+    });
+
     props.setRegisterView('READY');
   };
 
@@ -89,10 +98,19 @@ const JoinStep = (props: any) => {
       ...userProfileData
     } = props.registerData;
 
+    let act_level = null;
+
+    const act_level_checked = userProfileData.act_levels.find(level => level.checked);
+
+    if (act_level_checked) {
+      act_level = act_level_checked.value;
+    }
+
     return {
       ...userProfileData,
       ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.filter(cuisine => cuisine.checked).map(cuisine => cuisine.id),
-      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code)
+      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code),
+      act_level
     };
   };
 
@@ -199,8 +217,8 @@ const JoinStep = (props: any) => {
             .then(response => {
               setRegisterJoinLoading(false);
 
-              if (response.data && response.data.data) {
-                setAppSetting(response.data.data);
+              if (response.data.success && response.data.data) {
+                props.setAppSetting(response.data.data);
               }
             })
             .catch(error => {
@@ -409,5 +427,5 @@ const JoinStep = (props: any) => {
 
 export default connect(
   null,
-  { setAppSetting }
+  { setAppSetting, setUserData }
 )(JoinStep);

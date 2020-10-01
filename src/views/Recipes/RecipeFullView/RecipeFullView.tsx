@@ -1,5 +1,3 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable react/no-danger */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable no-underscore-dangle */
@@ -42,7 +40,7 @@ import './RecipeFullView.sass';
 import { ReactComponent as HeartFilledIcon } from 'assets/img/icons/heart-filled-icon.svg';
 import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
 import { ReactComponent as CartButtonIcon } from 'assets/img/icons/cart-button-icon.svg';
-import { ReactComponent as SaveIcon } from 'assets/img/icons/save-icon.svg';
+import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.svg';
 import { ReactComponent as NotesIcon } from 'assets/img/icons/notes-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 import { ReactComponent as DishIcon } from 'assets/img/icons/dish-icon.svg';
@@ -227,55 +225,61 @@ const RecipeFullView = (props: any) => {
                               active: image.isActive,
                             })}
                           >
-                            <img src={image.url} alt='' />
+                            <a href={image.url} target='_blank' rel='noreferrer'>
+                              <img src={image.url} alt='' />
+                            </a>
                           </div>
                         ))}
-                        <button
-                          type='button'
-                          onClick={() => {
-                            const updatedImages = [...recipeData.images];
+                        {recipeData.images.length > 1 && (
+                          <>
+                            <button
+                              type='button'
+                              onClick={() => {
+                                const updatedImages = [...recipeData.images];
 
-                            updatedImages.find((findImage, findImageIndex) => {
-                              if (findImage.isActive === true) {
-                                updatedImages[findImageIndex].isActive = false;
-                                if (findImageIndex === 0) {
-                                  updatedImages[updatedImages.length - 1].isActive = true;
-                                } else {
-                                  updatedImages[findImageIndex - 1].isActive = true;
-                                }
-                                return updatedImages;
-                              }
-                            });
+                                updatedImages.find((findImage, findImageIndex) => {
+                                  if (findImage.isActive === true) {
+                                    updatedImages[findImageIndex].isActive = false;
+                                    if (findImageIndex === 0) {
+                                      updatedImages[updatedImages.length - 1].isActive = true;
+                                    } else {
+                                      updatedImages[findImageIndex - 1].isActive = true;
+                                    }
+                                    return updatedImages;
+                                  }
+                                });
 
-                            setRecipeData({ ...recipeData, images: updatedImages });
-                          }}
-                          className='recipe__main-info-media-button recipe__main-info-media-prev'
-                        >
-                          <ArrowLeftLogo />
-                        </button>
-                        <button
-                          type='button'
-                          onClick={() => {
-                            const updatedImages = [...recipeData.images];
+                                setRecipeData({ ...recipeData, images: updatedImages });
+                              }}
+                              className='recipe__main-info-media-button recipe__main-info-media-prev'
+                            >
+                              <ArrowLeftLogo />
+                            </button>
+                            <button
+                              type='button'
+                              onClick={() => {
+                                const updatedImages = [...recipeData.images];
 
-                            updatedImages.find((findImage, findImageIndex) => {
-                              if (findImage.isActive === true) {
-                                updatedImages[findImageIndex].isActive = false;
-                                if (findImageIndex === updatedImages.length - 1) {
-                                  updatedImages[0].isActive = true;
-                                } else {
-                                  updatedImages[findImageIndex + 1].isActive = true;
-                                }
-                                return updatedImages;
-                              }
-                            });
+                                updatedImages.find((findImage, findImageIndex) => {
+                                  if (findImage.isActive === true) {
+                                    updatedImages[findImageIndex].isActive = false;
+                                    if (findImageIndex === updatedImages.length - 1) {
+                                      updatedImages[0].isActive = true;
+                                    } else {
+                                      updatedImages[findImageIndex + 1].isActive = true;
+                                    }
+                                    return updatedImages;
+                                  }
+                                });
 
-                            setRecipeData({ ...recipeData, images: updatedImages });
-                          }}
-                          className='recipe__main-info-media-button recipe__main-info-media-next'
-                        >
-                          <ArrowRightLogo />
-                        </button>
+                                setRecipeData({ ...recipeData, images: updatedImages });
+                              }}
+                              className='recipe__main-info-media-button recipe__main-info-media-next'
+                            >
+                              <ArrowRightLogo />
+                            </button>
+                          </>
+                        )}
                       </>
                     )}
                   </div>
@@ -296,7 +300,7 @@ const RecipeFullView = (props: any) => {
                     <div className='recipe__main-info-desc-row'>
                       {recipeData.time && (
                         <div className='recipe__main-info-desc-time'>
-                          {t('common.min', { number: recipeData.time })}
+                          {t('common.min', { COUNT: recipeData.time })}
                         </div>
                       )}
                       {recipeData.costLevel && (
@@ -332,9 +336,7 @@ const RecipeFullView = (props: any) => {
                       type='button'
                       onClick={() => {
                         addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then(() =>
-                          toast.success(t('recipe.update_shopping_list.success'), {
-                            autoClose: 3000,
-                          }));
+                          toast.success(t('recipe.update_shopping_list.success')));
                       }}
                       className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
                     >
@@ -385,7 +387,7 @@ const RecipeFullView = (props: any) => {
                           key={ingredient.ingredient_id}
                           className='recipe__composition-list-item'
                         >
-                          {`${t(getWeigthUnit(settings.measurement), { number: ingredient.weight })}.
+                          {`${t(getWeigthUnit(settings.measurement), { COUNT: ingredient.weight })}.
                           ${ingredient.name_i18n}`}
                         </div>
                       ))}
@@ -424,7 +426,7 @@ const RecipeFullView = (props: any) => {
                     className='recipe__actions-button card-bg'
                   >
                     <div className='recipe__actions-button-media'>
-                      <SaveIcon />
+                      <FileDyskIcon />
                     </div>
                     <div className='recipe__actions-button-desc'>
                       {t('recipe.save')}
@@ -437,7 +439,7 @@ const RecipeFullView = (props: any) => {
                     type='button'
                     onClick={() => setActiveNotesModal(!isActiveNotesModal)}
                     className={classnames('recipe__actions-button card-bg', {
-                      active: isActiveNotesModal,
+                      active: isActiveNotesModal || addNoteForm.note,
                     })}
                   >
                     <div className='recipe__actions-button-media'>
@@ -472,15 +474,11 @@ const RecipeFullView = (props: any) => {
                           disabled={!addNoteForm.note}
                           onClick={() => {
                             addRecipeNote(recipeId, addNoteForm.note).then(() => {
-                              toast.success(t('recipe.add_note.success'), {
-                                autoClose: 3000,
-                              });
+                              toast.success(t('recipe.add_note.success'));
 
                               setActiveNotesModal(false);
                             }).catch(() => {
-                              toast.error(t('recipe.add_note.error'), {
-                                autoClose: 3000,
-                              });
+                              toast.error(t('recipe.add_note.error'));
                             });
                           }}
                           className='recipe__notes-modal-btn'
@@ -554,14 +552,14 @@ const RecipeFullView = (props: any) => {
                   </div>
                   <div className='recipe__nutrients-calories'>
                     <span>{t('recipe.calories')}</span>
-                    <span>{t('common.calories', { number: recipeData.calorie })}</span>
+                    <span>{t('common.kcal', { COUNT: recipeData.calorie })}</span>
                   </div>
                   <div className='recipe__nutrients-composition-list'>
                     {recipeData.salt && (
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.salt')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.salt })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.salt })}
                         </span>
                       </div>
                     )}
@@ -569,7 +567,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.fats')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.fat })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.fat })}
                         </span>
                       </div>
                     )}
@@ -577,7 +575,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.sugar')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.sugar })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.sugar })}
                         </span>
                       </div>
                     )}
@@ -585,7 +583,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.proteins')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.protein })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.protein })}
                         </span>
                       </div>
                     )}
@@ -593,7 +591,7 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__nutrients-composition-item'>
                         <span>{t('common.carbohydrates')}</span>
                         <span>
-                          {t(getWeigthUnit(settings.measurement), { number: recipeData.carbohydrate })}
+                          {t(getWeigthUnit(settings.measurement), { COUNT: recipeData.carbohydrate })}
                         </span>
                       </div>
                     )}
@@ -601,7 +599,7 @@ const RecipeFullView = (props: any) => {
                 </div>
                 <div className='recipe__share card-bg'>
                   <div className='recipe__share-title'>
-                    {t('recipe.share.title')}
+                    {t('socials.share.title')}
                   </div>
                   <ShareButtons shareLink={window.location.href} classes='recipe__share-buttons' />
                 </div>
@@ -683,7 +681,7 @@ const RecipeFullView = (props: any) => {
                             <div className='recipe__similar-recipes-item-text-info'>
                               {similarRecipe.time && (
                                 <div className='recipe__similar-recipes-item-text-info-time'>
-                                  {t('common.min', { number: similarRecipe.time })}
+                                  {t('common.min', { COUNT: similarRecipe.time })}
                                 </div>
                               )}
                               <div className='recipe__similar-recipes-item-text-info-cost-level'>

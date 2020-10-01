@@ -27,7 +27,7 @@ const PlanProgressStep = (props: any) => {
     let currStepTitles = [...props.stepTitlesDefault];
     currStepTitles[0] = t('register.not_eating_step');
     currStepTitles[1] = t('register.plan_create_step');
-    currStepTitles[2] = t('register.expect_step');
+    currStepTitles[2] = t('register.step_health');
 
     props.setStepTitles([...currStepTitles]);
 

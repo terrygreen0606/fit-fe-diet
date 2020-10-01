@@ -20,7 +20,6 @@ import { userLogin, setAppSetting } from 'store/actions';
 import Helmet from 'react-helmet';
 
 // Components
-import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
@@ -109,8 +108,11 @@ const LoginView = (props: any) => {
               .then(response => {
                 setLoginLoading(false);
 
-                if (response.data && response.data.data) {
-                  setAppSetting(response.data.data);
+                if (response.data.success && response.data.data) {
+                  props.setAppSetting({
+                    ...response.data.data,
+                    is_private: true,
+                  });
                 }
               })
               .catch(error => {
@@ -120,12 +122,12 @@ const LoginView = (props: any) => {
 
             userClientLogin(token);
           } else {
-            toast.error('Error occurred when Sign In User');
+            toast.error(t('register.error_msg'));
           }
         })
         .catch((error) => {
           setLoginLoading(false);
-          toast.error('Error occurred when Sign In User');
+          toast.error(t('register.error_msg'));
         });
     }
   };
@@ -154,12 +156,12 @@ const LoginView = (props: any) => {
             if (token) {
               userClientLogin(token);
             } else {
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             }
           })
           .catch((error) => {
             setLoginGoogleLoading(false);
-            toast.error('Error occurred when Sign In User');
+            toast.error(t('register.error_msg'));
           });
       })
       .catch((error) => {
@@ -189,12 +191,12 @@ const LoginView = (props: any) => {
               if (token) {
                 userClientLogin(token);
               } else {
-                toast.error('Error occurred when Sign In User');
+                toast.error(t('register.error_msg'));
               }
             })
             .catch((error) => {
               setLoginFacebookLoading(false);
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             });
         } else {
           setLoginFacebookLoading(false);
@@ -212,11 +214,9 @@ const LoginView = (props: any) => {
         <title>{t('app.title.login')}</title>
       </Helmet>
 
-      {/*<AuthSocialHelmet />*/}
-
       <div className='loginScreen mt-3 mt-md-5'>
         <h3 className='loginScreen_title d-none d-lg-inline-block'>
-          {t('login.title', { product: 'TEST' })}
+          {t('login.title')}
         </h3>
 
         <span className='mainHeader_logo d-lg-none-i' />
@@ -267,7 +267,7 @@ const LoginView = (props: any) => {
             {t('login.submit')}
           </Button>
 
-          <span className='loginScreen_link link link-bold link-blue mt-md-5 mt-45'>{t('login.forgot_pass')}</span>
+          <Link to="/reset-password" className='loginScreen_link link link-bold link-blue mt-md-5 mt-45'>{t('login.forgot_pass')}</Link>
         </form>
 
         {/*<div className='loginScreen_socialBtns mt-4'>

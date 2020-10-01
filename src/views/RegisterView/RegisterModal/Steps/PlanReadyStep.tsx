@@ -32,7 +32,7 @@ const PlanReadyStep = (props: any) => {
         style={{ backgroundImage: `url(${require('assets/img/features/list-feature.png')})` }}
       />
 
-      <h4 id="register_title_final_welcome" className="register_title mb-xl-4">{t('register.plan_ready_title', { first_name: props.registerData.name })},</h4>
+      <h4 id="register_title_final_welcome" className="register_title mb-xl-4">{t('register.plan_ready_title', { NAME: props.registerData.name })},</h4>
       <h5 className="register_title mt-md-2">{t('register.plan_ready_subtitle')}</h5>
 
       <div className="text-center mt-md-5 mt-4">
@@ -42,7 +42,10 @@ const PlanReadyStep = (props: any) => {
           type="submit"
           size="lg"
           block
-          onClick={e => props.userLogin(props.registerData.token)}
+          onClick={e => {
+            props.userLogin(props.registerData.token);
+            props.history.push('/after-signup');
+          }}
         >
           <MealIcon className="mr-3" /> {t('register.check_btn')}
         </Button>

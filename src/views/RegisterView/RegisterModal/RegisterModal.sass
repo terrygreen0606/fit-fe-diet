@@ -18,7 +18,7 @@
     top: 47px !important
     right: 47px !important
   &_steps_content
-    width: 570px
+    width: 600px
     max-height: calc(100% - 50px - 37px)
     margin: 50px auto 0
     padding-bottom: 37px
@@ -67,10 +67,28 @@
         text-align: center
 
   &_expectation_chart
-    padding: 10px
-    canvas
-      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15)
-      border-radius: 20px
+    background-color: #fff
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15)
+    border-radius: 20px
+    &-wrap
+      position: relative
+    &-standart-plan-label
+      position: absolute
+      top: 40%
+      right: 20px
+      font-weight: 400
+      font-size: 14px
+      line-height: 16px
+      color: #BAC2D2
+    &-fitlope-plan-label
+      position: absolute
+      bottom: 10%
+      left: 5%
+      max-width: 150px
+      font-weight: bold
+      font-size: 16px
+      line-height: 17px
+      color: #000000
 
   &_socialBtns
     padding: 0 70px
@@ -116,14 +134,13 @@
       fill: #fff
       +mt(.1s)
 
-  &_health_problem
+  &_check
     &_list
       display: flex
-      align-items: flex-start
       justify-content: center
       flex-wrap: wrap
-      .register_health_problem_item
-        display: block
+      .register_check_item
+        display: flex
         width: calc(50% - 12px)
         margin-bottom: 29px
         background-color: #fff
@@ -131,22 +148,22 @@
           margin-right: 24px
         input
           display: none
-          &:checked ~ .register_health_problem_btn
-            font-weight: bold
+          &:checked ~ .register_check_btn
             color: #fff
             background-color: $steel-blue
             border-color: $steel-blue
     &_btn
-      height: 77px
+      min-height: 77px
       border: 1px solid #878787
       border-radius: 5px
+      font-weight: 400
       font-size: 20px
       line-height: 24px
+      white-space: normal
       background-color: transparent
       color: #000000
       +mt(.2s)
       &.active
-        font-weight: bold
         color: #fff
         background-color: $steel-blue
         border-color: $steel-blue
@@ -328,6 +345,13 @@
 
 @media only screen and (max-width : 576px)
   .register
+    &_check
+      &_list
+        .register_check_item
+          width: 100%
+          margin-bottom: 11px
+          &:nth-child(2n + 1)
+            margin-right: 0
 
 
 @media only screen and (max-width : 480px)
@@ -340,13 +364,6 @@
         margin-top: 50px
         &_submit
           margin-top: 50px
-    &_health_problem
-      &_list
-        .register_health_problem_item
-          width: 100%
-          margin-bottom: 11px
-          &:nth-child(2n + 1)
-            margin-right: 0
     &_eating
       &_list
         .register_eating_item

@@ -1,4 +1,4 @@
-/* eslint-disable react/no-danger */
+
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';

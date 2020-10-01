@@ -20,5 +20,9 @@ module.exports = {
     'consistent-return': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'array-callback-return': 'off',
+    'react/jsx-indent': 'off',
+    '@typescript-eslint/indent': 'off',
+    'no-return-assign': 'off',
+    'react/no-danger': 'off',
   },
 };

@@ -4,20 +4,26 @@
 .how-nutrition-plan-works
   &-sect
     font-size: 16px
+
     .container
       padding: 40px 0 50px
       background-color: $steel-blue
       color: #fff
+
       h5, h4
         color: #fff
+
       .row
         padding: 0 55px
         justify-content: space-between
+
   &-col
     flex: 0 0 20%
     max-width: 20%
+
   &-icon
     width: 70px
+
     &-wrap
       display: flex
       align-items: flex-end
@@ -29,66 +35,180 @@
   &-card-list
     &-sect
       padding-bottom: 80px
+
       @media (max-width: 768px)
         padding-bottom: 100px
+
       .container > .row
         @media (max-width: 768px)
           flex-direction: column
+
     &-col
       flex: 0 0 calc(62% - 82px)
       max-width: calc(62% - 82px)
       height: fit-content
       position: relative
+
       @media (max-width: 768px)
         padding: 0 15px
         flex-basis: 100%
         max-width: 100%
-      &.hinted > .row
+
+      &.hinted > .nutrition-plan-card-list-recipes
         z-index: 510
         position: relative
         background-color: #FFFFFF
         box-shadow: 0 0 0 20px #ffffff
+
         @media (max-width: 768px)
           box-shadow: none
+
+    &-controls
+      display: flex
+      align-items: center
+      justify-content: flex-end
+      margin-bottom: 20px
+
+      &-item
+        padding: 0
+        border: none
+        background-color: transparent
+        cursor: pointer
+
+        &:not(:first-child)
+          margin-left: 15px
+
+        svg path
+          fill: $black
+          transition: 0.2s fill ease
+
+      &-item:hover
+        svg path
+          fill: $caribbean-green
+
+    &-date
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-bottom: 65px
+
+      @media (max-width: 992px)
+        flex-wrap: wrap
+        justify-content: flex-start
+
+      &-item
+        flex-basis: calc(14.2% - 16px)
+        padding: 20px 10px
+        text-align: center
+        font-family: "Montserrat", sans-serif
+        background-color: $white
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        border: none
+        transition: 0.2s background-color ease
+        cursor: pointer
+
+        @media (max-width: 992px)
+          flex-basis: calc(25% - 10px)
+          margin-right: 10px
+          margin-bottom: 10px
+
+        &.card-bg
+          border-radius: 5px
+          
+        &-number
+          margin-bottom: 10px
+          font-size: 26px
+          font-weight: bold
+          transition: 0.2s color ease
+
+        &-day-week
+          font-size: 16px
+          transition: 0.2s color, 0.2s font-weight ease
+
+      &-item:hover,
+      &-item.active
+        background-color: #4596FF
+
+        .nutrition-plan-card-list-date-item-number
+          color: $white
+
+        .nutrition-plan-card-list-date-item-day-week
+          color: $white
+
+    &-recipes
+      padding: 36px 30px 0
+
+      @media (max-width: 768px)
+        padding: 0
+
+      &-title
+        display: flex
+        align-items: center
+        margin-bottom: 38px
+        font-size: 26px
+        line-height: 1.2
+        color: #878787
+
+        @media (max-width: 768px)
+          font-size: 18px
+
+        svg
+          margin-right: 18px
+
+          path
+            fill: #878787
+
+    &-recipes.card-bg
+      @media (max-width: 768px)
+        box-shadow: none
+
   &-info-col
     flex: 0 0 38%
     max-width: 38%
     margin-left: 82px
+
     @media (max-width: 768px)
       flex-basis: 100%
       max-width: 100%
+      margin-top: 50px
       margin-left: 0
       padding: 0 15px
 
 .nutrition-plan
   &-controls
     margin-left: 25px
+
     &-list
       display: flex
       justify-content: flex-end
       align-items: center
+
     &-item
       &:not(:last-child)
         margin-right: 10px
+
     &-icon
       width: 30px
       cursor: pointer
-      fill: #000
+
       path
         fill: #000
+        transition: 0.2s fill ease
+
       &:hover
-        fill: $caribbean-green
         path
-          fill: $caribbean-green
+          fill: $steel-blue
 
 .nutrition-plan-add-recipe-card
   position: relative
   padding: 24px 50px 0
   cursor: pointer
+
   &-img
     position: relative
     bottom: -6px
     width: 70%
+
   &-btn
     position: absolute
     bottom: -25px
@@ -104,83 +224,42 @@
     background-position: center center
     background-repeat: no-repeat
 
-.nutrition-plan-activity
-  &-list
-    display: flex
-  &-card
-    flex: 0 0 calc(38% - 47px)
-    position: relative
-    padding: 39px 12px 25px
-    text-align: center
-    cursor: pointer
-    &:not(:last-child)
-      margin-right: 47px
-    &:hover, &.active
-      color: #fff
-      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
-      .nutrition-plan-activity-card
-        &-icon
-          fill: #fff
-          path
-            fill: #fff
-          &-wrap
-            border-color: $caribbean-green
-            background-color: $caribbean-green
-        &-title
-          color: $caribbean-green
-    &.active
-      .nutrition-plan-activity-card-checkmark
-        opacity: 1
-    &-title
-      margin-top: 23px
-      font-size:
-      line-height: 22px
-      font-weight: 400
-    &-checkmark
-      position: absolute
-      top: -12px
-      right: -12px
-      display: inline-block
-      width: 43px
-      height: 43px
-      background-color: $caribbean-green
-      background-image: url('../../assets/img/icons/check-icon.svg')
-      background-repeat: no-repeat
-      background-position: center center
-      border-radius: 100%
-      box-shadow: 3px -3px 10px rgba(0, 0, 0, 0.08)
-      border: 8px solid #fff
-      opacity: 0
-    &-icon
-      width: 80%
-      fill: #000
-      path
-        fill: #000
-      &-wrap
-        display: inline-flex
-        justify-content: center
-        align-items: center
-        width: 73px
-        height: 76px
-        border: 1px solid #EDEDED
-        border-radius: 13px
-        +mt(.2s)
-
 .nutrition-plan
-  &-adherence-diet-card, &-usage-time-card, &-diet-settings-card
+  &-usage-time-card, &-diet-settings-card
     display: flex
-    flex-wrap: wrap
     padding: 25px 22px
+
     &-title
-      flex: 0 0 100%
       margin-bottom: 30px
+
     &-img
-      flex: 0 0 20%
+      margin-right: 22px
+      width: 58px
+      height: 58px
       text-align: center
-      img
-        max-width: 70%
+
+      @media (max-width: 576px)
+        display: none
+
+      svg
+        width: 58px
+        height: 58px
+
     &-content
-      flex: 0 0 80%
+      flex: 1
+
+      .link
+        color: $steel-blue
+        border-bottom: 1px solid
+
+      strong, b
+        color: $steel-blue
+
+      @media (max-width: 576px)
+        .bttn
+          width: 100%
+          padding: 20px
+          font-size: 14px
 
 
 .nutrition-plan-diet-settings-card-back, .nutrition-plan-add-recipe-card-back
@@ -188,6 +267,7 @@
   background-color: #ffffff
   z-index: 0
   position: relative
+
   &.hinted
     z-index: 510
 
@@ -197,6 +277,23 @@
       max-width: 70%
       path
         fill: #000000
+
+.nutrition-plan-socials
+  margin-top: 20px
+  padding: 40px
+
+  @media (max-width: 576px)
+    padding: 40px 22px
+
+  &-title
+    margin-bottom: 30px
+
+  .share-buttons-list
+    justify-content: space-between
+
+  .share-button
+    width: 58px
+    height: 58px
 
 .hint_sect_backdrop
   position: fixed
@@ -217,45 +314,31 @@
     max-width: 300px
     width: fit-content
     z-index: 510
-    &_1
-      bottom: 35px
-      right: 0
-      @media (max-width: 768px)
-        right: 0
-        left: 0
-        bottom: 100%
-        max-width: unset
-        padding: 20px
-      &_triangle
-        bottom: -10px
-        right: 50px
-        @media (max-width: 768px)
-          border-top: 160px solid $steel-blue !important
-          border-right: 30px solid transparent !important
-          border-left: 30px solid transparent !important
-          bottom: unset
-          top: 100%
-          right: 35px
 
-    &_2
+    &_1
       top: -15%
       left: calc(38% - 82px)
       padding: 15px
       text-align: center
+
       @media (max-width: 768px)
         right: 0
         left: 0
-        top: 103%
+        top: 50%
+        transform: translateY(-50%)
         max-width: unset
         width: unset
         text-align: unset
         padding: 20px
+
       @media (min-width: 768px) and (max-width: 992px)
         top: 0
         left: calc(38% - 52px)
+
       &_triangle
         bottom: -10px
         left: 15px
+
         @media (max-width: 768px)
           bottom: 100%
           left: 50%
@@ -263,17 +346,20 @@
           border-top: unset !important
           border-bottom: 10px solid $steel-blue !important
 
-    &_3
-      top: 80%
+    &_2
+      top: 20%
       left: 103%
+
       @media (max-width: 768px)
         right: 0
         left: 0
-        top: 100%
+        top: 50%
+        transform: translateY(-50%)
         max-width: unset
         width: unset
         padding: 20px
         margin: 0 15px
+
       &_triangle
         right: 100%
         top: 50%
@@ -282,6 +368,7 @@
         border-top: 15px solid transparent !important
         border-bottom: 15px solid transparent !important
         transform: translateY(-50%)
+
         @media (max-width: 768px)
           bottom: 100%
           top: unset
@@ -293,19 +380,22 @@
           border-bottom: 30px solid $steel-blue !important
           transform: unset
 
-    &_4
+    &_3
       top: 50%
       transform: translateY(-50%)
       right: 103%
       padding: 15px
+
       @media (max-width: 768px)
         right: 0
         left: 0
-        top: 100%
+        top: 50%
+        transform: translateY(-50%)
         max-width: unset
         width: unset
         padding: 20px
         transform: unset
+
       &_triangle
         left: 100%
         top: 50%
@@ -314,6 +404,7 @@
         border-left: 15px solid $steel-blue !important
         border-top: 15px solid transparent !important
         border-bottom: 15px solid transparent !important
+
         @media (max-width: 768px)
           bottom: 100%
           top: unset
@@ -336,6 +427,7 @@
   &_text
     color: #FFFFFF
     font-weight: bold
+
     @media (max-width: 768px)
       font-size: 20px
       line-height: 24px
@@ -346,11 +438,17 @@
     border-bottom: 3px solid #FFFFFF
     align-self: flex-end
     cursor: pointer
+
     &:hover
       color: darken(#FFFFFF, 20)
       border-bottom-color: darken(#FFFFFF, 20)
 
-.today-activities
+.nutrition-plan-info-col-today-activities
+  margin-bottom: 60px
+
+  @media (max-width: 576px)
+    margin-bottom: 20px
+  
   &.hinted
     position: relative
     background-color: #FFFFFF

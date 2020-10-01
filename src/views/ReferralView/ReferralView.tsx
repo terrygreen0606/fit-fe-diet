@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -146,7 +145,7 @@ const ReferralView = (props: any) => {
                 >
                   <InputField
                     name='email'
-                    data-validate='["email"]'
+                    data-validate='["email", "required"]'
                     errors={getFieldErrors('email')}
                     value={inviteFriendsForm.email}
                     onChange={(e) => validateOnChange('email', e.target.value, e)}
