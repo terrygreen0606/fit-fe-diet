@@ -10,7 +10,7 @@ export const selectStyles = {
     ...styles,
     display: 'none',
   }),
-  indicatorsContainer: (styles) => ({
+  dropdownIndicator: (styles) => ({
     ...styles,
     fill: '#fff',
   }),
@@ -35,14 +35,30 @@ export const selectStyles = {
     fontWeight: 'bold',
     color: '#fff',
   }),
-  option: (styles) => ({
+  noOptionsMessage: (styles) => ({
     ...styles,
-    backgroundColor: '#fff',
-    color: '#000',
-    transition: 'all 0.2s ease',
+    padding: '20px 26px',
+    textAlign: 'left',
+    fontSize: '26px',
+    color: '#fff',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s ease',
     ':hover': {
-      backgroundColor: '#CBFFCE',
-      color: '#0FC1A1',
+      backgroundColor: '#0c57b9',
     },
+  }),
+  menu: (styles) => ({
+    ...styles,
+    position: 'absolute',
+    marginTop: 0,
+    marginBottom: 0,
+    borderRadius: 0,
+    boxShadow: 'none',
+    backgroundColor: '#106EE8',
+    borderTop: '1px solid #fff',
+  }),
+  menuList: (styles) => ({
+    ...styles,
+    padding: 0,
   }),
 };

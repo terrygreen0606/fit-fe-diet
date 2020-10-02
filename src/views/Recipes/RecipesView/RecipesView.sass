@@ -3,19 +3,26 @@
 .page-create-btn
   text-decoration: none
 
-.recipes-search-sect-title
-  text-align: center
+.recipes-search-sect
+  margin-top: 70px
+  
+  &-title
+    text-align: center
 
 .recipes-search-wrap
   display: flex
-  align-items: center
   justify-content: center
   margin: 50px 0 90px
 
   &-input
     flex-basis: calc(56% - 24px)
     max-width: 640px
+    height: 100%
     margin-right: 24px
+    font-size: 26px
+    line-height: 1.2
+    font-weight: bold
+    font-family: "Montserrat", sans-serif
 
     &::placeholder
       font-size: 26px
@@ -30,3 +37,6 @@
   &-select
     flex-basis: 44%
     max-width: 466px
+
+    path
+      fill: $white

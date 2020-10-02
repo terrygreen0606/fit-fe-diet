@@ -80,7 +80,7 @@ const SettingsChangeMealPlanView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
 
-    getRecipeCuisines(0, 1).then((response) => {
+    getRecipeCuisines().then((response) => {
       if (!cleanComponent) setIgnoreCuisinesList(response.data.data);
     });
 

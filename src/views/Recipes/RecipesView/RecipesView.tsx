@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -6,6 +6,7 @@ import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
+import { getRecipeCuisines } from 'api';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -13,7 +14,6 @@ import InputField from 'components/common/Forms/InputField';
 import NutritionPlanCard from 'components/NutritionPlanCard';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
-import SelectInput from 'components/common/Forms/SelectInput';
 
 import './RecipesView.sass';
 
@@ -24,6 +24,12 @@ const RecipesView = (props: any) => {
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
+
+  useEffect(() => {
+    getRecipeCuisines().then((response) => {
+      console.log('response', response.data.data);
+    });
+  }, []);
 
   return (
     <>
@@ -85,6 +91,7 @@ const RecipesView = (props: any) => {
                   <Select
                     block
                     styles={selectStyles}
+                    isSearchable={false}
                   />
                 </div>
               </div>
