@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Select from 'react-select';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
@@ -12,8 +13,11 @@ import InputField from 'components/common/Forms/InputField';
 import NutritionPlanCard from 'components/NutritionPlanCard';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
+import SelectInput from 'components/common/Forms/SelectInput';
 
 import './RecipesView.sass';
+
+import { selectStyles } from './selectStyles';
 
 const RecipesView = (props: any) => {
   const [recipesSearch, setRecipesSearch] = useState('');
@@ -53,7 +57,7 @@ const RecipesView = (props: any) => {
             </div>
             <div className='col-6 text-right'>
               <Link to='/recipe/create' className='page-create-btn'>
-                Create your recipe
+                {t('recipe.create.title')}
               </Link>
             </div>
           </div>
@@ -64,7 +68,9 @@ const RecipesView = (props: any) => {
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
-              <h4>Look for recipes in our recipe database</h4>
+              <h4 className='recipes-search-sect-title'>
+                {t('recipe.search.header')}
+              </h4>
 
               <div className='recipes-search-wrap'>
                 <InputField
@@ -73,7 +79,14 @@ const RecipesView = (props: any) => {
                   searchBar
                   block
                   placeholder='Search by ingredients'
+                  className='recipes-search-wrap-input'
                 />
+                <div className='recipes-search-wrap-select'>
+                  <Select
+                    block
+                    styles={selectStyles}
+                  />
+                </div>
               </div>
 
               <div className='search-tags-list'>

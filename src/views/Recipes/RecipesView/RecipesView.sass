@@ -1,18 +1,32 @@
 @import '../../../assets/sass/vars'
 
-
-.recipes-search-sect
-  margin-top: 110px
-  padding-bottom: 0
-  text-align: center
-  .recipes-search-wrap
-    margin-top: 50px
-  .search-tags-list
-    margin-top: 70px
-
-.recipes-search-wrap
-  max-width: 70%
-  margin: 0 auto
-
 .page-create-btn
   text-decoration: none
+
+.recipes-search-sect-title
+  text-align: center
+
+.recipes-search-wrap
+  display: flex
+  align-items: center
+  justify-content: center
+  margin: 50px 0 90px
+
+  &-input
+    flex-basis: calc(56% - 24px)
+    max-width: 640px
+    margin-right: 24px
+
+    &::placeholder
+      font-size: 26px
+      line-height: 1.2
+      color: #A0A0A0
+      font-weight: bold
+      font-family: "Montserrat", sans-serif
+
+  &-input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):hover
+    border-color: #0c57b9 !important
+
+  &-select
+    flex-basis: 44%
+    max-width: 466px

@@ -148,7 +148,7 @@ const InputField = (props: InputFieldProps) => {
     attributes.type = 'text';
   }
 
-  if (searchBar && attributes.placeholder) {
+  if (searchBar && !attributes.placeholder) {
     attributes.placeholder = 'Search...';
   }
 
