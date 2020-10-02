@@ -264,7 +264,6 @@ const MealPlanView = (props: any) => {
         isLoading={isMealPlanLoading}
         isError={false}
         spinSize='lg'
-        label={t('mp.generating_recipes')}
       >
         {isNoAccess ? (
           <div className='container'>
@@ -286,118 +285,126 @@ const MealPlanView = (props: any) => {
                       },
                     )}
                   >
-                    <div className='nutrition-plan-card-list-controls'>
-                      <button
-                        type='button'
-                        onClick={() => downloadTxtFile()}
-                        className='nutrition-plan-card-list-controls-item'
-                      >
-                        <FileDyskIcon />
-                      </button>
-                      <button
-                        type='button'
-                        onClick={() => window.print()}
-                        className='nutrition-plan-card-list-controls-item'
-                      >
-                        <PrintIcon />
-                      </button>
-                      <div ref={changedBlockRef}>
+                    <ContentLoading
+                      isLoading={mealPlan.length !== 7}
+                      isError={false}
+                      spinSize='lg'
+                      label={t('mp.generating_recipes')}
+                    >
+                      <div className='nutrition-plan-card-list-controls'>
                         <button
                           type='button'
-                          onClick={() => setIsBlockActive(!isBlockActive)}
+                          onClick={() => downloadTxtFile()}
                           className='nutrition-plan-card-list-controls-item'
                         >
-                          <ShareIcon />
+                          <FileDyskIcon />
                         </button>
-                        <ShareButtons
-                          visible={isBlockActive}
-                          shareText={shareText}
-                          shareLink={window.location.origin}
-                          isFacebookActive={false}
-                          isWhatsappActive={false}
-                        />
-                      </div>
-                    </div>
-                    <div className='nutrition-plan-card-list-date'>
-                      {days.map((item) => (
                         <button
-                          key={item.id}
-                          id={item.id}
                           type='button'
-                          onClick={() => {
-                            const scrollElements = document.querySelectorAll('[data-scroll]');
-                            scrollElements.forEach((scrollItem) => {
-                              if (+scrollItem.getAttribute('data-scroll') === item.id) {
-                                scrollItem.scrollIntoView({ behavior: 'smooth' });
-                              }
-                            });
-                          }}
-                          className='nutrition-plan-card-list-date-item card-bg'
+                          onClick={() => window.print()}
+                          className='nutrition-plan-card-list-controls-item'
                         >
-                          <div
-                            className='nutrition-plan-card-list-date-item-number'
-                          >
-                            {item.dayNumber}
-                          </div>
-                          <div className='nutrition-plan-card-list-date-item-day-week'>
-                            {item.dayLabel}
-                          </div>
+                          <PrintIcon />
                         </button>
-                      ))}
-                    </div>
-                    <div className='nutrition-plan-card-list-recipes'>
-                      {days.map((dayItem, dayItemIndex) => (
-                        <div
-                          key={dayItem.id}
-                          data-scroll={dayItem.id}
-                          className='nutrition-plan-card-list-recipes-item card-bg'
-                        >
-                          <div className='nutrition-plan-card-list-recipes-item-title'>
-                            <CalendarIcon />
-                            <span>
-                              {dayItem.dayFullInfo}
-                            </span>
-                          </div>
-                          <div className='row'>
-                            {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
-                              <div
-                                key={recipeItem.id}
-                                className='col-xl-6'
-                              >
-                                <NutritionPlanCard
-                                  title={recipeItem.name_i18n}
-                                  imgSrc={recipeItem.image_url}
-                                  linkToRecipe={routes.getRecipeFullView(recipeItem.id)}
-                                  favouriteActive={recipeItem.is_liked}
-                                  checkedActive={recipeItem.is_prepared}
-                                  time={recipeItem.time}
-                                  desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
-                                  costLevel={costLevelLabel[recipeItem.cost_level]}
-                                  onClickFavorite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickChecked={() => prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickShopCart={() => addToShoppingListByRecipes([recipeItem.id])}
-                                  onClickReload={() =>
-                                    updateRecipe(
-                                      mealPlan[dayItemIndex].date_ts,
-                                      recipeItem.id,
-                                      dayItemIndex,
-                                      recipeItemIndex,
-                                    )}
-                                />
-                              </div>
-                            ))}
-                          </div>
+                        <div ref={changedBlockRef}>
+                          <button
+                            type='button'
+                            onClick={() => setIsBlockActive(!isBlockActive)}
+                            className='nutrition-plan-card-list-controls-item'
+                          >
+                            <ShareIcon />
+                          </button>
+                          <ShareButtons
+                            visible={isBlockActive}
+                            shareText={shareText}
+                            shareLink={window.location.origin}
+                            isFacebookActive={false}
+                            isWhatsappActive={false}
+                          />
                         </div>
-                      ))}
-                    </div>
-                    {tourStep === 2 && (
-                      <HintStep
-                        hintStep={2}
-                        onClick={() => setTourStep(3)}
-                        text={t('tour.hint.step2')}
-                        closeText={t('common.understand')}
-                      />
-                    )}
+                      </div>
+                      <div className='nutrition-plan-card-list-date'>
+                        {days.map((item) => (
+                          <button
+                            key={item.id}
+                            id={item.id}
+                            type='button'
+                            onClick={() => {
+                              const scrollElements = document.querySelectorAll('[data-scroll]');
+                              scrollElements.forEach((scrollItem) => {
+                                if (+scrollItem.getAttribute('data-scroll') === item.id) {
+                                  scrollItem.scrollIntoView({ behavior: 'smooth' });
+                                }
+                              });
+                            }}
+                            className='nutrition-plan-card-list-date-item card-bg'
+                          >
+                            <div
+                              className='nutrition-plan-card-list-date-item-number'
+                            >
+                              {item.dayNumber}
+                            </div>
+                            <div className='nutrition-plan-card-list-date-item-day-week'>
+                              {item.dayLabel}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                      <div className='nutrition-plan-card-list-recipes'>
+                        {days.map((dayItem, dayItemIndex) => (
+                          <div
+                            key={dayItem.id}
+                            data-scroll={dayItem.id}
+                            className='nutrition-plan-card-list-recipes-item card-bg'
+                          >
+                            <div className='nutrition-plan-card-list-recipes-item-title'>
+                              <CalendarIcon />
+                              <span>
+                                {dayItem.dayFullInfo}
+                              </span>
+                            </div>
+                            <div className='row'>
+                              {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
+                                <div
+                                  key={recipeItem.id}
+                                  className='col-xl-6'
+                                >
+                                  <NutritionPlanCard
+                                    title={recipeItem.name_i18n}
+                                    imgSrc={recipeItem.image_url}
+                                    linkToRecipe={routes.getRecipeFullView(recipeItem.id)}
+                                    favouriteActive={recipeItem.is_liked}
+                                    checkedActive={recipeItem.is_prepared}
+                                    time={recipeItem.time}
+                                    desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
+                                    costLevel={costLevelLabel[recipeItem.cost_level]}
+                                    onClickFavorite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                    onClickChecked={() =>
+                                      prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                    onClickShopCart={() => addToShoppingListByRecipes([recipeItem.id])}
+                                    onClickReload={() =>
+                                      updateRecipe(
+                                        mealPlan[dayItemIndex].date_ts,
+                                        recipeItem.id,
+                                        dayItemIndex,
+                                        recipeItemIndex,
+                                      )}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      {tourStep === 2 && (
+                        <HintStep
+                          hintStep={2}
+                          onClick={() => setTourStep(3)}
+                          text={t('tour.hint.step2')}
+                          closeText={t('common.understand')}
+                        />
+                      )}
+                    </ContentLoading>
                   </div>
                   <div className='nutrition-plan-info-col'>
                     <div
