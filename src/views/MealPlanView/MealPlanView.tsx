@@ -263,6 +263,7 @@ const MealPlanView = (props: any) => {
         isLoading={isMealPlanLoading}
         isError={false}
         spinSize='lg'
+        label={t('mp.generating_recipes')}
       >
         {isNoAccess ? (
           <div className='container'>
