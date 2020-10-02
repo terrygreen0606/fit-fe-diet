@@ -47,7 +47,7 @@ const InputFieldPropsDefaults = {
 };
 
 const InputField = (props: InputFieldProps) => {
-  const [inputFieldId] = useState(`inputField-${uuid()}`);
+  const [inputFieldId] = useState(props.id || `inputField-${uuid()}`);
 
   const onBlur = (e) => {
     if (props.type === 'money' && !props.mask) {

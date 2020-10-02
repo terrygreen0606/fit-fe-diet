@@ -209,7 +209,11 @@ const TrainingsView: React.FC = (props: any) => {
                 <div className='training-plan-adherence-diet-card-socials-title'>
                   {t('socials.share.title')}
                 </div>
-                <ShareButtons shareLink='' classes='training-plan-adherence-diet-card-socials-list' />
+                <ShareButtons
+                  shareLink=''
+                  visible
+                  className='training-plan-adherence-diet-card-socials-list'
+                />
               </div>
             </div>
           </div>

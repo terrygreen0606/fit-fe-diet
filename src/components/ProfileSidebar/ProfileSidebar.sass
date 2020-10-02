@@ -33,13 +33,14 @@
       border: 1px solid transparent
       border-radius: 20px
       +mt(.2s)
+      &.active, &:hover
+        border-color: $steel-blue
+        background-color: transparent
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
       &.active
         font-weight: bold
-      &.active, &:hover
-        color: $white
-        border-color: $steel-blue
         background-color: $steel-blue
-        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        color: $white
         .profile-menu-list-icon
           path
             fill: $white

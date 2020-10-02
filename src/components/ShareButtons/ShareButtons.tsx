@@ -11,46 +11,87 @@ import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-i
 import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 
 type ShareButtonsProps = {
-  shareLink: string;
-  classes?: string;
+  shareLink?: string;
+  shareText?: string,
+  visible?: boolean,
+  className?: string;
   disabled?: boolean,
+  isTwitterActive?: boolean,
+  isFacebookActive?: boolean,
+  isTelegramActive?: boolean,
+  isWhatsappActive?: boolean,
 };
 
-const ShareButtons = ({ shareLink, classes, disabled }: ShareButtonsProps) => (
-  <div className={classnames('share-buttons-list', classes)}>
-    <button
-      type='button'
-      className='share-button'
-      disabled={disabled}
-      onClick={() => openShareLink(`https://twitter.com/intent/tweet?text=${shareLink}`)}
+const shareButtonsPropsDefault = {
+  shareLink: '',
+  shareText: '',
+  visible: false,
+  className: '',
+  disabled: false,
+  isTwitterActive: true,
+  isFacebookActive: true,
+  isTelegramActive: true,
+  isWhatsappActive: true,
+};
+
+const ShareButtons = ({
+  shareLink,
+  shareText,
+  visible,
+  className,
+  disabled,
+  isTwitterActive,
+  isFacebookActive,
+  isTelegramActive,
+  isWhatsappActive,
+}: ShareButtonsProps) => (
+    <div className={classnames('share-buttons-list', className, {
+      visible,
+    })}
     >
-      <TwitterLogo />
-    </button>
-    <button
-      type='button'
-      className='share-button'
-      disabled={disabled}
-      onClick={() => openShareLink(`https://www.facebook.com/sharer/sharer.php?u=${shareLink}`)}
-    >
-      <FacebookLogo />
-    </button>
-    <button
-      type='button'
-      className='share-button'
-      disabled={disabled}
-      onClick={() => openShareLink(`https://t.me/share/url?url=${shareLink}`)}
-    >
-      <TelegramLogo />
-    </button>
-    <button
-      type='button'
-      className='share-button'
-      disabled={disabled}
-      onClick={() => openShareLink(`https://wa.me/?text=${shareLink}`)}
-    >
-      <WhatsappLogo />
-    </button>
-  </div>
-);
+      {isTwitterActive && (
+        <button
+          type='button'
+          className='share-button'
+          disabled={disabled}
+          onClick={() => openShareLink(`https://twitter.com/intent/tweet?text=${shareLink}%20${shareText}`)}
+        >
+          <TwitterLogo />
+        </button>
+      )}
+      {isFacebookActive && (
+        <button
+          type='button'
+          className='share-button'
+          disabled={disabled}
+          onClick={() => openShareLink(`https://www.facebook.com/sharer/sharer.php?u=${shareLink}`)}
+        >
+          <FacebookLogo />
+        </button>
+      )}
+      {isTelegramActive && (
+        <button
+          type='button'
+          className='share-button'
+          disabled={disabled}
+          onClick={() => openShareLink(`https://t.me/share/url?url=${shareLink}&text=${shareText}`)}
+        >
+          <TelegramLogo />
+        </button>
+      )}
+      {isWhatsappActive && (
+        <button
+          type='button'
+          className='share-button'
+          disabled={disabled}
+          onClick={() => openShareLink(`https://wa.me/?text=${shareLink}`)}
+        >
+          <WhatsappLogo />
+        </button>
+      )}
+    </div>
+  );
+
+ShareButtons.defaultProps = shareButtonsPropsDefault;
 
 export default ShareButtons;

@@ -38,7 +38,7 @@ export const getRecipeData = (
 
 export const likeRecipe = (recipeId: string) => axios.put(`/recipe/like/${recipeId}`);
 
-export const preparedRecipe = (recipeId: string) => axios.put(`/recipe/prepared/${recipeId}`);
+export const prepareRecipe = (recipeId: string) => axios.put(`/recipe/prepared/${recipeId}`);
 
 export const deleteRecipe = (recipeId: string) => axios.delete(`/recipe/${recipeId}`);
 

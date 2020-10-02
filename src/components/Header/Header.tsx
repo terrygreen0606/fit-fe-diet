@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
@@ -8,20 +8,16 @@ import { routes } from 'constants/routes';
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
-import ShoppingListPopup from 'components/ShoppingListPopup';
-import useOutsideClick from 'components/hooks/useOutsideClick';
+import ShoppingListCart from 'components/ShoppingListCart';
 
 import './Header.sass';
 
 import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon.svg';
-import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-icon.svg';
 
 const Header = (props: any) => {
   const {
     isAuthenticated,
-    location,
     localePhrases,
-    settings,
   } = props;
 
   const t = (code: string) => getTranslate(localePhrases, code);
@@ -29,18 +25,6 @@ const Header = (props: any) => {
   const toggleSideMenu = () => {
     document.body.classList.toggle('mobile-menu-opened');
   };
-
-  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
-
-  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
-
-  const updateShoppingListLength = (value) => {
-    setShoppingListLength(value);
-  };
-
-  useEffect(() => {
-    setShoppingListLength(settings.shopping_list_count);
-  }, [settings.shopping_list_count]);
 
   return (
     <>
@@ -53,14 +37,19 @@ const Header = (props: any) => {
 
             <div className='col-10 text-right'>
               <span className='header-controls'>
-                {isAuthenticated && (
+                {!isAuthenticated && (
                   <>
-                    <Button className='mobile-auth-btn' color='secondary' outline>
-                      {t('login.submit')}
-                    </Button>
-                    <Button className='mobile-auth-btn ml-2 mr-4' color='secondary'>
-                      {t('button.sign_up')}
-                    </Button>
+                    <Link to="/login" className="link-raw">
+                      <Button className='mobile-auth-btn' color='secondary' outline>
+                        {t('login.submit')}
+                      </Button>
+                    </Link>
+
+                    <Link to="/register" className="link-raw">
+                      <Button className='mobile-auth-btn ml-2 mr-4' color='secondary'>
+                        {t('button.sign_up')}
+                      </Button>
+                    </Link>
                   </>
                 )}
 
@@ -72,7 +61,7 @@ const Header = (props: any) => {
 
               <nav className='mainHeader_menuList'>
                 <NavLink
-                  to='/trainings'
+                  to={routes.trainings}
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
                 >
@@ -80,7 +69,7 @@ const Header = (props: any) => {
                 </NavLink>
 
                 <NavLink
-                  to='/recipes'
+                  to={routes.recipes}
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
                 >
@@ -96,50 +85,26 @@ const Header = (props: any) => {
                 </NavLink>
 
                 <NavLink
-                  to='/nutrition/plan'
+                  to={routes.mealPlan}
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
                 >
                   {t('nutrition.title')}
                 </NavLink>
 
+                <ShoppingListCart visible={isAuthenticated} />
                 {isAuthenticated ? (
-                  <>
-                    <div
-                      ref={changedBlockRef}
-                      className='mainHeader_menuList_shopping_cart_wrap'
-                    >
-                      <button
-                        type='button'
-                        className='mainHeader_menuList_shopping_cart'
-                        onClick={() => {
-                          if (!location.pathname.includes(routes.shoppingList)) {
-                            setIsBlockActive(!isBlockActive);
-                          }
-                        }}
-                      >
-                        <ShoppingCartIcon />
-                        <div className='mainHeader_menuList_shopping_cart_count'>
-                          {shoppingListLength}
-                        </div>
-                      </button>
-                      {(isBlockActive && !window.location.href.includes(routes.shoppingList)) && (
-                        <ShoppingListPopup updateShoppingListLength={updateShoppingListLength} />
-                      )}
-                    </div>
-
-                    <button
-                      type='button'
-                      className='mainHeader_menuList_item'
-                      onClick={() => props.userLogout()}
-                    >
-                      {t('common.logout')}
-                    </button>
-                  </>
+                  <button
+                    type='button'
+                    className='mainHeader_menuList_item'
+                    onClick={() => props.userLogout()}
+                  >
+                    {t('common.logout')}
+                  </button>
                 ) : (
                     <>
                       <NavLink
-                        to='/login'
+                        to={routes.login}
                         className='mainHeader_menuList_item'
                         activeClassName='mainHeader_menuList_item_active'
                       >

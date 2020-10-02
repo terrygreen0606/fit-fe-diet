@@ -46,8 +46,6 @@
         position: absolute
         bottom: calc(100% + 10px)
         right: 0
-        display: flex
-        align-items: center
         padding: 10px
         background-color: $white
         box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
@@ -344,19 +342,17 @@
         border-color: transparent
 
 @media print
-  body *
-    visibility: hidden
-  
+  *
+    overflow: visible !important
+    
   ::-webkit-scrollbar
     display: none
 
-  .shop-list__body
-    position: fixed
-    top: 0
-    left: 0
-
-  .shop-list__body *
-    visibility: visible
+  .shop-list__header,
+  .shop-list__footer,
+  .shop-list__banner,
+  .shop-list__title
+    display: none
 
   .shop-list__item
     padding: 20px 0

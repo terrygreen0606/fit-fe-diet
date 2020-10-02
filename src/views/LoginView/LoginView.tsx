@@ -69,7 +69,11 @@ const LoginView = (props: any) => {
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, loginErrors);
+    getFieldErrorsUtil(field, loginErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
@@ -267,7 +271,7 @@ const LoginView = (props: any) => {
             {t('login.submit')}
           </Button>
 
-          <Link to="/reset-password" className='loginScreen_link link link-bold link-blue mt-md-5 mt-45'>{t('login.forgot_pass')}</Link>
+          <Link to="/reset-password" className='loginScreen_link link link-bold link-blue mt-45'>{t('login.forgot_pass')}</Link>
         </form>
 
         {/*<div className='loginScreen_socialBtns mt-4'>

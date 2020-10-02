@@ -17,10 +17,12 @@ type AdvantagesProps = {
   advantage3Desc: string,
   localePhrases: [];
   isShowBtn?: boolean,
+  onClickShowBtn?: () => void,
 };
 
 const AdvantagesPropsDefault = {
   isShowBtn: false,
+  onClickShowBtn: () => { },
 };
 
 const Advantages = ({
@@ -36,6 +38,7 @@ const Advantages = ({
   advantage3Title,
   localePhrases,
   isShowBtn,
+  onClickShowBtn,
 }: AdvantagesProps) => {
   const t = (code: string, placeholders?: any) => getTranslate(
     localePhrases,
@@ -94,6 +97,7 @@ const Advantages = ({
         {isShowBtn && (
           <button
             type='button'
+            onClick={onClickShowBtn}
             className='how-exercise-plan-works-sect-hiding-btn'
           >
             {t('mp.hidden')}

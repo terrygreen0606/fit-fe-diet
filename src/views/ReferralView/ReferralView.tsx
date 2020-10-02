@@ -176,7 +176,10 @@ const ReferralView = (props: any) => {
             </div>
           </div>
           <div className='referral__socials'>
-            <ShareButtons shareLink={inviteLink} />
+            <ShareButtons
+              shareLink={inviteLink}
+              visible
+            />
           </div>
         </div>
       </section>

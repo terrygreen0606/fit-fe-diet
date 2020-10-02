@@ -14,3 +14,18 @@ export type UserAuthProfileType = {
   diseases?: string[],
   act_levels?: string[]
 };
+
+export type UserFacebookSignUpParams = {
+  token: string,
+  profile: UserAuthProfileType
+};
+
+export type UserGoogleSignUpParams = {
+  id_token: string,
+  profile: UserAuthProfileType
+};
+
+export interface UserSignupParams extends UserAuthProfileType {
+  email: string;
+  password: string;
+}

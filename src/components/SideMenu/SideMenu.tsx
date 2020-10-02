@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTranslate } from 'utils';
 
+import { routes } from 'constants/routes';
+
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 
@@ -33,22 +35,22 @@ const SideMenu = ({ localePhrases, isAuthenticated }: any) => {
 
         <ul className='mobile-menu-list'>
           <li>
-            <Link to='/trainings' className='mobile-menu-list-item'>
+            <Link to={routes.trainings} className='mobile-menu-list-item'>
               {t('header.menu_trainings')}
             </Link>
           </li>
           <li>
-            <Link to='/recipes' className='mobile-menu-list-item'>
+            <Link to={routes.recipes} className='mobile-menu-list-item'>
               {t('header.menu_recipes')}
             </Link>
           </li>
           <li>
-            <Link to='/plan/change-meal' className='mobile-menu-list-item'>
+            <Link to={routes.changeMealSettings} className='mobile-menu-list-item'>
               {t('mp.change.title')}
             </Link>
           </li>
           <li>
-            <Link to='/nutrition/plan' className='mobile-menu-list-item'>
+            <Link to={routes.mealPlan} className='mobile-menu-list-item'>
               {t('nutrition.title')}
             </Link>
           </li>
