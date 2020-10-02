@@ -1,7 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-import { getImagePath } from 'utils';
 import { Link } from 'react-router-dom';
+
+import { getTranslate } from 'utils';
+
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import './NutritionPlanCard.sass';
 
@@ -12,48 +15,72 @@ import { ReactComponent as HeartIcon } from 'assets/img/icons/heart-filled-icon.
 import { ReactComponent as CursorTouchIcon } from 'assets/img/icons/cursor-touch-icon.svg';
 
 type NutritionPlanCardProps = {
+  imgSrc: string,
+  title: string,
+  linkToRecipe: string,
+  localePhrases: [];
   type?: 'active' | 'cross' | 'default',
-  favorite?: boolean,
+  onClickFavorite?: () => void,
+  onClickReload?: () => void,
+  onClickShopCart?: () => void,
+  onClickChecked?: () => void,
   favouriteActive?: boolean,
-  reload?: boolean,
   reloadActive?: boolean,
-  shopCart?: boolean,
   shopCartActive?: boolean,
-  checked?: boolean,
   checkedActive?: boolean,
   mobileStyle?: 'horizontal-mobile' | '',
+  time?: number,
+  desc?: string,
+  costLevel?: string,
 };
 
 const NutritionPlanCardDefaultProps = {
   type: 'default',
-  favorite: false,
+  onClickFavorite: null,
+  onClickReload: false,
+  onClickShopCart: false,
+  onClickChecked: false,
   favouriteActive: false,
-  reload: false,
   reloadActive: false,
-  shopCart: false,
   shopCartActive: false,
-  checked: false,
   checkedActive: false,
   mobileStyle: '',
+  time: 0,
+  desc: '',
+  costLevel: '',
 };
 
 const NutritionPlanCard = ({
+  imgSrc,
+  title,
+  linkToRecipe,
+  localePhrases,
   type,
-  favorite,
+  onClickFavorite,
+  onClickReload,
+  onClickShopCart,
+  onClickChecked,
   favouriteActive,
-  reload,
   reloadActive,
-  shopCart,
   shopCartActive,
-  checked,
   checkedActive,
   mobileStyle,
-}: NutritionPlanCardProps) => (
+  time,
+  desc,
+  costLevel,
+}: NutritionPlanCardProps) => {
+  const t = (code: string, placeholders?: any) => getTranslate(
+    localePhrases,
+    code,
+    placeholders,
+  );
+
+  return (
     <div className={`nutrition-plan-card card-bg ${type} ${mobileStyle}`}>
       <Link
-        to='/'
+        to={linkToRecipe}
         className='nutrition-plan-card-image'
-        style={{ backgroundImage: `url(${getImagePath('nutrition-plan-preview-img.jpg')})` }}
+        style={{ backgroundImage: `url(${imgSrc})` }}
       >
         <div className='nutrition-plan-card-image-touch-icon'>
           <CursorTouchIcon />
@@ -62,12 +89,13 @@ const NutritionPlanCard = ({
 
       <div className={`${mobileStyle}-div`}>
         <div className='nutrition-plan-card-head'>
-          <Link to='/' className='nutrition-plan-card-title'>
-            Õhtusöök
+          <Link to={linkToRecipe} className='nutrition-plan-card-title'>
+            {title}
           </Link>
-          {favorite && (
+          {onClickFavorite && (
             <button
               type='button'
+              onClick={onClickFavorite}
               className={classnames('nutrition-plan-card-heart', {
                 active: favouriteActive,
               })}
@@ -76,18 +104,32 @@ const NutritionPlanCard = ({
             </button>
           )}
         </div>
-
-        <div className='nutrition-plan-card-descr'>Õuna-rosina kohupiimavorm</div>
+        <div className='nutrition-plan-card-descr'>
+          <span>
+            {desc}
+          </span>
+        </div>
 
         <div className='nutrition-plan-card-bottom'>
-          <span className='nutrition-plan-card-time'>40 min</span>
-          <span className='nutrition-plan-card-mark' />
-          <span className='nutrition-plan-card-price'>€€</span>
+          {time ? (
+            <>
+              <span className='nutrition-plan-card-time'>
+                {t('common.min', { COUNT: time })}
+              </span>
+              <span className='nutrition-plan-card-mark' />
+            </>
+          ) : null}
+          {costLevel && (
+            <span className='nutrition-plan-card-price'>
+              {costLevel}
+            </span>
+          )}
         </div>
         <div className='nutrition-plan-card-controls'>
-          {reload && (
+          {onClickReload && (
             <button
               type='button'
+              onClick={onClickReload}
               className={classnames('nutrition-plan-card-controls-item', {
                 active: reloadActive,
               })}
@@ -100,9 +142,10 @@ const NutritionPlanCard = ({
               </div>
             </button>
           )}
-          {shopCart && (
+          {onClickShopCart && (
             <button
               type='button'
+              onClick={onClickShopCart}
               className={classnames('nutrition-plan-card-controls-item', {
                 active: shopCartActive,
               })}
@@ -115,9 +158,10 @@ const NutritionPlanCard = ({
               </div>
             </button>
           )}
-          {checked && (
+          {onClickChecked && (
             <button
               type='button'
+              onClick={onClickChecked}
               className={classnames('nutrition-plan-card-controls-item', {
                 active: checkedActive,
               })}
@@ -134,7 +178,8 @@ const NutritionPlanCard = ({
       </div>
     </div>
   );
+};
 
 NutritionPlanCard.defaultProps = NutritionPlanCardDefaultProps;
 
-export default NutritionPlanCard;
+export default WithTranslate(NutritionPlanCard);

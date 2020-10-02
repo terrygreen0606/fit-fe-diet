@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
+import classnames from 'classnames';
 
 import {
   getTranslate,
@@ -14,6 +15,7 @@ import {
   deleteFromShoppingList,
 } from 'api';
 import { routes } from 'constants/routes';
+import { setAppSetting } from 'store/actions';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -27,11 +29,13 @@ import './ShoppingListPopup.sass';
 
 // Icons
 import { ReactComponent as FileDyskIcon } from 'assets/img/icons/file-dysk-icon.svg';
-import { ReactComponent as PrintIcon } from 'assets/img/icons/print-icon.svg';
 import { ReactComponent as ShareIcon } from 'assets/img/icons/share-icon.svg';
 import { ReactComponent as TrashIcon } from 'assets/img/icons/trash-icon.svg';
 
-const ShoppingListPopup = (props: any) => {
+const ShoppingListPopup = ({
+  visible,
+  ...props
+}: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
@@ -56,7 +60,7 @@ const ShoppingListPopup = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
-    if (settings.is_private) {
+    if (settings.is_private && !cleanComponent) {
       if (settings.paid_until > 0) {
         getShoppingList(2, dateSync).then((response) => {
           const { list } = response.data.data;
@@ -65,24 +69,28 @@ const ShoppingListPopup = (props: any) => {
             item.is_disable = false;
           });
 
-          if (!cleanComponent) setShoppingList(list);
+          setShoppingList(list);
 
-          if (!cleanComponent) setDateSync(response.data.data.date_sync);
+          setDateSync(response.data.data.date_sync);
         }).finally(() => {
-          if (!cleanComponent) setIsSpinnerActive(false);
+          setIsSpinnerActive(false);
         });
+        setIsNoAccess(false);
       } else {
-        if (!cleanComponent) setIsNoAccess(true);
-        if (!cleanComponent) setIsSpinnerActive(false);
+        setIsNoAccess(true);
+        setIsSpinnerActive(false);
       }
     }
     return () => cleanComponent = true;
-  }, [settings]);
+  }, [settings.paid_until, settings.is_private]);
 
-  useEffect(() => {
-    props.updateShoppingListLength(shoppingList.filter((item) =>
-      !item.is_bought).length || settings.shopping_list_count);
-  }, [shoppingList]);
+  const syncNumberInShopCart = (array = []) => {
+    const notBoughtIngredients = (array.length > 0 ? array : shoppingList).filter((item) => !item.is_bought).length;
+    props.setAppSetting({
+      ...settings,
+      shopping_list_count: notBoughtIngredients,
+    });
+  };
 
   const toggleCheckbox = (itemIndex: number, itemId: string) => {
     const updatedShoppingList = [...shoppingList];
@@ -110,6 +118,8 @@ const ShoppingListPopup = (props: any) => {
         updatedShoppingList[itemIndex].is_disable = false;
         setShoppingList([...updatedShoppingList]);
       }, 500);
+
+      syncNumberInShopCart();
     });
   };
 
@@ -124,7 +134,10 @@ const ShoppingListPopup = (props: any) => {
     props.updateShoppingListLength(updatedShoppingList.length);
 
     deleteFromShoppingList(itemId, dateSync)
-      .then((response) => setDateSync(response.data.data.date_sync))
+      .then((response) => {
+        setDateSync(response.data.data.date_sync);
+        syncNumberInShopCart();
+      })
       .catch(() => {
         toast.error(t('shop_list.update.error'));
 
@@ -133,7 +146,10 @@ const ShoppingListPopup = (props: any) => {
   };
 
   return (
-    <div className='shop-list-popup'>
+    <div className={classnames('shop-list-popup', {
+      visible,
+    })}
+    >
       {isSpinnerActive ? (
         <div className='container text-center mb-5'>
           <Spinner
@@ -161,13 +177,6 @@ const ShoppingListPopup = (props: any) => {
                       >
                         <FileDyskIcon />
                       </button>
-                      <button
-                        type='button'
-                        onClick={() => window.print()}
-                        className='shop-list-popup__header-buttons-item'
-                      >
-                        <PrintIcon />
-                      </button>
                       <div ref={changedBlockRef}>
                         <button
                           type='button'
@@ -181,11 +190,11 @@ const ShoppingListPopup = (props: any) => {
                         >
                           <ShareIcon />
                         </button>
-                        {isBlockActive && (
-                          <div className='shop-list-popup__header-buttons-share'>
-                            <ShareButtons shareLink={sharePublicUrl} />
-                          </div>
-                        )}
+                        <ShareButtons
+                          shareLink={sharePublicUrl}
+                          visible={isBlockActive}
+                          className='shop-list-popup__header-buttons-share'
+                        />
                       </div>
                     </div>
                   </div>
@@ -250,4 +259,4 @@ const ShoppingListPopup = (props: any) => {
 
 export default WithTranslate(connect((state: any) => ({
   settings: state.settings,
-}))(ShoppingListPopup));
+}), { setAppSetting })(ShoppingListPopup));

@@ -16,7 +16,6 @@ const App = (props: any) => {
 
   useEffect(() => {
     props.initApp();
-    // eslint-disable-next-line
   }, []);
 
   return (
@@ -35,5 +34,5 @@ export default connect(
     isAuthChecking: state.auth.isAuthChecking,
     phrases: state.locale.phrases,
   }),
-  { initApp }
+  { initApp },
 )(App);

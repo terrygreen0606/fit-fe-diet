@@ -149,13 +149,13 @@ const ShoppingListView = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
-    if (settings.is_private) {
+    if (settings.is_private && !cleanComponent) {
       if (settings.paid_until > 0) {
         getShoppingListFunc();
-        if (!cleanComponent) setIsNoAccess(false);
+        setIsNoAccess(false);
       } else {
-        if (!cleanComponent) setIsNoAccess(true);
-        if (!cleanComponent) setIsSpinnerActive(false);
+        setIsNoAccess(true);
+        setIsSpinnerActive(false);
       }
     }
 
@@ -360,7 +360,7 @@ const ShoppingListView = (props: any) => {
                 </div>
               ) : (
                   <>
-                    <div>
+                    <div className='shop-list__title'>
                       <span className='sect-subtitle'>
                         {t('app.title.shopping_list')}
                       </span>
@@ -398,11 +398,11 @@ const ShoppingListView = (props: any) => {
                             >
                               <ShareIcon />
                             </button>
-                            {isBlockActive && (
-                              <div className='shop-list__header-buttons-share'>
-                                <ShareButtons shareLink={sharePublicUrl} />
-                              </div>
-                            )}
+                            <ShareButtons
+                              shareLink={sharePublicUrl}
+                              visible={isBlockActive}
+                              className='shop-list__header-buttons-share'
+                            />
                           </div>
                         </div>
                       </div>

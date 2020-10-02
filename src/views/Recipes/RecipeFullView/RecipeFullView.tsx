@@ -19,7 +19,7 @@ import {
 import {
   getRecipeData,
   likeRecipe,
-  preparedRecipe,
+  prepareRecipe,
   deleteRecipe,
   addRecipeNote,
   addToShoppingListByRecipes,
@@ -125,15 +125,14 @@ const RecipeFullView = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
+    if (!cleanComponent) {
+      getRecipeData(recipeId, true, true, true).then((response) => {
+        const { data } = response.data;
 
-    getRecipeData(recipeId, true, true, true).then((response) => {
-      const { data } = response.data;
+        const updatedImages = [...data.images];
 
-      const updatedImages = [...data.images];
+        updatedImages[0].isActive = true;
 
-      updatedImages[0].isActive = true;
-
-      if (!cleanComponent) {
         setRecipeData({
           ...recipeData,
           calorie: data.calorie,
@@ -166,12 +165,12 @@ const RecipeFullView = (props: any) => {
         setAddNoteForm({ ...addNoteForm, note: data.note });
 
         setAvailabilityRecipe(true);
-      }
-    }).catch(() => {
-      if (!cleanComponent) setAvailabilityRecipe(false);
-    }).finally(() => {
-      if (!cleanComponent) setSpinnerActive(false);
-    });
+      }).catch(() => {
+        setAvailabilityRecipe(false);
+      }).finally(() => {
+        setSpinnerActive(false);
+      });
+    }
 
     return () => cleanComponent = true;
   }, [recipeId]);
@@ -354,7 +353,7 @@ const RecipeFullView = (props: any) => {
                           ...recipeData,
                           isPrepared: !recipeData.isPrepared,
                         });
-                        preparedRecipe(recipeId).then((response) => {
+                        prepareRecipe(recipeId).then((response) => {
                           setRecipeData({
                             ...recipeData,
                             isPrepared: response.data.data.is_prepared,
@@ -601,7 +600,11 @@ const RecipeFullView = (props: any) => {
                   <div className='recipe__share-title'>
                     {t('socials.share.title')}
                   </div>
-                  <ShareButtons shareLink={window.location.href} classes='recipe__share-buttons' />
+                  <ShareButtons
+                    shareLink={window.location.href}
+                    className='recipe__share-buttons'
+                    visible
+                  />
                 </div>
                 {recipeData.wines.length > 0 && (
                   <div className='recipe__advertising card-bg'>

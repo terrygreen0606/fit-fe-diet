@@ -3,6 +3,7 @@ import { TOGGLE_SETTING, CHANGE_SETTING } from '../actions';
 const initialSettings = {
   isFullscreen: false,
   afterSignup: false,
+  completedMealPlanTraining: false,
 };
 
 const storageReducer = (state = initialSettings, action) => {

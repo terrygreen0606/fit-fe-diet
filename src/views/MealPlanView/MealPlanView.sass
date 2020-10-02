@@ -44,8 +44,8 @@
           flex-direction: column
 
     &-col
-      flex: 0 0 calc(62% - 82px)
-      max-width: calc(62% - 82px)
+      flex: 0 0 calc(62% - 37px)
+      max-width: calc(62% - 37px)
       height: fit-content
       position: relative
 
@@ -64,19 +64,18 @@
           box-shadow: none
 
     &-controls
+      position: relative
       display: flex
       align-items: center
       justify-content: flex-end
       margin-bottom: 20px
 
       &-item
+        margin-left: 15px
         padding: 0
         border: none
         background-color: transparent
         cursor: pointer
-
-        &:not(:first-child)
-          margin-left: 15px
 
         svg path
           fill: $black
@@ -85,6 +84,20 @@
       &-item:hover
         svg path
           fill: $caribbean-green
+      
+      .share-buttons-list
+        position: absolute
+        bottom: 100%
+        right: 0
+        padding: 10px
+        background-color: #ffffff
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        border-radius: 5px
+
+        .share-button
+          width: 40px
+          height: 40px
+          margin: 0 4px
 
     &-date
       display: flex
@@ -135,7 +148,7 @@
         .nutrition-plan-card-list-date-item-day-week
           color: $white
 
-    &-recipes
+    &-recipes-item
       padding: 36px 30px 0
 
       @media (max-width: 768px)
@@ -161,11 +174,14 @@
     &-recipes.card-bg
       @media (max-width: 768px)
         box-shadow: none
+    
+    &-recipes-item + .nutrition-plan-card-list-recipes-item
+      margin-top: 54px
 
   &-info-col
     flex: 0 0 38%
     max-width: 38%
-    margin-left: 82px
+    margin-left: 37px
 
     @media (max-width: 768px)
       flex-basis: 100%
@@ -251,6 +267,9 @@
       .link
         color: $steel-blue
         border-bottom: 1px solid
+      
+      &-link
+        text-decoration: none
 
       strong, b
         color: $steel-blue
@@ -289,11 +308,14 @@
     margin-bottom: 30px
 
   .share-buttons-list
-    justify-content: space-between
+    justify-content: flex-start
 
   .share-button
     width: 58px
     height: 58px
+
+    &:not(:last-child)
+      margin-right: 10px
 
 .hint_sect_backdrop
   position: fixed
@@ -454,3 +476,48 @@
     background-color: #FFFFFF
     z-index: 510
     box-shadow: 0 0 0 20px #ffffff
+
+@media print
+  *
+    overflow: visible !important
+    
+  ::-webkit-scrollbar
+    display: none
+
+  .layoutMainWrapper,
+  .nutrition-plan-card-list-sect
+    padding-top: 0 !important
+  
+  .mainHeader,
+  .nutrition-plan-card-list-controls,
+  .nutrition-plan-card-list-date,
+  .mainFooter,
+  .nutrition-plan-info-col,
+  .breadcrumb
+    display: none !important
+
+  .nutrition-plan-card-list-recipes
+    &-item
+      &:nth-child(even)
+        page-break-after: always
+
+      & + .nutrition-plan-card-list-recipes-item
+        margin-top: 40px
+        
+      &.card-bg
+        box-shadow: none
+
+      &-title
+        margin-bottom: 10px
+
+      .nutrition-plan-card
+        margin-bottom: 10px
+        padding: 0
+
+        &.card-bg
+          box-shadow: none
+
+      .nutrition-plan-card-image,
+      .nutrition-plan-card-heart,
+      .nutrition-plan-card-controls
+        display: none
