@@ -5,6 +5,7 @@
   top: 100%
   right: 0
   width: 520px
+  max-height: 500px
   padding: 30px 25px
   text-align: left
   background: #FBFBFB
@@ -12,7 +13,9 @@
   border-top: 1px solid #1EC5A7
   opacity: 0
   visibility: hidden
+  overflow-y: auto
   z-index: 10
+  +scrollStyle(5px)
 
   &.visible
     opacity: 1
