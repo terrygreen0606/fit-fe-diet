@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
-import { getTranslate } from 'utils';
+import { getImagePath, getTranslate } from 'utils';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -130,31 +130,79 @@ const RecipesView = (props: any) => {
         <div className='container'>
           <div className='row'>
             <div className='col-4'>
-              <NutritionPlanCard />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+              />
             </div>
             <div className='col-4'>
-              <NutritionPlanCard type='active' favorite />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+                type='active'
+                favorite
+              />
             </div>
             <div className='col-4'>
-              <NutritionPlanCard type='active' favorite />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+                type='active'
+                favorite
+              />
             </div>
             <div className='col-4'>
-              <NutritionPlanCard />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+              />
             </div>
             <div className='col-4'>
-              <NutritionPlanCard type='active' favorite />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+                type='active'
+                favorite
+              />
             </div>
             <div className='col-4'>
-              <NutritionPlanCard type='active' favorite />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+                type='active'
+                favorite
+              />
             </div>
             <div className='col-4'>
-              <NutritionPlanCard />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+              />
             </div>
             <div className='col-4'>
-              <NutritionPlanCard type='active' favorite />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+                type='active'
+                favorite
+              />
             </div>
             <div className='col-4'>
-              <NutritionPlanCard type='active' favorite />
+              <NutritionPlanCard
+                title='Some title'
+                linkToRecipe='/'
+                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
+                type='active'
+                favorite
+              />
             </div>
           </div>
         </div>

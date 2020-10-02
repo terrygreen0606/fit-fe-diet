@@ -10,6 +10,13 @@
   background: #FBFBFB
   box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
   border-top: 1px solid #1EC5A7
+  opacity: 0
+  visibility: hidden
+  z-index: 10
+
+  &.visible
+    opacity: 1
+    visibility: visible
 
   &__header
     display: flex
@@ -44,8 +51,6 @@
         position: absolute
         bottom: calc(100% + 10px)
         right: 0
-        display: flex
-        align-items: center
         padding: 10px
         background-color: $white
         box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
@@ -110,18 +115,3 @@
     
   &__item:not(:last-child)
     border-bottom: 1px solid #E8E8E8
-
-@media print
-  body *
-    visibility: hidden
-  
-  ::-webkit-scrollbar
-    display: none
-
-  .shop-list-popup__body
-    position: fixed
-    top: 0
-    left: 0
-
-  .shop-list-popup__body *
-    visibility: visible

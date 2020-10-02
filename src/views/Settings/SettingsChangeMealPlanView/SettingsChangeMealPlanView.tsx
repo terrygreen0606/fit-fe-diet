@@ -80,21 +80,21 @@ const SettingsChangeMealPlanView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
 
-    getRecipeCuisines(0, 1).then((response) => {
-      if (!cleanComponent) setIgnoreCuisinesList(response.data.data);
-    });
+    if (!cleanComponent) {
+      getRecipeCuisines(0, 1).then((response) => {
+        setIgnoreCuisinesList(response.data.data);
+      });
 
-    getDiseases().then((response) => {
-      if (!cleanComponent) setDiseasesList(response.data.data);
-    });
+      getDiseases().then((response) => {
+        setDiseasesList(response.data.data);
+      });
 
-    getActivityLevels().then((response) =>
-      setActiveLevelsList([...response.data.data]));
+      getActivityLevels().then((response) =>
+        setActiveLevelsList([...response.data.data]));
 
-    fetchUserProfile().then((response) => {
-      const { data } = response.data;
+      fetchUserProfile().then((response) => {
+        const { data } = response.data;
 
-      if (!cleanComponent) {
         setUpdateChangeMealForm({
           ...updateChangeMealForm,
           measurement: userSettings.measurement,
@@ -109,10 +109,10 @@ const SettingsChangeMealPlanView = (props: any) => {
           meals_cnt: data.meals_cnt,
           act_level: data.act_level,
         });
-      }
 
-      setSpinnerActive(false);
-    });
+        setSpinnerActive(false);
+      });
+    }
 
     return () => cleanComponent = true;
   }, []);

@@ -23,11 +23,13 @@ const SettingsPaymentHistoryView = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
-    getPaymentHistory().then((response) => {
-      if (!cleanComponent) setPaymentHistory([...response.data.data]);
-    }).finally(() => {
-      if (!cleanComponent) setIsSpinnerActive(false);
-    });
+    if (!cleanComponent) {
+      getPaymentHistory().then((response) => {
+        setPaymentHistory([...response.data.data]);
+      }).finally(() => {
+        setIsSpinnerActive(false);
+      });
+    }
     return () => cleanComponent = true;
   }, []);
 

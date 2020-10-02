@@ -11,3 +11,4 @@ export * from './auth';
 export * from './getAppPublicSettings';
 export * from './getActivityLevels';
 export * from './payment';
+export * from './mealPlan';

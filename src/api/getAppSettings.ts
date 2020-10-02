@@ -1,4 +1,4 @@
 import axios from 'utils/axios';
 
-export const getAppSettings = () => 
+export const getAppSettings = () =>
   axios.get('/app/settings');
