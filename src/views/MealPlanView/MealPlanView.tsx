@@ -19,7 +19,7 @@ import {
   changeRecipeInMealPlan,
   getMealPlanText,
 } from 'api';
-import { toggleSetting } from 'store/actions';
+import { toggleSetting, changeSetting } from 'store/actions';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -528,5 +528,5 @@ export default WithTranslate(
     settings: state.settings,
     storage: state.storage,
     afterSignup: state.storage.afterSignup,
-  }), { toggleSetting })(MealPlanView),
+  }), { toggleSetting, changeSetting })(MealPlanView),
 );
