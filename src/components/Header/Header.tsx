@@ -53,14 +53,19 @@ const Header = (props: any) => {
 
             <div className='col-10 text-right'>
               <span className='header-controls'>
-                {isAuthenticated && (
+                {!isAuthenticated && (
                   <>
-                    <Button className='mobile-auth-btn' color='secondary' outline>
-                      {t('login.submit')}
-                    </Button>
-                    <Button className='mobile-auth-btn ml-2 mr-4' color='secondary'>
-                      {t('button.sign_up')}
-                    </Button>
+                    <Link to="/login" className="link-raw">
+                      <Button className='mobile-auth-btn' color='secondary' outline>
+                        {t('login.submit')}
+                      </Button>
+                    </Link>
+
+                    <Link to="/register" className="link-raw">
+                      <Button className='mobile-auth-btn ml-2 mr-4' color='secondary'>
+                        {t('button.sign_up')}
+                      </Button>
+                    </Link>
                   </>
                 )}
 
