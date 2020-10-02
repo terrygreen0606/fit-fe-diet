@@ -1,34 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { InputError } from 'types';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
+import { saveResetPassword } from 'api';
 import { toast } from 'react-toastify';
-import { resetPassword } from 'api';
-import { InputError } from 'types';
 import Helmet from 'react-helmet';
 
 // Components
-import ResetForm from './ResetForm';
-import ResetInfo from './ResetInfo';
+import SaveForm from './SaveForm';
+import SaveInfo from './SaveInfo';
 
+import FormGroup from 'components/common/Forms/FormGroup';
+import InputField from 'components/common/Forms/InputField';
+import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
 import WithTranslate from 'components/hoc/WithTranslate';
 
 import '../LoginView/LoginView.sass';
 
-const ResetPassword = (props: any) => {
+const SaveNewPassword = (props: any) => {
   const [resetPassForm, setResetPassForm] = useState({
-    email: ''
+    password: null,
+    password2: null
   });
 
   const [resetPassErrors, setResetPassErrors] = useState<InputError[]>([]);
 
   const [resetPassLoading, setResetPassLoading] = useState<boolean>(false);
 
-  const [resetEmailSuccess, setResetEmailSuccess] = useState<boolean>(false);
+  const [resetPasswordSuccess, setResetPasswordSuccess] = useState<boolean>(false);
+
+  const validateOnChange = (name: string, value: any, event, element?) => {
+    validateFieldOnChange(
+      name,
+      value,
+      event,
+      resetPassForm,
+      setResetPassForm,
+      resetPassErrors,
+      setResetPassErrors,
+      element
+    );
+  };
+
+  const getFieldErrors = (field: string) =>
+    getFieldErrorsUtil(field, resetPassErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
@@ -48,20 +72,20 @@ const ResetPassword = (props: any) => {
     if (!hasError) {
       setResetPassLoading(true);
 
-      resetPassword(resetPassForm.email)
+      saveResetPassword(resetPassForm.password, props.match.params.token)
         .then(response => {
           setResetPassLoading(false);
 
           if (response.data.success) {
-            setResetEmailSuccess(true);
-            toast.success(t('reset_password.email.success'));
+            setResetPasswordSuccess(true);
+            toast.success(t('reset_password.pass.success'));
           } else {
-            toast.error(t('reset_password.email.error'));
+            toast.error(t('reset_password.pass.error'));
           }
         })
         .catch(error => {
           setResetPassLoading(false);
-          toast.error(t('reset_password.email.error'));
+          toast.error(t('reset_password.pass.error'));
         });
     }
   };
@@ -69,20 +93,20 @@ const ResetPassword = (props: any) => {
   return (
     <>
       <Helmet>
-        <title>{t('app.title.reset_password')}</title>
+        <title>{t('app.title.reset_password.new')}</title>
       </Helmet>
 
       <div className='loginScreen mt-3 mt-md-5'>
         <h3 className='loginScreen_title d-none d-lg-inline-block'>
-          {t('reset_password.title')}
+          {t('reset_password.new.title')}
         </h3>
 
         <span className='mainHeader_logo d-lg-none-i' />
 
-        {resetEmailSuccess ? (
-          <ResetInfo localePhrases={props.localePhrases || {}} />
+        {resetPasswordSuccess ? (
+          <SaveInfo localePhrases={props.localePhrases || {}} />
         ) : (
-          <ResetForm
+          <SaveForm
             formSubmit={resetPassSubmit}
             form={resetPassForm}
             setForm={setResetPassForm}
@@ -97,4 +121,5 @@ const ResetPassword = (props: any) => {
   );
 };
 
-export default WithTranslate(ResetPassword);
+export default WithTranslate(SaveNewPassword);
+

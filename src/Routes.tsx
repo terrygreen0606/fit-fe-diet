@@ -12,6 +12,7 @@ import { routes } from 'constants/routes';
 const LoginView = React.lazy(() => import('./views/LoginView'));
 const RegisterView = React.lazy(() => import('./views/RegisterView'));
 const ResetPassword = React.lazy(() => import('./views/ResetPassword'));
+const SaveNewPassword = React.lazy(() => import('./views/SaveNewPassword'));
 const MealPlanView = React.lazy(() => import('./views/MealPlanView'));
 const TrainingsView = React.lazy(() => import('./views/TrainingsView'));
 const ShoppingListView = React.lazy(() => import('./views/ShoppingListView'));
@@ -294,6 +295,16 @@ const Routes = () => (
       component={(props: any) => (
         <BasePage {...props}>
           <ResetPassword {...props} />
+        </BasePage>
+      )}
+      exact
+    />
+
+    <AuthRoute
+      path={routes.saveNewPasword}
+      component={(props: any) => (
+        <BasePage {...props}>
+          <SaveNewPassword {...props} />
         </BasePage>
       )}
       exact

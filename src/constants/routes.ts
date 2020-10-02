@@ -21,6 +21,7 @@ export const routes = {
   login: '/login',
   register: '/register',
   resetPasword: '/reset-password',
+  saveNewPasword: '/reset-password/:token',
   recipeFullView: '/recipe/:recipeId',
   afterSignup: '/after-signup',
   checkout: '/checkout',
