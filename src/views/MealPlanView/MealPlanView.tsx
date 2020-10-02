@@ -127,7 +127,7 @@ const MealPlanView = (props: any) => {
           today.setDate(today.getDate() + i);
           updatedDays.push({
             id: i,
-            dayLabel: today.toLocaleDateString(getLangUser(), { weekday: 'long' }).substr(0, 3),
+            dayLabel: today.toLocaleDateString(getLangUser(), { weekday: 'short' }),
             dayNumber: today.toLocaleDateString(getLangUser(), { day: 'numeric' }),
             dayFullInfo: today.toLocaleDateString(getLangUser(), {
               weekday: 'long',
