@@ -1,4 +1,3 @@
-/* eslint-disable operator-linebreak */
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -11,6 +10,7 @@ import {
   getLangUser,
 } from 'utils';
 import { routes } from 'constants/routes';
+import { costLevelLabel } from 'constants/costLevelLabel';
 import {
   getMealPlan,
   likeRecipe,
@@ -62,12 +62,6 @@ const MealPlanView = (props: any) => {
   const [todayActivities, setTodayActivities] = useState(['workout_add']);
 
   const { settings, storage } = props;
-
-  const costLevelLabel = {
-    1: '$',
-    2: '$$',
-    3: '$$$',
-  };
 
   const [days, setDays] = useState<any[]>([]);
 

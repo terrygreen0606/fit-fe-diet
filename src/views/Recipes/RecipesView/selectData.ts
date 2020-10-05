@@ -29,9 +29,22 @@ export const selectStyles = {
       border: '1px solid #0c57b9 !important',
     },
   }),
+  valueContainer: (styles) => ({
+    ...styles,
+    padding: 0,
+    overflow: 'visible',
+  }),
   placeholder: (styles) => ({
     ...styles,
     fontSize: '26px',
+    lineHeight: '1.2',
+    fontWeight: 'bold',
+    color: '#fff',
+  }),
+  singleValue: (styles) => ({
+    ...styles,
+    fontSize: '26px',
+    lineHeight: '1.2',
     fontWeight: 'bold',
     color: '#fff',
   }),
@@ -41,6 +54,15 @@ export const selectStyles = {
     textAlign: 'left',
     fontSize: '26px',
     color: '#fff',
+  }),
+  option: (styles) => ({
+    ...styles,
+    padding: '20px 26px',
+    textAlign: 'left',
+    fontSize: '26px',
+    lineHeight: '1.2',
+    color: '#fff',
+    backgroundColor: 'transparent',
     cursor: 'pointer',
     transition: 'background-color 0.2s ease',
     ':hover': {

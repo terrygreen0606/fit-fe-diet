@@ -24,5 +24,6 @@ module.exports = {
     '@typescript-eslint/indent': 'off',
     'no-return-assign': 'off',
     'react/no-danger': 'off',
+    'operator-linebreak': 'off',
   },
 };

@@ -3,8 +3,10 @@ import Select from 'react-select';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import classnames from 'classnames';
 
 import { routes } from 'constants/routes';
+import { costLevelLabel } from 'constants/costLevelLabel';
 import { getTranslate } from 'utils';
 import {
   getRecipeCuisines,
@@ -21,10 +23,11 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import ContentLoading from 'components/hoc/ContentLoading';
 import Pagination from 'components/common/Pagination';
+import useDebounce from 'components/hooks/useDebounce';
 
 import './RecipesView.sass';
 
-import { selectStyles } from './selectStyles';
+import { selectStyles } from './selectData';
 
 const RecipesView = (props: any) => {
   const [recipesList, setRecipesList] = useState<any[]>([]);
@@ -43,24 +46,19 @@ const RecipesView = (props: any) => {
 
   const [isLoadingPage, setLoadingPage] = useState<boolean>(true);
 
-  const [recipesSearch, setRecipesSearch] = useState<string>('');
-
   const [paramsToGetRecipes, setParamsToGetRecipes] = useState<any>({
     privateRecipes: 0,
     liked: 0,
     cuisinesIds: [],
     page: 1,
-    sort: '',
+    filterType: 0,
+    filter: '',
   });
+
+  const debouncedSearch = useDebounce(paramsToGetRecipes.filter, 500);
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
-
-  const costLevelLabel = {
-    1: '$',
-    2: '$$',
-    3: '$$$',
-  };
 
   useEffect(() => {
     getRecipeCuisines().then((response) => {
@@ -69,16 +67,45 @@ const RecipesView = (props: any) => {
   }, []);
 
   useEffect(() => {
+    if (debouncedSearch) {
+      getRecipesList(
+        paramsToGetRecipes.privateRecipes,
+        paramsToGetRecipes.liked,
+        paramsToGetRecipes.cuisinesIds,
+        paramsToGetRecipes.page,
+        paramsToGetRecipes.filterType,
+        paramsToGetRecipes.filter,
+      ).then((response) => {
+        const { data } = response.data;
+
+        console.log('debounce data', data);
+
+        setRecipesList([...data.recipes]);
+
+        setRecipesListPageInfo({
+          ...recipesListPageInfo,
+          page: data.page,
+          total: data.total,
+          total_pages: data.total_pages,
+        });
+
+        setLoadingPage(false);
+      });
+    }
+  }, [debouncedSearch]);
+
+  useEffect(() => {
     getRecipesList(
       paramsToGetRecipes.privateRecipes,
       paramsToGetRecipes.liked,
       paramsToGetRecipes.cuisinesIds,
       paramsToGetRecipes.page,
-      paramsToGetRecipes.sort,
+      paramsToGetRecipes.filterType,
+      paramsToGetRecipes.filter,
     ).then((response) => {
       const { data } = response.data;
 
-      console.log(data);
+      console.log('data', data);
 
       setRecipesList([...data.recipes]);
 
@@ -96,7 +123,7 @@ const RecipesView = (props: any) => {
     paramsToGetRecipes.liked,
     paramsToGetRecipes.cuisinesIds,
     paramsToGetRecipes.page,
-    paramsToGetRecipes.sort,
+    paramsToGetRecipes.filterType,
   ]);
 
   const likeRecipeFunc = (itemIndex: number, recipeId: string) => {
@@ -129,6 +156,30 @@ const RecipesView = (props: any) => {
     setParamsToGetRecipes({
       ...paramsToGetRecipes,
       page: value,
+    });
+  };
+
+  const changeCuisineList = (item, itemIndex: number) => {
+    const updatedCuisinesList = [...cuisinesList];
+    const cuisinesIds = [...paramsToGetRecipes.cuisinesIds];
+
+    if (!item.isActive) {
+      updatedCuisinesList[itemIndex].isActive = true;
+      setCuisinesList([...updatedCuisinesList]);
+      cuisinesIds.push(item.id);
+    } else {
+      updatedCuisinesList[itemIndex].isActive = false;
+      setCuisinesList([...updatedCuisinesList]);
+      cuisinesIds.find((findItem, findItemIndex) => {
+        if (findItem === item.id) {
+          cuisinesIds.splice(findItemIndex, 1);
+        }
+      });
+    }
+
+    setParamsToGetRecipes({
+      ...paramsToGetRecipes,
+      cuisinesIds: [...cuisinesIds],
     });
   };
 
@@ -183,8 +234,14 @@ const RecipesView = (props: any) => {
 
                 <div className='recipes-search-wrap'>
                   <InputField
-                    value={recipesSearch}
-                    onChange={(e) => setRecipesSearch(e.target.value)}
+                    value={paramsToGetRecipes.filter}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      setParamsToGetRecipes({
+                        ...paramsToGetRecipes,
+                        filter: e.target.value,
+                      });
+                    }}
                     searchBar
                     block
                     placeholder={t('recipe.search_by_recipes')}
@@ -195,16 +252,39 @@ const RecipesView = (props: any) => {
                       block
                       styles={selectStyles}
                       isSearchable={false}
+                      defaultValue={{
+                        label: t('recipe.search_by_recipes'),
+                        value: 0,
+                      }}
+                      options={[
+                        {
+                          label: t('recipe.search_by_recipes'),
+                          value: 0,
+                        },
+                        {
+                          label: t('recipe.search_by_ingredients'),
+                          value: 1,
+                        },
+                      ]}
+                      onChange={(e) => {
+                        setParamsToGetRecipes({
+                          ...paramsToGetRecipes,
+                          filterType: e.value,
+                        });
+                      }}
                     />
                   </div>
                 </div>
 
                 <div className='recipes-search-tags'>
-                  {cuisinesList.map((cuisineItem) => (
+                  {cuisinesList.map((cuisineItem, cuisineItemIndex) => (
                     <button
                       key={cuisineItem.id}
                       type='button'
-                      className='recipes-search-tags-btn'
+                      onClick={() => changeCuisineList(cuisineItem, cuisineItemIndex)}
+                      className={classnames('recipes-search-tags-btn', {
+                        active: cuisineItem.isActive,
+                      })}
                     >
                       <img
                         src={cuisineItem.image}
