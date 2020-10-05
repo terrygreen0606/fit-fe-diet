@@ -136,7 +136,8 @@ const MealPlanView = (props: any) => {
 
         getMealPlan().then((response) => {
           const updatedMealPlan = [];
-          response.data.data.list.forEach((item, itemIndex) => {
+          const { list } = response.data.data;
+          list.forEach((item, itemIndex) => {
             if (itemIndex === 0) {
               updatedMealPlan.push({
                 date_ts: item.date_ts,
@@ -157,6 +158,9 @@ const MealPlanView = (props: any) => {
             }
           });
           setMealPlan(updatedMealPlan);
+          if (updatedMealPlan.length === 7) {
+            getMealPlanText().then((res) => setShareText(res.data.data.content));
+          }
         }).finally(() => {
           setIsMealPlanLoading(false);
         });
@@ -165,8 +169,6 @@ const MealPlanView = (props: any) => {
         const currentDate = new Date().valueOf();
         const diff = (paidBeforeDate - currentDate) / (60 * 60 * 24 * 1000);
         setDaysToEndSubscription(Math.round(diff));
-
-        getMealPlanText().then((response) => setShareText(response.data.data.content));
         setIsNoAccess(false);
       } else {
         setIsNoAccess(true);
