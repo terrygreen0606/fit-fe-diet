@@ -60,8 +60,7 @@ const ShoppingListPopup = ({
 
   useEffect(() => {
     let cleanComponent = false;
-    debugger;
-    if (settings.is_private && !cleanComponent) {
+    if (visible && settings.is_private && !cleanComponent) {
       if (settings.paid_until > 0) {
         getShoppingList(2, dateSync).then((response) => {
           const { list } = response.data.data;
@@ -70,7 +69,7 @@ const ShoppingListPopup = ({
             item.is_disable = false;
           });
 
-          setShoppingList(list);
+          setShoppingList([...list]);
 
           setDateSync(response.data.data.date_sync);
         }).finally(() => {
@@ -83,7 +82,7 @@ const ShoppingListPopup = ({
       }
     }
     return () => cleanComponent = true;
-  }, [settings.paid_until, settings.is_private]);
+  }, [visible, settings.paid_until, settings.is_private]);
 
   const syncNumberInShopCart = (array = []) => {
     const notBoughtIngredients = (array.length > 0 ? array : shoppingList).filter((item) => !item.is_bought).length;
