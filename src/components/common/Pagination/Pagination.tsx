@@ -7,64 +7,91 @@ import { ReactComponent as ArrowLeftGray } from 'assets/img/icons/arrow-left-gra
 import { ReactComponent as ArrowRightGray } from 'assets/img/icons/arrow-right-gray-icon.svg';
 
 type PaginationProps = {
-  activeItem: number,
-  totalPages: number,
+  currentItem: number,
+  lastPage: number,
   getClickedPage: Function,
+  quantityButtons: number,
 };
 
 const Pagination = ({
-  activeItem,
-  totalPages,
+  currentItem,
+  lastPage,
   getClickedPage,
+  quantityButtons,
 }: PaginationProps) => {
-  const [quantity, setQuantity] = useState<any[]>([]);
+  const [buttons, setButtons] = useState<any[]>([]);
+  const [activeBtn, setActiveBtn] = useState<number>();
 
   useEffect(() => {
-    setQuantity([
-      activeItem,
-      activeItem + 1,
-      activeItem + 2,
-      activeItem + 3,
-      activeItem + 4,
-      activeItem + 5,
-    ]);
-  }, [activeItem]);
+    const updatedButtons = [];
+
+    for (let i = 0; i < quantityButtons; i++) {
+      if (i === 0) setActiveBtn(currentItem);
+      updatedButtons.push(currentItem + i);
+    }
+
+    setButtons([...updatedButtons]);
+  }, []);
+
+  const handlerClick = (clickedItem) => {
+    getClickedPage(clickedItem);
+
+    setActiveBtn(clickedItem);
+
+    if (clickedItem > Math.round(quantityButtons / 2)) {
+      const updatedButtons = [];
+
+      for (let i = 0; i < quantityButtons; i++) {
+        updatedButtons.push(clickedItem + i - 2);
+      }
+
+      setButtons([...updatedButtons]);
+    }
+
+    if (lastPage - clickedItem < Math.round(quantityButtons / 2)) {
+      const updatedButtons = [];
+
+      for (let i = 0; i < quantityButtons; i++) {
+        updatedButtons.push(lastPage + i - quantityButtons + 1);
+      }
+
+      setButtons([...updatedButtons]);
+    }
+  };
 
   return (
     <ul className='pagination'>
       <li className='pagination__item pagination__item_arrow'>
         <button
           type='button'
-          disabled={activeItem === 1}
-          onClick={() => getClickedPage(activeItem - 1)}
+          disabled={activeBtn === 1}
+          onClick={() => handlerClick(activeBtn - 1)}
           className='pagination__item-btn pagination__item-btn_arrow'
         >
           <ArrowLeftGray />
         </button>
       </li>
-      {quantity.map((item) => (
-        item <= totalPages ? (
-          <li
-            key={item}
-            className='pagination__item'
+      {buttons.map((item) => (
+        <li
+          key={item}
+          className='pagination__item'
+        >
+          <button
+            type='button'
+            onClick={() => handlerClick(item)}
+            className={classnames('pagination__item-btn', {
+              active: item === activeBtn,
+            })}
           >
-            <button
-              type='button'
-              onClick={() => getClickedPage(item)}
-              className={classnames('pagination__item-btn', {
-                active: item === activeItem,
-              })}
-            >
-              {item}
-            </button>
-          </li>
-        ) : null
+            {item}
+          </button>
+        </li>
       ))}
       <li className='pagination__item pagination__item_arrow'>
         <button
           type='button'
-          disabled={activeItem === totalPages}
-          onClick={() => getClickedPage(activeItem + 1)}
+          disabled={activeBtn === lastPage}
+          onClick={() => handlerClick(activeBtn + 1)}
           className='pagination__item-btn pagination__item-btn_arrow'
         >
           <ArrowRightGray />

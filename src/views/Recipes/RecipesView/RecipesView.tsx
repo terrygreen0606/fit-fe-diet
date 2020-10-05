@@ -103,6 +103,8 @@ const RecipesView = (props: any) => {
     ).then((response) => {
       const { data } = response.data;
 
+      console.log(data);
+
       setRecipesList([...data.recipes]);
 
       setRecipesListPageInfo({
@@ -148,13 +150,6 @@ const RecipesView = (props: any) => {
     });
   };
 
-  const getClickedPage = (value: number) => {
-    setParamsToGetRecipes({
-      ...paramsToGetRecipes,
-      page: value,
-    });
-  };
-
   const changeCuisineList = (item, itemIndex: number) => {
     const updatedCuisinesList = [...cuisinesList];
     const cuisinesIds = [...paramsToGetRecipes.cuisinesIds];
@@ -176,6 +171,13 @@ const RecipesView = (props: any) => {
     setParamsToGetRecipes({
       ...paramsToGetRecipes,
       cuisinesIds: [...cuisinesIds],
+    });
+  };
+
+  const getClickedPage = (value: number) => {
+    setParamsToGetRecipes({
+      ...paramsToGetRecipes,
+      page: value,
     });
   };
 
@@ -323,9 +325,10 @@ const RecipesView = (props: any) => {
               ))}
             </div>
             <Pagination
-              activeItem={recipesListPageInfo.page}
-              totalPages={recipesListPageInfo.total_pages}
+              currentItem={1}
+              lastPage={recipesListPageInfo.total_pages}
               getClickedPage={getClickedPage}
+              quantityButtons={5}
             />
           </div>
         </section>
