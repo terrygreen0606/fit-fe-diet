@@ -60,15 +60,21 @@ const FavouriteRecipesView = (props: any) => {
             <div className='row'>
               <div className='col-xl-6'>
                 <ul className='recipes-header-tabs page-tabs'>
-                  <Link to={routes.recipes} className='page-tabs-item'>
-                    {t('common.everything')}
-                  </Link>
-                  <Link to={routes.savedRecipes} className='page-tabs-item'>
-                    {t('common.saved')}
-                  </Link>
-                  <Link to={routes.favouritesRecipes} className='page-tabs-item active'>
-                    {t('common.favourites')}
-                  </Link>
+                  <li className='page-tabs-list-item'>
+                    <Link to={routes.recipes} className='page-tabs-item'>
+                      {t('common.everything')}
+                    </Link>
+                  </li>
+                  <li className='page-tabs-list-item'>
+                    <Link to={routes.savedRecipes} className='page-tabs-item'>
+                      {t('common.saved')}
+                    </Link>
+                  </li>
+                  <li className='page-tabs-list-item'>
+                    <Link to={routes.favouritesRecipes} className='page-tabs-item active'>
+                      {t('common.favourites')}
+                    </Link>
+                  </li>
                 </ul>
               </div>
               <div className='col-xl-6 text-xl-right'>

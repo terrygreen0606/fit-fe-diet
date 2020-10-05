@@ -195,15 +195,21 @@ const RecipesView = (props: any) => {
           />
           <div className='recipes-header'>
             <ul className='recipes-header-tabs page-tabs'>
-              <Link to={routes.recipes} className='page-tabs-item active'>
-                {t('common.everything')}
-              </Link>
-              <Link to={routes.savedRecipes} className='page-tabs-item'>
-                {t('common.saved')}
-              </Link>
-              <Link to={routes.favouritesRecipes} className='page-tabs-item'>
-                {t('common.favourites')}
-              </Link>
+              <li className='page-tabs-list-item'>
+                <Link to={routes.recipes} className='page-tabs-item active'>
+                  {t('common.everything')}
+                </Link>
+              </li>
+              <li className='page-tabs-list-item'>
+                <Link to={routes.savedRecipes} className='page-tabs-item'>
+                  {t('common.saved')}
+                </Link>
+              </li>
+              <li className='page-tabs-list-item'>
+                <Link to={routes.favouritesRecipes} className='page-tabs-item'>
+                  {t('common.favourites')}
+                </Link>
+              </li>
             </ul>
             <div className='recipes-header-create-recipe'>
               <Link to='/recipe/create' className='page-create-btn'>
