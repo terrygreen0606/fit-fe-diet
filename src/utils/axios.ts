@@ -6,7 +6,7 @@ const instance = axios.create({
   baseURL,
 });
 
-axios.interceptors.request.use(config => {
+instance.interceptors.request.use(config => {
   config.headers['set-cookie'] =  document.cookie;
   return config;
 });
