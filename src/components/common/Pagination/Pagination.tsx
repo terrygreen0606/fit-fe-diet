@@ -38,21 +38,30 @@ const Pagination = ({
 
     setActiveBtn(clickedItem);
 
-    if (clickedItem > Math.round(quantityButtons / 2)) {
-      const updatedButtons = [];
-
-      for (let i = 0; i < quantityButtons; i++) {
-        updatedButtons.push(clickedItem + i - 2);
-      }
-
-      setButtons([...updatedButtons]);
-    }
-
     if (lastPage - clickedItem < Math.round(quantityButtons / 2)) {
       const updatedButtons = [];
 
       for (let i = 0; i < quantityButtons; i++) {
         updatedButtons.push(lastPage + i - quantityButtons + 1);
+      }
+
+      setButtons([...updatedButtons]);
+      return;
+    }
+
+    if (quantityButtons === 3) {
+      const updatedButtons = [];
+
+      for (let i = 0; i < quantityButtons; i++) {
+        updatedButtons.push(clickedItem + i - 1);
+      }
+
+      setButtons([...updatedButtons]);
+    } else if (clickedItem > Math.round(quantityButtons / 2)) {
+      const updatedButtons = [];
+
+      for (let i = 0; i < quantityButtons; i++) {
+        updatedButtons.push(clickedItem + i - 2);
       }
 
       setButtons([...updatedButtons]);

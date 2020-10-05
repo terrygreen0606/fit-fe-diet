@@ -103,8 +103,6 @@ const RecipesView = (props: any) => {
     ).then((response) => {
       const { data } = response.data;
 
-      console.log(data);
-
       setRecipesList([...data.recipes]);
 
       setRecipesListPageInfo({
@@ -234,7 +232,6 @@ const RecipesView = (props: any) => {
                   <InputField
                     value={paramsToGetRecipes.filter}
                     onChange={(e) => {
-                      console.log(e.target.value);
                       setParamsToGetRecipes({
                         ...paramsToGetRecipes,
                         filter: e.target.value,
@@ -303,32 +300,38 @@ const RecipesView = (props: any) => {
         <section className='recipes-list-sect nutrition-plan-list'>
           <div className='container'>
             <div className='row'>
-              {recipesList.map((item, itemIndex) => (
-                <div
-                  key={item.id}
-                  className='col-md-4'
-                >
-                  <NutritionPlanCard
-                    title={item.name_i18n}
-                    desc={item.preparation_i18n ? `${item.preparation_i18n.substr(0, 50)}...` : ''}
-                    imgSrc={item.image_url}
-                    linkToRecipe={routes.getRecipeFullView(item.id)}
-                    time={item.time}
-                    costLevel={costLevelLabel[item.cost_level]}
-                    favouriteActive={item.is_liked}
-                    checkedActive={item.is_prepared}
-                    onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
-                    onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
-                    onClickShopCart={() => addToShoppingListByRecipes([item.id])}
-                  />
-                </div>
-              ))}
+              {recipesList.length > 0 ? (
+                recipesList.map((item, itemIndex) => (
+                  <div
+                    key={item.id}
+                    className='col-md-4'
+                  >
+                    <NutritionPlanCard
+                      title={item.name_i18n}
+                      desc={item.preparation_i18n ? `${item.preparation_i18n.substr(0, 50)}...` : ''}
+                      imgSrc={item.image_url}
+                      linkToRecipe={routes.getRecipeFullView(item.id)}
+                      time={item.time}
+                      costLevel={costLevelLabel[item.cost_level]}
+                      favouriteActive={item.is_liked}
+                      checkedActive={item.is_prepared}
+                      onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
+                      onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
+                      onClickShopCart={() => addToShoppingListByRecipes([item.id])}
+                    />
+                  </div>
+                ))
+              ) : (
+                  <h4 className='text-center'>
+                    {t('recipe.not_found')}
+                  </h4>
+                )}
             </div>
             <Pagination
               currentItem={1}
               lastPage={recipesListPageInfo.total_pages}
               getClickedPage={getClickedPage}
-              quantityButtons={5}
+              quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
             />
           </div>
         </section>
