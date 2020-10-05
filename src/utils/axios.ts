@@ -6,4 +6,9 @@ const instance = axios.create({
   baseURL,
 });
 
+axios.interceptors.request.use(config => {
+  config.headers['set-cookie'] =  document.cookie;
+  return config;
+});
+
 export default instance;

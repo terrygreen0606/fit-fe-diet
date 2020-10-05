@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
-  getTranslate,
-  getCookie
+  getTranslate
 } from 'utils';
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
@@ -113,12 +112,6 @@ const JoinStep = (props: any) => {
       diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code),
       act_level
     };
-
-    const ref_code = getCookie('ref_code');
-
-    if (ref_code) {
-      profilePayload.ref_code = ref_code;
-    }
 
     return {
       ...profilePayload
