@@ -70,6 +70,10 @@ const RegisterModal = (props: RegisterModalProps) => {
     if (currentRegisterStep !== null) {
       setRegisterStep(currentRegisterStep);
     }
+
+    if (registerView) {
+      props.history.push(`/register#${registerView.toLowerCase()}`);
+    }
   }, [registerView]);
 
   const getRegisterStepView = (registerView: RegisterViewType) => getRegisterStepViewUtil(
