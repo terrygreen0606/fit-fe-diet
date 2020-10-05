@@ -163,6 +163,8 @@ const MealPlanView = (props: any) => {
             }
           });
           setMealPlan(updatedMealPlan);
+        }).finally(() => {
+          setIsMealPlanLoading(false);
         });
 
         const paidBeforeDate = new Date(settings.paid_until * 1000).valueOf();
@@ -180,12 +182,6 @@ const MealPlanView = (props: any) => {
 
     return () => cleanComponent = true;
   }, [settings.paid_until, settings.is_private]);
-
-  useEffect(() => {
-    if (mealPlan.length > 0) {
-      setIsMealPlanLoading(false);
-    }
-  }, [mealPlan.length]);
 
   const likeRecipeFunc = (mealPlanItemIndex: number, recipeItemIndex: number, recipeId: string) => {
     const updatedMealPlan = [...mealPlan];
