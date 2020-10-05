@@ -67,29 +67,27 @@ const RecipesView = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (debouncedSearch) {
-      getRecipesList(
-        paramsToGetRecipes.privateRecipes,
-        paramsToGetRecipes.liked,
-        paramsToGetRecipes.cuisinesIds,
-        paramsToGetRecipes.page,
-        paramsToGetRecipes.filterType,
-        paramsToGetRecipes.filter,
-      ).then((response) => {
-        const { data } = response.data;
+    getRecipesList(
+      paramsToGetRecipes.privateRecipes,
+      paramsToGetRecipes.liked,
+      paramsToGetRecipes.cuisinesIds,
+      paramsToGetRecipes.page,
+      paramsToGetRecipes.filterType,
+      paramsToGetRecipes.filter,
+    ).then((response) => {
+      const { data } = response.data;
 
-        setRecipesList([...data.recipes]);
+      setRecipesList([...data.recipes]);
 
-        setRecipesListPageInfo({
-          ...recipesListPageInfo,
-          page: data.page,
-          total: data.total,
-          total_pages: data.total_pages,
-        });
-
-        setLoadingPage(false);
+      setRecipesListPageInfo({
+        ...recipesListPageInfo,
+        page: data.page,
+        total: data.total,
+        total_pages: data.total_pages,
       });
-    }
+
+      setLoadingPage(false);
+    });
   }, [debouncedSearch]);
 
   useEffect(() => {
@@ -299,40 +297,42 @@ const RecipesView = (props: any) => {
 
         <section className='recipes-list-sect nutrition-plan-list'>
           <div className='container'>
-            <div className='row'>
-              {recipesList.length > 0 ? (
-                recipesList.map((item, itemIndex) => (
-                  <div
-                    key={item.id}
-                    className='col-md-4'
-                  >
-                    <NutritionPlanCard
-                      title={item.name_i18n}
-                      desc={item.preparation_i18n ? `${item.preparation_i18n.substr(0, 50)}...` : ''}
-                      imgSrc={item.image_url}
-                      linkToRecipe={routes.getRecipeFullView(item.id)}
-                      time={item.time}
-                      costLevel={costLevelLabel[item.cost_level]}
-                      favouriteActive={item.is_liked}
-                      checkedActive={item.is_prepared}
-                      onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
-                      onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
-                      onClickShopCart={() => addToShoppingListByRecipes([item.id])}
-                    />
-                  </div>
-                ))
-              ) : (
-                  <h4 className='text-center'>
-                    {t('recipe.not_found')}
-                  </h4>
-                )}
-            </div>
-            <Pagination
-              currentItem={1}
-              lastPage={recipesListPageInfo.total_pages}
-              getClickedPage={getClickedPage}
-              quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
-            />
+            {recipesList.length > 0 ? (
+              <>
+                <div className='row'>
+                  {recipesList.map((item, itemIndex) => (
+                    <div
+                      key={item.id}
+                      className='col-md-4'
+                    >
+                      <NutritionPlanCard
+                        title={item.name_i18n}
+                        desc={item.preparation_i18n ? `${item.preparation_i18n.substr(0, 50)}...` : ''}
+                        imgSrc={item.image_url}
+                        linkToRecipe={routes.getRecipeFullView(item.id)}
+                        time={item.time}
+                        costLevel={costLevelLabel[item.cost_level]}
+                        favouriteActive={item.is_liked}
+                        checkedActive={item.is_prepared}
+                        onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
+                        onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
+                        onClickShopCart={() => addToShoppingListByRecipes([item.id])}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <Pagination
+                  currentItem={1}
+                  lastPage={recipesListPageInfo.total_pages}
+                  getClickedPage={getClickedPage}
+                  quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
+                />
+              </>
+            ) : (
+                <h4 className='text-center mb-5'>
+                  {t('recipe.not_found')}
+                </h4>
+              )}
           </div>
         </section>
       </ContentLoading>

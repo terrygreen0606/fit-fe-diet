@@ -10,6 +10,7 @@ type PaginationProps = {
   currentItem: number,
   lastPage: number,
   getClickedPage: Function,
+  // must be greater than 2
   quantityButtons: number,
 };
 
@@ -31,7 +32,7 @@ const Pagination = ({
     }
 
     setButtons([...updatedButtons]);
-  }, []);
+  }, [currentItem, lastPage, quantityButtons]);
 
   const handlerClick = (clickedItem) => {
     getClickedPage(clickedItem);
