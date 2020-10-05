@@ -59,31 +59,16 @@ const FavouriteRecipesView = (props: any) => {
           <div className='saved-recipes__head'>
             <div className='row'>
               <div className='col-xl-6'>
-                <ul className='saved-recipes__head-tabs'>
-                  <li>
-                    <Link
-                      to='/recipes'
-                      className='saved-recipes__head-tabs-item'
-                    >
-                      {t('common.everything')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to='/recipes/saved'
-                      className='saved-recipes__head-tabs-item'
-                    >
-                      {t('common.saved')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to='/recipes/favourites'
-                      className='saved-recipes__head-tabs-item active'
-                    >
-                      {t('common.favourites')}
-                    </Link>
-                  </li>
+                <ul className='recipes-header-tabs page-tabs'>
+                  <Link to={routes.recipes} className='page-tabs-item'>
+                    {t('common.everything')}
+                  </Link>
+                  <Link to={routes.savedRecipes} className='page-tabs-item'>
+                    {t('common.saved')}
+                  </Link>
+                  <Link to={routes.favouritesRecipes} className='page-tabs-item active'>
+                    {t('common.favourites')}
+                  </Link>
                 </ul>
               </div>
               <div className='col-xl-6 text-xl-right'>

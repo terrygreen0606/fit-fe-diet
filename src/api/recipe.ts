@@ -54,3 +54,28 @@ export const addRecipeNote = (
   );
 
 export const getMealTimes = () => axios.get('recipe/mealtimes');
+
+export const getRecipesList = (
+  privateRecipes: 0 | 1 = 0,
+  liked: 0 | 1 = 0,
+  cuisinesIds: any[] = [],
+  page: number = 1,
+  sort: string = '',
+) => {
+  if (cuisinesIds.length === 0) {
+    return axios.get(`recipe/?private=${privateRecipes}&liked=${liked}&page=${page}&sort=${sort}`);
+  }
+
+  let cuisineIdsQuery = '';
+  cuisinesIds.forEach((cuisineId, cuisineIdIndex) => {
+    if (cuisineIdIndex === 0) {
+      cuisineIdsQuery += `cuisines_ids[]=${cuisineId}`;
+    } else {
+      cuisineIdsQuery += `&cuisines_ids[]=${cuisineId}`;
+    }
+  });
+
+  return axios.get(
+    `recipe/?${cuisineIdsQuery}&private=${privateRecipes}&liked=${liked}&page=${page}&sort=${sort}`,
+  );
+};

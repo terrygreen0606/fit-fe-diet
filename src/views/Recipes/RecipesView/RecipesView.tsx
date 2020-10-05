@@ -5,31 +5,132 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
-import { getImagePath, getTranslate } from 'utils';
-import { getRecipeCuisines } from 'api';
+import { getTranslate } from 'utils';
+import {
+  getRecipeCuisines,
+  getRecipesList,
+  likeRecipe,
+  prepareRecipe,
+  addToShoppingListByRecipes,
+} from 'api';
 
 // Components
-import Button from 'components/common/Forms/Button';
 import InputField from 'components/common/Forms/InputField';
 import NutritionPlanCard from 'components/NutritionPlanCard';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
+import ContentLoading from 'components/hoc/ContentLoading';
+import Pagination from 'components/common/Pagination';
 
 import './RecipesView.sass';
 
 import { selectStyles } from './selectStyles';
 
 const RecipesView = (props: any) => {
-  const [recipesSearch, setRecipesSearch] = useState('');
+  const [recipesList, setRecipesList] = useState<any[]>([]);
+
+  const [recipesListPageInfo, setRecipesListPageInfo] = useState<{
+    page: number,
+    total: number,
+    total_pages: number,
+  }>({
+    page: null,
+    total: null,
+    total_pages: null,
+  });
+
+  const [cuisinesList, setCuisinesList] = useState<any[]>([]);
+
+  const [isLoadingPage, setLoadingPage] = useState<boolean>(true);
+
+  const [recipesSearch, setRecipesSearch] = useState<string>('');
+
+  const [paramsToGetRecipes, setParamsToGetRecipes] = useState<any>({
+    privateRecipes: 0,
+    liked: 0,
+    cuisinesIds: [],
+    page: 1,
+    sort: '',
+  });
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
+  const costLevelLabel = {
+    1: '$',
+    2: '$$',
+    3: '$$$',
+  };
+
   useEffect(() => {
     getRecipeCuisines().then((response) => {
-      console.log('response', response.data.data);
+      setCuisinesList([...response.data.data]);
     });
   }, []);
+
+  useEffect(() => {
+    getRecipesList(
+      paramsToGetRecipes.privateRecipes,
+      paramsToGetRecipes.liked,
+      paramsToGetRecipes.cuisinesIds,
+      paramsToGetRecipes.page,
+      paramsToGetRecipes.sort,
+    ).then((response) => {
+      const { data } = response.data;
+
+      console.log(data);
+
+      setRecipesList([...data.recipes]);
+
+      setRecipesListPageInfo({
+        ...recipesListPageInfo,
+        page: data.page,
+        total: data.total,
+        total_pages: data.total_pages,
+      });
+
+      setLoadingPage(false);
+    });
+  }, [
+    paramsToGetRecipes.privateRecipes,
+    paramsToGetRecipes.liked,
+    paramsToGetRecipes.cuisinesIds,
+    paramsToGetRecipes.page,
+    paramsToGetRecipes.sort,
+  ]);
+
+  const likeRecipeFunc = (itemIndex: number, recipeId: string) => {
+    const updatedRecipesList = [...recipesList];
+    updatedRecipesList[itemIndex].is_liked = !updatedRecipesList[itemIndex].is_liked;
+
+    setRecipesList([...updatedRecipesList]);
+
+    likeRecipe(recipeId).catch(() => {
+      updatedRecipesList[itemIndex].is_liked = !updatedRecipesList[itemIndex].is_liked;
+
+      setRecipesList([...updatedRecipesList]);
+    });
+  };
+
+  const prepareRecipeFunc = (itemIndex: number, recipeId: string) => {
+    const updatedRecipesList = [...recipesList];
+    updatedRecipesList[itemIndex].is_prepared = !updatedRecipesList[itemIndex].is_prepared;
+
+    setRecipesList([...updatedRecipesList]);
+
+    prepareRecipe(recipeId).catch(() => {
+      updatedRecipesList[itemIndex].is_prepared = !updatedRecipesList[itemIndex].is_prepared;
+
+      setRecipesList([...updatedRecipesList]);
+    });
+  };
+
+  const getClickedPage = (value: number) => {
+    setParamsToGetRecipes({
+      ...paramsToGetRecipes,
+      page: value,
+    });
+  };
 
   return (
     <>
@@ -47,21 +148,19 @@ const RecipesView = (props: any) => {
             ]}
             currentPage={t('app.title.recipes')}
           />
-          <div className='row'>
-            <div className='col-6'>
-              <ul className='page-tabs'>
-                <Link to='/recipes' className='page-tabs-item active'>
-                  {t('common.everything')}
-                </Link>
-                <Link to='/recipes/saved' className='page-tabs-item'>
-                  {t('common.saved')}
-                </Link>
-                <Link to='/recipes/favourites' className='page-tabs-item'>
-                  {t('common.favourites')}
-                </Link>
-              </ul>
-            </div>
-            <div className='col-6 text-right'>
+          <div className='recipes-header'>
+            <ul className='recipes-header-tabs page-tabs'>
+              <Link to={routes.recipes} className='page-tabs-item active'>
+                {t('common.everything')}
+              </Link>
+              <Link to={routes.savedRecipes} className='page-tabs-item'>
+                {t('common.saved')}
+              </Link>
+              <Link to={routes.favouritesRecipes} className='page-tabs-item'>
+                {t('common.favourites')}
+              </Link>
+            </ul>
+            <div className='recipes-header-create-recipe'>
               <Link to='/recipe/create' className='page-create-btn'>
                 {t('recipe.create.title')}
               </Link>
@@ -69,164 +168,92 @@ const RecipesView = (props: any) => {
           </div>
         </div>
       </section>
+      <ContentLoading
+        isLoading={isLoadingPage}
+        isError={false}
+        spinSize='lg'
+      >
+        <section className='recipes-search-sect'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-12'>
+                <h4 className='recipes-search-sect-title'>
+                  {t('recipe.search.header')}
+                </h4>
 
-      <section className='recipes-search-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-12'>
-              <h4 className='recipes-search-sect-title'>
-                {t('recipe.search.header')}
-              </h4>
-
-              <div className='recipes-search-wrap'>
-                <InputField
-                  value={recipesSearch}
-                  onChange={(e) => setRecipesSearch(e.target.value)}
-                  searchBar
-                  block
-                  placeholder='Search by ingredients'
-                  className='recipes-search-wrap-input'
-                />
-                <div className='recipes-search-wrap-select'>
-                  <Select
+                <div className='recipes-search-wrap'>
+                  <InputField
+                    value={recipesSearch}
+                    onChange={(e) => setRecipesSearch(e.target.value)}
+                    searchBar
                     block
-                    styles={selectStyles}
-                    isSearchable={false}
+                    placeholder={t('recipe.search_by_recipes')}
+                    className='recipes-search-wrap-input'
+                  />
+                  <div className='recipes-search-wrap-select'>
+                    <Select
+                      block
+                      styles={selectStyles}
+                      isSearchable={false}
+                    />
+                  </div>
+                </div>
+
+                <div className='recipes-search-tags'>
+                  {cuisinesList.map((cuisineItem) => (
+                    <button
+                      key={cuisineItem.id}
+                      type='button'
+                      className='recipes-search-tags-btn'
+                    >
+                      <img
+                        src={cuisineItem.image}
+                        alt=''
+                        className='recipes-search-tags-btn-media'
+                      />
+                      <span>
+                        {cuisineItem.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className='recipes-list-sect nutrition-plan-list'>
+          <div className='container'>
+            <div className='row'>
+              {recipesList.map((item, itemIndex) => (
+                <div
+                  key={item.id}
+                  className='col-md-4'
+                >
+                  <NutritionPlanCard
+                    title={item.name_i18n}
+                    desc={item.preparation_i18n ? `${item.preparation_i18n.substr(0, 50)}...` : ''}
+                    imgSrc={item.image_url}
+                    linkToRecipe={routes.getRecipeFullView(item.id)}
+                    time={item.time}
+                    costLevel={costLevelLabel[item.cost_level]}
+                    favouriteActive={item.is_liked}
+                    checkedActive={item.is_prepared}
+                    onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
+                    onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
+                    onClickShopCart={() => addToShoppingListByRecipes([item.id])}
                   />
                 </div>
-              </div>
-
-              <div className='search-tags-list'>
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-
-                <div className='search-tags-list-item'>
-                  <Button className='search-tags-list-btn'>Magustoidud</Button>
-                </div>
-              </div>
+              ))}
             </div>
+            <Pagination
+              activeItem={recipesListPageInfo.page}
+              totalPages={recipesListPageInfo.total_pages}
+              getClickedPage={getClickedPage}
+            />
           </div>
-        </div>
-      </section>
-
-      <section className='recipes-list-sect nutrition-plan-list'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-              />
-            </div>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-                type='active'
-                favorite
-              />
-            </div>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-                type='active'
-                favorite
-              />
-            </div>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-              />
-            </div>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-                type='active'
-                favorite
-              />
-            </div>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-                type='active'
-                favorite
-              />
-            </div>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-              />
-            </div>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-                type='active'
-                favorite
-              />
-            </div>
-            <div className='col-4'>
-              <NutritionPlanCard
-                title='Some title'
-                linkToRecipe='/'
-                imgSrc={getImagePath('nutrition-plan-preview-img.jpg')}
-                type='active'
-                favorite
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </ContentLoading>
     </>
   );
 };

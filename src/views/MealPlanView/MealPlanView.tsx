@@ -378,7 +378,8 @@ const MealPlanView = (props: any) => {
                                     time={recipeItem.time}
                                     desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
                                     costLevel={costLevelLabel[recipeItem.cost_level]}
-                                    onClickFavorite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                    onClickFavourite={() =>
+                                      likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
                                     onClickChecked={() =>
                                       prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
                                     onClickShopCart={() => addToShoppingListByRecipes([recipeItem.id])}
