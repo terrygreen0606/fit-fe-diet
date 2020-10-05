@@ -78,8 +78,6 @@ const RecipesView = (props: any) => {
       ).then((response) => {
         const { data } = response.data;
 
-        console.log('debounce data', data);
-
         setRecipesList([...data.recipes]);
 
         setRecipesListPageInfo({
@@ -104,8 +102,6 @@ const RecipesView = (props: any) => {
       paramsToGetRecipes.filter,
     ).then((response) => {
       const { data } = response.data;
-
-      console.log('data', data);
 
       setRecipesList([...data.recipes]);
 

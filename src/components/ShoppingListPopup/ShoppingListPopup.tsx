@@ -60,6 +60,7 @@ const ShoppingListPopup = ({
 
   useEffect(() => {
     let cleanComponent = false;
+    debugger;
     if (settings.is_private && !cleanComponent) {
       if (settings.paid_until > 0) {
         getShoppingList(2, dateSync).then((response) => {
@@ -73,9 +74,9 @@ const ShoppingListPopup = ({
 
           setDateSync(response.data.data.date_sync);
         }).finally(() => {
+          setIsNoAccess(false);
           setIsSpinnerActive(false);
         });
-        setIsNoAccess(false);
       } else {
         setIsNoAccess(true);
         setIsSpinnerActive(false);
