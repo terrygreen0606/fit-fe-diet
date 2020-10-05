@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
-  getTranslate,
+  getTranslate
 } from 'utils';
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
@@ -106,11 +106,15 @@ const JoinStep = (props: any) => {
       act_level = act_level_checked.value;
     }
 
-    return {
+    let profilePayload = {
       ...userProfileData,
       ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.filter(cuisine => cuisine.checked).map(cuisine => cuisine.id),
       diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code),
       act_level
+    };
+
+    return {
+      ...profilePayload
     };
   };
 

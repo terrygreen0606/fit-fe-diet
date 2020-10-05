@@ -23,3 +23,4 @@ export * from './getWeigthUnit';
 export * from './getMealIcon';
 export * from './convertTime';
 export * from './getLangUser';
+export * from './getCookie';
