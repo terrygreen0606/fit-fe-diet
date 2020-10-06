@@ -158,9 +158,6 @@ const MealPlanView = (props: any) => {
             }
           });
           setMealPlan(updatedMealPlan);
-          if (updatedMealPlan.length === 7) {
-            getMealPlanText().then((res) => setShareText(res.data.data.content));
-          }
         }).finally(() => {
           setIsMealPlanLoading(false);
         });
@@ -312,11 +309,16 @@ const MealPlanView = (props: any) => {
                             shareLink={window.location.origin}
                             isFacebookActive={false}
                             isWhatsappActive={false}
+                          // onClickFunc={() => {
+                          //   if (mealPlan.length === 7) {
+                          //     return getMealPlanText().then((res) => setShareText(res.data.data.content));
+                          //   }
+                          // }}
                           />
                         </div>
                       </div>
                       <div className='nutrition-plan-card-list-date'>
-                        {days.map((item) => (
+                        {days.map((item, itemIndex) => (
                           <button
                             key={item.id}
                             id={item.id}
@@ -329,7 +331,9 @@ const MealPlanView = (props: any) => {
                                 }
                               });
                             }}
-                            className='nutrition-plan-card-list-date-item card-bg'
+                            className={classnames('nutrition-plan-card-list-date-item card-bg', {
+                              active: itemIndex === 0,
+                            })}
                           >
                             <div
                               className='nutrition-plan-card-list-date-item-number'

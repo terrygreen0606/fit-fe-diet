@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-shadow */
+import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
+import queryString from 'query-string';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -14,6 +16,7 @@ import {
   likeRecipe,
   prepareRecipe,
   addToShoppingListByRecipes,
+  getRecipesListByUrl,
 } from 'api';
 
 // Components
@@ -22,7 +25,7 @@ import NutritionPlanCard from 'components/NutritionPlanCard';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import ContentLoading from 'components/hoc/ContentLoading';
-import Pagination from 'components/common/Pagination';
+import Pagination from 'components/Pagination';
 import useDebounce from 'components/hooks/useDebounce';
 
 import './RecipesView.sass';
@@ -32,6 +35,8 @@ import { selectStyles } from './selectData';
 const RecipesView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
+
+  const history = useHistory();
 
   const [recipesList, setRecipesList] = useState<any[]>([]);
 
@@ -60,15 +65,44 @@ const RecipesView = (props: any) => {
     filter: '',
   });
 
+  const [startPagePagination, setStartPagePagination] = useState<number>(1);
+
   const debouncedSearch = useDebounce(paramsToGetRecipes.filter, 500);
 
+  const generateQueryString = (page: number, filter: string) => {
+    window.history.pushState(null, null, `/recipes/?page=${page}&filter=${filter}`);
+  };
+
   useEffect(() => {
-    getRecipeCuisines().then((response) => {
+    getRecipeCuisines(0, 1).then((response) => {
       setCuisinesList([...response.data.data]);
     });
   }, []);
 
+  const firstRender = useRef(true);
+
   useEffect(() => {
+    if (firstRender.current && window.location.search) {
+      getRecipesListByUrl(window.location.search)
+        .then((response) => {
+          const { data } = response.data;
+
+          setRecipesList([...data.recipes]);
+
+          setRecipesListPageInfo({
+            ...recipesListPageInfo,
+            page: data.page,
+            total: data.total,
+            total_pages: data.total_pages,
+          });
+
+          setStartPagePagination(data.page);
+
+          setLoadingPage(false);
+        });
+      firstRender.current = false;
+      return;
+    }
     getRecipesList(
       paramsToGetRecipes.privateRecipes,
       paramsToGetRecipes.liked,
@@ -87,6 +121,8 @@ const RecipesView = (props: any) => {
         total: data.total,
         total_pages: data.total_pages,
       });
+
+      generateQueryString(data.page, paramsToGetRecipes.filter);
 
       setLoadingPage(false);
     });
@@ -149,10 +185,37 @@ const RecipesView = (props: any) => {
     });
   };
 
-  const getClickedPage = (value: number) => {
-    setParamsToGetRecipes({
-      ...paramsToGetRecipes,
-      page: value,
+  // const getClickedPage = (value: number) => {
+  //   setParamsToGetRecipes({
+  //     ...paramsToGetRecipes,
+  //     page: value,
+  //   });
+  // };
+
+  const [requestsPage, setRequestsPage] = useState(() => {
+    const params = queryString.parse(props.location.search);
+
+    if (params.page && +params.page > 0) {
+      return +params.page;
+    }
+    return 0;
+  });
+
+  const requestsPerPageChange = (e) => {
+    const { history, location } = props;
+
+    // setRequestsPage(0);
+
+    const params = queryString.parse(location.search);
+
+    params.size = e.value.toString();
+    params.page = '0';
+
+    const search = `${queryString.stringify(params)}`;
+
+    history.push({
+      pathname: location.pathname,
+      search,
     });
   };
 
@@ -309,11 +372,20 @@ const RecipesView = (props: any) => {
                   ))}
                 </div>
                 {recipesListPageInfo.total_pages >= 2 && (
+                  // <Pagination
+                  //   currentItem={startPagePagination}
+                  //   lastPage={recipesListPageInfo.total_pages}
+                  //   getClickedPage={getClickedPage}
+                  //   quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
+                  // />
                   <Pagination
-                    currentItem={1}
-                    lastPage={recipesListPageInfo.total_pages}
-                    getClickedPage={getClickedPage}
-                    quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
+                    tableItemsTotal={recipesListPageInfo.total_pages}
+                    itemsPerPage={1}
+                    currentPage={startPagePagination}
+                    setPage={setRequestsPage}
+                    history={history}
+                    location={window.location}
+                    itemsPerPageChange={requestsPerPageChange}
                   />
                 )}
               </>

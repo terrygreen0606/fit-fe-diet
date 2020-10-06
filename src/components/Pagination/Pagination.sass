@@ -1,0 +1,48 @@
+@import '../../assets/sass/vars'
+
+.pagination
+  display: block
+  margin: 0
+  padding: 0
+  list-style-type: none
+  li
+    display: inline-block
+    &:not(:last-child)
+      margin-right: 3px
+
+.pagiItem
+  .pagiArrow
+    background-color: $grey-bg
+    //fill: white
+  .pagiLink
+    display: inline-block
+    padding: 12px 16px
+    font-size: 14px
+    color: $black
+    font-weight: 500
+    line-height: 16px
+    cursor: pointer
+    text-decoration: none
+    border-radius: 8px
+    border: none
+    appearance: none
+    &:not([disabled])
+      &:hover
+        background-color: $grey-bg
+        color: $black
+      &_active
+        cursor: default
+        background-color: $yellow-accent
+        color: #fff
+    &:disabled
+      cursor: default
+      svg
+        fill: $grey-light
+  &_active
+    .pagiLink
+      cursor: default
+      background-color: $yellow-accent
+      color: #fff
+      &:hover
+        background-color: $yellow-accent
+        color: #fff

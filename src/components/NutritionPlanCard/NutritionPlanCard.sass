@@ -1,12 +1,13 @@
 @import '../../assets/sass/vars'
 
-
 .nutrition-plan-list
   .nutrition-plan-card
     margin-bottom: 65px
+    height: calc(100% - 65px)
 
     @media (max-width: 768px)
       margin-bottom: 30px
+      height: calc(100% - 30px)
 
 .nutrition-plan-card
   position: relative
@@ -234,11 +235,11 @@
         svg path
           fill: #DAD7D7
           transition: 0.2s fill, 0.2s stroke ease
-      
+
       &-icon-reload
         svg path
           fill: transparent
-    
+
     &-item.active,
     &-item:hover
       .nutrition-plan-card-controls-item-icon-reload
@@ -246,14 +247,13 @@
 
         svg path
           stroke: $white
-        
+
       .nutrition-plan-card-controls-item-icon-shop
         svg path
           fill: $black
-        
+
       .nutrition-plan-card-controls-item-icon-checked
         background-color: $bright-green
 
         svg path
           fill: $white
-

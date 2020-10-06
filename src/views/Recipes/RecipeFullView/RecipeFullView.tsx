@@ -383,6 +383,7 @@ const RecipeFullView = (props: any) => {
                         >
                           {`${t(getWeigthUnit(settings.measurement), { COUNT: ingredient.weight })}.
                           ${ingredient.name_i18n}`}
+                          {ingredient.weight === 0 ? ` (${t('recipe.taste')})` : ''}
                         </div>
                       ))}
                     </div>
