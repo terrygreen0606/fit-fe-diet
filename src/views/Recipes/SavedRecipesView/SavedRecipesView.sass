@@ -1,45 +1,8 @@
-@import '../../../assets/sass/_vars'
+@import '../../../assets/sass/vars'
 
 .saved-recipes
   &__head
     margin-bottom: 150px
-
-    &-tabs
-      display: flex
-      align-items: center
-      margin: 0
-      padding-left: 0
-      list-style-type: none
-
-      &-item
-        position: relative
-        margin-right: 30px
-        padding: 3px 30px 3px 0
-        font-size: 32px
-        line-height: 1.2
-        font-weight: bold
-        color: #000000
-        border-right: 1px solid #000
-        text-decoration: none
-        
-        &::before
-          content: ''
-          position: absolute
-          bottom: -30px
-          left: 0
-          width: calc(100% - 30px)
-          height: 6px
-          background-color: #106EE8
-          opacity: 0
-          transition: 0.2s opacity ease
-
-        &.active::before,
-        &:hover::before
-          opacity: 1
-
-      li:last-child
-        .saved-recipes__head-tabs-item
-          border-right: none
 
   &__banner
     margin-bottom: 110px
@@ -352,42 +315,11 @@
         &-delete
           top: -40px
 
-    &__head
-      &-tabs
-        margin-bottom: 60px
-
-      .page-create-btn
-        padding: 22px 96px 22px 19px
-        padding-left: 19px
-        
-        &::before
-          left: initial
-          right: 0
-
 
 @media only screen and (max-width: 991px)
   .saved-recipes
     &__head
       margin-bottom: 70px
-
-      &-tabs
-        &-item
-          padding-right: 0
-          font-size: 18px
-          border-right: none
-
-          &::before
-            width: 100%
-            bottom: -15px
-
-      .page-create-btn
-        padding: 22px 183px 22px 19px
-        font-size: 18px
-
-        &::before
-          top: initial
-          bottom: -22px
-          right: 13px
 
     &__banner
       margin-bottom: 60px
@@ -507,10 +439,3 @@
 
         &-button
           flex-basis: 100%
-
-
-@media only screen and (max-width: 440px)
-  .saved-recipes__head
-    .page-create-btn
-      width: 100%
-      padding: 22px 109px 22px 19px

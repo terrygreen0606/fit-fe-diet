@@ -25,7 +25,6 @@
 // Text aligning
 @import "text"
 
-
 *, *::before, *::after
   box-sizing: border-box
 
@@ -169,12 +168,10 @@ img
 b
   font-weight: 700
 
-
 .card-bg
   background: #FFFFFF
   box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
   border-radius: 20px
-
 
 // Create button
 .page-create-btn
@@ -190,8 +187,22 @@ b
   background: #fff
   box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
   border-radius: 20px
+  text-decoration: none
   cursor: pointer
   +mt(.2s)
+
+  @media only screen and (max-width: 1199px)
+    padding: 22px 96px 22px 19px
+    padding-left: 19px
+
+  @media only screen and (max-width: 991px)
+    padding: 22px 183px 22px 19px
+    font-size: 18px
+
+  @media only screen and (max-width: 440px)
+    width: 100%
+    padding: 22px 109px 22px 19px
+
   &:hover
     color: $caribbean-green
   &::before
@@ -210,6 +221,14 @@ b
     background-size: 40%
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.04)
 
+    @media only screen and (max-width: 1199px)
+      left: initial
+      right: 0
+
+    @media only screen and (max-width: 991px)
+      top: initial
+      bottom: -22px
+      right: 13px
 
 // Search tags
 .search-tags-list
@@ -244,8 +263,38 @@ b
   margin: 0
   padding: 0
   list-style-type: none
-  .page-tabs-item
+  display: flex
+  align-items: center
+
+  @media (max-width: 1200px)
+    margin-bottom: 30px
+
+  &-list-item
     position: relative
+
+    &:not(:last-child)
+      margin-right: 56px
+
+      &::after
+        content: ''
+        position: absolute
+        top: 0
+        right: -28px
+        height: calc(100% - 15px)
+        border-right: 1px solid #000
+
+    @media (max-width: 768px)
+      &:not(:last-child)
+        margin-right: 20px
+
+        &::after
+          display: none
+
+    @media (max-width: 400px)
+      &:not(:last-child)
+        margin-right: 10px
+
+  .page-tabs-item
     display: inline-block
     padding-bottom: 15px
     border-bottom: 6px solid transparent
@@ -255,31 +304,17 @@ b
     color: #000
     text-decoration: none
     cursor: pointer
-    &:not(:last-child)
-      margin-right: 56px
-      &::after
-        content: ''
-        position: absolute
-        top: 0
-        right: -28px
-        height: calc(100% - 15px)
-        border-right: 1px solid #000
+
     &:hover, &.active
       border-bottom-color: $steel-blue
+
     @media (max-width: 768px)
       font-size: 18px
       line-height: 22px
       padding-bottom: 5px
-      &:not(:last-child)
-        margin-right: 30px
-        &::after
-          right: -15px
-          height: calc(100% - 5px)
-
 
 fieldset
   border: none
-
 
 // File input
 .input-file-container
@@ -293,7 +328,6 @@ fieldset
     margin: 0
     margin-top: 10px
 
-
 // List group
 ul.list-group
   margin: 0
@@ -302,7 +336,6 @@ ul.list-group
   li
     &:not(:last-child)
       margin-bottom: 10px
-
 
 .details-list
   margin: 0
@@ -334,7 +367,6 @@ ul.list-group
         a
           font-size: 14px !important
 
-
 // Bullets list
 .bullets-list
   margin: 0
@@ -355,7 +387,6 @@ ul.list-group
       font-family: 'FontAwesome'
       color: $brown
       font-size: 20px
-
 
 // Ribbon
 .ribbon
@@ -454,7 +485,6 @@ ul.list-group
     bottom: 30px
     transform: rotate(-225deg)
 
-
 // Socials
 .socials-list
   display: inline-flex
@@ -512,7 +542,6 @@ ul.list-group
 a.social-link
   text-decoration: none
 
-
 // React Toastify
 .Toastify__toast-container--top-right
   top: 80px
@@ -550,7 +579,6 @@ a.social-link
   background-position: center center
   fill: #fff
 
-
 // Tooltips
 .tippy-box
   background: #FFFFFF
@@ -575,7 +603,6 @@ a.social-link
 
 .tippy-box[data-placement^=left] > .tippy-arrow:before
   border-left-color: #fff
-
 
 // To top
 .to-top
@@ -607,7 +634,6 @@ a.social-link
     i
       color: #fff
 
-
 // Gender icon
 .genderIcon
   fill: #000
@@ -618,7 +644,6 @@ a.social-link
     fill: $caribbean-green
     path
       fill: $caribbean-green
-
 
 // Buttons
 a.bttn
@@ -697,9 +722,6 @@ a
   &:hover
     border-bottom-color: $yellow-accent !important
 
-
-
-
 // App Text colors
 .text-orange-accent
   color: $orange-accent
@@ -721,7 +743,6 @@ a
   color: $yellow-accent
 .text-malachite-green
   color: $malachite-green
-
 
 // Text
 .text-white
@@ -777,7 +798,6 @@ a
 .text-uppercase
   text-transform: uppercase
 
-
 // Fonts
 .fw-hairlight
   font-weight: 100 !important
@@ -789,7 +809,6 @@ a
   font-weight: 700 !important
 .fw-black-bold
   font-weight: 900 !important
-
 
 // App Bacgorunds
 .orange-accent-bg
@@ -810,7 +829,6 @@ a
   background-color: $red
 .yellow-accent-bg
   background-color: $yellow-accent
-
 
 // Backgrounds
 .beige-bg
@@ -908,7 +926,6 @@ a
 .ok-bg
   background-color: $ok-color
 
-
 // Border
 .border, .bttn.border
   border: 1px solid $silver
@@ -916,7 +933,6 @@ a
   border: 1px dashed $silver
 .border-dotted, .bttn.border-dotted
   border: 1px dotted $silver
-
 
 // Rounded
 .rounded
@@ -932,7 +948,6 @@ a
   position: fixed
   width: 100%
   overflow-y: scroll
-
 
 // Overflow
 .overflow-auto

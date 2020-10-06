@@ -19,8 +19,8 @@ export const createRecipe = (params: CreateRecipeParams) =>
   axios.post('/recipe/create', params);
 
 export const getRecipeCuisines = (
-  primary: number,
-  ignorable: number,
+  primary: number = 0,
+  ignorable: number = 1,
 ) =>
   axios.get(`/recipe/cuisines-list?primary=${primary}&ignorable=${ignorable}`);
 
@@ -54,3 +54,31 @@ export const addRecipeNote = (
   );
 
 export const getMealTimes = () => axios.get('recipe/mealtimes');
+
+export const getRecipesList = (
+  privateRecipes: 0 | 1 = 0,
+  liked: 0 | 1 = 0,
+  cuisinesIds: any[] = [],
+  page: number = 1,
+  filterType: 0 | 1 = 0,
+  filter: string = '',
+) => {
+  if (cuisinesIds.length === 0) {
+    return axios.get(
+      `recipe/?private=${privateRecipes}&liked=${liked}&page=${page}&filter_type=${filterType}&filter=${filter}`,
+    );
+  }
+
+  let cuisineIdsQuery = '';
+  cuisinesIds.forEach((cuisineId, cuisineIdIndex) => {
+    if (cuisineIdIndex === 0) {
+      cuisineIdsQuery += `cuisines_ids[]=${cuisineId}`;
+    } else {
+      cuisineIdsQuery += `&cuisines_ids[]=${cuisineId}`;
+    }
+  });
+
+  return axios.get(
+    `recipe/?${cuisineIdsQuery}&private=${privateRecipes}&liked=${liked}&page=${page}&filter_type=${filterType}&filter=${filter}`,
+  );
+};
