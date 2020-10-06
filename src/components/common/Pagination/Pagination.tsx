@@ -76,7 +76,7 @@ const Pagination = ({
           type='button'
           disabled={activeBtn === 1}
           onClick={() => handlerClick(activeBtn - 1)}
-          className='pagination__item-btn pagination__item-btn_arrow'
+          className='pagination__item-btn pagination__item-btn_arrow pagination__item-btn_arrow-prev'
         >
           <ArrowLeftGray />
         </button>
@@ -102,7 +102,7 @@ const Pagination = ({
           type='button'
           disabled={activeBtn === lastPage}
           onClick={() => handlerClick(activeBtn + 1)}
-          className='pagination__item-btn pagination__item-btn_arrow'
+          className='pagination__item-btn pagination__item-btn_arrow pagination__item-btn_arrow-next'
         >
           <ArrowRightGray />
         </button>
