@@ -88,36 +88,13 @@ const RecipesView = (props: any) => {
 
       setLoadingPage(false);
     });
-  }, [debouncedSearch]);
-
-  useEffect(() => {
-    getRecipesList(
-      paramsToGetRecipes.privateRecipes,
-      paramsToGetRecipes.liked,
-      paramsToGetRecipes.cuisinesIds,
-      paramsToGetRecipes.page,
-      paramsToGetRecipes.filterType,
-      paramsToGetRecipes.filter,
-    ).then((response) => {
-      const { data } = response.data;
-
-      setRecipesList([...data.recipes]);
-
-      setRecipesListPageInfo({
-        ...recipesListPageInfo,
-        page: data.page,
-        total: data.total,
-        total_pages: data.total_pages,
-      });
-
-      setLoadingPage(false);
-    });
   }, [
     paramsToGetRecipes.privateRecipes,
     paramsToGetRecipes.liked,
     paramsToGetRecipes.cuisinesIds,
     paramsToGetRecipes.page,
     paramsToGetRecipes.filterType,
+    debouncedSearch,
   ]);
 
   const likeRecipeFunc = (itemIndex: number, recipeId: string) => {
@@ -327,12 +304,14 @@ const RecipesView = (props: any) => {
                     </div>
                   ))}
                 </div>
-                <Pagination
-                  currentItem={1}
-                  lastPage={recipesListPageInfo.total_pages}
-                  getClickedPage={getClickedPage}
-                  quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
-                />
+                {recipesListPageInfo.total_pages >= 2 && (
+                  <Pagination
+                    currentItem={1}
+                    lastPage={recipesListPageInfo.total_pages}
+                    getClickedPage={getClickedPage}
+                    quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
+                  />
+                )}
               </>
             ) : (
                 <h4 className='text-center mb-5'>
