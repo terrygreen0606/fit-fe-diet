@@ -30,6 +30,9 @@ import './RecipesView.sass';
 import { selectStyles } from './selectData';
 
 const RecipesView = (props: any) => {
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
+
   const [recipesList, setRecipesList] = useState<any[]>([]);
 
   const [recipesListPageInfo, setRecipesListPageInfo] = useState<{
@@ -46,6 +49,8 @@ const RecipesView = (props: any) => {
 
   const [isLoadingPage, setLoadingPage] = useState<boolean>(true);
 
+  const [inputPlaceholder, setInputPlaceholder] = useState<string>(t('recipe.search_by_recipes'));
+
   const [paramsToGetRecipes, setParamsToGetRecipes] = useState<any>({
     privateRecipes: 0,
     liked: 0,
@@ -56,9 +61,6 @@ const RecipesView = (props: any) => {
   });
 
   const debouncedSearch = useDebounce(paramsToGetRecipes.filter, 500);
-
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
 
   useEffect(() => {
     getRecipeCuisines().then((response) => {
@@ -220,7 +222,7 @@ const RecipesView = (props: any) => {
                     }}
                     searchBar
                     block
-                    placeholder={t('recipe.search_by_recipes')}
+                    placeholder={inputPlaceholder}
                     className='recipes-search-wrap-input'
                   />
                   <div className='recipes-search-wrap-select'>
@@ -247,6 +249,8 @@ const RecipesView = (props: any) => {
                           ...paramsToGetRecipes,
                           filterType: e.value,
                         });
+
+                        setInputPlaceholder(e.label);
                       }}
                     />
                   </div>
