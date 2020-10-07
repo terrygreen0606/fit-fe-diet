@@ -1,8 +1,7 @@
-/* eslint-disable no-shadow */
 import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import queryString from 'query-string';
@@ -36,8 +35,6 @@ const RecipesView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
-  const history = useHistory();
-
   const [recipesList, setRecipesList] = useState<any[]>([]);
 
   const [recipesListPageInfo, setRecipesListPageInfo] = useState<{
@@ -65,8 +62,6 @@ const RecipesView = (props: any) => {
     filter: '',
   });
 
-  const [startPagePagination, setStartPagePagination] = useState<number>(1);
-
   const debouncedSearch = useDebounce(paramsToGetRecipes.filter, 500);
 
   const generateQueryString = (page: number, filter: string) => {
@@ -87,6 +82,13 @@ const RecipesView = (props: any) => {
         .then((response) => {
           const { data } = response.data;
 
+          const queryParametersObj = queryString.parse(window.location.search);
+
+          if (queryParametersObj.page > data.page) {
+            queryParametersObj.page = data.page;
+            window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+          }
+
           setRecipesList([...data.recipes]);
 
           setRecipesListPageInfo({
@@ -95,8 +97,6 @@ const RecipesView = (props: any) => {
             total: data.total,
             total_pages: data.total_pages,
           });
-
-          setStartPagePagination(data.page);
 
           setLoadingPage(false);
         });
@@ -185,37 +185,10 @@ const RecipesView = (props: any) => {
     });
   };
 
-  // const getClickedPage = (value: number) => {
-  //   setParamsToGetRecipes({
-  //     ...paramsToGetRecipes,
-  //     page: value,
-  //   });
-  // };
-
-  const [requestsPage, setRequestsPage] = useState(() => {
-    const params = queryString.parse(props.location.search);
-
-    if (params.page && +params.page > 0) {
-      return +params.page;
-    }
-    return 0;
-  });
-
-  const requestsPerPageChange = (e) => {
-    const { history, location } = props;
-
-    // setRequestsPage(0);
-
-    const params = queryString.parse(location.search);
-
-    params.size = e.value.toString();
-    params.page = '0';
-
-    const search = `${queryString.stringify(params)}`;
-
-    history.push({
-      pathname: location.pathname,
-      search,
+  const getClickedPage = (value: number) => {
+    setParamsToGetRecipes({
+      ...paramsToGetRecipes,
+      page: value,
     });
   };
 
@@ -371,21 +344,12 @@ const RecipesView = (props: any) => {
                     </div>
                   ))}
                 </div>
-                {recipesListPageInfo.total_pages >= 2 && (
-                  // <Pagination
-                  //   currentItem={startPagePagination}
-                  //   lastPage={recipesListPageInfo.total_pages}
-                  //   getClickedPage={getClickedPage}
-                  //   quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
-                  // />
+                {recipesListPageInfo.total_pages > 1 && (
                   <Pagination
-                    tableItemsTotal={recipesListPageInfo.total_pages}
-                    itemsPerPage={1}
-                    currentPage={startPagePagination}
-                    setPage={setRequestsPage}
-                    history={history}
-                    location={window.location}
-                    itemsPerPageChange={requestsPerPageChange}
+                    currentItem={recipesListPageInfo.page}
+                    lastPage={recipesListPageInfo.total_pages}
+                    getClickedPage={getClickedPage}
+                    quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
                   />
                 )}
               </>
