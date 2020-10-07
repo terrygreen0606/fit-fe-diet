@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { routes } from 'constants/routes';
 
-export const redirectToPayView = (props, text) => {
-  props.history.push(routes.checkout);
+export const redirectToPayView = (propsHistory, text) => {
+  propsHistory.push(routes.checkout);
   toast.error(text);
 };

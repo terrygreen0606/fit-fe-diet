@@ -168,7 +168,7 @@ const RecipeFullView = (props: any) => {
           setSpinnerActive(false);
         });
       } else {
-        redirectToPayView(props, t('tariff.not_paid'));
+        redirectToPayView(props.history, t('tariff.not_paid'));
       }
     }
 

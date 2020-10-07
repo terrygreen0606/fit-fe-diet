@@ -154,7 +154,7 @@ const ShoppingListView = (props: any) => {
         getShoppingListFunc();
         setIsNoAccess(false);
       } else {
-        redirectToPayView(props, t('tariff.not_paid'));
+        redirectToPayView(props.history, t('tariff.not_paid'));
       }
     }
 

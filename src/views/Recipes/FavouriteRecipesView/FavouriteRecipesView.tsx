@@ -130,7 +130,7 @@ const FavouriteRecipesView = (props: any) => {
       if (settings.paid_until > 0) {
         getRecipesListFunc();
       } else {
-        redirectToPayView(props, t('tariff.not_paid'));
+        redirectToPayView(props.history, t('tariff.not_paid'));
       }
     }
 

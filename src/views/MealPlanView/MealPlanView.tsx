@@ -172,7 +172,7 @@ const MealPlanView = (props: any) => {
         setDaysToEndSubscription(Math.round(diff));
         setIsNoAccess(false);
       } else {
-        redirectToPayView(props, t('tariff.not_paid'));
+        redirectToPayView(props.history, t('tariff.not_paid'));
       }
     }
 

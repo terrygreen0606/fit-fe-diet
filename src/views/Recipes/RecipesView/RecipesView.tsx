@@ -131,7 +131,7 @@ const RecipesView = (props: any) => {
         setLoadingPage(false);
       });
     } else {
-      redirectToPayView(props, t('tariff.not_paid'));
+      redirectToPayView(props.history, t('tariff.not_paid'));
     }
   }, [
     paramsToGetRecipes.privateRecipes,
