@@ -24,7 +24,6 @@ const WaterTrackerView = React.lazy(() => import('./views/WaterTrackerView'));
 const SettingsChangeMealPlanView = React.lazy(() => import('./views/Settings/SettingsChangeMealPlanView'));
 const SettingsPersonalView = React.lazy(() => import('./views/Settings/SettingsPersonalView'));
 const NotFound = React.lazy(() => import('./views/NotFound'));
-const SavedRecipesView = React.lazy(() => import('./views/Recipes/SavedRecipesView'));
 const FavouriteRecipesView = React.lazy(() => import('./views/Recipes/FavouriteRecipesView'));
 const DashboardView = React.lazy(() => import('./views/DashboardView'));
 const SettingsFaqView = React.lazy(() => import('./views/Settings/SettingsFaqView'));
@@ -176,16 +175,6 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <SettingsPersonalView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
-      path={routes.savedRecipes}
-      component={(props: any) => (
-        <Layout {...props}>
-          <SavedRecipesView {...props} />
         </Layout>
       )}
       exact

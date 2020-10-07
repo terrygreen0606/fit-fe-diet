@@ -10,7 +10,6 @@ export const routes = {
   waterTracker: '/water-tracker',
   changeMealSettings: '/settings/change-meal-plan',
   personalSettings: '/settings/personal',
-  savedRecipes: '/recipes/saved',
   favouritesRecipes: '/recipes/favourites',
   dashboard: '/dashboard',
   faqSettings: '/settings/faq',

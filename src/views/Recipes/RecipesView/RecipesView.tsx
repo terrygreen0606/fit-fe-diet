@@ -84,7 +84,7 @@ const RecipesView = (props: any) => {
 
           const queryParametersObj = queryString.parse(window.location.search);
 
-          if (queryParametersObj.page > data.page) {
+          if (queryParametersObj.page > data.total_pages) {
             queryParametersObj.page = data.page;
             window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
           }
@@ -124,6 +124,7 @@ const RecipesView = (props: any) => {
 
       generateQueryString(data.page, paramsToGetRecipes.filter);
 
+      firstRender.current = false;
       setLoadingPage(false);
     });
   }, [
@@ -208,25 +209,22 @@ const RecipesView = (props: any) => {
             ]}
             currentPage={t('app.title.recipes')}
           />
-          <div className='recipes-header'>
-            <ul className='recipes-header-tabs page-tabs'>
-              <li className='page-tabs-list-item'>
-                <Link to={routes.recipes} className='page-tabs-item active'>
-                  {t('common.everything')}
-                </Link>
-              </li>
-              <li className='page-tabs-list-item'>
-                <Link to={routes.savedRecipes} className='page-tabs-item'>
-                  {t('common.saved')}
-                </Link>
-              </li>
-              <li className='page-tabs-list-item'>
-                <Link to={routes.favouritesRecipes} className='page-tabs-item'>
-                  {t('common.favourites')}
-                </Link>
-              </li>
-            </ul>
-            <div className='recipes-header-create-recipe'>
+          <div className='row'>
+            <div className='col-xl-6'>
+              <ul className='recipes-header-tabs page-tabs'>
+                <li className='page-tabs-list-item'>
+                  <Link to={routes.recipes} className='page-tabs-item active'>
+                    {t('common.everything')}
+                  </Link>
+                </li>
+                <li className='page-tabs-list-item'>
+                  <Link to={routes.favouritesRecipes} className='page-tabs-item'>
+                    {t('common.favourites')}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className='col-xl-6 text-xl-right'>
               <Link to='/recipe/create' className='page-create-btn'>
                 {t('recipe.create.title')}
               </Link>

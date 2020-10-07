@@ -44,7 +44,7 @@ const ShoppingListCart = ({
       >
         <ShoppingCartIcon />
         <div className='shopping-cart__count'>
-          {shoppingListLength}
+          {shoppingListLength > 99 ? '99+' : shoppingListLength}
         </div>
       </button>
       <ShoppingListPopup visible={isBlockActive && !window.location.href.includes(routes.shoppingList)} />
