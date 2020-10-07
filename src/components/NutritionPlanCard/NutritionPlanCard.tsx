@@ -20,7 +20,7 @@ type NutritionPlanCardProps = {
   linkToRecipe: string,
   localePhrases: [];
   type?: 'active' | 'cross' | 'default',
-  onClickFavorite?: () => void,
+  onClickFavourite?: () => void,
   onClickReload?: () => void,
   onClickShopCart?: () => void,
   onClickChecked?: () => void,
@@ -36,7 +36,7 @@ type NutritionPlanCardProps = {
 
 const NutritionPlanCardDefaultProps = {
   type: 'default',
-  onClickFavorite: null,
+  onClickFavourite: null,
   onClickReload: false,
   onClickShopCart: false,
   onClickChecked: false,
@@ -56,7 +56,7 @@ const NutritionPlanCard = ({
   linkToRecipe,
   localePhrases,
   type,
-  onClickFavorite,
+  onClickFavourite,
   onClickReload,
   onClickShopCart,
   onClickChecked,
@@ -92,10 +92,10 @@ const NutritionPlanCard = ({
           <Link to={linkToRecipe} className='nutrition-plan-card-title'>
             {title}
           </Link>
-          {onClickFavorite && (
+          {onClickFavourite && (
             <button
               type='button'
-              onClick={onClickFavorite}
+              onClick={onClickFavourite}
               className={classnames('nutrition-plan-card-heart', {
                 active: favouriteActive,
               })}

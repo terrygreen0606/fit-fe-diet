@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable operator-linebreak */
 import React, {
   useState,
   useEffect,

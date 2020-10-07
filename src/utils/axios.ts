@@ -7,7 +7,7 @@ const instance = axios.create({
 });
 
 // instance.interceptors.request.use(config => {
-//   config.headers['set-cookie'] =  document.cookie;
+//   config.headers['set-cookie'] = document.cookie;
 //   return config;
 // });
 

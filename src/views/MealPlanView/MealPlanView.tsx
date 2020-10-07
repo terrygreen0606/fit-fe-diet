@@ -1,4 +1,3 @@
-/* eslint-disable operator-linebreak */
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -11,6 +10,7 @@ import {
   getLangUser,
 } from 'utils';
 import { routes } from 'constants/routes';
+import { costLevelLabel } from 'constants/costLevelLabel';
 import {
   getMealPlan,
   likeRecipe,
@@ -62,12 +62,6 @@ const MealPlanView = (props: any) => {
   const [todayActivities, setTodayActivities] = useState(['workout_add']);
 
   const { settings, storage } = props;
-
-  const costLevelLabel = {
-    1: '$',
-    2: '$$',
-    3: '$$$',
-  };
 
   const [days, setDays] = useState<any[]>([]);
 
@@ -142,7 +136,8 @@ const MealPlanView = (props: any) => {
 
         getMealPlan().then((response) => {
           const updatedMealPlan = [];
-          response.data.data.list.forEach((item, itemIndex) => {
+          const { list } = response.data.data;
+          list.forEach((item, itemIndex) => {
             if (itemIndex === 0) {
               updatedMealPlan.push({
                 date_ts: item.date_ts,
@@ -163,6 +158,9 @@ const MealPlanView = (props: any) => {
             }
           });
           setMealPlan(updatedMealPlan);
+          if (updatedMealPlan.length === 7) {
+            getMealPlanText().then((res) => setShareText(res.data.data.content));
+          }
         }).finally(() => {
           setIsMealPlanLoading(false);
         });
@@ -171,8 +169,6 @@ const MealPlanView = (props: any) => {
         const currentDate = new Date().valueOf();
         const diff = (paidBeforeDate - currentDate) / (60 * 60 * 24 * 1000);
         setDaysToEndSubscription(Math.round(diff));
-
-        getMealPlanText().then((response) => setShareText(response.data.data.content));
         setIsNoAccess(false);
       } else {
         setIsNoAccess(true);
@@ -320,7 +316,7 @@ const MealPlanView = (props: any) => {
                         </div>
                       </div>
                       <div className='nutrition-plan-card-list-date'>
-                        {days.map((item) => (
+                        {days.map((item, itemIndex) => (
                           <button
                             key={item.id}
                             id={item.id}
@@ -333,7 +329,9 @@ const MealPlanView = (props: any) => {
                                 }
                               });
                             }}
-                            className='nutrition-plan-card-list-date-item card-bg'
+                            className={classnames('nutrition-plan-card-list-date-item card-bg', {
+                              active: itemIndex === 0,
+                            })}
                           >
                             <div
                               className='nutrition-plan-card-list-date-item-number'
@@ -374,7 +372,8 @@ const MealPlanView = (props: any) => {
                                     time={recipeItem.time}
                                     desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
                                     costLevel={costLevelLabel[recipeItem.cost_level]}
-                                    onClickFavorite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                    onClickFavourite={() =>
+                                      likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
                                     onClickChecked={() =>
                                       prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
                                     onClickShopCart={() => addToShoppingListByRecipes([recipeItem.id])}

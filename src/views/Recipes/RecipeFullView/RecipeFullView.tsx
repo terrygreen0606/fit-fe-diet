@@ -9,6 +9,7 @@ import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
+import { costLevelLabel } from 'constants/costLevelLabel';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -57,12 +58,6 @@ const RecipeFullView = (props: any) => {
   const [recipeId, setRecipeId] = useState(
     window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
   );
-
-  const costLevelLabel = {
-    1: '$',
-    2: '$$',
-    3: '$$$',
-  };
 
   const history = useHistory();
 
@@ -388,6 +383,7 @@ const RecipeFullView = (props: any) => {
                         >
                           {`${t(getWeigthUnit(settings.measurement), { COUNT: ingredient.weight })}.
                           ${ingredient.name_i18n}`}
+                          {ingredient.weight === 0 ? ` (${t('recipe.taste')})` : ''}
                         </div>
                       ))}
                     </div>

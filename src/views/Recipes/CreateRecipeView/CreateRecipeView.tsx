@@ -176,12 +176,14 @@ const CreateRecipeView = (props: any) => {
 
   useEffect(() => {
     let cleanComponent: boolean = false;
-    setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
-    getMealTimes().then((response) => {
-      if (!cleanComponent) {
-        setMealTimes(response.data.data.list);
-      }
-    });
+    if (!props.location.propsRecipeId) {
+      setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
+      getMealTimes().then((response) => {
+        if (!cleanComponent) {
+          setMealTimes(response.data.data.list);
+        }
+      });
+    }
 
     return () => cleanComponent = true;
   }, []);
@@ -189,9 +191,20 @@ const CreateRecipeView = (props: any) => {
   useEffect(() => {
     let cleanComponent: boolean = false;
     if (props.location.propsRecipeId && !cleanComponent) {
+      let mealTimesList = [];
+
+      getMealTimes().then((response) => {
+        mealTimesList = [...response.data.data.list];
+        setMealTimes(response.data.data.list);
+      });
+
+      let a = null;
+
       getRecipeData(props.location.propsRecipeId, false, false, false, true)
         .then((response) => {
           const { data } = response.data;
+
+          a = data;
 
           const updatedImages: Array<any> = [];
 
@@ -209,8 +222,6 @@ const CreateRecipeView = (props: any) => {
             });
           });
 
-          setFiles(updatedImages);
-
           if (data.video_url) {
             setVideoLinkIframe(getVideo(data.video_url));
           }
@@ -227,11 +238,17 @@ const CreateRecipeView = (props: any) => {
             ingredientItem.isFullBlock = true;
           });
 
-          if (mealTimes.length > 0) {
-            data.mealtime_codes.map((mealItem) => {
-              mealTimes.find((findItem) => mealItem.i18n_code === findItem.i18n_code).isActive = true;
+          const mealTimeForRecipe = [];
+
+          data.mealtime_codes.map((mealItem) => {
+            mealTimesList.find((findItem) => {
+              if (mealItem.i18n_code === findItem.i18n_code) {
+                findItem.isActive = true;
+                mealTimeForRecipe.push(findItem.code);
+              }
             });
-          }
+          });
+
           setCreateRecipeForm({
             ...createRecipeForm,
             recipeName: data.name_i18n,
@@ -245,13 +262,18 @@ const CreateRecipeView = (props: any) => {
             totalWeight: data.weight,
             costLevel: data.cost_level,
             videoUrl: data.video_url,
-            mealtimes: data.mealtime_codes,
+            mealtimes: mealTimeForRecipe,
           });
+
+          setFiles(updatedImages);
         });
     }
 
     return () => cleanComponent = true;
-  }, [mealTimes]);
+  }, []);
+
+  useEffect(() => {
+  }, [createRecipeForm.recipeName]);
 
   useEffect(() => {
     calcComposition(createRecipeForm.ingredients);
@@ -292,7 +314,7 @@ const CreateRecipeView = (props: any) => {
         ingredient_id: data._id,
         cost_level: data.cost_level,
         name_i18n: data.name_i18n,
-        weight: null,
+        weight: 0,
         is_opt: false,
         calorie: data.calorie / 100,
         fat: data.fat / 100,
@@ -387,19 +409,6 @@ const CreateRecipeView = (props: any) => {
 
       const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
       ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-
-    const checkIngredientsWeight: Array<any> = createRecipeForm.ingredients.filter(
-      (ingredientItem) => !ingredientItem.weight,
-    );
-
-    if (checkIngredientsWeight.length > 0) {
-      toast.error(t('recipe.create.ingredient_weight_error'));
-
-      const ingredientsBlock = document.querySelector('.recipe__add-ingredients');
-      ingredientsBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
       return;
     }
 
