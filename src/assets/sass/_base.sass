@@ -186,8 +186,10 @@ section
     &_item
       display: inline-block
       margin-bottom: 31px
-      &:not(:last-child)
-        margin-right: 31px
+
+      @media only screen and (min-width : 576px)
+        &:not(:last-child)
+          margin-right: 31px
 
 
 // Create button
