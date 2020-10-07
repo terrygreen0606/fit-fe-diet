@@ -158,6 +158,9 @@ const MealPlanView = (props: any) => {
             }
           });
           setMealPlan(updatedMealPlan);
+          if (updatedMealPlan.length === 7) {
+            getMealPlanText().then((res) => setShareText(res.data.data.content));
+          }
         }).finally(() => {
           setIsMealPlanLoading(false);
         });
@@ -309,11 +312,6 @@ const MealPlanView = (props: any) => {
                             shareLink={window.location.origin}
                             isFacebookActive={false}
                             isWhatsappActive={false}
-                          // onClickFunc={() => {
-                          //   if (mealPlan.length === 7) {
-                          //     return getMealPlanText().then((res) => setShareText(res.data.data.content));
-                          //   }
-                          // }}
                           />
                         </div>
                       </div>
