@@ -44,6 +44,7 @@
         img
           max-width: 100%
           height: auto
+          border-radius: 27px
 
       &-button
         display: flex
@@ -107,7 +108,7 @@
         padding-bottom: 10px
         border-bottom: 1px solid $steel-blue
         text-transform: capitalize
-        
+
         @media (max-width: 767px)
           margin-bottom: 14px
           font-size: 14px
@@ -225,7 +226,7 @@
   &__additional-info
     padding-left: 100px
     padding-right: 90px
-    
+
     @media (max-width: 1200px)
       padding-left: 0
       padding-right: 0
@@ -240,7 +241,7 @@
       margin-bottom: 30px
       font-size: 20px
       line-height: 1.5
-      
+
       @media (max-width: 767px)
         margin-bottom: 20px
         font-size: 14px
@@ -292,7 +293,7 @@
 
       @media (max-width: 767px)
         margin-bottom: 40px
-    
+
     &-desc
       margin-bottom: 40px
       font-size: 20px
@@ -395,7 +396,7 @@
           height: 24px
           background-color: $steel-blue
           border-radius: 50%
-        
+
         &-icon
           position: absolute
           top: 50%
@@ -403,7 +404,7 @@
           transform: translate(-50%, -50%)
           width: 14px
           z-index: 2
-      
+
     &-button:hover,
     &-button.active
       .recipe__actions-button-media
@@ -412,7 +413,7 @@
 
         path
           fill: $white
-      
+
       .recipe__actions-button-desc
         color: $steel-blue
 
@@ -505,7 +506,7 @@
 
     &-buttons
       justify-content: space-between
-      
+
       .share-button
         width: 57px
         height: 57px
@@ -550,7 +551,7 @@
         max-width: 100%
         height: auto
         max-height: 100%
-    
+
     &-text
       flex: 1
       padding-left: 50px
@@ -646,7 +647,7 @@
           transform: translate(-50%, -50%)
           opacity: 0
           transition: 0.2s opacity ease
-      
+
       &-media:hover
         .recipe__similar-recipes-item-media-icon
           opacity: 1
@@ -671,10 +672,10 @@
 
           &:hover
             color: $grey-medium
-          
+
           @media (max-width: 767px)
             font-size: 18px
-        
+
         &-meal-time
           display: flex
           align-items: center
@@ -715,7 +716,7 @@
     .dialogHeader
       position: initial
       padding: 0
-    
+
     &-title
       margin-bottom: 40px
       text-align: center
@@ -739,7 +740,7 @@
       @media (max-width: 500px)
         width: 100%
         margin: 10px 0
-    
+
     &-textarea-wrap
       text-align: center
 

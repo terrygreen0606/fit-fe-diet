@@ -198,13 +198,9 @@ const CreateRecipeView = (props: any) => {
         setMealTimes(response.data.data.list);
       });
 
-      let a = null;
-
       getRecipeData(props.location.propsRecipeId, false, false, false, true)
         .then((response) => {
           const { data } = response.data;
-
-          a = data;
 
           const updatedImages: Array<any> = [];
 

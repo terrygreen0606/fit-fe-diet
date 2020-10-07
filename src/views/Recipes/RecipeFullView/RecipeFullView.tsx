@@ -128,6 +128,8 @@ const RecipeFullView = (props: any) => {
 
         updatedImages[0].isActive = true;
 
+        console.log('data', data);
+
         setRecipeData({
           ...recipeData,
           calorie: data.calorie,
