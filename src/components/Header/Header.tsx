@@ -93,9 +93,7 @@ const Header = (props: any) => {
                   {t('nutrition.title')}
                 </NavLink>
 
-                {settings.paid_until > 0 && (
-                  <ShoppingListCart visible={isAuthenticated} />
-                )}
+                <ShoppingListCart visible={isAuthenticated && settings.paid_until} />
 
                 {isAuthenticated ? (
                   <button
