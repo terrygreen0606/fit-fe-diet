@@ -53,5 +53,8 @@ export const getPublicShopListUrl = (txt: number = 0) =>
 export const getAppTariff = (id: string) =>
   axios.get(`/app/tariff/${id}`);
 
+export const getActiveAppTariff = () =>
+  axios.get('/user/tariff');
+
 export const getAppReviews = () =>
   axios.get('/app/reviews');
