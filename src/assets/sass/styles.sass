@@ -185,6 +185,42 @@
     &:not(:last-child)
       margin-right: 5px
 
+.referral
+  &__separator
+    position: relative
+    margin-bottom: 60px
+    text-align: center
+
+    &::before
+      content: ''
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      width: 480px
+      border-bottom: 1px dashed $steel-blue
+
+    &-text
+      position: relative
+      padding: 0 32px
+      font-size: 26px
+      line-height: 1.2
+      background-color: #ffffff
+
+  &__socials
+    position: relative
+    display: flex
+    justify-content: center
+    margin-top: 40px
+    z-index: 2
+
+    .share-button
+      margin: 0 17px
+
+      @media (max-width: 500px)
+        margin: 0 6px
+
+
 // App single review
 .app-review-single-item
   display: flex
