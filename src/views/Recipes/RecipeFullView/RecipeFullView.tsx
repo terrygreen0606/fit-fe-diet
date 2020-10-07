@@ -16,6 +16,7 @@ import {
   getTranslate,
   getWeigthUnit,
   getVideo,
+  redirectToPayView,
 } from 'utils';
 import {
   getRecipeData,
@@ -121,50 +122,54 @@ const RecipeFullView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
     if (!cleanComponent) {
-      getRecipeData(recipeId, true, true, true).then((response) => {
-        const { data } = response.data;
+      if (settings.paid_until > 0) {
+        getRecipeData(recipeId, true, true, true).then((response) => {
+          const { data } = response.data;
 
-        const updatedImages = [...data.images];
+          const updatedImages = [...data.images];
 
-        updatedImages[0].isActive = true;
+          updatedImages[0].isActive = true;
 
-        setRecipeData({
-          ...recipeData,
-          calorie: data.calorie,
-          carbohydrate: data.carbohydrate,
-          costLevel: data.cost_level,
-          cuisineIds: data.cuisine_ids,
-          fat: data.fat,
-          imageIds: data.image_ids,
-          images: updatedImages,
-          ingredients: data.ingredients,
-          isLiked: data.is_liked,
-          isPrepared: data.is_prepared,
-          isPublic: data.is_public,
-          mealtimeCodes: data.mealtime_codes,
-          name: data.name_i18n,
-          preparation: data.preparation_i18n,
-          protein: data.protein,
-          salt: data.salt,
-          servingsCnt: data.servings_cnt,
-          sugar: data.sugar,
-          time: data.time,
-          weight: data.weight,
-          id: data._id,
-          videoUrl: data.video_url,
-          isOwner: data.is_owner,
-          similar: data.similar,
-          wines: data.wines,
+          setRecipeData({
+            ...recipeData,
+            calorie: data.calorie,
+            carbohydrate: data.carbohydrate,
+            costLevel: data.cost_level,
+            cuisineIds: data.cuisine_ids,
+            fat: data.fat,
+            imageIds: data.image_ids,
+            images: updatedImages,
+            ingredients: data.ingredients,
+            isLiked: data.is_liked,
+            isPrepared: data.is_prepared,
+            isPublic: data.is_public,
+            mealtimeCodes: data.mealtime_codes,
+            name: data.name_i18n,
+            preparation: data.preparation_i18n,
+            protein: data.protein,
+            salt: data.salt,
+            servingsCnt: data.servings_cnt,
+            sugar: data.sugar,
+            time: data.time,
+            weight: data.weight,
+            id: data._id,
+            videoUrl: data.video_url,
+            isOwner: data.is_owner,
+            similar: data.similar,
+            wines: data.wines,
+          });
+
+          setAddNoteForm({ ...addNoteForm, note: data.note });
+
+          setAvailabilityRecipe(true);
+        }).catch(() => {
+          setAvailabilityRecipe(false);
+        }).finally(() => {
+          setSpinnerActive(false);
         });
-
-        setAddNoteForm({ ...addNoteForm, note: data.note });
-
-        setAvailabilityRecipe(true);
-      }).catch(() => {
-        setAvailabilityRecipe(false);
-      }).finally(() => {
-        setSpinnerActive(false);
-      });
+      } else {
+        redirectToPayView(props, t('tariff.not_paid'));
+      }
     }
 
     return () => cleanComponent = true;

@@ -8,7 +8,7 @@ import queryString from 'query-string';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
-import { getTranslate } from 'utils';
+import { getTranslate, redirectToPayView } from 'utils';
 import {
   getRecipeCuisines,
   getRecipesList,
@@ -34,6 +34,8 @@ import { selectStyles } from './selectData';
 const RecipesView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
+
+  const { settings } = props;
 
   const [recipesList, setRecipesList] = useState<any[]>([]);
 
@@ -77,56 +79,60 @@ const RecipesView = (props: any) => {
   const firstRender = useRef(true);
 
   useEffect(() => {
-    if (firstRender.current && window.location.search) {
-      getRecipesListByUrl(window.location.search)
-        .then((response) => {
-          const { data } = response.data;
+    if (settings.paid_until > 0) {
+      if (firstRender.current && window.location.search) {
+        getRecipesListByUrl(window.location.search)
+          .then((response) => {
+            const { data } = response.data;
 
-          const queryParametersObj = queryString.parse(window.location.search);
+            const queryParametersObj = queryString.parse(window.location.search);
 
-          if (queryParametersObj.page > data.total_pages) {
-            queryParametersObj.page = data.page;
-            window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
-          }
+            if (queryParametersObj.page > data.total_pages) {
+              queryParametersObj.page = data.page;
+              window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+            }
 
-          setRecipesList([...data.recipes]);
+            setRecipesList([...data.recipes]);
 
-          setRecipesListPageInfo({
-            ...recipesListPageInfo,
-            page: data.page,
-            total: data.total,
-            total_pages: data.total_pages,
+            setRecipesListPageInfo({
+              ...recipesListPageInfo,
+              page: data.page,
+              total: data.total,
+              total_pages: data.total_pages,
+            });
+
+            setLoadingPage(false);
           });
+        firstRender.current = false;
+        return;
+      }
+      getRecipesList(
+        paramsToGetRecipes.privateRecipes,
+        paramsToGetRecipes.liked,
+        paramsToGetRecipes.cuisinesIds,
+        paramsToGetRecipes.page,
+        paramsToGetRecipes.filterType,
+        paramsToGetRecipes.filter,
+      ).then((response) => {
+        const { data } = response.data;
 
-          setLoadingPage(false);
+        setRecipesList([...data.recipes]);
+
+        setRecipesListPageInfo({
+          ...recipesListPageInfo,
+          page: data.page,
+          total: data.total,
+          total_pages: data.total_pages,
         });
-      firstRender.current = false;
-      return;
-    }
-    getRecipesList(
-      paramsToGetRecipes.privateRecipes,
-      paramsToGetRecipes.liked,
-      paramsToGetRecipes.cuisinesIds,
-      paramsToGetRecipes.page,
-      paramsToGetRecipes.filterType,
-      paramsToGetRecipes.filter,
-    ).then((response) => {
-      const { data } = response.data;
 
-      setRecipesList([...data.recipes]);
+        generateQueryString(data.page, paramsToGetRecipes.filter);
 
-      setRecipesListPageInfo({
-        ...recipesListPageInfo,
-        page: data.page,
-        total: data.total,
-        total_pages: data.total_pages,
+        firstRender.current = false;
+        setLoadingPage(false);
       });
-
-      generateQueryString(data.page, paramsToGetRecipes.filter);
-
-      firstRender.current = false;
-      setLoadingPage(false);
-    });
+    } else {
+      redirectToPayView(props, t('tariff.not_paid'));
+    }
   }, [
     paramsToGetRecipes.privateRecipes,
     paramsToGetRecipes.liked,
@@ -363,4 +369,6 @@ const RecipesView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(RecipesView));
+export default WithTranslate(connect((state: any) => ({
+  settings: state.settings,
+}))(RecipesView));

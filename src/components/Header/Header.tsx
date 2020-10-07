@@ -18,6 +18,7 @@ const Header = (props: any) => {
   const {
     isAuthenticated,
     localePhrases,
+    settings,
   } = props;
 
   const t = (code: string) => getTranslate(localePhrases, code);
@@ -39,13 +40,13 @@ const Header = (props: any) => {
               <span className='header-controls'>
                 {!isAuthenticated && (
                   <>
-                    <Link to="/login" className="link-raw">
+                    <Link to='/login' className='link-raw'>
                       <Button className='mobile-auth-btn' color='secondary' outline>
                         {t('login.submit')}
                       </Button>
                     </Link>
 
-                    <Link to="/register" className="link-raw">
+                    <Link to='/register' className='link-raw'>
                       <Button className='mobile-auth-btn ml-2 mr-4' color='secondary'>
                         {t('button.sign_up')}
                       </Button>
@@ -92,7 +93,10 @@ const Header = (props: any) => {
                   {t('nutrition.title')}
                 </NavLink>
 
-                <ShoppingListCart visible={isAuthenticated} />
+                {settings.paid_until > 0 && (
+                  <ShoppingListCart visible={isAuthenticated} />
+                )}
+
                 {isAuthenticated ? (
                   <button
                     type='button'
