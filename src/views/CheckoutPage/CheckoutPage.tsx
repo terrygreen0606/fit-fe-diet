@@ -392,12 +392,12 @@ const CheckoutPage = (props: any) => {
                         </div>
 
                         <div className="checkout-summary-item">
-                          <div className="checkout-summary-item__label">{t('checkout.summary.price_after_trial_title', { COUNT: tariffData.days })}</div>
+                          <div className="checkout-summary-item__label">{t('checkout.summary.price_after_trial_title')}</div>
                           <div className="checkout-summary-item__value"><b>{tariffData.next_tariff.price_text}</b></div>
                         </div>
 
                         <div className="checkout-summary-item">
-                          <div className="checkout-summary-item__label">{t('checkout.summary.trial_title')}</div>
+                          <div className="checkout-summary-item__label">{t('checkout.summary.trial_title', { COUNT: tariffData.days })}</div>
                           <div className="checkout-summary-item__value">
                             <del className="mr-3">{tariffData.price_old_text}</del>
                             <b>{tariffData.price_text}</b>
