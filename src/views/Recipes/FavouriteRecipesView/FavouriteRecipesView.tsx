@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
+import queryString from 'query-string';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -58,37 +59,42 @@ const FavouriteRecipesView = (props: any) => {
     filter: '',
   });
 
-  const firstRender = useRef(true);
+  const getRecipesListFunc = () => {
+    const queryParametersObj = queryString.parse(window.location.search);
 
-  useEffect(() => {
-    let cleanComponent = false;
-    if (!cleanComponent) {
-      if (firstRender.current && window.location.search) {
-        getRecipesList(
-          paramsToGetRecipes.privateRecipes,
-          paramsToGetRecipes.liked,
-          paramsToGetRecipes.cuisinesIds,
-          paramsToGetRecipes.page,
-          paramsToGetRecipes.filterType,
-          paramsToGetRecipes.filter,
-        ).then((response) => {
-          const { data } = response.data;
-          setRecipesList([...data.recipes]);
+    if (+queryParametersObj.page) {
+      getRecipesList(
+        paramsToGetRecipes.privateRecipes,
+        paramsToGetRecipes.liked,
+        paramsToGetRecipes.cuisinesIds,
+        +queryParametersObj.page,
+        paramsToGetRecipes.filterType,
+        paramsToGetRecipes.filter,
+      ).then((response) => {
+        const { data } = response.data;
 
-          setRecipesListPageInfo({
-            ...recipesListPageInfo,
-            page: data.page,
-            total: data.total,
-            total_pages: data.total_pages,
-          });
+        if (queryParametersObj.page > data.total_pages) {
+          queryParametersObj.page = data.page;
+          window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+        }
 
-          setIsLoadingRecipes(false);
+        setRecipesList([...data.recipes]);
+
+        setRecipesListPageInfo({
+          ...recipesListPageInfo,
+          page: data.page,
+          total: data.total,
+          total_pages: data.total_pages,
         });
 
-        firstRender.current = false;
-        return;
-      }
+        setParamsToGetRecipes({
+          ...paramsToGetRecipes,
+          page: +queryParametersObj.page,
+        });
 
+        setIsLoadingRecipes(false);
+      });
+    } else {
       getRecipesList(
         paramsToGetRecipes.privateRecipes,
         paramsToGetRecipes.liked,
@@ -98,6 +104,12 @@ const FavouriteRecipesView = (props: any) => {
         paramsToGetRecipes.filter,
       ).then((response) => {
         const { data } = response.data;
+
+        const queryParameters = {
+          page: paramsToGetRecipes.page,
+        };
+        window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
+
         setRecipesList([...data.recipes]);
 
         setRecipesListPageInfo({
@@ -109,9 +121,13 @@ const FavouriteRecipesView = (props: any) => {
       });
 
       setIsLoadingRecipes(false);
-
-      firstRender.current = false;
     }
+  };
+
+  useEffect(() => {
+    let cleanComponent = false;
+    if (!cleanComponent) getRecipesListFunc();
+
     return () => cleanComponent = true;
   }, [
     paramsToGetRecipes.page,
@@ -126,6 +142,10 @@ const FavouriteRecipesView = (props: any) => {
   };
 
   const getClickedPage = (value: number) => {
+    const queryParameters = queryString.parse(window.location.search);
+    queryParameters.page = `${value}`;
+    window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
+
     setParamsToGetRecipes({
       ...paramsToGetRecipes,
       page: value,
@@ -184,7 +204,7 @@ const FavouriteRecipesView = (props: any) => {
             spinSize='lg'
           >
             <div className='favourites-recipes__list'>
-              {recipesList.map((item, itemIndex) => (
+              {recipesList.map((item) => (
                 <div
                   key={item.id}
                   className='favourites-recipes__list-item'
@@ -202,11 +222,7 @@ const FavouriteRecipesView = (props: any) => {
                     <button
                       type='button'
                       onClick={() => {
-                        likeRecipe(item.id).then(() => {
-                          const updatedRecipesList = [...recipesList];
-                          updatedRecipesList.splice(itemIndex, 1);
-                          setRecipesList([...updatedRecipesList]);
-                        });
+                        likeRecipe(item.id).then(() => getRecipesListFunc());
                       }}
                       className={classnames('favourites-recipes__list-item-media-like', {
                         active: item.is_liked,

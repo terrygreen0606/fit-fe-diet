@@ -84,7 +84,7 @@ const RecipesView = (props: any) => {
 
           const queryParametersObj = queryString.parse(window.location.search);
 
-          if (queryParametersObj.page > data.page) {
+          if (queryParametersObj.page > data.total_pages) {
             queryParametersObj.page = data.page;
             window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
           }
