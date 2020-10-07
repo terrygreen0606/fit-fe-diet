@@ -24,8 +24,8 @@ const AfterCheckoutPage = (props: any) => {
     next_price_text: null
   });
 
-  const [tariffLoading, setTariffLoading] = useState<boolean>(true);
-  const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
+  const [isTariffLoading, setTariffLoading] = useState<boolean>(true);
+  const [isTariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
 
   const [inviteLink, setInviteLink] = useState('');
 
@@ -91,8 +91,8 @@ const AfterCheckoutPage = (props: any) => {
 
               <div className="mt-4 mt-sm-5 pt-lg-5" >
                 <ContentLoading
-                  isLoading={tariffLoading}
-                  isError={tariffLoadingError}
+                  isLoading={isTariffLoading}
+                  isError={isTariffLoadingError}
                   fetchData={() => getActiveTariff()}
                 >
                   <h4 
