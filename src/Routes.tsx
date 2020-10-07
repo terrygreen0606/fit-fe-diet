@@ -36,6 +36,7 @@ const CancellationFormView = React.lazy(() => import('./views/Forms/Cancellation
 const RecipeFullView = React.lazy(() => import('./views/Recipes/RecipeFullView'));
 const AfterSignupPage = React.lazy(() => import('./views/AfterSignupPage'));
 const CheckoutPage = React.lazy(() => import('./views/CheckoutPage'));
+const AfterCheckoutPage = React.lazy(() => import('./views/AfterCheckoutPage'));
 const SettingsPaymentHistoryView = React.lazy(() => import('./views/Settings/SettingsPaymentHistoryView'));
 
 const Routes = () => (
@@ -65,6 +66,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <CheckoutPage {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path={routes.afterCheckout}
+      component={(props: any) => (
+        <Layout {...props}>
+          <AfterCheckoutPage {...props} />
         </Layout>
       )}
       exact

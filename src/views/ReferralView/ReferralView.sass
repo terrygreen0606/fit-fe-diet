@@ -54,27 +54,6 @@
       left: 50%
       transform: translateX(-50%)
 
-  &__separator
-    position: relative
-    margin-bottom: 60px
-    text-align: center
-
-    &::before
-      content: ''
-      position: absolute
-      top: 50%
-      left: 50%
-      transform: translate(-50%, -50%)
-      width: 480px
-      border-bottom: 1px dashed #106EE8
-
-    &-text
-      position: relative
-      padding: 0 32px
-      font-size: 26px
-      line-height: 1.2
-      background-color: #ffffff
-
   &__container-input
     position: relative
 
@@ -133,22 +112,6 @@
 
       path
         fill: $white
-
-  &__socials
-    position: relative
-    display: flex
-    justify-content: center
-    margin-top: 40px
-    z-index: 2
-
-    @media (max-width: 767px)
-      margin-top: 270px
-
-    .share-button
-      margin: 0 17px
-
-      @media (max-width: 500px)
-        margin: 0 6px
 
   &__container-media
     position: relative

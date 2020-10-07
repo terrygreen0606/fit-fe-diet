@@ -36,11 +36,14 @@ export const getRecipeData = (
     &ext_ingredients=${ext_ingredients}`,
   );
 
-export const likeRecipe = (recipeId: string) => axios.put(`/recipe/like/${recipeId}`);
+export const likeRecipe = (recipeId: string) => 
+  axios.put(`/recipe/like/${recipeId}`);
 
-export const prepareRecipe = (recipeId: string) => axios.put(`/recipe/prepared/${recipeId}`);
+export const prepareRecipe = (recipeId: string) => 
+  axios.put(`/recipe/prepared/${recipeId}`);
 
-export const deleteRecipe = (recipeId: string) => axios.delete(`/recipe/${recipeId}`);
+export const deleteRecipe = (recipeId: string) => 
+  axios.delete(`/recipe/${recipeId}`);
 
 export const addRecipeNote = (
   recipeId: string,
@@ -53,7 +56,8 @@ export const addRecipeNote = (
     },
   );
 
-export const getMealTimes = () => axios.get('recipe/mealtimes');
+export const getMealTimes = () => 
+  axios.get('recipe/mealtimes');
 
 export const getRecipesList = (
   privateRecipes: 0 | 1 = 0,

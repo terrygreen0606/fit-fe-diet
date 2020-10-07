@@ -1,0 +1,105 @@
+@import '../../assets/sass/_vars'
+
+
+.referral
+  &__container-input
+    position: relative
+
+    .fgInvalidMsg
+      position: absolute
+      top: 100%
+      left: 50%
+      transform: translateX(-50%)
+
+  &__input.fg-input
+    padding: 30px 140px 30px 40px
+    font-size: 20px
+    border-color: $steel-blue
+    color: darken($steel-blue, 10%)
+
+    &::placeholder
+      font-size: 20px
+      color: $steel-blue
+  
+  &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):hover,
+  &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):focus
+    border-color: darken($steel-blue, 10%) !important
+
+  &__invite-button
+    position: absolute
+    top: 28px
+    right: 28px
+    display: flex
+    align-items: center
+    font-size: 22px
+    font-weight: bold
+    color: $steel-blue
+    border: none
+    background: transparent
+    cursor: pointer
+
+    &:hover
+      .referral__invite-button-container-icon
+        transform: translateX(3px)
+
+    &-text
+      margin-right: 20px
+
+    &-container-icon
+      width: 26px
+      height: 26px
+      display: flex
+      align-items: center
+      justify-content: center
+      background: $steel-blue
+      border-radius: 50%
+      transition: transform 0.2s ease
+      
+    &-icon
+      margin-right: -2px
+
+      path
+        fill: $white
+
+
+@media only screen and(max-width: 767px)
+  .referral
+    &__invite-link
+      position: initial
+      &-input
+        position: absolute
+        left: 50%
+        transform: translateX(-50%)
+        bottom: 300px
+        padding: 30px 15px 30px 40px
+        max-width: 540px
+        justify-content: flex-start
+        font-size: 14px
+        overflow: hidden
+        z-index: 3
+
+      &-copied
+        top: initial
+        bottom: 270px
+    
+    // &__container-input
+    //   position: absolute
+    //   bottom: 160px
+    //   left: 50%
+    //   transform: translateX(-50%)
+    //   max-width: 540px
+    //   width: 100%
+
+    &__input.fg-input:placeholder-shown
+      &::placeholder
+        font-size: 14px
+    
+    &__invite-button
+      &-text
+        font-size: 14px
+
+    
+@media only screen and(max-width: 567px)
+  .referral
+    &__container-input
+      max-width: initial

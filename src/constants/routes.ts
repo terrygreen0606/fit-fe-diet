@@ -25,6 +25,7 @@ export const routes = {
   recipeFullView: '/recipe/:recipeId',
   afterSignup: '/after-signup',
   checkout: '/checkout',
+  afterCheckout: '/checkout/thankyou',
   getRecipeFullView: (recipeId: string) => `/recipe/${recipeId}`,
   paymentHistorySettings: '/settings/payment-history',
 };
