@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
+import queryString from 'query-string';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -14,6 +15,7 @@ import {
   likeRecipe,
   prepareRecipe,
   addToShoppingListByRecipes,
+  getRecipesListByUrl,
 } from 'api';
 
 // Components
@@ -22,7 +24,7 @@ import NutritionPlanCard from 'components/NutritionPlanCard';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import ContentLoading from 'components/hoc/ContentLoading';
-import Pagination from 'components/common/Pagination';
+import Pagination from 'components/Pagination';
 import useDebounce from 'components/hooks/useDebounce';
 
 import './RecipesView.sass';
@@ -30,6 +32,9 @@ import './RecipesView.sass';
 import { selectStyles } from './selectData';
 
 const RecipesView = (props: any) => {
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
+
   const [recipesList, setRecipesList] = useState<any[]>([]);
 
   const [recipesListPageInfo, setRecipesListPageInfo] = useState<{
@@ -46,6 +51,8 @@ const RecipesView = (props: any) => {
 
   const [isLoadingPage, setLoadingPage] = useState<boolean>(true);
 
+  const [inputPlaceholder, setInputPlaceholder] = useState<string>(t('recipe.search_by_recipes'));
+
   const [paramsToGetRecipes, setParamsToGetRecipes] = useState<any>({
     privateRecipes: 0,
     liked: 0,
@@ -57,16 +64,45 @@ const RecipesView = (props: any) => {
 
   const debouncedSearch = useDebounce(paramsToGetRecipes.filter, 500);
 
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+  const generateQueryString = (page: number, filter: string) => {
+    window.history.pushState(null, null, `/recipes/?page=${page}&filter=${filter}`);
+  };
 
   useEffect(() => {
-    getRecipeCuisines().then((response) => {
+    getRecipeCuisines(0, 1).then((response) => {
       setCuisinesList([...response.data.data]);
     });
   }, []);
 
+  const firstRender = useRef(true);
+
   useEffect(() => {
+    if (firstRender.current && window.location.search) {
+      getRecipesListByUrl(window.location.search)
+        .then((response) => {
+          const { data } = response.data;
+
+          const queryParametersObj = queryString.parse(window.location.search);
+
+          if (queryParametersObj.page > data.page) {
+            queryParametersObj.page = data.page;
+            window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+          }
+
+          setRecipesList([...data.recipes]);
+
+          setRecipesListPageInfo({
+            ...recipesListPageInfo,
+            page: data.page,
+            total: data.total,
+            total_pages: data.total_pages,
+          });
+
+          setLoadingPage(false);
+        });
+      firstRender.current = false;
+      return;
+    }
     getRecipesList(
       paramsToGetRecipes.privateRecipes,
       paramsToGetRecipes.liked,
@@ -85,6 +121,8 @@ const RecipesView = (props: any) => {
         total: data.total,
         total_pages: data.total_pages,
       });
+
+      generateQueryString(data.page, paramsToGetRecipes.filter);
 
       setLoadingPage(false);
     });
@@ -220,7 +258,7 @@ const RecipesView = (props: any) => {
                     }}
                     searchBar
                     block
-                    placeholder={t('recipe.search_by_recipes')}
+                    placeholder={inputPlaceholder}
                     className='recipes-search-wrap-input'
                   />
                   <div className='recipes-search-wrap-select'>
@@ -247,6 +285,8 @@ const RecipesView = (props: any) => {
                           ...paramsToGetRecipes,
                           filterType: e.value,
                         });
+
+                        setInputPlaceholder(e.label);
                       }}
                     />
                   </div>
@@ -304,9 +344,9 @@ const RecipesView = (props: any) => {
                     </div>
                   ))}
                 </div>
-                {recipesListPageInfo.total_pages >= 2 && (
+                {recipesListPageInfo.total_pages > 1 && (
                   <Pagination
-                    currentItem={1}
+                    currentItem={recipesListPageInfo.page}
                     lastPage={recipesListPageInfo.total_pages}
                     getClickedPage={getClickedPage}
                     quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}

@@ -21,61 +21,32 @@ const Pagination = ({
   quantityButtons,
 }: PaginationProps) => {
   const [buttons, setButtons] = useState<any[]>([]);
-  const [activeBtn, setActiveBtn] = useState<number>();
 
   useEffect(() => {
     const updatedButtons = [];
 
+    if (lastPage - currentItem < quantityButtons) {
+      for (let i = 0; i < quantityButtons; i++) {
+        updatedButtons.push(lastPage - quantityButtons + 1 + i);
+      }
+      setButtons([...updatedButtons]);
+      return;
+    }
+
     for (let i = 0; i < quantityButtons; i++) {
-      if (i === 0) setActiveBtn(currentItem);
       updatedButtons.push(currentItem + i);
     }
 
     setButtons([...updatedButtons]);
   }, [currentItem, lastPage, quantityButtons]);
 
-  const handlerClick = (clickedItem) => {
-    getClickedPage(clickedItem);
-
-    setActiveBtn(clickedItem);
-
-    if (lastPage - clickedItem < Math.round(quantityButtons / 2)) {
-      const updatedButtons = [];
-
-      for (let i = 0; i < quantityButtons; i++) {
-        updatedButtons.push(lastPage + i - quantityButtons + 1);
-      }
-
-      setButtons([...updatedButtons]);
-      return;
-    }
-
-    if (quantityButtons === 3) {
-      const updatedButtons = [];
-
-      for (let i = 0; i < quantityButtons; i++) {
-        updatedButtons.push(clickedItem + i - 1);
-      }
-
-      setButtons([...updatedButtons]);
-    } else if (clickedItem > Math.round(quantityButtons / 2)) {
-      const updatedButtons = [];
-
-      for (let i = 0; i < quantityButtons; i++) {
-        updatedButtons.push(clickedItem + i - 2);
-      }
-
-      setButtons([...updatedButtons]);
-    }
-  };
-
   return (
     <ul className='pagination'>
       <li className='pagination__item pagination__item_arrow'>
         <button
           type='button'
-          disabled={activeBtn === 1}
-          onClick={() => handlerClick(activeBtn - 1)}
+          disabled={currentItem === 1}
+          onClick={() => getClickedPage(currentItem - 1)}
           className='pagination__item-btn pagination__item-btn_arrow pagination__item-btn_arrow-prev'
         >
           <ArrowLeftGray />
@@ -88,9 +59,9 @@ const Pagination = ({
         >
           <button
             type='button'
-            onClick={() => handlerClick(item)}
+            onClick={() => getClickedPage(item)}
             className={classnames('pagination__item-btn', {
-              active: item === activeBtn,
+              active: item === currentItem,
             })}
           >
             {item}
@@ -100,8 +71,8 @@ const Pagination = ({
       <li className='pagination__item pagination__item_arrow'>
         <button
           type='button'
-          disabled={activeBtn === lastPage}
-          onClick={() => handlerClick(activeBtn + 1)}
+          disabled={currentItem === lastPage}
+          onClick={() => getClickedPage(currentItem + 1)}
           className='pagination__item-btn pagination__item-btn_arrow pagination__item-btn_arrow-next'
         >
           <ArrowRightGray />
