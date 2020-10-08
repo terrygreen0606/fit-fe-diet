@@ -15,6 +15,7 @@ import {
   getTranslate,
   getVideo,
   getMealIcon,
+  redirectToPayView,
 } from 'utils';
 import {
   searchIngredients,
@@ -177,12 +178,16 @@ const CreateRecipeView = (props: any) => {
   useEffect(() => {
     let cleanComponent: boolean = false;
     if (!props.location.propsRecipeId) {
-      setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
-      getMealTimes().then((response) => {
-        if (!cleanComponent) {
-          setMealTimes(response.data.data.list);
-        }
-      });
+      if (settings.paid_until > 0) {
+        setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
+        getMealTimes().then((response) => {
+          if (!cleanComponent) {
+            setMealTimes(response.data.data.list);
+          }
+        });
+      } else {
+        redirectToPayView(props.history, t('tariff.not_paid'));
+      }
     }
 
     return () => cleanComponent = true;
@@ -191,78 +196,82 @@ const CreateRecipeView = (props: any) => {
   useEffect(() => {
     let cleanComponent: boolean = false;
     if (props.location.propsRecipeId && !cleanComponent) {
-      let mealTimesList = [];
+      if (settings.paid_until > 0) {
+        let mealTimesList = [];
 
-      getMealTimes().then((response) => {
-        mealTimesList = [...response.data.data.list];
-        setMealTimes(response.data.data.list);
-      });
-
-      getRecipeData(props.location.propsRecipeId, false, false, false, true)
-        .then((response) => {
-          const { data } = response.data;
-
-          const updatedImages: Array<any> = [];
-
-          const pushedIdsImages: Array<any> = [];
-
-          data.images.forEach((imageItem) => {
-            pushedIdsImages.push(imageItem.image_id);
-
-            updatedImages.push({
-              id: imageItem.id,
-              image_id: imageItem.id,
-              url: imageItem.url,
-              isFailed: false,
-              isLoaded: true,
-            });
-          });
-
-          if (data.video_url) {
-            setVideoLinkIframe(getVideo(data.video_url));
-          }
-
-          const updatedIngredients: Array<any> = [...data.ingredients];
-
-          updatedIngredients.map((ingredientItem) => {
-            ingredientItem.calorie /= 100;
-            ingredientItem.carbohydrate /= 100;
-            ingredientItem.fat /= 100;
-            ingredientItem.protein /= 100;
-            ingredientItem.salt /= 100;
-            ingredientItem.sugar /= 100;
-            ingredientItem.isFullBlock = true;
-          });
-
-          const mealTimeForRecipe = [];
-
-          data.mealtime_codes.map((mealItem) => {
-            mealTimesList.find((findItem) => {
-              if (mealItem.i18n_code === findItem.i18n_code) {
-                findItem.isActive = true;
-                mealTimeForRecipe.push(findItem.code);
-              }
-            });
-          });
-
-          setCreateRecipeForm({
-            ...createRecipeForm,
-            recipeName: data.name_i18n,
-            recipePreparation: data.preparation_i18n,
-            ingredients: updatedIngredients,
-            measurement: settings.measurement,
-            cuisine: data.cuisine_ids,
-            imageIds: pushedIdsImages,
-            servingsCnt: data.servings_cnt,
-            time: data.time,
-            totalWeight: data.weight,
-            costLevel: data.cost_level,
-            videoUrl: data.video_url,
-            mealtimes: mealTimeForRecipe,
-          });
-
-          setFiles(updatedImages);
+        getMealTimes().then((response) => {
+          mealTimesList = [...response.data.data.list];
+          setMealTimes(response.data.data.list);
         });
+
+        getRecipeData(props.location.propsRecipeId, false, false, false, true)
+          .then((response) => {
+            const { data } = response.data;
+
+            const updatedImages: Array<any> = [];
+
+            const pushedIdsImages: Array<any> = [];
+
+            data.images.forEach((imageItem) => {
+              pushedIdsImages.push(imageItem.image_id);
+
+              updatedImages.push({
+                id: imageItem.id,
+                image_id: imageItem.id,
+                url: imageItem.url,
+                isFailed: false,
+                isLoaded: true,
+              });
+            });
+
+            if (data.video_url) {
+              setVideoLinkIframe(getVideo(data.video_url));
+            }
+
+            const updatedIngredients: Array<any> = [...data.ingredients];
+
+            updatedIngredients.map((ingredientItem) => {
+              ingredientItem.calorie /= 100;
+              ingredientItem.carbohydrate /= 100;
+              ingredientItem.fat /= 100;
+              ingredientItem.protein /= 100;
+              ingredientItem.salt /= 100;
+              ingredientItem.sugar /= 100;
+              ingredientItem.isFullBlock = true;
+            });
+
+            const mealTimeForRecipe = [];
+
+            data.mealtime_codes.map((mealItem) => {
+              mealTimesList.find((findItem) => {
+                if (mealItem.i18n_code === findItem.i18n_code) {
+                  findItem.isActive = true;
+                  mealTimeForRecipe.push(findItem.code);
+                }
+              });
+            });
+
+            setCreateRecipeForm({
+              ...createRecipeForm,
+              recipeName: data.name_i18n,
+              recipePreparation: data.preparation_i18n,
+              ingredients: updatedIngredients,
+              measurement: settings.measurement,
+              cuisine: data.cuisine_ids,
+              imageIds: pushedIdsImages,
+              servingsCnt: data.servings_cnt,
+              time: data.time,
+              totalWeight: data.weight,
+              costLevel: data.cost_level,
+              videoUrl: data.video_url,
+              mealtimes: mealTimeForRecipe,
+            });
+
+            setFiles(updatedImages);
+          });
+      } else {
+        redirectToPayView(props.history, t('tariff.not_paid'));
+      }
     }
 
     return () => cleanComponent = true;
