@@ -267,7 +267,7 @@ const JoinStep = (props: any) => {
               props.setRegisterView('INFO_WEIGHT_GOAL');
             }
           } catch {
-            
+
           }
         }
       });
