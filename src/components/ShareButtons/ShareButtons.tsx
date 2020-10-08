@@ -12,13 +12,15 @@ import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-i
 import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
 import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
 
+type SocialType = 'twitter' | 'facebook' | 'telegram' | 'whatsapp';
+
 type ShareButtonsProps = {
   shareLink?: string;
   shareText?: string,
   visible?: boolean,
   className?: string;
   disabled?: boolean,
-  items?: string[],
+  items?: SocialType[],
   fetchData?: () => Promise<any>,
 };
 
