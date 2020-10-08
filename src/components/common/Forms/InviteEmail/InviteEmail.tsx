@@ -90,29 +90,28 @@ const InviteEmail = (props: InviteEmailProps) => {
         [props.className]: props.className,
       })}
     >
+      <InputField
+        name='email'
+        data-validate='["email", "required"]'
+        errors={getFieldErrors('email')}
+        value={inviteFriendsForm.email}
+        onChange={(e) => validateOnChange('email', e.target.value, e)}
+        block
+        placeholder={t('referral.enter_email')}
+        height='lg'
+        className='referral__input card-bg'
+      />
+
       <ContentLoading
         isLoading={isRequestSent}
         isError={false}
-        spinSize='lg'
+        spinSize='md'
         color='#106EE8'
       >
-        <InputField
-          name='email'
-          data-validate='["email", "required"]'
-          errors={getFieldErrors('email')}
-          value={inviteFriendsForm.email}
-          onChange={(e) => validateOnChange('email', e.target.value, e)}
-          block
-          placeholder={t('referral.enter_email')}
-          height='lg'
-          className='referral__input card-bg'
-        />
-
         <button type='submit' className='referral__invite-button'>
           <span className='referral__invite-button-text'>
             {t('referral.invite')}
           </span>
-
           <div className='referral__invite-button-container-icon'>
             <ArrowRight className='referral__invite-button-icon' />
           </div>
