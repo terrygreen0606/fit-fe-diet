@@ -1,14 +1,18 @@
 @import '../../assets/sass/vars'
 
-
 .nutrition-plan-list
   .nutrition-plan-card
     margin-bottom: 65px
+    height: calc(100% - 65px)
+
+    @media (max-width: 768px)
+      margin-bottom: 30px
+      height: calc(100% - 30px)
 
 .nutrition-plan-card
   position: relative
-  padding: 13px 17px
-  cursor: pointer
+  padding: 13px 17px 40px
+
   &-image
     display: block
     position: relative
@@ -17,6 +21,7 @@
     background-position: center center
     background-repeat: no-repeat
     border-radius: 27px
+
     &::before
       content: ''
       position: absolute
@@ -26,47 +31,91 @@
       height: 100%
       background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.71) 100%)
       border-radius: 27px
-    &::after
-      content: ''
+      opacity: 0
+      transition: 0.2s opacity ease
+
+    &-touch-icon
       position: absolute
-      top: 0
-      left: 0
-      width: 100%
-      height: 100%
-      background-image: url('../../assets/img/icons/cursor-touch-icon.svg')
-      background-repeat: no-repeat
-      background-position: center center
-      background-size: 35px
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      opacity: 0
+      transition: 0.2s opacity ease
+
+  &-image:hover
+    &::before
+      opacity: 1
+
+    .nutrition-plan-card-image-touch-icon
+      opacity: 1
+
   &-head
     display: flex
+    justify-content: space-between
+    max-height: 58px
+    overflow: hidden
     margin-top: 19px
-  &-controls
-    &-list
-      width: 100%
-      display: flex
-      justify-content: flex-end
-      align-items: center
-    &-item
-      &:not(:last-child)
-        margin-right: 10px
-    &-icon
-      width: 30px
-      cursor: pointer
+    margin-bottom: 8px
+
+    @media (max-width: 768px)
+      max-height: 44px
+
+  &-title
+    margin-bottom: 0
+    padding-right: 20px
+    font-size: 24px
+    font-weight: bold
+    line-height: 1.2
+    text-decoration: none
+    color: $black
+    border-bottom: 1px solid transparent
+
+    @media (max-width: 768px)
+      font-size: 18px
+
+    &:hover
+      border-bottom: 1px solid transparent
+
+  &-heart
+    height: 100%
+    padding: 0
+    border: none
+    background-color: transparent
+    line-height: 0
+    cursor: pointer
+
+    & > *
+      line-height: initial
+
+    svg
+      width: 26px
+      height: 25px
+
+      path
+        fill: transparent
+        stroke: #F27C7C
+        transition: 0.2s fill ease
+
+  &-heart.active,
+  &-heart:hover
+    svg path
+      fill: #F27C7C
+
   &-descr
-    position: relative
-    &::after
-      content: ''
-      position: absolute
-      bottom: -10px
-      left: 0
-      width: 80%
-      border-bottom: 1px solid $steel-blue
-  &-bottom
-    margin-top: 15px
+    margin-bottom: 10px
+    padding-bottom: 10px
+    border-bottom: 1px solid $steel-blue
+
+    span
+      display: inline-block
+      max-height: 48px
+      overflow: hidden
+
   &-time
     font-size: 14px
     line-height: 17px
     color: #000
+
   &-mark
     display: inline-block
     width: 8px
@@ -74,46 +123,11 @@
     margin: 0 5px
     border-radius: 100%
     background-color: $mint-green
+
   &-price
     font-size: 14px
     line-height: 17px
     color: #000
-  &.active
-    .nutrition-plan-card-checkmark
-      background-color: $caribbean-green
-      background-image: url('../../assets/img/icons/check-icon.svg')
-  &.cross
-    opacity: .35
-    .nutrition-plan-card-checkmark
-      background-image: url('../../assets/img/icons/cross-icon-black.svg')
-      background-size: 38%
-      background-position: center center
-  &-checkmark
-    position: absolute
-    bottom: -20px
-    right: 26px
-    display: inline-block
-    width: 43px
-    height: 43px
-    border-radius: 100%
-    background-color: $ghost-white
-    border: 8px solid #fff
-    background-size: 60%
-    background-repeat: no-repeat
-    background-position: center center
-    box-shadow: 0 3px 5px #BAC2D2
-    z-index: 1
-  &::before
-    content: ''
-    position: absolute
-    bottom: -34px
-    right: 14px
-    width: 68px
-    height: 68px
-    background-color: #fff
-    border-radius: 100%
-    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.08)
-    z-index: 0
 
   &.horizontal-mobile
     @media (max-width: 768px)
@@ -122,12 +136,9 @@
       flex-wrap: wrap
       box-shadow: none
       padding: 0
+
       &::before
         content: none
-
-      &.active
-        .nutrition-plan-card-checkmark
-          background-image: url("../../assets/img/icons/plus-icon.svg")
 
       .horizontal-mobile-div
         flex: 0 1 calc(60% - 15px)
@@ -142,29 +153,30 @@
           margin-right: 24px
           max-height: 120px
           border-radius: 10px
+
           &::after
             content: none
+
         &-title
           margin-bottom: 0 !important
           align-self: flex-end
+
         &-controls-icon
           align-self: flex-start
           width: 40px !important
           height: 40px !important
+
         &-descr, &-time, &-mark, &-price
           font-size: 11px
           line-height: 13px
-        &-checkmark
-          bottom: 25px
-          right: -10px
-          border: none
-          width: 26px
-          height: 26px
+
         &-head
           @media (max-width: 375px)
             flex-direction: column-reverse
+
             .nutrition-plan-card-title
               align-self: flex-start
+
             .nutrition-plan-card-controls-list
               justify-content: flex-start
 
@@ -172,18 +184,76 @@
         width: 50px !important
         height: 50px !important
 
-#nutrition-plan-reload-icon
-  opacity: .3
-  &:hover
-    opacity: 1
+  &-controls
+    position: absolute
+    top: calc(100% - 43px)
+    right: 27px
+    display: flex
+    align-items: center
 
-#nutrition-plan-favorite-icon
-  display: inline-block
-  width: 25px
-  height: 25px
-  background-image: url('../../assets/img/icons/heart-outline-icon.svg')
-  background-size: contain
-  background-repeat: no-repeat
-  background-position: center center
-  &:hover, &.favorite
-    background-image: url('../../assets/img/icons/heart-filled-icon.svg')
+    @media (max-width: 1200px)
+      top: calc(100% - 20px)
+      right: 0
+      width: 100%
+      justify-content: space-between
+
+    &-item
+      display: flex
+      align-items: center
+      justify-content: center
+      padding: 0
+      width: 68px
+      height: 68px
+      background-color: $white
+      border: none
+      border-radius: 50%
+      cursor: pointer
+
+      @media (max-width: 1200px)
+        width: 44px
+        height: 44px
+
+      &:not(:first-child)
+        margin-left: 8px
+
+        @media (max-width: 1200px)
+          margin-left: 0
+
+      &-icon
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 44px
+        height: 44px
+        padding: 6px
+        border: 9px solid $white
+        box-shadow: 0px 3px 5px #BAC2D2
+        background-color: #F2F2F2
+        border-radius: 50%
+        transition: 0.2s background-color ease
+
+        svg path
+          fill: #DAD7D7
+          transition: 0.2s fill, 0.2s stroke ease
+
+      &-icon-reload
+        svg path
+          fill: transparent
+
+    &-item.active,
+    &-item:hover
+      .nutrition-plan-card-controls-item-icon-reload
+        background-color: $orange-accent
+
+        svg path
+          stroke: $white
+
+      .nutrition-plan-card-controls-item-icon-shop
+        svg path
+          fill: $black
+
+      .nutrition-plan-card-controls-item-icon-checked
+        background-color: $bright-green
+
+        svg path
+          fill: $white

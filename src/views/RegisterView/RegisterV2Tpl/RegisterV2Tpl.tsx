@@ -23,7 +23,13 @@ const RegisterV2Tpl = (props: any) => {
   return (
     <div className="register_v2tpl">
       <ProgressLine
-        steps={['Choose a goal', 'Add info', 'Join']}
+        steps={[{
+          text: 'Choose a goal'
+        }, { 
+          text: 'Add info'
+        }, { 
+          text: 'Join'
+        }]}
         activeStepIndex={1}
       />
 

@@ -1,4 +1,4 @@
-@import '../../../assets/sass/_vars'
+@import '../../../assets/sass/vars'
 
 .family
   padding: 36px 40px 100px
@@ -10,6 +10,7 @@
     font-weight: bold
 
   &__invite-link
+    position: relative
     margin: 0 auto 45px
     max-width: 540px
     text-align: center
@@ -22,6 +23,7 @@
     &-input
       width: 100%
       padding: 22.5px 27px
+      min-height: 67px
       text-align: center
       font-size: 20px
       font-weight: normal
@@ -34,6 +36,10 @@
         color: $black
 
     &-copied
+      position: absolute
+      top: 100%
+      left: 50%
+      transform: translateX(-50%)
       margin-top: 10px
       color: $success-green
 
@@ -63,6 +69,7 @@
     margin-bottom: 120px
 
     &-input-wrap
+      position: relative
       display: flex
       align-items: center
       flex-wrap: wrap
@@ -71,11 +78,14 @@
 
       .fgLabel
         margin-right: 30px
+        margin-bottom: 0
         font-size: 20px
 
       .fgInvalidMsg
+        position: absolute
+        top: 100%
+        left: 206px
         width: 100%
-        padding-left: 196px
 
     &-input
       flex: 1
@@ -181,10 +191,12 @@
 
     &__invite-link
       &-desc
+        margin-bottom: 0
         text-align: left
         font-size: 14px
 
       &-input
+        min-height: 42px
         padding: 10px 5px
         font-size: 14px
 
@@ -194,21 +206,30 @@
     &__separator
       margin-bottom: 40px
 
+      &::before
+        width: 100%
+
+      &-text
+        padding: 0 20px
+        font-size: 18px
+
     &__invite-email
       margin-bottom: 60px
       flex-wrap: wrap
 
       &-input-wrap
         flex-wrap: wrap
-        margin-bottom: 20px
+        margin-bottom: 50px
         padding-right: 0
         flex-basis: 100%
 
         .fgLabel
           width: 100%
+          padding-left: 0
+          font-size: 14px
 
         .fgInvalidMsg
-          padding-left: 0
+          left: 0
 
       &-input
         width: 100%
@@ -248,6 +269,10 @@
 
 @media only screen and (max-width: 400px)
   .family
+    &__invite-link
+      &-input
+        font-size: 12px
+
     &__list
       &-item
         flex-wrap: wrap

@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 
+import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 // Icons
 import { ReactComponent as SettingsIcon } from 'assets/img/icons/settings-icon.svg';
@@ -32,9 +34,11 @@ import './DashboardView.sass';
 import { data, labels } from './mockDatasChart';
 
 const DashboardView = (props: any) => {
-  const t = (code: string, placeholders?: any) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    getTranslate(props.localePhrases, code, placeholders);
+  const t = (code: string, placeholders?: any) => getTranslate(
+    props.localePhrases,
+    code,
+    placeholders,
+  );
 
   return (
     <>
@@ -42,6 +46,15 @@ const DashboardView = (props: any) => {
         <title>{t('app.title.dashboard')}</title>
       </Helmet>
       <div className='container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes.main,
+              name: t('breadcrumb.main'),
+            },
+          ]}
+          currentPage={t('app.title.dashboard')}
+        />
         <div className='dashboard'>
           <div className='dashboard__user card-bg'>
             <div className='dashboard__user-personal-data'>
@@ -81,7 +94,7 @@ const DashboardView = (props: any) => {
                       {`${t('common.subscription_title')}:`}
                     </div>
                     <div className='dashboard__user-personal-data-activity-subscription-date'>
-                      {t('dashboard.subscription_description', { number: 20 })}
+                      {t('dashboard.tariff.end', { COUNT: 20 })}
                     </div>
                   </div>
                 </div>
@@ -105,7 +118,7 @@ const DashboardView = (props: any) => {
                 </div>
                 <div className='dashboard__user-rewards-item-text'>
                   <div className='dashboard__user-rewards-item-text-title'>
-                    {t('dashboard.trophy', { number: 1 })}
+                    {t('dashboard.trophy')}
                   </div>
                   <div className='dashboard__user-rewards-item-text-description'>
                     {t('dashboard.rewards_description')}
@@ -118,7 +131,7 @@ const DashboardView = (props: any) => {
                 </div>
                 <div className='dashboard__user-rewards-item-text'>
                   <div className='dashboard__user-rewards-item-text-title'>
-                    {t('dashboard.trophy', { number: 2 })}
+                    {t('dashboard.trophy')}
                   </div>
                   <div className='dashboard__user-rewards-item-text-description'>
                     {t('dashboard.rewards_description')}
@@ -143,7 +156,7 @@ const DashboardView = (props: any) => {
                 </div>
               </div>
               <div className='dashboard__cards-item_diet-description'>
-                {t('dashboard.diet_description', { number: 12.05 })}
+                {t('dashboard.diet_description', { PERIOD: 12.05 })}
               </div>
             </div>
             <div
@@ -170,11 +183,11 @@ const DashboardView = (props: any) => {
                 <div className='dashboard__cards-item_workout-description-time'>
                   <ClockTimeIcon />
                   <span className='dashboard__cards-item_workout-description-time-quantity'>
-                    {t('common.minutes', { number: 16 })}
+                    {t('common.minutes', { COUNT: 16 })}
                   </span>
                 </div>
                 <div className='dashboard__cards-item_workout-description-play'>
-                  <div className='dashboard__cards-item_workout-description-play-duration'></div>
+                  <div className='dashboard__cards-item_workout-description-play-duration' />
                   <a
                     href='/'
                     className='dashboard__cards-item_workout-description-play-button'
@@ -211,10 +224,10 @@ const DashboardView = (props: any) => {
                   </div>
                   <div className='dashboard__cards-item_shopping-notifications-item-description'>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-title'>
-                      {t('common.snack')}
+                      {t('meal.snack')}
                     </div>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-content'>
-                      {t('common.products', { number: 20 })}
+                      {t('common.products', { COUNT: 20 })}
                     </div>
                   </div>
                 </div>
@@ -224,10 +237,10 @@ const DashboardView = (props: any) => {
                   </div>
                   <div className='dashboard__cards-item_shopping-notifications-item-description'>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-title'>
-                      {t('common.snack')}
+                      {t('meal.snack')}
                     </div>
                     <div className='dashboard__cards-item_shopping-notifications-item-description-content'>
-                      {t('common.products', { number: 20 })}
+                      {t('common.products', { COUNT: 20 })}
                     </div>
                   </div>
                 </div>
@@ -261,7 +274,7 @@ const DashboardView = (props: any) => {
                     <HeartIcon className='dashboard__cards-item_blood-datas-item-media-img' />
                   </div>
                   <div className='dashboard__cards-item_blood-datas-item-description'>
-                    {t('common.bpm', { number: 70 })}
+                    {t('common.bpm', { COUNT: 70 })}
                   </div>
                 </div>
               </div>
@@ -292,7 +305,9 @@ const DashboardView = (props: any) => {
                     {`1000 ${t('common.ml')}`}
                   </div>
                 </div>
-                <div className='dashboard__cards-item_water-rate-media'>50%</div>
+                <div className='dashboard__cards-item_water-rate-media'>
+                  50%
+                </div>
               </div>
             </div>
             <div

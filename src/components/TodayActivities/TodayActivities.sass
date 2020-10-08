@@ -2,6 +2,12 @@
 
 
 .today-activities-activity
+  &-title
+    margin-bottom: 50px
+
+    @media (max-width: 768px)
+      margin-bottom: 20px
+    
   &-list
     display: flex
     flex-wrap: wrap
@@ -12,6 +18,13 @@
 
     input:checked + .today-activities-activity-card .today-activities-activity-card-checkmark
       opacity: 1
+
+    label
+      margin-bottom: 20px
+
+      @media (max-width: 600px)
+        display: block
+        width: 100%
 
   &-card
     max-width: 140px
@@ -27,23 +40,23 @@
       align-items: center
       margin-right: 26px
 
+    @media (max-width: 600px)
+      justify-content: flex-start
+      max-width: initial
+      width: 100%
+
     &:hover, &.active
-      color: #fff
-      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
-      border-radius: 20px
+      color: $white
       .today-activities-activity-card
         &-icon
-          fill: #fff
+          fill: $white
           path
-            fill: #fff
+            fill: $white
           &-wrap
             border-color: $steel-blue
             background-color: $steel-blue
         &-title
           color: $steel-blue
-          font-weight: bold
-          @media (max-width: 768px)
-            font-weight: bold
 
     &.disabled
       opacity: .6
@@ -70,7 +83,7 @@
       background-position: center center
       border-radius: 100%
       box-shadow: 3px -3px 10px rgba(0, 0, 0, 0.08)
-      border: 8px solid #fff
+      border: 8px solid $white
       opacity: 0
       @media (max-width: 768px)
         right: 0
@@ -88,5 +101,8 @@
         +mt(.2s)
         @media (max-width: 768px)
           border-radius: 5px
-          height: 50px
+          height: 73  px
           margin: 0
+
+        @media (max-width: 600px)
+          margin-right: 20px

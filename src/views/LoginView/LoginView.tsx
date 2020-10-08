@@ -14,12 +14,12 @@ import {
   userLogin as userAuthLogin,
   userGoogleSignIn,
   userFacebookSignIn,
+  getAppSettings
 } from 'api';
-import { userLogin } from 'store/actions';
+import { userLogin, setAppSetting } from 'store/actions';
 import Helmet from 'react-helmet';
 
 // Components
-import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
@@ -51,8 +51,8 @@ const LoginView = (props: any) => {
   const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
 
   useEffect(() => {
-    initGoogleAuth(setLoginGoogleInitLoading, setLoginGoogleLoadingError);
-    initFacebookAuth(setLoginFacebookInitLoading);
+    // initGoogleAuth(setLoginGoogleInitLoading, setLoginGoogleLoadingError);
+    // initFacebookAuth(setLoginFacebookInitLoading);
   }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -69,14 +69,16 @@ const LoginView = (props: any) => {
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, loginErrors);
+    getFieldErrorsUtil(field, loginErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
   const userClientLogin = (authToken: string) => {
-    localStorage.setItem('authToken', authToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
     props.userLogin(authToken);
   };
 
@@ -97,22 +99,39 @@ const LoginView = (props: any) => {
 
       userAuthLogin(loginForm.email, loginForm.password)
         .then((response) => {
-          setLoginLoading(false);
-
           const token =
             response.data && response.data.access_token
               ? response.data.access_token
               : null;
 
           if (token) {
+            localStorage.setItem('authToken', token);
+            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            
+            getAppSettings()
+              .then(response => {
+                setLoginLoading(false);
+
+                if (response.data.success && response.data.data) {
+                  props.setAppSetting({
+                    ...response.data.data,
+                    is_private: true,
+                  });
+                }
+              })
+              .catch(error => {
+                toast.error(t('register.error_msg'));
+                setLoginLoading(false);
+              });
+
             userClientLogin(token);
           } else {
-            toast.error('Error occurred when Sign In User');
+            toast.error(t('register.error_msg'));
           }
         })
         .catch((error) => {
           setLoginLoading(false);
-          toast.error('Error occurred when Sign In User');
+          toast.error(t('register.error_msg'));
         });
     }
   };
@@ -141,12 +160,12 @@ const LoginView = (props: any) => {
             if (token) {
               userClientLogin(token);
             } else {
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             }
           })
           .catch((error) => {
             setLoginGoogleLoading(false);
-            toast.error('Error occurred when Sign In User');
+            toast.error(t('register.error_msg'));
           });
       })
       .catch((error) => {
@@ -176,12 +195,12 @@ const LoginView = (props: any) => {
               if (token) {
                 userClientLogin(token);
               } else {
-                toast.error('Error occurred when Sign In User');
+                toast.error(t('register.error_msg'));
               }
             })
             .catch((error) => {
               setLoginFacebookLoading(false);
-              toast.error('Error occurred when Sign In User');
+              toast.error(t('register.error_msg'));
             });
         } else {
           setLoginFacebookLoading(false);
@@ -199,14 +218,12 @@ const LoginView = (props: any) => {
         <title>{t('app.title.login')}</title>
       </Helmet>
 
-      <AuthSocialHelmet />
-
       <div className='loginScreen mt-3 mt-md-5'>
         <h3 className='loginScreen_title d-none d-lg-inline-block'>
-          {t('login.title', { product: 'TEST' })}
+          {t('login.title')}
         </h3>
 
-        <span className='mainHeader_logo d-lg-none' />
+        <span className='mainHeader_logo d-lg-none-i' />
 
         <form className='loginScreen_form' onSubmit={(e) => loginSubmit(e)}>
           <FormGroup>
@@ -216,6 +233,8 @@ const LoginView = (props: any) => {
               data-validate='["required", "email"]'
               errors={getFieldErrors('email')}
               value={loginForm.email}
+              autoComplete="email"
+              autoFocus={1}
               onChange={(e) => validateOnChange('email', e.target.value, e)}
               placeholder={t('login.email_placeholder')}
               block
@@ -225,17 +244,20 @@ const LoginView = (props: any) => {
           <FormGroup>
             <InputField
               name='password'
+              type="password"
               label={t('login.form_password')}
-              type='password'
-              autocomplate='current-password'
               data-validate='["required"]'
               errors={getFieldErrors('password')}
+              autoComplete="new-password"
               value={loginForm.password}
               onChange={(e) => validateOnChange('password', e.target.value, e)}
               placeholder={t('login.password_placeholder')}
               block
             />
           </FormGroup>
+
+          <input type="text" name="email" className="d-none" />
+          <input type="password" name="pass" className="d-none" />
 
           <Button
             className='loginScreen_btn'
@@ -249,7 +271,7 @@ const LoginView = (props: any) => {
             {t('login.submit')}
           </Button>
 
-          <span className='loginScreen_link link link-bold link-blue mt-md-5 mt-45'>{t('login.forgot_pass')}</span>
+          <Link to="/reset-password" className='loginScreen_link link link-bold link-blue mt-45'>{t('login.forgot_pass')}</Link>
         </form>
 
         {/*<div className='loginScreen_socialBtns mt-4'>
@@ -288,4 +310,6 @@ const LoginView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null, { userLogin })(LoginView));
+export default WithTranslate(
+  connect(null, { userLogin, setAppSetting }
+)(LoginView));

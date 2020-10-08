@@ -3,8 +3,11 @@ import { getTranslate } from 'utils';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
+import { routes } from 'constants/routes';
+
 import WithTranslate from 'components/hoc/WithTranslate';
 import WeekDays from 'components/WeekDays';
+import Breadcrumb from 'components/Breadcrumb';
 
 import { ReactComponent as DailyPlanIcon } from 'assets/img/icons/daily-plan-icon.svg';
 import { ReactComponent as WeekPlanIcon } from 'assets/img/icons/week-plan-icon.svg';
@@ -45,21 +48,19 @@ const FoodPlanView = (props: any) => {
     }
     return (
       <ol className='page-sub-tabs'>
-        {
-          weeks.map((item) => (
-            <li
-              key={item.title}
-              role='presentation'
-              value={weeks.indexOf(item)}
-              className={classnames('page-sub-tabs-item', {
-                active: week === weeks.indexOf(item),
-              })}
-              onClick={(e) => setWeek(e.currentTarget.value)}
-            >
-              {item.title}
-            </li>
-          ))
-        }
+        {weeks.map((item) => (
+          <li
+            key={item.title}
+            role='presentation'
+            value={weeks.indexOf(item)}
+            className={classnames('page-sub-tabs-item', {
+              active: week === weeks.indexOf(item),
+            })}
+            onClick={(e) => setWeek(e.currentTarget.value)}
+          >
+            {item.title}
+          </li>
+        ))}
       </ol>
     );
   };
@@ -71,14 +72,20 @@ const FoodPlanView = (props: any) => {
       </Helmet>
       <section>
         <div className='container'>
+          <Breadcrumb
+            routes={[
+              {
+                url: routes.main,
+                name: t('breadcrumb.main'),
+              },
+            ]}
+            currentPage={t('app.title.food_plan')}
+          />
           <div className='row food_plan'>
             <div className='col-md-8 col-lg-9'>
               <div className='row food_plan_tabs'>
                 <ul className='page-tabs mx-4 mx-md-0'>
-                  <li
-                    role='presentation'
-                    className='page-tabs-item active'
-                  >
+                  <li role='presentation' className='page-tabs-item active'>
                     {t('foodplan.your_menu')}
                   </li>
                 </ul>
@@ -107,17 +114,16 @@ const FoodPlanView = (props: any) => {
                   onChange={(e) => setPlan(e.target.value)}
                   checked={plan === 'week'}
                 />
-                <div className={classnames('d-flex flex-column choose_plan_item', {
-                  active: plan === 'week',
-                })}
+                <div
+                  className={classnames('d-flex flex-column choose_plan_item', {
+                    active: plan === 'week',
+                  })}
                 >
                   <span className='choose_plan_item_checkmark' />
                   <span className='choose_plan_item_icon-wrap'>
                     <WeekPlanIcon className='choose_plan_item_icon' />
                   </span>
-                  <h6 className='choose_plan_item_title'>
-                    {t('common.week')}
-                  </h6>
+                  <h6 className='choose_plan_item_title'>{t('common.week')}</h6>
                 </div>
               </label>
 
@@ -128,9 +134,11 @@ const FoodPlanView = (props: any) => {
                   onChange={(e) => setPlan(e.target.value)}
                   checked={plan === 'daily'}
                 />
-                <div className={classnames('d-flex flex-column choose_plan_item daily mr-0', {
-                  active: plan === 'daily',
-                })}
+                <div
+                  className={classnames(
+                    'd-flex flex-column choose_plan_item daily mr-0',
+                    { active: plan === 'daily' },
+                  )}
                 >
                   <span className='choose_plan_item_checkmark' />
                   <span className='choose_plan_item_icon-wrap'>
@@ -141,22 +149,19 @@ const FoodPlanView = (props: any) => {
                   </h6>
                 </div>
               </label>
-
             </div>
           </div>
-          {
-            activeWeek.days
-              .filter((day) => (plan === 'daily' ? day.value === curDay : true))
-              .map((day) => (
-                <FoodPlanDay
-                  key={`${day.date} food-plan-day`}
-                  date={day.date}
-                  mealPlan={day.mealPlan}
-                  plan={plan}
-                  t={t}
-                />
-              ))
-          }
+          {activeWeek.days
+            .filter((day) => (plan === 'daily' ? day.value === curDay : true))
+            .map((day) => (
+              <FoodPlanDay
+                key={`${day.date} food-plan-day`}
+                date={day.date}
+                mealPlan={day.mealPlan}
+                plan={plan}
+                t={t}
+              />
+            ))}
         </div>
       </section>
     </>

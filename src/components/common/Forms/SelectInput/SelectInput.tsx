@@ -67,7 +67,7 @@ const SelectInput = (props: SelectInputProps) => {
       {...controlProps}
       className={classNames('fgSelectControl', {
         fgSelectControl_block: props.block,
-        fgSelectControl_focused: controlProps.isFocused || controlProps.hasValue,
+        fgSelectControl_focused: controlProps.isFocused,
         fgSelectControl_has_value: controlProps.hasValue,
         fgSelectControl_disabled: controlProps.isDisabled,
         fgSelectControl_readonly: props.readOnly,

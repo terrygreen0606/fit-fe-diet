@@ -6,4 +6,5 @@ type ImageCreateParams = {
   size: number
 };
 
-export const imageCreate = (params: ImageCreateParams) => axios.post('/image/create', params);
+export const imageCreate = (params: ImageCreateParams) => 
+  axios.post('/image/create', params);

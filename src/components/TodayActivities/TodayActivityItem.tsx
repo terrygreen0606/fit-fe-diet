@@ -11,16 +11,13 @@ export type ItemProps = {
 };
 
 const TodayActivityItem = ({
-  icon,
+  icon: Icon,
   active,
   disabled,
   text,
-}: ItemProps) => {
-  const Icon = icon;
-
-  return (
+}: ItemProps) => (
     <div
-      className={classnames('today-activities-activity-card', {
+      className={classnames('today-activities-activity-card card-bg', {
         active,
         disabled,
       })}
@@ -34,6 +31,5 @@ const TodayActivityItem = ({
       </h6>
     </div>
   );
-};
 
 export default TodayActivityItem;

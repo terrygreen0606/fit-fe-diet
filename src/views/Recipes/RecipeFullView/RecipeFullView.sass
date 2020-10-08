@@ -1,0 +1,829 @@
+@import '../../../assets/sass/vars'
+
+.recipe
+  margin-bottom: 50px
+
+  &__error
+    text-align: center
+    font-size: 36px
+    line-height: 1.2
+    font-weight: bold
+
+  &__main-info
+    position: relative
+    display: flex
+    padding: 30px 25px
+    margin-bottom: 70px
+
+    @media (max-width: 767px)
+      padding: 42px 30px 15px
+      flex-wrap: wrap
+
+    &-media
+      position: relative
+      flex-basis: 59%
+      max-height: 280px
+      border-radius: 27px
+      overflow: hidden
+
+      @media (max-width: 767px)
+        flex-basis: calc(100% - 55px)
+        margin-bottom: 20px
+
+      &-slide
+        position: absolute
+        opacity: 0
+        visibility: hidden
+        transition: 0.2s all ease
+
+        &.active
+          position: initial
+          opacity: 1
+          visibility: visible
+
+        img
+          max-width: 100%
+          height: auto
+          border-radius: 27px
+
+      &-button
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 30px
+        height: 30px
+        padding: 0
+        background-color: $steel-blue
+        border: none
+        border-radius: 50%
+        cursor: pointer
+        transition: background-color 0.2s ease 0s
+
+        &:hover
+          background-color: darken($steel-blue, 10%)
+
+        svg
+          width: 13px
+          height: 16px
+
+      &-prev
+        position: absolute
+        top: 50%
+        left: 20px
+        transform: translateY(-50%)
+
+      &-next
+        position: absolute
+        top: 50%
+        right: 20px
+        transform: translateY(-50%)
+
+    &-desc
+      flex-basis: 41%
+      padding-top: 6px
+      padding-left: 30px
+
+      @media (max-width: 767px)
+        flex-basis: 100%
+        padding-top: 0
+        padding-left: 0
+
+      &-name
+        margin-bottom: 10px
+        padding-right: 30px
+        font-size: 26px
+        line-height: 1.2
+        font-weight: bold
+
+        @media (max-width: 767px)
+          font-size: 16px
+          padding-right: 0
+
+      &-eating
+        display: flex
+        align-items: center
+        flex-wrap: wrap
+        margin-bottom: 64px
+        line-height: 1.2
+        padding-bottom: 10px
+        border-bottom: 1px solid $steel-blue
+        text-transform: capitalize
+
+        @media (max-width: 767px)
+          margin-bottom: 14px
+          font-size: 14px
+
+        &-item:not(:first-child)::before
+          content: ', '
+
+      &-row
+        display: flex
+        align-items: center
+
+        @media (max-width: 767px)
+          font-size: 14px
+
+      &-time
+        display: flex
+        align-items: center
+        margin-right: 10px
+
+        &::after
+          content: ''
+          width: 8px
+          height: 8px
+          margin-left: 10px
+          border-radius: 50%
+          background-color: $mint-green
+
+      &-heart
+        position: absolute
+        top: 40px
+        right: 25px
+        width: 25px
+        height: 25px
+        padding: 0
+        line-height: 0
+        border: none
+        background-color: transparent
+        cursor: pointer
+
+        @media (max-width: 767px)
+          top: 40px
+          right: 42px
+
+        & > *
+          line-height: initial
+
+        svg
+          max-width: 100%
+          height: auto
+
+          path
+            fill: #c7c7c7
+            transition: 0.2s fill ease
+
+      &-heart.active
+        svg path
+          fill: #F27C7C
+
+      &-button
+        position: absolute
+        right: 10px
+        bottom: 0px
+        transform: translateY(50%)
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 66px
+        height: 66px
+        padding: 0
+        border-radius: 50%
+        box-shadow: 0px 3px 5px #BAC2D2
+        background-color: $white
+        border: none
+        cursor: pointer
+
+        &-wrap
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 44px
+          height: 44px
+          background-color: $white
+          box-shadow: 0px 3px 5px #BAC2D2
+          border-radius: 50%
+
+          &::before
+            content: ''
+            width: 26px
+            height: 26px
+            background-color: #f2f2f2
+            border-radius: 50%
+            transition: background-color 0.2s ease
+
+        &-icon
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+          width: 14px
+
+          path
+            fill: $black
+            transition: fill 0.2s ease
+
+      &-button.active
+        .recipe__main-info-desc-button-wrap::before
+          background-color: $caribbean-green
+
+        .recipe__main-info-desc-button-icon path
+          fill: $white
+
+      &-button_cart
+        right: 88px
+
+  &__additional-info
+    padding-left: 100px
+    padding-right: 90px
+
+    @media (max-width: 1200px)
+      padding-left: 0
+      padding-right: 0
+
+  &__composition
+    margin-bottom: 120px
+
+    @media (max-width: 767px)
+      margin-bottom: 40px
+
+    &-desc
+      margin-bottom: 30px
+      font-size: 20px
+      line-height: 1.5
+
+      @media (max-width: 767px)
+        margin-bottom: 20px
+        font-size: 14px
+
+    &-list
+      &-item
+        display: flex
+        align-items: center
+        justify-content: space-between
+        margin-bottom: 40px
+        padding-right: 20px
+        font-size: 20px
+        line-height: 1.5
+
+        @media (max-width: 767px)
+          font-size: 14px
+          margin-bottom: 20px
+
+  &__manufacture
+    &-title
+      margin-bottom: 80px
+
+      @media (max-width: 767px)
+        margin-bottom: 30px
+
+      &-text
+        position: relative
+        display: inline-block
+        padding-bottom: 20px
+        font-size: 32px
+        line-height: 1.2
+        font-weight: bold
+
+        @media (max-width: 767px)
+          padding-bottom: 18px
+          font-size: 18px
+
+        &::before
+          content: ''
+          position: absolute
+          bottom: 0
+          left: 0
+          width: 100%
+          height: 6px
+          background-color: $steel-blue
+
+    &-video
+      margin-bottom: 66px
+
+      @media (max-width: 767px)
+        margin-bottom: 40px
+
+    &-desc
+      margin-bottom: 40px
+      font-size: 20px
+      line-height: 1.5
+
+      @media (max-width: 767px)
+        margin-bottom: 20px
+        font-size: 14px
+
+  &__actions
+    position: relative
+    display: flex
+    margin-bottom: 54px
+
+    @media (max-width: 767px)
+      margin-bottom: 30px
+
+    @media (max-width: 500px)
+      flex-wrap: wrap
+      margin-bottom: 20px
+
+    &-button-wrap
+      margin-left: 21px
+      flex-basis: calc(33% - 14px)
+
+      @media (max-width: 500px)
+        flex-basis: calc(33.33% - 6px)
+        margin-left: 9px
+
+      .recipe__actions-button
+        width: 100%
+
+    &-button
+      position: relative
+      flex-basis: calc(33% - 14px)
+      padding: 20px
+      text-align: center
+      cursor: pointer
+      border: none
+      text-decoration: none
+
+      @media (max-width: 500px)
+        flex-basis: calc(33.33% - 6px)
+
+      &:not(:first-child)
+        margin-left: 21px
+
+        @media (max-width: 500px)
+          margin-left: 9px
+
+      &-media
+        width: 54px
+        height: 54px
+        display: flex
+        align-items: center
+        justify-content: center
+        margin: 0 auto 10px
+        border-radius: 12px
+        transition: background-color 0.2s, box-shadow 0.2s ease
+
+        @media (max-width: 767px)
+          width: 44px
+          height: 44px
+
+        svg
+          width: 26px
+
+          path
+            fill: $black
+            transition: fill 0.2s ease
+
+      &-desc
+        font-size: 20px
+        font-family: "Montserrat", sans-serif
+        color: $black
+        transition: color 0.2s ease
+
+        @media (max-width: 767px)
+          font-size: 14px
+
+      &-checked
+        position: absolute
+        top: -15px
+        right: -10px
+        width: 42px
+        height: 42px
+        display: flex
+        align-items: center
+        justify-content: center
+        border-radius: 50%
+        visibility: hidden
+        transition: opacity 0.2s, visibility 0.2s ease
+
+        &::before
+          content: ''
+          position: relative
+          width: 100%
+          height: 100%
+          background-color: $white
+          box-shadow: 0px 3px 5px #BAC2D2
+          border-radius: 50%
+          z-index: -1
+
+        &::after
+          content: ''
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+          width: 24px
+          height: 24px
+          background-color: $steel-blue
+          border-radius: 50%
+
+        &-icon
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+          width: 14px
+          z-index: 2
+
+    &-button:hover,
+    &-button.active
+      .recipe__actions-button-media
+        background-color: $steel-blue
+        box-shadow: 0px 4px 4px rgba(187, 187, 187, 0.25)
+
+        path
+          fill: $white
+
+      .recipe__actions-button-desc
+        color: $steel-blue
+
+      .recipe__actions-button-checked
+        visibility: visible
+
+  &__nutrients
+    margin-bottom: 30px
+    padding: 40px 34px
+    background-color: $caribbean-green
+
+    &-media
+      margin-bottom: 13px
+      text-align: center
+
+      @media (max-width: 767px)
+        max-width: 65px
+        margin: 0 auto 10px
+
+      svg
+        max-width: 84px
+
+        @media (max-width: 767px)
+          max-width: 100%
+
+    &-title
+      margin-bottom: 30px
+      text-align: center
+      font-size: 34px
+      line-height: 1.2
+      font-weight: bold
+      color: $white
+
+      @media (max-width: 767px)
+        font-size: 24px
+
+    &-calories
+      display: flex
+      justify-content: space-between
+      align-items: center
+      margin-bottom: 50px
+      padding: 30px 10px
+      font-size: 30px
+      line-height: 1.2
+      font-weight: bold
+      color: $white
+      border-top: 1px solid $white
+      border-bottom: 1px solid $white
+
+      @media (max-width: 1299px)
+        padding: 30px 0
+        font-size: 28px
+
+      @media (max-width: 767px)
+        padding: 20px 0
+        font-size: 22px
+
+    &-composition-list
+      padding: 0 30px
+
+      @media (max-width: 1299px)
+        padding: 0
+
+    &-composition-item
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-bottom: 40px
+      font-size: 24px
+      line-height: 1.2
+      font-weight: 600
+      color: $white
+
+      @media (max-width: 1299px)
+        font-size: 20px
+
+  &__share
+    margin-bottom: 40px
+    padding: 30px
+
+    &-title
+      margin-bottom: 40px
+      font-size: 24px
+      line-height: 1.2
+      font-weight: bold
+
+      @media (max-width: 767px)
+        font-size: 18px
+        margin-bottom: 30px
+
+    &-buttons
+      justify-content: space-between
+
+      .share-button
+        width: 57px
+        height: 57px
+        margin: 0
+
+        @media (max-width: 767px)
+          width: 45px
+          height: 45px
+
+  &__advertising
+    margin-bottom: 30px
+    padding: 26px 34px
+
+    &-title
+      margin-bottom: 30px
+      font-size: 24px
+      line-height: 1.2
+      font-weight: bold
+
+      @media (max-width: 767px)
+        font-size: 18px
+
+    &-wrap
+      display: flex
+      align-items: flex-start
+
+      & + .recipe__advertising-wrap
+        margin-top: 50px
+
+    &-media
+      width: 95px
+      height: 95px
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: flex-end
+      overflow: hidden
+      border: 1px solid #E8E8E8
+      border-radius: 20px
+      background-color: $white
+
+      img
+        max-width: 100%
+        height: auto
+        max-height: 100%
+
+    &-text
+      flex: 1
+      padding-left: 50px
+
+      @media (max-width: 767px)
+        width: calc(100% - 96px)
+        flex: initial
+        padding-left: 18px
+
+      &-title
+        display: block
+        margin-bottom: 10px
+        font-size: 24px
+        line-height: 1.2
+        font-weight: bold
+        color: $black
+        text-decoration: none
+        transition: 0.2s color ease
+
+        @media (max-width: 767px)
+          font-size: 18px
+
+        &:hover
+          color: $grey-medium
+
+      &-desc
+        margin-bottom: 20px
+        font-size: 18px
+        line-height: 1.2
+        max-height: 65px
+        overflow: hidden
+
+        @media (max-width: 767px)
+          font-size: 14px
+          max-height: 50px
+
+      &-btn
+        display: block
+        padding: 17px 20px
+        text-align: center
+        font-size: 16px
+        font-weight: bold
+        color: $white
+        background-color: $bright-green
+        border-radius: 5px
+        text-decoration: none
+        transition: 0.2s box-shadow ease
+
+        &:hover
+          box-shadow: 0 5px 15px #1CC637
+
+  &__similar-recipes
+    padding: 22px 25px 36px
+
+    &-title
+      margin-bottom: 56px
+      font-size: 24px
+      line-height: 1.2
+      font-weight: bold
+
+      @media (max-width: 767px)
+        font-size: 18px
+
+    &-item
+      display: flex
+      align-items: flex-start
+
+      &:not(:first-child)
+        margin-top: 54px
+
+      &-media
+        position: relative
+        width: 95px
+        padding: 0
+        overflow: hidden
+        line-height: 0
+        background-color: transparent
+        border: none
+        border-radius: 27px
+        cursor: pointer
+
+        & > *
+          line-height: initial
+
+        img
+          max-width: 100%
+          height: auto
+
+        &-icon
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+          opacity: 0
+          transition: 0.2s opacity ease
+
+      &-media:hover
+        .recipe__similar-recipes-item-media-icon
+          opacity: 1
+
+      &-text
+        flex: 1
+        padding-left: 24px
+
+        &-name
+          display: block
+          margin-bottom: 6px
+          padding: 0
+          font-size: 24px
+          line-height: 1.2
+          font-weight: bold
+          border: none
+          background-color: transparent
+          color: $black
+          text-decoration: none
+          transition: 0.2s color ease
+          cursor: pointer
+
+          &:hover
+            color: $grey-medium
+
+          @media (max-width: 767px)
+            font-size: 18px
+
+        &-meal-time
+          display: flex
+          align-items: center
+          flex-wrap: wrap
+          margin-bottom: 8px
+          padding-bottom: 8px
+          font-size: 16px
+          border-bottom: 1px solid $steel-blue
+
+          @media (max-width: 767px)
+            font-size: 14px
+
+          &-block:not(:first-child)::before
+            content: ', '
+
+        &-info
+          display: flex
+          align-items: center
+
+          @media (max-width: 767px)
+            font-size: 14px
+
+          &-time
+            display: flex
+            align-items: center
+            margin-right: 10px
+
+            &::after
+              content: ''
+              width: 8px
+              height: 8px
+              margin-left: 10px
+              border-radius: 50%
+              background-color: #CBFFCE
+  &__modal
+    padding: 40px 50px
+
+    .dialogHeader
+      position: initial
+      padding: 0
+
+    &-title
+      margin-bottom: 40px
+      text-align: center
+      font-size: 22px
+      font-weight: bold
+
+      @media (max-width: 767px)
+        font-size: 18px
+
+    &-btn-wrap
+      display: flex
+      align-items: center
+      justify-content: center
+
+      @media (max-width: 500px)
+        flex-wrap: wrap
+
+    &-btn
+      margin: 0 10px
+
+      @media (max-width: 500px)
+        width: 100%
+        margin: 10px 0
+
+    &-textarea-wrap
+      text-align: center
+
+      .bttn
+        margin-top: 20px
+
+        &[disabled]
+          &:hover
+            box-shadow: none
+
+  &__notes-modal
+    position: absolute
+    top: calc(100% + 10px)
+    left: 50%
+    transform: translateX(-50%)
+
+    &::before
+      content: ''
+      position: absolute
+      top: -7px
+      left: 50%
+      transform: translateX(-50%) rotate(45deg)
+      width: 20px
+      height: 20px
+      box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+      background-color: $white
+
+    &-wrap
+      position: relative
+      width: 440px
+      padding: 50px 25px 25px
+      text-align: center
+      border-radius: 5px
+
+      @media (max-width: 1366px)
+        width: 320px
+
+    &-title
+      margin-bottom: 18px
+      font-size: 14px
+      color: #474747
+
+    &-textarea
+      margin-bottom: 25px
+
+    &-btn
+      font-size: 18px
+      padding: 8px 63px
+
+      &[disabled]:hover
+        box-shadow: none
+
+    &-close
+      position: absolute
+      top: 12px
+      right: 12px
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 26px
+      height: 26px
+      padding: 0
+      background-color: #F2F2F2
+      border: none
+      border-radius: 50%
+      cursor: pointer
+      transition: 0.2s background-color ease
+
+      &:hover
+        background-color: darken(#f2f2f2, 10%)
+
+      svg
+        width: 14px
+        height: 14px

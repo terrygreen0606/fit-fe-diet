@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getTranslate } from 'utils';
-import { generatePublicUrl } from 'utils/generatePublicUrl';
+import { getTranslate, generatePublicUrl } from 'utils';
+
+import { routes } from 'constants/routes';
 
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
@@ -60,7 +61,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <Link
-                  to='/nutrition/plan/weights'
+                  to={routes.nutritionPlanWeight}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_nutrition_plan_weights')}
@@ -68,7 +69,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <Link
-                  to='/settings/personal'
+                  to={routes.personalSettings}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_personal_settings')}
@@ -107,10 +108,7 @@ const Footer = (props: any) => {
                 </a>
               </li>
               <li>
-                <Link
-                  to='/recipe/create'
-                  className='mainFooter_menuList_item'
-                >
+                <Link to={routes.createRecipe} className='mainFooter_menuList_item'>
                   {t('footer.menu_create_recipe')}
                 </Link>
               </li>
@@ -147,10 +145,7 @@ const Footer = (props: any) => {
                 </a>
               </li>
               <li>
-                <Link
-                  to='/water-tracker'
-                  className='mainFooter_menuList_item'
-                >
+                <Link to={routes.waterTracker} className='mainFooter_menuList_item'>
                   {t('footer.menu_water_tracker')}
                 </Link>
               </li>
@@ -194,5 +189,5 @@ const Footer = (props: any) => {
 export default WithTranslate(
   connect((state: any) => ({
     isAuthenticated: state.auth.isAuthenticated,
-  }))(Footer)
+  }))(Footer),
 );

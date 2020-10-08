@@ -1,4 +1,6 @@
 import React, { FunctionComponent, SVGProps } from 'react';
+import WithTranslate from 'components/hoc/WithTranslate';
+import { getTranslate } from 'utils';
 
 import './Advantages.sass';
 
@@ -13,6 +15,14 @@ type AdvantagesProps = {
   advantage2Desc: string,
   advantage3Title: string,
   advantage3Desc: string,
+  localePhrases: [];
+  isShowBtn?: boolean,
+  onClickShowBtn?: () => void,
+};
+
+const AdvantagesPropsDefault = {
+  isShowBtn: false,
+  onClickShowBtn: () => { },
 };
 
 const Advantages = ({
@@ -26,56 +36,78 @@ const Advantages = ({
   advantage2Title,
   advantage3Desc,
   advantage3Title,
-}: AdvantagesProps) => (
-  <section className='how-exercise-plan-works-sect'>
-    <div className='container'>
-      <div className='row'>
-        <div className='col-12 px-md-4 justify-content-between'>
-          <div className='how-exercise-plan-works-col d-flex align-items-center'>
+  localePhrases,
+  isShowBtn,
+  onClickShowBtn,
+}: AdvantagesProps) => {
+  const t = (code: string, placeholders?: any) => getTranslate(
+    localePhrases,
+    code,
+    placeholders,
+  );
 
-            <h4>{mainTitle}</h4>
+  return (
+    <section className='how-exercise-plan-works-sect'>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-12 px-md-4 justify-content-between'>
+            <div className='how-exercise-plan-works-col d-flex align-items-center'>
 
-          </div>
-          <div className='how-exercise-plan-works-col'>
+              <h4>{mainTitle}</h4>
 
-            <div className='how-exercise-plan-works-icon-wrap'>
-              <Icon1 className='how-exercise-plan-works-icon' />
             </div>
+            <div className='how-exercise-plan-works-col'>
 
-            <div className='how-exercise-plan-works-text'>
-              <h5 className='mt-4 mb-4'>{advantage1Title}</h5>
-              <p>{advantage1Desc}</p>
+              <div className='how-exercise-plan-works-icon-wrap'>
+                <Icon1 className='how-exercise-plan-works-icon' />
+              </div>
+
+              <div className='how-exercise-plan-works-text'>
+                <h5 className='mt-4 mb-4'>{advantage1Title}</h5>
+                <p>{advantage1Desc}</p>
+              </div>
+
             </div>
+            <div className='how-exercise-plan-works-col'>
 
-          </div>
-          <div className='how-exercise-plan-works-col'>
+              <div className='how-exercise-plan-works-icon-wrap'>
+                <Icon2 className='how-exercise-plan-works-icon' />
+              </div>
 
-            <div className='how-exercise-plan-works-icon-wrap'>
-              <Icon2 className='how-exercise-plan-works-icon' />
+              <div className='how-exercise-plan-works-text'>
+                <h5 className='mt-4 mb-4'>{advantage2Title}</h5>
+                <p>{advantage2Desc}</p>
+              </div>
+
             </div>
+            <div className='how-exercise-plan-works-col'>
 
-            <div className='how-exercise-plan-works-text'>
-              <h5 className='mt-4 mb-4'>{advantage2Title}</h5>
-              <p>{advantage2Desc}</p>
+              <div className='how-exercise-plan-works-icon-wrap'>
+                <Icon3 className='how-exercise-plan-works-icon' />
+              </div>
+
+              <div className='how-exercise-plan-works-text'>
+                <h5 className='mt-4 mb-4'>{advantage3Title}</h5>
+                <p>{advantage3Desc}</p>
+              </div>
+
             </div>
-
-          </div>
-          <div className='how-exercise-plan-works-col'>
-
-            <div className='how-exercise-plan-works-icon-wrap'>
-              <Icon3 className='how-exercise-plan-works-icon' />
-            </div>
-
-            <div className='how-exercise-plan-works-text'>
-              <h5 className='mt-4 mb-4'>{advantage3Title}</h5>
-              <p>{advantage3Desc}</p>
-            </div>
-
           </div>
         </div>
+        {isShowBtn && (
+          <button
+            type='button'
+            onClick={onClickShowBtn}
+            className='how-exercise-plan-works-sect-hiding-btn'
+          >
+            {t('mp.hidden')}
+          </button>
+        )}
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
-export default Advantages;
+Advantages.defaultProps = AdvantagesPropsDefault;
+
+export default WithTranslate(Advantages);

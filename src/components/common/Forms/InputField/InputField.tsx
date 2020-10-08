@@ -12,14 +12,15 @@ import FormInvalidMessage from '../FormInvalidMessage';
 
 import './InputField.sass';
 
-interface InputFieldProps {
-  type?: 'text' | 'number' | 'password' | 'money' | 'percent' | 'textarea',
+export type InputFieldProps = {
+  type?: 'text' | 'number' | 'password' | 'money' | 'percent' | 'textarea' | 'radio',
   name?: string,
   label?: string,
   value?: string | number,
-  mask?: string, // https://github.com/insin/inputmask-core#pattern
+  mask?: any, // https://github.com/insin/inputmask-core#pattern
   className?: string,
   invalid?: boolean,
+  isValid?: boolean,
   onChange?: (any) => void,
   readOnly?: boolean,
   disabled?: boolean,
@@ -46,7 +47,7 @@ const InputFieldPropsDefaults = {
 };
 
 const InputField = (props: InputFieldProps) => {
-  const [inputFieldId] = useState(`inputField-${uuid()}`);
+  const [inputFieldId] = useState(props.id || `inputField-${uuid()}`);
 
   const onBlur = (e) => {
     if (props.type === 'money' && !props.mask) {
@@ -121,7 +122,9 @@ const InputField = (props: InputFieldProps) => {
     openModalFiledProps,
     mask,
     errors,
+    valid,
     value,
+    isValid,
     disabled,
     searchBar,
     readOnly,
@@ -145,7 +148,7 @@ const InputField = (props: InputFieldProps) => {
     attributes.type = 'text';
   }
 
-  if (searchBar && attributes.placeholder) {
+  if (searchBar && !attributes.placeholder) {
     attributes.placeholder = 'Search...';
   }
 
@@ -160,6 +163,7 @@ const InputField = (props: InputFieldProps) => {
       [`border-${border}`]: border,
       'input-block': block,
       'is-invalid': invalid || (errors && errors.length > 0),
+      'is-valid': isValid,
       'is-searchbar': searchBar,
     }),
     onChange,

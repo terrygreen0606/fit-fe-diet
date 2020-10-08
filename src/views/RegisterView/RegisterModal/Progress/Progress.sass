@@ -4,34 +4,36 @@
 .registerModal
   &_steps_wrap
     position: relative
-    width: 100%
-    margin-right: 62px
+    flex: 0 0 700px
+    margin-right: calc((100% - 700px - 360px - 520px) / 2)
     margin-top: -48px
     margin-bottom: -100px
-    background-position: center center
+    background-position: center left
     background-repeat: no-repeat
+    background-size: 100%
     overflow: hidden
     z-index: 1
     &::before
       content: ''
       position: absolute
-      top: -57px
-      left: -530px
+      top: calc(50% - 25px)
+      transform: translateY(-50%)
+      right: calc(100% - 360px)
       z-index: -1
-      width: 900px
-      height: 910px
+      width: 100%
+      height: 100%
       border-radius: 100%
       background-color: $steel-blue
       opacity: .76        
     &_step1
       .registerModal_step:nth-child(1)
-        top: 41%
-        right: 14%
+        top: calc(50% - 45.5px - 25px)
+        right: calc(100% - 360px - 45px)
         .registerModal_step_label
           font-weight: bold
       .registerModal_step:nth-child(2)
-        top: 64%
-        right: 26%
+        top: calc(68% - 31px - 25px)
+        right: calc(100% - 360px)
         .registerModal_step_label
           font-size: 24px
           line-height: 29px
@@ -42,8 +44,8 @@
           height: 62px
           border-width: 14px
       .registerModal_step:nth-child(3)
-        top: 80%
-        right: 44%
+        top: calc(84% - 15px - 25px)
+        right: calc(100% - 360px + 75px)
         .registerModal_step_label
           font-weight: normal
           font-size: 18px
@@ -56,8 +58,8 @@
           border-width: 7px
     &_step2
       .registerModal_step:nth-child(1)
-        top: 20%
-        right: 27%
+        top: 23%
+        right: calc(100% - 360px + 15px)
         .registerModal_step_label
           font-size: 24px
           line-height: 29px
@@ -68,13 +70,13 @@
           height: 62px
           border-width: 14px
       .registerModal_step:nth-child(2)
-        top: 41%
-        right: 14%
+        top: calc(50% - 45.5px - 25px)
+        right: calc(100% - 360px - 45px)
         .registerModal_step_label
           font-weight: bold
       .registerModal_step:nth-child(3)
         top: 67%
-        right: 27%
+        right: calc(100% - 360px + 15px)
         .registerModal_step_label
           font-size: 24px
           line-height: 29px
@@ -87,7 +89,7 @@
     &_step3
       .registerModal_step:nth-child(1)
         top: 9.5%
-        right: 44%
+        right: calc(100% - 360px + 100px)
         .registerModal_step_label
           font-weight: normal
           font-size: 18px
@@ -99,8 +101,8 @@
           height: 30px
           border-width: 7px
       .registerModal_step:nth-child(2)
-        top: 20%
-        right: 26%
+        top: calc(25% - 31px - 25px)
+        right: calc(100% - 360px + 25px)
         .registerModal_step_label
           font-size: 24px
           line-height: 29px
@@ -111,8 +113,8 @@
           height: 62px
           border-width: 14px
       .registerModal_step:nth-child(3)
-        top: 41%
-        right: 14%
+        top: calc(50% - 45.5px - 25px)
+        right: calc(100% - 360px - 45px)
         .registerModal_step_label
           font-weight: bold
   &_step
@@ -122,6 +124,7 @@
     justify-content: flex-end
     background-size: 100%
     background-position: center center
+    cursor: pointer
     +mt(.35s)  
     &.active
       .registerModal_step_label
@@ -152,8 +155,10 @@
   .registerModal
     &_steps_wrap
       display: flex
+      width: 100%
       height: 180px
       margin: 0
+      flex: 0 0 100%
       justify-content: space-between
       align-items: center
       overflow: unset
@@ -165,7 +170,7 @@
         top: 0
         left: 0
         width: calc(100% + 31px)
-        height: 120px
+        height: 220px
         border-radius: 0
     &_step
       position: static

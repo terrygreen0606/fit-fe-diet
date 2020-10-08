@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
+import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
@@ -13,6 +14,7 @@ import CustomRadio from 'components/common/Forms/CustomRadio';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './TestimonialsFormView.sass';
 
@@ -117,6 +119,15 @@ const TestimonialsFormView = (props: any) => {
         <title>{t('app.title.testimonials.add')}</title>
       </Helmet>
       <div className='container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes.main,
+              name: t('breadcrumb.main'),
+            },
+          ]}
+          currentPage={t('app.title.testimonials.add')}
+        />
         <div className='testimonials-form'>
           <h2 className='testimonials-form__title'>
             <span className='testimonials-form__title-wrap'>
@@ -155,7 +166,7 @@ const TestimonialsFormView = (props: any) => {
                         updateCount.isActive = false;
                         if (updateCount.value <= count.value) {
                           updateCount.isActive = true;
-                          activeCount++;
+                          activeCount += 1;
                         }
 
                         return setLikeCounter([...updatedLikeCounter]);

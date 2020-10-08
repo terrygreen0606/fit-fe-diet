@@ -1,0 +1,43 @@
+@import '../../assets/sass/vars'
+
+
+.mainFooter_short
+  padding: 16px 0
+  color: #fff
+  background-color: $steel-blue
+  margin: 0 -20px
+  text-align: center
+  &_menuList
+    display: block
+    margin: 0
+    padding: 0
+    list-style-type: none  
+    li
+      position: relative
+      display: inline-block
+      &:not(:last-child)
+        margin-right: 30px
+        &::after
+          content: ''
+          position: absolute
+          top: 9px
+          right: -18px
+          width: 5px
+          height: 5px
+          border-radius: 100%
+          background-color: #fff
+    &_item
+      display: inline-block
+      color: #fff
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+
+
+@media only screen and (max-width : 576px)
+  .mainFooter_short
+    &_menuList
+      li
+        &:not(:last-child)
+          &::after
+            top: 5px

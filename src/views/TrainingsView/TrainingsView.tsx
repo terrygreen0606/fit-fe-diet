@@ -1,28 +1,21 @@
-/* eslint-disable react/jsx-curly-newline */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable @typescript-eslint/indent */
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
 
-import { routes, MAIN, MEAL_PLAN_LIST } from 'constants/routes';
+import { routes } from 'constants/routes';
 
 import WeekDays from 'components/WeekDays';
 import TrainingCard from 'components/TrainingCard';
 import TodayActivities from 'components/TodayActivities';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
-import { getTranslate } from 'utils';
+import { getTranslate, getImagePath } from 'utils';
 import Breadcrumb from 'components/Breadcrumb';
+import ShareButtons from 'components/ShareButtons';
+import AdherenceDietPlan from 'components/AdherenceDietPlan';
 
-import { ReactComponent as RewardImage } from 'assets/img/reward-img.svg';
 import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
 import { ReactComponent as WorkoutSettingsIcon } from 'assets/img/icons/workout-settings-icon.svg';
-import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-icon.svg';
-import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
-import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
-import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
-import WomanGymImage from 'assets/img/woman_ball_gym.png';
 
 import {
   dataForWeekWorkout,
@@ -33,11 +26,14 @@ import {
 import './TrainingsView.sass';
 
 const TrainingsView: React.FC = (props: any) => {
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
-
   const [weekWorkout, setWeekWorkout] = useState('wed');
   const [todayActivities, setTodayActivities] = useState(['workout_add']);
+
+  const t = (code: string, placeholders?: any) => getTranslate(
+    props.localePhrases,
+    code,
+    placeholders,
+  );
 
   const onWorkoutChange = (e) => setWeekWorkout(e.target.value);
 
@@ -46,9 +42,9 @@ const TrainingsView: React.FC = (props: any) => {
     return e.target.checked
       ? setTodayActivities((prev) => [...prev, e.target.value])
       : setTodayActivities((prev) => [
-          ...prev.slice(0, prev.indexOf(e.target.value)),
-          ...prev.slice(prev.indexOf(e.target.value) + 1),
-        ]);
+        ...prev.slice(0, prev.indexOf(e.target.value)),
+        ...prev.slice(prev.indexOf(e.target.value) + 1),
+      ]);
   };
 
   return (
@@ -62,15 +58,15 @@ const TrainingsView: React.FC = (props: any) => {
           <Breadcrumb
             routes={[
               {
-                url: routes[MAIN],
-                name: MAIN,
+                url: routes.main,
+                name: t('breadcrumb.main'),
               },
               {
-                url: routes[MEAL_PLAN_LIST],
-                name: MEAL_PLAN_LIST,
+                url: routes.mealPlanList,
+                name: t('app.title.meal_plan'),
               },
             ]}
-            currentPage='Trainings'
+            currentPage={t('app.title.trainings')}
           />
           <h1 className='training-plan-title'>
             <span className='training-plan-title-text'>
@@ -123,9 +119,9 @@ const TrainingsView: React.FC = (props: any) => {
                   {Array.from({ length: 8 }, (_, index) => (
                     <TrainingCard
                       key={index}
-                      image={WomanGymImage}
+                      image={getImagePath('woman_ball_gym.png')}
                       text='Intermediate level 1'
-                      time={t('common.minutes', { number: 16 })}
+                      time={t('common.minutes', { COUNT: 16 })}
                     />
                   ))}
                 </div>
@@ -139,46 +135,11 @@ const TrainingsView: React.FC = (props: any) => {
                 onChange={onActivitiesChange}
                 type='checkbox'
               />
-              <div className='training-plan-adherence-diet-card card-bg mt-5'>
-                <h4 className='training-plan-adherence-diet-card-title'>
-                  {t('trainings.diet_plan')}
-                </h4>
-                <div className='training-plan-adherence-diet-card-img'>
-                  <RewardImage />
-                </div>
-                <div className='training-plan-adherence-diet-card-content'>
-                  <p>{t('trainings.plan.completed', { number: 0 })}</p>
-                </div>
-                <div className='training-plan-adherence-diet-card-progress'>
-                  <div className='training-plan-adherence-diet-card-progress-desc'>
-                    <div className='training-plan-adherence-diet-card-progress-desc-title'>
-                      {t('trainings.week_progress')}
-                    </div>
-                    <a
-                      href='/'
-                      className='training-plan-adherence-diet-card-progress-desc-link'
-                    >
-                      {t('trainings.report')}
-                    </a>
-                  </div>
-                  <div className='training-plan-adherence-diet-card-progress-line'>
-                    <div
-                      style={{
-                        left: 'calc(20% - 40px)',
-                      }}
-                      className='training-plan-adherence-diet-card-progress-line-percent'
-                    >
-                      20%
-                    </div>
-                    <div
-                      style={{
-                        width: '20%',
-                      }}
-                      className='training-plan-adherence-diet-card-progress-line-painted'
-                    />
-                  </div>
-                </div>
-              </div>
+              <AdherenceDietPlan
+                className='mb-5 mt-5'
+                todayProgress={0}
+                weekProgress={20}
+              />
               <div className='training-plan-adherence-diet-card-level'>
                 <div className='training-plan-adherence-diet-card-level-title'>
                   {t('trainings.level')}
@@ -246,38 +207,13 @@ const TrainingsView: React.FC = (props: any) => {
               </div>
               <div className='training-plan-adherence-diet-card-socials card-bg'>
                 <div className='training-plan-adherence-diet-card-socials-title'>
-                  {t('trainings.socails_title')}
+                  {t('socials.share.title')}
                 </div>
-                <div className='training-plan-adherence-diet-card-socials-list'>
-                  <button
-                    type='button'
-                    className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => {}}
-                  >
-                    <TwitterLogo />
-                  </button>
-                  <button
-                    type='button'
-                    className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => {}}
-                  >
-                    <FacebookLogo />
-                  </button>
-                  <button
-                    type='button'
-                    className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => {}}
-                  >
-                    <WhatsappLogo />
-                  </button>
-                  <button
-                    type='button'
-                    className='training-plan-adherence-diet-card-socials-list-item'
-                    onClick={() => {}}
-                  >
-                    <TelegramLogo />
-                  </button>
-                </div>
+                <ShareButtons
+                  shareLink=''
+                  visible
+                  className='training-plan-adherence-diet-card-socials-list'
+                />
               </div>
             </div>
           </div>

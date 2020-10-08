@@ -1,106 +1,107 @@
-@import '../../assets/sass/_vars'
+@import '../../assets/sass/vars'
 
+.progress__list
+  position: relative
+  display: flex
+  align-items: flex-start
+  justify-content: space-between
+  margin-bottom: 40px
 
-// Progress line
-.progress-line
-  &-steps
-    position: relative
-    display: flex
+  @media (max-width: 450px)
+    flex-wrap: wrap
     justify-content: space-between
-  &-step
-    position: relative
-    width: 100%
-    text-align: center
-    &:not(:last-child)
-      min-height: 50px
-    &.active
-      &::before
-        background: linear-gradient(to right, #FFFFFF 0%, #106EE8 0.01%, #106EE8 25%, #F0F0F0 93.27%)
-      .progress-line-step-title
-        color: #000
-      .progress-line-step-point
-        background-color: $steel-blue
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5)
-        background-image: url('../../assets/img/icons/check-icon.svg')
-    &::before, &::after
-      content: ''
+
+  &-line
+    position: absolute
+    top: 24px
+    left: 50%
+    transform: translateX(-50%)
+    width: calc(100% - 70px)
+    height: 8px
+    background-color: #f3f3f3
+
+    @media (max-width: 767px)
+      top: 10px
+
+    @media (max-width: 450px)
+      display: none
+
+    &-painted
       position: absolute
-      top: 25px
-      width: 100%
-      height: 9px
-      background-color: #F0F0F0
-    &::before
-      right: 50%
-    &::after
-      left: 50%
-    &:first-child
-      &::before
-        content: none
-    &:last-child
-      &::after
-        content: none
-    &-point
+      top: 0
+      left: 0
+      height: 8px
+      background: linear-gradient(to right, #3282E9, #f3f3f3)
+
+  &-item
+    max-width: 100px
+    text-align: center
+    background-color: transparent
+    border: none
+    cursor: pointer
+    
+    @media (max-width: 450px)
+      margin-bottom: 20px
+      flex-basis: 33.33%
+
+    &-media
       position: relative
-      display: inline-block
-      width: 55px
-      height: 55px
-      border: 12px solid #fff
-      border-radius: 100%
-      background-color: #F0F0F0
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 54px
+      height: 54px
+      margin: 0 auto 20px
       box-shadow: 0px 3px 5px #BAC2D2
-      background-size: 55%
-      background-position: center center
-      background-repeat: no-repeat
-      transition: all .2s
-      z-index: 1
-    &-title
-      margin: 0
-      margin-top: 10px
-      color: #878787
-      font-size: 20px
-      line-height: 24px
-      font-weight: 400
+      background-color: $white
+      border-radius: 50%
 
+      @media (max-width: 767px)
+        width: 26px
+        height: 26px
 
-@media (max-width: 768px)
-  .progress-line
-    &-step
-      &::before, &::after
-        top: 11px
-        height: 8px
-      &-point
+      @media (max-width: 450px)
+        margin: 0 auto 10px
+
+      &::before
+        content: ''
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
         width: 32px
         height: 32px
-        border-width: 7px
-      &-title
+        background-color: $ghost-white
+        border-radius: 50%
+
+      svg
+        position: relative
+        max-width: 14px
+        
+        path
+          fill: $ghost-white
+    
+    &-desc
+      min-height: 48px
+      font-family: "Montserrat", sans-serif 
+      font-size: 20px
+      line-height: 1.2
+      color: #CDCDCD
+      
+      @media (max-width: 767px)
+        min-height: 28px
+        max-width: 60px
+        margin: 0 auto
         font-size: 12px
-        line-height: 
 
+  &-item.active
+    .progress__list-item-media
+      &::before
+        background-color: $steel-blue
 
-// @media (max-width: 480px)
-//   .progress-line
-//     &-steps
-//       display: inline-block
-//     &-step
-//       display: flex
-//       text-align: left
-//       &-point
-//         width: 30px
-//         height: 30px
-//         flex-shrink: 0
-//       &-title
-//         font-size: 13px
-//         margin-top: 5px
-//         margin-left: 15px
-//       &::before, &::after
-//         height: 100%
-//         width: 7px
-//         border: none
-//         border-left: 1px solid #C5C5C5
-//         border-right: 1px solid #C5C5C5
-//       &::before
-//         content: none
-//       &::after
-//         top: 5px
-//         right: unset
-//         left: 12px
+      svg
+        path
+          fill: $white
+
+    .progress__list-item-desc
+      color: $black

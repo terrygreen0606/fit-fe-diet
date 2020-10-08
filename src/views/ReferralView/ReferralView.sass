@@ -1,8 +1,14 @@
-@import '../../assets/sass/_vars'
+@import '../../assets/sass/vars'
 
 .referral
+  .row
+    align-items: center
+
   &__text-content
     text-align: center
+
+    &-preparation
+      margin-bottom: 30px
 
   &__title
     margin-top: 0
@@ -22,30 +28,63 @@
     font-size: 48px
     line-height: 1.2
     font-weight: bold
-    color: $caribbean-green
+    color: $steel-blue
 
   &__description
     margin-bottom: 50px
-    text-align: left
     font-size: 20px
     line-height: 1.67
+
+  &__invite-link
+    position: relative
+    margin-bottom: 44px
+
+    &-input
+      width: 100%
+      min-height: 82px
+      padding: 30px 56px
+      font-size: 20px
+      color: $black
+      font-weight: normal
+      border: 1px solid $black
+      border-radius: 15px
+
+      &:hover
+        color: $black
+
+    &-copied
+      position: absolute
+      margin-top: 10px
+      color: $success-green
+      top: 100%
+      left: 50%
+      transform: translateX(-50%)
 
   &__container-input
     position: relative
 
+    .referral__input
+      border-radius: 15px
+
+    .fgInvalidMsg
+      position: absolute
+      top: 100%
+      left: 50%
+      transform: translateX(-50%)
+
   &__input.fg-input
     padding: 30px 140px 30px 40px
     font-size: 20px
-    border-color: $caribbean-green
-    color: darken($caribbean-green, 10%)
+    border-color: $steel-blue
+    color: darken($steel-blue, 10%)
 
     &::placeholder
       font-size: 20px
-      color: $caribbean-green
-  
+      color: $steel-blue
+
   &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):hover,
   &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):focus
-      border-color: darken($caribbean-green, 10%) !important
+    border-color: darken($steel-blue, 10%) !important
 
   &__invite-button
     position: absolute
@@ -55,7 +94,7 @@
     align-items: center
     font-size: 22px
     font-weight: bold
-    color: $caribbean-green
+    color: $steel-blue
     border: none
     background: transparent
     cursor: pointer
@@ -73,42 +112,15 @@
       display: flex
       align-items: center
       justify-content: center
-      background: $caribbean-green
+      background: $steel-blue
       border-radius: 50%
       transition: transform 0.2s ease
-      
+
     &-icon
       margin-right: -2px
 
       path
         fill: $white
-
-  &__socials
-    position: relative
-    display: flex
-    align-items: center
-    justify-content: center
-    margin-top: 40px
-    z-index: 2
-
-    &-item
-      display: inline-block
-      margin: 0 17px
-      line-height: 0
-      border: none
-      background-color: transparent
-      cursor: pointer
-      transition: opacity 0.2s ease
-
-      svg, img
-        max-width: 100%
-        height: auto
-
-      & > *
-        line-height: initial
-
-      &:hover
-        opacity: 0.8
 
   &__container-media
     position: relative
@@ -132,18 +144,28 @@
       background-image: radial-gradient(#e0e0e0 20%, transparent 20%)
       background-position: 0 0
       background-size: 30px 30px
-  
+
   &__media
     position: relative
     z-index: 2
+
+  &__socials
+    margin-top: 55px
+    margin-bottom: 50px
 
 @media only screen and(max-width: 767px)
   .referral
     position: relative
 
+    .row
+      align-items: flex-start
+
     &__text-content
       text-align: left
-      
+
+      &-preparation
+        min-height: 515px
+
     &__title
       margin-bottom: 40px
       font-size: 28px
@@ -159,10 +181,29 @@
     &__description
       font-size: 14px
 
+    &__invite-link
+      width: 185%
+      margin-top: 20px
+
+      &-input
+        font-size: 14px
+
+    &__separator
+      width: 185%
+
+    &__container-input
+      width: 185%
+
+    &-text
+      padding: 0 20px
+      font-size: 18px
+
     &__container-media
+      min-height: 475px
+
       &::before
-       top: -20px
-       height: calc(100% + 40px)
+        top: -20px
+        height: calc(100% + 40px)
 
       &::after
         width: 115px
@@ -174,31 +215,20 @@
     &__media
       max-width: 450px
 
-    &__socials
-      margin-top: 200px
-      justify-content: space-between
-
-      &-item
-        margin: 0 6px
-        width: 56px
-    
-    &__container-input
-      position: absolute
-      bottom: 150px
-      left: 50%
-      transform: translateX(-50%)
-      max-width: 540px
-      width: 100%
-
     &__input.fg-input:placeholder-shown
       &::placeholder
         font-size: 14px
-    
+
     &__invite-button
       &-text
         font-size: 14px
 
-    
+    &__socials
+      width: 190%
+
+      .share-button
+        margin: 0 5px
+
 @media only screen and(max-width: 567px)
   .referral
     &__container-input

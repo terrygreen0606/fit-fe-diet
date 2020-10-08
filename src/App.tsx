@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LocaleContext from 'utils/localeContext';
@@ -16,15 +16,16 @@ const App = (props: any) => {
 
   useEffect(() => {
     props.initApp();
-    // eslint-disable-next-line
   }, []);
 
   return (
-    <BrowserRouter>
-      <LocaleContext.Provider value={phrases}>
-        {isAuthChecking ? <FullPageLoader /> : <Routes />}
-      </LocaleContext.Provider>
-    </BrowserRouter>
+    <Suspense fallback={<FullPageLoader />}>
+      <BrowserRouter>
+        <LocaleContext.Provider value={phrases}>
+          {isAuthChecking ? <FullPageLoader /> : <Routes />}
+        </LocaleContext.Provider>
+      </BrowserRouter>
+    </Suspense>
   );
 };
 
@@ -33,5 +34,5 @@ export default connect(
     isAuthChecking: state.auth.isAuthChecking,
     phrases: state.locale.phrases,
   }),
-  { initApp }
+  { initApp },
 )(App);

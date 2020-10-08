@@ -1,4 +1,8 @@
 import React from 'react';
+import { getTranslate } from 'utils';
+
+// Components
+import WithTranslate from 'components/hoc/WithTranslate';
 
 import TodayActivityItem, { ItemProps } from './TodayActivityItem';
 
@@ -9,39 +13,50 @@ type TodayActivitiesProps = {
   todayActivities: string[],
   onChange: (any) => void,
   type: 'radio' | 'checkbox',
+  localePhrases: [];
   name?: string,
 };
 
-const TodayActivities = ({
-  items, todayActivities, onChange, type, name,
-}: TodayActivitiesProps) => (
-  <>
-    <h4 className='mt-5 mb-4'>
-      {name}
-    </h4>
-    <div className='today-activities-activity-list'>
-      {
-        items.map((item) => (
-          <label key={item.text}>
-            <input
-              type={type}
-              value={item.value}
-              onChange={onChange}
-              checked={todayActivities.includes(item.value)}
-              disabled={item.disabled}
-            />
-            <TodayActivityItem
-              active={todayActivities.includes(item.value)}
-              value={item.value}
-              icon={item.icon}
-              text={item.text}
-              disabled={item.disabled}
-            />
-          </label>
-        ))
-      }
-    </div>
-  </>
-);
+const TodayActivitiesPropsDefault = {
+  name: '',
+};
 
-export default TodayActivities;
+const TodayActivities = ({
+  items, todayActivities, onChange, type, localePhrases, name,
+}: TodayActivitiesProps) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
+
+  return (
+    <>
+      <h4 className='today-activities-activity-title'>
+        {name}
+      </h4>
+      <div className='today-activities-activity-list'>
+        {
+          items.map((item) => (
+            <label key={item.text}>
+              <input
+                type={type}
+                value={item.value}
+                onChange={onChange}
+                checked={todayActivities.includes(item.value)}
+                disabled={item.disabled}
+              />
+              <TodayActivityItem
+                active={todayActivities.includes(item.value)}
+                value={item.value}
+                icon={item.icon}
+                text={t(item.text)}
+                disabled={item.disabled}
+              />
+            </label>
+          ))
+        }
+      </div>
+    </>
+  );
+};
+
+TodayActivities.defaultProps = TodayActivitiesPropsDefault;
+
+export default WithTranslate(TodayActivities);

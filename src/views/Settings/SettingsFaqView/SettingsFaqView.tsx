@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
+import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
 import ProfileLayout from 'components/hoc/ProfileLayout';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './SettingsFaqView.sass';
 
@@ -39,6 +41,17 @@ const SettingsFaqView = (props: any) => {
       <Helmet>
         <title>{t('app.title.faq')}</title>
       </Helmet>
+      <div className='container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes.main,
+              name: t('breadcrumb.main'),
+            },
+          ]}
+          currentPage={t('app.title.faq')}
+        />
+      </div>
       <ProfileLayout>
         <div className='faq'>
           <div className='faq__title'>{t('faq.title')}</div>
@@ -55,7 +68,8 @@ const SettingsFaqView = (props: any) => {
                   className='faq__item-question'
                   onClick={() => {
                     const updatedFaqData = [...faqData];
-                    updatedFaqData[index].isOpen = !updatedFaqData[index].isOpen;
+                    updatedFaqData[index].isOpen = !updatedFaqData[index]
+                      .isOpen;
                     setFaqData(updatedFaqData);
                   }}
                 >
@@ -67,7 +81,9 @@ const SettingsFaqView = (props: any) => {
                   </div>
                 </button>
                 <div className='faq__item-answer'>
-                  <div className='faq__item-answer-title'>{item.answerTitle}</div>
+                  <div className='faq__item-answer-title'>
+                    {item.answerTitle}
+                  </div>
                   {item.answerDescription}
                 </div>
               </div>

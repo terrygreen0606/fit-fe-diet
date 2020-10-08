@@ -30,6 +30,8 @@ type Props = {
   rawStyle?: boolean;
   filesOut?: FileDataType[];
   dropElement?: HTMLDivElement | null;
+  classes?: string;
+  phrase?: string;
 };
 
 const ImagesFileInput = ({
@@ -44,6 +46,8 @@ const ImagesFileInput = ({
   filesOut = [],
   usePasteEvent = false,
   dropElement,
+  classes,
+  phrase,
 }: Props) => {
   const isDisabled = disabled || readOnly;
 
@@ -77,7 +81,7 @@ const ImagesFileInput = ({
 
   const loadedFiles = React.useMemo(
     () => files.filter((file) => file.isLoaded),
-    [files]
+    [files],
   );
 
   React.useEffect(() => {
@@ -97,7 +101,7 @@ const ImagesFileInput = ({
   // );
 
   const fieldfiles = loadedFiles.filter((file) =>
-    filesOut.find((filee) => filee.id === file.id)
+    filesOut.find((filee) => filee.id === file.id),
   );
   const rootProps =
     loadedFiles.length || isLoading || isDisabled ? {} : getRootProps();
@@ -106,7 +110,7 @@ const ImagesFileInput = ({
     <div className={styles.container}>
       <div
         {...rootProps}
-        className={classNames({
+        className={classNames(classes, {
           [styles.inputFileContainerDragndrop]: !rawStyle,
           [styles.inputFileContainerDragndrop_drag_over]: isDragActive,
           [styles.inputFileContainerDragndrop_has_files]:
@@ -121,11 +125,11 @@ const ImagesFileInput = ({
         )}
 
         {!isLoading && !fieldfiles.length && (
-          <span>{t('common.choose_file')}</span>
+          <span>{phrase || t('common.choose_file')}</span>
         )}
 
         {!!fieldfiles.length && (
-          <div className={styles.returnFilesList}>
+          <button type='button' onClick={open} className={styles.returnFilesList}>
             {fieldfiles.map((fileData, index) => (
               <div
                 key={fileData.id}
@@ -143,7 +147,7 @@ const ImagesFileInput = ({
                 )}
               </div>
             ))}
-          </div>
+          </button>
         )}
 
         <input {...getInputProps()} />

@@ -39,6 +39,7 @@
 	box-shadow: none !important
 	+mt(.2s)
 	&:hover
+		border: 1px solid #E8E8E8 !important
 		&:not(.fgSelectControl_readonly):not(.fgSelectControl_disabled)
 			border-color: $grey-light
 	&_is_invalid
@@ -63,9 +64,6 @@
 		&:not(.fgSelectControl_readonly)
 			border-color: $grey-light !important
 			background-color: $grey-bg !important
-	&_has_value
-		color: #A0A0A0 !important
-		border-color: lighten($black, 30%) !important
 
 .fgSelectIndicatorsContainer
 	svg

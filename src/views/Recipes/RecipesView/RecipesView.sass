@@ -1,0 +1,106 @@
+@import '../../../assets/sass/vars'
+
+.recipes-header
+  display: flex
+  justify-content: space-between
+
+  @media (max-width: 1199px)
+    flex-wrap: wrap
+
+  &-create-recipe
+    text-align: right
+
+    @media (max-width: 1199px)
+      width: 100%
+      text-align: left
+
+  &-tabs
+    @media (max-width: 1199px)
+      width: 100%
+      margin-bottom: 40px
+
+.recipes-search-sect
+  margin-top: 70px
+
+  @media (max-width: 768px)
+    margin-top: 0
+  
+  &-title
+    text-align: center
+
+.recipes-search-wrap
+  display: flex
+  justify-content: center
+  margin: 50px 0 90px
+
+  @media (max-width: 768px)
+    flex-wrap: wrap
+
+  &-input
+    flex-basis: calc(56% - 24px)
+    max-width: 640px
+    height: 100%
+    margin-right: 24px
+    font-size: 26px
+    line-height: 1.2
+    font-weight: bold
+    font-family: "Montserrat", sans-serif
+
+    @media (max-width: 768px)
+      flex-basis: 100%
+      max-width: initial
+      margin-right: 0
+      margin-bottom: 10px
+      font-size: 18px
+
+    &::placeholder
+      font-size: 26px
+      line-height: 1.2
+      color: #A0A0A0
+      font-weight: bold
+      font-family: "Montserrat", sans-serif
+
+      @media (max-width: 768px)
+        font-size: 18px
+
+  &-input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):hover
+    border-color: #0c57b9 !important
+
+  &-select
+    flex-basis: 44%
+    max-width: 466px
+
+    @media (max-width: 768px)
+      flex-basis: 100%
+      max-width: initial
+
+    path
+      fill: $white
+
+.recipes-search-tags
+  display: flex
+  flex-wrap: wrap
+
+  &-btn
+    display: flex
+    align-items: center
+    margin-right: 20px
+    margin-bottom: 20px
+    padding: 9px 15px
+    font-size: 20px
+    line-height: 1.2
+    border: 1px solid $steel-blue
+    border-radius: 5px
+    background-color: transparent
+    transition: 0.2s background-color, 0.2s color ease
+    cursor: pointer
+
+    &:hover,
+    &.active
+      background-color: $steel-blue
+      color: $white
+
+    &-media
+      margin-right: 5px
+      max-width: 22px
+      height: auto

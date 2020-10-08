@@ -16,7 +16,7 @@ const HealthProblems = (props: any) => {
     let currStepTitles = [...props.stepTitlesDefault];
     currStepTitles[0] = t('register.plan_create_step');
     currStepTitles[1] = t('register.step_health');
-    currStepTitles[2] = t('register.expect_step');
+    currStepTitles[2] = t('register.step_workout');
 
     props.setStepTitles([...currStepTitles]);
 
@@ -26,11 +26,7 @@ const HealthProblems = (props: any) => {
   }, []);
 
   const nextStep = () => {
-    if (props.registerData.goal === 0) {
-      props.setRegisterView('JOIN');
-    } else {
-      props.setRegisterView('EXPECTATIONS');
-    }
+    props.setRegisterView('WORKOUT');
   };
 
   const changeDiseaseState = (code: string, checked: boolean) => {
@@ -60,12 +56,12 @@ const HealthProblems = (props: any) => {
           className="register-back-icon mr-5" 
           onClick={e => props.setRegisterView('NOT_EATING')}
         />
-        I have following problems with health:
+        {t('register.diseases_title')}:
       </h6>
 
-      <div className="register_health_problem_list">
+      <div className="register_check_list">
         {props.registerData.diseases.map(({ code, checked, i18n_code }) => (
-          <label className="register_health_problem_item">
+          <label key={code} className="register_check_item">
             <input 
               name="register_health_problem" 
               type="checkbox" 
@@ -73,7 +69,7 @@ const HealthProblems = (props: any) => {
               onChange={e => changeDiseaseState(code, e.target.checked)}
             />
 
-            <Button className="register_health_problem_btn" block spanBtn>
+            <Button className="register_check_btn" block spanBtn>
               {t(i18n_code)}
             </Button>
           </label>

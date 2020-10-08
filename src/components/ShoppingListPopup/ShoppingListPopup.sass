@@ -1,0 +1,126 @@
+@import '../../assets/sass/vars'
+
+.shop-list-popup
+  position: absolute
+  top: 100%
+  right: 0
+  width: 520px
+  max-height: 500px
+  padding: 30px 25px
+  text-align: left
+  background: #FBFBFB
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+  border-top: 1px solid #1EC5A7
+  opacity: 0
+  visibility: hidden
+  z-index: 10
+
+  &.visible
+    opacity: 1
+    visibility: visible
+
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 46px
+
+    &-title
+      margin-bottom: 0
+
+    &-buttons
+      position: relative
+      display: flex
+      align-items: center
+
+      &-item
+        margin-left: 15px
+        padding: 0
+        background-color: transparent
+        border: none
+        cursor: pointer
+
+        svg path
+          fill: $black
+          transition: 0.2s fill ease
+
+      &-item:hover
+        svg path
+          fill: $caribbean-green
+
+      &-share
+        position: absolute
+        bottom: calc(100% + 10px)
+        right: 0
+        padding: 10px
+        background-color: $white
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        border-radius: 5px
+
+        .share-button
+          width: 40px
+          height: 40px
+          margin: 0 4px
+
+  &__open-page-btn
+    display: inline-block
+    margin-bottom: 20px
+    text-decoration: none
+
+  &__body
+    width: calc(100% + 50px)
+    margin-left: -25px
+    max-height: 330px
+    padding: 0 25px
+    overflow-y: auto
+    +scrollStyle(5px)
+
+  &__item
+    padding: 20px 0
+
+    &-category
+      margin-bottom: 4px
+      text-align: left
+      font-size: 18px
+      line-height: 1.2
+      font-weight: bold
+
+    &-ingr
+      display: flex
+      align-items: center
+      justify-content: space-between
+
+      .customCheckbox
+        margin-bottom: 0
+        padding-right: 20px
+        flex: 1
+
+        .checkmark
+          top: 50%
+          transform: translateY(-50%)
+
+          &::after
+            border-color: $white
+
+      .customCheckbox input:checked ~ .checkmark
+        background-color: $caribbean-green
+        border-color: $caribbean-green
+
+      &-delete
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 38px
+        height: 38px
+        padding: 0
+        border: none
+        background-color: #FF3D00
+        border-radius: 50%
+        cursor: pointer
+        transition: 0.2s background-color ease
+
+        &:hover
+          background-color: darken(#FF3D00, 10%)
+
+  &__item:not(:last-child)
+    border-bottom: 1px solid #E8E8E8

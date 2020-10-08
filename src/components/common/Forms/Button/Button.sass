@@ -2,127 +2,183 @@
 
 
 .bttn
-	position: relative
-	display: -webkit-inline-flex
-	display:     -ms-inline-flexbox
-	display:         inline-flex
-	align-items: center
-	justify-content: center
-	padding: 16px 56px
-	color: $black
-	border: 2px solid #D3D3D3
-	color: #D3D3D3
-	font-size: 16px
-	line-height: 20px
-	font-family: $base_font
-	font-weight: bold
-	white-space: nowrap
-	text-decoration: none
-	background-color: #fff
-	text-align: center
-	border-radius: 5px
-	cursor: pointer
-	text-decoration: none !important
-	+mt(.2s)
-	&:hover
-		box-shadow: 3px 4px 26px -9px $slate-grey
-		color: #D3D3D3
-	&:disabled
-		opacity: .6
-		cursor: default
-	&.bttnOutline
-		background-color: transparent
-		&:hover
-			color: #fff
-			svg
-				fill: #fff
-				path
-					fill: #fff
-	svg
-		width: auto
-		height: 30px
+  position: relative
+  display: -webkit-inline-flex
+  display: -ms-inline-flexbox
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  padding: 16px 56px
+  color: $black
+  border: 2px solid #D3D3D3
+  color: #D3D3D3
+  font-size: 16px
+  line-height: 20px
+  font-family: $base_font
+  font-weight: bold
+  white-space: nowrap
+  text-decoration: none
+  background-color: #fff
+  text-align: center
+  border-radius: 5px
+  cursor: pointer
+  text-decoration: none !important
+  transition: all 0.2s ease-in-out
+  &:hover
+    box-shadow: 0 5px 15px $slate-grey
+    color: #D3D3D3
+  &:disabled
+    opacity: .6
+    cursor: default
+  &.bttnOutline
+    background-color: transparent
+    &:hover
+      color: #fff
+      svg
+        fill: #fff
+        path
+          fill: #fff
+  svg
+    width: auto
+    height: 30px
+
 
 .bttn_sm
-	padding: 8px 21px
+  padding: 8px 21px
+
 
 .bttn_lg
-	padding: 16.5px 22px
-	font-size: 24px
-	line-height: 29px
+  padding: 16.5px 22px
+  font-size: 24px
+  line-height: 29px
+
+  @media only screen and (max-width : 480px)
+    padding: 12px 22px
+    font-size: 22px
+    line-height: 30px
+
 
 .bttnWeight_medium
-	font-weight: 500
+  font-weight: 500
 
 button.bttn
-	&:focus
-		outline: 0
+  &:focus
+    outline: 0
 
 .bttnBlock
-	width: 100%
+  width: 100%
 
 .bttn_default
-	&.bttnOutline
-		&:hover
-			color: $grey-medium
-			background-color: #d3d3d3
-			box-shadow: 3px 4px 26px -9px #d3d3d3
+  &.bttnOutline
+    &:hover
+      color: $grey-medium
+      background-color: #d3d3d3
+      box-shadow: 0 5px 15px #d3d3d3
 
 
 .bttn_primary
-	background-color: $bright-green
-	border-color: $bright-green
-	color: #fff
-	svg
-		fill: #fff
-		path
-			fill: #fff
+  background-color: $bright-green
+  border-color: $bright-green
+  color: #fff
+  svg
+    fill: #fff
+    path
+      fill: #fff
 
-	&:hover
-		color: #fff
-		background-color: $bright-green
-		box-shadow: 3px 4px 26px -9px $bright-green
-		svg
-			fill: #fff
-			path
-				fill: #fff
+  &:hover
+    color: #fff
+    background-color: $bright-green
+    box-shadow: 0 5px 15px $bright-green
+    svg
+      fill: #fff
+      path
+        fill: #fff
 
-	&.bttnOutline
-		color: $bright-green
-		svg
-			fill: $bright-green
-			path
-				fill: $bright-green
+  &.bttnOutline
+    color: $bright-green
+    svg
+      fill: $bright-green
+      path
+        fill: $bright-green
+
+.bttn_primary-shadow
+  background-color: $bright-green
+  border-color: $bright-green
+  color: #fff
+  box-shadow: 0px 5px 15px $yellow-accent
+  svg
+    fill: #fff
+    path
+      fill: #fff
+
+  &:hover
+    color: #fff
+    background-color: $bright-green
+    box-shadow: 0 5px 15px $yellow-accent
+    svg
+      fill: #fff
+      path
+        fill: #fff
+
+  &.bttnOutline
+    color: $bright-green
+    svg
+      fill: $bright-green
+      path
+        fill: $bright-green
 
 
 .bttn_secondary
-	background-color: $steel-blue
-	border-color: $steel-blue
-	color: #fff
-	svg
-		fill: #fff
-		path
-			fill: #fff
+  background-color: $steel-blue
+  border-color: $steel-blue
+  color: #fff
+  svg
+    fill: #fff
+    path
+      fill: #fff
 
-	&:hover
-		color: #fff
-		background-color: $steel-blue
-		box-shadow: 3px 4px 26px -9px $steel-blue
-		svg
-			fill: #fff
-			path
-				fill: #fff
+  &:hover
+    color: #fff
+    background-color: $steel-blue
+    box-shadow: 0 5px 15px $steel-blue
+    svg
+      fill: #fff
+      path
+        fill: #fff
 
-	&.bttnOutline
-		color: $steel-blue
-		svg
-			fill: $steel-blue
-			path
-				fill: $steel-blue
+  &.bttnOutline
+    color: $steel-blue
+    svg
+      fill: $steel-blue
+      path
+        fill: $steel-blue
 
 
-.bttn_raw
-	border-color: transparent
-	background-color: transparent
+.bttn_mint
+  background-color: $caribbean-green
+  border-color: $caribbean-green
+  color: #fff
+  svg
+    fill: #fff
+    path
+      fill: #fff
+
+  &:hover
+    color: #fff
+    background-color: $caribbean-green
+    box-shadow: 0 5px 15px $caribbean-green
+    svg
+      fill: #fff
+      path
+        fill: #fff
+
+  &.bttnOutline
+    color: $caribbean-green
+    svg
+      fill: $caribbean-green
+      path
+        fill: $caribbean-green
+
 
 .bttn_info
   color: #000000
@@ -132,39 +188,68 @@ button.bttn
     color: #000000
     background-color: #CBFFCE
 
+.bttn_cancel
+  color: $white
+  background-color: #FF3D00
+  border-color: #FF3D00
+  &:hover
+    color: $white
+    box-shadow: 0 5px 15px #FF3D00
+
+.bttn_caribbean
+  color: $white
+  border: 2px solid $caribbean-green
+  background-color: $caribbean-green
+
+  &:hover
+    color: $white
+
+  &.bttnOutline
+    color: $steel-blue
+    svg
+      fill: $steel-blue
+      path
+        fill: $steel-blue
+
+
+.bttn_raw
+  border-color: transparent
+  background-color: transparent
+
+
 .google-login-btn
-	min-width: 279px
-	padding-left: 0
-	padding-right: 0
-	background-color: #fff
-	border-color: #000
-	border-width: 1px
-	color: #000
-	svg
-		height: 29px
+  min-width: 279px
+  padding-left: 0
+  padding-right: 0
+  background-color: #fff
+  border-color: #000
+  border-width: 1px
+  color: #000
+  svg
+    height: 29px
 
 .facebook-login-btn
-	min-width: 279px
-	padding-left: 0
-	padding-right: 0
-	background-color: $steel-blue
-	border-color: $steel-blue
-	color: #fff
-	border-width: 1px
-	svg
-		height: 23px
+  min-width: 279px
+  padding-left: 0
+  padding-right: 0
+  background-color: $steel-blue
+  border-color: $steel-blue
+  color: #fff
+  border-width: 1px
+  svg
+    height: 23px
 
 .bttnWithIcon
-	svg, img
-		display: inline-block
-		vertical-align: middle
-		margin-right: 13px
-		margin-top: -2px
+  svg, img
+    display: inline-block
+    vertical-align: middle
+    margin-right: 13px
+    margin-top: -2px
 
 .bttn_gray
-	color: #000
-	background-color: #C4C4C4
-	border: 2px solid #C4C4C4
+  color: #000
+  background-color: #C4C4C4
+  border: 2px solid #C4C4C4
 
-	&:hover
-		color: #000
+  &:hover
+    color: #000

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { connect } from 'react-redux';
 import {
   initGoogleAuth,
   initFacebookAuth,
@@ -9,7 +10,6 @@ import { UserAuthProfileType } from 'types/auth';
 import { getSignUpData } from 'api';
 
 // Components
-import AuthSocialHelmet from 'components/AuthSocialHelmet';
 import RegisterModal from './RegisterModal';
 import RegisterV2Tpl from './RegisterV2Tpl';
 import ContentLoading from 'components/hoc/ContentLoading';
@@ -32,7 +32,7 @@ const registerDataDefault: RegisterDataType = {
   phone: '',
   token: null,
   age: null,
-  gender: 'm',
+  gender: null,
   measurement: 'si',
   height: null,
   weight: null,
@@ -41,7 +41,8 @@ const registerDataDefault: RegisterDataType = {
   tpl_signup: null,
   goal: -1,
   ignore_cuisine_ids: [],
-  diseases: []
+  diseases: [],
+  act_levels: []
 };
 
 const RegisterView = (props: any) => {
@@ -52,6 +53,7 @@ const RegisterView = (props: any) => {
   );
 
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
+  const [registerDataErrors, setRegisterDataErrors] = useState([]);
 
   const [registerGoogleInitLoading, setRegisterGoogleInitLoading] = useState<boolean>(false);
   const [registerGoogleLoadingError, setRegisterGoogleLoadingError] = useState(false);
@@ -72,7 +74,14 @@ const RegisterView = (props: any) => {
           setRegisterData({
             ...registerData,
             tpl_signup: response.data.data.tpl || null,
-            ignore_cuisine_ids: response.data.data.cuisines || [],
+            act_levels: response.data.data.act_levels.map(activity => ({
+              ...activity,
+              checked: false
+            })) || [],
+            ignore_cuisine_ids: response.data.data.cuisines.map(cuisine => ({
+              ...cuisine,
+              checked: false
+            })) || [],
             diseases: response.data.data.diseases.map(disease => ({
               ...disease,
               checked: false
@@ -93,6 +102,15 @@ const RegisterView = (props: any) => {
     loadRegisterSettings();
   }, []);
 
+  useEffect(() => {
+    if (props.measurement) {
+      setRegisterData({
+        ...registerData,
+        measurement: props.measurement
+      });
+    }
+  }, [props.measurement]);
+
   return (
     <>
       <Helmet>
@@ -105,7 +123,6 @@ const RegisterView = (props: any) => {
         fetchData={() => loadRegisterSettings()}
         spinSize='lg'
       >
-        <AuthSocialHelmet />
 
         <RegisterV2Tpl
           registerData={registerData}
@@ -116,13 +133,23 @@ const RegisterView = (props: any) => {
           isOpen
           registerData={registerData}
           setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
           facebookInitLoading={registerFacebookInitLoading}
           googleLoadingError={registerGoogleLoadingError}
           googleInitLoading={registerGoogleInitLoading}
+          history={props.history}
         />*/}
       </ContentLoading>
     </>
   );
 };
 
-export default WithTranslate(RegisterView);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      measurement: state.settings.measurement
+    }),
+    null
+  )
+(RegisterView));

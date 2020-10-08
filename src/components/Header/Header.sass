@@ -2,20 +2,13 @@
 
 
 .mainHeader
+  position: relative
   margin: 0 auto
-  overflow: hidden
+  background-color: #fff
+  // z-index: 1
   .row
     padding: 60px 0
     align-items: center
-  &_logo
-    position: relative
-    display: inline-block
-    width: 155px
-    height: 45px
-    background-size: contain
-    background-repeat: no-repeat
-    background-position: center center
-    background-image: url('https://fitstg.s3.eu-central-1.amazonaws.com/logo-header.svg')
     // &::before
     //   content: ''
     //   position: absolute
@@ -36,7 +29,10 @@
       font-weight: 400
       cursor: pointer
       color: $black
+      font-family: "Montserrat", sans-serif
       text-decoration: none
+      background-color: transparent
+      border: none
       border-bottom: 2px solid transparent
       &:hover, &_active
         color: $steel-blue
@@ -44,10 +40,18 @@
       &:not(:last-child)
         margin-right: 60px
 
+      &_icon
+        width: 30px
+        height: 30px
+        path
+          fill: #7C7C7C
+
 .menu-toggle-icon
   width: 29px
   fill: $steel-blue
   cursor: pointer
+  path
+    fill: $steel-blue
 
 .mobile-auth-btn
   padding: 6.5px 20px
@@ -60,7 +64,6 @@
   display: none
   justify-content: flex-end
   align-items: center
-
 
 @media only screen and (max-width : 1400px)
   .mainHeader

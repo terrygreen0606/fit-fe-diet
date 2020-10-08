@@ -5,6 +5,8 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
+import { toast } from 'react-toastify';
+import { userValidate } from 'api';
 
 // Components
 import CustomRadio from 'components/common/Forms/CustomRadio';
@@ -24,7 +26,7 @@ import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-ico
 
 const InfoStep = (props: any) => {
   const { registerData } = props;
-  const [registerInfoErrors, setRegisterInfoErrors] = useState([]);
+
   const [weightPredictionLoading, setWeightPredictionLoading] = useState(false);
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
@@ -47,14 +49,18 @@ const InfoStep = (props: any) => {
       event,
       registerData,
       props.setRegisterData,
-      registerInfoErrors,
-      setRegisterInfoErrors,
+      props.registerDataErrors,
+      props.setRegisterDataErrors,
       element
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerInfoErrors);
+    getFieldErrorsUtil(field, props.registerDataErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -66,33 +72,70 @@ const InfoStep = (props: any) => {
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    setRegisterInfoErrors([...errors]);
+    props.setRegisterDataErrors([...errors]);
 
     if (!hasError) {
       setWeightPredictionLoading(true);
 
-      setTimeout(() => {
-        setWeightPredictionLoading(false);
-        props.setRegisterView('NOT_EATING');
-      }, 500);
+      const {
+        age,
+        height,
+        weight,
+        weight_goal
+      } = registerData;
+
+      userValidate({
+        age,
+        height,
+        weight,
+        weight_goal
+      })
+        .then(response => {
+          setWeightPredictionLoading(false);
+          props.setRegisterView('NOT_EATING');
+        })
+        .catch(error => {
+          setWeightPredictionLoading(false);
+
+          toast.error(t('register.error_msg'));
+
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
+
+              let registerDataErrorsTemp = [...props.registerDataErrors];
+
+              Object.keys(validateErrors).map(field => {
+                registerDataErrorsTemp.push({
+                  field,
+                  message: validateErrors[field]
+                })
+              })
+
+              props.setRegisterDataErrors(registerDataErrorsTemp);
+            } catch {
+
+            }
+          }
+        });
     }
   };
 
   return (
     <div className="register_info">
       <h6 className="register_title mb-xl-5 mb-45">
-        <AngleLeftIcon 
-          className="register-back-icon mr-3" 
+        <AngleLeftIcon
+          className="register-back-icon mr-3"
           onClick={e => props.setRegisterView('GOAL')}
-        /> 
+        />
         {t('register.fill_details_text')}
       </h6>
 
       <div className="text-center">
-        <CustomSwitch 
+        <CustomSwitch
           label1={t('common.us_metric')}
-          label2={t('common.metric')} 
-          checked={props.registerData.measurement === 'si'} 
+          label2={t('common.metric')}
+          checked={props.registerData.measurement === 'si'}
           onChange={e => props.setRegisterData({
             ...props.registerData,
             measurement: e.target.checked ? 'si' : 'us'
@@ -155,17 +198,19 @@ const InfoStep = (props: any) => {
 
         <div className="row">
           <div className="col-sm-6 mb-45">
-            
+
             <FormGroup className="register_info_fg_age mb-0" inline>
               <FormLabel>{t('register.form_age')}</FormLabel>
               <InputField
                 block
                 height="md"
                 type="number"
-                min={1}
+                min={12}
+                max={100}
+                data-param="12,100"
                 name="age"
                 value={registerData.age}
-                data-validate='["required"]'
+                data-validate='["required", "min-max"]'
                 onChange={(e) => validateOnChange('age', e.target.value, e)}
                 invalid={getFieldErrors('age').length > 0}
                 placeholder=""
@@ -179,7 +224,7 @@ const InfoStep = (props: any) => {
 
           </div>
           <div className="col-sm-6 mb-45">
-            
+
             <FormGroup className="register_info_fg_height mb-0" inline>
               <FormLabel>{t('register.form_height')}</FormLabel>
               <InputField
@@ -194,7 +239,10 @@ const InfoStep = (props: any) => {
                 invalid={getFieldErrors('height').length > 0}
                 placeholder=""
               />
-              <FormLabel>{t('common.cm')}</FormLabel>
+              <FormLabel>
+                {registerData.measurement === 'us' && t('common.ft_label')}
+                {registerData.measurement === 'si' && t('common.cm_label')}
+              </FormLabel>
             </FormGroup>
 
             {getFieldErrors('height').slice(0, 1).map((error, i) => (
@@ -206,7 +254,7 @@ const InfoStep = (props: any) => {
             "col-sm-6 offset-sm-3 mb-45": registerData.goal === 0,
             "col-sm-6 mb-45": registerData.goal !== 0,
           })}>
-            
+
             <FormGroup className="register_info_fg_weight mb-0" inline>
               <FormLabel>{t('register.form_weight_now')}</FormLabel>
               <InputField
@@ -221,7 +269,10 @@ const InfoStep = (props: any) => {
                 invalid={getFieldErrors('weight').length > 0}
                 placeholder=""
               />
-              <FormLabel>{t('common.kg')}</FormLabel>
+              <FormLabel>
+                {registerData.measurement === 'us' && t('common.lbs_label')}
+                {registerData.measurement === 'si' && t('common.kg_label')}
+              </FormLabel>
             </FormGroup>
 
             {getFieldErrors('weight').slice(0, 1).map((error, i) => (
@@ -231,7 +282,7 @@ const InfoStep = (props: any) => {
           </div>
           {registerData.goal !== 0 && (
             <div className="col-sm-6 mb-45">
-              
+
               <FormGroup className="register_info_fg_weight mb-0" inline>
                 <FormLabel>{t('register.form_weight_want')}</FormLabel>
                 <InputField
@@ -246,7 +297,10 @@ const InfoStep = (props: any) => {
                   invalid={getFieldErrors('weight_goal').length > 0}
                   placeholder=""
                 />
-                <FormLabel>{t('common.kg')}</FormLabel>
+                <FormLabel>
+                  {registerData.measurement === 'us' && t('common.lbs_label')}
+                  {registerData.measurement === 'si' && t('common.kg_label')}
+                </FormLabel>
               </FormGroup>
 
               {getFieldErrors('weight_goal').slice(0, 1).map((error, i) => (

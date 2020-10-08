@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { getTranslate } from 'utils';
+import { routes } from 'constants/routes';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 
 import './ProfileSidebar.sass';
 
 import { ReactComponent as UserEditIcon } from 'assets/img/icons/user-edit-icon.svg';
-import { ReactComponent as SettingsIcon } from 'assets/img/icons/settings-icon.svg';
 import { ReactComponent as CutleryIcon } from 'assets/img/icons/cutlery-icon.svg';
 import { ReactComponent as UsersIcon } from 'assets/img/icons/users-icon.svg';
 import { ReactComponent as WalletIcon } from 'assets/img/icons/wallet-icon.svg';
@@ -28,7 +28,7 @@ const ProfileSidebar = (props: any) => {
         <ul className='profile-menu-list'>
           <li>
             <NavLink
-              to='/settings/personal'
+              to={routes.personalSettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
@@ -40,19 +40,7 @@ const ProfileSidebar = (props: any) => {
 
           <li>
             <NavLink
-              to='/settings'
-              activeClassName='active'
-              exact
-              className='profile-menu-list-item'
-            >
-              <SettingsIcon className='profile-menu-list-icon' />
-              {t('personal.menu_diet')}
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              to='/settings'
+              to={routes.changeMealSettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
@@ -64,7 +52,7 @@ const ProfileSidebar = (props: any) => {
 
           <li>
             <NavLink
-              to='/settings/family'
+              to={routes.familySettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
@@ -96,7 +84,7 @@ const ProfileSidebar = (props: any) => {
 
           <li>
             <NavLink
-              to='/settings'
+              to={routes.paymentHistorySettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
@@ -115,7 +103,10 @@ const ProfileSidebar = (props: any) => {
 
         <ul className='profile-menu-list'>
           <li>
-            <NavLink to='/settings/faq' className='profile-menu-list-item'>
+            <NavLink
+              to={routes.faqSettings}
+              className='profile-menu-list-item'
+            >
               <QuestionIcon className='profile-menu-list-icon' />
               {t('personal.menu_faq')}
             </NavLink>

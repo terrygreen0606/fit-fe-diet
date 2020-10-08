@@ -2,6 +2,8 @@
 
 
 .customCheckbox
+	-webkit-print-color-adjust: exact
+	color-adjust: exact
 	display: block
 	position: relative
 	padding-left: 35px
@@ -46,6 +48,7 @@
 	height: 23px
 	border: 1px solid $grey-light
 	border-radius: 4px
+	transition: 0.2s all ease
 	&::after
 		content: ''
 		position: absolute
@@ -57,4 +60,4 @@
 		border-width: 0 2px 2px 0
 		transform: rotate(45deg)
 		opacity: 0
-		
+		transition: 0.2s opacity ease

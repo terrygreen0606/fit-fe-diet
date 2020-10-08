@@ -1,9 +1,12 @@
-@import '../../assets/sass/_vars'
+@import '../../assets/sass/vars'
   
 .breadcrumb
   display: flex
   align-items: center
   margin-bottom: 50px
+  
+  @media (max-width: 768px)
+    margin-bottom: 30px
 
   &__link
     font-size: 18px
@@ -13,8 +16,11 @@
     border-bottom: 1px solid transparent
     transition: 0.2s color ease
 
+    @media (max-width: 768px)
+      font-size: 14px
+
     &:hover
-      color: lighten($black, 50%)
+      color: $steel-blue
 
     &::after
       content: '»'
@@ -28,3 +34,6 @@
     line-height: 1.2
     font-weight: bold
     color: $steel-blue
+
+    @media (max-width: 768px)
+      font-size: 14px

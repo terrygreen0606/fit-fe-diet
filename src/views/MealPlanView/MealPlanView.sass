@@ -1,0 +1,523 @@
+@import '../../assets/sass/vars'
+
+.how-nutrition-plan-works
+  &-sect
+    font-size: 16px
+
+    .container
+      padding: 40px 0 50px
+      background-color: $steel-blue
+      color: #fff
+
+      h5, h4
+        color: #fff
+
+      .row
+        padding: 0 55px
+        justify-content: space-between
+
+  &-col
+    flex: 0 0 20%
+    max-width: 20%
+
+  &-icon
+    width: 70px
+
+    &-wrap
+      display: flex
+      align-items: flex-end
+      justify-content: flex-start
+      height: 100px
+      padding-left: 35px
+
+.nutrition-plan
+  &-card-list
+    &-sect
+      padding-bottom: 80px
+
+      @media (max-width: 768px)
+        padding-bottom: 100px
+
+      .container > .row
+        @media (max-width: 768px)
+          flex-direction: column
+
+    &-col
+      flex: 0 0 calc(62% - 37px)
+      max-width: calc(62% - 37px)
+      height: fit-content
+      position: relative
+
+      @media (max-width: 768px)
+        padding: 0 15px
+        flex-basis: 100%
+        max-width: 100%
+
+      &.hinted > .nutrition-plan-card-list-recipes
+        z-index: 510
+        position: relative
+        background-color: #FFFFFF
+        box-shadow: 0 0 0 20px #ffffff
+
+        @media (max-width: 768px)
+          box-shadow: none
+
+    &-controls
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: flex-end
+      margin-bottom: 20px
+
+      &-item
+        margin-left: 15px
+        padding: 0
+        border: none
+        background-color: transparent
+        cursor: pointer
+
+        svg path
+          fill: $black
+          transition: 0.2s fill ease
+
+      &-item:hover
+        svg path
+          fill: $caribbean-green
+
+      .share-buttons-list
+        position: absolute
+        bottom: 100%
+        right: 0
+        padding: 10px
+        background-color: #ffffff
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        border-radius: 5px
+
+        .share-button
+          width: 40px
+          height: 40px
+          margin: 0 4px
+
+    &-date
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-bottom: 65px
+
+      @media (max-width: 992px)
+        flex-wrap: wrap
+        justify-content: flex-start
+
+      &-item
+        flex-basis: calc(14.2% - 16px)
+        padding: 20px 10px
+        text-align: center
+        font-family: "Montserrat", sans-serif
+        background-color: $white
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+        border: none
+        transition: 0.2s background-color ease
+        cursor: pointer
+
+        @media (max-width: 992px)
+          flex-basis: calc(25% - 10px)
+          margin-right: 10px
+          margin-bottom: 10px
+
+        &.card-bg
+          border-radius: 5px
+
+        &-number
+          margin-bottom: 10px
+          font-size: 26px
+          font-weight: bold
+          transition: 0.2s color ease
+
+        &-day-week
+          font-size: 16px
+          transition: 0.2s color, 0.2s font-weight ease
+
+      &-item:hover,
+      &-item.active
+        background-color: #4596FF
+
+        .nutrition-plan-card-list-date-item-number
+          color: $white
+
+        .nutrition-plan-card-list-date-item-day-week
+          color: $white
+
+    &-recipes-item
+      padding: 36px 30px 0
+
+      @media (max-width: 768px)
+        padding: 0
+
+      &-title
+        display: flex
+        align-items: center
+        margin-bottom: 38px
+        font-size: 26px
+        line-height: 1.2
+        color: #878787
+
+        @media (max-width: 768px)
+          font-size: 18px
+
+        svg
+          margin-right: 18px
+
+          path
+            fill: #878787
+
+    &-recipes.card-bg
+      @media (max-width: 768px)
+        box-shadow: none
+
+    &-recipes-item + .nutrition-plan-card-list-recipes-item
+      margin-top: 54px
+
+  &-info-col
+    flex: 0 0 38%
+    max-width: 38%
+    margin-left: 37px
+
+    @media (max-width: 768px)
+      flex-basis: 100%
+      max-width: 100%
+      margin-top: 50px
+      margin-left: 0
+      padding: 0 15px
+
+.nutrition-plan
+  &-controls
+    margin-left: 25px
+
+    &-list
+      display: flex
+      justify-content: flex-end
+      align-items: center
+
+    &-item
+      &:not(:last-child)
+        margin-right: 10px
+
+    &-icon
+      width: 30px
+      cursor: pointer
+
+      path
+        fill: #000
+        transition: 0.2s fill ease
+
+      &:hover
+        path
+          fill: $steel-blue
+
+.nutrition-plan-add-recipe-card
+  position: relative
+  padding: 24px 50px 0
+  cursor: pointer
+
+  &-img
+    position: relative
+    bottom: -6px
+    width: 70%
+
+  &-btn
+    position: absolute
+    bottom: -25px
+    right: 25px
+    display: inline-block
+    width: 84px
+    height: 84px
+    border: 19px solid #fff
+    border-radius: 100%
+    background-color: $caribbean-green
+    background-image: url('../../assets/img/icons/plus-icon.svg')
+    background-size: 40%
+    background-position: center center
+    background-repeat: no-repeat
+
+.nutrition-plan
+  &-usage-time-card, &-diet-settings-card
+    display: flex
+    padding: 25px 22px
+
+    &-title
+      margin-bottom: 30px
+
+    &-img
+      margin-right: 22px
+      width: 58px
+      height: 58px
+      text-align: center
+
+      @media (max-width: 576px)
+        display: none
+
+      svg
+        width: 58px
+        height: 58px
+
+    &-content
+      flex: 1
+
+      .link
+        color: $steel-blue
+        border-bottom: 1px solid
+
+      &-link
+        text-decoration: none
+
+      strong, b
+        color: $steel-blue
+
+      @media (max-width: 576px)
+        .bttn
+          width: 100%
+          padding: 20px
+          font-size: 14px
+
+.nutrition-plan-diet-settings-card-back, .nutrition-plan-add-recipe-card-back
+  box-shadow: 0 0 0 20px #ffffff
+  background-color: #ffffff
+  z-index: 0
+  position: relative
+
+  &.hinted
+    z-index: 510
+
+.nutrition-plan-diet-settings-card
+  &-img
+    svg
+      max-width: 70%
+      path
+        fill: #000000
+
+.nutrition-plan-socials
+  margin-top: 20px
+  padding: 40px
+
+  @media (max-width: 576px)
+    padding: 40px 22px
+
+  &-title
+    margin-bottom: 30px
+
+  .share-buttons-list
+    justify-content: flex-start
+
+  .share-button
+    width: 58px
+    height: 58px
+    margin: 0
+
+    &:not(:last-child)
+      margin-right: 10px
+
+.hint_sect_backdrop
+  position: fixed
+  top: 0
+  bottom: 0
+  right: 0
+  left: 0
+  background-color: rgba(0, 0, 0, 0.3)
+  z-index: 505
+
+.hint
+  &_sect
+    display: flex
+    flex-direction: column
+    background-color: $steel-blue
+    position: absolute
+    padding: 10px
+    max-width: 300px
+    width: fit-content
+    z-index: 510
+
+    &_1
+      top: -15%
+      left: calc(38% - 82px)
+      padding: 15px
+      text-align: center
+
+      @media (max-width: 768px)
+        right: 0
+        left: 0
+        top: 50%
+        transform: translateY(-50%)
+        max-width: unset
+        width: unset
+        text-align: unset
+        padding: 20px
+
+      @media (min-width: 768px) and (max-width: 992px)
+        top: 0
+        left: calc(38% - 52px)
+
+      &_triangle
+        bottom: -10px
+        left: 15px
+
+        @media (max-width: 768px)
+          bottom: 100%
+          left: 50%
+          transform: translateX(-50%)
+          border-top: unset !important
+          border-bottom: 10px solid $steel-blue !important
+
+    &_2
+      top: 50%
+      transform: translateY(-50%)
+      left: 103%
+
+      @media (max-width: 768px)
+        right: 0
+        left: 0
+        max-width: unset
+        width: unset
+        padding: 20px
+        margin: 0 15px
+
+      &_triangle
+        right: 100%
+        top: 50%
+        border-right: 15px solid $steel-blue !important
+        border-left: unset !important
+        border-top: 15px solid transparent !important
+        border-bottom: 15px solid transparent !important
+        transform: translateY(-50%)
+
+        @media (max-width: 768px)
+          bottom: 100%
+          top: unset
+          right: unset
+          left: 20%
+          border-right: 30px solid transparent !important
+          border-left: 30px solid transparent !important
+          border-top: unset !important
+          border-bottom: 30px solid $steel-blue !important
+          transform: unset
+
+    &_3
+      top: 50%
+      transform: translateY(-50%)
+      right: 103%
+      padding: 15px
+
+      @media (max-width: 768px)
+        right: 0
+        left: 0
+        top: 50%
+        transform: translateY(-50%)
+        max-width: unset
+        width: unset
+        padding: 20px
+        transform: unset
+
+      &_triangle
+        left: 100%
+        top: 50%
+        transform: translateY(-50%)
+        border-right: unset !important
+        border-left: 15px solid $steel-blue !important
+        border-top: 15px solid transparent !important
+        border-bottom: 15px solid transparent !important
+
+        @media (max-width: 768px)
+          bottom: 100%
+          top: unset
+          left: 50%
+          transform: translateX(-50%)
+          border-right: 25px solid transparent !important
+          border-left: 25px solid transparent !important
+          border-top: unset !important
+          border-bottom: 25px solid $steel-blue !important
+
+  &_triangle
+    position: absolute
+    width: 0
+    height: 0
+    border-right: 15px solid transparent
+    border-left: 15px solid transparent
+    border-top: 10px solid $steel-blue
+    z-index: 3
+
+  &_text
+    color: #FFFFFF
+    font-weight: bold
+
+    @media (max-width: 768px)
+      font-size: 20px
+      line-height: 24px
+
+  &_close
+    color: #FFFFFF
+    font-size: 14px
+    border-bottom: 3px solid #FFFFFF
+    align-self: flex-end
+    cursor: pointer
+
+    &:hover
+      color: darken(#FFFFFF, 20)
+      border-bottom-color: darken(#FFFFFF, 20)
+
+.nutrition-plan-info-col-today-activities
+  margin-bottom: 60px
+
+  @media (max-width: 576px)
+    margin-bottom: 20px
+
+  &.hinted
+    position: relative
+    background-color: #FFFFFF
+    z-index: 510
+    box-shadow: 0 0 0 20px #ffffff
+
+@media print
+  *
+    overflow: visible !important
+
+  ::-webkit-scrollbar
+    display: none
+
+  .layoutMainWrapper,
+  .nutrition-plan-card-list-sect
+    padding-top: 0 !important
+
+  .mainHeader,
+  .nutrition-plan-card-list-controls,
+  .nutrition-plan-card-list-date,
+  .mainFooter,
+  .nutrition-plan-info-col,
+  .breadcrumb,
+  .how-exercise-plan-works-sect,
+  .quick_tour_sect
+    display: none !important
+
+  .nutrition-plan-card-list-recipes
+    &-item
+      &:nth-child(even)
+        page-break-after: always
+
+      & + .nutrition-plan-card-list-recipes-item
+        margin-top: 40px
+
+      &.card-bg
+        box-shadow: none
+
+      &-title
+        margin-bottom: 10px
+
+      .nutrition-plan-card
+        margin-bottom: 10px
+        padding: 0
+
+        &.card-bg
+          box-shadow: none
+
+      .nutrition-plan-card-image,
+      .nutrition-plan-card-heart,
+      .nutrition-plan-card-controls
+        display: none

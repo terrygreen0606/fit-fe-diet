@@ -1,0 +1,49 @@
+@import '../../assets/sass/vars'
+
+.shopping-cart
+  position: relative
+  margin-right: 30px
+  padding: 0
+  width: 36px
+  height: 33px
+  border: none
+  background-color: transparent
+  cursor: pointer
+
+  svg
+    width: 100%
+    height: auto
+
+    path
+      fill: #7C7C7C
+      transition: 0.2s fill ease
+
+  &__count
+    position: absolute
+    top: -5px
+    right: -12px
+    width: 30px
+    height: 30px
+    text-align: center
+    font-size: 18px
+    font-weight: bold
+    line-height: 30px
+    color: $white
+    background-color: #FF3D00
+    border-radius: 50%
+
+  &__wrap
+    width: 0
+    height: 0
+    opacity: 0
+    visibility: hidden
+
+    &.visible
+      width: initial
+      height: initial
+      opacity: 1
+      visibility: visible
+
+.shopping-cart:hover
+  svg path
+    fill: darken(#7c7c7c, 15%)

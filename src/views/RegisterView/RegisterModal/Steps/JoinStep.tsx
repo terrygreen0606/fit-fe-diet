@@ -2,12 +2,20 @@ import React, { useState, useEffect } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
-  getTranslate,
+  getTranslate
 } from 'utils';
+import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import { UserAuthProfileType } from 'types/auth';
-import { userSignup, userGoogleSignUp, userFacebookSignUp } from 'api';
+import { setAppSetting, setUserData } from 'store/actions';
+import { 
+  userSignup, 
+  userGoogleSignUp, 
+  userFacebookSignUp,
+  getAppSettings,
+  userValidate
+} from 'api';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -20,11 +28,10 @@ import '../RegisterModal.sass';
 
 const JoinStep = (props: any) => {
   const { registerData } = props;
+
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const [registerJoinErrors, setRegisterJoinErrors] = useState([]);
-
-  const [socialRegister, setSocialRegister] = useState<string>(null);
+  const [socialRegister, setSocialRegister] = useState<string>('email');
 
   const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(false);
   const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
@@ -52,22 +59,32 @@ const JoinStep = (props: any) => {
       event,
       registerData,
       props.setRegisterData,
-      registerJoinErrors,
-      setRegisterJoinErrors,
+      props.registerDataErrors,
+      props.setRegisterDataErrors,
       element
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerJoinErrors);
+    getFieldErrorsUtil(field, props.registerDataErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const finalWelcomeStep = (authToken: string) => {
-    localStorage.setItem('authToken', authToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
-
     props.setRegisterData({
       ...registerData,
       token: authToken
+    });
+
+    props.setUserData({
+      isAfterSignup: true,
+      afterSignupName: registerData.name,
+      afterSignupGoal: registerData.goal,
+      afterSignupWeight: registerData.weight,
+      afterSignupWeightGoal: registerData.weight_goal,
+      afterSignupPredictDate: registerData.predicted_date
     });
 
     props.setRegisterView('READY');
@@ -81,10 +98,23 @@ const JoinStep = (props: any) => {
       ...userProfileData
     } = props.registerData;
 
-    return {
+    let act_level = null;
+
+    const act_level_checked = userProfileData.act_levels.find(level => level.checked);
+
+    if (act_level_checked) {
+      act_level = act_level_checked.value;
+    }
+
+    let profilePayload = {
       ...userProfileData,
-      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id),
-      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code)
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.filter(cuisine => cuisine.checked).map(cuisine => cuisine.id),
+      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code),
+      act_level
+    };
+
+    return {
+      ...profilePayload
     };
   };
 
@@ -178,14 +208,28 @@ const JoinStep = (props: any) => {
       password: props.registerData.password,
       ...getRegisterProfilePayload()
     }).then(response => {
-      setRegisterJoinLoading(false);
-
         const token =
           response.data && response.data.access_token
             ? response.data.access_token
             : null;
 
         if (token) {
+          localStorage.setItem('authToken', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+          getAppSettings()
+            .then(response => {
+              setRegisterJoinLoading(false);
+
+              if (response.data.success && response.data.data) {
+                props.setAppSetting(response.data.data);
+              }
+            })
+            .catch(error => {
+              toast.error(t('register.error_msg'));
+              setRegisterJoinLoading(false);
+            });
+
           finalWelcomeStep(token);
         } else {
           toast.error(t('register.error_msg'));
@@ -193,7 +237,39 @@ const JoinStep = (props: any) => {
       })
       .catch((error) => {
         setRegisterJoinLoading(false);
+
         toast.error(t('register.error_msg'));
+
+        if (error.response && error.response.status >= 400 && error.response.status < 500) {
+          try {
+            const validateErrors = JSON.parse(error.response.data.message);
+
+            let registerDataErrorsTemp = [...props.registerDataErrors];
+
+            Object.keys(validateErrors).map(field => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field]
+              })
+            })
+
+            props.setRegisterDataErrors(registerDataErrorsTemp);
+
+            if (validateErrors.gender) {
+              props.setRegisterView('INFO_GENDER');
+            } else if (validateErrors.age) {
+              props.setRegisterView('INFO_AGE');
+            } else if (validateErrors.height) {
+              props.setRegisterView('INFO_HEIGHT');
+            } else if (validateErrors.weight) {
+              props.setRegisterView('INFO_WEIGHT');
+            } else if (validateErrors.weight_goal) {
+              props.setRegisterView('INFO_WEIGHT_GOAL');
+            }
+          } catch {
+
+          }
+        }
       });
   };
 
@@ -207,7 +283,7 @@ const JoinStep = (props: any) => {
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    setRegisterJoinErrors([...errors]);
+    props.setRegisterDataErrors([...errors]);
 
     if (!appRulesAccepted) {
       setAppRulesAccepted(false);
@@ -284,6 +360,8 @@ const JoinStep = (props: any) => {
           <InputField
             block
             name='name'
+            autoFocus 
+            isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
             value={registerData.name}
             data-validate='["required"]'
             onChange={(e) => validateOnChange('name', e.target.value, e)}
@@ -301,6 +379,8 @@ const JoinStep = (props: any) => {
             block
             name='email'
             value={registerData.email}
+            autoComplete="email"
+            isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
             data-validate={`["email"${
               socialRegister === 'email' ? ', "required"' : ''
             }]`}
@@ -316,6 +396,8 @@ const JoinStep = (props: any) => {
             block
             name='password'
             type='password'
+            autoComplete="new-password"
+            isValid={getFieldErrors('password').length === 0 && registerData.password.length > 0}
             value={registerData.password}
             data-validate={`[${
               socialRegister === 'email' ? '"required"' : ''
@@ -326,12 +408,14 @@ const JoinStep = (props: any) => {
           />
         </FormGroup>
 
+        <input type="text" name="email" className="d-none" />
+        <input type="password" name="pass" className="d-none" />
+
         <div className='text-center mt-xl-5 mt-45'>
           <Button
             className="registerBtn"
             style={{ maxWidth: '355px' }}
             type="submit"
-            onClick={e => setSocialRegister('email')}
             block
             size="lg"
             color="primary"
@@ -345,4 +429,7 @@ const JoinStep = (props: any) => {
   );
 };
 
-export default JoinStep;
+export default connect(
+  null,
+  { setAppSetting, setUserData }
+)(JoinStep);

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 
+import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
 
 // Components
@@ -9,6 +10,7 @@ import CustomRadio from 'components/common/Forms/CustomRadio';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './CancellationFormView.sass';
 
@@ -21,6 +23,15 @@ const CancellationFormView = (props: any) => {
         <title>{t('cancellation.title')}</title>
       </Helmet>
       <div className='container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes.main,
+              name: t('breadcrumb.main'),
+            },
+          ]}
+          currentPage={t('cancellation.title')}
+        />
         <div className='cancellation-form'>
           <h2 className='cancellation-form__title'>
             <div className='cancellation-form__title-text'>
@@ -90,7 +101,7 @@ const CancellationFormView = (props: any) => {
               className='cancellation-form__feedback-input'
             />
             <div className='cancellation-form__feedback-button-wrap'>
-              <Button color='secondary'>
+              <Button color='cancel'>
                 {t('cancellation.feedback.button')}
               </Button>
             </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import chartConfig from 'utils/chartConfig';
 
 import App from './App';
 
@@ -11,12 +12,14 @@ import configureStore from './store/store';
 
 const store = configureStore();
 
+chartConfig();
+
 ReactDOM.render(
   <Provider store={store}>
     <App />
-    <ToastContainer autoClose={1700} />
+    <ToastContainer autoClose={3000} />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

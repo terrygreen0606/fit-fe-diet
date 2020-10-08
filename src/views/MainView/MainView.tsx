@@ -10,9 +10,11 @@ const MainView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   return (
-    <Helmet>
-      <title>{t('app.title.main')}</title>
-    </Helmet>
+    <>
+      <Helmet>
+        <title>{t('app.title.main')}</title>
+      </Helmet>
+    </>
   );
 };
 

@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -8,6 +7,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
+import { routes } from 'constants/routes';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -28,6 +28,7 @@ import InputField from 'components/common/Forms/InputField';
 import ProfileLayout from 'components/hoc/ProfileLayout';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
+import Breadcrumb from 'components/Breadcrumb';
 
 import './SettingsFamilyView.sass';
 
@@ -116,6 +117,17 @@ const SettingsFamilyView = (props: any) => {
       <Helmet>
         <title>{t('app.title.family')}</title>
       </Helmet>
+      <div className='container'>
+        <Breadcrumb
+          routes={[
+            {
+              url: routes.main,
+              name: t('breadcrumb.main'),
+            },
+          ]}
+          currentPage={t('app.title.family')}
+        />
+      </div>
       <ProfileLayout>
         <div className='family card-bg'>
           <h2 className='family__title'>{t('family.invite_link.title')}</h2>
@@ -152,7 +164,7 @@ const SettingsFamilyView = (props: any) => {
             <div className='family__invite-email-input-wrap'>
               <InputField
                 name='email'
-                data-validate='["email"]'
+                data-validate='["email", "required"]'
                 errors={getFieldErrors('email')}
                 value={inviteEmailForm.email}
                 onChange={(e) => validateOnChange('email', e.target.value, e)}
@@ -175,7 +187,7 @@ const SettingsFamilyView = (props: any) => {
             <h2 className='family__title'>{t('family.invite.title')}</h2>
             <div className='family__user'>
               <span className='family__user-name'>
-                {`${userInfo.name} ${userInfo.surname}`}
+                {`${userInfo.name} ${userInfo.surname || ''}`}
               </span>
               {t('common.you')}
             </div>
@@ -183,11 +195,9 @@ const SettingsFamilyView = (props: any) => {
               {userFamily.map((member, memberIndex) => (
                 <div key={member.email} className='family__list-item'>
                   <div className='family__list-item-media'>
-                    {member.image ? (
-                      <img src={member.image} alt='' />
-                    ) : (
-                      <ManPlugIcon />
-                    )}
+                    {member.image
+                      ? <img src={member.image} alt='' />
+                      : <ManPlugIcon />}
                   </div>
                   <div className='family__list-item-desc'>
                     <div className='family__list-item-desc-name'>
