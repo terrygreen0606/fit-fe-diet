@@ -105,7 +105,7 @@ const InviteEmail = (props: InviteEmailProps) => {
       <ContentLoading
         isLoading={isRequestSent}
         isError={false}
-        spinSize='md'
+        spinSize='sm'
         color='#106EE8'
       >
         <button type='submit' className='referral__invite-button'>
