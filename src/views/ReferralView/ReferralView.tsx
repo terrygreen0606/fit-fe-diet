@@ -1,82 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
 import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
 import {
-  validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   copyTextInBuffer,
 } from 'utils';
-import FormValidator from 'utils/FormValidator';
-import { userInviteFriendByEmail, getUserInviteLink } from 'api';
+import { getUserInviteLink } from 'api';
 
 // Components
-import InputField from 'components/common/Forms/InputField';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 import Breadcrumb from 'components/Breadcrumb';
 import ShareButtons from 'components/ShareButtons';
-import InviteEmail from 'components/InviteEmail';
+import InviteEmail from 'components/common/Forms/InviteEmail';
 
 import './ReferralView.sass';
-
-// Icons
-import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-icon.svg';
 
 const ReferralView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const [inviteFriendsForm, setInviteFriendsForm] = useState({
-    email: '',
-  });
-
   const [inviteLink, setInviteLink] = useState('');
 
-  const [inviteFriendsErrors, setInviteFriendsErrors] = useState([]);
-
   const [isActiveCopiedBlock, setActiveCopiedBlock] = useState(false);
-
-  const validateOnChange = (name: string, value: any, event) => {
-    validateFieldOnChange(
-      name,
-      value,
-      event,
-      inviteFriendsForm,
-      setInviteFriendsForm,
-      inviteFriendsErrors,
-      setInviteFriendsErrors,
-    );
-  };
-
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, inviteFriendsErrors);
-
-  const inviteFriendsSubmit = (e) => {
-    e.preventDefault();
-
-    const form = e.target;
-
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
-
-    const { errors, hasError } = FormValidator.bulkValidate(inputs);
-
-    setInviteFriendsErrors([...errors]);
-
-    if (!hasError) {
-      userInviteFriendByEmail(inviteFriendsForm.email)
-        .then((response) => {
-          setInviteFriendsForm({ ...inviteFriendsForm, email: '' });
-          toast.success(t('referral.email_sent'));
-          return response.data.data;
-        })
-        .catch(() => {
-          toast.error(t('referral.error'));
-        });
-    }
-  };
 
   useEffect(() => {
     let cleanComponent = false;
