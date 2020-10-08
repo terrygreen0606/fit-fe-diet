@@ -153,19 +153,19 @@ const RecipeFullView = (props: any) => {
     if (!cleanComponent) {
       if (settings.paid_until > 0) {
         getRecipeData(recipeId, true, true, true).then((response) => {
-          const { data } = response.data;
+          const { data } = response;
 
-          if (response.data.success && response.data) {
+          if (data.success && data.data) {
             const {
               images,
               note,
-            } = data;
+            } = data.data;
 
             const updatedImages = [...images];
 
             updatedImages[0].isActive = true;
 
-            const preparedRecipeData = getRecipeDataFunc(data);
+            const preparedRecipeData = getRecipeDataFunc(data.data);
 
             setRecipeData({
               ...preparedRecipeData,
