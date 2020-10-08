@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import { toast } from 'react-toastify';
-
+import { InputError } from 'types';
 import { routes } from 'constants/routes';
 import {
   validateFieldOnChange,
@@ -20,6 +20,7 @@ import {
   getDiseases,
   fetchUserProfile,
   getActivityLevels,
+  userValidate,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -141,7 +142,7 @@ const SettingsChangeMealPlanView = (props: any) => {
     }
   }, [updateChangeMealForm.diseases.length, diseasesList.length]);
 
-  const [updateChangeMealErrors, setUpdateChangeMealErrors] = useState([]);
+  const [updateChangeMealErrors, setUpdateChangeMealErrors] = useState<InputError[]>([]);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -172,6 +173,18 @@ const SettingsChangeMealPlanView = (props: any) => {
     act_level: updateChangeMealForm.act_level,
   });
 
+  const updateMealSettings = (isShowAlert: boolean) => {
+    userUpdateMealSettings(getMealSettingsUpdatePayload())
+      .then(() => {
+        if (isShowAlert) {
+          toast.success(t('mp.form.success'));
+        }
+      })
+      .catch(() => {
+        toast.error(t('mp.form.error'));
+      });
+  };
+
   const updateChangeMealSubmit = (e, isShowAlert = false) => {
     e.preventDefault();
 
@@ -182,16 +195,62 @@ const SettingsChangeMealPlanView = (props: any) => {
 
     setUpdateChangeMealErrors([...errors]);
 
+    const {
+      measurement,
+      height,
+      age,
+      weight_goal,
+      weight,
+    } = updateChangeMealForm;
+
     if (!hasError) {
-      userUpdateMealSettings(getMealSettingsUpdatePayload())
-        .then(() => {
-          if (isShowAlert) {
-            toast.success(t('mp.form.success'));
+      if (activeStep === steps.metrics) {
+        userValidate({
+        measurement,
+        height,
+        age,
+        weight_goal,
+        weight,
+      })
+        .then((response) => {
+          if (response.data.success) {
+            updateMealSettings(isShowAlert);
           }
         })
-        .catch(() => {
+        .catch((error) => {
           toast.error(t('mp.form.error'));
+
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
+
+              const formErrorsTemp: InputError[] = [...updateChangeMealErrors];
+
+              Object.keys(validateErrors).map((field) => {
+                formErrorsTemp.push({
+                  field,
+                  message: validateErrors[field],
+                });
+              });
+
+              setUpdateChangeMealErrors([...formErrorsTemp]);
+
+              if (
+                validateErrors.height ||
+                validateErrors.age ||
+                validateErrors.weight ||
+                validateErrors.weight_goal
+              ) {
+                setActiveStep(steps.metrics);
+              }
+            } catch {
+
+            }
+          }
         });
+      } else {
+        updateMealSettings(isShowAlert);
+      }
     }
   };
 
