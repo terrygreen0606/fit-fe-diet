@@ -94,7 +94,7 @@ const HeightStep = (props: any) => {
 
           toast.error(t('register.error_msg'));
 
-          if (error.response.status >= 400 && error.response.status < 500) {
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
             try {
               const validateErrors = JSON.parse(error.response.data.message);
 
