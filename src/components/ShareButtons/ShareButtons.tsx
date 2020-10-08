@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import classnames from 'classnames';
+import uuid from 'react-uuid';
 
 import { openShareLink } from 'utils';
 
@@ -97,7 +98,7 @@ const ShareButtons = ({
     >
       {items.map((item) => (
         <button
-          key={item}
+          key={uuid()}
           type='button'
           className='share-button'
           disabled={disabled}
