@@ -8,6 +8,7 @@ import {
   getTranslate,
 } from 'utils';
 import { toast } from 'react-toastify';
+import { InputError } from 'types';
 import { fetchUserProfile, userUpdateProfile } from 'api';
 import Helmet from 'react-helmet';
 
@@ -39,9 +40,7 @@ type UserUpdateProfileParams = {
 const SettingsPersonalView = (props: any) => {
   const { userSettings } = props;
 
-  const [personalDataForm, setPersonalDataForm] = useState<
-    UserUpdateProfileParams
-  >({
+  const [personalDataForm, setPersonalDataForm] = useState<UserUpdateProfileParams>({
     name: '',
     measurement: 'si',
     gender: 'm',
@@ -50,7 +49,7 @@ const SettingsPersonalView = (props: any) => {
     is_mailing: false,
   });
 
-  const [personalDataFormErrors, setPersonalDataFormErrors] = useState([]);
+  const [personalDataFormErrors, setPersonalDataFormErrors] = useState<InputError[]>([]);
 
   const [personalDataLoading, setPersonalDataLoading] = useState(false);
   const [personalDataLoadingError, setPersonalDataLoadingError] = useState(
@@ -139,9 +138,28 @@ const SettingsPersonalView = (props: any) => {
           setUpdatePersonalDataLoading(false);
           toast.success(t('profile.personal_success'));
         })
-        .catch(() => {
+        .catch((error) => {
           setUpdatePersonalDataLoading(false);
           toast.error(t('profile.personal_error'));
+
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
+
+              let formErrorsTemp: InputError[] = [...personalDataFormErrors];
+
+              Object.keys(validateErrors).map((field) => {
+                formErrorsTemp.push({
+                  field,
+                  message: validateErrors[field],
+                });
+              });
+
+              setPersonalDataFormErrors(formErrorsTemp);
+            } catch {
+
+            }
+          }
         });
     }
   };
