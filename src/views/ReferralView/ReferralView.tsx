@@ -19,6 +19,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 import Breadcrumb from 'components/Breadcrumb';
 import ShareButtons from 'components/ShareButtons';
+import InviteEmail from 'components/InviteEmail';
 
 import './ReferralView.sass';
 
@@ -102,18 +103,20 @@ const ReferralView = (props: any) => {
             ]}
             currentPage={t('app.title.referral')}
           />
-          <div className='row align-items-center'>
+          <div className='row'>
             <div className='col-7 position-static'>
               <div className='referral__text-content'>
-                <h1 className='referral__title'>{t('referral.title')}</h1>
-                <h2 className='referral__subtitle'>{t('referral.subtitle')}</h2>
-                <div className='referral__bonus'>{t('referral.bonus')}</div>
-                <p className='referral__description'>
-                  {t('referral.description')}
-                </p>
-                <p className='referral__description'>
-                  {t('referral.copy_desc')}
-                </p>
+                <div className='referral__text-content-preparation'>
+                  <h1 className='referral__title'>{t('referral.title')}</h1>
+                  <h2 className='referral__subtitle'>{t('referral.subtitle')}</h2>
+                  <div className='referral__bonus'>{t('referral.bonus')}</div>
+                  <p className='referral__description'>
+                    {t('referral.description')}
+                  </p>
+                  <p className='referral__description'>
+                    {t('referral.copy_desc')}
+                  </p>
+                </div>
                 <div className='referral__invite-link'>
                   <Button
                     type='button'
@@ -139,30 +142,13 @@ const ReferralView = (props: any) => {
                     {t('common.or')}
                   </span>
                 </div>
-                <form
-                  onSubmit={(e) => inviteFriendsSubmit(e)}
-                  className='referral__container-input'
-                >
-                  <InputField
-                    name='email'
-                    data-validate='["email", "required"]'
-                    errors={getFieldErrors('email')}
-                    value={inviteFriendsForm.email}
-                    onChange={(e) => validateOnChange('email', e.target.value, e)}
-                    block
-                    placeholder={t('referral.enter_email')}
-                    height='lg'
-                    className='referral__input card-bg'
+                <InviteEmail />
+                <div className='referral__socials'>
+                  <ShareButtons
+                    shareLink={inviteLink}
+                    visible
                   />
-                  <button type='submit' className='referral__invite-button'>
-                    <span className='referral__invite-button-text'>
-                      {t('referral.invite')}
-                    </span>
-                    <div className='referral__invite-button-container-icon'>
-                      <ArrowRight className='referral__invite-button-icon' />
-                    </div>
-                  </button>
-                </form>
+                </div>
               </div>
             </div>
             <div className='col-5'>
@@ -174,12 +160,6 @@ const ReferralView = (props: any) => {
                 />
               </div>
             </div>
-          </div>
-          <div className='referral__socials'>
-            <ShareButtons
-              shareLink={inviteLink}
-              visible
-            />
           </div>
         </div>
       </section>

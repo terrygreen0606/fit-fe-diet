@@ -13,9 +13,7 @@
   border-top: 1px solid #1EC5A7
   opacity: 0
   visibility: hidden
-  overflow-y: auto
   z-index: 10
-  +scrollStyle(5px)
 
   &.visible
     opacity: 1
@@ -69,6 +67,14 @@
     margin-bottom: 20px
     text-decoration: none
 
+  &__body
+    width: calc(100% + 50px)
+    margin-left: -25px
+    max-height: 330px
+    padding: 0 25px
+    overflow-y: auto
+    +scrollStyle(5px)
+
   &__item
     padding: 20px 0
 
@@ -90,8 +96,8 @@
         flex: 1
 
         .checkmark
-          top: initial
-          bottom: 0
+          top: 50%
+          transform: translateY(-50%)
 
           &::after
             border-color: $white
@@ -115,6 +121,6 @@
 
         &:hover
           background-color: darken(#FF3D00, 10%)
-    
+
   &__item:not(:last-child)
     border-bottom: 1px solid #E8E8E8

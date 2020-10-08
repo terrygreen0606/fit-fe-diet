@@ -7,7 +7,6 @@ import classnames from 'classnames';
 import {
   getTranslate,
   getWeigthUnit,
-  redirectToPayView,
 } from 'utils';
 import {
   getPublicShopListUrl,
