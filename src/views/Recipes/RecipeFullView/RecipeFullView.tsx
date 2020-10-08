@@ -72,8 +72,6 @@ const RecipeFullView = (props: any) => {
 
   const [isActiveDeleteModal, setIsActiveDeleteModal] = useState<boolean>(false);
 
-  const [isActiveNotesModal, setIsActiveNotesModal] = useState<boolean>(false);
-
   const [addNoteForm, setAddNoteForm] = useState({
     note: '',
   });
@@ -123,6 +121,33 @@ const RecipeFullView = (props: any) => {
     wines: [],
   });
 
+  const getRecipeDataFunc = (data) => ({
+    calorie: data.calorie,
+    carbohydrate: data.carbohydrate,
+    costLevel: data.cost_level,
+    cuisineIds: data.cuisine_ids,
+    fat: data.fat,
+    imageIds: data.image_ids,
+    ingredients: data.ingredients,
+    isLiked: data.is_liked,
+    isPrepared: data.is_prepared,
+    isPublic: data.is_public,
+    mealtimeCodes: data.mealtime_codes,
+    name: data.name_i18n,
+    preparation: data.preparation_i18n,
+    protein: data.protein,
+    salt: data.salt,
+    servingsCnt: data.servings_cnt,
+    sugar: data.sugar,
+    time: data.time,
+    weight: data.weight,
+    id: data._id,
+    videoUrl: data.video_url,
+    isOwner: data.is_owner,
+    similar: data.similar,
+    wines: data.wines,
+  });
+
   useEffect(() => {
     let cleanComponent = false;
     if (!cleanComponent) {
@@ -132,31 +157,7 @@ const RecipeFullView = (props: any) => {
 
           if (response.data.success && response.data) {
             const {
-              calorie,
-              carbohydrate,
-              cost_level,
-              cuisine_ids,
-              fat,
-              image_ids,
               images,
-              ingredients,
-              is_liked,
-              is_prepared,
-              is_public,
-              mealtime_codes,
-              name_i18n,
-              preparation_i18n,
-              protein,
-              salt,
-              servings_cnt,
-              sugar,
-              time,
-              weight,
-              _id,
-              video_url,
-              is_owner,
-              similar,
-              wines,
               note,
             } = data;
 
@@ -164,33 +165,11 @@ const RecipeFullView = (props: any) => {
 
             updatedImages[0].isActive = true;
 
+            const preparedRecipeData = getRecipeDataFunc(data);
+
             setRecipeData({
-              ...recipeData,
-              calorie,
-              carbohydrate,
-              costLevel: cost_level,
-              cuisineIds: cuisine_ids,
-              fat,
-              imageIds: image_ids,
+              ...preparedRecipeData,
               images: updatedImages,
-              ingredients,
-              isLiked: is_liked,
-              isPrepared: is_prepared,
-              isPublic: is_public,
-              mealtimeCodes: mealtime_codes,
-              name: name_i18n,
-              preparation: preparation_i18n,
-              protein,
-              salt,
-              servingsCnt: servings_cnt,
-              sugar,
-              time,
-              weight,
-              id: _id,
-              videoUrl: video_url,
-              isOwner: is_owner,
-              similar,
-              wines,
             });
 
             setAddNoteForm({ ...addNoteForm, note });
@@ -474,7 +453,7 @@ const RecipeFullView = (props: any) => {
                       type='button'
                       onClick={() => setIsBlockActive(!isBlockActive)}
                       className={classnames('recipe__actions-button card-bg', {
-                        active: isActiveNotesModal || addNoteForm.note,
+                        active: isBlockActive || addNoteForm.note,
                       })}
                     >
                       <div className='recipe__actions-button-media'>
