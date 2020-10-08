@@ -173,6 +173,18 @@ const SettingsChangeMealPlanView = (props: any) => {
     act_level: updateChangeMealForm.act_level,
   });
 
+  const updateMealSettings = (isShowAlert: boolean) => {
+    userUpdateMealSettings(getMealSettingsUpdatePayload())
+      .then(() => {
+        if (isShowAlert) {
+          toast.success(t('mp.form.success'));
+        }
+      })
+      .catch(() => {
+        toast.error(t('mp.form.error'));
+      });
+  };
+
   const updateChangeMealSubmit = (e, isShowAlert = false) => {
     e.preventDefault();
 
@@ -192,7 +204,8 @@ const SettingsChangeMealPlanView = (props: any) => {
     } = updateChangeMealForm;
 
     if (!hasError) {
-      userValidate({
+      if (activeStep === steps.metrics) {
+        userValidate({
         measurement,
         height,
         age,
@@ -201,15 +214,7 @@ const SettingsChangeMealPlanView = (props: any) => {
       })
         .then((response) => {
           if (response.data.success) {
-            userUpdateMealSettings(getMealSettingsUpdatePayload())
-              .then(() => {
-                if (isShowAlert) {
-                  toast.success(t('mp.form.success'));
-                }
-              })
-              .catch(() => {
-                toast.error(t('mp.form.error'));
-              });
+            updateMealSettings(isShowAlert);
           }
         })
         .catch((error) => {
@@ -243,6 +248,9 @@ const SettingsChangeMealPlanView = (props: any) => {
             }
           }
         });
+      } else {
+        updateMealSettings(isShowAlert);
+      }
     }
   };
 
