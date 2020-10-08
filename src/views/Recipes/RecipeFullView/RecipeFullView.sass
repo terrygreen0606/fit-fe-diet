@@ -315,6 +315,17 @@
       flex-wrap: wrap
       margin-bottom: 20px
 
+    &-button-wrap
+      margin-left: 21px
+      flex-basis: calc(33% - 14px)
+
+      @media (max-width: 500px)
+        flex-basis: calc(33.33% - 6px)
+        margin-left: 9px
+
+      .recipe__actions-button
+        width: 100%
+
     &-button
       position: relative
       flex-basis: calc(33% - 14px)
