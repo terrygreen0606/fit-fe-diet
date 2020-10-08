@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable no-underscore-dangle */
@@ -16,6 +17,7 @@ import {
   getTranslate,
   getWeigthUnit,
   getVideo,
+  redirectToPayView,
 } from 'utils';
 import {
   getRecipeData,
@@ -34,6 +36,7 @@ import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal/Modal';
 import InputField from 'components/common/Forms/InputField';
 import ShareButtons from 'components/ShareButtons';
+import useOutsideClick from 'components/hooks/useOutsideClick';
 
 import './RecipeFullView.sass';
 
@@ -55,19 +58,19 @@ const RecipeFullView = (props: any) => {
 
   const { settings } = props;
 
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
+
   const [recipeId, setRecipeId] = useState(
     window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
   );
 
   const history = useHistory();
 
-  const [isAvailabilityRecipe, setAvailabilityRecipe] = useState<boolean>(false);
+  const [isAvailabilityRecipe, setIsAvailabilityRecipe] = useState<boolean>(false);
 
-  const [isSpinnerActive, setSpinnerActive] = useState<boolean>(true);
+  const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
-  const [isActiveDeleteModal, setActiveDeleteModal] = useState<boolean>(false);
-
-  const [isActiveNotesModal, setActiveNotesModal] = useState<boolean>(false);
+  const [isActiveDeleteModal, setIsActiveDeleteModal] = useState<boolean>(false);
 
   const [addNoteForm, setAddNoteForm] = useState({
     note: '',
@@ -118,53 +121,68 @@ const RecipeFullView = (props: any) => {
     wines: [],
   });
 
+  const getRecipeDataFunc = (data) => ({
+    calorie: data.calorie,
+    carbohydrate: data.carbohydrate,
+    costLevel: data.cost_level,
+    cuisineIds: data.cuisine_ids,
+    fat: data.fat,
+    imageIds: data.image_ids,
+    ingredients: data.ingredients,
+    isLiked: data.is_liked,
+    isPrepared: data.is_prepared,
+    isPublic: data.is_public,
+    mealtimeCodes: data.mealtime_codes,
+    name: data.name_i18n,
+    preparation: data.preparation_i18n,
+    protein: data.protein,
+    salt: data.salt,
+    servingsCnt: data.servings_cnt,
+    sugar: data.sugar,
+    time: data.time,
+    weight: data.weight,
+    id: data._id,
+    videoUrl: data.video_url,
+    isOwner: data.is_owner,
+    similar: data.similar,
+    wines: data.wines,
+  });
+
   useEffect(() => {
     let cleanComponent = false;
     if (!cleanComponent) {
-      getRecipeData(recipeId, true, true, true).then((response) => {
-        const { data } = response.data;
+      if (settings.paid_until > 0) {
+        getRecipeData(recipeId, true, true, true).then((response) => {
+          const { data } = response;
 
-        const updatedImages = [...data.images];
+          if (data.success && data.data) {
+            const {
+              images,
+              note,
+            } = data.data;
 
-        updatedImages[0].isActive = true;
+            const updatedImages = [...images];
 
-        setRecipeData({
-          ...recipeData,
-          calorie: data.calorie,
-          carbohydrate: data.carbohydrate,
-          costLevel: data.cost_level,
-          cuisineIds: data.cuisine_ids,
-          fat: data.fat,
-          imageIds: data.image_ids,
-          images: updatedImages,
-          ingredients: data.ingredients,
-          isLiked: data.is_liked,
-          isPrepared: data.is_prepared,
-          isPublic: data.is_public,
-          mealtimeCodes: data.mealtime_codes,
-          name: data.name_i18n,
-          preparation: data.preparation_i18n,
-          protein: data.protein,
-          salt: data.salt,
-          servingsCnt: data.servings_cnt,
-          sugar: data.sugar,
-          time: data.time,
-          weight: data.weight,
-          id: data._id,
-          videoUrl: data.video_url,
-          isOwner: data.is_owner,
-          similar: data.similar,
-          wines: data.wines,
+            updatedImages[0].isActive = true;
+
+            const preparedRecipeData = getRecipeDataFunc(data.data);
+
+            setRecipeData({
+              ...preparedRecipeData,
+              images: updatedImages,
+            });
+
+            setAddNoteForm({ ...addNoteForm, note });
+          }
+          setIsAvailabilityRecipe(true);
+        }).catch(() => {
+          setIsAvailabilityRecipe(false);
+        }).finally(() => {
+          setIsSpinnerActive(false);
         });
-
-        setAddNoteForm({ ...addNoteForm, note: data.note });
-
-        setAvailabilityRecipe(true);
-      }).catch(() => {
-        setAvailabilityRecipe(false);
-      }).finally(() => {
-        setSpinnerActive(false);
-      });
+      } else {
+        redirectToPayView(props.history, t('tariff.not_paid'));
+      }
     }
 
     return () => cleanComponent = true;
@@ -430,70 +448,72 @@ const RecipeFullView = (props: any) => {
                       <CheckedIcon className='recipe__actions-button-checked-icon' />
                     </div>
                   </Link>
-                  <button
-                    type='button'
-                    onClick={() => setActiveNotesModal(!isActiveNotesModal)}
-                    className={classnames('recipe__actions-button card-bg', {
-                      active: isActiveNotesModal || addNoteForm.note,
-                    })}
-                  >
-                    <div className='recipe__actions-button-media'>
-                      <NotesIcon />
-                    </div>
-                    <div className='recipe__actions-button-desc'>
-                      {t('recipe.notes')}
-                    </div>
-                    <div className='recipe__actions-button-checked'>
-                      <CheckedIcon className='recipe__actions-button-checked-icon' />
-                    </div>
-                  </button>
-                  {isActiveNotesModal && (
-                    <div className='recipe__notes-modal'>
-                      <div className='recipe__notes-modal-wrap card-bg'>
-                        <div className='recipe__notes-modal-title'>
-                          {t('recipe.add_note.desc')}
-                        </div>
-                        <InputField
-                          block
-                          type='textarea'
-                          name='note'
-                          errors={getFieldErrors('note')}
-                          value={addNoteForm.note}
-                          onChange={(e) => validateOnChange('note', e.target.value, e)}
-                          className='recipe__notes-modal-textarea'
-                          border='light'
-                          rows={10}
-                        />
-                        <Button
-                          color='primary'
-                          disabled={!addNoteForm.note}
-                          onClick={() => {
-                            addRecipeNote(recipeId, addNoteForm.note).then(() => {
-                              toast.success(t('recipe.add_note.success'));
-
-                              setActiveNotesModal(false);
-                            }).catch(() => {
-                              toast.error(t('recipe.add_note.error'));
-                            });
-                          }}
-                          className='recipe__notes-modal-btn'
-                        >
-                          {t('recipe.add_note.save')}
-                        </Button>
+                  <div ref={changedBlockRef} className='recipe__actions-button-wrap'>
+                    <button
+                      type='button'
+                      onClick={() => setIsBlockActive(!isBlockActive)}
+                      className={classnames('recipe__actions-button card-bg', {
+                        active: isBlockActive || addNoteForm.note,
+                      })}
+                    >
+                      <div className='recipe__actions-button-media'>
+                        <NotesIcon />
                       </div>
-                      <button
-                        type='button'
-                        onClick={() => setActiveNotesModal(false)}
-                        className='recipe__notes-modal-close'
-                      >
-                        <CloseIconLogo />
-                      </button>
-                    </div>
-                  )}
+                      <div className='recipe__actions-button-desc'>
+                        {t('recipe.notes')}
+                      </div>
+                      <div className='recipe__actions-button-checked'>
+                        <CheckedIcon className='recipe__actions-button-checked-icon' />
+                      </div>
+                    </button>
+                    {isBlockActive && (
+                      <div className='recipe__notes-modal'>
+                        <div className='recipe__notes-modal-wrap card-bg'>
+                          <div className='recipe__notes-modal-title'>
+                            {t('recipe.add_note.desc')}
+                          </div>
+                          <InputField
+                            block
+                            type='textarea'
+                            name='note'
+                            errors={getFieldErrors('note')}
+                            value={addNoteForm.note}
+                            onChange={(e) => validateOnChange('note', e.target.value, e)}
+                            className='recipe__notes-modal-textarea'
+                            border='light'
+                            rows={10}
+                          />
+                          <Button
+                            color='primary'
+                            disabled={!addNoteForm.note}
+                            onClick={() => {
+                              addRecipeNote(recipeId, addNoteForm.note).then(() => {
+                                toast.success(t('recipe.add_note.success'));
+
+                                setIsBlockActive(false);
+                              }).catch(() => {
+                                toast.error(t('recipe.add_note.error'));
+                              });
+                            }}
+                            className='recipe__notes-modal-btn'
+                          >
+                            {t('recipe.add_note.save')}
+                          </Button>
+                        </div>
+                        <button
+                          type='button'
+                          onClick={() => setIsBlockActive(false)}
+                          className='recipe__notes-modal-close'
+                        >
+                          <CloseIconLogo />
+                        </button>
+                      </div>
+                    )}
+                  </div>
                   {recipeData.isOwner && (
                     <button
                       type='button'
-                      onClick={() => setActiveDeleteModal(true)}
+                      onClick={() => setIsActiveDeleteModal(true)}
                       className={classnames('recipe__actions-button card-bg', {
                         active: isActiveDeleteModal,
                       })}
@@ -513,7 +533,7 @@ const RecipeFullView = (props: any) => {
                     <Modal
                       withCloseBtn
                       shouldCloseOnOverlayClick
-                      onClose={() => setActiveDeleteModal(false)}
+                      onClose={() => setIsActiveDeleteModal(false)}
                       className='recipe__modal'
                     >
                       <div className='recipe__modal-title'>
@@ -529,7 +549,7 @@ const RecipeFullView = (props: any) => {
                         </Button>
                         <Button
                           color='cancel'
-                          onClick={() => setActiveDeleteModal(false)}
+                          onClick={() => setIsActiveDeleteModal(false)}
                           className='recipe__modal-btn'
                         >
                           {t('common.no')}

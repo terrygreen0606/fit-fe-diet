@@ -8,6 +8,7 @@ import {
   getTranslate,
   getScrollbarSize,
   getLangUser,
+  redirectToPayView,
 } from 'utils';
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -171,8 +172,7 @@ const MealPlanView = (props: any) => {
         setDaysToEndSubscription(Math.round(diff));
         setIsNoAccess(false);
       } else {
-        setIsNoAccess(true);
-        setIsMealPlanLoading(false);
+        redirectToPayView(props.history, t('tariff.not_paid'));
       }
     }
 

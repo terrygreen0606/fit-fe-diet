@@ -14,6 +14,7 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getWeigthUnit,
+  redirectToPayView,
 } from 'utils';
 import {
   searchIngredients,
@@ -153,8 +154,7 @@ const ShoppingListView = (props: any) => {
         getShoppingListFunc();
         setIsNoAccess(false);
       } else {
-        setIsNoAccess(true);
-        setIsSpinnerActive(false);
+        redirectToPayView(props.history, t('tariff.not_paid'));
       }
     }
 
