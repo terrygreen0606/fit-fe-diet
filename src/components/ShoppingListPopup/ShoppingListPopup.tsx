@@ -49,8 +49,6 @@ const ShoppingListPopup = ({
 
   const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
 
-  const [sharePublicUrl, setSharePublicUrl] = useState<string>('');
-
   const saveFileShoppingList = () => {
     getPublicShopListUrl(1).then((response) =>
       window.location.assign(response.data.data.url));
@@ -119,7 +117,7 @@ const ShoppingListPopup = ({
         setShoppingList([...updatedShoppingList]);
       }, 500);
 
-      syncNumberInShopCart();
+      syncNumberInShopCart(updatedShoppingList);
     });
   };
 
@@ -131,17 +129,16 @@ const ShoppingListPopup = ({
 
     setShoppingList([...updatedShoppingList]);
 
-    props.updateShoppingListLength(updatedShoppingList.length);
-
     deleteFromShoppingList(itemId, dateSync)
       .then((response) => {
         setDateSync(response.data.data.date_sync);
-        syncNumberInShopCart();
       })
       .catch(() => {
         toast.error(t('shop_list.update.error'));
 
         setShoppingList([...prevShoppingList]);
+      }).finally(() => {
+        syncNumberInShopCart(updatedShoppingList);
       });
   };
 
@@ -182,17 +179,16 @@ const ShoppingListPopup = ({
                           type='button'
                           onClick={() => {
                             setIsBlockActive(!isBlockActive);
-                            getPublicShopListUrl().then((response) => {
-                              setSharePublicUrl(response.data.data.url);
-                            });
                           }}
                           className='shop-list-popup__header-buttons-item'
                         >
                           <ShareIcon />
                         </button>
                         <ShareButtons
-                          shareLink={sharePublicUrl}
                           visible={isBlockActive}
+                          fetchData={() => getPublicShopListUrl().then((response) => ({
+                            link: response.data.data.url,
+                          }))}
                           className='shop-list-popup__header-buttons-share'
                         />
                       </div>

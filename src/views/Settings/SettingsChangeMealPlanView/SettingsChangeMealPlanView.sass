@@ -1,11 +1,12 @@
 @import '../../../assets/sass/vars'
-  
+
 .change-meal-plan
+  min-height: 520px
   padding: 40px 50px
 
   @media (max-width: 500px)
     padding: 30px 20px
-    
+
   &__title
     margin-bottom: 60px
     text-align: center
@@ -16,7 +17,7 @@
     @media (max-width: 767px)
       font-size: 18px
       margin-bottom: 40px
-  
+
   &__btn-wrap
     text-align: center
 
@@ -33,7 +34,7 @@
   &__goals
     display: flex
     justify-content: space-between
-    margin-bottom: 50px 
+    margin-bottom: 50px
 
     @media (max-width: 991px)
       flex-wrap: wrap
@@ -68,7 +69,7 @@
         svg
           path
             fill: $white
-          
+
           circle
             fill: $steel-blue
             stroke: $white
@@ -159,7 +160,7 @@
 
           @media (max-width: 767px)
             font-size: 16px
-      
+
       &-item.active
         .change-meal-plan__metrics-gender-item-icon
           path
@@ -167,7 +168,7 @@
 
         .change-meal-plan__metrics-gender-item-text
           color: $black
-    
+
     &-row
       display: flex
       justify-content: space-between
@@ -183,7 +184,7 @@
 
       @media (max-width: 500px)
         flex-basis: calc(100% - 30px)
-      
+
       .fg-input
         width: 100%
         padding: 19px 20px
@@ -192,7 +193,7 @@
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button
           -webkit-appearance: none
-      
+
       .fgLabel
         margin-bottom: 10px
         padding-left: 0
@@ -338,7 +339,7 @@
           height: 80px
           flex-basis: 80px
           transform: translate(-50%, 0)
-        
+
         @media (max-width: 991px)
           width: 76px
           height: 76px
@@ -392,7 +393,7 @@
         transition: border 0.2s, background-color 0.2s, color 0.2s ease
 
         &:hover
-          border: 2px solid $steel-blue 
+          border: 2px solid $steel-blue
           background-color: $steel-blue
           color: $white
 
@@ -434,7 +435,3 @@
 
       .change-meal-plan__works-out-btn-desc
         color: $white
-
-    
-
-

@@ -25,8 +25,6 @@ const AfterCheckoutPage = (props: any) => {
   const [isTariffLoading, setTariffLoading] = useState<boolean>(true);
   const [isTariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
 
-  const [inviteLink, setInviteLink] = useState('');
-
   const getActiveTariff = () => {
     setTariffLoading(true);
     setTariffLoadingError(false);
@@ -54,15 +52,7 @@ const AfterCheckoutPage = (props: any) => {
   };
 
   useEffect(() => {
-    let cleanComponent = false;
-
-    getUserInviteLink().then((response) => {
-      if (!cleanComponent) setInviteLink(response.data.data.url);
-    });
-
     getActiveTariff();
-
-    return () => cleanComponent = true;
   }, []);
 
   const getTariffDate = (date) => {
@@ -198,8 +188,10 @@ const AfterCheckoutPage = (props: any) => {
               </div>
 
               <ShareButtons
-                shareLink={inviteLink}
                 visible
+                fetchData={() => getUserInviteLink().then((response) => ({
+                  link: response.data.data.url,
+                }))}
               />
 
               <div className='mt-5 pt-md-5'>

@@ -12,7 +12,6 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  copyTextInBuffer,
 } from 'utils';
 import FormValidator from 'utils/FormValidator';
 import {
@@ -29,6 +28,7 @@ import ProfileLayout from 'components/hoc/ProfileLayout';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
+import CopyLinkButton from 'components/common/CopyLinkButton';
 
 import './SettingsFamilyView.sass';
 
@@ -52,8 +52,6 @@ const SettingsFamilyView = (props: any) => {
   });
 
   const [userFamily, setUserFamily] = useState([]);
-
-  const [isActiveCopiedBlock, setActiveCopiedBlock] = useState(false);
 
   useEffect(() => {
     getUserFamily().then((response) => {
@@ -135,24 +133,7 @@ const SettingsFamilyView = (props: any) => {
             <p className='family__invite-link-desc'>
               {t('family.invite_link.desc')}
             </p>
-            <Button
-              type='button'
-              className='family__invite-link-input'
-              onClick={() => {
-                copyTextInBuffer('.family__invite-link-input');
-                setActiveCopiedBlock(true);
-                setTimeout(() => {
-                  setActiveCopiedBlock(false);
-                }, 2000);
-              }}
-            >
-              {inviteLink}
-            </Button>
-            {isActiveCopiedBlock && (
-              <div className='family__invite-link-copied'>
-                {t('family.copied')}
-              </div>
-            )}
+            <CopyLinkButton text={inviteLink} />
           </div>
           <div className='family__separator'>
             <span className='family__separator-text'>{t('common.or')}</span>

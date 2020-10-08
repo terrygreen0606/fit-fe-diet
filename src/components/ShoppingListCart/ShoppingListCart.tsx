@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { routes } from 'constants/routes';
 import classnames from 'classnames';
@@ -18,13 +18,7 @@ const ShoppingListCart = ({
 }: any) => {
   const { settings } = props;
 
-  const [shoppingListLength, setShoppingListLength] = useState<number>(0);
-
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
-
-  useEffect(() => {
-    setShoppingListLength(settings.shopping_list_count);
-  }, [settings.shopping_list_count]);
 
   return (
     <div
@@ -44,7 +38,7 @@ const ShoppingListCart = ({
       >
         <ShoppingCartIcon />
         <div className='shopping-cart__count'>
-          {shoppingListLength > 99 ? '99+' : shoppingListLength}
+          {settings.shopping_list_count > 99 ? '99+' : settings.shopping_list_count}
         </div>
       </button>
       <ShoppingListPopup visible={isBlockActive && !window.location.href.includes(routes.shoppingList)} />

@@ -70,8 +70,6 @@ const MealPlanView = (props: any) => {
 
   const [daysToEndSubscription, setDaysToEndSubscription] = useState<number>(0);
 
-  const [shareText, setShareText] = useState<string>('');
-
   const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
   const [isMealPlanLoading, setIsMealPlanLoading] = useState<boolean>(true);
 
@@ -159,9 +157,6 @@ const MealPlanView = (props: any) => {
             }
           });
           setMealPlan(updatedMealPlan);
-          if (updatedMealPlan.length === 7) {
-            getMealPlanText().then((res) => setShareText(res.data.data.content));
-          }
         }).finally(() => {
           setIsMealPlanLoading(false);
         });
@@ -218,12 +213,14 @@ const MealPlanView = (props: any) => {
   };
 
   const downloadTxtFile = () => {
-    const element = document.createElement('a');
-    const file = new Blob([shareText], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = 'meal-plan.txt';
-    document.body.appendChild(element); // Required for this to work in FireFox
-    element.click();
+    getMealPlanText().then((response) => {
+      const element = document.createElement('a');
+      const file = new Blob([response.data.data.content], { type: 'text/plain' });
+      element.href = URL.createObjectURL(file);
+      element.download = 'meal-plan.txt';
+      document.body.appendChild(element); // Required for this to work in FireFox
+      element.click();
+    });
   };
 
   return (
@@ -308,10 +305,11 @@ const MealPlanView = (props: any) => {
                           </button>
                           <ShareButtons
                             visible={isBlockActive}
-                            shareText={shareText}
-                            shareLink={window.location.origin}
-                            isFacebookActive={false}
-                            isWhatsappActive={false}
+                            items={['twitter', 'telegram']}
+                            fetchData={() => getMealPlanText().then((response) => ({
+                              link: window.location.origin,
+                              text: response.data.data.content,
+                            }))}
                           />
                         </div>
                       </div>
@@ -435,10 +433,11 @@ const MealPlanView = (props: any) => {
                       </h5>
                       <ShareButtons
                         visible
-                        shareText={shareText}
-                        shareLink={window.location.origin}
-                        isFacebookActive={false}
-                        isWhatsappActive={false}
+                        items={['twitter', 'telegram']}
+                        fetchData={() => getMealPlanText().then((res) => ({
+                          link: window.location.origin,
+                          text: res.data.data.content,
+                        }))}
                       />
                     </div>
 
