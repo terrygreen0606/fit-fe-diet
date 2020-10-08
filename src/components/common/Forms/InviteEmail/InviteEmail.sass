@@ -1,5 +1,4 @@
-@import '../../assets/sass/_vars'
-
+@import '../../../../assets/sass/_vars'
 
 .referral
   &__container-input
@@ -11,6 +10,13 @@
       left: 50%
       transform: translateX(-50%)
 
+    .loadingSpinner_wrap
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      right: 20px
+      width: 50px
+
   &__input.fg-input
     padding: 30px 140px 30px 40px
     font-size: 20px
@@ -20,7 +26,7 @@
     &::placeholder
       font-size: 20px
       color: $steel-blue
-  
+
   &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):hover,
   &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):focus
     border-color: darken($steel-blue, 10%) !important
@@ -54,51 +60,23 @@
       background: $steel-blue
       border-radius: 50%
       transition: transform 0.2s ease
-      
+
     &-icon
       margin-right: -2px
 
       path
         fill: $white
 
-
 @media only screen and(max-width: 767px)
   .referral
-    &__invite-link
-      position: initial
-      &-input
-        position: absolute
-        left: 50%
-        transform: translateX(-50%)
-        bottom: 300px
-        padding: 30px 15px 30px 40px
-        max-width: 540px
-        justify-content: flex-start
-        font-size: 14px
-        overflow: hidden
-        z-index: 3
-
-      &-copied
-        top: initial
-        bottom: 270px
-    
-    // &__container-input
-    //   position: absolute
-    //   bottom: 160px
-    //   left: 50%
-    //   transform: translateX(-50%)
-    //   max-width: 540px
-    //   width: 100%
-
     &__input.fg-input:placeholder-shown
       &::placeholder
         font-size: 14px
-    
+
     &__invite-button
       &-text
         font-size: 14px
 
-    
 @media only screen and(max-width: 567px)
   .referral
     &__container-input

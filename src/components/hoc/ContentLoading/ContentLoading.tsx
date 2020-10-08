@@ -15,11 +15,13 @@ type ContentLoadingProps = {
   fetchData?: (any) => void;
   [propName: string]: any;
   label?: string,
+  color?: string,
 };
 
 const ContentLoadingDefaultProps = {
   spinSize: 'sm',
   label: '',
+  color: '#00C5D1',
 };
 
 const ContentLoading = (props: ContentLoadingProps) => {
@@ -30,6 +32,7 @@ const ContentLoading = (props: ContentLoadingProps) => {
     spinSize,
     loadingOverlay,
     label,
+    color,
     children,
   } = props;
 
@@ -48,14 +51,14 @@ const ContentLoading = (props: ContentLoadingProps) => {
               loadingOverlay_is_loading: isLoading,
             })}
           >
-            <Spinner className='loadingSpinner' size={spinSize} color='#00C5D1' />
+            <Spinner className='loadingSpinner' size={spinSize} color={color} />
             {children}
           </div>
         ) : (
             <>
               {isLoading ? (
                 <div className='loadingSpinner_wrap'>
-                  <Spinner size={spinSize} color='#00C5D1' />
+                  <Spinner size={spinSize} color={color} />
                   {label && (
                     <p>
                       {label}

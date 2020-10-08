@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/destructuring-assignment */
+import React, { useState } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  copyTextInBuffer,
 } from 'utils';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
@@ -11,9 +11,9 @@ import { userInviteFriendByEmail } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
-import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
 import InputField from 'components/common/Forms/InputField';
+import ContentLoading from 'components/hoc/ContentLoading';
 
 import './InviteEmail.sass';
 
@@ -24,9 +24,12 @@ type InviteEmailProps = {
   localePhrases: any;
 };
 
-const InviteEmail = (props: InviteEmailProps) => {
+const InviteEmailDefaultProps = {
+  className: '',
+};
 
-  const t = (code: string, placeholders?: any) => 
+const InviteEmail = (props: InviteEmailProps) => {
+  const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
   const [inviteFriendsForm, setInviteFriendsForm] = useState({
@@ -35,7 +38,7 @@ const InviteEmail = (props: InviteEmailProps) => {
 
   const [inviteFriendsErrors, setInviteFriendsErrors] = useState([]);
 
-  const [isActiveCopiedBlock, setActiveCopiedBlock] = useState(false);
+  const [isRequestSent, setIsRequestSent] = useState<boolean>(false);
 
   const validateOnChange = (name: string, value: any, event) => {
     validateFieldOnChange(
@@ -52,7 +55,7 @@ const InviteEmail = (props: InviteEmailProps) => {
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, inviteFriendsErrors);
 
-  const inviteFriendsSubmit = e => {
+  const inviteFriendsSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
@@ -64,6 +67,7 @@ const InviteEmail = (props: InviteEmailProps) => {
     setInviteFriendsErrors([...errors]);
 
     if (!hasError) {
+      setIsRequestSent(true);
       userInviteFriendByEmail(inviteFriendsForm.email)
         .then((response) => {
           setInviteFriendsForm({ ...inviteFriendsForm, email: '' });
@@ -72,15 +76,18 @@ const InviteEmail = (props: InviteEmailProps) => {
         })
         .catch(() => {
           toast.error(t('referral.error'));
+        })
+        .finally(() => {
+          setIsRequestSent(false);
         });
     }
   };
 
   return (
     <form
-      onSubmit={e => inviteFriendsSubmit(e)}
+      onSubmit={(e) => inviteFriendsSubmit(e)}
       className={classNames('referral__container-input', {
-        [props.className]: props.className
+        [props.className]: props.className,
       })}
     >
       <InputField
@@ -95,17 +102,25 @@ const InviteEmail = (props: InviteEmailProps) => {
         className='referral__input card-bg'
       />
 
-      <button type='submit' className='referral__invite-button'>
-        <span className='referral__invite-button-text'>
-          {t('referral.invite')}
-        </span>
-
-        <div className='referral__invite-button-container-icon'>
-          <ArrowRight className='referral__invite-button-icon' />
-        </div>
-      </button>
+      <ContentLoading
+        isLoading={isRequestSent}
+        isError={false}
+        spinSize='sm'
+        color='#106EE8'
+      >
+        <button type='submit' className='referral__invite-button'>
+          <span className='referral__invite-button-text'>
+            {t('referral.invite')}
+          </span>
+          <div className='referral__invite-button-container-icon'>
+            <ArrowRight className='referral__invite-button-icon' />
+          </div>
+        </button>
+      </ContentLoading>
     </form>
   );
 };
+
+InviteEmail.defaultProps = InviteEmailDefaultProps;
 
 export default WithTranslate(InviteEmail);

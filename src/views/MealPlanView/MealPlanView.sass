@@ -1,6 +1,5 @@
 @import '../../assets/sass/vars'
 
-
 .how-nutrition-plan-works
   &-sect
     font-size: 16px
@@ -84,7 +83,7 @@
       &-item:hover
         svg path
           fill: $caribbean-green
-      
+
       .share-buttons-list
         position: absolute
         bottom: 100%
@@ -127,7 +126,7 @@
 
         &.card-bg
           border-radius: 5px
-          
+
         &-number
           margin-bottom: 10px
           font-size: 26px
@@ -174,7 +173,7 @@
     &-recipes.card-bg
       @media (max-width: 768px)
         box-shadow: none
-    
+
     &-recipes-item + .nutrition-plan-card-list-recipes-item
       margin-top: 54px
 
@@ -267,7 +266,7 @@
       .link
         color: $steel-blue
         border-bottom: 1px solid
-      
+
       &-link
         text-decoration: none
 
@@ -279,7 +278,6 @@
           width: 100%
           padding: 20px
           font-size: 14px
-
 
 .nutrition-plan-diet-settings-card-back, .nutrition-plan-add-recipe-card-back
   box-shadow: 0 0 0 20px #ffffff
@@ -313,6 +311,7 @@
   .share-button
     width: 58px
     height: 58px
+    margin: 0
 
     &:not(:last-child)
       margin-right: 10px
@@ -469,7 +468,7 @@
 
   @media (max-width: 576px)
     margin-bottom: 20px
-  
+
   &.hinted
     position: relative
     background-color: #FFFFFF
@@ -479,14 +478,14 @@
 @media print
   *
     overflow: visible !important
-    
+
   ::-webkit-scrollbar
     display: none
 
   .layoutMainWrapper,
   .nutrition-plan-card-list-sect
     padding-top: 0 !important
-  
+
   .mainHeader,
   .nutrition-plan-card-list-controls,
   .nutrition-plan-card-list-date,
@@ -504,7 +503,7 @@
 
       & + .nutrition-plan-card-list-recipes-item
         margin-top: 40px
-        
+
       &.card-bg
         box-shadow: none
 
