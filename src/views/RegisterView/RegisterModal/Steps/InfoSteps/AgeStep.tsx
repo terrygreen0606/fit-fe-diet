@@ -130,9 +130,9 @@ const AgeStep = (props: any) => {
             height="md"
             type="number"
             autoFocus 
-            min={12}
+            min={16}
             max={100}
-            data-param="12,100"
+            data-param="16,100"
             name="age"
             value={registerData.age}
             data-validate='["required", "min-max"]'
