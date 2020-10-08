@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-shadow */
+import React, { useState } from 'react';
 import classnames from 'classnames';
 
 import { openShareLink } from 'utils';
@@ -16,10 +17,8 @@ type ShareButtonsProps = {
   visible?: boolean,
   className?: string;
   disabled?: boolean,
-  isTwitterActive?: boolean,
-  isFacebookActive?: boolean,
-  isTelegramActive?: boolean,
-  isWhatsappActive?: boolean,
+  items?: string[],
+  fetchData?: () => Promise<any>,
 };
 
 const shareButtonsPropsDefault = {
@@ -28,10 +27,8 @@ const shareButtonsPropsDefault = {
   visible: false,
   className: '',
   disabled: false,
-  isTwitterActive: true,
-  isFacebookActive: true,
-  isTelegramActive: true,
-  isWhatsappActive: true,
+  items: ['twitter', 'facebook', 'telegram', 'whatsapp'],
+  fetchData: null,
 };
 
 const ShareButtons = ({
@@ -40,57 +37,78 @@ const ShareButtons = ({
   visible,
   className,
   disabled,
-  isTwitterActive,
-  isFacebookActive,
-  isTelegramActive,
-  isWhatsappActive,
-}: ShareButtonsProps) => (
+  items,
+  fetchData,
+}: ShareButtonsProps) => {
+  const [link, setLink] = useState<string>(null);
+  const [text, setText] = useState<string>(null);
+
+  const getImage = (item: string) => {
+    switch (item) {
+      case 'twitter':
+        return <TwitterLogo />;
+      case 'facebook':
+        return <FacebookLogo />;
+      case 'telegram':
+        return <TelegramLogo />;
+      case 'whatsapp':
+        return <WhatsappLogo />;
+      default:
+        break;
+    }
+  };
+
+  const getLink = (item: string) => {
+    switch (item) {
+      case 'twitter':
+        return (shareLink, shareText) => `https://twitter.com/intent/tweet?text=${shareLink}%20${shareText}`;
+      case 'facebook':
+        return (shareLink) => `https://www.facebook.com/sharer/sharer.php?u=${shareLink}`;
+      case 'telegram':
+        return (shareLink, shareText) => `https://t.me/share/url?url=${shareLink}&text=${shareText}`;
+      case 'whatsapp':
+        return (shareLink) => `https://wa.me/?text=${shareLink}`;
+      default:
+        break;
+    }
+  };
+
+  const onClick = (item) => {
+    if (fetchData) {
+      if (!text && !link) {
+        fetchData().then((response) => {
+          if (!response.text) response.text = '';
+          setLink(response.link);
+          setText(response.text);
+          openShareLink(getLink(item)(response.link, response.text));
+        });
+      } else {
+        openShareLink(getLink(item)(link, text));
+      }
+      return;
+    }
+    openShareLink(getLink(item)(shareLink, shareText));
+  };
+
+  return (
     <div className={classnames('share-buttons-list', className, {
       visible,
     })}
     >
-      {isTwitterActive && (
+      {items.map((item) => (
         <button
+          key={item}
           type='button'
           className='share-button'
           disabled={disabled}
-          onClick={() => openShareLink(`https://twitter.com/intent/tweet?text=${shareLink}%20${shareText}`)}
+          onClick={() => onClick(item)}
         >
-          <TwitterLogo />
+          {getImage(item)}
         </button>
-      )}
-      {isFacebookActive && (
-        <button
-          type='button'
-          className='share-button'
-          disabled={disabled}
-          onClick={() => openShareLink(`https://www.facebook.com/sharer/sharer.php?u=${shareLink}`)}
-        >
-          <FacebookLogo />
-        </button>
-      )}
-      {isTelegramActive && (
-        <button
-          type='button'
-          className='share-button'
-          disabled={disabled}
-          onClick={() => openShareLink(`https://t.me/share/url?url=${shareLink}&text=${shareText}`)}
-        >
-          <TelegramLogo />
-        </button>
-      )}
-      {isWhatsappActive && (
-        <button
-          type='button'
-          className='share-button'
-          disabled={disabled}
-          onClick={() => openShareLink(`https://wa.me/?text=${shareLink}`)}
-        >
-          <WhatsappLogo />
-        </button>
-      )}
+      ))}
     </div>
   );
+};
 
 ShareButtons.defaultProps = shareButtonsPropsDefault;
 

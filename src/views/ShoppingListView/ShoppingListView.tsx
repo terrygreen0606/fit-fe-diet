@@ -79,8 +79,6 @@ const ShoppingListView = (props: any) => {
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
-  const [sharePublicUrl, setSharePublicUrl] = useState<string>('');
-
   const filterIngredients = async (inputValue: string) => {
     if (inputValue.length < 2) return;
     const filteredListOfIngredients: Array<any> = [];
@@ -387,19 +385,16 @@ const ShoppingListView = (props: any) => {
                           <div ref={changedBlockRef}>
                             <button
                               type='button'
-                              onClick={() => {
-                                setIsBlockActive(!isBlockActive);
-                                getPublicShopListUrl().then((response) => {
-                                  setSharePublicUrl(response.data.data.url);
-                                });
-                              }}
+                              onClick={() => setIsBlockActive(!isBlockActive)}
                               className='shop-list__header-buttons-item'
                             >
                               <ShareIcon />
                             </button>
                             <ShareButtons
-                              shareLink={sharePublicUrl}
                               visible={isBlockActive}
+                              fetchData={() => getPublicShopListUrl().then((response) => ({
+                                link: response.data.data.url,
+                              }))}
                               className='shop-list__header-buttons-share'
                             />
                           </div>

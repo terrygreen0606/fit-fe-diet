@@ -3,18 +3,15 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
-import {
-  getTranslate,
-  copyTextInBuffer,
-} from 'utils';
+import { getTranslate } from 'utils';
 import { getUserInviteLink } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
-import Button from 'components/common/Forms/Button';
 import Breadcrumb from 'components/Breadcrumb';
 import ShareButtons from 'components/ShareButtons';
 import InviteEmail from 'components/common/Forms/InviteEmail';
+import CopyLinkButton from 'components/common/CopyLinkButton';
 
 import './ReferralView.sass';
 
@@ -22,8 +19,6 @@ const ReferralView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const [inviteLink, setInviteLink] = useState('');
-
-  const [isActiveCopiedBlock, setActiveCopiedBlock] = useState(false);
 
   useEffect(() => {
     let cleanComponent = false;
@@ -65,24 +60,7 @@ const ReferralView = (props: any) => {
                   </p>
                 </div>
                 <div className='referral__invite-link'>
-                  <Button
-                    type='button'
-                    className='referral__invite-link-input'
-                    onClick={() => {
-                      copyTextInBuffer('.referral__invite-link-input');
-                      setActiveCopiedBlock(true);
-                      setTimeout(() => {
-                        setActiveCopiedBlock(false);
-                      }, 2000);
-                    }}
-                  >
-                    {inviteLink}
-                  </Button>
-                  {isActiveCopiedBlock && (
-                    <div className='referral__invite-link-copied'>
-                      {t('referral.copied')}
-                    </div>
-                  )}
+                  <CopyLinkButton text={inviteLink} />
                 </div>
                 <div className='referral__separator'>
                   <span className='referral__separator-text'>

@@ -10,6 +10,7 @@ import { getTranslate } from 'utils';
 import ProfileLayout from 'components/hoc/ProfileLayout';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
+import Accordeon from 'components/common/Accordeon';
 
 import './SettingsFaqView.sass';
 
@@ -22,17 +23,14 @@ const SettingsFaqView = (props: any) => {
   const [faqData, setFaqData] = useState([
     {
       id: 1,
-      question: t('faq.question'),
-      answerTitle: t('faq.answer.title'),
-      answerDescription: t('faq.answer.description'),
-      isOpen: false,
+      title: t('faq.question'),
+      content: <div dangerouslySetInnerHTML={{ __html: t('faq.answer.description') }}></div>,
     },
     {
       id: 2,
-      question: t('faq.question'),
+      title: t('faq.question'),
       answerTitle: t('faq.answer.title'),
-      answerDescription: t('faq.answer.description'),
-      isOpen: false,
+      content: <div dangerouslySetInnerHTML={{ __html: t('faq.answer.description') }}></div>,
     },
   ]);
 
@@ -55,7 +53,10 @@ const SettingsFaqView = (props: any) => {
       <ProfileLayout>
         <div className='faq'>
           <div className='faq__title'>{t('faq.title')}</div>
-          <div className='faq__list'>
+          <Accordeon
+            items={faqData}
+          />
+          {/* <div className='faq__list'>
             {faqData.map((item, index) => (
               <div
                 key={item.id}
@@ -88,7 +89,7 @@ const SettingsFaqView = (props: any) => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </ProfileLayout>
     </>
