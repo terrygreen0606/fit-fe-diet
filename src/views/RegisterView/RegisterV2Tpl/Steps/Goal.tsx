@@ -13,72 +13,78 @@ import { ReactComponent as LiftIcon } from 'assets/img/icons/lift-icon.svg';
 import { ReactComponent as AngleRightIcon } from 'assets/img/icons/angle-right-icon.svg';
 
 const Goal = (props: any) => {
-
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const { registerData } = props;
 
   return (
     <>
-      <h3 className="register_v2tpl_title">We will help you achieve the chosen goal</h3>
+      <h3 className='register_v2tpl_title'>We will help you achieve the chosen goal</h3>
 
-      <div className="row">
-        <div className="col-8 offset-2">
-          
-          <div className="register_goals_list">
+      <div className='row'>
+        <div className='col-8 offset-2'>
+
+          <div className='register_goals_list'>
             <Button
-              className={classNames("register_goal_btn", {
-                'active': registerData.goal === -1
+              className={classNames('register_goal_btn', {
+                active: registerData.goal === -1
               })}
               block
-              onClick={(e) => props.setRegisterData({
+              onClick={() => props.setRegisterData({
                 ...registerData,
-                goal: -1,
+                goal: -1
               })}
             >
               <span>
-                <LoseIcon className="register_goal_icon mr-3" />
+                <LoseIcon className='register_goal_icon mr-3' />
                 {t('register.lose_weight')}
               </span>
-              <AngleRightIcon className="register_goal_icon" />
+              <AngleRightIcon className='register_goal_icon' />
             </Button>
 
             <Button
-              className={classNames("register_goal_btn", {
-                'active': registerData.goal === 0
+              className={classNames('register_goal_btn', {
+                active: registerData.goal === 0
               })}
               block
-              onClick={(e) => props.setRegisterData({
+              onClick={() => props.setRegisterData({
                 ...registerData,
-                goal: 0,
+                goal: 0
               })}
             >
               <span>
-                <KeepIcon className="register_goal_icon mr-3" />
+                <KeepIcon className='register_goal_icon mr-3' />
                 {t('register.keep_weight')}
               </span>
-              <AngleRightIcon className="register_goal_icon" />
+              <AngleRightIcon className='register_goal_icon' />
             </Button>
 
             <Button
-              className={classNames("register_goal_btn", {
-                'active': registerData.goal === 1
+              className={classNames('register_goal_btn', {
+                active: registerData.goal === 1
               })}
               block
-              onClick={(e) => props.setRegisterData({
+              onClick={() => props.setRegisterData({
                 ...registerData,
-                goal: 1,
+                goal: 1
               })}
             >
               <span>
-                <LiftIcon className="register_goal_icon mr-3" />
+                <LiftIcon className='register_goal_icon mr-3' />
                 {t('register.lift_weight')}
               </span>
-              <AngleRightIcon className="register_goal_icon" />
+              <AngleRightIcon className='register_goal_icon' />
             </Button>
           </div>
 
-          <Button className="register_v2tpl_btn" color="primary" size="lg">Next</Button>
+          <Button
+            className='register_v2tpl_btn'
+            color='primary'
+            size='lg'
+            onClick={() => props.setRegisterView('NOT_EATING')}
+          >
+            Next
+          </Button>
 
         </div>
       </div>

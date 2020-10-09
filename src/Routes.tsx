@@ -283,7 +283,7 @@ const Routes = () => (
     <AuthRoute
       path={routes.register}
       component={(props: any) => (
-        <BasePage {...props} hideHeader>
+        <BasePage {...props} hideHeader hideFooter rawBackground>
           <RegisterView {...props} />
         </BasePage>
       )}

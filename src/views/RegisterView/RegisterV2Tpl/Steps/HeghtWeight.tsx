@@ -5,6 +5,9 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
+import { InputError } from 'types';
+import { userValidate } from 'api';
+import { toast } from 'react-toastify';
 
 // Components
 import CustomSwitch from 'components/common/Forms/CustomSwitch';
@@ -17,12 +20,17 @@ import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 
 import '../RegisterV2Tpl.sass';
 
-const HeightWeight = (props: any) => {
+const HeightWeight = ({
+  registerData,
+  setRegisterData,
+  registerDataErrors,
+  setRegisterDataErrors,
+  setRegisterView,
+  localePhrases,
+}: any) => {
+  const [validateLoading, setValidateLoading] = useState<boolean>(false);
 
-  const { registerData } = props;
-  const [registerInfoErrors, setRegisterInfoErrors] = useState([]);
-
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+  const t = (code: string) => getTranslate(localePhrases, code);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -30,98 +38,144 @@ const HeightWeight = (props: any) => {
       value,
       event,
       registerData,
-      props.setRegisterData,
-      registerInfoErrors,
-      setRegisterInfoErrors,
-      element
+      setRegisterData,
+      registerDataErrors,
+      setRegisterDataErrors,
+      element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerInfoErrors);
+    getFieldErrorsUtil(field, registerDataErrors);
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    setRegisterInfoErrors([...errors]);
+    setRegisterDataErrors([...errors]);
 
     if (!hasError) {
-      props.setRegisterView('NOT_EATING');
+      setValidateLoading(true);
+
+      const {
+        measurement,
+        height,
+        weight,
+      } = registerData;
+
+      userValidate({
+        measurement,
+        height,
+        weight,
+      })
+        .then((response) => {
+          setValidateLoading(false);
+          setRegisterView('WEIGHT_GOAL');
+        })
+        .catch((error) => {
+          setValidateLoading(false);
+
+          toast.error(t('register.error_msg'));
+
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
+
+              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+
+              Object.keys(validateErrors).map((field) => {
+                registerDataErrorsTemp.push({
+                  field,
+                  message: validateErrors[field],
+                });
+              });
+
+              setRegisterDataErrors(registerDataErrorsTemp);
+            } catch {
+
+            }
+          }
+        });
     }
   };
 
   return (
     <>
-      <h3 className="register_v2tpl_title mb-5">What's your height and weight?</h3>
+      <h3 className='register_v2tpl_title mb-5'>What's your height and weight?</h3>
 
-      <CustomSwitch 
+      <CustomSwitch
         label1={t('common.us_metric')}
-        label2={t('common.metric')} 
-        checked={props.registerData.measurement === 'si'} 
-        onChange={e => props.setRegisterData({
-          ...props.registerData,
-          measurement: e.target.checked ? 'si' : 'us'
+        label2={t('common.metric')}
+        checked={registerData.measurement === 'si'}
+        onChange={(e) => setRegisterData({
+          ...registerData,
+          measurement: e.target.checked ? 'si' : 'us',
         })}
       />
 
-      <form className="mt-5 pt-2" onSubmit={(e) => registerInfoSubmit(e)}>
-        <div className="row">
-          <div className="col-4 offset-5 pr-5">
-            
-            <div className="mb-4">
-              <FormGroup className="register_v2tpl_fg_inline mb-0" inline>
+      <form className='mt-5 pt-4' onSubmit={(e) => registerInfoSubmit(e)}>
+        <div className='row'>
+          <div className='col-4 offset-5 pl-2'>
+
+            <div className='mb-4'>
+              <FormGroup className='register_v2tpl_fg_inline mb-0' inline>
                 <InputField
                   block
-                  height="md"
-                  type="number"
+                  height='md'
+                  type='number'
                   value={registerData.height}
-                  name="height"
-                  data-param="50,250"
+                  name='height'
+                  data-param='50,250'
                   data-validate='["required", "min-max"]'
                   onChange={(e) => validateOnChange('height', e.target.value, e)}
                   invalid={getFieldErrors('height').length > 0}
-                  placeholder=""
+                  placeholder=''
                 />
-                <FormLabel>{t('common.cm')}</FormLabel>
+                <FormLabel>{t('common.cm_label')}</FormLabel>
               </FormGroup>
 
               {getFieldErrors('height').slice(0, 1).map((error, i) => (
-                <FormInvalidMessage key={i} className="text-center">{error.message}</FormInvalidMessage>
+                <FormInvalidMessage key={i} className='text-left'>{error.message}</FormInvalidMessage>
               ))}
             </div>
 
             <div>
-              <FormGroup className="register_v2tpl_fg_inline mb-0" inline>
+              <FormGroup className='register_v2tpl_fg_inline mb-0' inline>
                 <InputField
                   block
-                  height="md"
-                  type="number"
+                  height='md'
+                  type='number'
                   value={registerData.weight}
-                  data-param="30,400"
+                  data-param='30,400'
                   data-validate='["required", "min-max"]'
-                  name="weight"
+                  name='weight'
                   onChange={(e) => validateOnChange('weight', e.target.value, e)}
                   invalid={getFieldErrors('weight').length > 0}
-                  placeholder=""
+                  placeholder=''
                 />
-                <FormLabel>{t('common.kg')}</FormLabel>
+                <FormLabel>{t('common.kg_label')}</FormLabel>
               </FormGroup>
 
               {getFieldErrors('weight').slice(0, 1).map((error, i) => (
-                <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
+                <FormInvalidMessage key={i} className='text-left'>{error.message}</FormInvalidMessage>
               ))}
             </div>
           </div>
         </div>
 
-        <Button className="register_v2tpl_btn" color="primary" size="lg">Next</Button>
+        <Button
+          className='register_v2tpl_btn mt-5'
+          color='primary'
+          type='submit'
+          size='lg'
+          isLoading={validateLoading}
+        >
+          Next
+        </Button>
       </form>
     </>
   );

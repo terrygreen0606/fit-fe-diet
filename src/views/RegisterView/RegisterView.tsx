@@ -10,10 +10,10 @@ import { UserAuthProfileType } from 'types/auth';
 import { getSignUpData } from 'api';
 
 // Components
-import RegisterModal from './RegisterModal';
-import RegisterV2Tpl from './RegisterV2Tpl';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
+import RegisterModal from './RegisterModal';
+import RegisterV2Tpl from './RegisterV2Tpl';
 
 import './RegisterView.sass';
 
@@ -67,30 +67,30 @@ const RegisterView = (props: any) => {
     setRegisterSettingsLoadingError(false);
 
     getSignUpData()
-      .then(response => {
+      .then((response) => {
         setRegisterSettingsLoading(false);
 
         if (response.data.data) {
           setRegisterData({
             ...registerData,
             tpl_signup: response.data.data.tpl || null,
-            act_levels: response.data.data.act_levels.map(activity => ({
+            act_levels: response.data.data.act_levels.map((activity) => ({
               ...activity,
-              checked: false
+              checked: false,
             })) || [],
-            ignore_cuisine_ids: response.data.data.cuisines.map(cuisine => ({
+            ignore_cuisine_ids: response.data.data.cuisines.map((cuisine) => ({
               ...cuisine,
-              checked: false
+              checked: false,
             })) || [],
-            diseases: response.data.data.diseases.map(disease => ({
+            diseases: response.data.data.diseases.map((disease) => ({
               ...disease,
-              checked: false
-            })) || []
+              checked: false,
+            })) || [],
 
           });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         setRegisterSettingsLoading(false);
         setRegisterSettingsLoadingError(true);
       });
@@ -106,7 +106,7 @@ const RegisterView = (props: any) => {
     if (props.measurement) {
       setRegisterData({
         ...registerData,
-        measurement: props.measurement
+        measurement: props.measurement,
       });
     }
   }, [props.measurement]);
@@ -127,6 +127,9 @@ const RegisterView = (props: any) => {
         <RegisterV2Tpl
           registerData={registerData}
           setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
+          history={props.history}
         />
 
         {/*<RegisterModal
@@ -148,8 +151,8 @@ const RegisterView = (props: any) => {
 export default WithTranslate(
   connect(
     (state: any) => ({
-      measurement: state.settings.measurement
+      measurement: state.settings.measurement,
     }),
-    null
+    null,
   )
 (RegisterView));

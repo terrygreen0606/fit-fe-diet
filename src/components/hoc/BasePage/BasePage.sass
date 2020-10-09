@@ -9,10 +9,21 @@
   min-height: 100%
   overflow-x: hidden
   background-color: #fff
-  background-image: url('../../../assets/img/login-bg-tpl.png')
   background-size: 30%
   background-position: center bottom
   background-repeat: repeat
+  &.hide_header
+    .basePageMainContentWrapper
+      min-height: calc(100vh - 55px)
+  &.hide_footer
+    .basePageMainContentWrapper
+      min-height: calc(100vh - 176px)
+  &.hide_header
+    &.hide_footer
+      .basePageMainContentWrapper
+        min-height: 100vh
+  &:not(.raw_background)
+    background-image: url('../../../assets/img/login-bg-tpl.png')
 
 .basePageMainContentWrapper
   max-width: 750px

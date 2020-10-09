@@ -1,5 +1,6 @@
 import React from 'react';
 import { RegisterViewType } from './types';
+import { InputError } from 'types';
 
 import Goal from './Steps/Goal';
 import NotEating from './Steps/NotEating';
@@ -19,7 +20,10 @@ export default (
   registerView: RegisterViewType,
   registerData: any,
   setRegisterData: (any) => void,
-  localePhrases: any
+  registerDataErrors: InputError[],
+  setRegisterDataErrors: (errors: InputError[]) => void,
+  setRegisterView: (RegisterViewType) => void,
+  localePhrases: any,
 ) => {
   let registerStepView = null;
 
@@ -29,6 +33,7 @@ export default (
         <Goal
           registerData={registerData}
           setRegisterData={setRegisterData}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -39,6 +44,7 @@ export default (
         <NotEating
           registerData={registerData}
           setRegisterData={setRegisterData}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -49,6 +55,9 @@ export default (
         <Gender
           registerData={registerData}
           setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -59,6 +68,7 @@ export default (
         <BackIssues
           registerData={registerData}
           setRegisterData={setRegisterData}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -69,6 +79,7 @@ export default (
         <HealthProblems
           registerData={registerData}
           setRegisterData={setRegisterData}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -79,6 +90,7 @@ export default (
         <DayMealPlan
           registerData={registerData}
           setRegisterData={setRegisterData}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -89,6 +101,9 @@ export default (
         <HeghtWeight
           registerData={registerData}
           setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -99,6 +114,9 @@ export default (
         <WeightGoal
           registerData={registerData}
           setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -108,6 +126,7 @@ export default (
       registerStepView = (
         <PlanProgress
           registerData={registerData}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -117,6 +136,7 @@ export default (
       registerStepView = (
         <ExpectationsGraph
           registerData={registerData}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );
@@ -127,6 +147,7 @@ export default (
         <ConfirmInfo
           registerData={registerData}
           setRegisterData={setRegisterData}
+          setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
       );

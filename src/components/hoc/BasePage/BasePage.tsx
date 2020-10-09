@@ -8,10 +8,12 @@ import SideMenu from 'components/SideMenu';
 
 import './BasePage.sass';
 
-const BasePage = ({ children, hideHeader }: any) => (
+const BasePage = ({ children, hideHeader, hideFooter, rawBackground }: any) => (
   <div 
     className={classNames("basePageLayoutWrapper", {
-      'hide_header': hideHeader
+      'hide_header': hideHeader,
+      'hide_footer': hideFooter,
+      'raw_background': rawBackground,
     })}
   >
     {!hideHeader && (
@@ -25,7 +27,7 @@ const BasePage = ({ children, hideHeader }: any) => (
       {children}
     </div>
 
-    <FooterShort />
+    {!hideFooter && <FooterShort />}
   </div>
 );
 
