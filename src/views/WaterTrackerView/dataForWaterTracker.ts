@@ -1,4 +1,6 @@
-export default {
+import { getImagePath } from 'utils';
+
+export const chartConfig = {
   options: {
     title: {
       display: false,
@@ -62,9 +64,34 @@ export default {
             stepSize: 25,
             padding: 10,
             fontFamily: "'Montserrat', sans-serif",
+            callback: (value) => `${value}%`,
           },
         },
       ],
     },
   },
+};
+
+export const bannerData = [
+  {
+    title: 'wt.banner.title1',
+    desc: 'wt.banner.desc1',
+    image: getImagePath('water-woman.png'),
+  },
+  {
+    title: 'wt.banner.title2',
+    desc: 'wt.banner.desc2',
+    image: getImagePath('glasses.png'),
+  },
+  {
+    title: 'wt.banner.title3',
+    desc: 'wt.banner.desc3',
+    image: getImagePath('woman-graphic.png'),
+  },
+];
+
+export const periods = {
+  week: 'week',
+  month: 'month',
+  year: 'year',
 };

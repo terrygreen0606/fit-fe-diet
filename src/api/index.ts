@@ -12,3 +12,4 @@ export * from './getAppPublicSettings';
 export * from './getActivityLevels';
 export * from './payment';
 export * from './mealPlan';
+export * from './waterTracker';

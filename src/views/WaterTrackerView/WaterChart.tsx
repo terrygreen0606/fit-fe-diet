@@ -1,9 +1,11 @@
+/* eslint-disable no-new */
 import React, { useEffect, useState, createRef } from 'react';
 
 import Chart from 'chart.js';
-import chartConfig from './chartConfig';
+import { chartConfig } from './dataForWaterTracker';
 
-type LineChartProps = {
+type WaterChartProps = {
+  // eslint-disable-next-line react/require-default-props
   options?: any;
   labels: any;
   data: any;
@@ -13,7 +15,7 @@ const WaterChart = ({
   options = chartConfig.options,
   data,
   labels,
-}: LineChartProps) => {
+}: WaterChartProps) => {
   const [chartContainer] = useState(createRef<HTMLCanvasElement>());
 
   useEffect(() => {

@@ -60,7 +60,7 @@ const WeightGraphicsPage = (props: any) => {
 
   const [dietStatisticsType, setDietStatisticsType] = useState('weight');
   const [dietStatisticsPeriod, setDietStatisticsPeriod] = useState(
-    periodOptions[0]
+    periodOptions[0],
   );
 
   return (
@@ -163,22 +163,24 @@ const WeightGraphicsPage = (props: any) => {
                 <DonutChart
                   className='mx-4'
                   percent={50}
-                  content={
+                  content={(
                     <div className='text-center'>
                       <h5>5 kg</h5>
                       <p>lost</p>
                     </div>
-                  }
+                  )}
                 />
 
                 <Button className='mt-5 px-2' block color='secondary'>
                   Add today&apos;s weight
                 </Button>
                 <Button className='mt-4 px-2' block color='secondary' outline>
-                  <ImagePlusIcon className='mr-2' /> Add selfie
+                  <ImagePlusIcon className='mr-2' />
+                  Add selfie
                 </Button>
                 <Button className='mt-4 px-2' block color='secondary' outline>
-                  <RewardIcon className='mr-2' /> Change the goal
+                  <RewardIcon className='mr-2' />
+                  Change the goal
                 </Button>
               </div>
             </div>
