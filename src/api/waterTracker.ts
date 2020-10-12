@@ -1,3 +1,4 @@
+import { stringify } from 'querystring';
 import axios from 'utils/axios';
 
 export const getDataStatsForPeriod = (
@@ -7,3 +8,9 @@ export const getDataStatsForPeriod = (
 
 export const getDataStatsForToday = () =>
   axios.get('/water/today');
+
+export const addDrink = (measurement: string, amount: number) =>
+  axios.post('/water/add-drink', {
+    measurement,
+    amount,
+  });

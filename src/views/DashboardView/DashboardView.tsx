@@ -299,10 +299,10 @@ const DashboardView = (props: any) => {
                     {`${t('dashboard.daily_rate')}:`}
                   </div>
                   <div className='dashboard__cards-item_water-rate-norm'>
-                    {`2000 ${t('common.ml')}`}
+                    {`2000 ${t('common.ml_label')}`}
                   </div>
                   <div className='dashboard__cards-item_water-rate-now'>
-                    {`1000 ${t('common.ml')}`}
+                    {`1000 ${t('common.ml_label')}`}
                   </div>
                 </div>
                 <div className='dashboard__cards-item_water-rate-media'>

@@ -6,16 +6,25 @@ import Helmet from 'react-helmet';
 import moment from 'moment';
 
 import { routes } from 'constants/routes';
-import { getTranslate } from 'utils';
+import {
+  validateFieldOnChange,
+  getFieldErrors as getFieldErrorsUtil,
+  getTranslate,
+} from 'utils';
 import {
   getDataStatsForPeriod,
   getDataStatsForToday,
+  addDrink,
 } from 'api';
+import FormValidator from 'utils/FormValidator';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import Banner from 'components/Banner';
 import Button from 'components/common/Forms/Button';
+import Modal from 'components/common/Modal';
+import CustomSwitch from 'components/common/Forms/CustomSwitch';
+import InputField from 'components/common/Forms/InputField';
 
 import './WaterTrackerView.sass';
 
@@ -23,19 +32,43 @@ import { ReactComponent as DropIcon } from 'assets/img/icons/drop-icon.svg';
 import { ReactComponent as TrashLineIcon } from 'assets/img/icons/trash-line-icon.svg';
 
 import WaterChart from './WaterChart';
-import { bannerData, periods } from './dataForWaterTracker';
+
+import {
+  bannerData,
+  periods,
+  buttonsData,
+} from './dataForWaterTracker';
 
 const WaterTrackerView = (props: any) => {
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+  const t = (code: string, placeholder?: any) => getTranslate(props.localePhrases, code, placeholder);
 
   const [trackerPeriod, setTrackerPeriod] = useState<string>(periods.week);
 
-  const [dayAverage, setDayAverage] = useState<number>(0);
-  const [drinkFrequency, setDrinkFrequency] = useState<number>(0);
-  const [completed, setCompleted] = useState<number>(0);
-  const [completedPercent, setCompletedPercent] = useState<number>(0);
-  const [dailyGoal, setDailyGoal] = useState<number>(0);
-  const [actLevel, setActLevel] = useState<string>('');
+  const [statsData, setStatsData] = useState<{
+    dayAverage: number,
+    drinkFrequency: number,
+  }>({
+    dayAverage: 0,
+    drinkFrequency: 0,
+  });
+
+  const [mainTodayData, setMainTodayData] = useState<{
+    actLevel: string,
+    completed: number,
+    completedPercent: number,
+    cups: number[],
+    dailyGoal: number,
+    drinks: any[],
+    unit: string,
+  }>({
+    actLevel: '',
+    completed: 0,
+    completedPercent: 0,
+    cups: [],
+    dailyGoal: 0,
+    drinks: [],
+    unit: 'ml',
+  });
 
   const [chartsData, setChartsData] = useState<{
     label: string[],
@@ -44,6 +77,16 @@ const WaterTrackerView = (props: any) => {
     label: [],
     data: [],
   });
+
+  const [addDrinkForm, setAddDrinkForm] = useState<{
+    amount: number,
+    measurement: 'si' | 'us',
+  }>({
+    amount: 0,
+    measurement: 'si',
+  });
+
+  const [isModalActive, setIsModalActive] = useState<boolean>(true);
 
   const getData = () => {
     getDataStatsForPeriod(trackerPeriod).then((response) => {
@@ -94,8 +137,11 @@ const WaterTrackerView = (props: any) => {
           setChartsData({ ...updatedData });
         }
 
-        setDayAverage(data.day_average);
-        setDrinkFrequency(data.frequency);
+        setStatsData({
+          ...statsData,
+          dayAverage: data.day_average,
+          drinkFrequency: data.frequency,
+        });
       }
     });
   };
@@ -109,13 +155,52 @@ const WaterTrackerView = (props: any) => {
       const { data } = response.data;
 
       if (response.data.succeeat && response.data.data) {
-        setCompleted(data.completed);
-        setCompletedPercent(data.completed_percent);
-        setDailyGoal(data.daily_goal);
-        setActLevel(data.act_level);
+        setMainTodayData({
+          ...mainTodayData,
+          completed: data.completed,
+          actLevel: data.act_level,
+          completedPercent: data.completed_percent,
+          cups: [...data.cups],
+          dailyGoal: data.dailyGoal,
+          drinks: [...data.drinks],
+          unit: data.unit,
+        });
       }
     });
   }, []);
+
+  const [addDrinkErrors, setAddDrinkErrors] = useState<any[]>([]);
+
+  const validateOnChange = (name: string, value: any, event, element?) => {
+    validateFieldOnChange(
+      name,
+      value,
+      event,
+      addDrinkForm,
+      setAddDrinkForm,
+      addDrinkErrors,
+      setAddDrinkErrors,
+      element,
+    );
+  };
+
+  const getFieldErrors = (field: string) =>
+    getFieldErrorsUtil(field, addDrinkErrors);
+
+  const addDrinkSubmit = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
+
+    const { errors, hasError } = FormValidator.bulkValidate(inputs);
+
+    setAddDrinkErrors([...errors]);
+
+    if (!hasError) {
+
+    }
+  };
 
   return (
     <>
@@ -123,6 +208,65 @@ const WaterTrackerView = (props: any) => {
         <title>{t('app.title.water_tracker')}</title>
       </Helmet>
       <div className='waterTracker'>
+        <Modal
+          withCloseBtn
+          shouldCloseOnOverlayClick
+          onClose={() => setIsModalActive(false)}
+          isOpen={isModalActive}
+          className='waterTracker_popup'
+        >
+          <h4 className='waterTracker_popup-title'>
+            {t('wt.add_drink')}
+          </h4>
+          <CustomSwitch
+            label1={t('common.oz_label')}
+            label2={t('common.ml_label')}
+            className='waterTracker_popup-switch'
+          />
+          <div className='waterTracker_popup-buttons'>
+            {buttonsData.map((item) => (
+              <button
+                key={item.id}
+                type='button'
+                className='waterTracker_popup-button'
+              >
+                <div className='waterTracker_popup-button-media'>
+                  {item.icon}
+                </div>
+                <div className='waterTracker_popup-button-desc'>
+                  {t('common.ml', { COUNT: item.count })}
+                </div>
+              </button>
+            ))}
+          </div>
+          <form
+            onSubmit={(e) => addDrinkSubmit(e)}
+            className='waterTracker_popup-form'
+          >
+              <div className='waterTracker_popup-form-input-wrap'>
+                <InputField
+                  type='number'
+                  name='amount'
+                  data-validate='["required"]'
+                  errors={getFieldErrors('amount')}
+                  value={addDrinkForm.amount}
+                  onChange={(e) => validateOnChange('amount', e.target.value, e)}
+                  className='waterTracker_popup-form-input'
+                  label={t('wt.customize')}
+                />
+              </div>
+              <div className='waterTracker_popup-form-button-wrap'>
+                <Button
+                  type='submit'
+                  color='primary'
+                  className='waterTracker_popup-form-button'
+                  size='lg'
+                >
+                  {t('button.save')}
+                </Button>
+              </div>
+          </form>
+        </Modal>
         <div className='container'>
           <Breadcrumb
             routes={[
@@ -195,7 +339,7 @@ const WaterTrackerView = (props: any) => {
                       <div className='waterTracker_daynorm-item-wrap'>
                         <div className='waterTracker_daynorm-item-size'>
                           200
-                          {t('common.ml')}
+                          {t('common.ml_label')}
                         </div>
                         <button
                           type='button'
@@ -215,7 +359,7 @@ const WaterTrackerView = (props: any) => {
                       <div className='waterTracker_daynorm-item-wrap'>
                         <div className='waterTracker_daynorm-item-size'>
                           200
-                          {t('common.ml')}
+                          {t('common.ml_label')}
                         </div>
                         <button
                           type='button'
@@ -235,7 +379,7 @@ const WaterTrackerView = (props: any) => {
                       <div className='waterTracker_daynorm-item-wrap'>
                         <div className='waterTracker_daynorm-item-size'>
                           200
-                          {t('common.ml')}
+                          {t('common.ml_label')}
                         </div>
                         <button
                           type='button'
@@ -255,7 +399,7 @@ const WaterTrackerView = (props: any) => {
                       <div className='waterTracker_daynorm-item-wrap'>
                         <div className='waterTracker_daynorm-item-size'>
                           200
-                          {t('common.ml')}
+                          {t('common.ml_label')}
                         </div>
                         <button
                           type='button'
@@ -275,7 +419,7 @@ const WaterTrackerView = (props: any) => {
                       <div className='waterTracker_daynorm-item-wrap'>
                         <div className='waterTracker_daynorm-item-size'>
                           200
-                          {t('common.ml')}
+                          {t('common.ml_label')}
                         </div>
                         <button
                           type='button'
@@ -300,15 +444,19 @@ const WaterTrackerView = (props: any) => {
                 <div className='col-lg-4 text-center'>
                   <div className='water-drop'>
                     <h3>
-                      {`${completedPercent}%`}
+                      {`${mainTodayData.completedPercent}%`}
                     </h3>
                     <h5>
-                      {dailyGoal}
-                      {t('common.ml')}
+                      {mainTodayData.dailyGoal}
+                      {t('common.ml_label')}
                     </h5>
                   </div>
                   <div className='log-drink-wrap'>
-                    <Button color='secondary' className='log-drink-btn'>
+                    <Button
+                      color='secondary'
+                      onClick={() => setIsModalActive(true)}
+                      className='log-drink-btn'
+                    >
                       {t('wt.log_drink')}
                     </Button>
                   </div>
@@ -326,7 +474,7 @@ const WaterTrackerView = (props: any) => {
                   </div>
                   <div className='waterTracker_info-item-desc'>
                     <div className='waterTracker_info-item-desc-selected'>
-                      {dayAverage}
+                      {statsData.dayAverage}
                     </div>
                     {t('wt.day_average')}
                   </div>
@@ -337,7 +485,7 @@ const WaterTrackerView = (props: any) => {
                   </div>
                   <div className='waterTracker_info-item-desc'>
                     <div className='waterTracker_info-item-desc-selected'>
-                      {drinkFrequency}
+                      {statsData.drinkFrequency}
                     </div>
                     {t('wt.drink_frequency_count')}
                   </div>
@@ -352,7 +500,7 @@ const WaterTrackerView = (props: any) => {
                     {t('wt.complete')}
                   </div>
                   <span className='waterTracker_stats-value'>
-                    {`${completed} ${t('common.ml')}`}
+                    {`${mainTodayData.completed} ${t('common.ml_label')}`}
                   </span>
                 </div>
                 <div className='waterTracker_stats'>
@@ -360,7 +508,7 @@ const WaterTrackerView = (props: any) => {
                     {t('common.daily_goal')}
                   </div>
                   <span className='waterTracker_stats-value'>
-                    {`${dailyGoal} ${t('common.ml')}`}
+                    {`${mainTodayData.dailyGoal} ${t('common.ml_label')}`}
                   </span>
                 </div>
                 <div className='waterTracker_stats'>
@@ -368,7 +516,7 @@ const WaterTrackerView = (props: any) => {
                     {t('common.average')}
                   </div>
                   <span className='waterTracker_stats-value'>
-                    {`${dayAverage} ${t('common.ml')}`}
+                    {`${statsData.dayAverage} ${t('common.ml_label')}`}
                   </span>
                 </div>
                 <div className='waterTracker_stats'>
@@ -376,7 +524,7 @@ const WaterTrackerView = (props: any) => {
                     {t('wt.status')}
                   </div>
                   <span className='waterTracker_stats-value'>
-                    {t(actLevel)}
+                    {t(mainTodayData.actLevel)}
                   </span>
                 </div>
               </div>

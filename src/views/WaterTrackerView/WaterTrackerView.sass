@@ -231,6 +231,148 @@
         font-weight: bold
         color: #000
 
+  &_popup
+    max-width: 1000px
+    padding: 60px 80px 160px
+    text-align: center
+
+    @media (max-width: 768px)
+      padding: 40px 20px
+
+    .dialogHeader
+      position: initial
+      padding: 0
+
+    &-title
+      margin-top: 0
+      margin-bottom: 50px
+
+    &-switch
+      display: inline-block
+      margin-bottom: 26px
+      padding: 0
+
+      @media (max-width: 1024px)
+        margin-bottom: 40px
+
+      .customSwitch_mark_text
+        width: 102px
+        font-weight: bold
+
+    &-buttons
+      display: flex
+      justify-content: center
+      align-items: flex-end
+      margin-bottom: 60px
+
+      @media (max-width: 1024px)
+        flex-wrap: wrap
+        justify-content: space-between
+
+      @media (max-width: 768px)
+        margin-bottom: 30px
+
+    &-button
+      display: flex
+      flex-direction: column
+      align-items: center
+      margin: 0 30px
+      padding: 0
+      background-color: transparent
+      border: none
+      cursor: pointer
+
+      @media (max-width: 1024px)
+        margin: 0
+        flex-basis: calc(33.33% - 20px)
+        margin-bottom: 20px
+
+      @media (max-width: 450px)
+        flex-basis: calc(50% - 10px)
+
+      &-media
+        margin-bottom: 20px
+
+        @media (max-width: 1024px)
+          display: flex
+          align-items: center
+          justify-content: flex-end
+          max-width: 30px
+          max-height: 70px
+
+        svg
+          max-width: 100%
+
+          path
+            transition: 0.2s fill ease
+
+      &-desc
+        font-size: 22px
+        transition: 0.2s font-weight ease
+
+    &-button:hover,
+    &-button.active
+      .waterTracker_popup-button-media svg path
+        fill: $steel-blue
+    
+    &-form
+      display: flex
+      justify-content: center
+
+      @media (max-width: 768px)
+        flex-wrap: wrap
+
+      &-input-wrap
+        position: relative
+        display: flex
+        align-items: center
+        margin-right: 20px
+
+        @media (max-width: 768px)
+          margin-right: 0
+
+        @media (max-width: 450px)
+          flex-wrap: wrap
+          justify-content: center
+        
+        .fgInvalidMsg
+          position: absolute
+          top: 100%
+          right: 0
+          text-align: right
+
+      .fgLabel
+        padding-right: 30px
+        flex-basis: 180px
+        text-align: left
+        font-size: 22px
+        line-height: 1.2
+
+        @media (max-width: 768px)
+          font-size: 16px
+
+        @media (max-width: 450px)
+          width: 100%
+          padding-right: 0
+          text-align: center
+
+      &-input
+        flex: 1
+        border: 1px solid #E4E4E4
+
+        @media (max-width: 450px)
+          width: 100%
+          flex: initial
+
+      &-button-wrap
+        @media (max-width: 768px)
+          margin-top: 40px
+          width: 100%
+
+      &-button
+        padding: 17px 36px
+
+
 @media (max-width: 996px)
 
   .waterTracker_stats:first-child

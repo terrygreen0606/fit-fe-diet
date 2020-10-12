@@ -37,7 +37,7 @@ import DonutChart from 'components/common/charts/DonutChart';
 import ImagesFileInput from 'components/common/Forms/ImagesFileInput';
 import Breadcrumb from 'components/Breadcrumb';
 import CustomSwitch from 'components/common/Forms/CustomSwitch';
-import Modal from 'components/common/Modal/Modal';
+import Modal from 'components/common/Modal';
 
 import './CreateRecipeView.sass';
 
@@ -684,52 +684,51 @@ const CreateRecipeView = (props: any) => {
               className='recipe__switch'
             />
           </div>
-          {isActiveDeleteIngrModal && (
-            <Modal
-              withCloseBtn
-              shouldCloseOnOverlayClick
-              onClose={() => setActiveDeleteIngrModal(false)}
-              className='recipe__delete-ingr-modal'
-            >
-              <div className='recipe__delete-ingr-modal-title'>
-                {t('recipe.delete_ingr.desc')}
-              </div>
-              <div className='recipe__delete-ingr-modal-btn-wrap'>
-                <Button
-                  color='primary'
-                  onClick={() => {
-                    const newMeasurement = checkingMeasurement(createRecipeForm.measurement);
+          <Modal
+            withCloseBtn
+            shouldCloseOnOverlayClick
+            isOpen={isActiveDeleteIngrModal}
+            onClose={() => setActiveDeleteIngrModal(false)}
+            className='recipe__delete-ingr-modal'
+          >
+            <div className='recipe__delete-ingr-modal-title'>
+              {t('recipe.delete_ingr.desc')}
+            </div>
+            <div className='recipe__delete-ingr-modal-btn-wrap'>
+              <Button
+                color='primary'
+                onClick={() => {
+                  const newMeasurement = checkingMeasurement(createRecipeForm.measurement);
 
-                    const prevIngredients = createRecipeForm.ingredients;
+                  const prevIngredients = createRecipeForm.ingredients;
 
-                    const prevTotalWeight = createRecipeForm.totalWeight;
+                  const prevTotalWeight = createRecipeForm.totalWeight;
 
+                  setCreateRecipeForm({
+                    ...createRecipeForm,
+                    ingredients: [],
+                    measurement: newMeasurement,
+                    totalWeight: 0,
+                  });
+
+                  userUpdateMeasurement(newMeasurement).catch(() => {
                     setCreateRecipeForm({
                       ...createRecipeForm,
-                      ingredients: [],
-                      measurement: newMeasurement,
-                      totalWeight: 0,
+                      ingredients: prevIngredients,
+                      measurement: checkingMeasurement(newMeasurement),
+                      totalWeight: prevTotalWeight,
                     });
 
-                    userUpdateMeasurement(newMeasurement).catch(() => {
-                      setCreateRecipeForm({
-                        ...createRecipeForm,
-                        ingredients: prevIngredients,
-                        measurement: checkingMeasurement(newMeasurement),
-                        totalWeight: prevTotalWeight,
-                      });
+                    toast.error(t('recipe.update_measurement.error'));
+                  });
 
-                      toast.error(t('recipe.update_measurement.error'));
-                    });
-
-                    setActiveDeleteIngrModal(false);
-                  }}
-                >
-                  {t('recipe.delete_ingr.confirm')}
-                </Button>
-              </div>
-            </Modal>
-          )}
+                  setActiveDeleteIngrModal(false);
+                }}
+              >
+                {t('recipe.delete_ingr.confirm')}
+              </Button>
+            </div>
+          </Modal>
           <div className='recipe__chart'>
             <div className='recipe__chart-progress'>
               {composition.map((item) => (
