@@ -5,6 +5,7 @@ import { InputError } from 'types';
 import Goal from './Steps/Goal';
 import NotEating from './Steps/NotEating';
 import Gender from './Steps/Gender';
+import Age from './Steps/Age';
 import BackIssues from './Steps/BackIssues';
 import HealthProblems from './Steps/HealthProblems';
 import DayMealPlan from './Steps/DayMealPlan';
@@ -63,11 +64,22 @@ export default (
       );
       break;
 
+    case 'AGE':
+      registerStepView = (
+        <Age
+          registerData={registerData}
+          setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
+          setRegisterView={setRegisterView}
+          localePhrases={localePhrases}
+        />
+      );
+      break;
+
     case 'BACK_ISSUES':
       registerStepView = (
         <BackIssues
-          registerData={registerData}
-          setRegisterData={setRegisterData}
           setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
@@ -88,8 +100,6 @@ export default (
     case 'DAY_MEALPLAN':
       registerStepView = (
         <DayMealPlan
-          registerData={registerData}
-          setRegisterData={setRegisterData}
           setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
@@ -126,6 +136,7 @@ export default (
       registerStepView = (
         <PlanProgress
           registerData={registerData}
+          setRegisterData={setRegisterData}
           setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />
@@ -147,6 +158,8 @@ export default (
         <ConfirmInfo
           registerData={registerData}
           setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />

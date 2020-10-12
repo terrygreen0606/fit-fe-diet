@@ -46,7 +46,11 @@ const HeightWeight = ({
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+    getFieldErrorsUtil(field, registerDataErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -105,7 +109,7 @@ const HeightWeight = ({
 
   return (
     <>
-      <h3 className='register_v2tpl_title mb-5'>What's your height and weight?</h3>
+      <h3 className='register_v2tpl_title mb-5'>{t('register.v2.height_weight.title')}</h3>
 
       <CustomSwitch
         label1={t('common.us_metric')}
@@ -119,7 +123,7 @@ const HeightWeight = ({
 
       <form className='mt-5 pt-4' onSubmit={(e) => registerInfoSubmit(e)}>
         <div className='row'>
-          <div className='col-4 offset-5 pl-2'>
+          <div className='col-8 offset-3 col-xs-7 offset-xs-4 col-md-4 offset-md-5 pl-md-2'>
 
             <div className='mb-4'>
               <FormGroup className='register_v2tpl_fg_inline mb-0' inline>
@@ -129,6 +133,7 @@ const HeightWeight = ({
                   type='number'
                   value={registerData.height}
                   name='height'
+                  autoFocus
                   data-param='50,250'
                   data-validate='["required", "min-max"]'
                   onChange={(e) => validateOnChange('height', e.target.value, e)}
@@ -174,7 +179,7 @@ const HeightWeight = ({
           size='lg'
           isLoading={validateLoading}
         >
-          Next
+          {t('register.form_next')}
         </Button>
       </form>
     </>

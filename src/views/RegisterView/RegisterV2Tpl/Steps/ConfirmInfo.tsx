@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  getImagePath
 } from 'utils';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
-import { UserAuthProfileType } from 'types/auth';
-import { userSignup, userGoogleSignUp, userFacebookSignUp } from 'api';
+import { UserAuthProfileType, InputError } from 'types';
+import { userSignup } from 'api';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -19,14 +18,17 @@ import FormValidator from 'utils/FormValidator';
 
 import '../RegisterV2Tpl.sass';
 
-const ConfirmInfo = (props: any) => {
+const ConfirmInfo = ({
+  registerData,
+  setRegisterData,
+  registerDataErrors,
+  setRegisterDataErrors,
+  setRegisterView,
+  localePhrases,
+}: any) => {
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(localePhrases, code, placeholders);
 
-  const { registerData } = props;
-
-  const t = (code: string, placeholders?: any) => 
-    getTranslate(props.localePhrases, code, placeholders);
-
-  const [registerJoinErrors, setRegisterJoinErrors] = useState([]);
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -35,28 +37,40 @@ const ConfirmInfo = (props: any) => {
       value,
       event,
       registerData,
-      props.setRegisterData,
-      registerJoinErrors,
-      setRegisterJoinErrors,
-      element
+      setRegisterData,
+      registerDataErrors,
+      setRegisterDataErrors,
+      element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerJoinErrors);
+    getFieldErrorsUtil(field, registerDataErrors);
 
   const getRegisterProfilePayload = (): UserAuthProfileType => {
     const {
       email,
       password,
+      act_levels,
       predicted_date,
       ...userProfileData
-    } = props.registerData;
+    } = registerData;
+
+    let act_level = null;
+
+    const act_level_checked = act_levels.find((level) => level.checked);
+
+    if (act_level_checked) {
+      act_level = act_level_checked.value;
+    }
 
     return {
       ...userProfileData,
-      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map(cuisine => cuisine.id),
-      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code)
+      act_level,
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map((cuisine) => cuisine.id),
+      diseases: userProfileData.diseases
+        .filter((disease) => disease.checked)
+        .map((disease) => disease.code),
     };
   };
 
@@ -64,22 +78,22 @@ const ConfirmInfo = (props: any) => {
     localStorage.setItem('authToken', authToken);
     axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
 
-    props.setRegisterData({
+    setRegisterData({
       ...registerData,
-      token: authToken
+      token: authToken,
     });
 
-    props.setRegisterView('READY');
+    setRegisterView('FINAL');
   };
 
   const registerEmail = () => {
     setRegisterJoinLoading(true);
 
     userSignup({
-      email: props.registerData.email,
-      password: props.registerData.password,
-      ...getRegisterProfilePayload()
-    }).then(response => {
+      email: registerData.email,
+      password: registerData.password,
+      ...getRegisterProfilePayload(),
+    }).then((response) => {
       setRegisterJoinLoading(false);
 
         const token =
@@ -96,6 +110,33 @@ const ConfirmInfo = (props: any) => {
       .catch((error) => {
         setRegisterJoinLoading(false);
         toast.error(t('register.error_msg'));
+
+        if (error.response && error.response.status >= 400 && error.response.status < 500) {
+          try {
+            const validateErrors = JSON.parse(error.response.data.message);
+
+            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+
+            Object.keys(validateErrors).map((field) => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field],
+              });
+            });
+
+            setRegisterDataErrors(registerDataErrorsTemp);
+
+            if (validateErrors.gender) {
+              setRegisterView('GENDER');
+            } else if (validateErrors.height || validateErrors.weight) {
+              setRegisterView('HEIGHT_WEIGHT');
+            } else if (validateErrors.weight_goal) {
+              setRegisterView('WEIGHT_GOAL');
+            }
+          } catch {
+
+          }
+        }
       });
   };
 
@@ -103,13 +144,11 @@ const ConfirmInfo = (props: any) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    setRegisterJoinErrors([...errors]);
+    setRegisterDataErrors([...errors]);
 
     if (!hasError) {
       registerEmail();
@@ -118,12 +157,12 @@ const ConfirmInfo = (props: any) => {
 
   return (
     <>
-      <h4 className="register_title mb-xl-5 mb-45 text-center">{t('register.info_confirm_title')}</h4>
+      <h4 className='register_title mb-md-5 text-center'>{t('register.info_confirm_title')}</h4>
 
-      <div className="row">
-        <div className="col-xs-10 offset-xs-1 col-md-8 offset-md-2 px-md-4">
-          
-          <form className="text-left mt-4 px-xl-5" onSubmit={(e) => registerJoinSubmit(e)}>
+      <div className='row'>
+        <div className='col-xs-10 offset-xs-1 col-md-8 offset-md-2 px-md-4'>
+
+          <form className='text-left mt-4 px-xl-5' onSubmit={(e) => registerJoinSubmit(e)}>
             <FormGroup>
               <FormLabel>
                 {t('register.form_name')}
@@ -132,10 +171,12 @@ const ConfirmInfo = (props: any) => {
               <InputField
                 block
                 name='name'
+                autoFocus
                 value={registerData.name}
                 data-validate='["required"]'
                 onChange={(e) => validateOnChange('name', e.target.value, e)}
                 errors={getFieldErrors('name')}
+                isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
                 placeholder=''
               />
             </FormGroup>
@@ -148,37 +189,44 @@ const ConfirmInfo = (props: any) => {
               <InputField
                 block
                 name='email'
+                autoComplete="email"
                 value={registerData.email}
                 data-validate='["email", "required"]'
                 onChange={e => validateOnChange('email', e.target.value, e)}
                 errors={getFieldErrors('email')}
+                isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
                 placeholder=''
               />
             </FormGroup>
 
-            <FormGroup className="mb-0">
+            <FormGroup className='mb-0'>
               <FormLabel>{t('register.form_password')}</FormLabel>
               <InputField
                 block
                 name='password'
+                autoComplete="new-password"
                 type='password'
                 value={registerData.password}
                 data-validate='["required"]'
-                onChange={e => validateOnChange('password', e.target.value, e)}
+                onChange={(e) => validateOnChange('password', e.target.value, e)}
                 errors={getFieldErrors('password')}
+                isValid={getFieldErrors('password').length === 0 && registerData.password.length > 0}
                 placeholder=''
               />
             </FormGroup>
 
-            <div className="text-center">
+            <input type="text" name="email" className="d-none" />
+            <input type="password" name="pass" className="d-none" />
+
+            <div className='text-center'>
               <Button
-                className="register_v2tpl_btn"
+                className='register_v2tpl_btn mt-5'
                 style={{ maxWidth: '355px' }}
-                color="primary"
-                type="submit"
-                size="lg"
+                color='primary'
+                type='submit'
+                size='lg'
                 block
-                onClick={() => props.setRegisterView('JOIN')}
+                isLoading={registerJoinLoading}
               >
                 {t('button.continue')}
               </Button>

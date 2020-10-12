@@ -10,23 +10,24 @@ import { RegisterViewType } from './types';
 import './RegisterV2Tpl.sass';
 
 const registerViewsList: RegisterViewType[] = [
-  'GOAL',             // 0
-  'NOT_EATING',      // 1
+  'GOAL',           // 0
+  'NOT_EATING',     // 1
   'GENDER',         // 2
-  'BACK_ISSUES',      // 3
-  'HEALTH_PROBLEMS',      // 4
-  'DAY_MEALPLAN', // 5
-  'HEIGHT_WEIGHT',       // 6
-  'WEIGHT_GOAL',    // 7
-  'PLAN_PROGRESS',  // 8
-  'EXPECTATIONS',          // 9
-  'CONFIRM',     // 10
-  'FINAL',             // 11
+  'AGE',            // 3
+  'BACK_ISSUES',    // 4
+  'HEALTH_PROBLEMS',// 5
+  'DAY_MEALPLAN',   // 6
+  'HEIGHT_WEIGHT',  // 7
+  'WEIGHT_GOAL',    // 8
+  'PLAN_PROGRESS',  // 9
+  'EXPECTATIONS',   // 10
+  'CONFIRM',        // 11
+  'FINAL',          // 12
 ];
 
 const RegisterV2Tpl = (props: any) => {
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
-  const [registerView, setRegisterView] = useState<RegisterViewType>('PLAN_PROGRESS');
+  const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
 
   useEffect(() => {
     let currentRegisterStep: 0 | 1 | 2 = null;

@@ -12,27 +12,30 @@ import { ReactComponent as KeepIcon } from 'assets/img/icons/keep-icon.svg';
 import { ReactComponent as LiftIcon } from 'assets/img/icons/lift-icon.svg';
 import { ReactComponent as AngleRightIcon } from 'assets/img/icons/angle-right-icon.svg';
 
-const Goal = (props: any) => {
-  const t = (code: string) => getTranslate(props.localePhrases, code);
-
-  const { registerData } = props;
+const Goal = ({
+  registerData,
+  setRegisterData,
+  setRegisterView,
+  localePhrases,
+}: any) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
 
   return (
     <>
-      <h3 className='register_v2tpl_title'>We will help you achieve the chosen goal</h3>
+      <h3 className='register_v2tpl_title'>{t('register.help_achieve_goal')}</h3>
 
       <div className='row'>
-        <div className='col-8 offset-2'>
+        <div className='col-md-8 offset-md-2'>
 
           <div className='register_goals_list'>
             <Button
               className={classNames('register_goal_btn', {
-                active: registerData.goal === -1
+                active: registerData.goal === -1,
               })}
               block
-              onClick={() => props.setRegisterData({
+              onClick={() => setRegisterData({
                 ...registerData,
-                goal: -1
+                goal: -1,
               })}
             >
               <span>
@@ -44,12 +47,12 @@ const Goal = (props: any) => {
 
             <Button
               className={classNames('register_goal_btn', {
-                active: registerData.goal === 0
+                active: registerData.goal === 0,
               })}
               block
-              onClick={() => props.setRegisterData({
+              onClick={() => setRegisterData({
                 ...registerData,
-                goal: 0
+                goal: 0,
               })}
             >
               <span>
@@ -61,12 +64,12 @@ const Goal = (props: any) => {
 
             <Button
               className={classNames('register_goal_btn', {
-                active: registerData.goal === 1
+                active: registerData.goal === 1,
               })}
               block
-              onClick={() => props.setRegisterData({
+              onClick={() => setRegisterData({
                 ...registerData,
-                goal: 1
+                goal: 1,
               })}
             >
               <span>
@@ -78,12 +81,12 @@ const Goal = (props: any) => {
           </div>
 
           <Button
-            className='register_v2tpl_btn'
+            className='register_v2tpl_btn mt-5'
             color='primary'
             size='lg'
-            onClick={() => props.setRegisterView('NOT_EATING')}
+            onClick={() => setRegisterView('NOT_EATING')}
           >
-            Next
+            {t('register.form_next')}
           </Button>
 
         </div>

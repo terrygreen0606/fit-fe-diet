@@ -1,26 +1,34 @@
 import React from 'react';
+import { getTranslate } from 'utils';
 
 // Components
 import Button from 'components/common/Forms/Button';
 
 import '../RegisterV2Tpl.sass';
 
-const NotEating = ({ registerData, setRegisterData, setRegisterView }: any) => {
+const NotEating = ({
+  registerData,
+  setRegisterData,
+  setRegisterView,
+  localePhrases,
+}: any) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
+
   const changeCuisineState = (id: string, checked: boolean) => {
-    const index = registerData.ignore_cuisine_ids.findIndex(cuisine => cuisine.id === id);
+    const index = registerData.ignore_cuisine_ids.findIndex((cuisine) => cuisine.id === id);
 
     if (index >= 0) {
-      let ignore_cuisine_ids = registerData.ignore_cuisine_ids;
+      const { ignore_cuisine_ids } = registerData;
 
       if (ignore_cuisine_ids[index]) {
         ignore_cuisine_ids[index] = {
           ...ignore_cuisine_ids[index],
-          checked
+          checked,
         };
 
         setRegisterData({
           ...registerData,
-          ignore_cuisine_ids
+          ignore_cuisine_ids,
         });
       }
     }
@@ -28,7 +36,7 @@ const NotEating = ({ registerData, setRegisterData, setRegisterView }: any) => {
 
   return (
     <>
-      <h3 className='register_v2tpl_title'>What foods do you not eat:</h3>
+      <h3 className='register_v2tpl_title'>{t('register.v2.not_eating_title')}</h3>
 
       <div className='row'>
         <div className='col-10 offset-1'>
@@ -39,7 +47,7 @@ const NotEating = ({ registerData, setRegisterData, setRegisterView }: any) => {
                 <input
                   name='register_not_eating'
                   type='checkbox'
-                  onChange={e => changeCuisineState(id, e.target.checked)}
+                  onChange={(e) => changeCuisineState(id, e.target.checked)}
                 />
 
                 <div key={id} className='register_v2tpl_check_item register_v2tpl_eating_item'>

@@ -11,7 +11,7 @@ const BackIssues = ({ setRegisterView, localePhrases }: any) => {
 
   return (
     <>
-      <h3 className='register_v2tpl_title'>Do you have any significant back issues?</h3>
+      <h3 className='register_v2tpl_title'>{t('register.v2.back_issues.title')}</h3>
 
       <div className='row'>
         <div className='col-8 offset-2'>
@@ -19,12 +19,12 @@ const BackIssues = ({ setRegisterView, localePhrases }: any) => {
           <div className='register_v2tpl_check_list'>
             <label className='register_v2tpl_check_label'>
               <input name='register_back_issues' type='radio' />
-              <div className='register_v2tpl_check_item'>No</div>
+              <div className='register_v2tpl_check_item'>{t('common.no')}</div>
             </label>
 
             <label className='register_v2tpl_check_label'>
               <input name='register_back_issues' type='radio' />
-              <div className='register_v2tpl_check_item'>Yes</div>
+              <div className='register_v2tpl_check_item'>{t('common.yes')}</div>
             </label>
           </div>
 
@@ -32,12 +32,12 @@ const BackIssues = ({ setRegisterView, localePhrases }: any) => {
       </div>
 
       <Button
-        className='register_v2tpl_btn mt-5' 
-        color='primary' 
+        className='register_v2tpl_btn mt-5'
+        color='primary'
         size='lg'
         onClick={() => setRegisterView('HEALTH_PROBLEMS')}
       >
-        Next
+        {t('register.form_next')}
       </Button>
     </>
   );

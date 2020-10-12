@@ -10,7 +10,7 @@ const HealthProblems = ({
   registerData,
   setRegisterData,
   setRegisterView,
-  localePhrases
+  localePhrases,
 }: any) => {
   const t = (code: string) => getTranslate(localePhrases, code);
 
@@ -36,7 +36,7 @@ const HealthProblems = ({
 
   return (
     <>
-      <h3 className='register_v2tpl_title'>I have following problems with health:</h3>
+      <h3 className='register_v2tpl_title'>{t('register.diseases_title')}</h3>
 
       <div className='row'>
         <div className='col-8 offset-2'>
@@ -45,8 +45,8 @@ const HealthProblems = ({
             {registerData.diseases.map(({ code, checked, i18n_code }) => (
               <label className='register_v2tpl_check_label'>
                 <input
-                  name='register_health_problem' 
-                  type='checkbox' 
+                  name='register_health_problem'
+                  type='checkbox'
                   checked={checked}
                   onChange={(e) => changeDiseaseState(code, e.target.checked)}
                 />
@@ -61,7 +61,7 @@ const HealthProblems = ({
             size='lg'
             onClick={() => setRegisterView('DAY_MEALPLAN')}
           >
-            Next
+            {t('register.form_next')}
           </Button>
 
         </div>

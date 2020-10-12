@@ -46,7 +46,11 @@ const WeightGoal = ({
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+    getFieldErrorsUtil(field, registerDataErrors)
+      .map(msg => ({
+        ...msg,
+        message: t('api.ecode.invalid_value')
+      }));
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -103,14 +107,14 @@ const WeightGoal = ({
 
   return (
     <>
-      <h3 className='register_v2tpl_title mb-5'>What is your ideal weight that you want to reach?</h3>
+      <h3 className='register_v2tpl_title mb-5'>{t('register.v2.weight_goal_step_title')}</h3>
 
       <form className='mt-5 pt-4' onSubmit={(e) => registerInfoSubmit(e)}>
         <div className='row'>
-          <div className='col-4 offset-5 pl-2'>
+          <div className='col-8 offset-3 col-xs-7 offset-xs-4 col-md-4 offset-md-5 pl-md-2'>
 
             <div>
-              <FormGroup className='register_info_fg_weight mb-0' inline>
+              <FormGroup className='register_v2tpl_fg_inline mb-0' inline>
                 <InputField
                   block
                   height='md'
@@ -119,6 +123,7 @@ const WeightGoal = ({
                   data-param='30,400'
                   data-validate='["required", "min-max"]'
                   name='weight_goal'
+                  autoFocus
                   onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
                   invalid={getFieldErrors('weight_goal').length > 0}
                   placeholder=''
@@ -140,7 +145,7 @@ const WeightGoal = ({
           size='lg'
           isLoading={validateLoading}
         >
-          Next
+          {t('register.form_next')}
         </Button>
       </form>
     </>
