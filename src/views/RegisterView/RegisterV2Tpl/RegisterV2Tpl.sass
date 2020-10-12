@@ -1,0 +1,113 @@
+@import '../../../assets/sass/vars'
+
+
+.register_v2tpl
+  padding-top: 50px
+
+  @media only screen and (max-width : 576px)
+    padding-top: 20px
+  &_content
+    margin-top: 90px
+    padding: 20px
+    text-align: center
+    position: relative
+    z-index: 1
+
+    @media only screen and (max-width : 576px)
+      max-height: calc(100vh - 250px)
+      overflow-y: scroll
+      overflow-x: hidden
+      margin-top: 50px
+      +scrollStyle(7px)
+  &_title
+    margin-bottom: 80px
+    font-size: 36px
+    font-weight: bold
+    line-height: 44px
+    text-align: center
+
+    @media only screen and (max-width : 1200px)
+      margin-bottom: 40px
+      font-size: 24px
+      line-height: 36px
+  &_btn
+    min-width: 220px
+    margin-top: 20px  
+  &_check
+    &_item
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      width: 100%
+      min-height: 77px
+      padding: 0 25px
+      border: 1px solid #f0f0f0
+      border-radius: 5px
+      font-size: 20px
+      line-height: 24px
+      background-color: #f0f0f0
+      color: #000000
+      cursor: pointer
+      +mt(.2s)
+      &.active
+        font-weight: bold
+        color: #fff
+        background-color: $steel-blue
+        border-color: $steel-blue
+      &:hover
+        border-color: $steel-blue
+        color: $steel-blue
+        background-color: #fff
+        box-shadow: 3px 4px 26px -9px $steel-blue
+    &_list
+      .register_v2tpl_check_item
+        margin-bottom: 39px
+        @media only screen and (max-width : 576px)
+          margin-bottom: 19px
+      .register_v2tpl_check_label
+        &:last-child
+          .register_v2tpl_check_item
+            margin-bottom: 0
+    &_label
+      input
+        display: none
+        &:checked ~ .register_v2tpl_check_item
+          font-weight: bold
+          color: #fff
+          background-color: $steel-blue
+          border-color: $steel-blue
+  &_eating
+    &_list
+      display: flex
+      align-items: flex-start
+      justify-content: center
+      flex-wrap: wrap
+      .register_v2tpl_eating_label
+        display: flex
+        width: calc(50% - 7px)
+        margin-bottom: 29px
+        &:nth-child(2n + 1)
+          margin-right: 14px
+        @media only screen and (max-width : 576px)
+          width: 100%
+          margin-bottom: 19px
+          &:nth-child(2n + 1)
+            margin-right: 0
+    &_item
+      span
+        display: inline-flex
+        align-items: center
+      &_icon
+        margin-right: 10px
+        height: 24px
+  &_fg_inline
+    flex-wrap: nowrap !important
+    &.formGroup_inline
+      .fg-input
+        @media only screen and (max-width : 480px)
+          flex: 0 0 calc(100% - 95px) !important
+    .fgLabel
+      margin-bottom: 0 !important
+      margin-right: 0
+      padding-left: 29px
+      text-align: left

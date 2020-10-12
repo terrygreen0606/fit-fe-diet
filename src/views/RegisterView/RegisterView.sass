@@ -1,0 +1,71 @@
+@import '../../assets/sass/vars'
+
+
+.register
+  &_goals_list
+    .register_goal_btn
+      &:not(:last-child)
+        margin-bottom: 28px
+  &_goal_btn
+    height: 77px
+    padding-left: 17px
+    padding-right: 27px
+    justify-content: space-between
+    color: #000
+    font-size: 20px
+    border-color: #000
+    border-width: 1px
+    line-height: 24px
+    font-weight: bold
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease
+    span
+      display: inline-flex
+      align-items: center
+    &.active, &:hover
+      color: #fff
+      background-color: $steel-blue
+      border-color: $steel-blue
+      .register_goal_icon
+        fill: #fff
+        path
+          fill: #fff
+        circle
+          fill: $steel-blue
+          stroke: #fff
+  &_goal_icon
+    width: 26px
+    fill: #000
+    +mt(.05s)
+    path
+      fill: #000
+      +mt(.05s)
+    circle
+      fill: #fff
+      +mt(.1s)
+
+  &_expectation_chart
+    background-color: #fff
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15)
+    border-radius: 20px
+    &-wrap
+      position: relative
+    &-standart-plan-label
+      position: absolute
+      top: 40%
+      right: 20px
+      font-weight: 400
+      font-size: 14px
+      line-height: 16px
+      color: #BAC2D2
+    &-fitlope-plan-label
+      position: absolute
+      bottom: 10%
+      left: 5%
+      max-width: 150px
+      font-weight: bold
+      font-size: 16px
+      line-height: 17px
+      color: #000000
+      &.v2tpl
+        .text-steel-blue
+          color: #fff !important

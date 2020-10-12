@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 // Components
 import Header from 'components/Header';
@@ -7,16 +8,26 @@ import SideMenu from 'components/SideMenu';
 
 import './BasePage.sass';
 
-const BasePage = ({ children }: any) => (
-  <div className="basePageLayoutWrapper">
-    <Header />
-    <SideMenu />
+const BasePage = ({ children, hideHeader, hideFooter, rawBackground }: any) => (
+  <div 
+    className={classNames("basePageLayoutWrapper", {
+      'hide_header': hideHeader,
+      'hide_footer': hideFooter,
+      'raw_background': rawBackground,
+    })}
+  >
+    {!hideHeader && (
+      <>
+        <Header />
+        <SideMenu />
+      </>
+    )}
 
     <div className="basePageMainContentWrapper">
       {children}
     </div>
 
-    <FooterShort />
+    {!hideFooter && <FooterShort />}
   </div>
 );
 

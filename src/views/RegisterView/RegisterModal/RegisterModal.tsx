@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { getTranslate } from 'utils';
 import { Link } from 'react-router-dom';
-import getRegisterStepViewUtil from './getRegisterStepView';
-import { RegisterViewType, RegisterStepTitlesType } from './types';
 import { InputError } from 'types';
 
 // Components
 import Modal from 'components/common/Modal';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Progress from './Progress';
+import getRegisterStepViewUtil from './getRegisterStepView';
+
+import { RegisterViewType, RegisterStepTitlesType } from './types';
 
 import './RegisterModal.sass';
 
@@ -23,6 +24,7 @@ type RegisterModalProps = {
   fetchRecipeCuisines: () => void,
   onClose?: (e: React.SyntheticEvent) => void,
   history: any,
+  location: any,
   localePhrases: any
 };
 
@@ -42,9 +44,26 @@ const registerViewsList: RegisterViewType[] = [
   'READY',            // 12
 ];
 
-const RegisterModal = (props: RegisterModalProps) => {
-  const t = (code: string) => getTranslate(props.localePhrases, code);
-  const registerStepTitlesDefault: RegisterStepTitlesType = [t('register.step_goal'), t('register.step_info'), t('register.step_join')];
+const RegisterModal = ({
+  registerData,
+  history,
+  location,
+  setRegisterData,
+  registerDataErrors,
+  setRegisterDataErrors,
+  cuisinesLoading,
+  cuisinesLoadingError,
+  fetchRecipeCuisines,
+  isOpen,
+  onClose,
+  localePhrases,
+}: RegisterModalProps) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
+  const registerStepTitlesDefault: RegisterStepTitlesType = [
+    t('register.step_goal'),
+    t('register.step_info'),
+    t('register.step_join'),
+  ];
 
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
   const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
@@ -62,7 +81,7 @@ const RegisterModal = (props: RegisterModalProps) => {
         currentRegisterStep = 2;
         break;
 
-      default: 
+      default:
         currentRegisterStep = 1;
         break;
     }
@@ -72,28 +91,28 @@ const RegisterModal = (props: RegisterModalProps) => {
     }
 
     if (registerView) {
-      props.history.push(`/register#${registerView.toLowerCase()}`);
+      history.push(`/register${location.search}#${registerView.toLowerCase()}`);
     }
   }, [registerView]);
 
-  const getRegisterStepView = (registerView: RegisterViewType) => getRegisterStepViewUtil(
-    registerView,
-    props.registerData,
-    props.setRegisterData,
-    props.registerDataErrors,
-    props.setRegisterDataErrors,
-    props.cuisinesLoading,
-    props.cuisinesLoadingError,
-    props.fetchRecipeCuisines,
-    props.localePhrases,
+  const getRegisterStepView = (registerViewType: RegisterViewType) => getRegisterStepViewUtil(
+    registerViewType,
+    registerData,
+    setRegisterData,
+    registerDataErrors,
+    setRegisterDataErrors,
+    cuisinesLoading,
+    cuisinesLoadingError,
+    fetchRecipeCuisines,
+    localePhrases,
     registerStepTitlesDefault,
     setRegisterStepTitles,
     setRegisterView,
-    props.history
+    history,
   );
 
   const setStepPrev = () => {
-    const curStepIndex = registerViewsList.findIndex(view => view === registerView);
+    const curStepIndex = registerViewsList.findIndex((view) => view === registerView);
 
     if (curStepIndex > 0 && curStepIndex !== (registerViewsList.length - 1)) {
       setRegisterView(registerViewsList[curStepIndex - 1]);
@@ -102,22 +121,22 @@ const RegisterModal = (props: RegisterModalProps) => {
 
   return (
     <Modal
-      isOpen={props.isOpen}
-      onClose={props.onClose}
-      className="registerModal"
+      isOpen={isOpen}
+      onClose={onClose}
+      className='registerModal'
     >
-      <Modal.Main className="registerModal_main">
+      <Modal.Main className='registerModal_main'>
         <Link to='/' className='mainHeader_logo registerModal_logo' />
 
-        <Progress 
-          step={registerStep} 
+        <Progress
+          step={registerStep}
           view={registerView}
-          titles={registerStepTitles} 
+          titles={registerStepTitles}
           setStepPrev={setStepPrev}
         />
 
-        <div className="registerModal_steps_content_wrap">
-          <div className="registerModal_steps_content">
+        <div className='registerModal_steps_content_wrap'>
+          <div className='registerModal_steps_content'>
             {getRegisterStepView(registerView)}
           </div>
         </div>

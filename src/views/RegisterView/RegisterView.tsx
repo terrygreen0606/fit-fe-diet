@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-import {
-  initGoogleAuth,
-  initFacebookAuth,
-  getTranslate,
-} from 'utils';
+import { getTranslate } from 'utils';
 import { UserAuthProfileType } from 'types/auth';
+import queryString from 'query-string';
 import { getSignUpData } from 'api';
 
 // Components
-import RegisterModal from './RegisterModal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
+import RegisterModal from './RegisterModal';
+import RegisterV2Tpl from './RegisterV2Tpl';
 
 import './RegisterView.sass';
 
@@ -41,22 +39,23 @@ const registerDataDefault: RegisterDataType = {
   goal: -1,
   ignore_cuisine_ids: [],
   diseases: [],
-  act_levels: []
+  act_levels: [],
 };
 
-const RegisterView = (props: any) => {
+const RegisterView = ({
+  history,
+  location,
+  measurement,
+  localePhrases,
+}: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(
-    props.localePhrases,
+    localePhrases,
     code,
     placeholders,
   );
 
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
   const [registerDataErrors, setRegisterDataErrors] = useState([]);
-
-  const [registerGoogleInitLoading, setRegisterGoogleInitLoading] = useState<boolean>(false);
-  const [registerGoogleLoadingError, setRegisterGoogleLoadingError] = useState(false);
-  const [registerFacebookInitLoading, setRegisterFacebookInitLoading] = useState<boolean>(false);
 
   const [registerSettingsLoading, setRegisterSettingsLoading] = useState<boolean>(true);
   const [registerSettingsLoadingError, setRegisterSettingsLoadingError] = useState<boolean>(false);
@@ -66,49 +65,47 @@ const RegisterView = (props: any) => {
     setRegisterSettingsLoadingError(false);
 
     getSignUpData()
-      .then(response => {
+      .then((response) => {
         setRegisterSettingsLoading(false);
 
         if (response.data.data) {
           setRegisterData({
             ...registerData,
             tpl_signup: response.data.data.tpl || null,
-            act_levels: response.data.data.act_levels.map(activity => ({
+            act_levels: response.data.data.act_levels.map((activity) => ({
               ...activity,
-              checked: false
+              checked: false,
             })) || [],
-            ignore_cuisine_ids: response.data.data.cuisines.map(cuisine => ({
+            ignore_cuisine_ids: response.data.data.cuisines.map((cuisine) => ({
               ...cuisine,
-              checked: false
+              checked: false,
             })) || [],
-            diseases: response.data.data.diseases.map(disease => ({
+            diseases: response.data.data.diseases.map((disease) => ({
               ...disease,
-              checked: false
-            })) || []
+              checked: false,
+            })) || [],
 
           });
         }
       })
-      .catch(error => {
+      .catch(() => {
         setRegisterSettingsLoading(false);
         setRegisterSettingsLoadingError(true);
       });
   };
 
   useEffect(() => {
-    initGoogleAuth(setRegisterGoogleInitLoading, setRegisterGoogleLoadingError);
-    initFacebookAuth(setRegisterFacebookInitLoading);
     loadRegisterSettings();
   }, []);
 
   useEffect(() => {
-    if (props.measurement) {
+    if (measurement) {
       setRegisterData({
         ...registerData,
-        measurement: props.measurement
+        measurement,
       });
     }
-  }, [props.measurement]);
+  }, [measurement]);
 
   return (
     <>
@@ -123,17 +120,26 @@ const RegisterView = (props: any) => {
         spinSize='lg'
       >
 
+      {queryString.parse(location.search).tpl === '2' ? (
+        <RegisterV2Tpl
+          registerData={registerData}
+          setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
+          location={location}
+          history={history}
+        />
+      ) : (
         <RegisterModal
           isOpen
           registerData={registerData}
           setRegisterData={setRegisterData}
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
-          facebookInitLoading={registerFacebookInitLoading}
-          googleLoadingError={registerGoogleLoadingError}
-          googleInitLoading={registerGoogleInitLoading}
-          history={props.history}
+          location={location}
+          history={history}
         />
+      )}
       </ContentLoading>
     </>
   );
@@ -142,8 +148,8 @@ const RegisterView = (props: any) => {
 export default WithTranslate(
   connect(
     (state: any) => ({
-      measurement: state.settings.measurement
+      measurement: state.settings.measurement,
     }),
-    null
+    null,
   )
 (RegisterView));
