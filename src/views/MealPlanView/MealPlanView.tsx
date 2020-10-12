@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import {
   getTranslate,
@@ -136,7 +137,20 @@ const MealPlanView = (props: any) => {
         getMealPlan().then((response) => {
           const updatedMealPlan = [];
           const { list } = response.data.data;
+
+          const today = new Date();
+
+          const todayTs = moment(today.setHours(-(new Date().getTimezoneOffset() / 60), 0, 0, 0)).unix();
+
           list.forEach((item, itemIndex) => {
+            if (item.date_ts !== todayTs && itemIndex === 0) {
+              for (let i = todayTs; i < item.date_ts; i += 86400) {
+                updatedMealPlan.push({
+                  date_ts: i,
+                  list: [],
+                });
+              }
+            }
             if (itemIndex === 0) {
               updatedMealPlan.push({
                 date_ts: item.date_ts,
@@ -147,7 +161,16 @@ const MealPlanView = (props: any) => {
                 if (findItem.date_ts === item.date_ts) {
                   findItem.list.push(item);
                   return;
-                } if (updatedMealPlan.length - 1 === findItemIndex) {
+                }
+                if (updatedMealPlan.length - 1 === findItemIndex) {
+                  if (item.date_ts - updatedMealPlan[findItemIndex].date_ts !== 86400) {
+                    for (let i = updatedMealPlan[findItemIndex].date_ts + 86400; i < item.date_ts; i += 86400) {
+                      updatedMealPlan.push({
+                        date_ts: i,
+                        list: [],
+                      });
+                    }
+                  }
                   updatedMealPlan.push({
                     date_ts: item.date_ts,
                     list: [item],
@@ -156,6 +179,15 @@ const MealPlanView = (props: any) => {
               });
             }
           });
+          if (updatedMealPlan.length !== 7) {
+            for (let i = updatedMealPlan.length; updatedMealPlan.length < 7; i++) {
+              const newTime = {
+                date_ts: updatedMealPlan[updatedMealPlan.length - 1].date_ts + 86400,
+                list: [],
+              };
+              updatedMealPlan.push(newTime);
+            }
+          }
           setMealPlan(updatedMealPlan);
         }).finally(() => {
           setIsMealPlanLoading(false);
@@ -274,45 +306,39 @@ const MealPlanView = (props: any) => {
                       },
                     )}
                   >
-                    <ContentLoading
-                      isLoading={mealPlan.length !== 7}
-                      isError={false}
-                      spinSize='lg'
-                      label={t('mp.generating_recipes')}
-                    >
-                      <div className='nutrition-plan-card-list-controls'>
+                    <div className='nutrition-plan-card-list-controls'>
+                      <button
+                        type='button'
+                        onClick={() => downloadTxtFile()}
+                        className='nutrition-plan-card-list-controls-item'
+                      >
+                        <FileDyskIcon />
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => window.print()}
+                        className='nutrition-plan-card-list-controls-item'
+                      >
+                        <PrintIcon />
+                      </button>
+                      <div ref={changedBlockRef}>
                         <button
                           type='button'
-                          onClick={() => downloadTxtFile()}
+                          onClick={() => setIsBlockActive(!isBlockActive)}
                           className='nutrition-plan-card-list-controls-item'
                         >
-                          <FileDyskIcon />
+                          <ShareIcon />
                         </button>
-                        <button
-                          type='button'
-                          onClick={() => window.print()}
-                          className='nutrition-plan-card-list-controls-item'
-                        >
-                          <PrintIcon />
-                        </button>
-                        <div ref={changedBlockRef}>
-                          <button
-                            type='button'
-                            onClick={() => setIsBlockActive(!isBlockActive)}
-                            className='nutrition-plan-card-list-controls-item'
-                          >
-                            <ShareIcon />
-                          </button>
-                          <ShareButtons
-                            visible={isBlockActive}
-                            items={['twitter', 'telegram']}
-                            fetchData={() => getMealPlanText().then((response) => ({
-                              link: window.location.origin,
-                              text: response.data.data.content,
-                            }))}
-                          />
-                        </div>
+                        <ShareButtons
+                          visible={isBlockActive}
+                          items={['twitter', 'telegram']}
+                          fetchData={() => getMealPlanText().then((response) => ({
+                            link: window.location.origin,
+                            text: response.data.data.content,
+                          }))}
+                        />
                       </div>
+                    </div>
                       <div className='nutrition-plan-card-list-date'>
                         {days.map((item, itemIndex) => (
                           <button
@@ -355,6 +381,12 @@ const MealPlanView = (props: any) => {
                                 {dayItem.dayFullInfo}
                               </span>
                             </div>
+                            <ContentLoading
+                              isLoading={mealPlan[dayItemIndex]?.list?.length === 0}
+                              isError={false}
+                              spinSize='lg'
+                              label={t('mp.generating_recipes')}
+                            />
                             <div className='row'>
                               {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
                                 <div
@@ -397,7 +429,6 @@ const MealPlanView = (props: any) => {
                           closeText={t('common.understand')}
                         />
                       )}
-                    </ContentLoading>
                   </div>
                   <div className='nutrition-plan-info-col'>
                     <div
