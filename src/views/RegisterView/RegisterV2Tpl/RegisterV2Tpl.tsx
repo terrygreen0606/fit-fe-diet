@@ -25,7 +25,15 @@ const registerViewsList: RegisterViewType[] = [
   'FINAL',          // 12
 ];
 
-const RegisterV2Tpl = (props: any) => {
+const RegisterV2Tpl = ({
+  registerData,
+  setRegisterData,
+  registerDataErrors,
+  setRegisterDataErrors,
+  localePhrases,
+  history,
+  location, 
+}: any) => {
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
   const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
 
@@ -54,19 +62,19 @@ const RegisterV2Tpl = (props: any) => {
     }
 
     if (registerView) {
-      props.history.push(`/register#${registerView.toLowerCase()}`);
+      history.push(`/register${location.search}#${registerView.toLowerCase()}`);
     }
   }, [registerView]);
 
   const getRegisterStepView = (registerViewType: RegisterViewType) =>
     getRegisterStepViewUtil(
       registerViewType,
-      props.registerData,
-      props.setRegisterData,
-      props.registerDataErrors,
-      props.setRegisterDataErrors,
+      registerData,
+      setRegisterData,
+      registerDataErrors,
+      setRegisterDataErrors,
       setRegisterView,
-      props.localePhrases,
+      localePhrases,
     );
 
   const setStepPrev = () => {

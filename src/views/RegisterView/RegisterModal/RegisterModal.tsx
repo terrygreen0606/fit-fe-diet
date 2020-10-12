@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getTranslate } from 'utils';
 import { Link } from 'react-router-dom';
+import { InputError } from 'types';
 
 // Components
 import Modal from 'components/common/Modal';
@@ -9,7 +10,6 @@ import Progress from './Progress';
 import getRegisterStepViewUtil from './getRegisterStepView';
 
 import { RegisterViewType, RegisterStepTitlesType } from './types';
-import { InputError } from 'types';
 
 import './RegisterModal.sass';
 
@@ -24,6 +24,7 @@ type RegisterModalProps = {
   fetchRecipeCuisines: () => void,
   onClose?: (e: React.SyntheticEvent) => void,
   history: any,
+  location: any,
   localePhrases: any
 };
 
@@ -43,8 +44,21 @@ const registerViewsList: RegisterViewType[] = [
   'READY',            // 12
 ];
 
-const RegisterModal = (props: RegisterModalProps) => {
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+const RegisterModal = ({
+  registerData,
+  history,
+  location,
+  setRegisterData,
+  registerDataErrors,
+  setRegisterDataErrors,
+  cuisinesLoading,
+  cuisinesLoadingError,
+  fetchRecipeCuisines,
+  isOpen,
+  onClose,
+  localePhrases,
+}: RegisterModalProps) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
   const registerStepTitlesDefault: RegisterStepTitlesType = [
     t('register.step_goal'),
     t('register.step_info'),
@@ -67,7 +81,7 @@ const RegisterModal = (props: RegisterModalProps) => {
         currentRegisterStep = 2;
         break;
 
-      default: 
+      default:
         currentRegisterStep = 1;
         break;
     }
@@ -77,24 +91,24 @@ const RegisterModal = (props: RegisterModalProps) => {
     }
 
     if (registerView) {
-      props.history.push(`/register#${registerView.toLowerCase()}`);
+      history.push(`/register${location.search}#${registerView.toLowerCase()}`);
     }
   }, [registerView]);
 
   const getRegisterStepView = (registerViewType: RegisterViewType) => getRegisterStepViewUtil(
     registerViewType,
-    props.registerData,
-    props.setRegisterData,
-    props.registerDataErrors,
-    props.setRegisterDataErrors,
-    props.cuisinesLoading,
-    props.cuisinesLoadingError,
-    props.fetchRecipeCuisines,
-    props.localePhrases,
+    registerData,
+    setRegisterData,
+    registerDataErrors,
+    setRegisterDataErrors,
+    cuisinesLoading,
+    cuisinesLoadingError,
+    fetchRecipeCuisines,
+    localePhrases,
     registerStepTitlesDefault,
     setRegisterStepTitles,
     setRegisterView,
-    props.history,
+    history,
   );
 
   const setStepPrev = () => {
@@ -107,8 +121,8 @@ const RegisterModal = (props: RegisterModalProps) => {
 
   return (
     <Modal
-      isOpen={props.isOpen}
-      onClose={props.onClose}
+      isOpen={isOpen}
+      onClose={onClose}
       className='registerModal'
     >
       <Modal.Main className='registerModal_main'>

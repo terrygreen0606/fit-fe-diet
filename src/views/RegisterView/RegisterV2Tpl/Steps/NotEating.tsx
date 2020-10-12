@@ -43,7 +43,7 @@ const NotEating = ({
 
           <div className='register_v2tpl_eating_list'>
             {registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
-              <label className='register_v2tpl_eating_label register_v2tpl_check_label'>
+              <label key={id} className='register_v2tpl_eating_label register_v2tpl_check_label'>
                 <input
                   name='register_not_eating'
                   type='checkbox'
