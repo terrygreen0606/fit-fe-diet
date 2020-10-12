@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -29,14 +30,6 @@ const WaterTrackerView = (props: any) => {
 
   const [trackerPeriod, setTrackerPeriod] = useState<string>(periods.week);
 
-  const [dataCurrentChart, setDataCurrentChart] = useState<{
-    label: string[],
-    value: number[],
-  }>({
-    label: [],
-    value: [],
-  });
-  const [chart, setChart] = useState<JSX.Element>();
   const [dayAverage, setDayAverage] = useState<number>(0);
   const [drinkFrequency, setDrinkFrequency] = useState<number>(0);
   const [completed, setCompleted] = useState<number>(0);
@@ -44,62 +37,78 @@ const WaterTrackerView = (props: any) => {
   const [dailyGoal, setDailyGoal] = useState<number>(0);
   const [actLevel, setActLevel] = useState<string>('');
 
-  // const [chartsData] = useState<Array<{
-  //   id: number,
-  //   period: string,
-  //   label: any,
-  //   data: number[],
-  // }>>([
-  //   {
-  //     id: 0,
-  //     period: periods.week,
-  //     label: dataCurrentChart.label,
-  //     data: dataCurrentChart.value,
-  //   },
-  //   {
-  //     id: 1,
-  //     period: periods.month,
-  //     label: dataCurrentChart.label,
-  //     data: dataCurrentChart.value,
-  //   },
-  //   {
-  //     id: 2,
-  //     period: periods.year,
-  //     label: dataCurrentChart.label,
-  //     data: dataCurrentChart.value,
-  //   },
-  // ]);
+  const [chartsData, setChartsData] = useState<{
+    label: string[],
+    data: number[],
+  }>({
+    label: [],
+    data: [],
+  });
 
-  useEffect(() => {
+  const getData = () => {
     getDataStatsForPeriod(trackerPeriod).then((response) => {
       const { data } = response.data;
 
       if (response.data.status && response.data.data) {
         if (trackerPeriod === periods.week) {
-          console.log('week', data);
-
           const updatedData = {
             label: [],
-            value: [],
+            data: [],
           };
 
           Object.keys(data.stats).forEach((item) => {
-            updatedData.label.push(item);
-            updatedData.value.push(data.stats[item]);
+            updatedData.label.push(
+              moment.unix(+item).format('HH:mm'),
+            );
+            updatedData.data.push(data.stats[item]);
           });
 
-          setDataCurrentChart(updatedData);
+          setChartsData({ ...updatedData });
+        } else if (trackerPeriod === periods.month) {
+          const updatedData = {
+            label: [],
+            data: [],
+          };
+
+          Object.keys(data.stats).forEach((item) => {
+            updatedData.label.push(
+              moment.unix(+item).format('D MMM'),
+            );
+            updatedData.data.push(data.stats[item]);
+          });
+
+          setChartsData({ ...updatedData });
+        } else if (trackerPeriod === periods.year) {
+          const updatedData = {
+            label: [],
+            data: [],
+          };
+
+          Object.keys(data.stats).forEach((item) => {
+            updatedData.label.push(
+              moment.unix(+item).format('MMM'),
+            );
+            updatedData.data.push(data.stats[item]);
+          });
+
+          setChartsData({ ...updatedData });
         }
 
         setDayAverage(data.day_average);
         setDrinkFrequency(data.frequency);
       }
     });
+  };
 
+  useEffect(() => {
+    getData();
+  }, [trackerPeriod]);
+
+  useEffect(() => {
     getDataStatsForToday().then((response) => {
       const { data } = response.data;
 
-      if (response.data.success && response.data.data) {
+      if (response.data.succeeat && response.data.data) {
         setCompleted(data.completed);
         setCompletedPercent(data.completed_percent);
         setDailyGoal(data.daily_goal);
@@ -107,24 +116,6 @@ const WaterTrackerView = (props: any) => {
       }
     });
   }, []);
-
-  const setActiveTab = (period) =>
-    classnames('waterTracker_period-item', {
-      'active-period': trackerPeriod === period,
-    });
-
-  const initChart = () => {
-    setChart(
-      <WaterChart
-        labels={dataCurrentChart.label}
-        data={dataCurrentChart.value}
-      />,
-    );
-  };
-
-  useEffect(() => {
-    initChart();
-  }, [dataCurrentChart]);
 
   return (
     <>
@@ -155,21 +146,27 @@ const WaterTrackerView = (props: any) => {
             <ul className='waterTracker_period'>
               <li
                 onClick={() => setTrackerPeriod(periods.week)}
-                className={setActiveTab(periods.week)}
+                className={classnames('waterTracker_period-item', {
+                  'active-period': trackerPeriod === periods.week,
+                })}
                 role='presentation'
               >
                 {t('common.week')}
               </li>
               <li
                 onClick={() => setTrackerPeriod(periods.month)}
-                className={setActiveTab(periods.month)}
+                className={classnames('waterTracker_period-item', {
+                  'active-period': trackerPeriod === periods.month,
+                })}
                 role='presentation'
               >
                 {t('common.month')}
               </li>
               <li
                 onClick={() => setTrackerPeriod(periods.year)}
-                className={setActiveTab(periods.year)}
+                className={classnames('waterTracker_period-item', {
+                  'active-period': trackerPeriod === periods.year,
+                })}
                 role='presentation'
               >
                 {t('common.year')}
@@ -180,7 +177,7 @@ const WaterTrackerView = (props: any) => {
           <div className='row row-wrap mb-5'>
             <div className='col-xl-5'>
               <div className='waterTracker_chartwrap'>
-                {chart}
+                <WaterChart labels={chartsData.label} data={chartsData.data} />
               </div>
             </div>
 
@@ -306,7 +303,7 @@ const WaterTrackerView = (props: any) => {
                       {`${completedPercent}%`}
                     </h3>
                     <h5>
-                      {1000}
+                      {dailyGoal}
                       {t('common.ml')}
                     </h5>
                   </div>
@@ -371,7 +368,7 @@ const WaterTrackerView = (props: any) => {
                     {t('common.average')}
                   </div>
                   <span className='waterTracker_stats-value'>
-                    {`1300 ${t('common.ml')}`}
+                    {`${dayAverage} ${t('common.ml')}`}
                   </span>
                 </div>
                 <div className='waterTracker_stats'>
