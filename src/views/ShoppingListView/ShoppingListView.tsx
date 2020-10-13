@@ -14,7 +14,6 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getWeigthUnit,
-  redirectToPayView,
 } from 'utils';
 import {
   searchIngredients,
@@ -148,62 +147,56 @@ const ShoppingListView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
     if (settings.is_private && !cleanComponent) {
-      if (settings.paid_until > 0) {
-        getShoppingListFunc();
-        setIsNoAccess(false);
-      } else {
-        redirectToPayView(props.history, t('tariff.not_paid'));
-      }
+      getShoppingListFunc();
+      setIsNoAccess(false);
     }
 
     return () => cleanComponent = true;
   }, [settings.paid_until, settings.is_private]);
 
   useInterval(() => {
-    if (settings.paid_until > 0) {
-      syncShoppingList(dateSync).then((response) => {
-        const { list } = response.data.data;
-        const syncFromResponse = response.data.data.date_sync;
+    syncShoppingList(dateSync).then((response) => {
+      const { list } = response.data.data;
+      const syncFromResponse = response.data.data.date_sync;
 
-        if (syncFromResponse !== dateSync) {
-          setDateSync(response.data.data.date_sync);
-          let updatedShoppingList = [...shoppingList];
+      if (syncFromResponse !== dateSync) {
+        setDateSync(response.data.data.date_sync);
+        let updatedShoppingList = [...shoppingList];
 
-          if (list.length === updatedShoppingList.length) {
-            updatedShoppingList.forEach((item) => {
-              list.find((findItem) => {
-                if (findItem[0] === item.id) {
-                  const newWeight = findItem[1];
-                  const newIsBought = findItem[2];
+        if (list.length === updatedShoppingList.length) {
+          updatedShoppingList.forEach((item) => {
+            list.find((findItem) => {
+              if (findItem[0] === item.id) {
+                const newWeight = findItem[1];
+                const newIsBought = findItem[2];
 
-                  item.weight = newWeight;
-                  item.is_bought = newIsBought;
-                }
-              });
+                item.weight = newWeight;
+                item.is_bought = newIsBought;
+              }
             });
-          } else if (list.length < updatedShoppingList.length) {
-            const filteredShoppingList = [];
-            updatedShoppingList.forEach((item) => {
-              list.find((findItem) => {
-                if (findItem[0] === item.id) {
-                  const newWeight = findItem[1];
-                  const newIsBought = findItem[2];
+          });
+        } else if (list.length < updatedShoppingList.length) {
+          const filteredShoppingList = [];
+          updatedShoppingList.forEach((item) => {
+            list.find((findItem) => {
+              if (findItem[0] === item.id) {
+                const newWeight = findItem[1];
+                const newIsBought = findItem[2];
 
-                  item.weight = newWeight;
-                  item.is_bought = newIsBought;
+                item.weight = newWeight;
+                item.is_bought = newIsBought;
 
-                  filteredShoppingList.push(item);
-                }
-              });
+                filteredShoppingList.push(item);
+              }
             });
-            updatedShoppingList = [...filteredShoppingList];
-          } else {
-            getShoppingListFunc();
-          }
-          setShoppingList([...updatedShoppingList]);
+          });
+          updatedShoppingList = [...filteredShoppingList];
+        } else {
+          getShoppingListFunc();
         }
-      });
-    }
+        setShoppingList([...updatedShoppingList]);
+      }
+    });
   }, isSyncResponseActive ? 5000 : null);
 
   const toggleCheckbox = (itemIndex: number, itemId: string) => {

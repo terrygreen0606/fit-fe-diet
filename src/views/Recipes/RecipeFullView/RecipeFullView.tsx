@@ -17,7 +17,6 @@ import {
   getTranslate,
   getWeigthUnit,
   getVideo,
-  redirectToPayView,
 } from 'utils';
 import {
   getRecipeData,
@@ -151,38 +150,34 @@ const RecipeFullView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
     if (!cleanComponent) {
-      if (settings.paid_until > 0) {
-        getRecipeData(recipeId, true, true, true).then((response) => {
-          const { data } = response;
+      getRecipeData(recipeId, true, true, true).then((response) => {
+        const { data } = response;
 
-          if (data.success && data.data) {
-            const {
-              images,
-              note,
-            } = data.data;
+        if (data.success && data.data) {
+          const {
+            images,
+            note,
+          } = data.data;
 
-            const updatedImages = [...images];
+          const updatedImages = [...images];
 
-            updatedImages[0].isActive = true;
+          updatedImages[0].isActive = true;
 
-            const preparedRecipeData = getRecipeDataFunc(data.data);
+          const preparedRecipeData = getRecipeDataFunc(data.data);
 
-            setRecipeData({
-              ...preparedRecipeData,
-              images: updatedImages,
-            });
+          setRecipeData({
+            ...preparedRecipeData,
+            images: updatedImages,
+          });
 
-            setAddNoteForm({ ...addNoteForm, note });
-          }
-          setIsAvailabilityRecipe(true);
-        }).catch(() => {
-          setIsAvailabilityRecipe(false);
-        }).finally(() => {
-          setIsSpinnerActive(false);
-        });
-      } else {
-        redirectToPayView(props.history, t('tariff.not_paid'));
-      }
+          setAddNoteForm({ ...addNoteForm, note });
+        }
+        setIsAvailabilityRecipe(true);
+      }).catch(() => {
+        setIsAvailabilityRecipe(false);
+      }).finally(() => {
+        setIsSpinnerActive(false);
+      });
     }
 
     return () => cleanComponent = true;

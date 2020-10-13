@@ -7,7 +7,7 @@ import queryString from 'query-string';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
-import { getTranslate, redirectToPayView } from 'utils';
+import { getTranslate } from 'utils';
 import {
   getRecipesList,
   likeRecipe,
@@ -126,13 +126,7 @@ const FavouriteRecipesView = (props: any) => {
 
   useEffect(() => {
     let cleanComponent = false;
-    if (!cleanComponent) {
-      if (settings.paid_until > 0) {
-        getRecipesListFunc();
-      } else {
-        redirectToPayView(props.history, t('tariff.not_paid'));
-      }
-    }
+    if (!cleanComponent) getRecipesListFunc();
 
     return () => cleanComponent = true;
   }, [

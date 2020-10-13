@@ -9,7 +9,6 @@ import {
   getTranslate,
   getScrollbarSize,
   getLangUser,
-  redirectToPayView,
 } from 'utils';
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -115,7 +114,6 @@ const MealPlanView = (props: any) => {
     const updatedDays = [];
 
     if (settings.is_private && !cleanComponent) {
-      if (settings.paid_until > 0) {
         for (let i = 0; i < 7; i++) {
           const today = new Date();
           today.setDate(today.getDate() + i);
@@ -198,9 +196,6 @@ const MealPlanView = (props: any) => {
         const diff = (paidBeforeDate - currentDate) / (60 * 60 * 24 * 1000);
         setDaysToEndSubscription(Math.round(diff));
         setIsNoAccess(false);
-      } else {
-        redirectToPayView(props.history, t('tariff.not_paid'));
-      }
     }
 
     return () => cleanComponent = true;

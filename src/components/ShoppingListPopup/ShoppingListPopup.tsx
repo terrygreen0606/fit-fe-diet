@@ -47,8 +47,6 @@ const ShoppingListPopup = ({
 
   const [dateSync, setDateSync] = useState<number>(0);
 
-  const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
-
   const saveFileShoppingList = () => {
     getPublicShopListUrl(1).then((response) =>
       window.location.assign(response.data.data.url));
@@ -59,25 +57,19 @@ const ShoppingListPopup = ({
   useEffect(() => {
     let cleanComponent = false;
     if (visible && settings.is_private && !cleanComponent) {
-      if (settings.paid_until > 0) {
-        getShoppingList(2, dateSync).then((response) => {
-          const { list } = response.data.data;
+      getShoppingList(2, dateSync).then((response) => {
+        const { list } = response.data.data;
 
-          list.map((item) => {
-            item.is_disable = false;
-          });
-
-          setShoppingList([...list]);
-
-          setDateSync(response.data.data.date_sync);
-        }).finally(() => {
-          setIsNoAccess(false);
-          setIsSpinnerActive(false);
+        list.map((item) => {
+          item.is_disable = false;
         });
-      } else {
-        setIsNoAccess(true);
+
+        setShoppingList([...list]);
+
+        setDateSync(response.data.data.date_sync);
+      }).finally(() => {
         setIsSpinnerActive(false);
-      }
+      });
     }
     return () => cleanComponent = true;
   }, [visible, settings.paid_until, settings.is_private]);
@@ -156,97 +148,89 @@ const ShoppingListPopup = ({
         </div>
       ) : (
           <>
-            {isNoAccess ? (
+            <div className='shop-list-popup__header'>
               <h5 className='shop-list-popup__header-title'>
-                {t('common.no_access')}
+                {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
               </h5>
-            ) : (
-                <>
-                  <div className='shop-list-popup__header'>
-                    <h5 className='shop-list-popup__header-title'>
-                      {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
-                    </h5>
-                    <div className='shop-list-popup__header-buttons'>
-                      <button
-                        type='button'
-                        onClick={() => saveFileShoppingList()}
-                        className='shop-list-popup__header-buttons-item'
-                      >
-                        <FileDyskIcon />
-                      </button>
-                      <div ref={changedBlockRef}>
-                        <button
-                          type='button'
-                          onClick={() => {
-                            setIsBlockActive(!isBlockActive);
-                          }}
-                          className='shop-list-popup__header-buttons-item'
-                        >
-                          <ShareIcon />
-                        </button>
-                        <ShareButtons
-                          visible={isBlockActive}
-                          fetchData={() => getPublicShopListUrl().then((response) => ({
-                            link: response.data.data.url,
-                          }))}
-                          className='shop-list-popup__header-buttons-share'
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <NavLink
-                    to={routes.shoppingList}
-                    className='shop-list-popup__open-page-btn'
+              <div className='shop-list-popup__header-buttons'>
+                <button
+                  type='button'
+                  onClick={() => saveFileShoppingList()}
+                  className='shop-list-popup__header-buttons-item'
+                >
+                  <FileDyskIcon />
+                </button>
+                <div ref={changedBlockRef}>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setIsBlockActive(!isBlockActive);
+                    }}
+                    className='shop-list-popup__header-buttons-item'
                   >
-                    <Button
-                      color='caribbean'
-                      size='sm'
-                    >
-                      {t('shop_list.open_page')}
-                    </Button>
-                  </NavLink>
-                  <div className='shop-list-popup__body'>
-                    {shoppingList.map((item, itemIndex) => (
-                      <div
-                        key={item.id}
-                        className='shop-list-popup__item'
-                      >
-                        {itemIndex === 0 ? (
-                          <div className='shop-list-popup__item-category'>
-                            {item.cuisine_name_i18n}
-                          </div>
-                        ) : (
-                            shoppingList[itemIndex]?.cuisine_name_i18n
-                            !== shoppingList[itemIndex - 1]?.cuisine_name_i18n
-                            && (
-                              <div className='shop-list-popup__item-category'>
-                                {item.cuisine_name_i18n}
-                              </div>
-                            )
-                          )}
-                        <div
-                          className='shop-list-popup__item-ingr'
-                        >
-                          <CustomCheckbox
-                            label={`${t(getWeigthUnit(settings.measurement),
-                              { COUNT: item.weight })} ${item.name_i18n}`}
-                            checked={item.is_bought}
-                            disabled={item.is_disable}
-                            onChange={() => toggleCheckbox(itemIndex, item.id)}
-                          />
-                          <button
-                            type='button'
-                            onClick={() => deleteIngredient(itemIndex, item.id)}
-                            className='shop-list-popup__item-ingr-delete'
-                          >
-                            <TrashIcon />
-                          </button>
+                    <ShareIcon />
+                  </button>
+                  <ShareButtons
+                    visible={isBlockActive}
+                    fetchData={() => getPublicShopListUrl().then((response) => ({
+                      link: response.data.data.url,
+                    }))}
+                    className='shop-list-popup__header-buttons-share'
+                  />
+                </div>
+              </div>
+            </div>
+            <NavLink
+              to={routes.shoppingList}
+              className='shop-list-popup__open-page-btn'
+            >
+              <Button
+                color='caribbean'
+                size='sm'
+              >
+                {t('shop_list.open_page')}
+              </Button>
+            </NavLink>
+            <div className='shop-list-popup__body'>
+              {shoppingList.map((item, itemIndex) => (
+                <div
+                  key={item.id}
+                  className='shop-list-popup__item'
+                >
+                  {itemIndex === 0 ? (
+                    <div className='shop-list-popup__item-category'>
+                      {item.cuisine_name_i18n}
+                    </div>
+                  ) : (
+                      shoppingList[itemIndex]?.cuisine_name_i18n
+                      !== shoppingList[itemIndex - 1]?.cuisine_name_i18n
+                      && (
+                        <div className='shop-list-popup__item-category'>
+                          {item.cuisine_name_i18n}
                         </div>
-                      </div>
-                    ))}
+                      )
+                    )}
+                  <div
+                    className='shop-list-popup__item-ingr'
+                  >
+                    <CustomCheckbox
+                      label={`${t(getWeigthUnit(settings.measurement),
+                        { COUNT: item.weight })} ${item.name_i18n}`}
+                      checked={item.is_bought}
+                      disabled={item.is_disable}
+                      onChange={() => toggleCheckbox(itemIndex, item.id)}
+                    />
+                    <button
+                      type='button'
+                      onClick={() => deleteIngredient(itemIndex, item.id)}
+                      className='shop-list-popup__item-ingr-delete'
+                    >
+                      <TrashIcon />
+                    </button>
                   </div>
-                </>
-              )}
+                </div>
+              ))}
+            </div>
           </>
         )}
     </div>

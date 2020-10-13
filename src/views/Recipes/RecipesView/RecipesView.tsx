@@ -8,7 +8,7 @@ import queryString from 'query-string';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
-import { getTranslate, redirectToPayView } from 'utils';
+import { getTranslate } from 'utils';
 import {
   getRecipeCuisines,
   getRecipesList,
@@ -75,50 +75,16 @@ const RecipesView = (props: any) => {
   const firstUpdate = useRef(true);
 
   useEffect(() => {
-    if (settings.paid_until > 0) {
-      const queryParametersObj = queryString.parse(window.location.search);
-      if (+queryParametersObj.page && firstUpdate.current) {
-        getRecipesListByUrl(window.location.search)
-          .then((response) => {
-            const { data } = response.data;
-
-            if (queryParametersObj.page > data.total_pages) {
-              queryParametersObj.page = data.page;
-              window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
-            }
-
-            setRecipesList([...data.recipes]);
-
-            setRecipesListPageInfo({
-              ...recipesListPageInfo,
-              page: data.page,
-              total: data.total,
-              total_pages: data.total_pages,
-            });
-
-            setParamsToGetRecipes({
-              ...paramsToGetRecipes,
-              page: +queryParametersObj.page,
-            });
-
-            setIsLoadingPage(false);
-          });
-        firstUpdate.current = false;
-      } else {
-        getRecipesList(
-          paramsToGetRecipes.privateRecipes,
-          paramsToGetRecipes.liked,
-          paramsToGetRecipes.cuisinesIds,
-          paramsToGetRecipes.page,
-          paramsToGetRecipes.filterType,
-          paramsToGetRecipes.filter,
-        ).then((response) => {
+    const queryParametersObj = queryString.parse(window.location.search);
+    if (+queryParametersObj.page && firstUpdate.current) {
+      getRecipesListByUrl(window.location.search)
+        .then((response) => {
           const { data } = response.data;
 
-          const queryParameters = {
-            page: paramsToGetRecipes.page,
-          };
-          window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
+          if (queryParametersObj.page > data.total_pages) {
+            queryParametersObj.page = data.page;
+            window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+          }
 
           setRecipesList([...data.recipes]);
 
@@ -129,12 +95,42 @@ const RecipesView = (props: any) => {
             total_pages: data.total_pages,
           });
 
+          setParamsToGetRecipes({
+            ...paramsToGetRecipes,
+            page: +queryParametersObj.page,
+          });
+
           setIsLoadingPage(false);
         });
-        firstUpdate.current = false;
-      }
+      firstUpdate.current = false;
     } else {
-      redirectToPayView(props.history, t('tariff.not_paid'));
+      getRecipesList(
+        paramsToGetRecipes.privateRecipes,
+        paramsToGetRecipes.liked,
+        paramsToGetRecipes.cuisinesIds,
+        paramsToGetRecipes.page,
+        paramsToGetRecipes.filterType,
+        paramsToGetRecipes.filter,
+      ).then((response) => {
+        const { data } = response.data;
+
+        const queryParameters = {
+          page: paramsToGetRecipes.page,
+        };
+        window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
+
+        setRecipesList([...data.recipes]);
+
+        setRecipesListPageInfo({
+          ...recipesListPageInfo,
+          page: data.page,
+          total: data.total,
+          total_pages: data.total_pages,
+        });
+
+        setIsLoadingPage(false);
+      });
+      firstUpdate.current = false;
     }
   }, [
     paramsToGetRecipes.privateRecipes,
