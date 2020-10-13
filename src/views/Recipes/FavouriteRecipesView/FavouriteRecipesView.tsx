@@ -156,6 +156,9 @@ const FavouriteRecipesView = (props: any) => {
       ...paramsToGetRecipes,
       page: value,
     });
+
+    const $recipesList = document.querySelector('.favourites-recipes__list');
+    $recipesList.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (

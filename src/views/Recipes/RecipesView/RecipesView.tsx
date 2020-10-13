@@ -66,10 +66,6 @@ const RecipesView = (props: any) => {
 
   const debouncedSearch = useDebounce(paramsToGetRecipes.filter, 500);
 
-  // const generateQueryString = (page: number, filter: string = '') => {
-  //   window.history.pushState(null, null, `/recipes/?page=${page}&filter=${filter}`);
-  // };
-
   useEffect(() => {
     getRecipeCuisines(0, 1).then((response) => {
       setCuisinesList([...response.data.data]);
@@ -208,6 +204,9 @@ const RecipesView = (props: any) => {
       ...paramsToGetRecipes,
       page: value,
     });
+
+    const $recipesList = document.querySelector('.recipes-list-sect');
+    $recipesList.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
