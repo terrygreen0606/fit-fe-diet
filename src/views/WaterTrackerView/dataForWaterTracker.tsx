@@ -8,7 +8,6 @@ import { ReactComponent as GlassIcon } from 'assets/img/icons/glass-icon.svg';
 import { ReactComponent as BottleXsIcon } from 'assets/img/icons/bottle-xs-icon.svg';
 import { ReactComponent as BottleMdIcon } from 'assets/img/icons/bottle-md-icon.svg';
 import { ReactComponent as BottleXlIcon } from 'assets/img/icons/bottle-xl-icon.svg';
-import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
 export const chartConfig = {
   options: {

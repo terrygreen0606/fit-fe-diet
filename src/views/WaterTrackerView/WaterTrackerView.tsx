@@ -156,6 +156,19 @@ const WaterTrackerView = (props: any) => {
     });
   };
 
+  const updateMainTodayData = (data) => {
+    setMainTodayData({
+      ...mainTodayData,
+      completed: data.completed,
+      actLevel: data.act_level,
+      completedPercent: data.completed_percent,
+      cups: getCupList(data.cups),
+      dailyGoal: data.daily_goal,
+      drinks: [...data.drinks],
+      unit: data.unit,
+    });
+  };
+
   useEffect(() => {
     getData();
   }, [trackerPeriod]);
@@ -165,16 +178,7 @@ const WaterTrackerView = (props: any) => {
       const { data } = response.data;
 
       if (response.data.success && response.data.data) {
-        setMainTodayData({
-          ...mainTodayData,
-          completed: data.completed,
-          actLevel: data.act_level,
-          completedPercent: data.completed_percent,
-          cups: getCupList(data.cups),
-          dailyGoal: data.daily_goal,
-          drinks: [...data.drinks],
-          unit: data.unit,
-        });
+        updateMainTodayData(data);
       }
     });
   }, []);
@@ -232,16 +236,7 @@ const WaterTrackerView = (props: any) => {
           const { data } = response.data;
 
           if (response.data.success && data) {
-            setMainTodayData({
-              ...mainTodayData,
-              completed: data.completed,
-              actLevel: data.act_level,
-              completedPercent: data.completed_percent,
-              cups: getCupList(data.cups),
-              dailyGoal: data.daily_goal,
-              drinks: [...data.drinks],
-              unit: data.unit,
-            });
+            updateMainTodayData(data);
 
             setAddDrinkForm({
               ...addDrinkForm,
@@ -263,16 +258,8 @@ const WaterTrackerView = (props: any) => {
       const { data } = response.data;
 
       if (response.data.success && data) {
-        setMainTodayData({
-          ...mainTodayData,
-          completed: data.completed,
-          actLevel: data.act_level,
-          completedPercent: data.completed_percent,
-          cups: getCupList(data.cups),
-          dailyGoal: data.daily_goal,
-          drinks: [...data.drinks],
-          unit: data.unit,
-        });
+        updateMainTodayData(data);
+        setDeleteDrinkId(null);
       }
     }).catch(() => {
       toast.error(t('wt.remove_drink.error'));
@@ -411,7 +398,7 @@ const WaterTrackerView = (props: any) => {
             </ul>
           </div>
 
-          <div className='row row-wrap mb-5'>
+          <div className='row row-wrap'>
             <div className='col-xl-5'>
               <div className='waterTracker_chartwrap'>
                 <WaterChart labels={chartsData.label} data={chartsData.data} />
@@ -441,7 +428,7 @@ const WaterTrackerView = (props: any) => {
                             type='button'
                             onClick={() => {
                               setDeleteDrinkId(item.id);
-                              setIsBlockActive(true);
+                              setIsBlockActive(!isBlockActive);
                             }}
                             className='waterTracker_daynorm-item-btn-trash'
                           >
