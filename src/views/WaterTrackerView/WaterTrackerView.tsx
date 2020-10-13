@@ -17,6 +17,7 @@ import {
   getDataStatsForToday,
   addDrink,
   removeDrink,
+  userUpdateMeasurement,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -111,7 +112,7 @@ const WaterTrackerView = (props: any) => {
 
           Object.keys(data.stats).forEach((item) => {
             updatedData.label.push(
-              moment.unix(+item).format('HH:mm'),
+              moment.unix(+item).format('DD:MM'),
             );
             updatedData.data.push(data.stats[item]);
           });
@@ -171,7 +172,7 @@ const WaterTrackerView = (props: any) => {
 
   useEffect(() => {
     getData();
-  }, [trackerPeriod]);
+  }, [trackerPeriod, addDrinkForm.measurement]);
 
   useEffect(() => {
     getDataStatsForToday().then((response) => {
@@ -291,9 +292,18 @@ const WaterTrackerView = (props: any) => {
             onChange={() => {
               const newMeasurement = checkingMeasurement(addDrinkForm.measurement);
 
-              setAddDrinkForm({
-                ...addDrinkForm,
-                measurement: newMeasurement,
+              userUpdateMeasurement(newMeasurement).then(() => {
+                getDataStatsForToday().then((response) => {
+                  const { data } = response.data;
+
+                  if (response.data.success && response.data.data) {
+                    updateMainTodayData(data);
+                    setAddDrinkForm({
+                      ...addDrinkForm,
+                      measurement: newMeasurement,
+                    });
+                  }
+                });
               });
             }}
             className='waterTracker_popup-switch'
@@ -398,7 +408,7 @@ const WaterTrackerView = (props: any) => {
             </ul>
           </div>
 
-          <div className='row row-wrap'>
+          <div className='row row-wrap mb-5'>
             <div className='col-xl-5'>
               <div className='waterTracker_chartwrap'>
                 <WaterChart labels={chartsData.label} data={chartsData.data} />

@@ -27,14 +27,8 @@ export const chartConfig = {
         radius: 10,
       },
     },
-    tooltips: {
-      backgroundColor: '#3283EB',
-      titleFontColor: '#fff',
-      titleFontStyle: 'bold',
-      titleSpacing: 4,
-      titleFontSize: 14,
-      titleFontFamily: "'Montserrat', sans-serif",
-    },
+    tooltips: false,
+    hover: false,
     scales: {
       xAxes: [
         {
@@ -67,13 +61,13 @@ export const chartConfig = {
           ticks: {
             beginAtZero: false,
             suggestedMin: 0,
-            suggestedMax: 100,
+            suggestedMax: 5000,
             fontColor: '#000',
             fontSize: 14,
-            stepSize: 25,
+            stepSize: 500,
             padding: 10,
             fontFamily: "'Montserrat', sans-serif",
-            callback: (value) => `${value}%`,
+            callback: (value) => `${value / 50}%`,
           },
         },
       ],

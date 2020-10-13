@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 /* eslint-disable react/require-default-props */
 import React, { useEffect, useState, createRef } from 'react';
 
@@ -18,7 +19,7 @@ const WaterChart = ({
   const [chartContainer] = useState(createRef<HTMLCanvasElement>());
 
   useEffect(() => {
-    const waterGraphic = new Chart(chartContainer.current.getContext('2d'), {
+    new Chart(chartContainer.current.getContext('2d'), {
       type: 'line',
       data: {
         labels,
@@ -35,9 +36,6 @@ const WaterChart = ({
       },
       options,
     });
-    // waterGraphic.data.datasets[0].data = [...data];
-    // waterGraphic.data.labels = [...labels];
-    // waterGraphic.update();
   }, [labels, data]);
 
   return <canvas ref={chartContainer} />;
