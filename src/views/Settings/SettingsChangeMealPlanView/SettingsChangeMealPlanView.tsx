@@ -123,8 +123,11 @@ const SettingsChangeMealPlanView = (props: any) => {
 
     if (ignoreCuisinesList.length > 0) {
       updateChangeMealForm.ignore_cuisine_ids.forEach((ignoreCuisineItem) => {
-        updatedIgnoreCuisinesList.find((findItem) =>
-          ignoreCuisineItem === findItem.id).isActive = true;
+        updatedIgnoreCuisinesList.find((findItem) => {
+          if (ignoreCuisineItem === findItem.id) {
+            findItem.isActive = true;
+          }
+        });
       });
 
       setIgnoreCuisinesList([...updatedIgnoreCuisinesList]);
