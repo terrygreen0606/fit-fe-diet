@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
 import {
@@ -36,11 +37,13 @@ import WaterChart from './WaterChart';
 import {
   bannerData,
   periods,
-  buttonsData,
+  getCupList,
 } from './dataForWaterTracker';
 
 const WaterTrackerView = (props: any) => {
   const t = (code: string, placeholder?: any) => getTranslate(props.localePhrases, code, placeholder);
+
+  const { settings } = props;
 
   const [trackerPeriod, setTrackerPeriod] = useState<string>(periods.week);
 
@@ -56,7 +59,7 @@ const WaterTrackerView = (props: any) => {
     actLevel: string,
     completed: number,
     completedPercent: number,
-    cups: number[],
+    cups: any[],
     dailyGoal: number,
     drinks: any[],
     unit: string,
@@ -82,11 +85,11 @@ const WaterTrackerView = (props: any) => {
     amount: number,
     measurement: 'si' | 'us',
   }>({
-    amount: 0,
-    measurement: 'si',
+    amount: null,
+    measurement: settings.measurement,
   });
 
-  const [isModalActive, setIsModalActive] = useState<boolean>(true);
+  const [isModalActive, setIsModalActive] = useState<boolean>(false);
 
   const getData = () => {
     getDataStatsForPeriod(trackerPeriod).then((response) => {
@@ -154,13 +157,15 @@ const WaterTrackerView = (props: any) => {
     getDataStatsForToday().then((response) => {
       const { data } = response.data;
 
-      if (response.data.succeeat && response.data.data) {
+      console.log('data.drinks', data.drinks);
+
+      if (response.data.success && response.data.data) {
         setMainTodayData({
           ...mainTodayData,
           completed: data.completed,
           actLevel: data.act_level,
           completedPercent: data.completed_percent,
-          cups: [...data.cups],
+          cups: getCupList(data.cups),
           dailyGoal: data.dailyGoal,
           drinks: [...data.drinks],
           unit: data.unit,
@@ -168,6 +173,27 @@ const WaterTrackerView = (props: any) => {
       }
     });
   }, []);
+
+  const setDrinkCount = (item, itemIndex) => {
+    const updatedButtons = [...mainTodayData.cups];
+    updatedButtons.map((updatedItem) => {
+      updatedItem.isActive = false;
+    });
+
+    updatedButtons[itemIndex].isActive = true;
+
+    setMainTodayData({
+      ...mainTodayData,
+      cups: [...updatedButtons],
+    });
+
+    setAddDrinkForm({
+      ...addDrinkForm,
+      amount: item.count,
+    });
+  };
+
+  const checkingMeasurement = (measurement: string) => (measurement === 'si' ? 'us' : 'si');
 
   const [addDrinkErrors, setAddDrinkErrors] = useState<any[]>([]);
 
@@ -198,7 +224,20 @@ const WaterTrackerView = (props: any) => {
     setAddDrinkErrors([...errors]);
 
     if (!hasError) {
+      addDrink(addDrinkForm.amount, addDrinkForm.measurement)
+        .then((response) => {
+          console.log(response.data.data);
+          setAddDrinkForm({
+            ...addDrinkForm,
+            amount: null,
+            measurement: settings.measurement,
+          });
 
+          setIsModalActive(false);
+        })
+        .catch(() => {
+          toast.error(t('wt.add_drink.error'));
+        });
     }
   };
 
@@ -221,14 +260,26 @@ const WaterTrackerView = (props: any) => {
           <CustomSwitch
             label1={t('common.oz_label')}
             label2={t('common.ml_label')}
+            checked={addDrinkForm.measurement === 'si'}
+            onChange={() => {
+              const newMeasurement = checkingMeasurement(addDrinkForm.measurement);
+
+              setAddDrinkForm({
+                ...addDrinkForm,
+                measurement: newMeasurement,
+              });
+            }}
             className='waterTracker_popup-switch'
           />
           <div className='waterTracker_popup-buttons'>
-            {buttonsData.map((item) => (
+            {mainTodayData.cups.map((item, itemIndex) => (
               <button
                 key={item.id}
                 type='button'
-                className='waterTracker_popup-button'
+                className={classnames('waterTracker_popup-button', {
+                  active: item.isActive,
+                })}
+                onClick={() => setDrinkCount(item, itemIndex)}
               >
                 <div className='waterTracker_popup-button-media'>
                   {item.icon}
@@ -247,12 +298,14 @@ const WaterTrackerView = (props: any) => {
                 <InputField
                   type='number'
                   name='amount'
-                  data-validate='["required"]'
+                  data-param='0'
+                  data-validate='["min", "required"]'
                   errors={getFieldErrors('amount')}
                   value={addDrinkForm.amount}
                   onChange={(e) => validateOnChange('amount', e.target.value, e)}
+                  min={0}
                   className='waterTracker_popup-form-input'
-                  label={t('wt.customize')}
+                  label={t('wt.value')}
                 />
               </div>
               <div className='waterTracker_popup-form-button-wrap'>
@@ -262,7 +315,7 @@ const WaterTrackerView = (props: any) => {
                   className='waterTracker_popup-form-button'
                   size='lg'
                 >
-                  {t('button.save')}
+                  {t('common.add')}
                 </Button>
               </div>
           </form>
@@ -329,106 +382,30 @@ const WaterTrackerView = (props: any) => {
               <div className='row'>
                 <div className='col-lg-8'>
                   <div className='waterTracker_daynorm'>
-                    <div className='waterTracker_daynorm-item'>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <DropIcon className='waterTracker_daynorm-item-drop' />
-                        <div className='waterTracker_daynorm-item-time'>
-                          11:00
+                    {mainTodayData.drinks.map((item) => (
+                      <div
+                        key={item.id}
+                        className='waterTracker_daynorm-item'
+                      >
+                        <div className='waterTracker_daynorm-item-wrap'>
+                          <DropIcon className='waterTracker_daynorm-item-drop' />
+                          <div className='waterTracker_daynorm-item-time'>
+                            {/* {moment(item.created_at).toDate()} */}
+                          </div>
+                        </div>
+                        <div className='waterTracker_daynorm-item-wrap'>
+                          <div className='waterTracker_daynorm-item-size'>
+                            {t('common.ml', { COUNT: item.amount })}
+                          </div>
+                          <button
+                            type='button'
+                            className='waterTracker_daynorm-item-btn-trash'
+                          >
+                            <TrashLineIcon className='waterTracker_daynorm-item-trash' />
+                          </button>
                         </div>
                       </div>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <div className='waterTracker_daynorm-item-size'>
-                          200
-                          {t('common.ml_label')}
-                        </div>
-                        <button
-                          type='button'
-                          className='waterTracker_daynorm-item-btn-trash'
-                        >
-                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
-                        </button>
-                      </div>
-                    </div>
-                    <div className='waterTracker_daynorm-item'>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <DropIcon className='waterTracker_daynorm-item-drop' />
-                        <div className='waterTracker_daynorm-item-time'>
-                          11:00
-                        </div>
-                      </div>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <div className='waterTracker_daynorm-item-size'>
-                          200
-                          {t('common.ml_label')}
-                        </div>
-                        <button
-                          type='button'
-                          className='waterTracker_daynorm-item-btn-trash'
-                        >
-                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
-                        </button>
-                      </div>
-                    </div>
-                    <div className='waterTracker_daynorm-item'>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <DropIcon className='waterTracker_daynorm-item-drop' />
-                        <div className='waterTracker_daynorm-item-time'>
-                          11:00
-                        </div>
-                      </div>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <div className='waterTracker_daynorm-item-size'>
-                          200
-                          {t('common.ml_label')}
-                        </div>
-                        <button
-                          type='button'
-                          className='waterTracker_daynorm-item-btn-trash'
-                        >
-                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
-                        </button>
-                      </div>
-                    </div>
-                    <div className='waterTracker_daynorm-item'>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <DropIcon className='waterTracker_daynorm-item-drop' />
-                        <div className='waterTracker_daynorm-item-time'>
-                          11:00
-                        </div>
-                      </div>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <div className='waterTracker_daynorm-item-size'>
-                          200
-                          {t('common.ml_label')}
-                        </div>
-                        <button
-                          type='button'
-                          className='waterTracker_daynorm-item-btn-trash'
-                        >
-                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
-                        </button>
-                      </div>
-                    </div>
-                    <div className='waterTracker_daynorm-item'>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <DropIcon className='waterTracker_daynorm-item-drop' />
-                        <div className='waterTracker_daynorm-item-time'>
-                          11:00
-                        </div>
-                      </div>
-                      <div className='waterTracker_daynorm-item-wrap'>
-                        <div className='waterTracker_daynorm-item-size'>
-                          200
-                          {t('common.ml_label')}
-                        </div>
-                        <button
-                          type='button'
-                          className='waterTracker_daynorm-item-btn-trash'
-                        >
-                          <TrashLineIcon className='waterTracker_daynorm-item-trash' />
-                        </button>
-                      </div>
-                    </div>
+                    ))}
                     <div className='waterTracker_daynorm-delete'>
                       <span>{t('wt.delete')}</span>
                       <button
@@ -536,4 +513,8 @@ const WaterTrackerView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(WaterTrackerView));
+export default WithTranslate(connect(
+  (state: any) => ({
+    settings: state.settings,
+  }),
+)(WaterTrackerView));

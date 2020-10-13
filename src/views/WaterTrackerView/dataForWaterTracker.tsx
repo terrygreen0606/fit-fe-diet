@@ -8,6 +8,7 @@ import { ReactComponent as GlassIcon } from 'assets/img/icons/glass-icon.svg';
 import { ReactComponent as BottleXsIcon } from 'assets/img/icons/bottle-xs-icon.svg';
 import { ReactComponent as BottleMdIcon } from 'assets/img/icons/bottle-md-icon.svg';
 import { ReactComponent as BottleXlIcon } from 'assets/img/icons/bottle-xl-icon.svg';
+import { faSleigh } from '@fortawesome/free-solid-svg-icons';
 
 export const chartConfig = {
   options: {
@@ -105,35 +106,20 @@ export const periods = {
   year: 'year',
 };
 
-export const buttonsData = [
-  {
-    id: 0,
-    count: 100,
-    icon: <CupSmIcon />,
-  },
-  {
-    id: 1,
-    count: 200,
-    icon: <CupMdIcon />,
-  },
-  {
-    id: 2,
-    count: 300,
-    icon: <GlassIcon />,
-  },
-  {
-    id: 3,
-    count: 400,
-    icon: <BottleXsIcon />,
-  },
-  {
-    id: 4,
-    count: 500,
-    icon: <BottleMdIcon />,
-  },
-  {
-    id: 5,
-    count: 600,
-    icon: <BottleXlIcon />,
-  },
+const cupButtonIcons = [
+    <CupSmIcon />,
+    <CupMdIcon />,
+    <GlassIcon />,
+    <BottleXsIcon />,
+    <BottleMdIcon />,
+    <BottleXlIcon />,
 ];
+
+export const getCupList = (data: number[]) => (
+  data.map((item, itemIndex) => ({
+    count: item,
+    icon: cupButtonIcons[itemIndex],
+    id: itemIndex,
+    isActive: false,
+  }))
+);
