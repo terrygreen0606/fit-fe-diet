@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-indent */
 import React, { useState, useEffect } from 'react';
 import uuid from 'react-uuid';
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 import './ProgressLine.sass';
 
@@ -17,15 +17,14 @@ const ProgressLine = ({
   activeStepIndex,
   steps,
 }: ProgressProps) => {
-
   const [stepsList, setStepsList] = useState([]);
 
   useEffect(() => {
     if (steps.length && steps.length > 0) {
-      setStepsList(steps.map(step => ({
+      setStepsList(steps.map((step) => ({
         ...step,
-        id: uuid()
-      })));      
+        id: uuid(),
+      })));
     }
   }, [steps]);
 
@@ -39,11 +38,12 @@ const ProgressLine = ({
           className='progress__list-line-painted'
         />
       </div>
+
       {stepsList.map((step, stepIndex) => (
         <button
           key={step.id}
           type='button'
-          className={classnames('progress__list-item', {
+          className={classNames('progress__list-item', {
             active: activeStepIndex >= stepIndex + 1,
           })}
           onClick={step.onClick}

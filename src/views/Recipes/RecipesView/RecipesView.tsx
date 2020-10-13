@@ -66,9 +66,9 @@ const RecipesView = (props: any) => {
 
   const debouncedSearch = useDebounce(paramsToGetRecipes.filter, 500);
 
-  const generateQueryString = (page: number, filter: string) => {
-    window.history.pushState(null, null, `/recipes/?page=${page}&filter=${filter}`);
-  };
+  // const generateQueryString = (page: number, filter: string = '') => {
+  //   window.history.pushState(null, null, `/recipes/?page=${page}&filter=${filter}`);
+  // };
 
   useEffect(() => {
     getRecipeCuisines(0, 1).then((response) => {
@@ -76,11 +76,12 @@ const RecipesView = (props: any) => {
     });
   }, []);
 
+  const firstUpdate = useRef(true);
+
   useEffect(() => {
     if (settings.paid_until > 0) {
       const queryParametersObj = queryString.parse(window.location.search);
-
-      if (+queryParametersObj.page) {
+      if (+queryParametersObj.page && firstUpdate.current) {
         getRecipesListByUrl(window.location.search)
           .then((response) => {
             const { data } = response.data;
@@ -106,6 +107,7 @@ const RecipesView = (props: any) => {
 
             setIsLoadingPage(false);
           });
+        firstUpdate.current = false;
       } else {
         getRecipesList(
           paramsToGetRecipes.privateRecipes,
@@ -133,6 +135,7 @@ const RecipesView = (props: any) => {
 
           setIsLoadingPage(false);
         });
+        firstUpdate.current = false;
       }
     } else {
       redirectToPayView(props.history, t('tariff.not_paid'));

@@ -9,21 +9,34 @@
   min-height: 100%
   overflow-x: hidden
   background-color: #fff
-  background-image: url('../../../assets/img/login-bg-tpl.png')
   background-size: 30%
   background-position: center bottom
   background-repeat: repeat
+  &.hide_header
+    .basePageMainContentWrapper
+      min-height: calc(100vh - 55px)
+  &.hide_footer
+    .basePageMainContentWrapper
+      min-height: calc(100vh - 176px)
+  &.hide_header
+    &.hide_footer
+      .basePageMainContentWrapper
+        min-height: 100vh
+  &:not(.raw_background)
+    background-image: url('../../../assets/img/login-bg-tpl.png')
 
 .basePageMainContentWrapper
   max-width: 750px
   min-height: calc(100vh - 176px - 55px)
   margin: 0 auto
   padding: 40px !important
+  padding-bottom: 60px !important
 
 
 @media only screen and (max-width : 1400px)
   .basePageLayoutWrapper
-    padding-top: 80px
+    &:not(.hide_header)
+      padding-top: 80px
 
   .basePageMainContentWrapper
     max-width: 750px
@@ -32,7 +45,7 @@
 
 @media only screen and (max-width : 576px)
   .basePageMainContentWrapper
-    padding: 0 !important
+    padding: 20px !important
     padding-bottom: 40px !important
     min-height: calc(100vh - 80px - 49px - 17px)
 

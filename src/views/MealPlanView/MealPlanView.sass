@@ -153,6 +153,10 @@
       @media (max-width: 768px)
         padding: 0
 
+      &.card-bg
+        @media (max-width: 768px)
+          box-shadow: none
+
       &-title
         display: flex
         align-items: center
@@ -169,6 +173,12 @@
 
           path
             fill: #878787
+
+      .loadingSpinner_wrap
+        margin-bottom: 36px
+
+        @media (max-width: 768px)
+          margin-bottom: 0
 
     &-recipes.card-bg
       @media (max-width: 768px)
