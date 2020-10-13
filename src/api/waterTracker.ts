@@ -13,3 +13,6 @@ export const addDrink = (amount: number, measurement: string) =>
     amount,
     measurement,
   });
+
+export const removeDrink = (id: string) =>
+  axios.delete(`/water/delete-drink/${id}`);

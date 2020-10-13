@@ -16,6 +16,7 @@ import {
   getDataStatsForPeriod,
   getDataStatsForToday,
   addDrink,
+  removeDrink,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
 
@@ -26,6 +27,7 @@ import Button from 'components/common/Forms/Button';
 import Modal from 'components/common/Modal';
 import CustomSwitch from 'components/common/Forms/CustomSwitch';
 import InputField from 'components/common/Forms/InputField';
+import useOutsideClick from 'components/hooks/useOutsideClick';
 
 import './WaterTrackerView.sass';
 
@@ -89,7 +91,12 @@ const WaterTrackerView = (props: any) => {
     measurement: settings.measurement,
   });
 
-  const [isModalActive, setIsModalActive] = useState<boolean>(false);
+  const [isModalAddDrinkActive, setIsModalAddDrinkActive] = useState<boolean>(false);
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
+
+  const [deleteDrinkId, setDeleteDrinkId] = useState<string>();
+
+  const checkingMeasurement = (measurement: string) => (measurement === 'si' ? 'us' : 'si');
 
   const getData = () => {
     getDataStatsForPeriod(trackerPeriod).then((response) => {
@@ -157,8 +164,6 @@ const WaterTrackerView = (props: any) => {
     getDataStatsForToday().then((response) => {
       const { data } = response.data;
 
-      console.log('data.drinks', data.drinks);
-
       if (response.data.success && response.data.data) {
         setMainTodayData({
           ...mainTodayData,
@@ -166,7 +171,7 @@ const WaterTrackerView = (props: any) => {
           actLevel: data.act_level,
           completedPercent: data.completed_percent,
           cups: getCupList(data.cups),
-          dailyGoal: data.dailyGoal,
+          dailyGoal: data.daily_goal,
           drinks: [...data.drinks],
           unit: data.unit,
         });
@@ -192,8 +197,6 @@ const WaterTrackerView = (props: any) => {
       amount: item.count,
     });
   };
-
-  const checkingMeasurement = (measurement: string) => (measurement === 'si' ? 'us' : 'si');
 
   const [addDrinkErrors, setAddDrinkErrors] = useState<any[]>([]);
 
@@ -226,19 +229,56 @@ const WaterTrackerView = (props: any) => {
     if (!hasError) {
       addDrink(addDrinkForm.amount, addDrinkForm.measurement)
         .then((response) => {
-          console.log(response.data.data);
-          setAddDrinkForm({
-            ...addDrinkForm,
-            amount: null,
-            measurement: settings.measurement,
-          });
+          const { data } = response.data;
 
-          setIsModalActive(false);
+          if (response.data.success && data) {
+            setMainTodayData({
+              ...mainTodayData,
+              completed: data.completed,
+              actLevel: data.act_level,
+              completedPercent: data.completed_percent,
+              cups: getCupList(data.cups),
+              dailyGoal: data.daily_goal,
+              drinks: [...data.drinks],
+              unit: data.unit,
+            });
+
+            setAddDrinkForm({
+              ...addDrinkForm,
+              amount: null,
+              measurement: settings.measurement,
+            });
+
+            setIsModalAddDrinkActive(false);
+          }
         })
         .catch(() => {
           toast.error(t('wt.add_drink.error'));
         });
     }
+  };
+
+  const deleteDrinkSubmit = () => {
+    removeDrink(deleteDrinkId).then((response) => {
+      const { data } = response.data;
+
+      if (response.data.success && data) {
+        setMainTodayData({
+          ...mainTodayData,
+          completed: data.completed,
+          actLevel: data.act_level,
+          completedPercent: data.completed_percent,
+          cups: getCupList(data.cups),
+          dailyGoal: data.daily_goal,
+          drinks: [...data.drinks],
+          unit: data.unit,
+        });
+      }
+    }).catch(() => {
+      toast.error(t('wt.remove_drink.error'));
+    }).finally(() => {
+      setIsBlockActive(false);
+    });
   };
 
   return (
@@ -250,8 +290,8 @@ const WaterTrackerView = (props: any) => {
         <Modal
           withCloseBtn
           shouldCloseOnOverlayClick
-          onClose={() => setIsModalActive(false)}
-          isOpen={isModalActive}
+          onClose={() => setIsModalAddDrinkActive(false)}
+          isOpen={isModalAddDrinkActive}
           className='waterTracker_popup'
         >
           <h4 className='waterTracker_popup-title'>
@@ -390,15 +430,19 @@ const WaterTrackerView = (props: any) => {
                         <div className='waterTracker_daynorm-item-wrap'>
                           <DropIcon className='waterTracker_daynorm-item-drop' />
                           <div className='waterTracker_daynorm-item-time'>
-                            {/* {moment(item.created_at).toDate()} */}
+                            {moment.unix(item.created_at).format('HH:mm')}
                           </div>
                         </div>
                         <div className='waterTracker_daynorm-item-wrap'>
                           <div className='waterTracker_daynorm-item-size'>
-                            {t('common.ml', { COUNT: item.amount })}
+                            {`${item.amount} ${mainTodayData.unit}`}
                           </div>
                           <button
                             type='button'
+                            onClick={() => {
+                              setDeleteDrinkId(item.id);
+                              setIsBlockActive(true);
+                            }}
                             className='waterTracker_daynorm-item-btn-trash'
                           >
                             <TrashLineIcon className='waterTracker_daynorm-item-trash' />
@@ -406,10 +450,19 @@ const WaterTrackerView = (props: any) => {
                         </div>
                       </div>
                     ))}
-                    <div className='waterTracker_daynorm-delete'>
+                    <div
+                      ref={changedBlockRef}
+                      className={classnames('waterTracker_daynorm-delete', {
+                        active: isBlockActive,
+                      })}
+                    >
                       <span>{t('wt.delete')}</span>
                       <button
                         type='button'
+                        onClick={() => {
+                          setIsBlockActive(false);
+                          deleteDrinkSubmit();
+                        }}
                         className='waterTracker_daynorm-delete-btn'
                       >
                         {t('common.yes')}
@@ -424,14 +477,13 @@ const WaterTrackerView = (props: any) => {
                       {`${mainTodayData.completedPercent}%`}
                     </h3>
                     <h5>
-                      {mainTodayData.dailyGoal}
-                      {t('common.ml_label')}
+                      {`${mainTodayData.dailyGoal} ${mainTodayData.unit}`}
                     </h5>
                   </div>
                   <div className='log-drink-wrap'>
                     <Button
                       color='secondary'
-                      onClick={() => setIsModalActive(true)}
+                      onClick={() => setIsModalAddDrinkActive(true)}
                       className='log-drink-btn'
                     >
                       {t('wt.log_drink')}
@@ -453,7 +505,7 @@ const WaterTrackerView = (props: any) => {
                     <div className='waterTracker_info-item-desc-selected'>
                       {statsData.dayAverage}
                     </div>
-                    {t('wt.day_average')}
+                    {`${mainTodayData.unit} / ${t('common.day')}`}
                   </div>
                 </div>
                 <div className='waterTracker_info-item'>
@@ -477,7 +529,7 @@ const WaterTrackerView = (props: any) => {
                     {t('wt.complete')}
                   </div>
                   <span className='waterTracker_stats-value'>
-                    {`${mainTodayData.completed} ${t('common.ml_label')}`}
+                    {`${mainTodayData.completed} ${mainTodayData.unit}`}
                   </span>
                 </div>
                 <div className='waterTracker_stats'>
@@ -485,7 +537,7 @@ const WaterTrackerView = (props: any) => {
                     {t('common.daily_goal')}
                   </div>
                   <span className='waterTracker_stats-value'>
-                    {`${mainTodayData.dailyGoal} ${t('common.ml_label')}`}
+                    {`${mainTodayData.dailyGoal} ${mainTodayData.unit}`}
                   </span>
                 </div>
                 <div className='waterTracker_stats'>
@@ -493,7 +545,7 @@ const WaterTrackerView = (props: any) => {
                     {t('common.average')}
                   </div>
                   <span className='waterTracker_stats-value'>
-                    {`${statsData.dayAverage} ${t('common.ml_label')}`}
+                    {`${statsData.dayAverage} ${mainTodayData.unit}`}
                   </span>
                 </div>
                 <div className='waterTracker_stats'>
