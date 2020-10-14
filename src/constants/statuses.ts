@@ -1,3 +1,3 @@
 export const xhrStatuses = {
-  NOTPAID: 403,
+  NOT_PAID: 403,
 };
