@@ -154,7 +154,7 @@ const WaterTrackerView = (props: any) => {
           drinkFrequency: data.frequency,
         });
       }
-    });
+    }).catch(() => { });
   };
 
   const updateMainTodayData = (data) => {
@@ -181,7 +181,7 @@ const WaterTrackerView = (props: any) => {
       if (response.data.success && response.data.data) {
         updateMainTodayData(data);
       }
-    });
+    }).catch(() => { });
   }, []);
 
   const setDrinkCount = (item, itemIndex) => {
@@ -303,8 +303,8 @@ const WaterTrackerView = (props: any) => {
                       measurement: newMeasurement,
                     });
                   }
-                });
-              });
+                }).catch(() => { });
+              }).catch(() => { });
             }}
             className='waterTracker_popup-switch'
           />
