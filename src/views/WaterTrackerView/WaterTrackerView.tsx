@@ -240,9 +240,9 @@ const WaterTrackerView = (props: any) => {
     if (!hasError) {
       addDrink(addDrinkForm.amount, addDrinkForm.measurement)
         .then((response) => {
-          const { data } = response.data;
+          if (response.data.success && response.data.data) {
+            const { data } = response.data;
 
-          if (response.data.success && data) {
             updateMainTodayData(data);
 
             setAddDrinkForm({
@@ -262,9 +262,9 @@ const WaterTrackerView = (props: any) => {
 
   const deleteDrinkSubmit = () => {
     removeDrink(deleteDrinkId).then((response) => {
-      const { data } = response.data;
+      if (response.data.success && response.data.data) {
+        const { data } = response.data;
 
-      if (response.data.success && data) {
         updateMainTodayData(data);
         setDeleteDrinkId(null);
       }
@@ -286,9 +286,9 @@ const WaterTrackerView = (props: any) => {
         });
 
         getDataStatsForToday().then((response) => {
-          const { data } = response.data;
-
           if (response.data.success && response.data.data) {
+            const { data } = response.data;
+
             updateMainTodayData(data);
             setAddDrinkForm({
               ...addDrinkForm,
