@@ -8,7 +8,7 @@ import { initApp } from 'store/actions';
 // Routes
 import Routes from './Routes';
 import FullPageLoader from './components/common/FullPageLoader';
-import RouteComponent from './components/hoc/RouteComponent';
+import InitApp from './components/hoc/InitApp';
 
 import './assets/sass/styles.sass';
 
@@ -22,11 +22,11 @@ const App = (props: any) => {
   return (
     <Suspense fallback={<FullPageLoader />}>
       <BrowserRouter>
-        <RouteComponent>
+        <InitApp>
           <LocaleContext.Provider value={phrases}>
             {isAuthChecking ? <FullPageLoader /> : <Routes />}
           </LocaleContext.Provider>
-        </RouteComponent>
+        </InitApp>
       </BrowserRouter>
     </Suspense>
   );

@@ -5,11 +5,11 @@ import axios from 'utils/axios';
 import { routes } from 'constants/routes';
 import { xhrStatuses } from 'constants/statuses';
 
-interface RouteComponentFinalProps extends RouteComponentProps {
+interface InitAppProps extends RouteComponentProps {
   children: any,
 }
 
-const RouteComponent = ({ history, children }: RouteComponentFinalProps) => {
+const InitApp = ({ history, children }: InitAppProps) => {
   axios.interceptors.response.use((response) => response, (error) => {
     if (error.response) {
       if (error.response.status === xhrStatuses.NOT_PAID) {
@@ -26,4 +26,4 @@ const RouteComponent = ({ history, children }: RouteComponentFinalProps) => {
   );
 };
 
-export default withRouter(RouteComponent);
+export default withRouter(InitApp);
