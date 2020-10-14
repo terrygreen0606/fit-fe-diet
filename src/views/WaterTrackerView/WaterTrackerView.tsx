@@ -327,7 +327,7 @@ const WaterTrackerView = (props: any) => {
                   {item.icon}
                 </div>
                 <div className='waterTracker_popup-button-desc'>
-                  {t('common.ml', { COUNT: item.count })}
+                  {`${item.count} ${mainTodayData.unit}`}
                 </div>
               </button>
             ))}
@@ -340,12 +340,12 @@ const WaterTrackerView = (props: any) => {
               <InputField
                 type='number'
                 name='amount'
-                data-param='0'
+                data-param='1'
                 data-validate='["min", "required"]'
                 errors={getFieldErrors('amount')}
                 value={addDrinkForm.amount}
                 onChange={(e) => validateOnChange('amount', e.target.value, e)}
-                min={0}
+                min={1}
                 className='waterTracker_popup-form-input'
                 label={t('wt.value')}
               />
