@@ -39,6 +39,7 @@ import Spinner from 'components/common/Spinner';
 import ShareButtons from 'components/ShareButtons';
 import useOutsideClick from 'components/hooks/useOutsideClick';
 import useInterval from 'components/hooks/useInterval';
+import Banner from 'components/Banner';
 
 import './ShoppingListView.sass';
 
@@ -54,9 +55,6 @@ const ShoppingListView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
   const { settings } = props;
-
-  const [bannerStep, setBannerStep] = useState<number>(0);
-  const [isBannerActive, setIsBannerActive] = useState<boolean>(true);
 
   const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
@@ -547,44 +545,9 @@ const ShoppingListView = (props: any) => {
                     </div>
                   </>
                 )}
-              {
-                isBannerActive && (
-                  <div className='shop-list__banner card-bg'>
-                    <div className='shop-list__banner-text'>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: t(mockData[bannerStep].title) }}
-                        className='shop-list__banner-text-title'
-                      />
-                      <div className='shop-list__banner-text-desc'>
-                        {t(mockData[bannerStep].text)}
-                      </div>
-                    </div>
-                    <div className='shop-list__banner-media'>
-                      <img src={mockData[bannerStep].image} alt='' />
-                    </div>
-                    <Button
-                      color='primary'
-                      className='shop-list__banner-btn'
-                      onClick={() => {
-                        if (mockData.length - 1 === bannerStep) {
-                          setIsBannerActive(false);
-                          return;
-                        }
-                        setBannerStep((prev) => prev + 1);
-                      }}
-                    >
-                      {t('banner.next')}
-                    </Button>
-                    <button
-                      type='button'
-                      onClick={() => setIsBannerActive(false)}
-                      className='shop-list__banner-btn-skip'
-                    >
-                      {t('common.skip')}
-                    </button>
-                  </div>
-                )
-              }
+              <Banner
+                items={mockData}
+              />
             </div>
           )}
       </section>

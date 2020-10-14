@@ -1,39 +1,39 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import axios from 'utils/axios';
 import { 
-  UserValidateParams, 
-  UserWeightPredictionParams, 
-  userUpdateProfileParams, 
-  userUpdateMealSettingsParams 
+  UserValidateParams,
+  UserWeightPredictionParams,
+  userUpdateProfileParams,
+  userUpdateMealSettingsParams,
 } from 'types';
 
-export const deleteFamilyMembers = (email: string) => 
+export const deleteFamilyMembers = (email: string) =>
   axios.delete(`/user/family/${email}`);
 
-export const fetchUserProfile = () => 
+export const fetchUserProfile = () =>
   axios.get('/user/profile');
 
-export const getUserFamily = () => 
+export const getUserFamily = () =>
   axios.get('user/family');
 
-export const getUserInviteLink = () => 
+export const getUserInviteLink = () =>
   axios.get('user/invite-link');
 
-export const getUserSettings = () => 
+export const getUserSettings = () =>
   axios.get('app/settings');
 
 export const getUserWeightChart = () =>
   axios.get('/user/weight-chart');
 
-export const getUserWeightPrediction = (params: UserWeightPredictionParams) => 
+export const getUserWeightPrediction = (params: UserWeightPredictionParams) =>
   axios.get('/user/weight-prediction', {
     params,
   });
 
-export const userInviteFriendByEmail = (email: string) => 
+export const userInviteFriendByEmail = (email: string) =>
   axios.put(`user/invite-friend/${email}`);
 
-export const userUpdateProfile = (params: userUpdateProfileParams) => 
+export const userUpdateProfile = (params: userUpdateProfileParams) =>
   axios.put('/user/update-profile', params);
 
 export const userUpdateMealSettings = (params: userUpdateMealSettingsParams) =>

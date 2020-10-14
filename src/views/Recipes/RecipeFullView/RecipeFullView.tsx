@@ -32,7 +32,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import Button from 'components/common/Forms/Button';
 import Spinner from 'components/common/Spinner';
-import Modal from 'components/common/Modal/Modal';
+import Modal from 'components/common/Modal';
 import InputField from 'components/common/Forms/InputField';
 import ShareButtons from 'components/ShareButtons';
 import useOutsideClick from 'components/hooks/useOutsideClick';
@@ -535,38 +535,33 @@ const RecipeFullView = (props: any) => {
                       </div>
                     </button>
                   )}
-                  {isActiveDeleteModal && (
-                    <Modal
-                      withCloseBtn
-                      shouldCloseOnOverlayClick
-                      onClose={() => setIsActiveDeleteModal(false)}
-                      className='recipe__modal'
-                    >
-                      <div className='recipe__modal-title'>
-                        {t('recipe.delete.confirm')}
-                      </div>
-                      <div className='recipe__modal-btn-wrap'>
-                        <Button
-                          color='primary'
-                          onClick={() => deleteRecipe(recipeId).then((response) => {
-                            if (response.data.success) {
-                              history.push(routes.recipes);
-                            }
-                          }).catch(() => { })}
-                          className='recipe__modal-btn'
-                        >
-                          {t('common.yes')}
-                        </Button>
-                        <Button
-                          color='cancel'
-                          onClick={() => setIsActiveDeleteModal(false)}
-                          className='recipe__modal-btn'
-                        >
-                          {t('common.no')}
-                        </Button>
-                      </div>
-                    </Modal>
-                  )}
+                  <Modal
+                    withCloseBtn
+                    shouldCloseOnOverlayClick
+                    isOpen={isActiveDeleteModal}
+                    onClose={() => setIsActiveDeleteModal(false)}
+                    className='recipe__modal'
+                  >
+                    <div className='recipe__modal-title'>
+                      {t('recipe.delete.confirm')}
+                    </div>
+                    <div className='recipe__modal-btn-wrap'>
+                      <Button
+                        color='primary'
+                        onClick={() => deleteRecipe(recipeId).then(() => history.push(routes.recipes))}
+                        className='recipe__modal-btn'
+                      >
+                        {t('common.yes')}
+                      </Button>
+                      <Button
+                        color='cancel'
+                        onClick={() => setIsActiveDeleteModal(false)}
+                        className='recipe__modal-btn'
+                      >
+                        {t('common.no')}
+                      </Button>
+                    </div>
+                  </Modal>
                 </div>
                 <div className='recipe__nutrients'>
                   <div className='recipe__nutrients-media'>

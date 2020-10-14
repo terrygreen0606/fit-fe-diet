@@ -1,3 +1,5 @@
+/* eslint-disable no-new */
+/* eslint-disable react/require-default-props */
 import React, { useEffect, useState, createRef } from 'react';
 
 import Chart from 'chart.js';
@@ -17,7 +19,6 @@ const ProgressChart = ({
   const [chartContainer] = useState(createRef<HTMLCanvasElement>());
 
   useEffect(() => {
-    // eslint-disable-next-line no-new
     new Chart(chartContainer.current.getContext('2d'), {
       type: 'bar',
       data: {
