@@ -70,9 +70,10 @@ const InviteEmail = (props: InviteEmailProps) => {
       setIsRequestSent(true);
       userInviteFriendByEmail(inviteFriendsForm.email)
         .then((response) => {
-          setInviteFriendsForm({ ...inviteFriendsForm, email: '' });
-          toast.success(t('referral.email_sent'));
-          return response.data.data;
+          if (response.data.success) {
+            setInviteFriendsForm({ ...inviteFriendsForm, email: '' });
+            toast.success(t('referral.email_sent'));
+          }
         })
         .catch(() => {
           toast.error(t('referral.error'));

@@ -23,8 +23,10 @@ const ReferralView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
     getUserInviteLink().then((response) => {
-      if (!cleanComponent) setInviteLink(response.data.data.url);
-    });
+      if (response.data.success && response.data.data) {
+        if (!cleanComponent) setInviteLink(response.data.data.url);
+      }
+    }).catch(() => { });
 
     return () => cleanComponent = true;
   }, []);

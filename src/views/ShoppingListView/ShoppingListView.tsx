@@ -14,7 +14,6 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getWeigthUnit,
-  redirectToPayView,
 } from 'utils';
 import {
   searchIngredients,
@@ -101,18 +100,23 @@ const ShoppingListView = (props: any) => {
     });
 
   const saveFileShoppingList = () => {
-    getPublicShopListUrl(1).then((response) =>
-      window.location.assign(response.data.data.url));
+    getPublicShopListUrl(1).then((response) => {
+      if (response.data.success && response.data.data) {
+        window.location.assign(response.data.data.url);
+      }
+    }).catch(() => { });
   };
 
   const setIndgredient = (e: any) => {
     getIngredient(e.value).then((response) => {
-      const { data } = response.data;
-      setAddIngredientForm({
-        ...addIngredientForm,
-        id: data._id,
-      });
-    });
+      if (response.data.success && response.data.data) {
+        const { data } = response.data;
+        setAddIngredientForm({
+          ...addIngredientForm,
+          id: data._id,
+        });
+      }
+    }).catch(() => { });
   };
 
   const syncNumberInShopCart = (array = []) => {
@@ -126,18 +130,20 @@ const ShoppingListView = (props: any) => {
   const getShoppingListFunc = () => {
     setIsSyncResponseActive(false);
     getShoppingList(2, dateSync).then((response) => {
-      const { list } = response.data.data;
+      if (response.data.success && response.data.data) {
+        const { list } = response.data.data;
 
-      list.map((item) => {
-        item.is_disable = false;
-      });
+        list.map((item) => {
+          item.is_disable = false;
+        });
 
-      syncNumberInShopCart(list);
+        syncNumberInShopCart(list);
 
-      setShoppingList(list);
+        setShoppingList(list);
 
-      setDateSync(response.data.data.date_sync);
-    }).finally(() => {
+        setDateSync(response.data.data.date_sync);
+      }
+    }).catch(() => { }).finally(() => {
       setIsSyncResponseActive(true);
       setIsSpinnerActive(false);
     });
@@ -146,20 +152,16 @@ const ShoppingListView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
     if (settings.is_private && !cleanComponent) {
-      if (settings.paid_until > 0) {
-        getShoppingListFunc();
-        setIsNoAccess(false);
-      } else {
-        redirectToPayView(props.history, t('tariff.not_paid'));
-      }
+      getShoppingListFunc();
+      setIsNoAccess(false);
     }
 
     return () => cleanComponent = true;
   }, [settings.paid_until, settings.is_private]);
 
   useInterval(() => {
-    if (settings.paid_until > 0) {
-      syncShoppingList(dateSync).then((response) => {
+    syncShoppingList(dateSync).then((response) => {
+      if (response.data.success && response.data.data) {
         const { list } = response.data.data;
         const syncFromResponse = response.data.data.date_sync;
 
@@ -200,8 +202,8 @@ const ShoppingListView = (props: any) => {
           }
           setShoppingList([...updatedShoppingList]);
         }
-      });
-    }
+      }
+    }).catch(() => { });
   }, isSyncResponseActive ? 5000 : null);
 
   const toggleCheckbox = (itemIndex: number, itemId: string) => {
@@ -221,7 +223,9 @@ const ShoppingListView = (props: any) => {
       updatedShoppingList[itemIndex].is_bought,
       dateSync,
     ).then((response) => {
-      setDateSync(response.data.data.date_sync);
+      if (response.data.success && response.data.data) {
+        setDateSync(response.data.data.date_sync);
+      }
     }).catch(() => {
       updatedShoppingList[itemIndex].is_bought =
         !updatedShoppingList[itemIndex].is_bought;
@@ -253,8 +257,10 @@ const ShoppingListView = (props: any) => {
 
     deleteFromShoppingList(itemId, dateSync)
       .then((response) => {
-        setDateSync(response.data.data.date_sync);
-        syncNumberInShopCart(updatedShoppingList);
+        if (response.data.success && response.data.data) {
+          setDateSync(response.data.data.date_sync);
+          syncNumberInShopCart(updatedShoppingList);
+        }
       })
       .catch(() => {
         toast.error(t('shop_list.update.error'));
@@ -390,9 +396,13 @@ const ShoppingListView = (props: any) => {
                             </button>
                             <ShareButtons
                               visible={isBlockActive}
-                              fetchData={() => getPublicShopListUrl().then((response) => ({
-                                link: response.data.data.url,
-                              }))}
+                              fetchData={() => getPublicShopListUrl().then((response) => {
+                                if (response.data.success && response.data.data) {
+                                  return {
+                                    link: response.data.data.url,
+                                  };
+                                }
+                              }).catch(() => { })}
                               className='shop-list__header-buttons-share'
                             />
                           </div>
