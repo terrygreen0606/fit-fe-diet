@@ -20,6 +20,7 @@ import {
   userUpdateMeasurement,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
+import { setAppSetting } from 'store/actions';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
@@ -274,6 +275,32 @@ const WaterTrackerView = (props: any) => {
     });
   };
 
+  const updateUserMeasurement = () => {
+    const newMeasurement = checkingMeasurement(addDrinkForm.measurement);
+
+    userUpdateMeasurement(newMeasurement).then((res) => {
+      if (res.data.success) {
+        props.setAppSetting({
+          ...settings,
+          measurement: newMeasurement,
+        });
+
+        getDataStatsForToday().then((response) => {
+          const { data } = response.data;
+
+          if (response.data.success && response.data.data) {
+            updateMainTodayData(data);
+            setAddDrinkForm({
+              ...addDrinkForm,
+              measurement: newMeasurement,
+              amount: null,
+            });
+          }
+        }).catch(() => { });
+      }
+    }).catch(() => { });
+  };
+
   return (
     <>
       <Helmet>
@@ -294,23 +321,7 @@ const WaterTrackerView = (props: any) => {
             label1={t('common.oz_label')}
             label2={t('common.ml_label')}
             checked={addDrinkForm.measurement === 'si'}
-            onChange={() => {
-              const newMeasurement = checkingMeasurement(addDrinkForm.measurement);
-
-              userUpdateMeasurement(newMeasurement).then(() => {
-                getDataStatsForToday().then((response) => {
-                  const { data } = response.data;
-
-                  if (response.data.success && response.data.data) {
-                    updateMainTodayData(data);
-                    setAddDrinkForm({
-                      ...addDrinkForm,
-                      measurement: newMeasurement,
-                    });
-                  }
-                }).catch(() => { });
-              }).catch(() => { });
-            }}
+            onChange={() => updateUserMeasurement()}
             className='waterTracker_popup-switch'
           />
           <div className='waterTracker_popup-buttons'>
@@ -340,12 +351,12 @@ const WaterTrackerView = (props: any) => {
               <InputField
                 type='number'
                 name='amount'
-                data-param='1'
+                data-param={settings.measurement === 'si' ? '50' : '2'}
                 data-validate='["min", "required"]'
                 errors={getFieldErrors('amount')}
                 value={addDrinkForm.amount}
                 onChange={(e) => validateOnChange('amount', e.target.value, e)}
-                min={1}
+                min={settings.measurement === 'si' ? 50 : 2}
                 className='waterTracker_popup-form-input'
                 label={t('wt.value')}
               />
@@ -582,5 +593,5 @@ const WaterTrackerView = (props: any) => {
 export default WithTranslate(connect(
   (state: any) => ({
     settings: state.settings,
-  }),
+  }), { setAppSetting },
 )(WaterTrackerView));
