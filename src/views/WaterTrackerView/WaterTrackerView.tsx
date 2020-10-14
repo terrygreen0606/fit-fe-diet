@@ -331,30 +331,30 @@ const WaterTrackerView = (props: any) => {
             onSubmit={(e) => addDrinkSubmit(e)}
             className='waterTracker_popup-form'
           >
-              <div className='waterTracker_popup-form-input-wrap'>
-                <InputField
-                  type='number'
-                  name='amount'
-                  data-param='0'
-                  data-validate='["min", "required"]'
-                  errors={getFieldErrors('amount')}
-                  value={addDrinkForm.amount}
-                  onChange={(e) => validateOnChange('amount', e.target.value, e)}
-                  min={0}
-                  className='waterTracker_popup-form-input'
-                  label={t('wt.value')}
-                />
-              </div>
-              <div className='waterTracker_popup-form-button-wrap'>
-                <Button
-                  type='submit'
-                  color='primary'
-                  className='waterTracker_popup-form-button'
-                  size='lg'
-                >
-                  {t('common.add')}
-                </Button>
-              </div>
+            <div className='waterTracker_popup-form-input-wrap'>
+              <InputField
+                type='number'
+                name='amount'
+                data-param='0'
+                data-validate='["min", "required"]'
+                errors={getFieldErrors('amount')}
+                value={addDrinkForm.amount}
+                onChange={(e) => validateOnChange('amount', e.target.value, e)}
+                min={0}
+                className='waterTracker_popup-form-input'
+                label={t('wt.value')}
+              />
+            </div>
+            <div className='waterTracker_popup-form-button-wrap'>
+              <Button
+                type='submit'
+                color='primary'
+                className='waterTracker_popup-form-button'
+                size='lg'
+              >
+                {t('common.add')}
+              </Button>
+            </div>
           </form>
         </Modal>
         <div className='container'>
@@ -411,7 +411,13 @@ const WaterTrackerView = (props: any) => {
           <div className='row row-wrap mb-5'>
             <div className='col-xl-5'>
               <div className='waterTracker_chartwrap'>
-                <WaterChart labels={chartsData.label} data={chartsData.data} />
+                {mainTodayData.dailyGoal && (
+                  <WaterChart
+                    labels={chartsData.label}
+                    data={chartsData.data}
+                    maxValue={mainTodayData.dailyGoal}
+                  />
+                )}
               </div>
             </div>
 

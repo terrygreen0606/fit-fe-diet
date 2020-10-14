@@ -9,7 +9,7 @@ import { ReactComponent as BottleXsIcon } from 'assets/img/icons/bottle-xs-icon.
 import { ReactComponent as BottleMdIcon } from 'assets/img/icons/bottle-md-icon.svg';
 import { ReactComponent as BottleXlIcon } from 'assets/img/icons/bottle-xl-icon.svg';
 
-export const chartConfig = {
+export const chartConfig = (maxValue) => ({
   options: {
     title: {
       display: false,
@@ -61,19 +61,19 @@ export const chartConfig = {
           ticks: {
             beginAtZero: false,
             suggestedMin: 0,
-            suggestedMax: 5000,
+            suggestedMax: maxValue,
             fontColor: '#000',
             fontSize: 14,
-            stepSize: 500,
+            stepSize: maxValue / 10,
             padding: 10,
             fontFamily: "'Montserrat', sans-serif",
-            callback: (value) => `${value / 50}%`,
+            callback: (value) => `${value / (maxValue / 100)}%`,
           },
         },
       ],
     },
   },
-};
+});
 
 export const bannerData = [
   {
@@ -100,12 +100,12 @@ export const periods = {
 };
 
 const cupButtonIcons = [
-    <CupSmIcon />,
-    <CupMdIcon />,
-    <GlassIcon />,
-    <BottleXsIcon />,
-    <BottleMdIcon />,
-    <BottleXlIcon />,
+  <CupSmIcon />,
+  <CupMdIcon />,
+  <GlassIcon />,
+  <BottleXsIcon />,
+  <BottleMdIcon />,
+  <BottleXlIcon />,
 ];
 
 export const getCupList = (data: number[]) => (

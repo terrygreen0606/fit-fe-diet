@@ -9,12 +9,14 @@ type WaterChartProps = {
   options?: any;
   labels: any;
   data: any;
+  maxValue: number,
 };
 
 const WaterChart = ({
-  options = chartConfig.options,
   data,
   labels,
+  maxValue,
+  options = chartConfig(maxValue).options,
 }: WaterChartProps) => {
   const [chartContainer] = useState(createRef<HTMLCanvasElement>());
 
