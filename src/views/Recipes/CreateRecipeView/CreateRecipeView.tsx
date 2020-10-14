@@ -15,7 +15,6 @@ import {
   getTranslate,
   getVideo,
   getMealIcon,
-  redirectToPayView,
 } from 'utils';
 import {
   searchIngredients,
@@ -178,16 +177,12 @@ const CreateRecipeView = (props: any) => {
   useEffect(() => {
     let cleanComponent: boolean = false;
     if (!props.location.propsRecipeId) {
-      if (settings.paid_until > 0) {
-        setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
-        getMealTimes().then((response) => {
-          if (!cleanComponent) {
-            setMealTimes(response.data.data.list);
-          }
-        });
-      } else {
-        redirectToPayView(props.history, t('tariff.not_paid'));
-      }
+      setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
+      getMealTimes().then((response) => {
+        if (!cleanComponent && response.data.data.list) {
+          setMealTimes(response.data.data.list);
+        }
+      }).catch(() => { });
     }
 
     return () => cleanComponent = true;
@@ -196,16 +191,18 @@ const CreateRecipeView = (props: any) => {
   useEffect(() => {
     let cleanComponent: boolean = false;
     if (props.location.propsRecipeId && !cleanComponent) {
-      if (settings.paid_until > 0) {
-        let mealTimesList = [];
+      let mealTimesList = [];
 
-        getMealTimes().then((response) => {
+      getMealTimes().then((response) => {
+        if (response.data.data.list) {
           mealTimesList = [...response.data.data.list];
           setMealTimes(response.data.data.list);
-        });
+        }
+      }).catch(() => { });
 
-        getRecipeData(props.location.propsRecipeId, false, false, false, true)
-          .then((response) => {
+      getRecipeData(props.location.propsRecipeId, false, false, false, true)
+        .then((response) => {
+          if (response.data.success && response.data.data) {
             const { data } = response.data;
 
             const updatedImages: Array<any> = [];
@@ -268,10 +265,8 @@ const CreateRecipeView = (props: any) => {
             });
 
             setFiles(updatedImages);
-          });
-      } else {
-        redirectToPayView(props.history, t('tariff.not_paid'));
-      }
+          }
+        }).catch(() => { });
     }
 
     return () => cleanComponent = true;
@@ -306,36 +301,38 @@ const CreateRecipeView = (props: any) => {
 
   const addIndgredient = (e: any) => {
     getIngredient(e.value).then((response) => {
-      const { data } = response.data;
-      if (
-        createRecipeForm.ingredients.find(
-          (item) => item.ingredient_id === data._id,
-        )
-      ) {
-        toast.error(t('recipe.create.duplication_error'));
-        return;
-      }
-      const filteredData = {
-        ingredient_id: data._id,
-        cost_level: data.cost_level,
-        name_i18n: data.name_i18n,
-        weight: 0,
-        is_opt: false,
-        calorie: data.calorie / 100,
-        fat: data.fat / 100,
-        carbohydrate: data.carbohydrate / 100,
-        protein: data.protein / 100,
-        sugar: data.sugar / 100,
-        salt: data.salt / 100,
-        isFullBlock: true,
-        image_url: data.image_url,
-      };
+      if (response.data.success && response.data.data) {
+        const { data } = response.data;
+        if (
+          createRecipeForm.ingredients.find(
+            (item) => item.ingredient_id === data._id,
+          )
+        ) {
+          toast.error(t('recipe.create.duplication_error'));
+          return;
+        }
+        const filteredData = {
+          ingredient_id: data._id,
+          cost_level: data.cost_level,
+          name_i18n: data.name_i18n,
+          weight: 0,
+          is_opt: false,
+          calorie: data.calorie / 100,
+          fat: data.fat / 100,
+          carbohydrate: data.carbohydrate / 100,
+          protein: data.protein / 100,
+          sugar: data.sugar / 100,
+          salt: data.salt / 100,
+          isFullBlock: true,
+          image_url: data.image_url,
+        };
 
-      setCreateRecipeForm({
-        ...createRecipeForm,
-        ingredients: [...createRecipeForm.ingredients, filteredData],
-      });
-    });
+        setCreateRecipeForm({
+          ...createRecipeForm,
+          ingredients: [...createRecipeForm.ingredients, filteredData],
+        });
+      }
+    }).catch(() => { });
   };
 
   const deleteIngredient = (index: number) => {
@@ -420,9 +417,11 @@ const CreateRecipeView = (props: any) => {
     if (!hasError) {
       createRecipe(getCreateRecipePayload())
         .then((response) => {
-          toast.success(t('recipe.create.success'));
+          if (response.data.success && response.data.data) {
+            toast.success(t('recipe.create.success'));
 
-          history.push(`/recipe/${response.data.data._id}`);
+            history.push(`/recipe/${response.data.data._id}`);
+          }
         })
         .catch(() => {
           toast.error(t('recipe.create.error'));

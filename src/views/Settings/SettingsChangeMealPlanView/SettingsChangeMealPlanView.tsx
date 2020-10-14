@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable import/order */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -83,36 +84,45 @@ const SettingsChangeMealPlanView = (props: any) => {
 
     if (!cleanComponent) {
       getRecipeCuisines().then((response) => {
-        setIgnoreCuisinesList(response.data.data);
-      });
+        if (response.data.success && response.data.data) {
+          setIgnoreCuisinesList(response.data.data);
+        }
+      }).catch(() => { });
 
       getDiseases().then((response) => {
-        setDiseasesList(response.data.data);
-      });
+        if (response.data.success && response.data.data) {
+          setDiseasesList(response.data.data);
+        }
+      }).catch(() => { });
 
-      getActivityLevels().then((response) =>
-        setActiveLevelsList([...response.data.data]));
+      getActivityLevels().then((response) => {
+        if (response.data.success && response.data.data) {
+          return setActiveLevelsList([...response.data.data]);
+        }
+      }).catch(() => { });
 
       fetchUserProfile().then((response) => {
-        const { data } = response.data;
+        if (response.data.success && response.data.data) {
+          const { data } = response.data;
 
-        setUpdateChangeMealForm({
-          ...updateChangeMealForm,
-          measurement: userSettings.measurement,
-          gender: data.gender,
-          age: data.age,
-          height: data.height,
-          weight: data.weight,
-          weight_goal: data.weight_goal,
-          goal: data.goal,
-          ignore_cuisine_ids: data.ignore_cuisine_ids || [],
-          diseases: data.diseases || [],
-          meals_cnt: data.meals_cnt,
-          act_level: data.act_level,
-        });
+          setUpdateChangeMealForm({
+            ...updateChangeMealForm,
+            measurement: userSettings.measurement,
+            gender: data.gender,
+            age: data.age,
+            height: data.height,
+            weight: data.weight,
+            weight_goal: data.weight_goal,
+            goal: data.goal,
+            ignore_cuisine_ids: data.ignore_cuisine_ids || [],
+            diseases: data.diseases || [],
+            meals_cnt: data.meals_cnt,
+            act_level: data.act_level,
+          });
 
-        setSpinnerActive(false);
-      });
+          setSpinnerActive(false);
+        }
+      }).catch(() => { });
     }
 
     return () => cleanComponent = true;
@@ -209,48 +219,48 @@ const SettingsChangeMealPlanView = (props: any) => {
     if (!hasError) {
       if (activeStep === steps.metrics) {
         userValidate({
-        measurement,
-        height,
-        age,
-        weight_goal,
-        weight,
-      })
-        .then((response) => {
-          if (response.data.success) {
-            updateMealSettings(isShowAlert);
-          }
+          measurement,
+          height,
+          age,
+          weight_goal,
+          weight,
         })
-        .catch((error) => {
-          toast.error(t('mp.form.error'));
-
-          if (error.response && error.response.status >= 400 && error.response.status < 500) {
-            try {
-              const validateErrors = JSON.parse(error.response.data.message);
-
-              const formErrorsTemp: InputError[] = [...updateChangeMealErrors];
-
-              Object.keys(validateErrors).map((field) => {
-                formErrorsTemp.push({
-                  field,
-                  message: validateErrors[field],
-                });
-              });
-
-              setUpdateChangeMealErrors([...formErrorsTemp]);
-
-              if (
-                validateErrors.height ||
-                validateErrors.age ||
-                validateErrors.weight ||
-                validateErrors.weight_goal
-              ) {
-                setActiveStep(steps.metrics);
-              }
-            } catch {
-
+          .then((response) => {
+            if (response.data.success) {
+              updateMealSettings(isShowAlert);
             }
-          }
-        });
+          })
+          .catch((error) => {
+            toast.error(t('mp.form.error'));
+
+            if (error.response && error.response.status >= 400 && error.response.status < 500) {
+              try {
+                const validateErrors = JSON.parse(error.response.data.message);
+
+                const formErrorsTemp: InputError[] = [...updateChangeMealErrors];
+
+                Object.keys(validateErrors).map((field) => {
+                  formErrorsTemp.push({
+                    field,
+                    message: validateErrors[field],
+                  });
+                });
+
+                setUpdateChangeMealErrors([...formErrorsTemp]);
+
+                if (
+                  validateErrors.height ||
+                  validateErrors.age ||
+                  validateErrors.weight ||
+                  validateErrors.weight_goal
+                ) {
+                  setActiveStep(steps.metrics);
+                }
+              } catch {
+
+              }
+            }
+          });
       } else {
         updateMealSettings(isShowAlert);
       }

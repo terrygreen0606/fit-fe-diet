@@ -9,7 +9,6 @@ import {
   getTranslate,
   getScrollbarSize,
   getLangUser,
-  redirectToPayView,
 } from 'utils';
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -115,26 +114,26 @@ const MealPlanView = (props: any) => {
     const updatedDays = [];
 
     if (settings.is_private && !cleanComponent) {
-      if (settings.paid_until > 0) {
-        for (let i = 0; i < 7; i++) {
-          const today = new Date();
-          today.setDate(today.getDate() + i);
-          updatedDays.push({
-            id: i,
-            dayLabel: today.toLocaleDateString(getLangUser(), { weekday: 'short' }),
-            dayNumber: today.toLocaleDateString(getLangUser(), { day: 'numeric' }),
-            dayFullInfo: today.toLocaleDateString(getLangUser(), {
-              weekday: 'long',
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            }),
-          });
-        }
+      for (let i = 0; i < 7; i++) {
+        const today = new Date();
+        today.setDate(today.getDate() + i);
+        updatedDays.push({
+          id: i,
+          dayLabel: today.toLocaleDateString(getLangUser(), { weekday: 'short' }),
+          dayNumber: today.toLocaleDateString(getLangUser(), { day: 'numeric' }),
+          dayFullInfo: today.toLocaleDateString(getLangUser(), {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          }),
+        });
+      }
 
-        setDays(updatedDays);
+      setDays(updatedDays);
 
-        getMealPlan().then((response) => {
+      getMealPlan().then((response) => {
+        if (response.data.success && response.data.data) {
           const updatedMealPlan = [];
           const { list } = response.data.data;
 
@@ -189,18 +188,16 @@ const MealPlanView = (props: any) => {
             }
           }
           setMealPlan(updatedMealPlan);
-        }).finally(() => {
-          setIsMealPlanLoading(false);
-        });
+        }
+      }).catch(() => { }).finally(() => {
+        setIsMealPlanLoading(false);
+      });
 
-        const paidBeforeDate = new Date(settings.paid_until * 1000).valueOf();
-        const currentDate = new Date().valueOf();
-        const diff = (paidBeforeDate - currentDate) / (60 * 60 * 24 * 1000);
-        setDaysToEndSubscription(Math.round(diff));
-        setIsNoAccess(false);
-      } else {
-        redirectToPayView(props.history, t('tariff.not_paid'));
-      }
+      const paidBeforeDate = new Date(settings.paid_until * 1000).valueOf();
+      const currentDate = new Date().valueOf();
+      const diff = (paidBeforeDate - currentDate) / (60 * 60 * 24 * 1000);
+      setDaysToEndSubscription(Math.round(diff));
+      setIsNoAccess(false);
     }
 
     return () => cleanComponent = true;
@@ -238,21 +235,25 @@ const MealPlanView = (props: any) => {
 
   const updateRecipe = (dateTs: number, recipeId: string, mealPlanItemIndex: number, recipeItemIndex: number) => {
     changeRecipeInMealPlan(dateTs, recipeId).then((response) => {
-      const updatedMealPlan = [...mealPlan];
-      updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex] = response.data.data;
-      setMealPlan([...updatedMealPlan]);
-    });
+      if (response.data.success && response.data.data) {
+        const updatedMealPlan = [...mealPlan];
+        updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex] = response.data.data;
+        setMealPlan([...updatedMealPlan]);
+      }
+    }).catch(() => { });
   };
 
   const downloadTxtFile = () => {
     getMealPlanText().then((response) => {
-      const element = document.createElement('a');
-      const file = new Blob([response.data.data.content], { type: 'text/plain' });
-      element.href = URL.createObjectURL(file);
-      element.download = 'meal-plan.txt';
-      document.body.appendChild(element); // Required for this to work in FireFox
-      element.click();
-    });
+      if (response.data.success && response.data.data) {
+        const element = document.createElement('a');
+        const file = new Blob([response.data.data.content], { type: 'text/plain' });
+        element.href = URL.createObjectURL(file);
+        element.download = 'meal-plan.txt';
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+      }
+    }).catch(() => { });
   };
 
   return (
@@ -332,103 +333,107 @@ const MealPlanView = (props: any) => {
                         <ShareButtons
                           visible={isBlockActive}
                           items={['twitter', 'telegram']}
-                          fetchData={() => getMealPlanText().then((response) => ({
-                            link: window.location.origin,
-                            text: response.data.data.content,
-                          }))}
+                          fetchData={() => getMealPlanText().then((response) => {
+                            if (response.data.success && response.data.data) {
+                              return {
+                                link: window.location.origin,
+                                text: response.data.data.content,
+                              };
+                            }
+                          }).catch(() => { })}
                         />
                       </div>
                     </div>
-                      <div className='nutrition-plan-card-list-date'>
-                        {days.map((item, itemIndex) => (
-                          <button
-                            key={item.id}
-                            id={item.id}
-                            type='button'
-                            onClick={() => {
-                              const scrollElements = document.querySelectorAll('[data-scroll]');
-                              scrollElements.forEach((scrollItem) => {
-                                if (+scrollItem.getAttribute('data-scroll') === item.id) {
-                                  scrollItem.scrollIntoView({ behavior: 'smooth' });
-                                }
-                              });
-                            }}
-                            className={classnames('nutrition-plan-card-list-date-item card-bg', {
-                              active: itemIndex === 0,
-                            })}
-                          >
-                            <div
-                              className='nutrition-plan-card-list-date-item-number'
-                            >
-                              {item.dayNumber}
-                            </div>
-                            <div className='nutrition-plan-card-list-date-item-day-week'>
-                              {item.dayLabel}
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                      <div className='nutrition-plan-card-list-recipes'>
-                        {days.map((dayItem, dayItemIndex) => (
+                    <div className='nutrition-plan-card-list-date'>
+                      {days.map((item, itemIndex) => (
+                        <button
+                          key={item.id}
+                          id={item.id}
+                          type='button'
+                          onClick={() => {
+                            const scrollElements = document.querySelectorAll('[data-scroll]');
+                            scrollElements.forEach((scrollItem) => {
+                              if (+scrollItem.getAttribute('data-scroll') === item.id) {
+                                scrollItem.scrollIntoView({ behavior: 'smooth' });
+                              }
+                            });
+                          }}
+                          className={classnames('nutrition-plan-card-list-date-item card-bg', {
+                            active: itemIndex === 0,
+                          })}
+                        >
                           <div
-                            key={dayItem.id}
-                            data-scroll={dayItem.id}
-                            className='nutrition-plan-card-list-recipes-item card-bg'
+                            className='nutrition-plan-card-list-date-item-number'
                           >
-                            <div className='nutrition-plan-card-list-recipes-item-title'>
-                              <CalendarIcon />
-                              <span>
-                                {dayItem.dayFullInfo}
-                              </span>
-                            </div>
-                            <ContentLoading
-                              isLoading={mealPlan[dayItemIndex]?.list?.length === 0}
-                              isError={false}
-                              spinSize='lg'
-                              label={t('mp.generating_recipes')}
-                            />
-                            <div className='row'>
-                              {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
-                                <div
-                                  key={recipeItem.id}
-                                  className='col-xl-6'
-                                >
-                                  <NutritionPlanCard
-                                    title={recipeItem.name_i18n}
-                                    imgSrc={recipeItem.image_url}
-                                    linkToRecipe={routes.getRecipeFullView(recipeItem.id)}
-                                    favouriteActive={recipeItem.is_liked}
-                                    checkedActive={recipeItem.is_prepared}
-                                    time={recipeItem.time}
-                                    desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
-                                    costLevel={costLevelLabel[recipeItem.cost_level]}
-                                    onClickFavourite={() =>
-                                      likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                    onClickChecked={() =>
-                                      prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                    onClickShopCart={() => addToShoppingListByRecipes([recipeItem.id])}
-                                    onClickReload={() =>
-                                      updateRecipe(
-                                        mealPlan[dayItemIndex].date_ts,
-                                        recipeItem.id,
-                                        dayItemIndex,
-                                        recipeItemIndex,
-                                      )}
-                                  />
-                                </div>
-                              ))}
-                            </div>
+                            {item.dayNumber}
                           </div>
-                        ))}
-                      </div>
-                      {tourStep === 2 && (
-                        <HintStep
-                          hintStep={2}
-                          onClick={() => setTourStep(3)}
-                          text={t('tour.hint.step2')}
-                          closeText={t('common.understand')}
-                        />
-                      )}
+                          <div className='nutrition-plan-card-list-date-item-day-week'>
+                            {item.dayLabel}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    <div className='nutrition-plan-card-list-recipes'>
+                      {days.map((dayItem, dayItemIndex) => (
+                        <div
+                          key={dayItem.id}
+                          data-scroll={dayItem.id}
+                          className='nutrition-plan-card-list-recipes-item card-bg'
+                        >
+                          <div className='nutrition-plan-card-list-recipes-item-title'>
+                            <CalendarIcon />
+                            <span>
+                              {dayItem.dayFullInfo}
+                            </span>
+                          </div>
+                          <ContentLoading
+                            isLoading={mealPlan[dayItemIndex]?.list?.length === 0}
+                            isError={false}
+                            spinSize='lg'
+                            label={t('mp.generating_recipes')}
+                          />
+                          <div className='row'>
+                            {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
+                              <div
+                                key={recipeItem.id}
+                                className='col-xl-6'
+                              >
+                                <NutritionPlanCard
+                                  title={recipeItem.name_i18n}
+                                  imgSrc={recipeItem.image_url}
+                                  linkToRecipe={routes.getRecipeFullView(recipeItem.id)}
+                                  favouriteActive={recipeItem.is_liked}
+                                  checkedActive={recipeItem.is_prepared}
+                                  time={recipeItem.time}
+                                  desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
+                                  costLevel={costLevelLabel[recipeItem.cost_level]}
+                                  onClickFavourite={() =>
+                                    likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                  onClickChecked={() =>
+                                    prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                  onClickShopCart={() => addToShoppingListByRecipes([recipeItem.id])}
+                                  onClickReload={() =>
+                                    updateRecipe(
+                                      mealPlan[dayItemIndex].date_ts,
+                                      recipeItem.id,
+                                      dayItemIndex,
+                                      recipeItemIndex,
+                                    )}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {tourStep === 2 && (
+                      <HintStep
+                        hintStep={2}
+                        onClick={() => setTourStep(3)}
+                        text={t('tour.hint.step2')}
+                        closeText={t('common.understand')}
+                      />
+                    )}
                   </div>
                   <div className='nutrition-plan-info-col'>
                     <div
@@ -465,10 +470,14 @@ const MealPlanView = (props: any) => {
                       <ShareButtons
                         visible
                         items={['twitter', 'telegram']}
-                        fetchData={() => getMealPlanText().then((res) => ({
-                          link: window.location.origin,
-                          text: res.data.data.content,
-                        }))}
+                        fetchData={() => getMealPlanText().then((response) => {
+                          if (response.data.success && response.data.data) {
+                            return {
+                              link: window.location.origin,
+                              text: response.data.data.content,
+                            };
+                          }
+                        }).catch(() => { })}
                       />
                     </div>
 
