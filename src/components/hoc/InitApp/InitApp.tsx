@@ -6,6 +6,7 @@ import { routes } from 'constants/routes';
 import { xhrStatuses } from 'constants/statuses';
 
 interface InitAppProps extends RouteComponentProps {
+  history: any,
   children: any,
 }
 
