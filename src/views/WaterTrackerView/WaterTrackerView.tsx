@@ -29,6 +29,7 @@ import Modal from 'components/common/Modal';
 import CustomSwitch from 'components/common/Forms/CustomSwitch';
 import InputField from 'components/common/Forms/InputField';
 import useOutsideClick from 'components/hooks/useOutsideClick';
+import ContentLoading from 'components/hoc/ContentLoading';
 
 import './WaterTrackerView.sass';
 
@@ -94,6 +95,8 @@ const WaterTrackerView = (props: any) => {
 
   const [isModalAddDrinkActive, setIsModalAddDrinkActive] = useState<boolean>(false);
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
+
+  const [isWaterTrackerLoading, setIsWaterTrackingLoading] = useState<boolean>(true);
 
   const [deleteDrinkId, setDeleteDrinkId] = useState<string>();
 
@@ -181,6 +184,8 @@ const WaterTrackerView = (props: any) => {
       if (response.data.success && response.data.data) {
         updateMainTodayData(data);
       }
+
+      setIsWaterTrackingLoading(false);
     }).catch(() => { });
   }, []);
 
@@ -367,201 +372,207 @@ const WaterTrackerView = (props: any) => {
             ]}
             currentPage={t('wt.head_title')}
           />
-          <h4 className='waterTracker_title'>
-            <span className='waterTracker_title-text'>
-              {t('wt.head_title')}
-            </span>
-          </h4>
-          <Banner
-            items={bannerData}
-            imageSize='lg'
-          />
-          <div className='row'>
-            <ul className='waterTracker_period'>
-              <li
-                onClick={() => setTrackerPeriod(periods.week)}
-                className={classnames('waterTracker_period-item', {
-                  'active-period': trackerPeriod === periods.week,
-                })}
-                role='presentation'
-              >
-                {t('common.week')}
-              </li>
-              <li
-                onClick={() => setTrackerPeriod(periods.month)}
-                className={classnames('waterTracker_period-item', {
-                  'active-period': trackerPeriod === periods.month,
-                })}
-                role='presentation'
-              >
-                {t('common.month')}
-              </li>
-              <li
-                onClick={() => setTrackerPeriod(periods.year)}
-                className={classnames('waterTracker_period-item', {
-                  'active-period': trackerPeriod === periods.year,
-                })}
-                role='presentation'
-              >
-                {t('common.year')}
-              </li>
-            </ul>
-          </div>
-
-          <div className='row row-wrap mb-5'>
-            <div className='col-xl-5'>
-              <div className='waterTracker_chartwrap'>
-                {mainTodayData.dailyGoal && (
-                  <WaterChart
-                    labels={chartsData.label}
-                    data={chartsData.data}
-                    maxValue={mainTodayData.dailyGoal}
-                  />
-                )}
-              </div>
+          <ContentLoading
+            isLoading={isWaterTrackerLoading}
+            isError={false}
+            spinSize='lg'
+          >
+            <h4 className='waterTracker_title'>
+              <span className='waterTracker_title-text'>
+                {t('wt.head_title')}
+              </span>
+            </h4>
+            <Banner
+              items={bannerData}
+              imageSize='lg'
+            />
+            <div className='row'>
+              <ul className='waterTracker_period'>
+                <li
+                  onClick={() => setTrackerPeriod(periods.week)}
+                  className={classnames('waterTracker_period-item', {
+                    'active-period': trackerPeriod === periods.week,
+                  })}
+                  role='presentation'
+                >
+                  {t('common.week')}
+                </li>
+                <li
+                  onClick={() => setTrackerPeriod(periods.month)}
+                  className={classnames('waterTracker_period-item', {
+                    'active-period': trackerPeriod === periods.month,
+                  })}
+                  role='presentation'
+                >
+                  {t('common.month')}
+                </li>
+                <li
+                  onClick={() => setTrackerPeriod(periods.year)}
+                  className={classnames('waterTracker_period-item', {
+                    'active-period': trackerPeriod === periods.year,
+                  })}
+                  role='presentation'
+                >
+                  {t('common.year')}
+                </li>
+              </ul>
             </div>
 
-            <div className='col-xl-7'>
-              <div className='row'>
-                <div className='col-lg-8'>
-                  <div className='waterTracker_daynorm'>
-                    {mainTodayData.drinks.map((item) => (
+            <div className='row row-wrap mb-5'>
+              <div className='col-xl-5'>
+                <div className='waterTracker_chartwrap'>
+                  {mainTodayData.dailyGoal && (
+                    <WaterChart
+                      labels={chartsData.label}
+                      data={chartsData.data}
+                      maxValue={mainTodayData.dailyGoal}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className='col-xl-7'>
+                <div className='row'>
+                  <div className='col-lg-8'>
+                    <div className='waterTracker_daynorm'>
+                      {mainTodayData.drinks.map((item) => (
+                        <div
+                          key={item.id}
+                          className='waterTracker_daynorm-item'
+                        >
+                          <div className='waterTracker_daynorm-item-wrap'>
+                            <DropIcon className='waterTracker_daynorm-item-drop' />
+                            <div className='waterTracker_daynorm-item-time'>
+                              {moment.unix(item.created_at).format('HH:mm')}
+                            </div>
+                          </div>
+                          <div className='waterTracker_daynorm-item-wrap'>
+                            <div className='waterTracker_daynorm-item-size'>
+                              {`${item.amount} ${mainTodayData.unit}`}
+                            </div>
+                            <button
+                              type='button'
+                              onClick={() => {
+                                setDeleteDrinkId(item.id);
+                                setIsBlockActive(!isBlockActive);
+                              }}
+                              className='waterTracker_daynorm-item-btn-trash'
+                            >
+                              <TrashLineIcon className='waterTracker_daynorm-item-trash' />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                       <div
-                        key={item.id}
-                        className='waterTracker_daynorm-item'
+                        ref={changedBlockRef}
+                        className={classnames('waterTracker_daynorm-delete', {
+                          active: isBlockActive,
+                        })}
                       >
-                        <div className='waterTracker_daynorm-item-wrap'>
-                          <DropIcon className='waterTracker_daynorm-item-drop' />
-                          <div className='waterTracker_daynorm-item-time'>
-                            {moment.unix(item.created_at).format('HH:mm')}
-                          </div>
-                        </div>
-                        <div className='waterTracker_daynorm-item-wrap'>
-                          <div className='waterTracker_daynorm-item-size'>
-                            {`${item.amount} ${mainTodayData.unit}`}
-                          </div>
-                          <button
-                            type='button'
-                            onClick={() => {
-                              setDeleteDrinkId(item.id);
-                              setIsBlockActive(!isBlockActive);
-                            }}
-                            className='waterTracker_daynorm-item-btn-trash'
-                          >
-                            <TrashLineIcon className='waterTracker_daynorm-item-trash' />
-                          </button>
-                        </div>
+                        <span>{t('wt.delete')}</span>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            setIsBlockActive(false);
+                            deleteDrinkSubmit();
+                          }}
+                          className='waterTracker_daynorm-delete-btn'
+                        >
+                          {t('common.yes')}
+                        </button>
                       </div>
-                    ))}
-                    <div
-                      ref={changedBlockRef}
-                      className={classnames('waterTracker_daynorm-delete', {
-                        active: isBlockActive,
-                      })}
-                    >
-                      <span>{t('wt.delete')}</span>
-                      <button
-                        type='button'
-                        onClick={() => {
-                          setIsBlockActive(false);
-                          deleteDrinkSubmit();
-                        }}
-                        className='waterTracker_daynorm-delete-btn'
+                    </div>
+                  </div>
+
+                  <div className='col-lg-4 text-center'>
+                    <div className='water-drop'>
+                      <h3>
+                        {`${mainTodayData.completedPercent}%`}
+                      </h3>
+                      <h5>
+                        {`${mainTodayData.dailyGoal} ${mainTodayData.unit}`}
+                      </h5>
+                    </div>
+                    <div className='log-drink-wrap'>
+                      <Button
+                        color='secondary'
+                        onClick={() => setIsModalAddDrinkActive(true)}
+                        className='log-drink-btn'
                       >
-                        {t('common.yes')}
-                      </button>
+                        {t('wt.log_drink')}
+                      </Button>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
 
-                <div className='col-lg-4 text-center'>
-                  <div className='water-drop'>
-                    <h3>
-                      {`${mainTodayData.completedPercent}%`}
-                    </h3>
-                    <h5>
+            <div className='row row-wrap align-items-end'>
+              <div className='col-xl-5'>
+                <div className='waterTracker_info'>
+                  <div className='waterTracker_info-item'>
+                    <div className='waterTracker_info-item-title'>
+                      {t('common.day_average')}
+                    </div>
+                    <div className='waterTracker_info-item-desc'>
+                      <div className='waterTracker_info-item-desc-selected'>
+                        {statsData.dayAverage}
+                      </div>
+                      {`${mainTodayData.unit} / ${t('common.day')}`}
+                    </div>
+                  </div>
+                  <div className='waterTracker_info-item'>
+                    <div className='waterTracker_info-item-title'>
+                      {t('wt.drink_frequency')}
+                    </div>
+                    <div className='waterTracker_info-item-desc'>
+                      <div className='waterTracker_info-item-desc-selected'>
+                        {statsData.drinkFrequency}
+                      </div>
+                      {t('wt.drink_frequency_count')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className='col-xl-7'>
+                <div className='waterTracker_stats-wrap'>
+                  <div className='waterTracker_stats'>
+                    <div>
+                      {t('wt.complete')}
+                    </div>
+                    <span className='waterTracker_stats-value'>
+                      {`${mainTodayData.completed} ${mainTodayData.unit}`}
+                    </span>
+                  </div>
+                  <div className='waterTracker_stats'>
+                    <div>
+                      {t('common.daily_goal')}
+                    </div>
+                    <span className='waterTracker_stats-value'>
                       {`${mainTodayData.dailyGoal} ${mainTodayData.unit}`}
-                    </h5>
+                    </span>
                   </div>
-                  <div className='log-drink-wrap'>
-                    <Button
-                      color='secondary'
-                      onClick={() => setIsModalAddDrinkActive(true)}
-                      className='log-drink-btn'
-                    >
-                      {t('wt.log_drink')}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className='row row-wrap align-items-end'>
-            <div className='col-xl-5'>
-              <div className='waterTracker_info'>
-                <div className='waterTracker_info-item'>
-                  <div className='waterTracker_info-item-title'>
-                    {t('common.day_average')}
-                  </div>
-                  <div className='waterTracker_info-item-desc'>
-                    <div className='waterTracker_info-item-desc-selected'>
-                      {statsData.dayAverage}
+                  <div className='waterTracker_stats'>
+                    <div>
+                      {t('common.average')}
                     </div>
-                    {`${mainTodayData.unit} / ${t('common.day')}`}
+                    <span className='waterTracker_stats-value'>
+                      {`${statsData.dayAverage} ${mainTodayData.unit}`}
+                    </span>
                   </div>
-                </div>
-                <div className='waterTracker_info-item'>
-                  <div className='waterTracker_info-item-title'>
-                    {t('wt.drink_frequency')}
-                  </div>
-                  <div className='waterTracker_info-item-desc'>
-                    <div className='waterTracker_info-item-desc-selected'>
-                      {statsData.drinkFrequency}
+                  <div className='waterTracker_stats'>
+                    <div>
+                      {t('wt.status')}
                     </div>
-                    {t('wt.drink_frequency_count')}
+                    <span className='waterTracker_stats-value'>
+                      {t(mainTodayData.actLevel)}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div className='col-xl-7'>
-              <div className='waterTracker_stats-wrap'>
-                <div className='waterTracker_stats'>
-                  <div>
-                    {t('wt.complete')}
-                  </div>
-                  <span className='waterTracker_stats-value'>
-                    {`${mainTodayData.completed} ${mainTodayData.unit}`}
-                  </span>
-                </div>
-                <div className='waterTracker_stats'>
-                  <div>
-                    {t('common.daily_goal')}
-                  </div>
-                  <span className='waterTracker_stats-value'>
-                    {`${mainTodayData.dailyGoal} ${mainTodayData.unit}`}
-                  </span>
-                </div>
-                <div className='waterTracker_stats'>
-                  <div>
-                    {t('common.average')}
-                  </div>
-                  <span className='waterTracker_stats-value'>
-                    {`${statsData.dayAverage} ${mainTodayData.unit}`}
-                  </span>
-                </div>
-                <div className='waterTracker_stats'>
-                  <div>
-                    {t('wt.status')}
-                  </div>
-                  <span className='waterTracker_stats-value'>
-                    {t(mainTodayData.actLevel)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+          </ContentLoading>
         </div>
       </div>
     </>
