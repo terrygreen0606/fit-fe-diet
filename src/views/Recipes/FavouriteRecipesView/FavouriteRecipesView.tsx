@@ -71,29 +71,31 @@ const FavouriteRecipesView = (props: any) => {
         paramsToGetRecipes.filterType,
         paramsToGetRecipes.filter,
       ).then((response) => {
-        const { data } = response.data;
+        if (response.data.success && response.data.data) {
+          const { data } = response.data;
 
-        if (queryParametersObj.page > data.total_pages) {
-          queryParametersObj.page = data.page;
-          window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+          if (queryParametersObj.page > data.total_pages) {
+            queryParametersObj.page = data.page;
+            window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+          }
+
+          setRecipesList([...data.recipes]);
+
+          setRecipesListPageInfo({
+            ...recipesListPageInfo,
+            page: data.page,
+            total: data.total,
+            total_pages: data.total_pages,
+          });
+
+          setParamsToGetRecipes({
+            ...paramsToGetRecipes,
+            page: +queryParametersObj.page,
+          });
+
+          setIsLoadingRecipes(false);
         }
-
-        setRecipesList([...data.recipes]);
-
-        setRecipesListPageInfo({
-          ...recipesListPageInfo,
-          page: data.page,
-          total: data.total,
-          total_pages: data.total_pages,
-        });
-
-        setParamsToGetRecipes({
-          ...paramsToGetRecipes,
-          page: +queryParametersObj.page,
-        });
-
-        setIsLoadingRecipes(false);
-      });
+      }).catch(() => { });
     } else {
       getRecipesList(
         paramsToGetRecipes.privateRecipes,
@@ -103,22 +105,24 @@ const FavouriteRecipesView = (props: any) => {
         paramsToGetRecipes.filterType,
         paramsToGetRecipes.filter,
       ).then((response) => {
-        const { data } = response.data;
+        if (response.data.success && response.data.data) {
+          const { data } = response.data;
 
-        const queryParameters = {
-          page: paramsToGetRecipes.page,
-        };
-        window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
+          const queryParameters = {
+            page: paramsToGetRecipes.page,
+          };
+          window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
 
-        setRecipesList([...data.recipes]);
+          setRecipesList([...data.recipes]);
 
-        setRecipesListPageInfo({
-          ...recipesListPageInfo,
-          page: data.page,
-          total: data.total,
-          total_pages: data.total_pages,
-        });
-      });
+          setRecipesListPageInfo({
+            ...recipesListPageInfo,
+            page: data.page,
+            total: data.total,
+            total_pages: data.total_pages,
+          });
+        }
+      }).catch(() => { });
 
       setIsLoadingRecipes(false);
     }
@@ -225,7 +229,11 @@ const FavouriteRecipesView = (props: any) => {
                     <button
                       type='button'
                       onClick={() => {
-                        likeRecipe(item.id).then(() => getRecipesListFunc());
+                        likeRecipe(item.id).then((response) => {
+                          if (response.data.success && response.data.data) {
+                            getRecipesListFunc();
+                          }
+                        }).catch(() => { });
                       }}
                       className={classnames('favourites-recipes__list-item-media-like', {
                         active: item.is_liked,

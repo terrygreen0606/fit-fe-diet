@@ -179,10 +179,10 @@ const CreateRecipeView = (props: any) => {
     if (!props.location.propsRecipeId) {
       setCreateRecipeForm({ ...createRecipeForm, measurement: settings.measurement });
       getMealTimes().then((response) => {
-        if (!cleanComponent) {
+        if (!cleanComponent && response.data.data.list) {
           setMealTimes(response.data.data.list);
         }
-      });
+      }).catch(() => { });
     }
 
     return () => cleanComponent = true;
@@ -194,75 +194,79 @@ const CreateRecipeView = (props: any) => {
       let mealTimesList = [];
 
       getMealTimes().then((response) => {
-        mealTimesList = [...response.data.data.list];
-        setMealTimes(response.data.data.list);
-      });
+        if (response.data.data.list) {
+          mealTimesList = [...response.data.data.list];
+          setMealTimes(response.data.data.list);
+        }
+      }).catch(() => { });
 
       getRecipeData(props.location.propsRecipeId, false, false, false, true)
         .then((response) => {
-          const { data } = response.data;
+          if (response.data.success && response.data.data) {
+            const { data } = response.data;
 
-          const updatedImages: Array<any> = [];
+            const updatedImages: Array<any> = [];
 
-          const pushedIdsImages: Array<any> = [];
+            const pushedIdsImages: Array<any> = [];
 
-          data.images.forEach((imageItem) => {
-            pushedIdsImages.push(imageItem.image_id);
+            data.images.forEach((imageItem) => {
+              pushedIdsImages.push(imageItem.image_id);
 
-            updatedImages.push({
-              id: imageItem.id,
-              image_id: imageItem.id,
-              url: imageItem.url,
-              isFailed: false,
-              isLoaded: true,
+              updatedImages.push({
+                id: imageItem.id,
+                image_id: imageItem.id,
+                url: imageItem.url,
+                isFailed: false,
+                isLoaded: true,
+              });
             });
-          });
 
-          if (data.video_url) {
-            setVideoLinkIframe(getVideo(data.video_url));
+            if (data.video_url) {
+              setVideoLinkIframe(getVideo(data.video_url));
+            }
+
+            const updatedIngredients: Array<any> = [...data.ingredients];
+
+            updatedIngredients.map((ingredientItem) => {
+              ingredientItem.calorie /= 100;
+              ingredientItem.carbohydrate /= 100;
+              ingredientItem.fat /= 100;
+              ingredientItem.protein /= 100;
+              ingredientItem.salt /= 100;
+              ingredientItem.sugar /= 100;
+              ingredientItem.isFullBlock = true;
+            });
+
+            const mealTimeForRecipe = [];
+
+            data.mealtime_codes.map((mealItem) => {
+              mealTimesList.find((findItem) => {
+                if (mealItem.i18n_code === findItem.i18n_code) {
+                  findItem.isActive = true;
+                  mealTimeForRecipe.push(findItem.code);
+                }
+              });
+            });
+
+            setCreateRecipeForm({
+              ...createRecipeForm,
+              recipeName: data.name_i18n,
+              recipePreparation: data.preparation_i18n,
+              ingredients: updatedIngredients,
+              measurement: settings.measurement,
+              cuisine: data.cuisine_ids,
+              imageIds: pushedIdsImages,
+              servingsCnt: data.servings_cnt,
+              time: data.time,
+              totalWeight: data.weight,
+              costLevel: data.cost_level,
+              videoUrl: data.video_url,
+              mealtimes: mealTimeForRecipe,
+            });
+
+            setFiles(updatedImages);
           }
-
-          const updatedIngredients: Array<any> = [...data.ingredients];
-
-          updatedIngredients.map((ingredientItem) => {
-            ingredientItem.calorie /= 100;
-            ingredientItem.carbohydrate /= 100;
-            ingredientItem.fat /= 100;
-            ingredientItem.protein /= 100;
-            ingredientItem.salt /= 100;
-            ingredientItem.sugar /= 100;
-            ingredientItem.isFullBlock = true;
-          });
-
-          const mealTimeForRecipe = [];
-
-          data.mealtime_codes.map((mealItem) => {
-            mealTimesList.find((findItem) => {
-              if (mealItem.i18n_code === findItem.i18n_code) {
-                findItem.isActive = true;
-                mealTimeForRecipe.push(findItem.code);
-              }
-            });
-          });
-
-          setCreateRecipeForm({
-            ...createRecipeForm,
-            recipeName: data.name_i18n,
-            recipePreparation: data.preparation_i18n,
-            ingredients: updatedIngredients,
-            measurement: settings.measurement,
-            cuisine: data.cuisine_ids,
-            imageIds: pushedIdsImages,
-            servingsCnt: data.servings_cnt,
-            time: data.time,
-            totalWeight: data.weight,
-            costLevel: data.cost_level,
-            videoUrl: data.video_url,
-            mealtimes: mealTimeForRecipe,
-          });
-
-          setFiles(updatedImages);
-        });
+        }).catch(() => { });
     }
 
     return () => cleanComponent = true;
@@ -297,36 +301,38 @@ const CreateRecipeView = (props: any) => {
 
   const addIndgredient = (e: any) => {
     getIngredient(e.value).then((response) => {
-      const { data } = response.data;
-      if (
-        createRecipeForm.ingredients.find(
-          (item) => item.ingredient_id === data._id,
-        )
-      ) {
-        toast.error(t('recipe.create.duplication_error'));
-        return;
-      }
-      const filteredData = {
-        ingredient_id: data._id,
-        cost_level: data.cost_level,
-        name_i18n: data.name_i18n,
-        weight: 0,
-        is_opt: false,
-        calorie: data.calorie / 100,
-        fat: data.fat / 100,
-        carbohydrate: data.carbohydrate / 100,
-        protein: data.protein / 100,
-        sugar: data.sugar / 100,
-        salt: data.salt / 100,
-        isFullBlock: true,
-        image_url: data.image_url,
-      };
+      if (response.data.success && response.data.data) {
+        const { data } = response.data;
+        if (
+          createRecipeForm.ingredients.find(
+            (item) => item.ingredient_id === data._id,
+          )
+        ) {
+          toast.error(t('recipe.create.duplication_error'));
+          return;
+        }
+        const filteredData = {
+          ingredient_id: data._id,
+          cost_level: data.cost_level,
+          name_i18n: data.name_i18n,
+          weight: 0,
+          is_opt: false,
+          calorie: data.calorie / 100,
+          fat: data.fat / 100,
+          carbohydrate: data.carbohydrate / 100,
+          protein: data.protein / 100,
+          sugar: data.sugar / 100,
+          salt: data.salt / 100,
+          isFullBlock: true,
+          image_url: data.image_url,
+        };
 
-      setCreateRecipeForm({
-        ...createRecipeForm,
-        ingredients: [...createRecipeForm.ingredients, filteredData],
-      });
-    });
+        setCreateRecipeForm({
+          ...createRecipeForm,
+          ingredients: [...createRecipeForm.ingredients, filteredData],
+        });
+      }
+    }).catch(() => { });
   };
 
   const deleteIngredient = (index: number) => {
@@ -411,9 +417,11 @@ const CreateRecipeView = (props: any) => {
     if (!hasError) {
       createRecipe(getCreateRecipePayload())
         .then((response) => {
-          toast.success(t('recipe.create.success'));
+          if (response.data.success && response.data.data) {
+            toast.success(t('recipe.create.success'));
 
-          history.push(`/recipe/${response.data.data._id}`);
+            history.push(`/recipe/${response.data.data._id}`);
+          }
         })
         .catch(() => {
           toast.error(t('recipe.create.error'));

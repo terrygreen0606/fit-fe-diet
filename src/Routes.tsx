@@ -1,6 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import {
+  Route,
+  Switch,
+} from 'react-router-dom';
 import BasePage from 'components/hoc/BasePage';
 import Layout from 'components/hoc/Layout';
 import PrivateRoute from 'components/common/PrivateRoute';
@@ -314,4 +317,4 @@ const Routes = () => (
   </Switch>
 );
 
-export default withRouter(Routes);
+export default Routes;

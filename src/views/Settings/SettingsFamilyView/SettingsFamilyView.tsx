@@ -55,16 +55,22 @@ const SettingsFamilyView = (props: any) => {
 
   useEffect(() => {
     getUserFamily().then((response) => {
-      setUserFamily(response.data.data.list);
-    });
+      if (response.data.success && response.data.data) {
+        setUserFamily(response.data.data.list);
+      }
+    }).catch(() => { });
 
     fetchUserProfile().then((response) => {
-      setUserInfo(response.data.data);
-    });
+      if (response.data.success && response.data.data) {
+        setUserInfo(response.data.data);
+      }
+    }).catch(() => { });
 
     getUserInviteLink().then((response) => {
-      setInviteLink(response.data.data.url);
-    });
+      if (response.data.success && response.data.data) {
+        setInviteLink(response.data.data.url);
+      }
+    }).catch(() => { });
   }, []);
 
   const [inviteEmailErrors, setInviteEmailErrors] = useState([]);
@@ -100,9 +106,10 @@ const SettingsFamilyView = (props: any) => {
     if (!hasError) {
       userInviteFriendByEmail(inviteEmailForm.email)
         .then((response) => {
-          setInviteEmailForm({ ...inviteEmailForm, email: '' });
-          toast.success(t('referral.email_sent'));
-          return response.data.data;
+          if (response.data.success) {
+            setInviteEmailForm({ ...inviteEmailForm, email: '' });
+            toast.success(t('referral.email_sent'));
+          }
         })
         .catch(() => {
           toast.error(t('referral.error'));

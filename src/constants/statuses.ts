@@ -1,3 +1,3 @@
-export const statuses = {
-  403: 403,
+export const xhrStatuses = {
+  NOTPAID: 403,
 };

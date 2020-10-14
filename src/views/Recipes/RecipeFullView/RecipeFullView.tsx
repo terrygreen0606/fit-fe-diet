@@ -151,28 +151,30 @@ const RecipeFullView = (props: any) => {
     let cleanComponent = false;
     if (!cleanComponent) {
       getRecipeData(recipeId, true, true, true).then((response) => {
-        const { data } = response;
+        if (response.data.success && response.data.data) {
+          const { data } = response;
 
-        if (data.success && data.data) {
-          const {
-            images,
-            note,
-          } = data.data;
+          if (data.success && data.data) {
+            const {
+              images,
+              note,
+            } = data.data;
 
-          const updatedImages = [...images];
+            const updatedImages = [...images];
 
-          updatedImages[0].isActive = true;
+            updatedImages[0].isActive = true;
 
-          const preparedRecipeData = getRecipeDataFunc(data.data);
+            const preparedRecipeData = getRecipeDataFunc(data.data);
 
-          setRecipeData({
-            ...preparedRecipeData,
-            images: updatedImages,
-          });
+            setRecipeData({
+              ...preparedRecipeData,
+              images: updatedImages,
+            });
 
-          setAddNoteForm({ ...addNoteForm, note });
+            setAddNoteForm({ ...addNoteForm, note });
+          }
+          setIsAvailabilityRecipe(true);
         }
-        setIsAvailabilityRecipe(true);
       }).catch(() => {
         setIsAvailabilityRecipe(false);
       }).finally(() => {
@@ -322,10 +324,12 @@ const RecipeFullView = (props: any) => {
                           isLiked: !recipeData.isLiked,
                         });
                         likeRecipe(recipeId).then((response) => {
-                          setRecipeData({
-                            ...recipeData,
-                            isLiked: response.data.data.is_liked,
-                          });
+                          if (response.data.success && response.data.data) {
+                            setRecipeData({
+                              ...recipeData,
+                              isLiked: response.data.data.is_liked,
+                            });
+                          }
                         }).catch(() => {
                           setRecipeData({
                             ...recipeData,
@@ -342,8 +346,11 @@ const RecipeFullView = (props: any) => {
                     <button
                       type='button'
                       onClick={() => {
-                        addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then(() =>
-                          toast.success(t('recipe.update_shopping_list.success')));
+                        addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then((response) => {
+                          if (response.data.success && response.data.data) {
+                            toast.success(t('recipe.update_shopping_list.success'));
+                          }
+                        }).catch(() => { });
                       }}
                       className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
                     >
@@ -362,10 +369,12 @@ const RecipeFullView = (props: any) => {
                           isPrepared: !recipeData.isPrepared,
                         });
                         prepareRecipe(recipeId).then((response) => {
-                          setRecipeData({
-                            ...recipeData,
-                            isPrepared: response.data.data.is_prepared,
-                          });
+                          if (response.data.success && response.data.data) {
+                            setRecipeData({
+                              ...recipeData,
+                              isPrepared: response.data.data.is_prepared,
+                            });
+                          }
                         }).catch(() => {
                           setRecipeData({
                             ...recipeData,
@@ -482,10 +491,12 @@ const RecipeFullView = (props: any) => {
                             color='primary'
                             disabled={!addNoteForm.note}
                             onClick={() => {
-                              addRecipeNote(recipeId, addNoteForm.note).then(() => {
-                                toast.success(t('recipe.add_note.success'));
+                              addRecipeNote(recipeId, addNoteForm.note).then((response) => {
+                                if (response.data.success && response.data.data) {
+                                  toast.success(t('recipe.add_note.success'));
 
-                                setIsBlockActive(false);
+                                  setIsBlockActive(false);
+                                }
                               }).catch(() => {
                                 toast.error(t('recipe.add_note.error'));
                               });
@@ -537,7 +548,11 @@ const RecipeFullView = (props: any) => {
                       <div className='recipe__modal-btn-wrap'>
                         <Button
                           color='primary'
-                          onClick={() => deleteRecipe(recipeId).then(() => history.push(routes.recipes))}
+                          onClick={() => deleteRecipe(recipeId).then((response) => {
+                            if (response.data.success) {
+                              history.push(routes.recipes);
+                            }
+                          }).catch(() => { })}
                           className='recipe__modal-btn'
                         >
                           {t('common.yes')}

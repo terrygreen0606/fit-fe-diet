@@ -25,8 +25,10 @@ const SettingsPaymentHistoryView = (props: any) => {
     let cleanComponent = false;
     if (!cleanComponent) {
       getPaymentHistory().then((response) => {
-        setPaymentHistory([...response.data.data]);
-      }).finally(() => {
+        if (response.data.success && response.data.data) {
+          setPaymentHistory([...response.data.data]);
+        }
+      }).catch(() => { }).finally(() => {
         setIsSpinnerActive(false);
       });
     }

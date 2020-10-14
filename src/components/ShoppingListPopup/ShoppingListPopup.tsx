@@ -48,8 +48,11 @@ const ShoppingListPopup = ({
   const [dateSync, setDateSync] = useState<number>(0);
 
   const saveFileShoppingList = () => {
-    getPublicShopListUrl(1).then((response) =>
-      window.location.assign(response.data.data.url));
+    getPublicShopListUrl(1).then((response) => {
+      if (response.data.success && response.data.data) {
+        window.location.assign(response.data.data.url);
+      }
+    }).catch(() => { });
   };
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
@@ -58,16 +61,18 @@ const ShoppingListPopup = ({
     let cleanComponent = false;
     if (visible && settings.is_private && !cleanComponent) {
       getShoppingList(2, dateSync).then((response) => {
-        const { list } = response.data.data;
+        if (response.data.success && response.data.data) {
+          const { list } = response.data.data;
 
-        list.map((item) => {
-          item.is_disable = false;
-        });
+          list.map((item) => {
+            item.is_disable = false;
+          });
 
-        setShoppingList([...list]);
+          setShoppingList([...list]);
 
-        setDateSync(response.data.data.date_sync);
-      }).finally(() => {
+          setDateSync(response.data.data.date_sync);
+        }
+      }).catch(() => { }).finally(() => {
         setIsSpinnerActive(false);
       });
     }
@@ -96,7 +101,9 @@ const ShoppingListPopup = ({
       updatedShoppingList[itemIndex].is_bought,
       dateSync,
     ).then((response) => {
-      setDateSync(response.data.data.date_sync);
+      if (response.data.success && response.data.data) {
+        setDateSync(response.data.data.date_sync);
+      }
     }).catch(() => {
       updatedShoppingList[itemIndex].is_bought = !updatedShoppingList[itemIndex].is_bought;
 
@@ -123,7 +130,9 @@ const ShoppingListPopup = ({
 
     deleteFromShoppingList(itemId, dateSync)
       .then((response) => {
-        setDateSync(response.data.data.date_sync);
+        if (response.data.success && response.data.data) {
+          setDateSync(response.data.data.date_sync);
+        }
       })
       .catch(() => {
         toast.error(t('shop_list.update.error'));
@@ -172,9 +181,13 @@ const ShoppingListPopup = ({
                   </button>
                   <ShareButtons
                     visible={isBlockActive}
-                    fetchData={() => getPublicShopListUrl().then((response) => ({
-                      link: response.data.data.url,
-                    }))}
+                    fetchData={() => getPublicShopListUrl().then((response) => {
+                      if (response.data.success && response.data.data) {
+                        return {
+                          link: response.data.data.url,
+                        };
+                      }
+                    }).catch(() => { })}
                     className='shop-list-popup__header-buttons-share'
                   />
                 </div>
