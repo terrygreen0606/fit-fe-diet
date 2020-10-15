@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -99,6 +100,7 @@ const RecipesView = (props: any) => {
             setParamsToGetRecipes({
               ...paramsToGetRecipes,
               page: +queryParametersObj.page,
+              filter: queryParametersObj.filter,
             });
 
             setIsLoadingPage(false);
@@ -119,6 +121,7 @@ const RecipesView = (props: any) => {
 
           const queryParameters = {
             page: paramsToGetRecipes.page,
+            filter: paramsToGetRecipes.filter,
           };
           window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
 
@@ -353,7 +356,11 @@ const RecipesView = (props: any) => {
                         checkedActive={item.is_prepared}
                         onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
                         onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
-                        onClickShopCart={() => addToShoppingListByRecipes([item.id])}
+                        onClickShopCart={() => addToShoppingListByRecipes([item.id]).then((response) => {
+                          if (response.data.success && response.data.data) {
+                            toast.success(t('recipe.update_shopping_list.success'));
+                          }
+                        })}
                       />
                     </div>
                   ))}

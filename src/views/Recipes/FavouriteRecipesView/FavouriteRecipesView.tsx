@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -59,6 +60,8 @@ const FavouriteRecipesView = (props: any) => {
     filter: '',
   });
 
+  const firstRender = useRef(true);
+
   const getRecipesListFunc = () => {
     const queryParametersObj = queryString.parse(window.location.search);
 
@@ -93,7 +96,15 @@ const FavouriteRecipesView = (props: any) => {
             page: +queryParametersObj.page,
           });
 
+          const $recipesList = document.querySelector('.favourites-recipes__list');
+
+          if (!firstRender.current) {
+            $recipesList.scrollIntoView({ behavior: 'smooth' });
+          }
+
           setIsLoadingRecipes(false);
+
+          firstRender.current = false;
         }
       }).catch(() => { });
     } else {
@@ -121,6 +132,8 @@ const FavouriteRecipesView = (props: any) => {
             total: data.total,
             total_pages: data.total_pages,
           });
+
+          firstRender.current = false;
         }
       }).catch(() => { });
 
@@ -134,7 +147,7 @@ const FavouriteRecipesView = (props: any) => {
 
     return () => cleanComponent = true;
   }, [
-    paramsToGetRecipes.page,
+    window.location.search,
   ]);
 
   const checkMeasurement = () => {
@@ -155,8 +168,10 @@ const FavouriteRecipesView = (props: any) => {
       page: value,
     });
 
-    const $recipesList = document.querySelector('.favourites-recipes__list');
-    $recipesList.scrollIntoView({ behavior: 'smooth' });
+    console.log(value);
+
+    // const $recipesList = document.querySelector('.favourites-recipes__list');
+    // $recipesList.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -311,7 +326,11 @@ const FavouriteRecipesView = (props: any) => {
                       <Button
                         color='gray'
                         onClick={() => {
-                          addToShoppingListByRecipes([item.id]);
+                          addToShoppingListByRecipes([item.id]).then((response) => {
+                            if (response.data.success && response.data.data) {
+                              toast.success(t('recipe.update_shopping_list.success'));
+                            }
+                          });
                         }}
                         className='favourites-recipes__list-item-text-shop-list-btn'
                       >

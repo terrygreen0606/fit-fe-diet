@@ -45,7 +45,7 @@
       align-items: center
       justify-content: center
       flex-basis: calc(33.33% - 10px)
-      padding: 25px 0
+      padding: 20px 0
       font-size: 18px
       line-height: 1.2
       font-weight: bold
@@ -60,11 +60,18 @@
         margin-bottom: 30px
         font-size: 16px
         padding: 15px 0
+      
+      &:hover
+        box-shadow: 0 5px 15px #8A8A8A
+        color: $black
 
-      &.active, &:hover
+      &.active
         border: 1px solid $steel-blue
         background-color: $steel-blue
         color: $white
+
+        &:hover
+          box-shadow: 0 5px 15px $steel-blue
 
         svg
           path
@@ -231,12 +238,17 @@
       border: 1px solid $steel-blue
       border-radius: 5px
       cursor: pointer
-      transition: background-color 0.2s, border 0.2s ease
+      transition: background-color 0.2s, border 0.2s, box-shadow 0.2s ease
 
-      &:hover,
+      &:hover
+        box-shadow: 0 5px 15px $steel-blue
+
       &.active
         background-color: $seashell-pink
         border: 1px solid $seashell-pink
+
+        &:hover
+          box-shadow: 0 5px 15px $seashell-pink
 
         .change-meal-plan__not-eating-item-desc
           color: $white
@@ -273,14 +285,20 @@
       background-color: transparent
       border: 1px solid $black
       border-radius: 5px
-      transition: color 0.2s, background-color 0.2s, border 0.2s, font-weight 0.2s ease
+      transition: color 0.2s, background-color 0.2s, border 0.2s, font-weight 0.2s, box-shadow 0.2s ease
       cursor: pointer
 
-      &:hover, &.active
+      &:hover
+        box-shadow: 0 5px 15px #8A8A8A
+
+      &.active
         font-weight: bold
         color: $white
         background-color: $steel-blue
         border: 1px solid $steel-blue
+
+        &:hover
+          box-shadow: 0 5px 15px $steel-blue
 
       @media (max-width: 767px)
         flex-basis: calc(50% - 10px)
@@ -319,6 +337,9 @@
           border: 2px solid $steel-blue
           background-color: $steel-blue
           color: $white
+
+          &:hover
+            box-shadow: 0 5px 15px $steel-blue
 
       &-count
         display: flex
@@ -390,14 +411,12 @@
       &-btn
         border: 2px solid $black
         color: $black
-        transition: border 0.2s, background-color 0.2s, color 0.2s ease
+        transition: border 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s ease
 
         &:hover
-          border: 2px solid $steel-blue
-          background-color: $steel-blue
-          color: $white
+          color: $black
 
-  &__works-out
+  &__workout
     &-list
       display: flex
       justify-content: center
@@ -411,7 +430,7 @@
       border: 1px solid #878787
       border-radius: 5px
       background-color: transparent
-      transition: 0.2s background-color, 0.2s border-color ease
+      transition: 0.2s background-color, 0.2s border-color, 0.2s box-shadow ease
       cursor: pointer
 
       @media (max-width: 600px)
@@ -428,10 +447,15 @@
         @media (max-width: 767px)
           font-size: 14px
 
-    &-btn:hover,
+    &-btn:hover
+      box-shadow: 0 5px 15px #8A8A8A
+
     &-btn.active
       border-color: $steel-blue
       background-color: $steel-blue
 
-      .change-meal-plan__works-out-btn-desc
+      &:hover
+        box-shadow: 0 5px 15px $steel-blue
+
+      .change-meal-plan__workout-btn-desc
         color: $white
