@@ -26,40 +26,40 @@ export const userLogin = (token: string) => {
 export const fetchLocales = () => async (dispatch) => {
   const userLang = window.navigator.language;
 
-  await loadPhrases(userLang).then((response) => {
-    localStorage.setItem('FITLOPE_CHECKSUM_I18N', response.headers['fitlope-checksum-i18n']);
+  await loadPhrases(userLang).then(({ data, headers }) => {
+    localStorage.setItem('FITLOPE_CHECKSUM_I18N', headers['fitlope-checksum-i18n']);
 
-    if (response.data.success && response.data.data) {
-      dispatch(setLocalePhrases(response.data.data));
+    if (data.success && data.data) {
+      dispatch(setLocalePhrases(data.data));
       localStorage.setItem('FITLOPE_LOCALE_LANG', userLang);
-      localStorage.setItem('FITLOPE_LOCALE_PHRASES', JSON.stringify(response.data.data));
+      localStorage.setItem('FITLOPE_LOCALE_PHRASES', JSON.stringify(data.data));
     }
   });
 };
 
 export const fetchPublicSettings = () => async (dispatch) => {
   await getAppPublicSettings()
-    .then((response) => {
-      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', response.headers['fitlope-checksum-settings']);
+    .then(({ data, headers }) => {
+      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', headers['fitlope-checksum-settings']);
 
-      if (response.data.success && response.data.data) {
-        dispatch(setAppSetting(response.data.data));
-        localStorage.setItem('FITLOPE_PUBLIC_SETTINGS', JSON.stringify(response.data.data));
+      if (data.success && data.data) {
+        dispatch(setAppSetting(data.data));
+        localStorage.setItem('FITLOPE_PUBLIC_SETTINGS', JSON.stringify(data.data));
       }
     });
 };
 
 export const fetchUserSettings = () => async (dispatch) => {
   await getAppSettings()
-    .then((response) => {
-      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', response.headers['fitlope-checksum-settings']);
+    .then(({ data, headers }) => {
+      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', headers['fitlope-checksum-settings']);
 
-      if (response.data.success && response.data.data) {
+      if (data.success && data.data) {
         dispatch(setAppSetting({
-          ...response.data.data,
+          ...data.data,
           is_private: true,
         }));
-        localStorage.setItem('FITLOPE_USER_SETTINGS', JSON.stringify(response.data.data));
+        localStorage.setItem('FITLOPE_USER_SETTINGS', JSON.stringify(data.data));
       }
     });
 };
@@ -99,7 +99,6 @@ export const loadLocales = (reloadLocales: boolean = false) => async (dispatch) 
 export const appSetting = (
   isAuthenticated: boolean,
   localesLoad: boolean = true,
-  reloadSettings: boolean = false,
 ) => async (dispatch) => {
   const SETTINGS_DEV = true;
   const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
