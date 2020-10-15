@@ -47,7 +47,6 @@ const SettingsChangeMealPlanView = (props: any) => {
   useEffect(() => {
     fetchUserProfile().then((response) => {
       if (response.data.success && response.data.data) {
-        console.log('data', response.data.data);
         const {
           goal,
           gender,
