@@ -1,5 +1,5 @@
 import axios from 'utils/axios';
-import { 
+import {
   userAcknowledge,
   loadPhrases,
   getAppSettings,
@@ -17,104 +17,176 @@ export const setUserData = (userData: any) => ({ type: SET_USER_DATA, userData }
 export const setAuthChecking = (isAuthChecking: boolean) => (
   { type: SET_AUTH_CHECKING, isAuthChecking }
 );
-export const userLogin = (token: string) => ({ type: USER_LOGIN, token });
 
-export const loadLocales = () => {
-  return dispatch => {
-    const LOCALIZATION_DEV = true;
-
-    const localeLang = localStorage.getItem('localeLang');
-    let localePhrases = localStorage.getItem('localePhrases');
-    localePhrases = localePhrases ? JSON.parse(localePhrases) : null;
-
-    const userLang = window.navigator.language;
-
-    if (!LOCALIZATION_DEV && localePhrases && userLang === localeLang) {
-      dispatch(setLocaleLang(userLang));
-      dispatch(setLocalePhrases(localePhrases));
-    } else {
-      loadPhrases(userLang).then((response) => {
-        dispatch(setAuthChecking(false));
-
-        if (response.data.success && response.data.data) {
-          dispatch(setLocalePhrases(response.data.data));
-
-          localStorage.setItem('localeLang', userLang);
-          localStorage.setItem('localePhrases', JSON.stringify(response.data.data));
-        }
-      }).catch((error) => {
-        dispatch(setAuthChecking(false));
-      });
-    }
-  };
+export const userLogin = (token: string) => {
+  sessionStorage.setItem('FITLOPE_IS_AUTHENTICATED', 'true');
+  return { type: USER_LOGIN, token };
 };
 
-export const appSetting = (isAuthenticated: boolean, localesLoad: boolean = true) => {
-  return dispatch => {
-    if (isAuthenticated) {
-      getAppSettings()
-        .then(response => {
-          if (response.data.success && response.data.data) {
-            dispatch(setAppSetting({
-              ...response.data.data,
-              is_private: true,
-            }));
+export const fetchLocales = () => async (dispatch) => {
+  const userLang = window.navigator.language;
 
-            if (localesLoad) {
-              dispatch(loadLocales());
-            }
-          }
-        })
-        .catch(error => {
-          dispatch(setAuthChecking(false));
-        });
-    } else {
-      getAppPublicSettings()
-        .then(response => {
-          if (response.data.success && response.data.data) {
-            dispatch(setAppSetting(response.data.data));
+  await loadPhrases(userLang).then((response) => {
+    localStorage.setItem('FITLOPE_CHECKSUM_I18N', response.headers['fitlope-checksum-i18n']);
 
-            if (localesLoad) {
-              dispatch(loadLocales());
-            }
-          }
-        })
-        .catch(error => {
-          dispatch(setAuthChecking(false));
-        })
+    if (response.data.success && response.data.data) {
+      dispatch(setLocalePhrases(response.data.data));
+      localStorage.setItem('FITLOPE_LOCALE_LANG', userLang);
+      localStorage.setItem('FITLOPE_LOCALE_PHRASES', JSON.stringify(response.data.data));
     }
-  };
+  });
 };
 
-export const authCheck = () => dispatch => {
-  const token = localStorage.getItem('authToken');
+export const fetchPublicSettings = () => async (dispatch) => {
+  await getAppPublicSettings()
+    .then((response) => {
+      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', response.headers['fitlope-checksum-settings']);
+
+      if (response.data.success && response.data.data) {
+        dispatch(setAppSetting(response.data.data));
+        localStorage.setItem('FITLOPE_PUBLIC_SETTINGS', JSON.stringify(response.data.data));
+      }
+    });
+};
+
+export const fetchUserSettings = () => async (dispatch) => {
+  await getAppSettings()
+    .then((response) => {
+      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', response.headers['fitlope-checksum-settings']);
+
+      if (response.data.success && response.data.data) {
+        dispatch(setAppSetting({
+          ...response.data.data,
+          is_private: true,
+        }));
+        localStorage.setItem('FITLOPE_USER_SETTINGS', JSON.stringify(response.data.data));
+      }
+    });
+};
+
+export const loadLocales = (reloadLocales: boolean = false) => async (dispatch) => {
+  const LOCALIZATION_DEV = true;
+  const FITLOPE_CHECKSUM_I18N = localStorage.getItem('FITLOPE_CHECKSUM_I18N');
+  const FITLOPE_LOCALE_LANG = localStorage.getItem('FITLOPE_LOCALE_LANG');
+  const FITLOPE_LOCALE_PHRASES = JSON.parse(localStorage.getItem('FITLOPE_LOCALE_PHRASES'));
+  const userLang = window.navigator.language;
+
+  if (
+    !LOCALIZATION_DEV &&
+    FITLOPE_CHECKSUM_I18N &&
+    FITLOPE_LOCALE_PHRASES &&
+    userLang === FITLOPE_LOCALE_LANG
+  ) {
+    await dispatch(setLocaleLang(userLang));
+    await dispatch(setLocalePhrases(JSON.stringify(FITLOPE_LOCALE_PHRASES)));
+  } else {
+    await dispatch(fetchLocales());
+  }
+
+  axios.interceptors.response.use((response) => {
+    const FITLOPE_CHECKSUM_I18N = localStorage.getItem('FITLOPE_CHECKSUM_I18N');
+    const FITLOPE_CHECKSUM_I18N_HEADER = response.headers['fitlope-checksum-i18n'];
+
+    if (FITLOPE_CHECKSUM_I18N_HEADER !== FITLOPE_CHECKSUM_I18N) {
+      localStorage.setItem('FITLOPE_CHECKSUM_I18N', FITLOPE_CHECKSUM_I18N_HEADER);
+      dispatch(fetchLocales());
+    }
+
+    return response;
+  });
+};
+
+export const appSetting = (
+  isAuthenticated: boolean,
+  localesLoad: boolean = true,
+  reloadSettings: boolean = false,
+) => async (dispatch) => {
+  const SETTINGS_DEV = true;
+  const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
+  const FITLOPE_PUBLIC_SETTINGS: any = JSON.parse(localStorage.getItem('FITLOPE_PUBLIC_SETTINGS'));
+  const FITLOPE_USER_SETTINGS: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
+
+  if (isAuthenticated) {
+    if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
+      await dispatch(fetchUserSettings());
+    } else {
+      dispatch(setAppSetting({
+        ...FITLOPE_USER_SETTINGS,
+        is_private: true,
+      }));
+    }
+
+    if (localesLoad) {
+      await dispatch(loadLocales());
+    }
+  } else {
+    if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_PUBLIC_SETTINGS) {
+      await dispatch(fetchPublicSettings());
+    } else {
+      dispatch(setAppSetting(FITLOPE_PUBLIC_SETTINGS));
+    }
+
+    if (localesLoad) {
+      await dispatch(loadLocales());
+    }
+  }
+
+  axios.interceptors.response.use((response) => {
+    const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem('FITLOPE_IS_AUTHENTICATED');
+
+    if (FITLOPE_IS_AUTHENTICATED === 'true') {
+      const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
+      const FITLOPE_CHECKSUM_SETTINGS_HEADER = response.headers['fitlope-checksum-settings'];
+
+      if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
+        localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', FITLOPE_CHECKSUM_SETTINGS_HEADER);
+        dispatch(fetchUserSettings());
+      }
+    } else if (!FITLOPE_IS_AUTHENTICATED || FITLOPE_IS_AUTHENTICATED === 'false') {
+      const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
+      const FITLOPE_CHECKSUM_SETTINGS_HEADER = response.headers['fitlope-checksum-settings'];
+
+      if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
+        localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', FITLOPE_CHECKSUM_SETTINGS_HEADER);
+        dispatch(fetchUserSettings());
+      }
+    }
+
+    return response;
+  });
+};
+
+export const authCheck = () => async (dispatch) => {
+  const token = localStorage.getItem('FITLOPE_AUTH_TOKEN');
 
   dispatch(setAuthChecking(true));
 
   if (token) {
-    userAcknowledge(token).then((response) => {
-      if (response.data && response.data.access_token) {
-        localStorage.setItem('authToken', token);
+    userAcknowledge(token).then(async ({ data }) => {
+      if (data && data.access_token) {
+        localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-        dispatch(userLogin(response.data.access_token));
-
-        dispatch(appSetting(true));
+        dispatch(userLogin(data.access_token));
+        await dispatch(appSetting(true));
+        dispatch(setAuthChecking(false));
       }
-    }).catch((error) => {
-      dispatch(appSetting(false));
+    }).catch(async () => {
+      await dispatch(appSetting(false));
+      dispatch(setAuthChecking(false));
     });
   } else {
-    dispatch(appSetting(false));
+    await dispatch(appSetting(false));
+    dispatch(setAuthChecking(false));
   }
 };
 
-export const initApp = () => dispatch => {
+export const initApp = () => (dispatch) => {
   dispatch(authCheck());
 };
 
 export const userLogout = () => {
-  localStorage.removeItem('authToken');
-
+  localStorage.removeItem('FITLOPE_AUTH_TOKEN');
+  sessionStorage.setItem('FITLOPE_IS_AUTHENTICATED', 'false');
   return { type: USER_LOGOUT };
 };
