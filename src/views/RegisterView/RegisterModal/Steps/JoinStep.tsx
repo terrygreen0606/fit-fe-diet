@@ -214,7 +214,7 @@ const JoinStep = (props: any) => {
             : null;
 
         if (token) {
-          localStorage.setItem('authToken', token);
+          localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
           axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
           getAppSettings()

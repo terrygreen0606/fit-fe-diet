@@ -75,7 +75,7 @@ const ConfirmInfo = ({
   };
 
   const finalWelcomeStep = (authToken: string) => {
-    localStorage.setItem('authToken', authToken);
+    localStorage.setItem('FITLOPE_AUTH_TOKEN', authToken);
     axios.defaults.headers.common.Authorization = `Bearer ${authToken}`;
 
     setRegisterData({
