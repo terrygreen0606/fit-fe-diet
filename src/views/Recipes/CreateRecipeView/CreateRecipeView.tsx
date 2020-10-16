@@ -921,7 +921,7 @@ const CreateRecipeView = (props: any) => {
                               + 1).toFixed(2);
 
                             updatedIngredients.forEach((item) => {
-                              countTotalWeight += item.weight;
+                              countTotalWeight += +item.weight;
                             });
 
                             countTotalWeight = +countTotalWeight.toFixed(2);

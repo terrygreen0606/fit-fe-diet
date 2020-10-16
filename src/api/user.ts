@@ -3,8 +3,8 @@ import axios from 'utils/axios';
 import { 
   UserValidateParams,
   UserWeightPredictionParams,
-  userUpdateProfileParams,
-  userUpdateMealSettingsParams,
+  UserUpdateProfileParams,
+  UserUpdateMealSettingsParams,
 } from 'types';
 
 export const deleteFamilyMembers = (email: string) =>
@@ -33,10 +33,10 @@ export const getUserWeightPrediction = (params: UserWeightPredictionParams) =>
 export const userInviteFriendByEmail = (email: string) =>
   axios.put(`user/invite-friend/${email}`);
 
-export const userUpdateProfile = (params: userUpdateProfileParams) =>
+export const userUpdateProfile = (params: UserUpdateProfileParams) =>
   axios.put('/user/update-profile', params);
 
-export const userUpdateMealSettings = (params: userUpdateMealSettingsParams) =>
+export const userUpdateMealSettings = (params: UserUpdateMealSettingsParams) =>
   axios.put('/user/meal-settings', params);
 
 export const userValidate = (params: UserValidateParams) =>
