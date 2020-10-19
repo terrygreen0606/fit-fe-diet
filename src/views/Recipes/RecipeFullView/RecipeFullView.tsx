@@ -688,7 +688,10 @@ const RecipeFullView = (props: any) => {
                       {recipeData.similar.map((similarRecipe) => (
                         <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
                           <Link
-                            to={routes.getRecipeFullView(similarRecipe.id)}
+                            to={props.location.fromMealPlan ? {
+                              pathname: routes.getRecipeFullView(similarRecipe.id),
+                              fromMealPlan: true,
+                            } : routes.getRecipeFullView(similarRecipe.id)}
                             onClick={() => scrollToTop()}
                             className='recipe__similar-recipes-item-media'
                           >
@@ -697,7 +700,10 @@ const RecipeFullView = (props: any) => {
                           </Link>
                           <div className='recipe__similar-recipes-item-text'>
                             <Link
-                              to={routes.getRecipeFullView(similarRecipe.id)}
+                              to={props.location.fromMealPlan ? {
+                                pathname: routes.getRecipeFullView(similarRecipe.id),
+                                fromMealPlan: true,
+                              } : routes.getRecipeFullView(similarRecipe.id)}
                               onClick={() => scrollToTop()}
                               className='recipe__similar-recipes-item-text-name'
                             >
