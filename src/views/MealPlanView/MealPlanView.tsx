@@ -269,7 +269,7 @@ const MealPlanView = (props: any) => {
               name: t('breadcrumb.main'),
             },
           ]}
-          currentPage={t('nutrition.title')}
+          currentPage={t('mp.title')}
         />
       </div>
       {afterSignUp && (
@@ -401,7 +401,10 @@ const MealPlanView = (props: any) => {
                                 <NutritionPlanCard
                                   title={recipeItem.name_i18n}
                                   imgSrc={recipeItem.image_url}
-                                  linkToRecipe={routes.getRecipeFullView(recipeItem.id)}
+                                  linkToRecipe={{
+                                    pathname: routes.getRecipeFullView(recipeItem.id),
+                                    fromMealPlan: true,
+                                  }}
                                   favouriteActive={recipeItem.is_liked}
                                   checkedActive={recipeItem.is_prepared}
                                   time={recipeItem.time}

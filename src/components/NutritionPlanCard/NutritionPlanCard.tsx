@@ -17,7 +17,7 @@ import { ReactComponent as CursorTouchIcon } from 'assets/img/icons/cursor-touch
 type NutritionPlanCardProps = {
   imgSrc: string,
   title: string,
-  linkToRecipe: string,
+  linkToRecipe: string | object,
   localePhrases: [];
   type?: 'active' | 'cross' | 'default',
   onClickFavourite?: () => void,

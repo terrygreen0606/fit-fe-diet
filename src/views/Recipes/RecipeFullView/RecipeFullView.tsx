@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/jsx-indent */
@@ -8,6 +9,7 @@ import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import uuid from 'react-uuid';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -59,11 +61,9 @@ const RecipeFullView = (props: any) => {
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
-  const [recipeId, setRecipeId] = useState(
-    window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
-  );
-
   const history = useHistory();
+
+  const [recipeId, setRecipeId] = useState<string>('');
 
   const [isAvailabilityRecipe, setIsAvailabilityRecipe] = useState<boolean>(false);
 
@@ -147,43 +147,46 @@ const RecipeFullView = (props: any) => {
     wines: data.wines,
   });
 
+  const getRecipe = (recipeIdArg: string) => {
+    getRecipeData(recipeIdArg, true, true, true).then((response) => {
+      if (response.data.success && response.data.data) {
+        const { data } = response.data;
+        const {
+          images,
+          note,
+        } = data;
+
+        const updatedImages = [...images];
+
+        updatedImages[0].isActive = true;
+
+        const preparedRecipeData = getRecipeDataFunc(data);
+
+        setRecipeData({
+          ...preparedRecipeData,
+          images: updatedImages,
+        });
+
+        setAddNoteForm({ ...addNoteForm, note });
+        setIsAvailabilityRecipe(true);
+      }
+    }).catch(() => {
+      setIsAvailabilityRecipe(false);
+    }).finally(() => {
+      setIsSpinnerActive(false);
+    });
+  };
+
   useEffect(() => {
+    const pathname = history.location.pathname.split('/');
+    const recipeIdByLink = pathname[pathname.length - 1];
+
+    setRecipeId(recipeIdByLink);
+
     let cleanComponent = false;
-    if (!cleanComponent) {
-      getRecipeData(recipeId, true, true, true).then((response) => {
-        if (response.data.success && response.data.data) {
-          const { data } = response;
-
-          if (data.success && data.data) {
-            const {
-              images,
-              note,
-            } = data.data;
-
-            const updatedImages = [...images];
-
-            updatedImages[0].isActive = true;
-
-            const preparedRecipeData = getRecipeDataFunc(data.data);
-
-            setRecipeData({
-              ...preparedRecipeData,
-              images: updatedImages,
-            });
-
-            setAddNoteForm({ ...addNoteForm, note });
-          }
-          setIsAvailabilityRecipe(true);
-        }
-      }).catch(() => {
-        setIsAvailabilityRecipe(false);
-      }).finally(() => {
-        setIsSpinnerActive(false);
-      });
-    }
-
+    if (!cleanComponent) getRecipe(recipeIdByLink);
     return () => cleanComponent = true;
-  }, [recipeId]);
+  }, [history.location.pathname]);
 
   return (
     <>
@@ -209,16 +212,31 @@ const RecipeFullView = (props: any) => {
         <div className='recipe'>
           <div className='container'>
             <Breadcrumb
-              routes={[
-                {
-                  url: routes.main,
-                  name: t('breadcrumb.main'),
-                },
-                {
-                  url: routes.recipes,
-                  name: t('app.title.recipes'),
-                },
-              ]}
+              routes={
+                props.location.fromMealPlan ? ([
+                  {
+                    url: routes.main,
+                    name: t('breadcrumb.main'),
+                  },
+                  {
+                    url: routes.mealPlan,
+                    name: t('mp.title'),
+                  },
+                  {
+                    url: routes.recipes,
+                    name: t('app.title.recipes'),
+                  },
+                ]) : ([
+                  {
+                    url: routes.main,
+                    name: t('breadcrumb.main'),
+                  },
+                  {
+                    url: routes.recipes,
+                    name: t('app.title.recipes'),
+                  },
+                ])
+              }
               currentPage={recipeData.name}
             />
             <div className='row'>
@@ -400,7 +418,7 @@ const RecipeFullView = (props: any) => {
                     <div className='recipe__composition-list'>
                       {recipeData.ingredients.map((ingredient) => (
                         <div
-                          key={ingredient.ingredient_id}
+                          key={uuid()}
                           className='recipe__composition-list-item'
                         >
                           {`${t(getWeigthUnit(settings.measurement), { COUNT: ingredient.weight })}.
@@ -671,7 +689,6 @@ const RecipeFullView = (props: any) => {
                           <Link
                             to={routes.getRecipeFullView(similarRecipe.id)}
                             onClick={() => {
-                              setRecipeId(similarRecipe.id);
                               const recipeInfoBlock = document.querySelector('.recipe__main-info');
                               recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             }}
@@ -684,7 +701,6 @@ const RecipeFullView = (props: any) => {
                             <Link
                               to={routes.getRecipeFullView(similarRecipe.id)}
                               onClick={() => {
-                                setRecipeId(similarRecipe.id);
                                 const recipeInfoBlock = document.querySelector('.recipe__main-info');
                                 recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
                               }}
