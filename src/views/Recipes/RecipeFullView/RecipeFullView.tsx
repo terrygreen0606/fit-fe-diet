@@ -1,7 +1,4 @@
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/indent */
-/* eslint-disable react/jsx-indent */
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -9,7 +6,6 @@ import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import uuid from 'react-uuid';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -187,6 +183,11 @@ const RecipeFullView = (props: any) => {
     if (!cleanComponent) getRecipe(recipeIdByLink);
     return () => cleanComponent = true;
   }, [history.location.pathname]);
+
+  const scrollToTop = () => {
+    const recipeInfoBlock = document.querySelector('.recipe__main-info');
+    recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   return (
     <>
@@ -418,7 +419,7 @@ const RecipeFullView = (props: any) => {
                     <div className='recipe__composition-list'>
                       {recipeData.ingredients.map((ingredient) => (
                         <div
-                          key={uuid()}
+                          key={ingredient.ingredient_id}
                           className='recipe__composition-list-item'
                         >
                           {`${t(getWeigthUnit(settings.measurement), { COUNT: ingredient.weight })}.
@@ -688,10 +689,7 @@ const RecipeFullView = (props: any) => {
                         <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
                           <Link
                             to={routes.getRecipeFullView(similarRecipe.id)}
-                            onClick={() => {
-                              const recipeInfoBlock = document.querySelector('.recipe__main-info');
-                              recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }}
+                            onClick={() => scrollToTop()}
                             className='recipe__similar-recipes-item-media'
                           >
                             <img src={similarRecipe.image_url} alt='' />
@@ -700,10 +698,7 @@ const RecipeFullView = (props: any) => {
                           <div className='recipe__similar-recipes-item-text'>
                             <Link
                               to={routes.getRecipeFullView(similarRecipe.id)}
-                              onClick={() => {
-                                const recipeInfoBlock = document.querySelector('.recipe__main-info');
-                                recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                              }}
+                              onClick={() => scrollToTop()}
                               className='recipe__similar-recipes-item-text-name'
                             >
                               {similarRecipe.name_i18n}
