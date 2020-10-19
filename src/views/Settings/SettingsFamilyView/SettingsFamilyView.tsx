@@ -1,10 +1,6 @@
-/* eslint-disable react/jsx-curly-newline */
-/* eslint-disable function-paren-newline */
-/* eslint-disable comma-dangle */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
@@ -15,8 +11,7 @@ import {
 } from 'utils';
 import FormValidator from 'utils/FormValidator';
 import {
-  userInviteFriendByEmail,
-  getUserInviteLink,
+  userInviteFamilyByEmail,
   fetchUserProfile,
   getUserFamily,
   deleteFamilyMembers,
@@ -28,7 +23,6 @@ import ProfileLayout from 'components/hoc/ProfileLayout';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
-import CopyLinkButton from 'components/common/CopyLinkButton';
 
 import './SettingsFamilyView.sass';
 
@@ -40,35 +34,52 @@ const SettingsFamilyView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
-  const [inviteLink, setInviteLink] = useState('');
-
-  const [inviteEmailForm, setInviteEmailForm] = useState({
+  const [inviteEmailForm, setInviteEmailForm] = useState<{
+    email: string,
+  }>({
     email: '',
   });
 
-  const [userInfo, setUserInfo] = useState({
+  const [userInfo, setUserInfo] = useState<{
+    name: string,
+    surname: string,
+  }>({
     name: '',
     surname: '',
   });
 
-  const [userFamily, setUserFamily] = useState([]);
+  const [userFamily, setUserFamily] = useState<any[]>([]);
 
-  useEffect(() => {
+  const [isOwnerFamily, setIsOwnerFamily] = useState<boolean>(false);
+
+  const deleteFromFamily = (email: string, index: number) => {
+    deleteFamilyMembers(email).then(() => {
+      const updatedFamily = [...userFamily];
+      updatedFamily.splice(index, 1);
+      setUserFamily(updatedFamily);
+    }).catch(() => { });
+  };
+
+  const getFamily = () => {
     getUserFamily().then((response) => {
       if (response.data.success && response.data.data) {
         setUserFamily(response.data.data.list);
+        setIsOwnerFamily(response.data.data.is_owner);
       }
     }).catch(() => { });
+  };
+
+  useEffect(() => {
+    getFamily();
 
     fetchUserProfile().then((response) => {
       if (response.data.success && response.data.data) {
-        setUserInfo(response.data.data);
-      }
-    }).catch(() => { });
-
-    getUserInviteLink().then((response) => {
-      if (response.data.success && response.data.data) {
-        setInviteLink(response.data.data.url);
+        const { name, surname } = response.data.data;
+        setUserInfo({
+          ...userInfo,
+          name,
+          surname,
+        });
       }
     }).catch(() => { });
   }, []);
@@ -83,7 +94,7 @@ const SettingsFamilyView = (props: any) => {
       inviteEmailForm,
       setInviteEmailForm,
       inviteEmailErrors,
-      setInviteEmailErrors
+      setInviteEmailErrors,
     );
   };
 
@@ -95,20 +106,18 @@ const SettingsFamilyView = (props: any) => {
 
     const form = e.target;
 
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setInviteEmailErrors([...errors]);
 
     if (!hasError) {
-      userInviteFriendByEmail(inviteEmailForm.email)
+      userInviteFamilyByEmail(inviteEmailForm.email)
         .then((response) => {
           if (response.data.success) {
             setInviteEmailForm({ ...inviteEmailForm, email: '' });
-            toast.success(t('referral.email_sent'));
+            getFamily();
           }
         })
         .catch(() => {
@@ -135,44 +144,52 @@ const SettingsFamilyView = (props: any) => {
       </div>
       <ProfileLayout>
         <div className='family card-bg'>
-          <h2 className='family__title'>{t('family.invite_link.title')}</h2>
-          <div className='family__invite-link'>
-            <p className='family__invite-link-desc'>
-              {t('family.invite_link.desc')}
-            </p>
-            <CopyLinkButton text={inviteLink} />
-          </div>
-          <div className='family__separator'>
-            <span className='family__separator-text'>{t('common.or')}</span>
-          </div>
-          <form
-            onSubmit={(e) => inviteEmailSubmit(e)}
-            className='family__invite-email'
-          >
-            <div className='family__invite-email-input-wrap'>
-              <InputField
-                name='email'
-                data-validate='["email", "required"]'
-                errors={getFieldErrors('email')}
-                value={inviteEmailForm.email}
-                onChange={(e) => validateOnChange('email', e.target.value, e)}
-                label={t('family.invite_email.desc')}
-                className='family__invite-email-input'
-              />
+          {userFamily.length !== 3 && (
+            <>
+              <h2 className='family__title'>
+                {t('family.invite_link.title')}
+              </h2>
+              {/* <div className='family__invite-link'>
+              <p className='family__invite-link-desc'>
+                {t('family.invite_link.desc')}
+              </p>
+              <CopyLinkButton text={inviteLink} />
             </div>
-            <div className='family__invite-email-button-wrap'>
-              <Button
-                type='submit'
-                color='secondary'
-                size='lg'
-                className='family__invite-email-button'
+            <div className='family__separator'>
+              <span className='family__separator-text'>{t('common.or')}</span>
+            </div> */}
+              <form
+                onSubmit={(e) => inviteEmailSubmit(e)}
+                className='family__invite-email'
               >
-                {t('family.invite_email.button')}
-              </Button>
-            </div>
-          </form>
+                <div className='family__invite-email-input-wrap'>
+                  <InputField
+                    name='email'
+                    data-validate='["email", "required"]'
+                    errors={getFieldErrors('email')}
+                    value={inviteEmailForm.email}
+                    onChange={(e) => validateOnChange('email', e.target.value, e)}
+                    label={t('family.invite_email.desc')}
+                    className='family__invite-email-input'
+                  />
+                </div>
+                <div className='family__invite-email-button-wrap'>
+                  <Button
+                    type='submit'
+                    color='secondary'
+                    size='lg'
+                    className='family__invite-email-button'
+                  >
+                    {t('family.invite_email.button')}
+                  </Button>
+                </div>
+              </form>
+            </>
+          )}
           <div>
-            <h2 className='family__title'>{t('family.invite.title')}</h2>
+            <h2 className='family__title'>
+              {t('family.invite.title')}
+            </h2>
             <div className='family__user'>
               <span className='family__user-name'>
                 {`${userInfo.name} ${userInfo.surname || ''}`}
@@ -192,37 +209,28 @@ const SettingsFamilyView = (props: any) => {
                       {member.name}
                     </div>
                     <a
-                      href={member.email}
+                      href={`mailto:${member.email}`}
                       className='family__list-item-desc-email'
                     >
                       {member.email}
                     </a>
-                    {member.is_joined && (
+                    {!member.is_joined && (
                       <div className='family__list-item-desc-way'>
                         {t('family.link_sent')}
                       </div>
                     )}
                   </div>
-                  <button
-                    onClick={() =>
-                      deleteFamilyMembers(member.email).then(() => {
-                        const updatedFamily = [...userFamily];
-                        updatedFamily.splice(memberIndex, 1);
-                        setUserFamily(updatedFamily);
-                      })
-                    }
-                    type='button'
-                    className='family__list-item-close'
-                  >
-                    <CloseIcon />
-                  </button>
+                  {isOwnerFamily && (
+                    <button
+                      onClick={() => deleteFromFamily(member.email, memberIndex)}
+                      type='button'
+                      className='family__list-item-close'
+                    >
+                      <CloseIcon />
+                    </button>
+                  )}
                 </div>
               ))}
-            </div>
-            <div className='family__referral-button-wrap'>
-              <Link to='/referral' className='family__referral-button-link'>
-                <Button color='secondary'>{t('family.referral_page')}</Button>
-              </Link>
             </div>
           </div>
         </div>
