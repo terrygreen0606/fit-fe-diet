@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/indent */
-/* eslint-disable react/jsx-indent */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -59,11 +57,9 @@ const RecipeFullView = (props: any) => {
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
-  const [recipeId, setRecipeId] = useState(
-    window.location.pathname.split('/')[window.location.pathname.split('/').length - 1],
-  );
-
   const history = useHistory();
+
+  const [recipeId, setRecipeId] = useState<string>('');
 
   const [isAvailabilityRecipe, setIsAvailabilityRecipe] = useState<boolean>(false);
 
@@ -147,43 +143,51 @@ const RecipeFullView = (props: any) => {
     wines: data.wines,
   });
 
+  const getRecipe = (recipeIdArg: string) => {
+    getRecipeData(recipeIdArg, true, true, true).then((response) => {
+      if (response.data.success && response.data.data) {
+        const { data } = response.data;
+        const {
+          images,
+          note,
+        } = data;
+
+        const updatedImages = [...images];
+
+        updatedImages[0].isActive = true;
+
+        const preparedRecipeData = getRecipeDataFunc(data);
+
+        setRecipeData({
+          ...preparedRecipeData,
+          images: updatedImages,
+        });
+
+        setAddNoteForm({ ...addNoteForm, note });
+        setIsAvailabilityRecipe(true);
+      }
+    }).catch(() => {
+      setIsAvailabilityRecipe(false);
+    }).finally(() => {
+      setIsSpinnerActive(false);
+    });
+  };
+
   useEffect(() => {
+    const pathname = history.location.pathname.split('/');
+    const recipeIdByLink = pathname[pathname.length - 1];
+
+    setRecipeId(recipeIdByLink);
+
     let cleanComponent = false;
-    if (!cleanComponent) {
-      getRecipeData(recipeId, true, true, true).then((response) => {
-        if (response.data.success && response.data.data) {
-          const { data } = response;
-
-          if (data.success && data.data) {
-            const {
-              images,
-              note,
-            } = data.data;
-
-            const updatedImages = [...images];
-
-            updatedImages[0].isActive = true;
-
-            const preparedRecipeData = getRecipeDataFunc(data.data);
-
-            setRecipeData({
-              ...preparedRecipeData,
-              images: updatedImages,
-            });
-
-            setAddNoteForm({ ...addNoteForm, note });
-          }
-          setIsAvailabilityRecipe(true);
-        }
-      }).catch(() => {
-        setIsAvailabilityRecipe(false);
-      }).finally(() => {
-        setIsSpinnerActive(false);
-      });
-    }
-
+    if (!cleanComponent) getRecipe(recipeIdByLink);
     return () => cleanComponent = true;
-  }, [recipeId]);
+  }, [history.location.pathname]);
+
+  const scrollToTop = () => {
+    const recipeInfoBlock = document.querySelector('.recipe__main-info');
+    recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   return (
     <>
@@ -209,16 +213,31 @@ const RecipeFullView = (props: any) => {
         <div className='recipe'>
           <div className='container'>
             <Breadcrumb
-              routes={[
-                {
-                  url: routes.main,
-                  name: t('breadcrumb.main'),
-                },
-                {
-                  url: routes.recipes,
-                  name: t('app.title.recipes'),
-                },
-              ]}
+              routes={
+                props.location.fromMealPlan ? ([
+                  {
+                    url: routes.main,
+                    name: t('breadcrumb.main'),
+                  },
+                  {
+                    url: routes.mealPlan,
+                    name: t('mp.title'),
+                  },
+                  {
+                    url: routes.recipes,
+                    name: t('app.title.recipes'),
+                  },
+                ]) : ([
+                  {
+                    url: routes.main,
+                    name: t('breadcrumb.main'),
+                  },
+                  {
+                    url: routes.recipes,
+                    name: t('app.title.recipes'),
+                  },
+                ])
+              }
               currentPage={recipeData.name}
             />
             <div className='row'>
@@ -669,12 +688,11 @@ const RecipeFullView = (props: any) => {
                       {recipeData.similar.map((similarRecipe) => (
                         <div key={similarRecipe.id} className='recipe__similar-recipes-item'>
                           <Link
-                            to={routes.getRecipeFullView(similarRecipe.id)}
-                            onClick={() => {
-                              setRecipeId(similarRecipe.id);
-                              const recipeInfoBlock = document.querySelector('.recipe__main-info');
-                              recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }}
+                            to={props.location.fromMealPlan ? {
+                              pathname: routes.getRecipeFullView(similarRecipe.id),
+                              fromMealPlan: true,
+                            } : routes.getRecipeFullView(similarRecipe.id)}
+                            onClick={() => scrollToTop()}
                             className='recipe__similar-recipes-item-media'
                           >
                             <img src={similarRecipe.image_url} alt='' />
@@ -682,12 +700,11 @@ const RecipeFullView = (props: any) => {
                           </Link>
                           <div className='recipe__similar-recipes-item-text'>
                             <Link
-                              to={routes.getRecipeFullView(similarRecipe.id)}
-                              onClick={() => {
-                                setRecipeId(similarRecipe.id);
-                                const recipeInfoBlock = document.querySelector('.recipe__main-info');
-                                recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                              }}
+                              to={props.location.fromMealPlan ? {
+                                pathname: routes.getRecipeFullView(similarRecipe.id),
+                                fromMealPlan: true,
+                              } : routes.getRecipeFullView(similarRecipe.id)}
+                              onClick={() => scrollToTop()}
                               className='recipe__similar-recipes-item-text-name'
                             >
                               {similarRecipe.name_i18n}

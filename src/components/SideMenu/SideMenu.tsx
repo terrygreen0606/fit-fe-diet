@@ -51,7 +51,7 @@ const SideMenu = ({ localePhrases, isAuthenticated }: any) => {
           </li>
           <li>
             <Link to={routes.mealPlan} className='mobile-menu-list-item'>
-              {t('nutrition.title')}
+              {t('mp.title')}
             </Link>
           </li>
         </ul>

@@ -90,7 +90,7 @@ const Header = (props: any) => {
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
                 >
-                  {t('nutrition.title')}
+                  {t('mp.title')}
                 </NavLink>
 
                 <ShoppingListCart visible={isAuthenticated && settings.paid_until} />
