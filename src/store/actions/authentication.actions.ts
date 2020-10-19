@@ -34,7 +34,7 @@ export const fetchLocales = () => async (dispatch) => {
       localStorage.setItem('FITLOPE_LOCALE_LANG', userLang);
       localStorage.setItem('FITLOPE_LOCALE_PHRASES', JSON.stringify(data.data));
     }
-  });
+  }).catch(() => { });
 };
 
 export const fetchPublicSettings = () => async (dispatch) => {
@@ -46,7 +46,7 @@ export const fetchPublicSettings = () => async (dispatch) => {
         dispatch(setAppSetting(data.data));
         localStorage.setItem('FITLOPE_PUBLIC_SETTINGS', JSON.stringify(data.data));
       }
-    });
+    }).catch(() => { });
 };
 
 export const fetchUserSettings = () => async (dispatch) => {
@@ -61,7 +61,7 @@ export const fetchUserSettings = () => async (dispatch) => {
         }));
         localStorage.setItem('FITLOPE_USER_SETTINGS', JSON.stringify(data.data));
       }
-    });
+    }).catch(() => { });
 };
 
 export const loadLocales = (reloadLocales: boolean = false) => async (dispatch) => {

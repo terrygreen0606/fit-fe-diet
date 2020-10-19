@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import axios from 'utils/axios';
-import { 
+import {
   UserValidateParams,
   UserWeightPredictionParams,
   UserUpdateProfileParams,
@@ -14,13 +14,13 @@ export const fetchUserProfile = () =>
   axios.get('/user/profile');
 
 export const getUserFamily = () =>
-  axios.get('user/family');
+  axios.get('/user/family');
 
 export const getUserInviteLink = () =>
-  axios.get('user/invite-link');
+  axios.get('/user/invite-link');
 
 export const getUserSettings = () =>
-  axios.get('app/settings');
+  axios.get('/app/settings');
 
 export const getUserWeightChart = () =>
   axios.get('/user/weight-chart');
@@ -31,7 +31,7 @@ export const getUserWeightPrediction = (params: UserWeightPredictionParams) =>
   });
 
 export const userInviteFriendByEmail = (email: string) =>
-  axios.put(`user/invite-friend/${email}`);
+  axios.put(`/user/invite-friend/${email}`);
 
 export const userUpdateProfile = (params: UserUpdateProfileParams) =>
   axios.put('/user/update-profile', params);
@@ -58,3 +58,6 @@ export const getActiveAppTariff = () =>
 
 export const getAppReviews = () =>
   axios.get('/app/reviews');
+
+export const userInviteFamilyByEmail = (email: string) =>
+  axios.put(`/user/invite-family/${email}`);
