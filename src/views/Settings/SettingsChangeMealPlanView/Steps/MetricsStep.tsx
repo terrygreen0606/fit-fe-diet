@@ -58,6 +58,7 @@ const MetricsStep = ({
     getTranslate(localePhrases, code, placeholders);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
 
   const [updateMetrics, setUpdateMetrics] = useState({
     measurement: settings?.measurement,
@@ -133,6 +134,7 @@ const MetricsStep = ({
     } = updateMetrics;
 
     if (!hasError) {
+      setIsLoadingButton(true);
       userValidate({
         measurement,
         age,
@@ -188,7 +190,8 @@ const MetricsStep = ({
               }
             } catch { }
           }
-        });
+        })
+        .finally(() => setIsLoadingButton(true));
     }
   };
 
@@ -347,6 +350,11 @@ const MetricsStep = ({
             onClick={(e) => updateChangeMealSubmit(e)}
           >
             {t('mp.save_next')}
+            <ContentLoading
+              isLoading={isLoadingButton}
+              isError={false}
+              spinSize='sm'
+            />
           </Button>
         </div>
       </div>

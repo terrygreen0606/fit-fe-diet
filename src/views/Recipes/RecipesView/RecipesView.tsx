@@ -51,6 +51,7 @@ const RecipesView = (props: any) => {
   const [cuisinesList, setCuisinesList] = useState<any[]>([]);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
 
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(t('recipe.search_by_recipes'));
 
@@ -172,6 +173,18 @@ const RecipesView = (props: any) => {
 
       setRecipesList([...updatedRecipesList]);
     });
+  };
+
+  const addToShopList = (itemId: string) => {
+    setActiveItemIdShopBtn(itemId);
+    addToShoppingListByRecipes([itemId])
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.update_shopping_list.success'));
+        }
+      })
+      .catch(() => { })
+      .finally(() => setActiveItemIdShopBtn(null));
   };
 
   const changeCuisineList = (item, itemIndex: number) => {
@@ -356,11 +369,8 @@ const RecipesView = (props: any) => {
                         checkedActive={item.is_prepared}
                         onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
                         onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
-                        onClickShopCart={() => addToShoppingListByRecipes([item.id]).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            toast.success(t('recipe.update_shopping_list.success'));
-                          }
-                        })}
+                        onClickShopCart={() => addToShopList(item.id)}
+                        isLoadingShopBtn={activeItemIdShopBtn === item.id}
                       />
                     </div>
                   ))}

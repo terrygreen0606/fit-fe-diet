@@ -92,10 +92,12 @@
     border: 1px solid $steel-blue
     border-radius: 5px
     background-color: transparent
-    transition: 0.2s background-color, 0.2s color ease
+    transition: 0.2s background-color, 0.2s color, 0.2s box-shadow ease
     cursor: pointer
 
-    &:hover,
+    &:hover
+      box-shadow: 0 8px 15px $steel-blue
+
     &.active
       background-color: $steel-blue
       color: $white

@@ -36,6 +36,7 @@ const MealsStep = ({
     getTranslate(localePhrases, code, placeholders);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [mealsCnt, setMealsCnt] = useState<number>(null);
 
   useEffect(() => {
@@ -44,14 +45,18 @@ const MealsStep = ({
   }, []);
 
   const updateMealsQuantity = () => {
+    setIsLoadingButton(true);
     userUpdateMealSettings({
       meals_cnt: mealsCnt,
-    }).then((response) => {
-      if (response.data.success && response.data.data) {
-        updateActiveStep(steps.workout);
-        updateMealsCnt(mealsCnt);
-      }
-    }).catch(() => toast.error(t('mp.form.error')));
+    })
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          updateActiveStep(steps.workout);
+          updateMealsCnt(mealsCnt);
+        }
+      })
+      .catch(() => toast.error(t('mp.form.error')))
+      .finally(() => setIsLoadingButton(false));
   };
 
   return (
@@ -198,6 +203,11 @@ const MealsStep = ({
             className='change-meal-plan__btn'
           >
             {t('mp.save_next')}
+            <ContentLoading
+              isLoading={isLoadingButton}
+              isError={false}
+              spinSize='sm'
+            />
           </Button>
         </div>
       </div>

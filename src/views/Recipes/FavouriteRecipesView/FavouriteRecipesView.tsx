@@ -38,6 +38,7 @@ const FavouriteRecipesView = (props: any) => {
   );
 
   const [isLoadingRecipes, setIsLoadingRecipes] = useState<boolean>(true);
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
 
   const [recipesList, setRecipesList] = useState<any[]>([]);
 
@@ -126,13 +127,6 @@ const FavouriteRecipesView = (props: any) => {
 
           setRecipesList([...data.recipes]);
 
-          setRecipesListPageInfo({
-            ...recipesListPageInfo,
-            page: data.page,
-            total: data.total,
-            total_pages: data.total_pages,
-          });
-
           firstRender.current = false;
         }
       }).catch(() => { });
@@ -156,6 +150,19 @@ const FavouriteRecipesView = (props: any) => {
     }
 
     return t('common.oz_label');
+  };
+
+  const addToShopList = (itemId: string) => {
+    setActiveItemIdShopBtn(itemId);
+
+    addToShoppingListByRecipes([itemId])
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.update_shopping_list.success'));
+        }
+      })
+      .catch(() => { })
+      .finally(() => setActiveItemIdShopBtn(null));
   };
 
   const getClickedPage = (value: number) => {
@@ -320,17 +327,16 @@ const FavouriteRecipesView = (props: any) => {
                     <div className='favourites-recipes__list-item-text-shop-list'>
                       <Button
                         color='gray'
-                        onClick={() => {
-                          addToShoppingListByRecipes([item.id]).then((response) => {
-                            if (response.data.success && response.data.data) {
-                              toast.success(t('recipe.update_shopping_list.success'));
-                            }
-                          });
-                        }}
+                        onClick={() => addToShopList(item.id)}
                         className='favourites-recipes__list-item-text-shop-list-btn'
                       >
                         <ShoppingCartIcon />
                         {t('recipe.favourites.shopping_list')}
+                        <ContentLoading
+                          isLoading={activeItemIdShopBtn === item.id}
+                          isError={false}
+                          spinSize='sm'
+                        />
                       </Button>
                     </div>
                   </div>

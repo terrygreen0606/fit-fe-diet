@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import {
   getTranslate,
@@ -72,6 +73,7 @@ const MealPlanView = (props: any) => {
 
   const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
   const [isMealPlanLoading, setIsMealPlanLoading] = useState<boolean>(true);
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
@@ -243,6 +245,19 @@ const MealPlanView = (props: any) => {
     }).catch(() => { });
   };
 
+  const addToShopList = (itemId: string) => {
+    setActiveItemIdShopBtn(itemId);
+
+    addToShoppingListByRecipes([itemId])
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.update_shopping_list.success'));
+        }
+      })
+      .catch(() => { })
+      .finally(() => setActiveItemIdShopBtn(null));
+  };
+
   const downloadTxtFile = () => {
     getMealPlanText().then((response) => {
       if (response.data.success && response.data.data) {
@@ -410,11 +425,9 @@ const MealPlanView = (props: any) => {
                                   time={recipeItem.time}
                                   desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
                                   costLevel={costLevelLabel[recipeItem.cost_level]}
-                                  onClickFavourite={() =>
-                                    likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickChecked={() =>
-                                    prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickShopCart={() => addToShoppingListByRecipes([recipeItem.id])}
+                                  onClickFavourite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                  onClickChecked={() => prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                  onClickShopCart={() => addToShopList(recipeItem.id)}
                                   onClickReload={() =>
                                     updateRecipe(
                                       mealPlan[dayItemIndex].date_ts,
@@ -422,6 +435,7 @@ const MealPlanView = (props: any) => {
                                       dayItemIndex,
                                       recipeItemIndex,
                                     )}
+                                  isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
                                 />
                               </div>
                             ))}
