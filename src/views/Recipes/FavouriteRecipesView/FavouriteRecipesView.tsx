@@ -38,7 +38,7 @@ const FavouriteRecipesView = (props: any) => {
   );
 
   const [isLoadingRecipes, setIsLoadingRecipes] = useState<boolean>(true);
-  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>('');
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
 
   const [recipesList, setRecipesList] = useState<any[]>([]);
 
@@ -162,7 +162,7 @@ const FavouriteRecipesView = (props: any) => {
         }
       })
       .catch(() => { })
-      .finally(() => setActiveItemIdShopBtn(''));
+      .finally(() => setActiveItemIdShopBtn(null));
   };
 
   const getClickedPage = (value: number) => {
@@ -228,7 +228,7 @@ const FavouriteRecipesView = (props: any) => {
             spinSize='lg'
           >
             <div className='favourites-recipes__list'>
-              {recipesList.map((item, itemIndex) => (
+              {recipesList.map((item) => (
                 <div
                   key={item.id}
                   className='favourites-recipes__list-item'

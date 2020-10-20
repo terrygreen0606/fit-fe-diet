@@ -51,7 +51,7 @@ const RecipesView = (props: any) => {
   const [cuisinesList, setCuisinesList] = useState<any[]>([]);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
-  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>('');
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
 
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(t('recipe.search_by_recipes'));
 
@@ -184,7 +184,7 @@ const RecipesView = (props: any) => {
         }
       })
       .catch(() => { })
-      .finally(() => setActiveItemIdShopBtn(''));
+      .finally(() => setActiveItemIdShopBtn(null));
   };
 
   const changeCuisineList = (item, itemIndex: number) => {

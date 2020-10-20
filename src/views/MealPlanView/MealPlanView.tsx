@@ -73,7 +73,7 @@ const MealPlanView = (props: any) => {
 
   const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
   const [isMealPlanLoading, setIsMealPlanLoading] = useState<boolean>(true);
-  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>('');
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
@@ -255,7 +255,7 @@ const MealPlanView = (props: any) => {
         }
       })
       .catch(() => { })
-      .finally(() => setActiveItemIdShopBtn(''));
+      .finally(() => setActiveItemIdShopBtn(null));
   };
 
   const downloadTxtFile = () => {
