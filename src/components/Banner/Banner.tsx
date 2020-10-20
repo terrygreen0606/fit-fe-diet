@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { getTranslate } from 'utils';
 
@@ -28,12 +28,34 @@ const Banner = ({
     placeholders,
   );
 
+  const bannerRef = useRef(null);
   const [isBannerActive, setIsBannerActive] = useState<boolean>(true);
   const [bannerStep, setBannerStep] = useState<number>(0);
+  const [bannerAnimationClean, setBannerAnimationClean] = useState(null);
+
+  useEffect(() => {
+    clearTimeout(bannerAnimationClean);
+
+    if (bannerRef.current) {
+      bannerRef.current.classList.remove('fadeInOut');
+
+      setTimeout(() => {
+        bannerRef.current.classList.add('fadeInOut');
+      }, 0);
+
+      const timeout = setTimeout(() => {
+        if (bannerRef.current) {
+          bannerRef.current.classList.remove('fadeInOut');
+        }
+      }, 3000);
+
+      setBannerAnimationClean(timeout);
+    }
+  }, [bannerStep]);
 
   return (
     isBannerActive && (
-      <div className='banner card-bg'>
+      <div ref={bannerRef} className='banner card-bg'>
         <div className='banner-text'>
           <div
             dangerouslySetInnerHTML={{ __html: t(items[bannerStep].title) }}
