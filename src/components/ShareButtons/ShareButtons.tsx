@@ -11,8 +11,9 @@ import { ReactComponent as TwitterLogo } from 'assets/img/icons/twitter-logo-ico
 import { ReactComponent as FacebookLogo } from 'assets/img/icons/facebook-logo-icon.svg';
 import { ReactComponent as WhatsappLogo } from 'assets/img/icons/whatsapp-logo-icon.svg';
 import { ReactComponent as TelegramLogo } from 'assets/img/icons/telegram-logo-icon.svg';
+import { ReactComponent as PinterestLogo } from 'assets/img/icons/pinterest-logo-icon.svg';
 
-type SocialType = 'twitter' | 'facebook' | 'telegram' | 'whatsapp';
+type SocialType = 'twitter' | 'facebook' | 'telegram' | 'whatsapp' | 'pinterest';
 
 type ShareButtonsProps = {
   shareLink?: string;
@@ -30,7 +31,7 @@ const shareButtonsPropsDefault = {
   visible: false,
   className: '',
   disabled: false,
-  items: ['twitter', 'facebook', 'whatsapp'],
+  items: ['twitter', 'facebook', 'whatsapp', 'pinterest'],
   fetchData: null,
 };
 
@@ -56,6 +57,8 @@ const ShareButtons = ({
         return <TelegramLogo />;
       case 'whatsapp':
         return <WhatsappLogo />;
+      case 'pinterest':
+        return <PinterestLogo />;
       default:
         break;
     }
