@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import {
   getTranslate,
@@ -142,6 +143,7 @@ const MealPlanView = (props: any) => {
           const todayTs = moment(today.setHours(-(new Date().getTimezoneOffset() / 60), 0, 0, 0)).unix();
 
           list.forEach((item, itemIndex) => {
+            item.isActiveShopBtn = false;
             if (item.date_ts !== todayTs && itemIndex === 0) {
               for (let i = todayTs; i < item.date_ts; i += 86400) {
                 updatedMealPlan.push({
@@ -241,6 +243,23 @@ const MealPlanView = (props: any) => {
         setMealPlan([...updatedMealPlan]);
       }
     }).catch(() => { });
+  };
+
+  const addToShopList = (itemId: string, dayItemIndex: number, itemIndex: number) => {
+    const updatedMealPlan = [...mealPlan];
+    updatedMealPlan[dayItemIndex].list[itemIndex].isActiveShopBtn = true;
+    setMealPlan([...updatedMealPlan]);
+    addToShoppingListByRecipes([itemId])
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.update_shopping_list.success'));
+        }
+      })
+      .catch(() => { })
+      .finally(() => {
+        updatedMealPlan[dayItemIndex].list[itemIndex].isActiveShopBtn = false;
+        setMealPlan([...updatedMealPlan]);
+      });
   };
 
   const downloadTxtFile = () => {
@@ -410,11 +429,9 @@ const MealPlanView = (props: any) => {
                                   time={recipeItem.time}
                                   desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
                                   costLevel={costLevelLabel[recipeItem.cost_level]}
-                                  onClickFavourite={() =>
-                                    likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickChecked={() =>
-                                    prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickShopCart={() => addToShoppingListByRecipes([recipeItem.id])}
+                                  onClickFavourite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                  onClickChecked={() => prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                                  onClickShopCart={() => addToShopList(recipeItem.id, dayItemIndex, recipeItemIndex)}
                                   onClickReload={() =>
                                     updateRecipe(
                                       mealPlan[dayItemIndex].date_ts,
@@ -422,6 +439,7 @@ const MealPlanView = (props: any) => {
                                       dayItemIndex,
                                       recipeItemIndex,
                                     )}
+                                  isLoadingShopBtn={recipeItem.isActiveShopBtn}
                                 />
                               </div>
                             ))}

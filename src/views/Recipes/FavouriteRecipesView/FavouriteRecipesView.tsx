@@ -82,7 +82,12 @@ const FavouriteRecipesView = (props: any) => {
             window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
           }
 
-          setRecipesList([...data.recipes]);
+          const updatedRecipesList = data.recipes.map((item) => ({
+            ...item,
+            isActiveShopBtn: false,
+          }));
+
+          setRecipesList([...updatedRecipesList]);
 
           setRecipesListPageInfo({
             ...recipesListPageInfo,
@@ -124,7 +129,12 @@ const FavouriteRecipesView = (props: any) => {
           };
           window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
 
-          setRecipesList([...data.recipes]);
+          const updatedRecipesList = data.recipes.map((item) => ({
+            ...item,
+            isActiveShopBtn: false,
+          }));
+
+          setRecipesList([...updatedRecipesList]);
 
           setRecipesListPageInfo({
             ...recipesListPageInfo,
@@ -156,6 +166,24 @@ const FavouriteRecipesView = (props: any) => {
     }
 
     return t('common.oz_label');
+  };
+
+  const addToShopList = (itemId: string, itemIndex: number) => {
+    const updatedRecipesList = [...recipesList];
+    updatedRecipesList[itemIndex].isActiveShopBtn = true;
+    setRecipesList([...updatedRecipesList]);
+
+    addToShoppingListByRecipes([itemId])
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.update_shopping_list.success'));
+        }
+      })
+      .catch(() => { })
+      .finally(() => {
+        updatedRecipesList[itemIndex].isActiveShopBtn = false;
+        setRecipesList([...updatedRecipesList]);
+      });
   };
 
   const getClickedPage = (value: number) => {
@@ -221,7 +249,7 @@ const FavouriteRecipesView = (props: any) => {
             spinSize='lg'
           >
             <div className='favourites-recipes__list'>
-              {recipesList.map((item) => (
+              {recipesList.map((item, itemIndex) => (
                 <div
                   key={item.id}
                   className='favourites-recipes__list-item'
@@ -320,17 +348,16 @@ const FavouriteRecipesView = (props: any) => {
                     <div className='favourites-recipes__list-item-text-shop-list'>
                       <Button
                         color='gray'
-                        onClick={() => {
-                          addToShoppingListByRecipes([item.id]).then((response) => {
-                            if (response.data.success && response.data.data) {
-                              toast.success(t('recipe.update_shopping_list.success'));
-                            }
-                          });
-                        }}
+                        onClick={() => addToShopList(item.id, itemIndex)}
                         className='favourites-recipes__list-item-text-shop-list-btn'
                       >
                         <ShoppingCartIcon />
                         {t('recipe.favourites.shopping_list')}
+                        <ContentLoading
+                          isLoading={item.isActiveShopBtn}
+                          isError={false}
+                          spinSize='sm'
+                        />
                       </Button>
                     </div>
                   </div>

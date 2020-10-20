@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getTranslate } from 'utils';
 
 import WithTranslate from 'components/hoc/WithTranslate';
+import ContentLoading from 'components/hoc/ContentLoading';
 
 import './NutritionPlanCard.sass';
 
@@ -32,6 +33,7 @@ type NutritionPlanCardProps = {
   time?: number,
   desc?: string,
   costLevel?: string,
+  isLoadingShopBtn?,
 };
 
 const NutritionPlanCardDefaultProps = {
@@ -48,6 +50,7 @@ const NutritionPlanCardDefaultProps = {
   time: 0,
   desc: '',
   costLevel: '',
+  isLoadingShopBtn: false,
 };
 
 const NutritionPlanCard = ({
@@ -68,6 +71,7 @@ const NutritionPlanCard = ({
   time,
   desc,
   costLevel,
+  isLoadingShopBtn,
 }: NutritionPlanCardProps) => {
   const t = (code: string, placeholders?: any) => getTranslate(
     localePhrases,
@@ -154,7 +158,13 @@ const NutritionPlanCard = ({
                 nutrition-plan-card-controls-item-icon
                 nutrition-plan-card-controls-item-icon-shop'
               >
-                <ShoppingCartIcon />
+                <ContentLoading
+                  isLoading={isLoadingShopBtn}
+                  isError={false}
+                  spinSize='xs'
+                >
+                  <ShoppingCartIcon />
+                </ContentLoading>
               </div>
             </button>
           )}

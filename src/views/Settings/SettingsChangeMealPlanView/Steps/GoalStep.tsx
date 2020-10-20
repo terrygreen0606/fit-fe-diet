@@ -38,6 +38,7 @@ const GoalStep = ({
   const [goal, setGoal] = useState(null);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
 
   useEffect(() => {
     setGoal(userGoal);
@@ -45,6 +46,7 @@ const GoalStep = ({
   }, [userGoal]);
 
   const updateGoal = () => {
+    setIsLoadingButton(true);
     userUpdateMealSettings({
       goal,
     }).then((response) => {
@@ -52,7 +54,8 @@ const GoalStep = ({
         updateActiveStep(steps.metrics);
         updateUserGoal(response.data.data.goal);
       }
-    }).catch(() => toast.error(t('mp.form.error')));
+    }).catch(() => toast.error(t('mp.form.error')))
+      .finally(() => setIsLoadingButton(false));
   };
 
   return (
@@ -109,6 +112,11 @@ const GoalStep = ({
             onClick={() => updateGoal()}
           >
             {t('mp.save_next')}
+            <ContentLoading
+              isLoading={isLoadingButton}
+              isError={false}
+              spinSize='sm'
+            />
           </Button>
         </div>
       </div>

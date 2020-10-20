@@ -31,6 +31,7 @@ const DiseasesStep = ({
     getTranslate(localePhrases, code, placeholders);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [diseasesList, setDiseasesList] = useState([]);
 
   useEffect(() => {
@@ -55,6 +56,8 @@ const DiseasesStep = ({
   }, []);
 
   const updateUserDesiases = () => {
+    setIsLoadingButton(true);
+
     const updatedDesiasesList = [];
 
     diseasesList.forEach((item) => {
@@ -63,12 +66,15 @@ const DiseasesStep = ({
 
     userUpdateMealSettings({
       diseases: updatedDesiasesList,
-    }).then((response) => {
-      if (response.data.success && response.data.data) {
-        updateActiveStep(steps.meals);
-        userUpdateDesiases(updatedDesiasesList);
-      }
-    });
+    })
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          updateActiveStep(steps.meals);
+          userUpdateDesiases(updatedDesiasesList);
+        }
+      })
+      .catch(() => { })
+      .finally(() => setIsLoadingButton(false));
   };
 
   return (
@@ -107,6 +113,11 @@ const DiseasesStep = ({
             onClick={() => updateUserDesiases()}
           >
             {t('mp.save_next')}
+            <ContentLoading
+              isLoading={isLoadingButton}
+              isError={false}
+              spinSize='sm'
+            />
           </Button>
         </div>
       </div>

@@ -88,7 +88,12 @@ const RecipesView = (props: any) => {
               window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
             }
 
-            setRecipesList([...data.recipes]);
+            const updatedRecipesList = data.recipes.map((item) => ({
+              ...item,
+              isActiveShopBtn: false,
+            }));
+
+            setRecipesList([...updatedRecipesList]);
 
             setRecipesListPageInfo({
               ...recipesListPageInfo,
@@ -125,7 +130,12 @@ const RecipesView = (props: any) => {
           };
           window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
 
-          setRecipesList([...data.recipes]);
+          const updatedRecipesList = data.recipes.map((item) => ({
+            ...item,
+            isActiveShopBtn: false,
+          }));
+
+          setRecipesList([...updatedRecipesList]);
 
           setRecipesListPageInfo({
             ...recipesListPageInfo,
@@ -172,6 +182,24 @@ const RecipesView = (props: any) => {
 
       setRecipesList([...updatedRecipesList]);
     });
+  };
+
+  const addToShopList = (itemId: string, itemIndex: number) => {
+    const updatedRecipesList = [...recipesList];
+    updatedRecipesList[itemIndex].isActiveShopBtn = true;
+    setRecipesList([...updatedRecipesList]);
+
+    addToShoppingListByRecipes([itemId])
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.update_shopping_list.success'));
+        }
+      })
+      .catch(() => { })
+      .finally(() => {
+        updatedRecipesList[itemIndex].isActiveShopBtn = false;
+        setRecipesList([...updatedRecipesList]);
+      });
   };
 
   const changeCuisineList = (item, itemIndex: number) => {
@@ -356,11 +384,8 @@ const RecipesView = (props: any) => {
                         checkedActive={item.is_prepared}
                         onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
                         onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
-                        onClickShopCart={() => addToShoppingListByRecipes([item.id]).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            toast.success(t('recipe.update_shopping_list.success'));
-                          }
-                        })}
+                        onClickShopCart={() => addToShopList(item.id, itemIndex)}
+                        isLoadingShopBtn={item.isActiveShopBtn}
                       />
                     </div>
                   ))}

@@ -22,6 +22,7 @@
     text-align: center
 
   &__btn
+    position: relative
     padding: 13px 74px
     font-size: 24px
 
@@ -30,6 +31,13 @@
 
     @media (max-width: 767px)
       width: 100%
+
+    .loadingSpinner_wrap
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      padding-right: 15px
+      text-align: right
 
   &__goals
     display: flex
@@ -62,16 +70,22 @@
         padding: 15px 0
       
       &:hover
-        box-shadow: 0 5px 15px #8A8A8A
-        color: $black
+        box-shadow: 3px 4px 26px -9px $steel-blue
+        color: $steel-blue
+        border: 1px solid $steel-blue
+
+        svg
+          path
+            fill: $steel-blue
+
+          circle
+            fill: $white
+            stroke: $steel-blue
 
       &.active
         border: 1px solid $steel-blue
         background-color: $steel-blue
         color: $white
-
-        &:hover
-          box-shadow: 0 5px 15px $steel-blue
 
         svg
           path
@@ -241,14 +255,12 @@
       transition: background-color 0.2s, border 0.2s, box-shadow 0.2s ease
 
       &:hover
-        box-shadow: 0 5px 15px $steel-blue
+        border: 1px solid $seashell-pink
+        box-shadow: 3px 4px 26px -9px $seashell-pink
 
       &.active
         background-color: $seashell-pink
         border: 1px solid $seashell-pink
-
-        &:hover
-          box-shadow: 0 5px 15px $seashell-pink
 
         .change-meal-plan__not-eating-item-desc
           color: $white
@@ -289,16 +301,15 @@
       cursor: pointer
 
       &:hover
-        box-shadow: 0 5px 15px #8A8A8A
+        color: $steel-blue
+        border: 1px solid $steel-blue
+        box-shadow: 3px 4px 26px -9px $steel-blue
 
       &.active
         font-weight: bold
         color: $white
         background-color: $steel-blue
         border: 1px solid $steel-blue
-
-        &:hover
-          box-shadow: 0 5px 15px $steel-blue
 
       @media (max-width: 767px)
         flex-basis: calc(50% - 10px)
@@ -339,14 +350,14 @@
           color: $white
 
           &:hover
-            box-shadow: 0 5px 15px $steel-blue
+            box-shadow: 3px 4px 26px -9px $steel-blue
 
       &-count
         display: flex
         justify-content: center
         align-items: center
         transform: translateX(-50%)
-        flex-basis: 102px
+        width: 102px
         height: 102px
         font-size: 48px
         line-height: 1.2
@@ -378,7 +389,7 @@
       &-content
         display: flex
         flex-wrap: wrap
-        flex-basis: 300px
+        flex-basis: 290px
 
         @media (max-width: 1366px)
           flex-basis: 150px
@@ -413,8 +424,13 @@
         color: $black
         transition: border 0.2s, background-color 0.2s, color 0.2s, box-shadow 0.2s ease
 
+        @media (max-width: 1600px)
+          padding: 16px 36px
+
         &:hover
-          color: $black
+          box-shadow: 3px 4px 26px -9px $steel-blue
+          border: 2px solid $steel-blue
+          color: $steel-blue
 
   &__workout
     &-list
@@ -448,14 +464,13 @@
           font-size: 14px
 
     &-btn:hover
-      box-shadow: 0 5px 15px #8A8A8A
+      color: $steel-blue
+      border: 1px solid $steel-blue
+      box-shadow: 3px 4px 26px -9px $steel-blue
 
     &-btn.active
       border-color: $steel-blue
       background-color: $steel-blue
-
-      &:hover
-        box-shadow: 0 5px 15px $steel-blue
 
       .change-meal-plan__workout-btn-desc
         color: $white

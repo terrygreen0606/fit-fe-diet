@@ -29,6 +29,7 @@ const NotEatingStep = ({
     getTranslate(localePhrases, code, placeholders);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [ignoreCuisinesList, setIgnoreCuisinesList] = useState([]);
 
   useEffect(() => {
@@ -52,6 +53,8 @@ const NotEatingStep = ({
   }, []);
 
   const updateCuisineList = () => {
+    setIsLoadingButton(true);
+
     const updatedCuisineList = [];
 
     ignoreCuisinesList.forEach((item) => {
@@ -60,12 +63,15 @@ const NotEatingStep = ({
 
     userUpdateMealSettings({
       ignore_cuisine_ids: updatedCuisineList,
-    }).then((response) => {
-      if (response.data.success && response.data.data) {
-        updateActiveStep(steps.diseases);
-        userUpdateCuisineList(updatedCuisineList);
-      }
-    });
+    })
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          updateActiveStep(steps.diseases);
+          userUpdateCuisineList(updatedCuisineList);
+        }
+      })
+      .catch(() => { })
+      .finally(() => setIsLoadingButton(false));
   };
 
   return (
@@ -109,6 +115,11 @@ const NotEatingStep = ({
             onClick={() => updateCuisineList()}
           >
             {t('mp.save_next')}
+            <ContentLoading
+              isLoading={isLoadingButton}
+              isError={false}
+              spinSize='sm'
+            />
           </Button>
         </div>
       </div>

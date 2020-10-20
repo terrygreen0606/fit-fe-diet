@@ -27,6 +27,7 @@ const WorkoutStep = ({
     getTranslate(localePhrases, code, placeholders);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [isLoadingButton, setIsLoadingButton] = useState<boolean>(false);
   const [activityLevels, setActivityLevels] = useState<any[]>([]);
   const [userActivityLevel, setUserActivityLevel] = useState<number>();
 
@@ -42,14 +43,18 @@ const WorkoutStep = ({
   }, []);
 
   const updateUserActLevel = () => {
+    setIsLoadingButton(true);
     userUpdateMealSettings({
       act_level: userActivityLevel,
-    }).then((response) => {
-      if (response.data.success && response.data.data) {
-        updateActLevel(userActivityLevel);
-        toast.success(t('mp.form.success'));
-      }
-    }).catch(() => toast.error(t('mp.form.error')));
+    })
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          updateActLevel(userActivityLevel);
+          toast.success(t('mp.form.success'));
+        }
+      })
+      .catch(() => toast.error(t('mp.form.error')))
+      .finally(() => setIsLoadingButton(false));
   };
 
   return (
@@ -86,6 +91,11 @@ const WorkoutStep = ({
             className='change-meal-plan__btn'
           >
             {t('mp.save')}
+            <ContentLoading
+              isLoading={isLoadingButton}
+              isError={false}
+              spinSize='sm'
+            />
           </Button>
         </div>
       </div>
