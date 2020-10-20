@@ -51,6 +51,7 @@ const RecipesView = (props: any) => {
   const [cuisinesList, setCuisinesList] = useState<any[]>([]);
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>('');
 
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(t('recipe.search_by_recipes'));
 
@@ -88,12 +89,7 @@ const RecipesView = (props: any) => {
               window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
             }
 
-            const updatedRecipesList = data.recipes.map((item) => ({
-              ...item,
-              isActiveShopBtn: false,
-            }));
-
-            setRecipesList([...updatedRecipesList]);
+            setRecipesList([...data.recipes]);
 
             setRecipesListPageInfo({
               ...recipesListPageInfo,
@@ -130,12 +126,7 @@ const RecipesView = (props: any) => {
           };
           window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
 
-          const updatedRecipesList = data.recipes.map((item) => ({
-            ...item,
-            isActiveShopBtn: false,
-          }));
-
-          setRecipesList([...updatedRecipesList]);
+          setRecipesList([...data.recipes]);
 
           setRecipesListPageInfo({
             ...recipesListPageInfo,
@@ -184,11 +175,8 @@ const RecipesView = (props: any) => {
     });
   };
 
-  const addToShopList = (itemId: string, itemIndex: number) => {
-    const updatedRecipesList = [...recipesList];
-    updatedRecipesList[itemIndex].isActiveShopBtn = true;
-    setRecipesList([...updatedRecipesList]);
-
+  const addToShopList = (itemId: string) => {
+    setActiveItemIdShopBtn(itemId);
     addToShoppingListByRecipes([itemId])
       .then((response) => {
         if (response.data.success && response.data.data) {
@@ -196,10 +184,7 @@ const RecipesView = (props: any) => {
         }
       })
       .catch(() => { })
-      .finally(() => {
-        updatedRecipesList[itemIndex].isActiveShopBtn = false;
-        setRecipesList([...updatedRecipesList]);
-      });
+      .finally(() => setActiveItemIdShopBtn(''));
   };
 
   const changeCuisineList = (item, itemIndex: number) => {
@@ -384,8 +369,8 @@ const RecipesView = (props: any) => {
                         checkedActive={item.is_prepared}
                         onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
                         onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
-                        onClickShopCart={() => addToShopList(item.id, itemIndex)}
-                        isLoadingShopBtn={item.isActiveShopBtn}
+                        onClickShopCart={() => addToShopList(item.id)}
+                        isLoadingShopBtn={activeItemIdShopBtn === item.id}
                       />
                     </div>
                   ))}

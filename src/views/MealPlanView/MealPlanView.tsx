@@ -73,6 +73,7 @@ const MealPlanView = (props: any) => {
 
   const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
   const [isMealPlanLoading, setIsMealPlanLoading] = useState<boolean>(true);
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>('');
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
@@ -143,7 +144,6 @@ const MealPlanView = (props: any) => {
           const todayTs = moment(today.setHours(-(new Date().getTimezoneOffset() / 60), 0, 0, 0)).unix();
 
           list.forEach((item, itemIndex) => {
-            item.isActiveShopBtn = false;
             if (item.date_ts !== todayTs && itemIndex === 0) {
               for (let i = todayTs; i < item.date_ts; i += 86400) {
                 updatedMealPlan.push({
@@ -245,10 +245,9 @@ const MealPlanView = (props: any) => {
     }).catch(() => { });
   };
 
-  const addToShopList = (itemId: string, dayItemIndex: number, itemIndex: number) => {
-    const updatedMealPlan = [...mealPlan];
-    updatedMealPlan[dayItemIndex].list[itemIndex].isActiveShopBtn = true;
-    setMealPlan([...updatedMealPlan]);
+  const addToShopList = (itemId: string) => {
+    setActiveItemIdShopBtn(itemId);
+
     addToShoppingListByRecipes([itemId])
       .then((response) => {
         if (response.data.success && response.data.data) {
@@ -256,10 +255,7 @@ const MealPlanView = (props: any) => {
         }
       })
       .catch(() => { })
-      .finally(() => {
-        updatedMealPlan[dayItemIndex].list[itemIndex].isActiveShopBtn = false;
-        setMealPlan([...updatedMealPlan]);
-      });
+      .finally(() => setActiveItemIdShopBtn(''));
   };
 
   const downloadTxtFile = () => {
@@ -431,7 +427,7 @@ const MealPlanView = (props: any) => {
                                   costLevel={costLevelLabel[recipeItem.cost_level]}
                                   onClickFavourite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
                                   onClickChecked={() => prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickShopCart={() => addToShopList(recipeItem.id, dayItemIndex, recipeItemIndex)}
+                                  onClickShopCart={() => addToShopList(recipeItem.id)}
                                   onClickReload={() =>
                                     updateRecipe(
                                       mealPlan[dayItemIndex].date_ts,
@@ -439,7 +435,7 @@ const MealPlanView = (props: any) => {
                                       dayItemIndex,
                                       recipeItemIndex,
                                     )}
-                                  isLoadingShopBtn={recipeItem.isActiveShopBtn}
+                                  isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
                                 />
                               </div>
                             ))}

@@ -38,6 +38,7 @@ const FavouriteRecipesView = (props: any) => {
   );
 
   const [isLoadingRecipes, setIsLoadingRecipes] = useState<boolean>(true);
+  const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>('');
 
   const [recipesList, setRecipesList] = useState<any[]>([]);
 
@@ -82,12 +83,7 @@ const FavouriteRecipesView = (props: any) => {
             window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
           }
 
-          const updatedRecipesList = data.recipes.map((item) => ({
-            ...item,
-            isActiveShopBtn: false,
-          }));
-
-          setRecipesList([...updatedRecipesList]);
+          setRecipesList([...data.recipes]);
 
           setRecipesListPageInfo({
             ...recipesListPageInfo,
@@ -129,19 +125,7 @@ const FavouriteRecipesView = (props: any) => {
           };
           window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
 
-          const updatedRecipesList = data.recipes.map((item) => ({
-            ...item,
-            isActiveShopBtn: false,
-          }));
-
-          setRecipesList([...updatedRecipesList]);
-
-          setRecipesListPageInfo({
-            ...recipesListPageInfo,
-            page: data.page,
-            total: data.total,
-            total_pages: data.total_pages,
-          });
+          setRecipesList([...data.recipes]);
 
           firstRender.current = false;
         }
@@ -168,10 +152,8 @@ const FavouriteRecipesView = (props: any) => {
     return t('common.oz_label');
   };
 
-  const addToShopList = (itemId: string, itemIndex: number) => {
-    const updatedRecipesList = [...recipesList];
-    updatedRecipesList[itemIndex].isActiveShopBtn = true;
-    setRecipesList([...updatedRecipesList]);
+  const addToShopList = (itemId: string) => {
+    setActiveItemIdShopBtn(itemId);
 
     addToShoppingListByRecipes([itemId])
       .then((response) => {
@@ -180,10 +162,7 @@ const FavouriteRecipesView = (props: any) => {
         }
       })
       .catch(() => { })
-      .finally(() => {
-        updatedRecipesList[itemIndex].isActiveShopBtn = false;
-        setRecipesList([...updatedRecipesList]);
-      });
+      .finally(() => setActiveItemIdShopBtn(''));
   };
 
   const getClickedPage = (value: number) => {
@@ -348,13 +327,13 @@ const FavouriteRecipesView = (props: any) => {
                     <div className='favourites-recipes__list-item-text-shop-list'>
                       <Button
                         color='gray'
-                        onClick={() => addToShopList(item.id, itemIndex)}
+                        onClick={() => addToShopList(item.id)}
                         className='favourites-recipes__list-item-text-shop-list-btn'
                       >
                         <ShoppingCartIcon />
                         {t('recipe.favourites.shopping_list')}
                         <ContentLoading
-                          isLoading={item.isActiveShopBtn}
+                          isLoading={activeItemIdShopBtn === item.id}
                           isError={false}
                           spinSize='sm'
                         />
