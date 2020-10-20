@@ -15,17 +15,11 @@ type BannerProps = {
       image: string,
     }
   ];
-  imageSize?: 'md' | 'lg';
   localePhrases: [];
-};
-
-const BannerDefaultProps = {
-  imageSize: 'md',
 };
 
 const Banner = ({
   items,
-  imageSize,
   localePhrases,
 }: BannerProps) => {
   const t = (code: string, placeholders?: any) => getTranslate(
@@ -40,7 +34,7 @@ const Banner = ({
   return (
     isBannerActive && (
       <div className='banner card-bg'>
-        <div className={`banner-text image-size-${imageSize}`}>
+        <div className='banner-text'>
           <div
             dangerouslySetInnerHTML={{ __html: t(items[bannerStep].title) }}
             className='banner-text-title'
@@ -53,7 +47,7 @@ const Banner = ({
           style={{
             backgroundImage: `url(${items[bannerStep].image})`,
           }}
-          className={`banner-media image-size-${imageSize}`}
+          className='banner-media'
         />
         <Button
           color='primary'
@@ -79,7 +73,5 @@ const Banner = ({
     )
   );
 };
-
-Banner.defaultProps = BannerDefaultProps;
 
 export default WithTranslate(Banner);

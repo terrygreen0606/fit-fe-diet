@@ -1,20 +1,24 @@
+@import '../../assets/sass/vars'
+
 .banner
   position: relative
   display: flex
   align-items: center
-  flex-wrap: wrap
   padding: 0 125px 0 55px
   margin-bottom: 80px
 
   @media (max-width: 1200px)
+    flex-wrap: wrap
     padding: 60px 00px 0
 
   &-text
     flex-basis: calc(63% - 115px)
+    max-width: 580px
     padding: 10px 20px 10px 0
 
     @media (max-width: 1200px)
       flex-basis: 100%
+      max-width: 100%
       margin-bottom: 30px
       padding: 0 30px
       text-align: center
@@ -35,21 +39,18 @@
       @media (max-width: 768px)
         font-size: 16px
 
-  &-text.image-size-lg
-    flex-basis: calc(51% - 115px)
-
-    @media (max-width: 1200px)
-      flex-basis: 100%
-
   &-media
-    flex-basis: calc(37% - 115px)
-    height: 250px
+    max-width: 540px
+    flex-basis: 50%
+    height: 220px
     line-height: 0
-    background-size: cover
+    background-size: contain
     background-position: center
+    background-repeat: no-repeat
 
     @media (max-width: 1200px)
       flex-basis: 100%
+      max-width: 100%
       text-align: center
 
     @media (max-width: 768px)
@@ -62,22 +63,18 @@
       max-width: 100%
       height: auto
 
-  &-media.image-size-lg
-    flex-basis: calc(49% - 115px)
-
-    @media (max-width: 1200px)
-      flex-basis: 100%
-
   &-btn
-    flex-basis: 200px
-    margin-left: 30px
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    right: 60px
+    width: 200px
 
     @media (max-width: 1200px)
-      position: absolute
+      top: initial
       bottom: 45px
       left: 50%
       transform: translateX(-50%)
-      margin-left: 0
 
     @media (max-width: 768px)
       font-weight: normal
@@ -88,7 +85,7 @@
     right: 20px
     padding: 0
     font-size: 18px
-    font-family: Montserrat
+    font-family: $base_font
     color: #878787
     background-color: transparent
     border: none
