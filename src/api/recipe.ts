@@ -65,7 +65,7 @@ export const getRecipesList = (
   cuisinesIds: any[] = [],
   page: number = 1,
   filterType: 0 | 1 = 0,
-  filter: string = '',
+  filter: string | string[] = '',
 ) => {
   if (cuisinesIds.length === 0) {
     return axios.get(
@@ -86,6 +86,3 @@ export const getRecipesList = (
     `recipe/?${cuisineIdsQuery}&private=${privateRecipes}&liked=${liked}&page=${page}&filter_type=${filterType}&filter=${filter}`,
   );
 };
-
-export const getRecipesListByUrl = (queryString: string) =>
-  axios.get(`recipe/${queryString}`);

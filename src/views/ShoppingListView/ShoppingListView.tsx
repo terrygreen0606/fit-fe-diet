@@ -545,9 +545,7 @@ const ShoppingListView = (props: any) => {
                     </div>
                   </>
                 )}
-              <Banner
-                items={mockData}
-              />
+              <Banner items={mockData} />
             </div>
           )}
       </section>
