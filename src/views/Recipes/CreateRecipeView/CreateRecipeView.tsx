@@ -1,6 +1,4 @@
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable array-callback-return */
 import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -983,7 +981,7 @@ const CreateRecipeView = (props: any) => {
               value={createRecipeForm.totalWeight}
               onChange={(e) => validateOnChange('totalWeight', e.target.value, e)}
               min={0}
-              height='md'
+              height='sm'
               label={t('recipe.create.total_weight')}
               border='light'
             />
@@ -1001,7 +999,7 @@ const CreateRecipeView = (props: any) => {
               errors={getFieldErrors('recipePreparation')}
               value={createRecipeForm.recipePreparation}
               onChange={(e) => validateOnChange('recipePreparation', e.target.value, e)}
-              rows={16}
+              rows={8}
               className='instructions__field'
               border='light'
             />

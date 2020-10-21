@@ -63,16 +63,16 @@ h1, h2, h3, h4, h5, h6
     margin-bottom: 0
 
 h1
-  font-size: 70px
-  line-height: 80px
+  font-size: 60px
+  line-height: 1.2
   font-weight: 500
 h2
-  font-size: 80px
-  line-height: 98px
+  font-size: 50px
+  line-height: 1.4
   font-weight: bold // styled
 h3
-  font-size: 64px // !!
-  line-height: 78px
+  font-size: 45px // !!
+  line-height: 1.2
   font-weight: bold
 h4
   font-size: 32px
@@ -145,8 +145,8 @@ section
   display: inline-block
   margin-bottom: 44px
   padding-bottom: 16px
-  font-size: 34px
-  line-height: 41px
+  font-size: 28px
+  line-height: 1.2
   font-weight: bold
   border-bottom: 6px solid $steel-blue
 
@@ -178,8 +178,8 @@ section
 
 .app-market-img
   display: inline-block
-  max-width: 274px
-  height: 90px
+  max-width: 200px
+  height: auto
   &__list
     display: block
     &_item
@@ -194,10 +194,10 @@ section
 .page-create-btn
   position: relative
   display: inline-flex
-  padding: 22px 19px
+  padding: 15px 18px
   padding-left: 96px
-  font-size: 24px
-  line-height: 29px
+  font-size: 20px
+  line-height: 1.2
   color: #000
   font-weight: bold
   border: none
@@ -209,16 +209,16 @@ section
   +mt(.2s)
 
   @media only screen and (max-width: 1199px)
-    padding: 22px 96px 22px 19px
+    padding: 15px 96px 15px 18px
     padding-left: 19px
 
   @media only screen and (max-width: 991px)
-    padding: 22px 183px 22px 19px
+    padding: 15px 183px 15px 18px
     font-size: 18px
 
   @media only screen and (max-width: 440px)
     width: 100%
-    padding: 22px 109px 22px 19px
+    padding: 15px 69px 15px 18px
 
   &:hover
     color: $caribbean-green
@@ -227,10 +227,10 @@ section
     position: absolute
     top: 0
     left: 0
-    width: 84px
-    height: 84px
+    width: 60px
+    height: 60px
     background-color: $caribbean-green
-    border: 18px solid #fff
+    border: 10px solid #fff
     border-radius: 100%
     background-image: url('../img/icons/plus-icon.svg')
     background-repeat: no-repeat
@@ -241,11 +241,6 @@ section
     @media only screen and (max-width: 1199px)
       left: initial
       right: 0
-
-    @media only screen and (max-width: 991px)
-      top: initial
-      bottom: -22px
-      right: 13px
 
 // Search tags
 .search-tags-list
@@ -315,11 +310,12 @@ section
     display: inline-block
     padding-bottom: 15px
     border-bottom: 6px solid transparent
-    font-size: 32px
-    line-height: 39px
+    font-size: 24px
+    line-height: 1.2
     font-weight: bold
     color: #000
     text-decoration: none
+    transition: 0.2s border-bottom-color ease
     cursor: pointer
 
     &:hover, &.active
