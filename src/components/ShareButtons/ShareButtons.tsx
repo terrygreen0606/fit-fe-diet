@@ -74,6 +74,8 @@ const ShareButtons = ({
         return (shareLink, shareText) => `https://t.me/share/url?url=${shareLink}&text=${shareText}`;
       case 'whatsapp':
         return (shareLink) => `https://wa.me/?text=${shareLink}`;
+      case 'pinterest':
+        return () => 'https://www.pinterest.com/pin/create/button/';
       default:
         break;
     }
