@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
 import chartConfig from 'utils/chartConfig';
 
 import 'react-app-polyfill/ie11';
@@ -16,6 +18,15 @@ import configureStore from './store/store';
 const store = configureStore();
 
 chartConfig();
+
+Sentry.init({
+  dsn: 'https://cae1d1cda83d48fe8d39302cc41f90cd@sentry.io/1509568',
+  integrations: [new Integrations.BrowserTracing()],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+});
 
 ReactDOM.render(
   <Provider store={store}>
