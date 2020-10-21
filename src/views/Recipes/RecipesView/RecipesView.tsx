@@ -51,6 +51,7 @@ const RecipesView = (props: any) => {
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
+  const [enteredInputValue, setEnteredInputValue] = useState<boolean>(false);
 
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(t('recipe.search_by_recipes'));
 
@@ -109,6 +110,7 @@ const RecipesView = (props: any) => {
             setParamsToGetRecipes({
               ...paramsToGetRecipes,
               page: +queryParametersObj.page,
+              filter: queryParametersObj.filter,
             });
 
             setIsLoadingPage(false);
@@ -148,6 +150,11 @@ const RecipesView = (props: any) => {
   }, [
     paramsToGetRecipes.cuisinesIds,
     paramsToGetRecipes.filterType,
+  ]);
+
+  useEffect(() => {
+    if (enteredInputValue) getRecipeListFunc();
+  }, [
     debouncedSearch,
   ]);
 
@@ -288,6 +295,8 @@ const RecipesView = (props: any) => {
                       const queryParametersObj = queryString.parse(window.location.search);
                       queryParametersObj.filter = e.target.value;
                       window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+
+                      setEnteredInputValue(true);
 
                       setParamsToGetRecipes({
                         ...paramsToGetRecipes,
