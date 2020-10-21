@@ -488,6 +488,7 @@ const CheckoutPage = (props: any) => {
                         onChange={e => validateOnChange('payer_name', e.target.value, e)}
                         errors={getFieldErrors('payer_name')}
                         placeholder=''
+                        className='checkout-pay-form__input'
                       />
                     </FormGroup>
 
@@ -502,6 +503,7 @@ const CheckoutPage = (props: any) => {
                         onChange={e => validateOnChange('phone', e.target.value, e)}
                         errors={getFieldErrors('phone')}
                         placeholder=''
+                        className='checkout-pay-form__input'
                       />
                     </FormGroup>
 
@@ -519,6 +521,7 @@ const CheckoutPage = (props: any) => {
                         onChange={e => validateOnChange('card_number', e.target.value, e)}
                         errors={getFieldErrors('card_number')}
                         placeholder=''
+                        className='checkout-pay-form__input'
                       />
                     </FormGroup>
 
@@ -538,6 +541,7 @@ const CheckoutPage = (props: any) => {
                             onChange={e => validateOnChange('card_month', e.target.value, e)}
                             errors={getFieldErrors('card_month')}
                             placeholder=''
+                            className='checkout-pay-form__input'
                           />
                         </FormGroup>
 
@@ -557,6 +561,7 @@ const CheckoutPage = (props: any) => {
                             onChange={e => validateOnChange('card_year', e.target.value, e)}
                             errors={getFieldErrors('card_year')}
                             placeholder=''
+                            className='checkout-pay-form__input'
                           />
                         </FormGroup>
 
@@ -576,6 +581,7 @@ const CheckoutPage = (props: any) => {
                             onChange={e => validateOnChange('card_cvv', e.target.value, e)}
                             errors={getFieldErrors('card_cvv')}
                             placeholder=''
+                            className='checkout-pay-form__input'
                           />
                         </FormGroup>
 

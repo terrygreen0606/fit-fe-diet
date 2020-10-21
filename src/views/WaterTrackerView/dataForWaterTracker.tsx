@@ -67,7 +67,7 @@ export const chartConfig = (maxValue) => ({
             stepSize: maxValue / 10,
             padding: 10,
             fontFamily: "'Montserrat', sans-serif",
-            callback: (value) => `${Math.round(value / (maxValue / 100))}%`,
+            callback: (value) => `${Math.round((value / maxValue) * 100)}%`,
           },
         },
       ],
