@@ -1,0 +1,26 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "edge": "17",
+          "firefox": "60",
+          "chrome": "58",
+          "ie": "11",
+          "safari": "11.1",
+        },
+        "useBuiltIns": "usage",
+        "corejs": "3.6.5",
+      }
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "esmodules": true
+        }
+      }
+    ]
+  ]
+}

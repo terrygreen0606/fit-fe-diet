@@ -103,11 +103,10 @@ const FavouriteRecipesView = (props: any) => {
             $recipesList.scrollIntoView({ behavior: 'smooth' });
           }
 
-          setIsLoadingRecipes(false);
-
           firstRender.current = false;
         }
-      }).catch(() => { });
+      }).catch(() => { })
+        .finally(() => setIsLoadingRecipes(false));
     } else {
       getRecipesList(
         paramsToGetRecipes.privateRecipes,
@@ -120,18 +119,19 @@ const FavouriteRecipesView = (props: any) => {
         if (response.data.success && response.data.data) {
           const { data } = response.data;
 
-          const queryParameters = {
-            page: paramsToGetRecipes.page,
-          };
-          window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
-
           setRecipesList([...data.recipes]);
+
+          setRecipesListPageInfo({
+            ...recipesListPageInfo,
+            page: data.page,
+            total: data.total,
+            total_pages: data.total_pages,
+          });
 
           firstRender.current = false;
         }
-      }).catch(() => { });
-
-      setIsLoadingRecipes(false);
+      }).catch(() => { })
+        .finally(() => setIsLoadingRecipes(false));
     }
   };
 
@@ -140,9 +140,7 @@ const FavouriteRecipesView = (props: any) => {
     if (!cleanComponent) getRecipesListFunc();
 
     return () => cleanComponent = true;
-  }, [
-    window.location.search,
-  ]);
+  }, [window.location.search]);
 
   const checkMeasurement = () => {
     if (settings.measurement === 'si') {

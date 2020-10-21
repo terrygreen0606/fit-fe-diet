@@ -16,7 +16,6 @@ import {
   likeRecipe,
   prepareRecipe,
   addToShoppingListByRecipes,
-  getRecipesListByUrl,
 } from 'api';
 
 // Components
@@ -52,6 +51,7 @@ const RecipesView = (props: any) => {
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
+  const [enteredInputValue, setEnteredInputValue] = useState<boolean>(false);
 
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(t('recipe.search_by_recipes'));
 
@@ -74,12 +74,21 @@ const RecipesView = (props: any) => {
     }).catch(() => { });
   }, []);
 
-  const firstUpdate = useRef(true);
+  const firstRender = useRef(true);
 
-  useEffect(() => {
+  const getRecipeListFunc = () => {
     const queryParametersObj = queryString.parse(window.location.search);
-    if (+queryParametersObj.page && firstUpdate.current) {
-      getRecipesListByUrl(window.location.search)
+
+    if (+queryParametersObj.page || queryParametersObj.filter) {
+      if (!queryParametersObj.page) queryParametersObj.page = '1';
+      getRecipesList(
+        paramsToGetRecipes.privateRecipes,
+        paramsToGetRecipes.liked,
+        paramsToGetRecipes.cuisinesIds,
+        +queryParametersObj.page,
+        paramsToGetRecipes.filterType,
+        queryParametersObj.filter,
+      )
         .then((response) => {
           if (response.data.success && response.data.data) {
             const { data } = response.data;
@@ -107,7 +116,7 @@ const RecipesView = (props: any) => {
             setIsLoadingPage(false);
           }
         }).catch(() => { });
-      firstUpdate.current = false;
+      firstRender.current = false;
     } else {
       getRecipesList(
         paramsToGetRecipes.privateRecipes,
@@ -119,12 +128,6 @@ const RecipesView = (props: any) => {
       ).then((response) => {
         if (response.data.success && response.data.data) {
           const { data } = response.data;
-
-          const queryParameters = {
-            page: paramsToGetRecipes.page,
-            filter: paramsToGetRecipes.filter,
-          };
-          window.history.pushState(null, null, `?${queryString.stringify(queryParameters)}`);
 
           setRecipesList([...data.recipes]);
 
@@ -138,14 +141,20 @@ const RecipesView = (props: any) => {
           setIsLoadingPage(false);
         }
       }).catch(() => { });
-      firstUpdate.current = false;
+      firstRender.current = false;
     }
+  };
+
+  useEffect(() => {
+    getRecipeListFunc();
   }, [
-    paramsToGetRecipes.privateRecipes,
-    paramsToGetRecipes.liked,
     paramsToGetRecipes.cuisinesIds,
-    paramsToGetRecipes.page,
     paramsToGetRecipes.filterType,
+  ]);
+
+  useEffect(() => {
+    if (enteredInputValue) getRecipeListFunc();
+  }, [
     debouncedSearch,
   ]);
 
@@ -221,6 +230,8 @@ const RecipesView = (props: any) => {
       page: value,
     });
 
+    getRecipeListFunc();
+
     const $recipesList = document.querySelector('.recipes-list-sect');
     $recipesList.scrollIntoView({ behavior: 'smooth' });
   };
@@ -281,6 +292,12 @@ const RecipesView = (props: any) => {
                   <InputField
                     value={paramsToGetRecipes.filter}
                     onChange={(e) => {
+                      const queryParametersObj = queryString.parse(window.location.search);
+                      queryParametersObj.filter = e.target.value;
+                      window.history.pushState(null, null, `?${queryString.stringify(queryParametersObj)}`);
+
+                      setEnteredInputValue(true);
+
                       setParamsToGetRecipes({
                         ...paramsToGetRecipes,
                         filter: e.target.value,

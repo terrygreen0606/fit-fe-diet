@@ -393,10 +393,7 @@ const WaterTrackerView = (props: any) => {
                 {t('wt.head_title')}
               </span>
             </h4>
-            <Banner
-              items={bannerData}
-              imageSize='lg'
-            />
+            <Banner items={bannerData} />
             <div className='row'>
               <ul className='waterTracker_period'>
                 <li
