@@ -100,6 +100,8 @@ export default (
     case 'DAY_MEALPLAN':
       registerStepView = (
         <DayMealPlan
+          registerData={registerData}
+          setRegisterData={setRegisterData}
           setRegisterView={setRegisterView}
           localePhrases={localePhrases}
         />

@@ -95,6 +95,8 @@ const JoinStep = (props: any) => {
       email,
       password,
       predicted_date,
+      act_levels,
+      meal_counts,
       ...userProfileData
     } = props.registerData;
 
