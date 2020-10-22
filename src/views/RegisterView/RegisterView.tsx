@@ -78,22 +78,30 @@ const RegisterView = ({
           setRegisterData({
             ...registerData,
             tpl_signup: data.tpl || null,
-            act_levels: data.act_levels.map((activity) => ({
-              ...activity,
-              checked: false,
-            })) || [],
-            ignore_cuisine_ids: data.cuisines.map((cuisine) => ({
-              ...cuisine,
-              checked: false,
-            })) || [],
-            diseases: data.diseases.map((disease) => ({
-              ...disease,
-              checked: false,
-            })) || [],
-            meal_counts: data.meal_counts.map((meal_count) => ({
-              ...meal_count,
-              checked: false,
-            })) || [],
+            act_levels: data.act_levels && data.act_levels.length ?
+              data.act_levels.map((activity) => ({
+                ...activity,
+                checked: false,
+              }))
+            : [],
+            ignore_cuisine_ids: data.cuisines && data.cuisines.length ?
+              data.cuisines.map((cuisine) => ({
+                ...cuisine,
+                checked: false,
+              }))
+            : [],
+            diseases: data.diseases && data.diseases.length ?
+              data.diseases.map((disease) => ({
+                ...disease,
+                checked: false,
+              }))
+            : [],
+            meal_counts: data.meal_counts && data.meal_counts.length ?
+              data.meal_counts.map((meal_count) => ({
+                ...meal_count,
+                checked: false,
+              }))
+            : [],
           });
         }
       })
