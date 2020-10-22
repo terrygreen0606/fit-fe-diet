@@ -322,41 +322,46 @@ const MealPlanView = (props: any) => {
                       },
                     )}
                   >
-                    <div className='nutrition-plan-card-list-controls'>
-                      <button
-                        type='button'
-                        onClick={() => downloadTxtFile()}
-                        className='nutrition-plan-card-list-controls-item'
-                      >
-                        <FileDyskIcon />
-                      </button>
-                      <button
-                        type='button'
-                        onClick={() => window.print()}
-                        className='nutrition-plan-card-list-controls-item'
-                      >
-                        <PrintIcon />
-                      </button>
-                      <div ref={changedBlockRef}>
+                    <div className='nutrition-plan-card-list-header'>
+                      <h5 className='nutrition-plan-card-list-title'>
+                        {t('mp.list.title')}
+                      </h5>
+                      <div className='nutrition-plan-card-list-controls'>
                         <button
                           type='button'
-                          onClick={() => setIsBlockActive(!isBlockActive)}
+                          onClick={() => downloadTxtFile()}
                           className='nutrition-plan-card-list-controls-item'
                         >
-                          <ShareIcon />
+                          <FileDyskIcon />
                         </button>
-                        <ShareButtons
-                          visible={isBlockActive}
-                          items={['twitter', 'telegram']}
-                          fetchData={() => getMealPlanText().then((response) => {
-                            if (response.data.success && response.data.data) {
-                              return {
-                                link: window.location.origin,
-                                text: response.data.data.content,
-                              };
-                            }
-                          }).catch(() => { })}
-                        />
+                        <button
+                          type='button'
+                          onClick={() => window.print()}
+                          className='nutrition-plan-card-list-controls-item'
+                        >
+                          <PrintIcon />
+                        </button>
+                        <div ref={changedBlockRef}>
+                          <button
+                            type='button'
+                            onClick={() => setIsBlockActive(!isBlockActive)}
+                            className='nutrition-plan-card-list-controls-item'
+                          >
+                            <ShareIcon />
+                          </button>
+                          <ShareButtons
+                            visible={isBlockActive}
+                            items={['twitter', 'telegram']}
+                            fetchData={() => getMealPlanText().then((response) => {
+                              if (response.data.success && response.data.data) {
+                                return {
+                                  link: window.location.origin,
+                                  text: response.data.data.content,
+                                };
+                              }
+                            }).catch(() => { })}
+                          />
+                        </div>
                       </div>
                     </div>
                     <div className='nutrition-plan-card-list-date'>
@@ -398,7 +403,7 @@ const MealPlanView = (props: any) => {
                           <div className='nutrition-plan-card-list-recipes-item-title'>
                             <CalendarIcon />
                             <span>
-                              {dayItem.dayFullInfo}
+                              {t('mp.date.desc', { PERIOD: dayItem.dayFullInfo })}
                             </span>
                           </div>
                           <ContentLoading
