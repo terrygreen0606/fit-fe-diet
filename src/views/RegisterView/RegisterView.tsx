@@ -67,28 +67,30 @@ const RegisterView = ({
     setRegisterSettingsLoadingError(false);
 
     getSignUpData()
-      .then((response) => {
+      .then(({ data: responseData }) => {
+        const { data, success } = responseData;
+
         setRegisterSettingsLoading(false);
 
-        if (response.data.data) {
-          setRegisterSettings(response.data.data);
+        if (success && data) {
+          setRegisterSettings(data);
           
           setRegisterData({
             ...registerData,
-            tpl_signup: response.data.data.tpl || null,
-            act_levels: response.data.data.act_levels.map((activity) => ({
+            tpl_signup: data.tpl || null,
+            act_levels: data.act_levels.map((activity) => ({
               ...activity,
               checked: false,
             })) || [],
-            ignore_cuisine_ids: response.data.data.cuisines.map((cuisine) => ({
+            ignore_cuisine_ids: data.cuisines.map((cuisine) => ({
               ...cuisine,
               checked: false,
             })) || [],
-            diseases: response.data.data.diseases.map((disease) => ({
+            diseases: data.diseases.map((disease) => ({
               ...disease,
               checked: false,
             })) || [],
-            meal_counts: response.data.data.meal_counts.map((meal_count) => ({
+            meal_counts: data.meal_counts.map((meal_count) => ({
               ...meal_count,
               checked: false,
             })) || [],
