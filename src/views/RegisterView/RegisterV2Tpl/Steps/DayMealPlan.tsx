@@ -17,6 +17,15 @@ const DayMealPlan = ({
 
   const [hasError, setHasError] = useState(false);
 
+  const nextStep = () => {
+    if (registerData.meal_counts.find(meal_count => meal_count.checked)) {
+      setHasError(false);
+      setRegisterView('HEIGHT_WEIGHT');
+    } else {
+      setHasError(true);
+    }
+  };
+
   const changeMealCountState = (value: number, checked: boolean) => {
     setHasError(false);
 
@@ -76,7 +85,7 @@ const DayMealPlan = ({
         className='register_v2tpl_btn mt-5'
         color='primary'
         size='lg'
-        onClick={() => setRegisterView('HEIGHT_WEIGHT')}
+        onClick={() => nextStep()}
       >
         {t('register.form_next')}
       </Button>

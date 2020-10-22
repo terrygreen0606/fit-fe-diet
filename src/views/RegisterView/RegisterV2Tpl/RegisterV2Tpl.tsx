@@ -35,7 +35,7 @@ const RegisterV2Tpl = ({
   location, 
 }: any) => {
   const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
-  const [registerView, setRegisterView] = useState<RegisterViewType>('GOAL');
+  const [registerView, setRegisterView] = useState<RegisterViewType>(registerViewsList[0]);
 
   useEffect(() => {
     let currentRegisterStep: 0 | 1 | 2 = null;
