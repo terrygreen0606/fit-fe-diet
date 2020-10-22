@@ -67,7 +67,7 @@ export const options = {
       }
     },
     backgroundColor: '#FFF',
-    titleFontFamily: 'Montserrat',
+    titleFontFamily: '"SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
     titleFontSize: 14,
     titleFontColor: '#000',
     titleFontStyle: '500',
@@ -79,7 +79,7 @@ export const options = {
     bodyFontStyle: 'bold',
     titleAlign: 'center',
     bodyFontColor: '#000',
-    bodyFontFamily: 'Montserrat',
+    bodyFontFamily: '"SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
     bodyAlign: 'center',
     bodyFontSize: 14,
     displayColors: false,
