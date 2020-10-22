@@ -160,17 +160,17 @@ const Footer = (props: any) => {
 
               <ul className='socials-list mt-2'>
                 <li>
-                  <a href='https://www.instagram.com/' className='social-link'>
+                  <a href='https://www.instagram.com/fitlopecom/' className='social-link'>
                     <InstaIcon className='social-icon' />
                   </a>
                 </li>
                 <li>
-                  <a href='https://www.facebook.com/' className='social-link'>
+                  <a href='https://www.facebook.com/fitlopecom' className='social-link'>
                     <FacebookIcon className='social-icon' />
                   </a>
                 </li>
                 <li>
-                  <a href='https://www.youtube.com/' className='social-link'>
+                  <a href='https://www.youtube.com/channel/UC4LGxoe4iAIc9M-PXcH274Q/' className='social-link'>
                     <YoutubeIcon className='social-icon' />
                   </a>
                 </li>
