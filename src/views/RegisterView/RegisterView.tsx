@@ -74,7 +74,7 @@ const RegisterView = ({
 
         if (success && data) {
           setRegisterSettings(data);
-          
+
           setRegisterData({
             ...registerData,
             tpl_signup: data.tpl || null,
