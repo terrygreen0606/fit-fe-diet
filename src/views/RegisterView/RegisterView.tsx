@@ -40,6 +40,7 @@ const registerDataDefault: RegisterDataType = {
   ignore_cuisine_ids: [],
   diseases: [],
   act_levels: [],
+  meal_counts: [],
 };
 
 const RegisterView = ({
@@ -57,6 +58,7 @@ const RegisterView = ({
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
   const [registerDataErrors, setRegisterDataErrors] = useState([]);
 
+  const [registerSettings, setRegisterSettings] = useState(null);
   const [registerSettingsLoading, setRegisterSettingsLoading] = useState<boolean>(true);
   const [registerSettingsLoadingError, setRegisterSettingsLoadingError] = useState<boolean>(false);
 
@@ -69,6 +71,8 @@ const RegisterView = ({
         setRegisterSettingsLoading(false);
 
         if (response.data.data) {
+          setRegisterSettings(response.data.data);
+          
           setRegisterData({
             ...registerData,
             tpl_signup: response.data.data.tpl || null,
@@ -84,7 +88,10 @@ const RegisterView = ({
               ...disease,
               checked: false,
             })) || [],
-
+            meal_counts: response.data.data.meal_counts.map((meal_count) => ({
+              ...meal_count,
+              checked: false,
+            })) || [],
           });
         }
       })

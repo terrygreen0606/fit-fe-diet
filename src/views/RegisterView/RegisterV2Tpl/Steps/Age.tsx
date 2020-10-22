@@ -105,7 +105,9 @@ const Age = ({
 
   return (
     <>
-      <h3 className='register_v2tpl_title mb-5'>{t('register.v2.weight_goal_step_title')}</h3>
+      <h3 className='register_v2tpl_title mb-5'>
+        {t('register.age_step_title')}
+      </h3>
 
       <form className='mt-5 pt-4' onSubmit={(e) => registerInfoSubmit(e)}>
         <div className='row'>

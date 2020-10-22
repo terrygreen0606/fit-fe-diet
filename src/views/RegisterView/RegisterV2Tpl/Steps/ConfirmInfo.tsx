@@ -53,6 +53,7 @@ const ConfirmInfo = ({
       password,
       act_levels,
       predicted_date,
+      meal_counts,
       ...userProfileData
     } = registerData;
 
@@ -64,9 +65,18 @@ const ConfirmInfo = ({
       act_level = act_level_checked.value;
     }
 
+    let meals_cnt = null;
+
+    const meals_cnt_checked = meal_counts.find((meal_count) => meal_count.checked);
+
+    if (meals_cnt_checked) {
+      meals_cnt = meals_cnt_checked.value;
+    }
+
     return {
       ...userProfileData,
       act_level,
+      meals_cnt,
       ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.map((cuisine) => cuisine.id),
       diseases: userProfileData.diseases
         .filter((disease) => disease.checked)
