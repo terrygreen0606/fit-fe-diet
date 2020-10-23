@@ -112,6 +112,14 @@ const Footer = (props: any) => {
                   {t('footer.menu_create_recipe')}
                 </Link>
               </li>
+              <li>
+                <a
+                  href={generatePublicUrl('media-inquiries')}
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_media_inquiries')}
+                </a>
+              </li>
             </ul>
           </div>
           <div className='col-6 col-md-3'>
