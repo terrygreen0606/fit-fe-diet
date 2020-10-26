@@ -102,7 +102,7 @@ const JoinStep = (props: any) => {
 
     let act_level = null;
 
-    const act_level_checked = userProfileData.act_levels.find(level => level.checked);
+    const act_level_checked = act_levels.find(level => level.checked);
 
     if (act_level_checked) {
       act_level = act_level_checked.value;

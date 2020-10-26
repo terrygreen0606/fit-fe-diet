@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import chartConfig from 'utils/chartConfig';
+import TagManager from 'react-gtm-module';
 
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
@@ -27,6 +28,12 @@ Sentry.init({
   // for finer control
   tracesSampleRate: 1.0,
 });
+
+const tagManagerArgs = {
+  gtmId: 'GTM-5BF52MF',
+};
+
+TagManager.initialize(tagManagerArgs);
 
 ReactDOM.render(
   <Provider store={store}>
