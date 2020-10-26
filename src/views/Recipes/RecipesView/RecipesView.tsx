@@ -284,9 +284,9 @@ const RecipesView = (props: any) => {
           <div className='container'>
             <div className='row'>
               <div className='col-12'>
-                <h4 className='recipes-search-sect-title'>
+                <h1 className='recipes-search-sect-title'>
                   {t('recipe.search.header')}
-                </h4>
+                </h1>
 
                 <div className='recipes-search-wrap'>
                   <InputField

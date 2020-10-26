@@ -31,9 +31,9 @@ const AdherenceDietPlan = ({
 
   return (
     <div className={`${className} adherence-diet-card card-bg`}>
-      <h4 className='adherence-diet-card-title'>
+      <h2 className='adherence-diet-card-title'>
         {t('mp.adherence.title')}
-      </h4>
+      </h2>
       <div className='adherence-diet-card-img'>
         <RewardImage />
       </div>

@@ -325,12 +325,12 @@ const CheckoutPage = (props: any) => {
                 </div>
 
                 <div className="checkout-rewards-block">
-                  <h4 className="checkout-rewards-block__title"><RewardIcon className="mr-3" /> {t('checkout.rewards_title')}</h4>
+                  <h1 className="checkout-rewards-block__title"><RewardIcon className="mr-3" /> {t('checkout.rewards_title')}</h1>
 
                   <div className="row mt-5">
                     <div className="col-lg-3 mb-3 mb-lg-0 pt-2">
                       
-                      <h5>{t('lp.partners_list_title')}</h5>
+                      <h3>{t('lp.partners_list_title')}</h3>
 
                     </div>
                     <div className="col-lg-9">
@@ -347,8 +347,8 @@ const CheckoutPage = (props: any) => {
 
                 <div className="checkout-form-container">
                   <div className="checkout-reserved-top-block">
-                    <h5 className="checkout-reserved-top-block__title">{t('checkout.reserved_block.title')}</h5>
-                    <p className="checkout-reserved-top-block__descr">{t('checkout.reserved_block.descr')}</p>
+                    <h3 className="checkout-reserved-top-block__title">{t('checkout.reserved_block.title')}</h3>
+                    <h6 className="checkout-reserved-top-block__descr">{t('checkout.reserved_block.descr')}</h6>
                     <h6 className="checkout-reserved-top-block__countdown_title">{t('checkout.reserved_block.title')}:</h6>
                     <span className="checkout-reserved-top-block__countdown">
                       <RawCountDown seconds={900} />
@@ -475,7 +475,7 @@ const CheckoutPage = (props: any) => {
                   </div>
 
                   <form className="checkout-pay-form mt-5" onSubmit={e => checkoutFormSubmit(e)}>
-                    <h6 className="checkout-pay-form__title mb-3">{t('checkout.form_title')} <LockIcon className="ml-2" /></h6>
+                    <h3 className="checkout-pay-form__title mb-3">{t('checkout.form_title')} <LockIcon className="ml-2" /></h3>
 
                     <FormGroup>
                       <InputField

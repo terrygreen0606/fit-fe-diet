@@ -304,7 +304,7 @@ const JoinStep = (props: any) => {
 
   return (
     <div className="register_join">
-      <h4 className="register_title mb-xl-5 mb-45 text-center">{t('register.info_confirm_title')}</h4>
+      <h1 className="register_title mb-xl-5 mb-45 text-center">{t('register.info_confirm_title')}</h1>
 
       {/*<CustomCheckbox
         invalid={appRulesAccepted === false}

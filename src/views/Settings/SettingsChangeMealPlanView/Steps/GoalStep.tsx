@@ -65,7 +65,7 @@ const GoalStep = ({
       spinSize='lg'
     >
       <div>
-        <div className='change-meal-plan__title'>{t('mp.goal.title')}</div>
+        <h3 className='change-meal-plan__title'>{t('mp.goal.title')}</h3>
         <div className='change-meal-plan__goals'>
           <Button
             type='button'

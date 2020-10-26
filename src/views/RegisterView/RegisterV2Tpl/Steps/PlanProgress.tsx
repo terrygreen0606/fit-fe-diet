@@ -63,7 +63,7 @@ const PlanProgress = ({
 
   return (
     <div className='px-5'>
-      <h5 className='mb-2 mb-xl-5 fw-regular'>{t('register.plan_progress_title')}</h5>
+      <h1 className='mb-2 mb-xl-5 fw-regular'>{t('register.plan_progress_title')}</h1>
       <span className='site-logo mb-2 mb-xl-4' />
       <h3 className='register_v2tpl_title'>{progressTitle}</h3>
       <LinearProgress color='green' />

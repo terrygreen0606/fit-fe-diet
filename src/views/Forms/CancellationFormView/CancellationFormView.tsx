@@ -34,25 +34,23 @@ const CancellationFormView = (props: any) => {
         />
         <div className='cancellation-form'>
           <h2 className='sect-subtitle'>
-            <div>
-              {t('cancellation.title')}
-            </div>
+            {t('cancellation.title')}
           </h2>
-          <div className='cancellation-form__sub-title'>
+          <h2 className='cancellation-form__sub-title'>
             {t('cancellation.date.title')}
-          </div>
+          </h2>
           <div className='cancellation-form__sub-desc'>
             {t('cancellation.date.desc')}
           </div>
-          <div className='cancellation-form__sub-title'>
+          <h2 className='cancellation-form__sub-title'>
             {t('cancellation.deletion.title')}
-          </div>
+          </h2>
           <div className='cancellation-form__sub-desc'>
             {t('cancellation.deletion.desc')}
           </div>
-          <div className='cancellation-form__sub-title cancellation-form__sub-title_mt'>
+          <h2 className='cancellation-form__sub-title cancellation-form__sub-title_mt'>
             {t('cancellation.reason.title')}
-          </div>
+          </h2>
           <div className='cancellation-form__reasons-list'>
             <div className='cancellation-form__reasons-item'>
               <CustomRadio
@@ -91,9 +89,9 @@ const CancellationFormView = (props: any) => {
             </div>
           </div>
           <div className='cancellation-form__feedback'>
-            <div className='cancellation-form__sub-title'>
+            <h2 className='cancellation-form__sub-title'>
               {t('cancellation.feedback.title')}
-            </div>
+            </h2>
             <InputField
               type='textarea'
               rows={8}

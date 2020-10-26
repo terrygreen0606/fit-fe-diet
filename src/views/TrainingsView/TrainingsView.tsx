@@ -68,10 +68,8 @@ const TrainingsView: React.FC = (props: any) => {
             ]}
             currentPage={t('app.title.trainings')}
           />
-          <h1 className='training-plan-title'>
-            <span className='training-plan-title-text'>
-              {t('trainings.title')}
-            </span>
+          <h1 className='training-plan-title sect-subtitle'>
+            {t('trainings.title')}
           </h1>
           <div className='row'>
             <div className='training-plan-card-list-col training-plan-list'>
@@ -141,9 +139,9 @@ const TrainingsView: React.FC = (props: any) => {
                 weekProgress={20}
               />
               <div className='training-plan-adherence-diet-card-level'>
-                <div className='training-plan-adherence-diet-card-level-title'>
+                <h2 className='training-plan-adherence-diet-card-level-title'>
                   {t('trainings.level')}
-                </div>
+                </h2>
                 <div className='training-plan-adherence-diet-card-level-list'>
                   <label className='training-plan-adherence-diet-card-level-list-item card-bg'>
                     <input
@@ -206,9 +204,9 @@ const TrainingsView: React.FC = (props: any) => {
                 </div>
               </div>
               <div className='training-plan-adherence-diet-card-socials card-bg'>
-                <div className='training-plan-adherence-diet-card-socials-title'>
+                <h2 className='training-plan-adherence-diet-card-socials-title'>
                   {t('socials.share.title')}
-                </div>
+                </h2>
                 <ShareButtons
                   shareLink=''
                   visible

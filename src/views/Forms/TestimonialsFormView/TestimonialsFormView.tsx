@@ -137,9 +137,9 @@ const TestimonialsFormView = (props: any) => {
             {t('testimonials.add.description')}
           </p>
           <div>
-            <div className='testimonials-form__label-title'>
+            <h2 className='testimonials-form__label-title'>
               {t('testimonials.add.recommendation_title')}
-            </div>
+            </h2>
             <div className='testimonials-form__recommendation-description'>
               <span>{t('testimonials.add.not_likely')}</span>
               <span>{t('testimonials.add.most_likely')}</span>
@@ -185,9 +185,9 @@ const TestimonialsFormView = (props: any) => {
             </div>
           </div>
           <div>
-            <div className='testimonials-form__label-title'>
+            <h2 className='testimonials-form__label-title'>
               {t('testimonials.add.liked_scale')}
-            </div>
+            </h2>
             <div className='testimonials-form__rating-table'>
               <div className='testimonials-form__rating-table-row'>
                 <div className='testimonials-form__rating-table-item_big testimonials-form__rating-table-head' />
@@ -315,9 +315,9 @@ const TestimonialsFormView = (props: any) => {
             </div>
           </div>
           <div>
-            <div className='testimonials-form__label-title'>
+            <h2 className='testimonials-form__label-title'>
               {t('testimonials.add.rating')}
-            </div>
+            </h2>
             <div className='testimonials-form__rating-stars'>
               {starRating.map((starButton) => (
                 <button
@@ -347,9 +347,9 @@ const TestimonialsFormView = (props: any) => {
             </div>
           </div>
           <div>
-            <div className='testimonials-form__label-title'>
+            <h2 className='testimonials-form__label-title'>
               {t('testimonials.add.improve_title')}
-            </div>
+            </h2>
             <InputField
               type='textarea'
               border='light'

@@ -199,7 +199,7 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-xl-6 after-signup-header-content-col">
 
-              <h3>{t('lp.welcome.title', { NAME: afterSignupName })}</h3>
+              <h1>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
               {isAfterSignup && <h4 className="mt-xl-5 mt-4" dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }} />}
 
               <div className="text-center mt-xl-5 mt-4">
@@ -370,7 +370,7 @@ const AfterSignupPage = (props: any) => {
             </div>
             <div className="col-xl-6 offset-xl-1">
 
-              <h4 className="mb-45">{t('lp.faq.title')}</h4>
+              <h2 className="mb-45">{t('lp.faq.title')}</h2>
 
               <Accordeon
                 items={[
@@ -402,7 +402,7 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-xl-6">
 
-              <h4 className="mb-5">{t('lp.advantages_title')}</h4>
+              <h2 className="mb-5">{t('lp.advantages_title')}</h2>
 
               <div className="app-advantages-list">
                 <div className="app-advantages-list__item">{t('lp.advantage_1')}</div>
@@ -455,7 +455,7 @@ const AfterSignupPage = (props: any) => {
           <div className="row">
             <div className="col-xl-6 offset-xl-3 after-signup-start-today-col text-center">
 
-              <h4 className="sect-title title-center">{t('lp.start_today_title')}</h4>
+              <h2 className="sect-title title-center">{t('lp.start_today_title')}</h2>
 
               <ContentLoading
                 isLoading={tariffLoading}

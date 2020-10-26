@@ -81,9 +81,9 @@ const NotEatingStep = ({
       spinSize='lg'
     >
       <div>
-        <div className='change-meal-plan__title'>
+        <h3 className='change-meal-plan__title'>
           {t('mp.not_eating.title')}
-        </div>
+        </h3>
         <div className='change-meal-plan__not-eating'>
           {ignoreCuisinesList.map((item, itemIndex) => (
             <button

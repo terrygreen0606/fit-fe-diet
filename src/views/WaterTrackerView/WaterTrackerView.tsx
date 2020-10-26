@@ -314,9 +314,9 @@ const WaterTrackerView = (props: any) => {
           isOpen={isModalAddDrinkActive}
           className='waterTracker_popup'
         >
-          <h4 className='waterTracker_popup-title'>
+          <h2 className='waterTracker_popup-title'>
             {t('wt.add_drink')}
-          </h4>
+          </h2>
           <CustomSwitch
             label1={t('common.oz_label')}
             label2={t('common.ml_label')}
@@ -388,11 +388,9 @@ const WaterTrackerView = (props: any) => {
             isError={false}
             spinSize='lg'
           >
-            <h4 className='waterTracker_title'>
-              <span className='waterTracker_title-text'>
-                {t('wt.head_title')}
-              </span>
-            </h4>
+            <h1 className='waterTracker_title sect-subtitle'>
+              {t('wt.head_title')}
+            </h1>
             <Banner items={bannerData} />
             <div className='row'>
               <ul className='waterTracker_period'>

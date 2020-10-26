@@ -115,13 +115,13 @@ const AgeStep = (props: any) => {
 
   return (
     <div className="register_info">
-      <h6 className="register_title mb-xl-5 mb-45">
+      <h1 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon
           className="register-back-icon mr-3"
           onClick={e => props.setRegisterView('INFO_GENDER')}
         />
         {t('register.age_step_title')}
-      </h6>
+      </h1>
 
       <form className="register_info_form" onSubmit={(e) => registerInfoSubmit(e)}>
         <FormGroup className="register_info_fg mb-0" inline>

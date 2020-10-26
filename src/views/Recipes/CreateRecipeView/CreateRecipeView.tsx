@@ -616,9 +616,9 @@ const CreateRecipeView = (props: any) => {
             </div>
           </div>
           <div className='recipe__meal-time'>
-            <div className='recipe__meal-time-title'>
+            <h2 className='recipe__sub-title'>
               {t('recipe.choose_meal_plan')}
-            </div>
+            </h2>
             <div className='recipe__meal-time-list'>
               {mealTimes.map((mealTime, mealTimeIndex) => (
                 <button
@@ -771,11 +771,9 @@ const CreateRecipeView = (props: any) => {
             </div>
           </div>
           <div className='recipe__add-ingredients'>
-            <div className='recipe__add-ingredients-description'>
-              <h2 className='recipe__add-ingredients-description-title'>
-                {t('ingr.label')}
-              </h2>
-            </div>
+            <h2 className='recipe__sub-title'>
+              {t('ingr.label')}
+            </h2>
             <div className='recipe__add-ingredients-field'>
               <SelectInput
                 async
@@ -990,7 +988,7 @@ const CreateRecipeView = (props: any) => {
             </div>
           </div>
           <div className='instructions'>
-            <h2 className='instructions__title'>{t('recipe.preparation')}</h2>
+            <h2 className='recipe__sub-title'>{t('recipe.preparation')}</h2>
             <InputField
               block
               type='textarea'

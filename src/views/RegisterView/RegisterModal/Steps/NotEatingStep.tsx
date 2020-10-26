@@ -55,13 +55,13 @@ const NotEatingStep = (props: any) => {
 
   return (
     <>
-      <h6 className="register_title mb-xl-5 mb-45">
+      <h1 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon 
           className="register-back-icon mr-5" 
           onClick={e => props.setRegisterView('INFO_WEIGHT_GOAL')}
         />
         {t('register.not_eating')}
-      </h6>
+      </h1>
 
       <div className="register_eating_list">
         {props.registerData.ignore_cuisine_ids.map(({ id, name, checked, image }) => (

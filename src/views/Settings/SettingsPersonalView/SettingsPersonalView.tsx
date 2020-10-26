@@ -182,7 +182,7 @@ const SettingsPersonalView = (props: any) => {
       </div>
       <ProfileLayout>
         <div className='profile-settings-personal-card card-bg'>
-          <h5 className='mb-4 mb-xs-5'>{t('profile.personal_title')}</h5>
+          <h2 className='mb-4 mb-xs-5'>{t('profile.personal_title')}</h2>
 
           <ContentLoading
             fetchData={() => fetchUserPersonalData()}

@@ -36,7 +36,7 @@ const NotEating = ({
 
   return (
     <>
-      <h3 className='register_v2tpl_title'>{t('register.v2.not_eating_title')}</h3>
+      <h1 className='register_v2tpl_title'>{t('register.v2.not_eating_title')}</h1>
 
       <div className='row'>
         <div className='col-10 offset-1'>
