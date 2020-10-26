@@ -240,10 +240,14 @@
         svg path
           fill: #DAD7D7
           transition: 0.2s fill, 0.2s stroke ease
+      
+      &-icon-shop
+        svg
+          width: 14px
+          height: auto
 
-      &-icon-reload
-        svg path
-          fill: transparent
+          path
+            fill: $black
 
     &-item.active,
     &-item:hover
@@ -251,7 +255,7 @@
         background-color: $orange-accent
 
         svg path
-          stroke: $white
+          fill: $white
 
       .nutrition-plan-card-controls-item-icon-shop
         svg path
