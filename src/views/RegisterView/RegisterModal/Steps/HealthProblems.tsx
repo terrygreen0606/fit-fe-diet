@@ -10,6 +10,7 @@ import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-ico
 
 const HealthProblems = ({
   registerData,
+  setRegisterData,
   setRegisterView,
   stepTitlesDefault,
   setStepTitles,
@@ -31,7 +32,7 @@ const HealthProblems = ({
   }, []);
 
   const nextStep = () => {
-    props.setRegisterView('WORKOUT');
+    setRegisterView('WORKOUT');
   };
 
   const changeDiseaseState = (code: string, checked: boolean) => {

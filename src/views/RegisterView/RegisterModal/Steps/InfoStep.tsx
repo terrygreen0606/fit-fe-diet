@@ -30,6 +30,7 @@ const InfoStep = ({
   setRegisterData,
   registerDataErrors,
   setRegisterDataErrors,
+  setRegisterView,
   stepTitlesDefault,
   setStepTitles,
   localePhrases,
@@ -135,7 +136,7 @@ const InfoStep = ({
       <h6 className='register_title mb-xl-5 mb-45'>
         <AngleLeftIcon
           className='register-back-icon mr-3'
-          onClick={() => props.setRegisterView('GOAL')}
+          onClick={() => setRegisterView('GOAL')}
         />
         {t('register.fill_details_text')}
       </h6>
@@ -145,8 +146,8 @@ const InfoStep = ({
           label1={t('common.us_metric')}
           label2={t('common.metric')}
           checked={registerData.measurement === 'si'}
-          onChange={(e) => props.setRegisterData({
-            ...props.registerData,
+          onChange={(e) => setRegisterData({
+            ...registerData,
             measurement: e.target.checked ? 'si' : 'us',
           })}
         />

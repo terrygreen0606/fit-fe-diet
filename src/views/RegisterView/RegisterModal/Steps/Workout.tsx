@@ -57,7 +57,7 @@ const Workout = ({
     const index = registerData.act_levels.findIndex((activity) => activity.value === value);
 
     if (index >= 0) {
-      let act_levels = registerData.act_levels.map((level) => ({
+      const act_levels = registerData.act_levels.map((level) => ({
         ...level,
         checked: false,
       }));

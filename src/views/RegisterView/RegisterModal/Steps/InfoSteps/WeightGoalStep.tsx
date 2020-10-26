@@ -78,7 +78,7 @@ const WeightGoalStep = ({
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    props.setRegisterDataErrors([...errors]);
+    setRegisterDataErrors([...errors]);
 
     if (!hasError) {
       setValidateLoading(true);
@@ -94,7 +94,7 @@ const WeightGoalStep = ({
       })
         .then(({ data }) => {
           if (data.success) {
-            props.setRegisterView('NOT_EATING');
+            setRegisterView('NOT_EATING');
           } else {
             toast.error(t('register.error_msg'));
           }
@@ -106,7 +106,7 @@ const WeightGoalStep = ({
             try {
               const validateErrors = JSON.parse(error.response.data.message);
 
-              const registerDataErrorsTemp: InputError[] = [...props.registerDataErrors];
+              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
 
               Object.keys(validateErrors).map((field) => {
                 registerDataErrorsTemp.push({
@@ -115,7 +115,7 @@ const WeightGoalStep = ({
                 });
               });
 
-              props.setRegisterDataErrors(registerDataErrorsTemp);
+              setRegisterDataErrors(registerDataErrorsTemp);
             } catch {
 
             }

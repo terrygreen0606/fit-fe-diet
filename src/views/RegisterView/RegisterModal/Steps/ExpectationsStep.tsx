@@ -19,7 +19,7 @@ const ExpectationsStep = ({
   const i18n_measurement = registerData.measurement === 'si' ? 'common.kg' : 'common.lbs';
 
   const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+    getTranslate(localePhrases, code, placeholders);
 
   useEffect(() => {
     const currStepTitles = [...stepTitlesDefault];

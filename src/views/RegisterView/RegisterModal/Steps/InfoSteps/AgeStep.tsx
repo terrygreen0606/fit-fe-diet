@@ -78,7 +78,7 @@ const AgeStep = ({
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
-    props.setRegisterDataErrors([...errors]);
+    setRegisterDataErrors([...errors]);
 
     if (!hasError) {
       setValidateLoading(true);
@@ -130,7 +130,7 @@ const AgeStep = ({
       <h6 className='register_title mb-xl-5 mb-45'>
         <AngleLeftIcon
           className='register-back-icon mr-3'
-          onClick={() => props.setRegisterView('INFO_GENDER')}
+          onClick={() => setRegisterView('INFO_GENDER')}
         />
         {t('register.age_step_title')}
       </h6>

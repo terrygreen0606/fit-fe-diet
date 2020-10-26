@@ -36,7 +36,7 @@ const HeightStep = ({
   const [validateLoading, setValidateLoading] = useState(false);
 
   useEffect(() => {
-    const currStepTitles = [...props.stepTitlesDefault];
+    const currStepTitles = [...stepTitlesDefault];
     currStepTitles[0] = t('register.age_step');
     currStepTitles[1] = t('register.height_step');
     currStepTitles[2] = t('register.weight_step');

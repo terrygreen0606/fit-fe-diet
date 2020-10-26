@@ -3,6 +3,7 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
+  getCookie,
 } from 'utils';
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
@@ -110,10 +111,20 @@ const JoinStep = (props: any) => {
 
     const profilePayload = {
       ...userProfileData,
-      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.filter((cuisine) => cuisine.checked).map((cuisine) => cuisine.id),
-      diseases: userProfileData.diseases.filter((disease) => disease.checked).map((disease) => disease.code),
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids
+        .filter((cuisine) => cuisine.checked)
+        .map((cuisine) => cuisine.id),
+      diseases: userProfileData.diseases
+        .filter((disease) => disease.checked)
+        .map((disease) => disease.code),
       act_level,
     };
+
+    const ref_code = getCookie('ref_code');
+
+    if (ref_code) {
+      profilePayload.ref_code = ref_code;
+    }
 
     return {
       ...profilePayload,
@@ -209,10 +220,10 @@ const JoinStep = (props: any) => {
       email: props.registerData.email,
       password: props.registerData.password,
       ...getRegisterProfilePayload(),
-    }).then((response) => {
+    }).then(({ data }) => {
         const token =
-          response.data && response.data.access_token
-            ? response.data.access_token
+          data && data.access_token
+            ? data.access_token
             : null;
 
         if (token) {
@@ -220,14 +231,16 @@ const JoinStep = (props: any) => {
           axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
           getAppSettings()
-            .then((response) => {
+            .then(({ data: settingsData }) => {
               setRegisterJoinLoading(false);
 
-              if (response.data.success && response.data.data) {
-                props.setAppSetting(response.data.data);
+              if (settingsData.success && settingsData.data) {
+                props.setAppSetting(settingsData.data);
+              } else {
+                toast.error(t('register.error_msg'));
               }
             })
-            .catch((error) => {
+            .catch(() => {
               toast.error(t('register.error_msg'));
               setRegisterJoinLoading(false);
             });
