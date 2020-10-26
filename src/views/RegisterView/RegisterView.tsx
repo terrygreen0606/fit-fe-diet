@@ -77,7 +77,8 @@ const RegisterView = ({
           
           setRegisterData({
             ...registerData,
-            tpl_signup: data.tpl || null,
+            // tpl_signup: data.tpl || null,
+            tpl_signup: queryString.parse(location.search).tpl === '2' ? 2 : 1,
             act_levels: data.act_levels && data.act_levels.length ?
               data.act_levels.map((activity) => ({
                 ...activity,
