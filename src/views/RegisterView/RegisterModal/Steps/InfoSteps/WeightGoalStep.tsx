@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
+import { InputError } from 'types';
 import { toast } from 'react-toastify';
 import { userValidate } from 'api';
 
@@ -20,23 +20,30 @@ import '../../RegisterModal.sass';
 
 import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
 
-const WeightGoalStep = (props: any) => {
-  const { registerData } = props;
-
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+const WeightGoalStep = ({
+  registerData,
+  setRegisterData,
+  registerDataErrors,
+  setRegisterDataErrors,
+  setRegisterView,
+  stepTitlesDefault,
+  setStepTitles,
+  localePhrases,
+}: any) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
 
   useEffect(() => {
-    let currStepTitles = [...props.stepTitlesDefault];
+    const currStepTitles = [...stepTitlesDefault];
     currStepTitles[0] = t('register.weight_step');
     currStepTitles[1] = t('register.weight_goal_step');
     currStepTitles[2] = t('register.not_eating_step');
 
-    props.setStepTitles([...currStepTitles]);
+    setStepTitles([...currStepTitles]);
 
     return () => {
-      props.setStepTitles([...props.stepTitlesDefault]);
+      setStepTitles([...stepTitlesDefault]);
     };
   }, []);
 
@@ -46,27 +53,28 @@ const WeightGoalStep = (props: any) => {
       value,
       event,
       registerData,
-      props.setRegisterData,
-      props.registerDataErrors,
-      props.setRegisterDataErrors,
-      element
+      setRegisterData,
+      registerDataErrors,
+      setRegisterDataErrors,
+      element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, props.registerDataErrors)
-      .map(msg => ({
+    getFieldErrorsUtil(field, registerDataErrors)
+      .map((msg) => ({
         ...msg,
-        message: t('api.ecode.invalid_value')
+        message: t('api.ecode.invalid_value'),
       }));
+
+  const isFieldValid = (field: string) =>
+    getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -77,71 +85,76 @@ const WeightGoalStep = (props: any) => {
 
       const {
         weight_goal,
-        measurement
+        measurement,
       } = registerData;
 
       userValidate({
         weight_goal,
-        measurement
+        measurement,
       })
-        .then(response => {
-          setValidateLoading(false);
-          props.setRegisterView('NOT_EATING');
+        .then(({ data }) => {
+          if (data.success) {
+            props.setRegisterView('NOT_EATING');
+          } else {
+            toast.error(t('register.error_msg'));
+          }
         })
-        .catch(error => {
-          setValidateLoading(false);
-
+        .catch((error) => {
           toast.error(t('register.error_msg'));
 
           if (error.response && error.response.status >= 400 && error.response.status < 500) {
             try {
               const validateErrors = JSON.parse(error.response.data.message);
 
-              let registerDataErrorsTemp = [...props.registerDataErrors];
+              const registerDataErrorsTemp: InputError[] = [...props.registerDataErrors];
 
-              Object.keys(validateErrors).map(field => {
+              Object.keys(validateErrors).map((field) => {
                 registerDataErrorsTemp.push({
                   field,
-                  message: validateErrors[field]
-                })
-              })
+                  message: validateErrors[field],
+                });
+              });
 
               props.setRegisterDataErrors(registerDataErrorsTemp);
             } catch {
 
             }
           }
+        })
+        .finally(() => {
+          setValidateLoading(false);
         });
     }
   };
 
   return (
-    <div className="register_info">
-      <h6 className="register_title mb-xl-5 mb-45">
+    <div className='register_info'>
+      <h6 className='register_title mb-xl-5 mb-45'>
         <AngleLeftIcon
-          className="register-back-icon mr-3"
-          onClick={e => props.setRegisterView('INFO_WEIGHT')}
+          className='register-back-icon mr-3'
+          onClick={() => setRegisterView('INFO_WEIGHT')}
         />
         {t('register.weight_goal_step_title')}
       </h6>
 
-      <form className="register_info_form" onSubmit={(e) => registerInfoSubmit(e)}>
-        <FormGroup className="register_info_fg mb-0" inline>
+      <form className='register_info_form' onSubmit={(e) => registerInfoSubmit(e)}>
+        <FormGroup className='register_info_fg mb-0' inline>
           <InputField
             block
-            height="md"
-            type={registerData.measurement === 'us' ? 'text' : "number"}
-            autoFocus 
+            height='md'
+            type={registerData.measurement === 'us' ? 'text' : 'number'}
+            autoFocus
             min={0}
             value={registerData.weight_goal}
-            data-param="30,400"
+            data-param='30,400'
             data-validate={`["required"${
               registerData.measurement === 'si' ? ', "min-max"' : ''
             }]`}
-            name="weight_goal"
+            name='weight_goal'
             invalid={getFieldErrors('weight_goal').length > 0}
+            isValid={isFieldValid('weight_goal')}
             onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
-            placeholder=""
+            placeholder=''
           />
           <FormLabel>
             {registerData.measurement === 'us' && t('common.lbs_label')}
@@ -153,12 +166,12 @@ const WeightGoalStep = (props: any) => {
           <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
         ))}
 
-        <div className="register_info_form_submit">
+        <div className='register_info_form_submit'>
           <Button
             style={{ width: '217px' }}
-            color="primary"
-            type="submit"
-            size="lg"
+            color='primary'
+            type='submit'
+            size='lg'
             isLoading={validateLoading}
           >
             {t('register.form_next')}

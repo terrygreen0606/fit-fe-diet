@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
-import { toast } from 'react-toastify';
 
 // Components
 import Button from 'components/common/Forms/Button';
 import FormGroup from 'components/common/Forms/FormGroup';
-import FormLabel from 'components/common/Forms/FormLabel';
-import InputField from 'components/common/Forms/InputField';
 import CustomRadio from 'components/common/Forms/CustomRadio';
-import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 import FormValidator from 'utils/FormValidator';
 
 import '../../RegisterModal.sass';
@@ -110,7 +106,7 @@ const GenderStep = ({
       </h6>
 
       <form className='register_info_form' onSubmit={(e) => registerInfoSubmit(e)}>
-        <FormGroup inline className='mb-5'>
+        <FormGroup inline className='mb-5 justify-content-center'>
           <CustomRadio
             name='gender'
             className='register_gender_radio mr-md-5 pr-md-4'

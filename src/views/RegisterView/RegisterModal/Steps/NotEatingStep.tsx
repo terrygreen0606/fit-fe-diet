@@ -12,7 +12,7 @@ const NotEatingStep = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   useEffect(() => {
-    let currStepTitles = [...props.stepTitlesDefault];
+    const currStepTitles = [...props.stepTitlesDefault];
     currStepTitles[0] = t('register.weight_goal_step');
     currStepTitles[1] = t('register.not_eating_step');
     currStepTitles[2] = t('register.plan_create_step');
@@ -28,26 +28,26 @@ const NotEatingStep = (props: any) => {
     props.setRegisterData({
       ...props.registerData,
       ignore_cuisine_ids: props.registerData.ignore_cuisine_ids.filter(
-        cuisine => cuisine.id !== cuisineId,
+        (cuisine) => cuisine.id !== cuisineId,
       ),
     });
   };
 
   const changeCuisineState = (id: string, checked: boolean) => {
-    const index = props.registerData.ignore_cuisine_ids.findIndex(cuisine => cuisine.id === id);
+    const index = props.registerData.ignore_cuisine_ids.findIndex((cuisine) => cuisine.id === id);
 
     if (index >= 0) {
-      let ignore_cuisine_ids = props.registerData.ignore_cuisine_ids;
+      const ignore_cuisine_ids = props.registerData.ignore_cuisine_ids;
 
       if (ignore_cuisine_ids[index]) {
         ignore_cuisine_ids[index] = {
           ...ignore_cuisine_ids[index],
-          checked
+          checked,
         };
 
         props.setRegisterData({
           ...props.registerData,
-          ignore_cuisine_ids
+          ignore_cuisine_ids,
         });
       }
     }
@@ -55,38 +55,38 @@ const NotEatingStep = (props: any) => {
 
   return (
     <>
-      <h6 className="register_title mb-xl-5 mb-45">
-        <AngleLeftIcon 
-          className="register-back-icon mr-5" 
-          onClick={e => props.setRegisterView('INFO_WEIGHT_GOAL')}
+      <h6 className='register_title mb-xl-5 mb-45'>
+        <AngleLeftIcon
+          className='register-back-icon mr-5' 
+          onClick={() => props.setRegisterView('INFO_WEIGHT_GOAL')}
         />
         {t('register.not_eating')}
       </h6>
 
-      <div className="register_eating_list">
+      <div className='register_eating_list'>
         {props.registerData.ignore_cuisine_ids.map(({ id, name, checked, image }) => (
-          <label key={id} className="register_eating_label">
-            <input 
-              name="register_eating_item" 
-              type="checkbox"
+          <label key={id} className='register_eating_label'>
+            <input
+              name='register_eating_item' 
+              type='checkbox'
               checked={checked}
-              onChange={e => changeCuisineState(id, e.target.checked)}
+              onChange={(e) => changeCuisineState(id, e.target.checked)}
             />
 
-            <div key={id} className="register_eating_item">
-              {image && <img src={image} className="register_eating_item_icon" />}
-              <span className="register_eating_item_label">{name}</span>
+            <div key={id} className='register_eating_item'>
+              {image && <img src={image} className='register_eating_item_icon' />}
+              <span className='register_eating_item_label'>{name}</span>
             </div>
           </label>
         ))}
       </div>
 
-      <div className="text-center mt-xl-5 mt-45">
+      <div className='text-center mt-xl-5 mt-45'>
         <Button
           style={{ width: '217px' }}
-          color="primary"
-          type="submit"
-          size="lg"
+          color='primary'
+          type='submit'
+          size='lg'
           onClick={() => props.setRegisterView('PLAN_PROGRESS')}
         >
           {t('register.form_next')}

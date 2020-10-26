@@ -86,7 +86,7 @@ const Workout = ({
         })}
       >
         <AngleLeftIcon
-          className='register-back-icon mr-5' 
+          className='register-back-icon mr-5'
           onClick={() => setRegisterView('HEALTH_PROBLEMS')}
         />
         {`${t('register.workout_title')}:`}
@@ -96,8 +96,8 @@ const Workout = ({
         {registerData.act_levels.map(({ value, checked, i18n_code }) => (
           <label key={value} className='register_check_item'>
             <input
-              name='register_act_levels' 
-              type='radio' 
+              name='register_act_levels'
+              type='radio'
               checked={checked}
               onChange={(e) => changeActLevelState(value, e.target.checked)}
             />

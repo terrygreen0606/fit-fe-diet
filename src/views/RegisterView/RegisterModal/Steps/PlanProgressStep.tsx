@@ -8,7 +8,6 @@ import LinearPreloader from 'components/common/LinearPreloader';
 import LinearProgress from 'components/common/LinearProgress';
 
 const PlanProgressStep = (props: any) => {
-
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
   const [progressTitle, setProgressTitle] = useState(t('register.plan_progress_descr1'));
@@ -24,7 +23,7 @@ const PlanProgressStep = (props: any) => {
   };
 
   useEffect(() => {
-    let currStepTitles = [...props.stepTitlesDefault];
+    const currStepTitles = [...props.stepTitlesDefault];
     currStepTitles[0] = t('register.not_eating_step');
     currStepTitles[1] = t('register.plan_create_step');
     currStepTitles[2] = t('register.step_health');
@@ -43,12 +42,12 @@ const PlanProgressStep = (props: any) => {
         height: props.registerData.height,
         weight: props.registerData.weight,
         weight_goal: props.registerData.weight_goal,
-        goal: props.registerData.goal
-      }).then(response => {
+        goal: props.registerData.goal,
+      }).then((response) => {
         if (response.data && response.data.data) {
           props.setRegisterData({
             ...props.registerData,
-            predicted_date: response.data.data.predicted_date
+            predicted_date: response.data.data.predicted_date,
           });
 
           setTimeout(() => {
@@ -57,7 +56,7 @@ const PlanProgressStep = (props: any) => {
         } else {
           toast.error(t('register.weight_predict_error_msg'));
         }
-      }).catch(error => {
+      }).catch(() => {
         toast.error(t('register.weight_predict_error_msg'));
       });
     }
@@ -68,10 +67,10 @@ const PlanProgressStep = (props: any) => {
   }, []);
 
   return (
-    <div className="pt-xl-5 text-center">
-      <h5 className="mb-2 mb-xl-5 fw-regular">{t('register.plan_progress_title')}</h5>
+    <div className='pt-xl-5 text-center'>
+      <h5 className='mb-2 mb-xl-5 fw-regular'>{t('register.plan_progress_title')}</h5>
 
-      <span className="site-logo mb-2 mb-xl-4" />
+      <span className='site-logo mb-2 mb-xl-4' />
 
       <LinearProgress />
       
