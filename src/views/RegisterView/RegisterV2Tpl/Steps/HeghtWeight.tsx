@@ -109,7 +109,7 @@ const HeightWeight = ({
 
   return (
     <>
-      <h3 className='register_v2tpl_title mb-5'>{t('register.v2.height_weight.title')}</h3>
+      <h1 className='register_v2tpl_title mb-5'>{t('register.v2.height_weight.title')}</h1>
 
       <CustomSwitch
         label1={t('common.us_metric')}

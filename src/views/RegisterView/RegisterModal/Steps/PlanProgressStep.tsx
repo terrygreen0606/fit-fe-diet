@@ -69,7 +69,7 @@ const PlanProgressStep = (props: any) => {
 
   return (
     <div className="pt-xl-5 text-center">
-      <h5 className="mb-2 mb-xl-5 fw-regular">{t('register.plan_progress_title')}</h5>
+      <h1 className="mb-2 mb-xl-5 fw-regular">{t('register.plan_progress_title')}</h1>
 
       <span className="site-logo mb-2 mb-xl-4" />
 

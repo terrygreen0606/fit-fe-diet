@@ -22,7 +22,7 @@ const Goal = ({
 
   return (
     <>
-      <h3 className='register_v2tpl_title'>{t('register.help_achieve_goal')}</h3>
+      <h1 className='register_v2tpl_title'>{t('register.help_achieve_goal')}</h1>
 
       <div className='row'>
         <div className='col-md-8 offset-md-2'>

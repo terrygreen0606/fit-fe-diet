@@ -83,7 +83,7 @@ const AfterCheckoutPage = (props: any) => {
                   isError={isTariffLoadingError}
                   fetchData={() => getActiveTariff()}
                 >
-                  <h4
+                  <h2
                     dangerouslySetInnerHTML={{
                       __html: t('checkout.thankyou.trial_info', {
                         COUNT: `
@@ -143,7 +143,7 @@ const AfterCheckoutPage = (props: any) => {
             </div>
             <div className='col-lg-6 offset-lg-1 after-checkout-app-sect-col-2 text-center'>
 
-              <h4 className='mb-5 pb-4'>{t('checkout.thankyou.application_title')}</h4>
+              <h2 className='mb-5 pb-4'>{t('checkout.thankyou.application_title')}</h2>
 
               <img src={getImagePath('point-arrow-yellow.png')} alt='' className='after-checkout-app-sect-arrow' />
 
@@ -177,7 +177,7 @@ const AfterCheckoutPage = (props: any) => {
             <div className='col-lg-7 order-lg-1 mt-5 mt-lg-0 text-center'>
 
               <div className='after-checkout__invite_email__wrap'>
-                <h4 className='mb-5 text-steel-blue'>{t('checkout.thankyou.share_title')}</h4>
+                <h2 className='mb-5 text-steel-blue'>{t('checkout.thankyou.share_title')}</h2>
                 <InviteEmail className='after-checkout__invite_email' />
               </div>
 

@@ -110,13 +110,13 @@ const Gender = ({
 
   return (
     <>
-      <h3
+      <h1
         className={classNames('register_v2tpl_title', {
           'text-red': getFieldErrors('gender').length > 0,
         })}
       >
         {t('register.v2.gender_step_title')}
-      </h3>
+      </h1>
 
       <form onSubmit={(e) => registerInfoSubmit(e)}>
         <div className='row'>

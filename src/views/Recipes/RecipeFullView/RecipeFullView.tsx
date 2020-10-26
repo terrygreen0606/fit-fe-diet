@@ -312,9 +312,9 @@ const RecipeFullView = (props: any) => {
                     )}
                   </div>
                   <div className='recipe__main-info-desc'>
-                    <div className='recipe__main-info-desc-name'>
+                    <h2 className='recipe__main-info-desc-name'>
                       {recipeData.name}
-                    </div>
+                    </h2>
                     <div className='recipe__main-info-desc-eating'>
                       {recipeData.mealtimeCodes.map((mealTimeItem) => (
                         <div
@@ -430,11 +430,9 @@ const RecipeFullView = (props: any) => {
                     </div>
                   </div>
                   <div className='recipe__manufacture'>
-                    <div className='recipe__manufacture-title'>
-                      <span className='recipe__manufacture-title-text'>
-                        {t('recipe.manufacture')}
-                      </span>
-                    </div>
+                    <h2 className='recipe__manufacture-title sect-subtitle'>
+                      {t('recipe.manufacture')}
+                    </h2>
                     {recipeData.videoUrl && (
                       <div className='recipe__manufacture-video'>
                         <iframe

@@ -118,15 +118,15 @@ const ExpectationsGraph = ({
 
   return (
     <div className='text-center'>
-      <h5 className='mb-xl-4 mb-2 fw-regular'>{t('register.expect_title')}</h5>
+      <h1 className='mb-xl-4 mb-2 fw-regular'>{t('register.expect_title')}</h1>
 
-      <h4 className='mb-45 text-steel-blue'>
+      <h2 className='mb-45 text-steel-blue'>
         {t(i18n_measurement, { COUNT: weight_goal })}
         {' '}
         {t('register.expect_date_by')}
         {' '}
         {getPredictedDate()}
-      </h4>
+      </h2>
 
       <div className='register_expectation_chart-wrap'>
         <span className='register_expectation_chart-standart-plan-label'>

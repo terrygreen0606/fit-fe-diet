@@ -202,7 +202,7 @@ const MetricsStep = ({
       spinSize='lg'
     >
       <div>
-        <div className='change-meal-plan__title'>{t('mp.metrics.title')}</div>
+        <h3 className='change-meal-plan__title'>{t('mp.metrics.title')}</h3>
         <div className='change-meal-plan__metrics'>
           <div className='change-meal-plan__metrics-switch'>
             <CustomSwitch

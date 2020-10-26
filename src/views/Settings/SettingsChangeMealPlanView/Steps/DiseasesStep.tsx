@@ -84,9 +84,9 @@ const DiseasesStep = ({
       spinSize='lg'
     >
       <div>
-        <div className='change-meal-plan__title'>
+        <h1 className='change-meal-plan__title'>
           {t('mp.diseases.title')}
-        </div>
+        </h1>
         <div className='change-meal-plan__diseases'>
           {diseasesList.map((item, itemIndex) => (
             <button

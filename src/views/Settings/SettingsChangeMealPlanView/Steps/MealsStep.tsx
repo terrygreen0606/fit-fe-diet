@@ -66,7 +66,7 @@ const MealsStep = ({
       spinSize='lg'
     >
       <div>
-        <div className='change-meal-plan__title'>{t('mp.meals.title')}</div>
+        <h3 className='change-meal-plan__title'>{t('mp.meals.title')}</h3>
         <div className='change-meal-plan__meals'>
           <div className={classnames('change-meal-plan__meals-item', 'card-bg', {
             active: mealsCnt === 3,

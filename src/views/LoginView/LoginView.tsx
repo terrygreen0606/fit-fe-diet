@@ -219,9 +219,9 @@ const LoginView = (props: any) => {
       </Helmet>
 
       <div className='loginScreen mt-3 mt-md-5'>
-        <h3 className='loginScreen_title d-none d-lg-inline-block'>
+        <h1 className='loginScreen_title d-none d-lg-inline-block'>
           {t('login.title')}
-        </h3>
+        </h1>
 
         <span className='mainHeader_logo d-lg-none-i' />
 

@@ -36,7 +36,7 @@ const HealthProblems = ({
 
   return (
     <>
-      <h3 className='register_v2tpl_title'>{t('register.diseases_title')}</h3>
+      <h1 className='register_v2tpl_title'>{t('register.diseases_title')}</h1>
 
       <div className='row'>
         <div className='col-8 offset-2'>

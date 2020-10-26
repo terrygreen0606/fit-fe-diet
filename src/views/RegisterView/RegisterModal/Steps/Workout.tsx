@@ -69,7 +69,7 @@ const Workout = (props: any) => {
 
   return (
     <>
-      <h6 className={classNames("register_title mb-xl-5 mb-45", {
+      <h1 className={classNames("register_title mb-xl-5 mb-45", {
         'text-red': hasError
       })}>
         <AngleLeftIcon 
@@ -77,7 +77,7 @@ const Workout = (props: any) => {
           onClick={e => props.setRegisterView('HEALTH_PROBLEMS')}
         />
         {t('register.workout_title')}:
-      </h6>
+      </h1>
 
       <div className="register_check_list">
         {props.registerData.act_levels.map(({ value, checked, i18n_code }) => (

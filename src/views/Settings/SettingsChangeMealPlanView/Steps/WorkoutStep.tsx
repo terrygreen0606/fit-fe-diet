@@ -64,9 +64,9 @@ const WorkoutStep = ({
       spinSize='lg'
     >
       <div>
-        <div className='change-meal-plan__title'>
+        <h3 className='change-meal-plan__title'>
           {t('mp.workout.title')}
-        </div>
+        </h3>
         <div className='change-meal-plan__workout-list'>
           {activityLevels.map((item) => (
             <button

@@ -11,7 +11,7 @@ const BackIssues = ({ setRegisterView, localePhrases }: any) => {
 
   return (
     <>
-      <h3 className='register_v2tpl_title'>{t('register.v2.back_issues.title')}</h3>
+      <h1 className='register_v2tpl_title'>{t('register.v2.back_issues.title')}</h1>
 
       <div className='row'>
         <div className='col-8 offset-2'>
