@@ -95,12 +95,14 @@ const JoinStep = (props: any) => {
       email,
       password,
       predicted_date,
+      act_levels,
+      meal_counts,
       ...userProfileData
     } = props.registerData;
 
     let act_level = null;
 
-    const act_level_checked = userProfileData.act_levels.find(level => level.checked);
+    const act_level_checked = act_levels.find(level => level.checked);
 
     if (act_level_checked) {
       act_level = act_level_checked.value;

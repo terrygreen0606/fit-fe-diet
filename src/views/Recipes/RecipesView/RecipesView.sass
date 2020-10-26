@@ -20,18 +20,21 @@
       margin-bottom: 40px
 
 .recipes-search-sect
-  margin-top: 70px
-
   @media (max-width: 768px)
     margin-top: 0
   
   &-title
     text-align: center
+    font-size: 28px
+    line-height: 1.2
+
+    @media (max-width: 768px)
+      font-size: 24px
 
 .recipes-search-wrap
   display: flex
   justify-content: center
-  margin: 50px 0 90px
+  margin: 40px 0 80px
 
   @media (max-width: 768px)
     flex-wrap: wrap
@@ -40,11 +43,12 @@
     flex-basis: calc(56% - 24px)
     max-width: 640px
     height: 100%
-    margin-right: 24px
-    font-size: 26px
+    margin-right: 22px
+    padding: 14.5px 27px
+    font-size: 20px
     line-height: 1.2
     font-weight: bold
-    font-family: "Montserrat", sans-serif
+    font-family: $base_font
 
     @media (max-width: 768px)
       flex-basis: 100%
@@ -54,11 +58,11 @@
       font-size: 18px
 
     &::placeholder
-      font-size: 26px
+      font-size: 20px
       line-height: 1.2
       color: #A0A0A0
       font-weight: bold
-      font-family: "Montserrat", sans-serif
+      font-family: $base_font
 
       @media (max-width: 768px)
         font-size: 18px
@@ -96,7 +100,7 @@
     cursor: pointer
 
     &:hover
-      box-shadow: 0 8px 15px $steel-blue
+      box-shadow: 3px 4px 26px -9px $steel-blue
 
     &.active
       background-color: $steel-blue

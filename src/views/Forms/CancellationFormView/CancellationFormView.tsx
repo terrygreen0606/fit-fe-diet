@@ -33,8 +33,8 @@ const CancellationFormView = (props: any) => {
           currentPage={t('cancellation.title')}
         />
         <div className='cancellation-form'>
-          <h2 className='cancellation-form__title'>
-            <div className='cancellation-form__title-text'>
+          <h2 className='sect-subtitle'>
+            <div>
               {t('cancellation.title')}
             </div>
           </h2>
@@ -96,7 +96,7 @@ const CancellationFormView = (props: any) => {
             </div>
             <InputField
               type='textarea'
-              rows={14}
+              rows={8}
               border='light'
               className='cancellation-form__feedback-input'
             />

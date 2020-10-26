@@ -12,9 +12,7 @@
 
   &__title
     margin-top: 0
-    margin-bottom: 70px
-    font-size: 80px
-    line-height: 1.2
+    margin-bottom: 40px
     font-weight: bold
 
   &__subtitle
@@ -25,13 +23,13 @@
 
   &__bonus
     margin-bottom: 50px
-    font-size: 48px
+    font-size: 42px
     line-height: 1.2
     font-weight: bold
     color: $steel-blue
 
   &__description
-    margin-bottom: 50px
+    margin-bottom: 30px
     font-size: 20px
     line-height: 1.67
 
@@ -42,64 +40,8 @@
   &__container-input
     position: relative
 
-    .referral__input
-      border-radius: 15px
-
-    .fgInvalidMsg
-      position: absolute
-      top: 100%
-      left: 50%
-      transform: translateX(-50%)
-
   &__input.fg-input
-    padding: 30px 140px 30px 40px
-    font-size: 20px
-    border-color: $steel-blue
-    color: darken($steel-blue, 10%)
-
-    &::placeholder
-      font-size: 20px
-      color: $steel-blue
-
-  &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):hover,
-  &__input.fg-input:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid):focus
-    border-color: darken($steel-blue, 10%) !important
-
-  &__invite-button
-    position: absolute
-    top: 28px
-    right: 28px
-    display: flex
-    align-items: center
-    font-size: 22px
-    font-weight: bold
-    color: $steel-blue
-    border: none
-    background: transparent
-    cursor: pointer
-
-    &:hover
-      .referral__invite-button-container-icon
-        transform: translateX(3px)
-
-    &-text
-      margin-right: 20px
-
-    &-container-icon
-      width: 26px
-      height: 26px
-      display: flex
-      align-items: center
-      justify-content: center
-      background: $steel-blue
-      border-radius: 50%
-      transition: transform 0.2s ease
-
-    &-icon
-      margin-right: -2px
-
-      path
-        fill: $white
+    border-radius: 15px
 
   &__container-media
     position: relative

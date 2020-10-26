@@ -110,7 +110,6 @@ const TestimonialsFormView = (props: any) => {
   ]);
 
   const t = (code: string, placeholders?: any) =>
-    // eslint-disable-next-line implicit-arrow-linebreak
     getTranslate(props.localePhrases, code, placeholders);
 
   return (
@@ -129,8 +128,8 @@ const TestimonialsFormView = (props: any) => {
           currentPage={t('app.title.testimonials.add')}
         />
         <div className='testimonials-form'>
-          <h2 className='testimonials-form__title'>
-            <span className='testimonials-form__title-wrap'>
+          <h2 className='sect-subtitle'>
+            <span>
               {t('testimonials.add.title')}
             </span>
           </h2>

@@ -260,7 +260,7 @@ const LoginView = (props: any) => {
           <input type="password" name="pass" className="d-none" />
 
           <Button
-            className='loginScreen_btn'
+            className='loginScreen_btn mb-45'
             type='submit'
             color='secondary'
             size='lg'
@@ -271,7 +271,7 @@ const LoginView = (props: any) => {
             {t('login.submit')}
           </Button>
 
-          <Link to="/reset-password" className='loginScreen_link link link-bold link-blue mt-45'>{t('login.forgot_pass')}</Link>
+          <Link to="/reset-password" className='loginScreen_link link link-bold link-blue'>{t('login.forgot_pass')}</Link>
         </form>
 
         {/*<div className='loginScreen_socialBtns mt-4'>

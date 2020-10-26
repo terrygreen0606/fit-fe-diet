@@ -105,9 +105,9 @@ const WaterTrackerView = (props: any) => {
 
   const getData = () => {
     getDataStatsForPeriod(trackerPeriod).then((response) => {
-      const { data } = response.data;
-
       if (response.data.status && response.data.data) {
+        const { data } = response.data;
+
         if (trackerPeriod === periods.week) {
           const updatedData = {
             label: [],
