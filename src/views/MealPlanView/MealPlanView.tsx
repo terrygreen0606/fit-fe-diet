@@ -351,7 +351,7 @@ const MealPlanView = (props: any) => {
                           </button>
                           <ShareButtons
                             visible={isBlockActive}
-                            items={['twitter', 'pinterest']}
+                            items={['twitter']}
                             fetchData={() => getMealPlanText().then((response) => {
                               if (response.data.success && response.data.data) {
                                 return {
@@ -491,7 +491,7 @@ const MealPlanView = (props: any) => {
                       </h5>
                       <ShareButtons
                         visible
-                        items={['twitter', 'pinterest']}
+                        items={['twitter']}
                         fetchData={() => getMealPlanText().then((response) => {
                           if (response.data.success && response.data.data) {
                             return {
