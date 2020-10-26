@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
-import { toast } from 'react-toastify';
-import { userValidate } from 'api';
 
 // Components
 import Button from 'components/common/Forms/Button';
 import FormGroup from 'components/common/Forms/FormGroup';
-import FormLabel from 'components/common/Forms/FormLabel';
-import InputField from 'components/common/Forms/InputField';
 import CustomRadio from 'components/common/Forms/CustomRadio';
-import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 import FormValidator from 'utils/FormValidator';
 
 import '../../RegisterModal.sass';
@@ -23,22 +18,27 @@ import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
 import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
 import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
 
-const GenderStep = (props: any) => {
-  const { registerData } = props;
-
-  const t = (code: string) => getTranslate(props.localePhrases, code);
-
-  const [validateLoading, setValidateLoading] = useState(false);
+const GenderStep = ({
+  registerData,
+  setRegisterData,
+  registerDataErrors,
+  setRegisterDataErrors,
+  setRegisterView,
+  stepTitlesDefault,
+  setStepTitles,
+  localePhrases,
+}: any) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
 
   useEffect(() => {
-    let currStepTitles = [...props.stepTitlesDefault];
+    const currStepTitles = [...stepTitlesDefault];
     currStepTitles[1] = t('register.gender_step');
     currStepTitles[2] = t('register.not_eating_step');
 
-    props.setStepTitles([...currStepTitles]);
+    setStepTitles([...currStepTitles]);
 
     return () => {
-      props.setStepTitles([...props.stepTitlesDefault]);
+      setStepTitles([...stepTitlesDefault]);
     };
   }, []);
 
@@ -48,102 +48,73 @@ const GenderStep = (props: any) => {
       value,
       event,
       registerData,
-      props.setRegisterData,
-      props.registerDataErrors,
-      props.setRegisterDataErrors,
-      element
+      setRegisterData,
+      registerDataErrors,
+      setRegisterDataErrors,
+      element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, props.registerDataErrors)
-      .map(msg => ({
+    getFieldErrorsUtil(field, registerDataErrors)
+      .map((msg) => ({
         ...msg,
-        message: t('api.ecode.invalid_value')
+        message: t('api.ecode.invalid_value'),
       }));
+
+  const nextStep = () => {
+    setRegisterView('INFO_AGE');
+  };
+
+  const changeRegisterGender = (e: Event & { target: HTMLInputElement }) => {
+    validateOnChange('gender', e.target.value, e);
+    nextStep();
+  };
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     let { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     if (!registerData.gender) {
       errors.push({
         field: 'gender',
-        message: t('api.ecode.invalid_value')
+        message: t('api.ecode.invalid_value'),
       });
 
       hasError = true;
     }
 
-    props.setRegisterDataErrors([...errors]);
+    setRegisterDataErrors([...errors]);
 
     if (!hasError) {
-      setValidateLoading(true);
-
-      const {
-        gender,
-      } = registerData;
-
-      userValidate({
-        gender,
-      })
-        .then(response => {
-          setValidateLoading(false);
-          props.setRegisterView('INFO_AGE');
-        })
-        .catch(error => {
-          setValidateLoading(false);
-
-          toast.error(t('register.error_msg'));
-
-          if (error.response && error.response.status >= 400 && error.response.status < 500) {
-            try {
-              const validateErrors = JSON.parse(error.response.data.message);
-
-              let registerDataErrorsTemp = [...props.registerDataErrors];
-
-              Object.keys(validateErrors).map(field => {
-                registerDataErrorsTemp.push({
-                  field,
-                  message: validateErrors[field]
-                })
-              })
-
-              props.setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-              
-            }
-          }
-        });
+      nextStep();
     }
   };
 
   return (
-    <div className="register_info">
-      <h1 className="register_title mb-xl-5 mb-45">
+    <div className='register_info'>
+      <h3 className='register_title mb-xl-5 mb-45'>
         <AngleLeftIcon
-          className="register-back-icon mr-3"
-          onClick={e => props.setRegisterView('GOAL')}
+          className='register-back-icon mr-3'
+          onClick={() => setRegisterView('GOAL')}
         />
         {t('register.gender_step_title')}
-      </h1>
+      </h3>
 
-      <form className="register_info_form" onSubmit={(e) => registerInfoSubmit(e)}>
-        <FormGroup inline className="mb-5">
+      <form className='register_info_form' onSubmit={(e) => registerInfoSubmit(e)}>
+        <FormGroup inline className='mb-5 justify-content-center'>
           <CustomRadio
             name='gender'
-            className="register_gender_radio mr-md-5 pr-md-4"
+            className='register_gender_radio mr-md-5 pr-md-4'
             label={
               <>
                 <MaleIcon
                   className={classNames('genderIcon', {
-                    genderIcon_active: props.registerData.gender === 'm',
+                    genderIcon_active: registerData.gender === 'm',
                   })}
                 />
 
@@ -154,17 +125,17 @@ const GenderStep = (props: any) => {
             checked={registerData.gender === 'm'}
             invalid={getFieldErrors('gender').length > 0}
             inline
-            onChange={e => validateOnChange('gender', e.target.value, e)}
+            onChange={(e) => changeRegisterGender(e)}
           />
 
           <CustomRadio
             name='gender'
-            className="register_gender_radio"
+            className='register_gender_radio'
             label={
               <>
                 <FemaleIcon
                   className={classNames('genderIcon', {
-                    genderIcon_active: props.registerData.gender === 'f',
+                    genderIcon_active: registerData.gender === 'f',
                   })}
                 />
 
@@ -175,17 +146,16 @@ const GenderStep = (props: any) => {
             checked={registerData.gender === 'f'}
             invalid={getFieldErrors('gender').length > 0}
             inline
-            onChange={e => validateOnChange('gender', e.target.value, e)}
+            onChange={(e) => changeRegisterGender(e)}
           />
         </FormGroup>
 
-        <div className="register_info_form_submit">
+        <div className='register_info_form_submit'>
           <Button
             style={{ width: '217px' }}
-            color="primary"
-            type="submit"
-            size="lg"
-            isLoading={validateLoading}
+            color='primary'
+            type='submit'
+            size='lg'
           >
             {t('register.form_next')}
           </Button>

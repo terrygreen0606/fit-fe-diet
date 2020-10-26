@@ -3,6 +3,7 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
+  getCookie,
 } from 'utils';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
@@ -73,7 +74,7 @@ const ConfirmInfo = ({
       meals_cnt = meals_cnt_checked.value;
     }
 
-    return {
+    const profilePayload = {
       ...userProfileData,
       act_level,
       meals_cnt,
@@ -81,6 +82,16 @@ const ConfirmInfo = ({
       diseases: userProfileData.diseases
         .filter((disease) => disease.checked)
         .map((disease) => disease.code),
+    };
+
+    const ref_code = getCookie('ref_code');
+
+    if (ref_code) {
+      profilePayload.ref_code = ref_code;
+    }
+
+    return {
+      ...profilePayload
     };
   };
 

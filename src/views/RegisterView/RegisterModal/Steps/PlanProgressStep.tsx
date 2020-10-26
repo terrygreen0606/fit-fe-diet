@@ -4,12 +4,17 @@ import { toast } from 'react-toastify';
 import { getUserWeightPrediction } from 'api';
 
 // Components
-import LinearPreloader from 'components/common/LinearPreloader';
 import LinearProgress from 'components/common/LinearProgress';
 
-const PlanProgressStep = (props: any) => {
-
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+const PlanProgressStep = ({
+  registerData,
+  setRegisterData,
+  setRegisterView,
+  stepTitlesDefault,
+  setStepTitles,
+  localePhrases,
+}: any) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
 
   const [progressTitle, setProgressTitle] = useState(t('register.plan_progress_descr1'));
 
@@ -24,60 +29,58 @@ const PlanProgressStep = (props: any) => {
   };
 
   useEffect(() => {
-    let currStepTitles = [...props.stepTitlesDefault];
+    const currStepTitles = [...stepTitlesDefault];
     currStepTitles[0] = t('register.not_eating_step');
     currStepTitles[1] = t('register.plan_create_step');
     currStepTitles[2] = t('register.step_health');
 
-    props.setStepTitles([...currStepTitles]);
+    setStepTitles([...currStepTitles]);
 
     getProgressTitlte();
 
-    if (props.registerData.goal === 0) {
+    if (registerData.goal === 0) {
       setTimeout(() => {
-        props.setRegisterView('HEALTH_PROBLEMS');
+        setRegisterView('HEALTH_PROBLEMS');
       }, 10000);
     } else {
       getUserWeightPrediction({
-        measurement: props.registerData.measurement,
-        height: props.registerData.height,
-        weight: props.registerData.weight,
-        weight_goal: props.registerData.weight_goal,
-        goal: props.registerData.goal
-      }).then(response => {
+        measurement: registerData.measurement,
+        height: registerData.height,
+        weight: registerData.weight,
+        weight_goal: registerData.weight_goal,
+        goal: registerData.goal,
+      }).then((response) => {
         if (response.data && response.data.data) {
-          props.setRegisterData({
-            ...props.registerData,
-            predicted_date: response.data.data.predicted_date
+          setRegisterData({
+            ...registerData,
+            predicted_date: response.data.data.predicted_date,
           });
 
           setTimeout(() => {
-            props.setRegisterView('HEALTH_PROBLEMS');
+            setRegisterView('HEALTH_PROBLEMS');
           }, 9000);
         } else {
           toast.error(t('register.weight_predict_error_msg'));
         }
-      }).catch(error => {
+      }).catch(() => {
         toast.error(t('register.weight_predict_error_msg'));
       });
     }
 
     return () => {
-      props.setStepTitles([...props.stepTitlesDefault]);
+      setStepTitles([...stepTitlesDefault]);
     };
   }, []);
 
   return (
-    <div className="pt-xl-5 text-center">
-      <h1 className="mb-2 mb-xl-5 fw-regular">{t('register.plan_progress_title')}</h1>
+    <div className='pt-xl-5 text-center'>
+      <h5 className='mb-2 mb-xl-5 fw-regular'>{t('register.plan_progress_title')}</h5>
 
-      <span className="site-logo mb-2 mb-xl-4" />
+      <span className='site-logo mb-2 mb-xl-4' />
 
       <LinearProgress />
-      
-      {/*<LinearPreloader />*/}
-      
-      <br/>
+
+      <br />
 
       <p>{progressTitle}</p>
     </div>

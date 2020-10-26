@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
-  getTranslate
+  getTranslate,
+  getCookie,
 } from 'utils';
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import { UserAuthProfileType } from 'types/auth';
 import { setAppSetting, setUserData } from 'store/actions';
-import { 
-  userSignup, 
-  userGoogleSignUp, 
+import { InputError } from 'types';
+import {
+  userSignup,
+  userGoogleSignUp,
   userFacebookSignUp,
   getAppSettings,
-  userValidate
 } from 'api';
 
 // Components
@@ -40,7 +41,7 @@ const JoinStep = (props: any) => {
   const [appRulesAccepted, setAppRulesAccepted] = useState(null);
 
   useEffect(() => {
-    let currStepTitles = [...props.stepTitlesDefault];
+    const currStepTitles = [...props.stepTitlesDefault];
     currStepTitles[0] = t('register.expect_step');
     currStepTitles[1] = t('register.step_confirm');
     currStepTitles[2] = t('register.ready_step');
@@ -61,21 +62,21 @@ const JoinStep = (props: any) => {
       props.setRegisterData,
       props.registerDataErrors,
       props.setRegisterDataErrors,
-      element
+      element,
     );
   };
 
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, props.registerDataErrors)
-      .map(msg => ({
+      .map((msg) => ({
         ...msg,
-        message: t('api.ecode.invalid_value')
+        message: t('api.ecode.invalid_value'),
       }));
 
   const finalWelcomeStep = (authToken: string) => {
     props.setRegisterData({
       ...registerData,
-      token: authToken
+      token: authToken,
     });
 
     props.setUserData({
@@ -84,7 +85,7 @@ const JoinStep = (props: any) => {
       afterSignupGoal: registerData.goal,
       afterSignupWeight: registerData.weight,
       afterSignupWeightGoal: registerData.weight_goal,
-      afterSignupPredictDate: registerData.predicted_date
+      afterSignupPredictDate: registerData.predicted_date,
     });
 
     props.setRegisterView('READY');
@@ -108,15 +109,25 @@ const JoinStep = (props: any) => {
       act_level = act_level_checked.value;
     }
 
-    let profilePayload = {
+    const profilePayload = {
       ...userProfileData,
-      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids.filter(cuisine => cuisine.checked).map(cuisine => cuisine.id),
-      diseases: userProfileData.diseases.filter(disease => disease.checked).map(disease => disease.code),
-      act_level
+      ignore_cuisine_ids: userProfileData.ignore_cuisine_ids
+        .filter((cuisine) => cuisine.checked)
+        .map((cuisine) => cuisine.id),
+      diseases: userProfileData.diseases
+        .filter((disease) => disease.checked)
+        .map((disease) => disease.code),
+      act_level,
     };
 
+    const ref_code = getCookie('ref_code');
+
+    if (ref_code) {
+      profilePayload.ref_code = ref_code;
+    }
+
     return {
-      ...profilePayload
+      ...profilePayload,
     };
   };
 
@@ -150,12 +161,12 @@ const JoinStep = (props: any) => {
               toast.error(t('register.error_msg'));
             }
           })
-          .catch((error) => {
+          .catch(() => {
             setRegisterGoogleLoading(false);
             toast.error(t('register.error_msg'));
           });
       })
-      .catch((error) => {
+      .catch(() => {
         setRegisterGoogleLoading(false);
       });
   };
@@ -188,7 +199,7 @@ const JoinStep = (props: any) => {
                 toast.error(t('register.error_msg'));
               }
             })
-            .catch((error) => {
+            .catch(() => {
               setRegisterFacebookLoading(false);
               toast.error(t('register.error_msg'));
             });
@@ -198,7 +209,7 @@ const JoinStep = (props: any) => {
       },
       {
         scope: 'email',
-      }
+      },
     );
   };
 
@@ -208,11 +219,11 @@ const JoinStep = (props: any) => {
     userSignup({
       email: props.registerData.email,
       password: props.registerData.password,
-      ...getRegisterProfilePayload()
-    }).then(response => {
+      ...getRegisterProfilePayload(),
+    }).then(({ data }) => {
         const token =
-          response.data && response.data.access_token
-            ? response.data.access_token
+          data && data.access_token
+            ? data.access_token
             : null;
 
         if (token) {
@@ -220,14 +231,16 @@ const JoinStep = (props: any) => {
           axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
           getAppSettings()
-            .then(response => {
+            .then(({ data: settingsData }) => {
               setRegisterJoinLoading(false);
 
-              if (response.data.success && response.data.data) {
-                props.setAppSetting(response.data.data);
+              if (settingsData.success && settingsData.data) {
+                props.setAppSetting(settingsData.data);
+              } else {
+                toast.error(t('register.error_msg'));
               }
             })
-            .catch(error => {
+            .catch(() => {
               toast.error(t('register.error_msg'));
               setRegisterJoinLoading(false);
             });
@@ -246,14 +259,14 @@ const JoinStep = (props: any) => {
           try {
             const validateErrors = JSON.parse(error.response.data.message);
 
-            let registerDataErrorsTemp = [...props.registerDataErrors];
+            const registerDataErrorsTemp: InputError[] = [...props.registerDataErrors];
 
-            Object.keys(validateErrors).map(field => {
+            Object.keys(validateErrors).map((field) => {
               registerDataErrorsTemp.push({
                 field,
-                message: validateErrors[field]
-              })
-            })
+                message: validateErrors[field],
+              });
+            });
 
             props.setRegisterDataErrors(registerDataErrorsTemp);
 
@@ -279,9 +292,7 @@ const JoinStep = (props: any) => {
     e.preventDefault();
 
     const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -303,8 +314,8 @@ const JoinStep = (props: any) => {
   };
 
   return (
-    <div className="register_join">
-      <h1 className="register_title mb-xl-5 mb-45 text-center">{t('register.info_confirm_title')}</h1>
+    <div className='register_join'>
+      <h3 className='register_title mb-xl-5 mb-45 text-center'>{t('register.info_confirm_title')}</h3>
 
       {/*<CustomCheckbox
         invalid={appRulesAccepted === false}
@@ -312,9 +323,9 @@ const JoinStep = (props: any) => {
         onChange={(e) => setAppRulesAccepted(e.target.checked)}
       />*/}
 
-      <form className="register_join_form mt-4 px-xl-5" onSubmit={(e) => registerJoinSubmit(e)}>
+      <form className='register_join_form mt-4 px-xl-5' onSubmit={(e) => registerJoinSubmit(e)}>
 
-        {/*<div className="register_socialBtns">
+        {/*<div className='register_socialBtns'>
           <Button
             type='submit'
             className='facebook-login-btn'
@@ -348,10 +359,10 @@ const JoinStep = (props: any) => {
               <GoogleIcon className='mr-2' /> Login with Google
             </Button>
           )}
-        </div>*/}        
+        </div>*/}
 
-        {/*<div className="register_join_or">
-          <span className="register_join_or_txt">{t('register.form_or')}</span>
+        {/*<div className='register_join_or'>
+          <span className='register_join_or_txt'>{t('register.form_or')}</span>
         </div>*/}
 
         <FormGroup>
@@ -362,7 +373,7 @@ const JoinStep = (props: any) => {
           <InputField
             block
             name='name'
-            autoFocus 
+            autoFocus
             isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
             value={registerData.name}
             data-validate='["required"]'
@@ -381,7 +392,7 @@ const JoinStep = (props: any) => {
             block
             name='email'
             value={registerData.email}
-            autoComplete="email"
+            autoComplete='email'
             isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
             data-validate={`["email"${
               socialRegister === 'email' ? ', "required"' : ''
@@ -398,7 +409,7 @@ const JoinStep = (props: any) => {
             block
             name='password'
             type='password'
-            autoComplete="new-password"
+            autoComplete='new-password'
             isValid={getFieldErrors('password').length === 0 && registerData.password.length > 0}
             value={registerData.password}
             data-validate={`[${
@@ -410,17 +421,17 @@ const JoinStep = (props: any) => {
           />
         </FormGroup>
 
-        <input type="text" name="email" className="d-none" />
-        <input type="password" name="pass" className="d-none" />
+        <input type='text' name='email' className='d-none' />
+        <input type='password' name='pass' className='d-none' />
 
         <div className='text-center mt-xl-5 mt-45'>
           <Button
-            className="registerBtn"
+            className='registerBtn'
             style={{ maxWidth: '355px' }}
-            type="submit"
+            type='submit'
             block
-            size="lg"
-            color="primary"
+            size='lg'
+            color='primary'
             isLoading={registerJoinLoading}
           >
             {t('register.form_submit')}
@@ -433,5 +444,5 @@ const JoinStep = (props: any) => {
 
 export default connect(
   null,
-  { setAppSetting, setUserData }
+  { setAppSetting, setUserData },
 )(JoinStep);
