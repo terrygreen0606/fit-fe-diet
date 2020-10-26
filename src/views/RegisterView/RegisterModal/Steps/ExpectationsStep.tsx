@@ -52,7 +52,7 @@ const ExpectationsStep = ({
   const getChartData = () => ([
     Number(weight),
     Number(weight),
-    Number(weight_goal) / 2.2,
+    Number(weight_goal) / 2.2, // imitate graph rising/falling
     Number(weight_goal) / 2.2,
     Number(weight_goal) / 2.2,
     Number(weight_goal) / 2.2,
@@ -70,7 +70,7 @@ const ExpectationsStep = ({
       borderWidth: 2,
       backgroundColor: 'transparent',
       data: [
-        Number(weight) * 1.05,
+        Number(weight) * 1.05, // imitate graph rising/falling
         Number(weight) * 1.1,
         Number(weight) * 0.8,
         Number(weight) * 0.99,
