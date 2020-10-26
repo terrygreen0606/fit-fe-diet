@@ -35,7 +35,7 @@ const GoalStep = ({
 
   return (
     <div className='register_goal'>
-      <h6 className='register_title mb-xl-5 mb-45'>{t('register.help_achieve_goal')}</h6>
+      <h3 className='register_title mb-xl-5 mb-45'>{t('register.help_achieve_goal')}</h3>
 
       <div className='register_goals_list'>
         <Button

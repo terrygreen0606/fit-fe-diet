@@ -323,9 +323,9 @@ const MealPlanView = (props: any) => {
                     )}
                   >
                     <div className='nutrition-plan-card-list-header'>
-                      <h5 className='nutrition-plan-card-list-title'>
+                      <h2 className='nutrition-plan-card-list-title'>
                         {t('mp.list.title')}
-                      </h5>
+                      </h2>
                       <div className='nutrition-plan-card-list-controls'>
                         <button
                           type='button'
@@ -351,7 +351,7 @@ const MealPlanView = (props: any) => {
                           </button>
                           <ShareButtons
                             visible={isBlockActive}
-                            items={['twitter', 'telegram']}
+                            items={['twitter']}
                             fetchData={() => getMealPlanText().then((response) => {
                               if (response.data.success && response.data.data) {
                                 return {
@@ -486,12 +486,12 @@ const MealPlanView = (props: any) => {
                     />
 
                     <div className='nutrition-plan-socials card-bg'>
-                      <h5 className='nutrition-plan-socials-title'>
+                      <h2 className='nutrition-plan-socials-title'>
                         {t('socials.share.title')}
-                      </h5>
+                      </h2>
                       <ShareButtons
                         visible
-                        items={['twitter', 'telegram']}
+                        items={['twitter']}
                         fetchData={() => getMealPlanText().then((response) => {
                           if (response.data.success && response.data.data) {
                             return {
@@ -509,9 +509,9 @@ const MealPlanView = (props: any) => {
                       </div>
 
                       <div className='nutrition-plan-usage-time-card-content'>
-                        <h5>
+                        <h2>
                           {t('nutrition.active_time')}
-                        </h5>
+                        </h2>
                         <p
                           dangerouslySetInnerHTML={
                             { __html: t('nutrition.days_use', { COUNT: daysToEndSubscription }) }
@@ -539,7 +539,7 @@ const MealPlanView = (props: any) => {
                         </div>
 
                         <div className='nutrition-plan-diet-settings-card-content'>
-                          <h5>{t('personal.menu_diet')}</h5>
+                          <h2>{t('personal.menu_diet')}</h2>
                           <p>{t('nutrition.settings.text')}</p>
                           <Link to={routes.changeMealSettings} className='nutrition-plan-usage-time-card-content-link'>
                             <Button className='mt-3' outline color='secondary'>

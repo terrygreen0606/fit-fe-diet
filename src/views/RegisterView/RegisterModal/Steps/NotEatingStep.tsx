@@ -60,13 +60,13 @@ const NotEatingStep = ({
 
   return (
     <>
-      <h6 className='register_title mb-xl-5 mb-45'>
+      <h3 className='register_title mb-xl-5 mb-45'>
         <AngleLeftIcon
           className='register-back-icon mr-5'
           onClick={() => setRegisterView('INFO_WEIGHT_GOAL')}
         />
         {t('register.not_eating')}
-      </h6>
+      </h3>
 
       <div className='register_eating_list'>
         {registerData.ignore_cuisine_ids.map(({

@@ -80,7 +80,7 @@ const Workout = ({
 
   return (
     <>
-      <h6
+      <h3
         className={classNames('register_title mb-xl-5 mb-45', {
           'text-red': hasError,
         })}
@@ -90,7 +90,7 @@ const Workout = ({
           onClick={() => setRegisterView('HEALTH_PROBLEMS')}
         />
         {`${t('register.workout_title')}:`}
-      </h6>
+      </h3>
 
       <div className='register_check_list'>
         {registerData.act_levels.map(({ value, checked, i18n_code }) => (

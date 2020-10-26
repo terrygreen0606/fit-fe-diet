@@ -30,7 +30,7 @@ const shareButtonsPropsDefault = {
   visible: false,
   className: '',
   disabled: false,
-  items: ['twitter', 'facebook', 'telegram', 'whatsapp'],
+  items: ['twitter', 'facebook', 'whatsapp'],
   fetchData: null,
 };
 

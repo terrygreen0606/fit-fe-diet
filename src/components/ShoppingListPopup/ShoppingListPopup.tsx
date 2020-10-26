@@ -158,9 +158,9 @@ const ShoppingListPopup = ({
       ) : (
           <>
             <div className='shop-list-popup__header'>
-              <h5 className='shop-list-popup__header-title'>
+              <h2 className='shop-list-popup__header-title'>
                 {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
-              </h5>
+              </h2>
               <div className='shop-list-popup__header-buttons'>
                 <button
                   type='button'

@@ -28,9 +28,9 @@ const TodayActivities = ({
 
   return (
     <>
-      <h4 className='today-activities-activity-title'>
+      <h2 className='today-activities-activity-title'>
         {name}
-      </h4>
+      </h2>
       <div className='today-activities-activity-list'>
         {
           items.map((item) => (

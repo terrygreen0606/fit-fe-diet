@@ -178,7 +178,7 @@ const ConfirmInfo = ({
 
   return (
     <>
-      <h4 className='register_title mb-md-5 text-center'>{t('register.info_confirm_title')}</h4>
+      <h1 className='register_title mb-md-5 text-center'>{t('register.info_confirm_title')}</h1>
 
       <div className='row'>
         <div className='col-xs-10 offset-xs-1 col-md-8 offset-md-2 px-md-4'>

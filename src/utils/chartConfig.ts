@@ -1,7 +1,7 @@
 import Chart from 'chart.js';
 
 export default () => {
-  Chart.defaults.global.tooltipFontFamily = 'Montserrat, sans-serif';
+  Chart.defaults.global.tooltipFontFamily = '"SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif';
 
   Chart.pluginService.register({
     beforeRender: function (chart) {

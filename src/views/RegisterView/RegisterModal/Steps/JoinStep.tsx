@@ -103,7 +103,7 @@ const JoinStep = (props: any) => {
 
     let act_level = null;
 
-    const act_level_checked = userProfileData.act_levels.find((level) => level.checked);
+    const act_level_checked = act_levels.find(level => level.checked);
 
     if (act_level_checked) {
       act_level = act_level_checked.value;
@@ -315,7 +315,7 @@ const JoinStep = (props: any) => {
 
   return (
     <div className='register_join'>
-      <h4 className='register_title mb-xl-5 mb-45 text-center'>{t('register.info_confirm_title')}</h4>
+      <h3 className='register_title mb-xl-5 mb-45 text-center'>{t('register.info_confirm_title')}</h3>
 
       {/*<CustomCheckbox
         invalid={appRulesAccepted === false}

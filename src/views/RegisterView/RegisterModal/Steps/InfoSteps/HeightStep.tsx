@@ -129,14 +129,14 @@ const HeightStep = ({
   };
 
   return (
-    <div className='register_info'>
-      <h6 className='register_title mb-xl-5 mb-45'>
+    <div className="register_info">
+      <h3 className="register_title mb-xl-5 mb-45">
         <AngleLeftIcon
           className='register-back-icon mr-3'
           onClick={() => setRegisterView('INFO_AGE')}
         />
         {t('register.height_step_title')}
-      </h6>
+      </h3>
 
       <div className='text-center mt-5 pt-md-5'>
         <CustomSwitch

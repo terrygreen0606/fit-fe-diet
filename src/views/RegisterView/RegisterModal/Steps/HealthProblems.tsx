@@ -57,13 +57,13 @@ const HealthProblems = ({
 
   return (
     <>
-      <h6 className='register_title mb-xl-5 mb-45'>
+      <h3 className='register_title mb-xl-5 mb-45'>
         <AngleLeftIcon
           className='register-back-icon mr-5'
           onClick={() => setRegisterView('NOT_EATING')}
         />
         {`${t('register.diseases_title')}:`}
-      </h6>
+      </h3>
 
       <div className='register_check_list'>
         {registerData.diseases.map(({ code, checked, i18n_code }) => (

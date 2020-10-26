@@ -53,13 +53,13 @@ const DayMealPlan = ({
 
   return (
     <>
-      <h3
+      <h1
         className={classNames('register_v2tpl_title', {
           'text-red': hasError
         })}
       >
         {t('register.v2.meal_plan.title')}
-      </h3>
+      </h1>
 
       <div className='row'>
         <div className='col-8 offset-2'>

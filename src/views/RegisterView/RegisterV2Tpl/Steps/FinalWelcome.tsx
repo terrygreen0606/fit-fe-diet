@@ -26,11 +26,11 @@ const FinalWelcome = ({
           style={{ backgroundImage: `url(${getImagePath('features/list-feature.png')})` }}
         />
 
-        <h5 className='register_title mt-md-2'>
+        <h1 className='register_title mt-md-2'>
           {t('register.plan_ready_title', { NAME: registerData.name })}
           {', '}
           {t('register.plan_ready_subtitle')}
-        </h5>
+        </h1>
 
         <div className='text-center mt-md-5 mt-4'>
           <Button
