@@ -134,15 +134,17 @@ const NutritionPlanCard = ({
             <button
               type='button'
               onClick={onClickReload}
-              className={classnames('nutrition-plan-card-controls-item', {
+              className={classnames('nutrition-plan-card-controls-item-reload', {
                 active: reloadActive,
               })}
             >
-              <div className='
-                nutrition-plan-card-controls-item-icon
-                nutrition-plan-card-controls-item-icon-reload'
-              >
-                <ReloadGrayIcon />
+              <div className='nutrition-plan-card-controls-item-reload-wrap'>
+                <div className='nutrition-plan-card-controls-item-reload-text'>
+                  {t('recipe.replace')}
+                </div>
+                <div className='nutrition-plan-card-controls-item-reload-icon'>
+                  <ReloadGrayIcon />
+                </div>
               </div>
             </button>
           )}
