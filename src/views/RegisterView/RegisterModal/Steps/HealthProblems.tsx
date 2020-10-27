@@ -43,9 +43,7 @@ const HealthProblems = ({
       if (registerData.diseases.find((disease) => disease.checked)) {
         setHaveDiseases(true);
         setAskDiseasesView(false);
-      }
-
-      if (registerData.diseases.every((disease) => disease.checked === false)) {
+      } else if (registerData.diseases.every((disease) => disease.checked === false)) {
         setHaveDiseases(false);
         setAskDiseasesView(true);
       }
