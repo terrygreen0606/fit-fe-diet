@@ -189,8 +189,10 @@
     position: absolute
     top: calc(100% - 43px)
     right: 27px
+    width: calc(100% - 27px)
     display: flex
     align-items: center
+    justify-content: flex-end
 
     @media (max-width: 1200px)
       top: calc(100% - 20px)
@@ -211,8 +213,9 @@
       cursor: pointer
 
       @media (max-width: 1200px)
-        width: 44px
+        width: calc(33.33% - 10px)
         height: 44px
+        text-align: center
         background-color: transparent
 
       &:not(:first-child)
@@ -281,9 +284,10 @@
       cursor: pointer
 
       @media (max-width: 1200px)
-        min-width: 44px
+        min-width: calc(33.33% - 10px)
         height: 44px
         padding: 0
+        text-align: center
         background-color: transparent
 
       &-wrap
