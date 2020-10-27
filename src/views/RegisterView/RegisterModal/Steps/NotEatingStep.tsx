@@ -79,7 +79,8 @@ const NotEatingStep = ({
             <input
               name='register_eating_item'
               type='checkbox'
-              checked={checked}
+              value={id}
+              checked={!!checked}
               onChange={(e) => changeCuisineState(id, e.target.checked)}
             />
 
@@ -99,7 +100,9 @@ const NotEatingStep = ({
           size='lg'
           onClick={() => setRegisterView('PLAN_PROGRESS')}
         >
-          {t('register.form_next')}
+          {registerData.ignore_cuisine_ids.find((cuisine) => cuisine.checked)
+            ? t('register.form_next')
+            : t('register.eating_all')}
         </Button>
       </div>
     </>

@@ -94,7 +94,16 @@ const WeightStep = ({
       })
         .then(({ data }) => {
           if (data.success) {
-            setRegisterView('INFO_WEIGHT_GOAL');
+            if (registerData.goal === 0) {
+              setRegisterData({
+                ...registerData,
+                weight_goal: registerData.weight
+              });
+              
+              setRegisterView('NOT_EATING');
+            } else {
+              setRegisterView('INFO_WEIGHT_GOAL');
+            }
           } else {
             toast.error(t('register.error_msg'));
           }
