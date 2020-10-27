@@ -89,6 +89,11 @@ export const loadLocales = (reloadLocales: boolean = false) => async (dispatch) 
 
     if (FITLOPE_CHECKSUM_I18N_HEADER !== FITLOPE_CHECKSUM_I18N) {
       localStorage.setItem('FITLOPE_CHECKSUM_I18N', FITLOPE_CHECKSUM_I18N_HEADER);
+
+      if (response.config.url === '/i18n/load') {
+        return response;
+      }
+
       dispatch(fetchLocales());
     }
 
@@ -132,22 +137,24 @@ export const appSetting = (
 
   axios.interceptors.response.use((response) => {
     const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem('FITLOPE_IS_AUTHENTICATED');
+    const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
+    const FITLOPE_CHECKSUM_SETTINGS_HEADER = response.headers['fitlope-checksum-settings'];
+
+    if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
+      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', FITLOPE_CHECKSUM_SETTINGS_HEADER);
+    }
+
+    if (response.config.url === '/app/public-settings' || response.config.url === '/app/settings') {
+      return response;
+    }
 
     if (FITLOPE_IS_AUTHENTICATED === 'true') {
-      const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
-      const FITLOPE_CHECKSUM_SETTINGS_HEADER = response.headers['fitlope-checksum-settings'];
-
       if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
-        localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', FITLOPE_CHECKSUM_SETTINGS_HEADER);
         dispatch(fetchUserSettings());
       }
     } else if (!FITLOPE_IS_AUTHENTICATED || FITLOPE_IS_AUTHENTICATED === 'false') {
-      const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
-      const FITLOPE_CHECKSUM_SETTINGS_HEADER = response.headers['fitlope-checksum-settings'];
-
       if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
-        localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', FITLOPE_CHECKSUM_SETTINGS_HEADER);
-        dispatch(fetchUserSettings());
+        dispatch(fetchPublicSettings());
       }
     }
 
