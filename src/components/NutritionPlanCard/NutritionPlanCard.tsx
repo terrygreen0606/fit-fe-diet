@@ -10,8 +10,8 @@ import ContentLoading from 'components/hoc/ContentLoading';
 import './NutritionPlanCard.sass';
 
 import { ReactComponent as ReloadGrayIcon } from 'assets/img/icons/reload-gray-icon.svg';
-import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-icon.svg';
-import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
+import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-recipe-icon.svg';
+import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-recipe-icon.svg';
 import { ReactComponent as HeartIcon } from 'assets/img/icons/heart-filled-icon.svg';
 import { ReactComponent as CursorTouchIcon } from 'assets/img/icons/cursor-touch-icon.svg';
 
