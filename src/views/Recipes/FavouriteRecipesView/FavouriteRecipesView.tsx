@@ -25,7 +25,7 @@ import Pagination from 'components/Pagination';
 import './FavouriteRecipesView.sass';
 
 import { ReactComponent as CursorTouchIcon } from 'assets/img/icons/cursor-touch-icon.svg';
-import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-icon.svg';
+import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-recipe-icon.svg';
 import { ReactComponent as HeartFilledIcon } from 'assets/img/icons/heart-filled-icon.svg';
 
 const FavouriteRecipesView = (props: any) => {

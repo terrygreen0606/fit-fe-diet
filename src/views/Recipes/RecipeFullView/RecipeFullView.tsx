@@ -49,6 +49,7 @@ import { ReactComponent as CursorTouchLogo } from 'assets/img/icons/cursor-touch
 import { ReactComponent as CloseIconLogo } from 'assets/img/icons/close-icon.svg';
 import { ReactComponent as ArrowLeftLogo } from 'assets/img/icons/angle-left-icon.svg';
 import { ReactComponent as ArrowRightLogo } from 'assets/img/icons/angle-right-icon.svg';
+// import { ReactComponent as ReloadGrayIcon } from 'assets/img/icons/reload-gray-icon.svg';
 
 const RecipeFullView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
@@ -730,6 +731,17 @@ const RecipeFullView = (props: any) => {
                               </div>
                             </div>
                           </div>
+                          {/* <button
+                            type='button'
+                            className='recipe__similar-recipes-item-reload-btn'
+                          >
+                            <div className='recipe__similar-recipes-item-reload-btn-text'>
+                              {t('recipe.replace')}
+                            </div>
+                            <div className='recipe__similar-recipes-item-reload-btn-icon'>
+                              <ReloadGrayIcon />
+                            </div>
+                          </button> */}
                         </div>
                       ))}
                     </div>

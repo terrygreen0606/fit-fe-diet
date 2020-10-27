@@ -6,7 +6,6 @@
     height: calc(100% - 65px)
 
     @media (max-width: 768px)
-      margin-bottom: 30px
       height: calc(100% - 30px)
 
 .nutrition-plan-card
@@ -189,9 +188,11 @@
   &-controls
     position: absolute
     top: calc(100% - 43px)
-    right: 27px
+    right: 10px
+    width: calc(100% - 10px)
     display: flex
     align-items: center
+    justify-content: flex-end
 
     @media (max-width: 1200px)
       top: calc(100% - 20px)
@@ -214,6 +215,8 @@
       @media (max-width: 1200px)
         width: 44px
         height: 44px
+        text-align: center
+        background-color: transparent
 
       &:not(:first-child)
         margin-left: 8px
@@ -227,42 +230,111 @@
         justify-content: center
         width: 44px
         height: 44px
-        padding: 4px
         border: 9px solid $white
+        background-color: $white
         box-shadow: 0px 3px 5px #BAC2D2
-        background-color: #F2F2F2
         border-radius: 50%
         transition: 0.2s background-color ease
-
-        svg
-          max-width: 14px
 
         svg path
           fill: #DAD7D7
           transition: 0.2s fill, 0.2s stroke ease
       
       &-icon-shop
-        svg
-          width: 14px
-          height: auto
-
           path
             fill: #DAD7D7
 
     &-item.active,
     &-item:hover
-      .nutrition-plan-card-controls-item-icon-reload
-        background-color: $orange-accent
-
-        svg path
-          fill: $white
-
       .nutrition-plan-card-controls-item-icon-shop
         svg path
-          fill: $black
+          fill: #555E63
 
       .nutrition-plan-card-controls-item-icon-checked
         background-color: $bright-green
 
         svg path
           fill: $white
+
+    &-item-reload
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: center
+      min-width: 68px
+      height: 68px
+      padding: 12px
+      border: none
+      border-radius: 25px
+      background-color: $white
+      cursor: pointer
+
+      @media (max-width: 1200px)
+        width: 44px
+        min-width: initial
+        height: 44px
+        padding: 0
+        text-align: center
+        background-color: transparent
+
+      &-wrap
+        position: relative
+        display: flex
+        align-items: center
+        min-width: 44px
+        height: 44px
+        overflow: hidden
+        border-radius: 25px
+        background-color: $white
+        box-shadow: 0px 3px 5px #BAC2D2
+
+        &:before
+          content: ''
+          position: absolute
+          top: 0
+          right: 0
+          width: 44px
+          height: 44px
+          background-color: $white
+          border-radius: 50%
+          z-index: 2
+
+      &-icon
+        position: absolute
+        top: 9px
+        right: 9px
+        display: flex
+        align-items: center
+        justify-content: center
+        min-width: 26px
+        max-width: 70px
+        height: 26px
+        border-radius: 50%
+        z-index: 3
+
+        svg path
+          fill:#DAD7D7
+          transition: 0.2s fill ease
+
+      &-text
+        max-width: 0
+        text-align: left
+        opacity: 0
+        font-size: 11px
+        font-family: $base_font
+        transition: max-width 0.2s ease-out, padding-left 0.2s ease-out, padding-right 0.2s ease-out, opacity 0.2s ease-out
+
+        @media (max-width: 1200px)
+          display: none
+
+    &-item-reload:hover
+      .nutrition-plan-card-controls-item-reload-text
+        max-width: 110px
+        padding-right: 40px
+        padding-left: 20px
+        opacity: 1
+      
+      .nutrition-plan-card-controls-item-reload-icon
+        svg path
+          fill: $orange-accent
+    

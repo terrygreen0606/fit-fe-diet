@@ -10,8 +10,8 @@ import ContentLoading from 'components/hoc/ContentLoading';
 import './NutritionPlanCard.sass';
 
 import { ReactComponent as ReloadGrayIcon } from 'assets/img/icons/reload-gray-icon.svg';
-import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-icon.svg';
-import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
+import { ReactComponent as ShoppingCartIcon } from 'assets/img/icons/shopping-cart-recipe-icon.svg';
+import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-recipe-icon.svg';
 import { ReactComponent as HeartIcon } from 'assets/img/icons/heart-filled-icon.svg';
 import { ReactComponent as CursorTouchIcon } from 'assets/img/icons/cursor-touch-icon.svg';
 
@@ -134,15 +134,17 @@ const NutritionPlanCard = ({
             <button
               type='button'
               onClick={onClickReload}
-              className={classnames('nutrition-plan-card-controls-item', {
+              className={classnames('nutrition-plan-card-controls-item-reload', {
                 active: reloadActive,
               })}
             >
-              <div className='
-                nutrition-plan-card-controls-item-icon
-                nutrition-plan-card-controls-item-icon-reload'
-              >
-                <ReloadGrayIcon />
+              <div className='nutrition-plan-card-controls-item-reload-wrap'>
+                <div className='nutrition-plan-card-controls-item-reload-text'>
+                  {t('recipe.replace')}
+                </div>
+                <div className='nutrition-plan-card-controls-item-reload-icon'>
+                  <ReloadGrayIcon />
+                </div>
               </div>
             </button>
           )}

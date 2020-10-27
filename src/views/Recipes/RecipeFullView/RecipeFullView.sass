@@ -486,6 +486,9 @@
     margin-bottom: 40px
     padding: 30px
 
+    @media (max-width: 400px)
+      padding: 30px 15px
+
     &-title
       margin-bottom: 40px
       font-size: 24px
@@ -599,6 +602,9 @@
   &__similar-recipes
     padding: 22px 25px 36px
 
+    @media (max-width: 400px)
+      padding: 22px 15px 36px
+
     &-title
       margin-bottom: 56px
       font-size: 24px
@@ -609,6 +615,7 @@
         font-size: 18px
 
     &-item
+      position: relative
       display: flex
       align-items: flex-start
 
@@ -646,7 +653,7 @@
           opacity: 1
 
       &-text
-        flex: 1
+        flex-basis: calc(100% - 150px)
         padding-left: 24px
 
         &-name
@@ -703,6 +710,74 @@
               margin-left: 10px
               border-radius: 50%
               background-color: #CBFFCE
+
+      &-reload-btn
+        position: absolute
+        top: 0
+        right: 0
+        display: flex
+        align-items: center
+        max-width: 112px
+        min-width: 44px
+        height: 44px
+        padding: 0
+        overflow: hidden
+        border: none
+        border-radius: 25px
+        box-shadow: 0px 3px 5px #BAC2D2
+        background-color: $white
+        cursor: pointer
+
+        &:before
+          content: ''
+          position: absolute
+          top: 0
+          right: 0
+          width: 44px
+          height: 44px
+          border-radius: 50%
+          background-color: $white
+          z-index: 2
+
+        &-icon
+          position: absolute
+          top: 9px
+          right: 9px
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 26px
+          height: 26px
+          background-color: #F2F2F2
+          border-radius: 50%
+          transition: 0.2s background-color ease
+          z-index: 3
+
+          svg path
+            fill: #DAD7D7
+            transition: 0.2s fill ease
+
+        &-text
+          max-width: 0
+          text-align: left
+          opacity: 0
+          font-size: 11px
+          font-family: $base_font
+          transition: max-width 0.2s ease-out, padding-left 0.2s ease-out, padding-right 0.2s ease-out, opacity 0.2s ease-out
+      
+      &-reload-btn:hover
+        .recipe__similar-recipes-item-reload-btn-text
+          max-width: 110px
+          padding-right: 40px
+          padding-left: 20px
+          opacity: 1
+
+        .recipe__similar-recipes-item-reload-btn-icon
+          background-color: $orange-accent
+
+          svg path
+            fill: $white
+
   &__modal
     padding: 40px 50px
 
