@@ -186,7 +186,8 @@ const Footer = (props: any) => {
             </div>
           </div>
           <div className='col-md-3 offset-md-9 text-center text-md-right'>
-            <div className='mainFooter_copyright'>{t('footer.copyright')}</div>
+            <div className='mainFooter_info'>{t('footer.copyright')}</div>
+            <div className='mainFooter_info'>{t('footer.disclaimer')}</div>
           </div>
         </div>
       </div>
