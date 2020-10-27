@@ -98,7 +98,8 @@ const Workout = ({
             <input
               name='register_act_levels'
               type='radio'
-              checked={checked}
+              value={value}
+              checked={!!checked}
               onChange={(e) => changeActLevelState(value, e.target.checked)}
             />
 

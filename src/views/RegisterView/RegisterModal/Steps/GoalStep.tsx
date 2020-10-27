@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getTranslate } from 'utils';
 import classNames from 'classnames';
 
@@ -20,11 +20,23 @@ const GoalStep = ({
 }: any) => {
   const t = (code: string) => getTranslate(localePhrases, code);
 
+  const [hasError, setHasError] = useState(false);
+
   const nextStep = () => {
     setRegisterView('INFO_GENDER');
   };
 
+  const nextStepSubmit = () => {
+    if (registerData.goal === null) {
+      setHasError(true);
+    } else {
+      nextStep();
+    }
+  };
+
   const changeRegisterGoal = (goal: -1 | 0 | 1) => {
+    setHasError(false);
+
     setRegisterData({
       ...registerData,
       goal,
@@ -35,7 +47,13 @@ const GoalStep = ({
 
   return (
     <div className='register_goal'>
-      <h3 className='register_title mb-xl-5 mb-45'>{t('register.help_achieve_goal')}</h3>
+      <h3
+        className={classNames('register_title mb-xl-5 mb-45', {
+          'text-red': hasError,
+        })}
+      >
+        {t('register.help_achieve_goal')}
+      </h3>
 
       <div className='register_goals_list'>
         <Button
@@ -87,7 +105,7 @@ const GoalStep = ({
           style={{ width: '220px' }}
           color='primary'
           size='lg'
-          onClick={() => nextStep()}
+          onClick={() => nextStepSubmit()}
         >
           {t('register.form_next')}
         </Button>

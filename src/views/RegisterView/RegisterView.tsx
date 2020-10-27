@@ -36,7 +36,7 @@ const registerDataDefault: RegisterDataType = {
   weight_goal: null,
   predicted_date: null,
   tpl_signup: null,
-  goal: -1,
+  goal: null,
   ignore_cuisine_ids: [],
   diseases: [],
   act_levels: [],
@@ -82,25 +82,25 @@ const RegisterView = ({
             act_levels: data.act_levels && data.act_levels.length ?
               data.act_levels.map((activity) => ({
                 ...activity,
-                checked: false,
+                checked: null,
               }))
             : [],
             ignore_cuisine_ids: data.cuisines && data.cuisines.length ?
               data.cuisines.map((cuisine) => ({
                 ...cuisine,
-                checked: false,
+                checked: null,
               }))
             : [],
             diseases: data.diseases && data.diseases.length ?
               data.diseases.map((disease) => ({
                 ...disease,
-                checked: false,
+                checked: null,
               }))
             : [],
             meal_counts: data.meal_counts && data.meal_counts.length ?
               data.meal_counts.map((meal_count) => ({
                 ...meal_count,
-                checked: false,
+                checked: null,
               }))
             : [],
           });
