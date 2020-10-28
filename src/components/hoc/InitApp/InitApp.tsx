@@ -11,17 +11,15 @@ interface InitAppProps extends RouteComponentProps {
 }
 
 const InitApp = ({ history, children }: InitAppProps) => {
-  // window.addEventListener('beforeinstallprompt', (e) => {
-  //   window['beforeinstallprompt'] = e;
-  //   e.preventDefault();
-
-  //   if (history.location.pathname.indexOf(routes.register) > -1) {
-  //     e.preventDefault();
-  //   }
-  // });
+  window.addEventListener('beforeinstallprompt', (e) => {
+    window['beforeinstallprompt'] = e;
+    if (history.location.pathname.indexOf(routes.register) > -1) {
+      e.preventDefault();
+    }
+  });
 
   history.listen((location) => {
-    if (location.pathname.indexOf(routes.register) > -1) {
+    if (location.pathname.indexOf(routes.afterCheckout) > -1) {
       if (window['beforeinstallprompt'] && window['beforeinstallprompt'].prompt) {
         window['beforeinstallprompt'].prompt();
       }
