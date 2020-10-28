@@ -15,6 +15,8 @@ const InitApp = ({ history, children }: InitAppProps) => {
     window['beforeinstallprompt'] = e;
     if (history.location.pathname.indexOf(routes.register) > -1) {
       e.preventDefault();
+    } else if (window['beforeinstallprompt'] && window['beforeinstallprompt'].prompt) {
+      window['beforeinstallprompt'].prompt();
     }
   });
 
