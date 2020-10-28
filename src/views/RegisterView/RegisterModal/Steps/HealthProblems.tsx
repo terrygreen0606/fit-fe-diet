@@ -181,12 +181,14 @@ const HealthProblems = ({
       <div className='text-center'>
         <Button
           className='mt-xl-5 mt-45'
-          style={{ width: '220px' }}
+          style={{ minWidth: '220px' }}
           color='primary'
           size='lg'
           onClick={() => nextStep()}
         >
-          {t('register.form_next')}
+          {registerData.diseases.find((disease) => disease.checked)
+            ? t('register.form_next')
+            : t('register.no_diseases_label')}
         </Button>
       </div>
     </>

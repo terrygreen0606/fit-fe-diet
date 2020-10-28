@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
 
 import { routes } from 'constants/routes';
@@ -12,7 +13,7 @@ import './SideMenu.sass';
 
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon.svg';
 
-const SideMenu = ({ localePhrases, isAuthenticated }: any) => {
+const SideMenu = ({ localePhrases, isAuthenticated, userLogout: userAuthLogout }: any) => {
   const closeSideMenu = () => {
     document.body.classList.remove('mobile-menu-opened');
   };
@@ -56,7 +57,7 @@ const SideMenu = ({ localePhrases, isAuthenticated }: any) => {
           </li>
         </ul>
 
-        {isAuthenticated && (
+        {!isAuthenticated ? (
           <>
             <Link
               to='/login'
@@ -71,6 +72,14 @@ const SideMenu = ({ localePhrases, isAuthenticated }: any) => {
               {t('button.register')}
             </Link>
           </>
+        ) : (
+          <button
+            className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
+            type='button'
+            onClick={() => userAuthLogout()}
+          >
+            {t('common.logout')}
+          </button>
         )}
       </div>
     </>
@@ -82,7 +91,7 @@ export default WithTranslate(
     (state: any) => ({
       isAuthenticated: state.auth.isAuthenticated,
     }),
-    null
+    { userLogout },
   )(SideMenu),
 );
 
