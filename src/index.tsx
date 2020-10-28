@@ -16,6 +16,15 @@ import * as serviceWorker from './serviceWorker';
 
 import configureStore from './store/store';
 
+window.addEventListener('beforeinstallprompt', (e) => {
+  window['beforeinstallprompt'] = e;
+  e.preventDefault();
+  
+  // if (history.location.pathname.indexOf(routes.register) > -1) {
+  //   e.preventDefault();
+  // }
+});
+
 const store = configureStore();
 
 chartConfig();
