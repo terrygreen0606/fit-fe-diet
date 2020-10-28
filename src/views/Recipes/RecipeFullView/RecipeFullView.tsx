@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
@@ -6,6 +7,7 @@ import Helmet from 'react-helmet';
 import classnames from 'classnames';
 import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import uuid from 'react-uuid';
 
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
@@ -103,7 +105,7 @@ const RecipeFullView = (props: any) => {
     isPublic: null,
     mealtimeCodes: [],
     name: null,
-    preparation: null,
+    preparation: [],
     protein: null,
     salt: null,
     servingsCnt: null,
@@ -130,7 +132,6 @@ const RecipeFullView = (props: any) => {
     isPublic: data.is_public,
     mealtimeCodes: data.mealtime_codes,
     name: data.name_i18n,
-    preparation: data.preparation_i18n,
     protein: data.protein,
     salt: data.salt,
     servingsCnt: data.servings_cnt,
@@ -151,6 +152,7 @@ const RecipeFullView = (props: any) => {
         const {
           images,
           note,
+          preparation_i18n,
         } = data;
 
         const updatedImages = [...images];
@@ -159,9 +161,15 @@ const RecipeFullView = (props: any) => {
 
         const preparedRecipeData = getRecipeDataFunc(data);
 
+        const updatedPreparation = preparation_i18n.split('\n').map((item) => ({
+          text: item,
+          id: uuid(),
+        }));
+
         setRecipeData({
           ...preparedRecipeData,
           images: updatedImages,
+          preparation: updatedPreparation,
         });
 
         setAddNoteForm({ ...addNoteForm, note });
@@ -423,7 +431,7 @@ const RecipeFullView = (props: any) => {
                           key={ingredient.ingredient_id}
                           className='recipe__composition-list-item'
                         >
-                          {`${t(getWeigthUnit(settings.measurement), { COUNT: ingredient.weight })}.
+                          {`${t(getWeigthUnit(settings.measurement), { COUNT: ingredient.weight })}
                           ${ingredient.name_i18n}`}
                           {ingredient.weight === 0 ? ` (${t('recipe.taste')})` : ''}
                         </div>
@@ -445,9 +453,13 @@ const RecipeFullView = (props: any) => {
                         />
                       </div>
                     )}
-                    <div className='recipe__manufacture-desc'>
-                      {recipeData.preparation}
-                    </div>
+                    <ol className='recipe__manufacture-desc'>
+                      {recipeData.preparation.map((item) => (
+                        <li key={item.id}>
+                          {item.text}
+                        </li>
+                      ))}
+                    </ol>
                   </div>
                 </div>
               </div>
