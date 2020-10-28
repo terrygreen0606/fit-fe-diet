@@ -11,6 +11,12 @@ interface InitAppProps extends RouteComponentProps {
 }
 
 const InitApp = ({ history, children }: InitAppProps) => {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    if (history.location.pathname.indexOf('register') > -1) {
+      e.preventDefault();
+    }
+  });
+
   axios.interceptors.response.use((response) => response, (error) => {
     if (error.response) {
       if (error.response.status === xhrStatuses.NOT_PAID) {

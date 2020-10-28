@@ -75,7 +75,7 @@ const SideMenu = ({ localePhrases, isAuthenticated, userLogout: userAuthLogout }
         ) : (
           <button
             className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
-            type="button"
+            type='button'
             onClick={() => userAuthLogout()}
           >
             {t('common.logout')}
