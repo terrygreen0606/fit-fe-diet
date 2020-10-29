@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import {
@@ -15,6 +15,7 @@ import {
   fetchUserProfile,
   getPaymentMethods,
   payCreditCard,
+  getRecallsData,
 } from 'api';
 
 // Components
@@ -29,6 +30,7 @@ import RawCountDown from 'components/common/RawCountDown';
 import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
+import useInterval from 'components/hooks/useInterval';
 import FormValidator from 'utils/FormValidator';
 
 import './CheckoutPage.sass';
@@ -37,9 +39,7 @@ import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.
 import { ReactComponent as LockIcon } from 'assets/img/icons/lock-icon.svg';
 import { ReactComponent as UsersIcon } from 'assets/img/icons/three-users-icon.svg';
 import { ReactComponent as ProofIcon } from 'assets/img/icons/proof-icon.svg';
-import { ReactComponent as StarIcon } from 'assets/img/icons/star-icon.svg';
-
-import { mockData } from './mockData';
+import { ReactComponent as StarIcon } from 'assets/img/icons/star-yellow-icon.svg';
 
 const checkoutFormDefault = {
   payment_type: 'credit_card',
@@ -90,21 +90,19 @@ const CheckoutPage = (props: any) => {
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
   const [isUsersWidgetActive, setIsUsersWidgetActive] = useState<boolean>(false);
-  const [usersCount, setUsersCount] = useState<number>(3456);
+  const [usersCount, setUsersCount] = useState<number>(null);
 
   const [isReviewsWidgetActive, setIsReviewsWidgetActive] = useState<boolean>(false);
-  const [isReviewActive, setIsReviewActive] = useState<{
+  const [isReviewsWidgetHide, setIsReviewsWidgetHide] = useState<boolean>(false);
+  const [reviewsList, setReviewsList] = useState<any[]>([]);
+  const [reviewActive, setReviewActive] = useState<{
     image: string,
     name: string,
-    desc: string,
-    stars: number,
-    proofService: boolean,
+    text: string,
   }>({
     image: null,
     name: null,
-    desc: null,
-    stars: null,
-    proofService: null,
+    text: null,
   });
 
   const getUserTariff = () => {
@@ -192,16 +190,55 @@ const CheckoutPage = (props: any) => {
       });
   };
 
-  const getReviewData = (index: number) => {
-    setIsReviewActive({
-      ...isReviewActive,
-      image: mockData[index].image,
-      name: mockData[index].name,
-      desc: mockData[index].desc,
-      stars: mockData[index].stars,
-      proofService: mockData[index].proofService,
+  const getRecallsInfo = () => {
+    getRecallsData().then((response) => {
+      if (response.data.data && response.data.success) {
+        const { data } = response.data;
+
+        setUsersCount(data.active_users);
+        setReviewsList([...data.recalls]);
+
+        console.log('11', data.recalls);
+
+        setReviewActive({
+          ...reviewActive,
+          image: data.recalls[0].image,
+          name: data.recalls[0].name,
+          text: data.recalls[0].text,
+        });
+
+        setIsUsersWidgetActive(true);
+        setIsReviewsWidgetActive(true);
+      } else {
+        toast.error(t('common.error'));
+      }
     });
   };
+
+  const reviewCount = useRef(1);
+
+  useInterval(() => {
+    setIsReviewsWidgetHide(true);
+    setReviewActive({
+      ...reviewActive,
+      image: reviewsList[reviewCount.current]?.image,
+      name: reviewsList[reviewCount.current]?.name,
+      text: reviewsList[reviewCount.current]?.text,
+    });
+
+    if (reviewsList.length === 0) {
+      reviewCount.current = 1;
+    } else {
+      reviewCount.current += 1;
+    }
+
+    if (reviewCount.current === reviewsList.length) {
+      reviewCount.current = 0;
+    }
+    setTimeout(() => {
+      setIsReviewsWidgetHide(false);
+    }, 200);
+  }, 5000);
 
   useEffect(() => {
     getUserTariff();
@@ -214,19 +251,8 @@ const CheckoutPage = (props: any) => {
     }
 
     setTimeout(() => {
-      setIsUsersWidgetActive(true);
-      setIsReviewsWidgetActive(true);
-      getReviewData(0);
-    }, 0);
-
-    let reviewCount = 1;
-    setInterval(() => {
-      getReviewData(reviewCount);
-      reviewCount += 1;
-      if (reviewCount === mockData.length) {
-        reviewCount = 0;
-      }
-    }, 5000);
+      getRecallsInfo();
+    }, 15000);
   }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -371,19 +397,21 @@ const CheckoutPage = (props: any) => {
             </div>
           </div>
         </div>
-        <div className={classNames('checkout-reviews', {
-          active: isReviewsWidgetActive,
-        })}
+        <div
+          className={classNames('checkout-reviews', {
+            active: isReviewsWidgetActive,
+            hide: isReviewsWidgetHide,
+          })}
         >
           <div className='checkout-reviews__media'>
-            <img src={isReviewActive.image} alt='' />
+            <img src={reviewActive.image} alt='' />
           </div>
           <div className='checkout-reviews__text'>
             <div className='checkout-reviews__text-name'>
-              {isReviewActive.name}
+              {reviewActive.name}
             </div>
             <div className='checkout-reviews__text-desc'>
-              {isReviewActive.desc}
+              {reviewActive.text}
             </div>
             <div className='checkout-reviews__text-footer'>
               <div className='checkout-reviews__text-footer-stars'>
@@ -403,14 +431,12 @@ const CheckoutPage = (props: any) => {
                   <StarIcon />
                 </div>
               </div>
-              {isReviewActive.proofService && (
-                <div className='checkout-reviews__text-footer-proof'>
-                  <div className='checkout-reviews__text-footer-proof-img'>
-                    <ProofIcon />
-                  </div>
-                ProofService
+              <div className='checkout-reviews__text-footer-proof'>
+                <div className='checkout-reviews__text-footer-proof-img'>
+                  <ProofIcon />
                 </div>
-              )}
+                {t('checkout.proof_service')}
+              </div>
             </div>
           </div>
         </div>
@@ -582,9 +608,9 @@ const CheckoutPage = (props: any) => {
                             label={(
                               <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
                                 <div className='payment-types-img-list'>
-                                  {paymentMethods.cards.map((card, index) => (
+                                  {paymentMethods.cards.map((card) => (
                                     <img
-                                      key={index}
+                                      key={card.id}
                                       src={card.logo || null}
                                       className='payment-types-img'
                                       alt=''

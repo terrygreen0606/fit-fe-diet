@@ -13,3 +13,4 @@ export * from './getActivityLevels';
 export * from './payment';
 export * from './mealPlan';
 export * from './waterTracker';
+export * from './app';

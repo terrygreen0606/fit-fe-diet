@@ -358,7 +358,7 @@
   left: 20px
   display: flex
   align-items: center
-  max-width: 330px
+  width: 330px
   padding: 12px
   transform: translateX(-100%)
   background-color: $white
@@ -372,13 +372,18 @@
     position: initial
     bottom: initial
     right: initial
-    max-width: 110px
+    width: 110px
     padding: 10px 5px
 
   &__media
     flex-basis: 75px
-    border-radius: 50%
     overflow: hidden
+    line-height: 0
+    border-radius: 50%
+    transition: 0.2s opacity
+
+    & > *
+      line-height: initial
 
     @media (max-width: 1024px)
       display: none
@@ -390,6 +395,7 @@
   &__text
     flex: 1
     padding-left: 13px
+    transition: 0.2s opacity
     
     @media (max-width: 1024px)
       padding-left: 0
@@ -452,3 +458,8 @@
 
   @media (max-width: 1024px)
     margin-top: 10px
+
+.checkout-reviews.hide
+  .checkout-reviews__media,
+  .checkout-reviews__text
+    opacity: 0
