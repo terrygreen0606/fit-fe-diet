@@ -32,14 +32,13 @@ import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import useInterval from 'components/hooks/useInterval';
 import FormValidator from 'utils/FormValidator';
+import UsersWidget from 'components/Widgets/UsersWidget';
+import ReviewsWidget from 'components/Widgets/ReviewsWidget';
 
 import './CheckoutPage.sass';
 
 import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
 import { ReactComponent as LockIcon } from 'assets/img/icons/lock-icon.svg';
-import { ReactComponent as UsersIcon } from 'assets/img/icons/three-users-icon.svg';
-import { ReactComponent as ProofIcon } from 'assets/img/icons/proof-icon.svg';
-import { ReactComponent as StarIcon } from 'assets/img/icons/star-yellow-icon.svg';
 
 const checkoutFormDefault = {
   payment_type: 'credit_card',
@@ -197,8 +196,6 @@ const CheckoutPage = (props: any) => {
 
         setUsersCount(data.active_users);
         setReviewsList([...data.recalls]);
-
-        console.log('11', data.recalls);
 
         setReviewActive({
           ...reviewActive,
@@ -381,65 +378,17 @@ const CheckoutPage = (props: any) => {
         </Modal.Main>
       </Modal>
       <div className='checkout-widgets'>
-        <div className={classNames('checkout-users-quantity', {
-          active: isUsersWidgetActive,
-        })}
-        >
-          <div className='checkout-users-quantity__icon'>
-            <UsersIcon />
-          </div>
-          <div className='checkout-users-quantity__desc'>
-            <div className='checkout-users-quantity__desc-count'>
-              {usersCount}
-            </div>
-            <div className='checkout-users-quantity__desc-text'>
-              {t('checkout.active_users')}
-            </div>
-          </div>
-        </div>
-        <div
-          className={classNames('checkout-reviews', {
-            active: isReviewsWidgetActive,
-            hide: isReviewsWidgetHide,
-          })}
-        >
-          <div className='checkout-reviews__media'>
-            <img src={reviewActive.image} alt='' />
-          </div>
-          <div className='checkout-reviews__text'>
-            <div className='checkout-reviews__text-name'>
-              {reviewActive.name}
-            </div>
-            <div className='checkout-reviews__text-desc'>
-              {reviewActive.text}
-            </div>
-            <div className='checkout-reviews__text-footer'>
-              <div className='checkout-reviews__text-footer-stars'>
-                <div className='checkout-reviews__text-footer-stars-item'>
-                  <StarIcon />
-                </div>
-                <div className='checkout-reviews__text-footer-stars-item'>
-                  <StarIcon />
-                </div>
-                <div className='checkout-reviews__text-footer-stars-item'>
-                  <StarIcon />
-                </div>
-                <div className='checkout-reviews__text-footer-stars-item'>
-                  <StarIcon />
-                </div>
-                <div className='checkout-reviews__text-footer-stars-item'>
-                  <StarIcon />
-                </div>
-              </div>
-              <div className='checkout-reviews__text-footer-proof'>
-                <div className='checkout-reviews__text-footer-proof-img'>
-                  <ProofIcon />
-                </div>
-                {t('checkout.proof_service')}
-              </div>
-            </div>
-          </div>
-        </div>
+        <UsersWidget
+          active={isUsersWidgetActive}
+          count={usersCount}
+        />
+        <ReviewsWidget
+          active={isReviewsWidgetActive}
+          fadeAnimation={isReviewsWidgetHide}
+          image={reviewActive.image}
+          name={reviewActive.name}
+          text={reviewActive.text}
+        />
       </div>
       <section className='checkout-tpl-sect'>
         <div className='container'>

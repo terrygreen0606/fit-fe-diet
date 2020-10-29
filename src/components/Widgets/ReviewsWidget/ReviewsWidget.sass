@@ -1,0 +1,108 @@
+@import '../../../assets/sass/_vars'
+
+.reviews-widget
+  position: fixed
+  bottom: 20px
+  left: 20px
+  display: flex
+  align-items: center
+  width: 330px
+  padding: 12px
+  transform: translateX(-100%)
+  background-color: $white
+  box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.1)
+  opacity: 0
+  visibility: hidden
+  z-index: 2
+  transition: 0.2s opacity, 0.2s visibility, transform 0.2s ease-out
+
+  @media (max-width: 1024px)
+    width: 110px
+    padding: 10px 5px
+
+  &__media
+    flex-basis: 75px
+    height: 75px
+    line-height: 0
+    background-position: center
+    background-size: cover
+    background-repeat: no-repeat
+    border-radius: 50%
+    transition: 0.2s opacity
+
+    & > *
+      line-height: initial
+
+    @media (max-width: 1024px)
+      display: none
+
+    img
+      max-width: 100%
+      height: auto
+
+  &__text
+    flex: 1
+    padding-left: 13px
+    transition: 0.2s opacity
+    
+    @media (max-width: 1024px)
+      padding-left: 0
+
+    &-name
+      margin-bottom: 8px
+      font-size: 22px
+      line-height: 1.2
+      font-weight: bold
+      color: $steel-blue
+      
+      @media (max-width: 1024px)
+        font-size: 14px
+
+    &-desc
+      margin-bottom: 8px
+      font-size: 12px
+      line-height: 1.2
+
+    &-footer
+      display: flex
+      justify-content: space-between
+
+      @media (max-width: 1024px)
+        flex-wrap: wrap
+
+      &-stars
+        display: flex
+        align-items: center
+
+        &-item
+          max-width: 14px
+
+          svg
+            max-width: 100%
+            height: auto
+        
+        &-item:not(:first-child)
+          margin-left: 3px
+
+      &-proof
+        display: flex
+        align-items: center
+        font-size: 10px
+        color: $caribbean-green
+
+        &-img
+          margin-right: 4px
+          line-height: 0
+
+          & > *
+            line-height: initial
+
+.reviews-widget.active
+  transform: translateX(0%)
+  opacity: 1
+  visibility: visible
+  
+.reviews-widget.hide
+  .reviews-widget__media,
+  .reviews-widget__text
+    opacity: 0
