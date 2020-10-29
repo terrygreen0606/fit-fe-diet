@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import {
@@ -15,7 +15,6 @@ import {
   fetchUserProfile,
   getPaymentMethods,
   payCreditCard,
-  getRecallsData,
 } from 'api';
 
 // Components
@@ -30,10 +29,8 @@ import RawCountDown from 'components/common/RawCountDown';
 import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
-import useInterval from 'components/hooks/useInterval';
 import FormValidator from 'utils/FormValidator';
-import UsersWidget from 'components/Widgets/UsersWidget';
-import ReviewsWidget from 'components/Widgets/ReviewsWidget';
+import UsersWidgets from 'components/UsersWidgets';
 
 import './CheckoutPage.sass';
 
@@ -87,22 +84,6 @@ const CheckoutPage = (props: any) => {
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
-
-  const [isUsersWidgetActive, setIsUsersWidgetActive] = useState<boolean>(false);
-  const [usersCount, setUsersCount] = useState<number>(null);
-
-  const [isReviewsWidgetActive, setIsReviewsWidgetActive] = useState<boolean>(false);
-  const [isReviewsWidgetHide, setIsReviewsWidgetHide] = useState<boolean>(false);
-  const [reviewsList, setReviewsList] = useState<any[]>([]);
-  const [reviewActive, setReviewActive] = useState<{
-    image: string,
-    name: string,
-    text: string,
-  }>({
-    image: null,
-    name: null,
-    text: null,
-  });
 
   const getUserTariff = () => {
     setTariffLoading(true);
@@ -189,54 +170,6 @@ const CheckoutPage = (props: any) => {
       });
   };
 
-  const getRecallsInfo = () => {
-    getRecallsData().then((response) => {
-      if (response.data.data && response.data.success) {
-        const { data } = response.data;
-
-        setUsersCount(data.active_users);
-        setReviewsList([...data.recalls]);
-
-        setReviewActive({
-          ...reviewActive,
-          image: data.recalls[0].image,
-          name: data.recalls[0].name,
-          text: data.recalls[0].text,
-        });
-
-        setIsUsersWidgetActive(true);
-        setIsReviewsWidgetActive(true);
-      } else {
-        toast.error(t('common.error'));
-      }
-    });
-  };
-
-  const reviewCount = useRef(1);
-
-  useInterval(() => {
-    setIsReviewsWidgetHide(true);
-    setReviewActive({
-      ...reviewActive,
-      image: reviewsList[reviewCount.current]?.image,
-      name: reviewsList[reviewCount.current]?.name,
-      text: reviewsList[reviewCount.current]?.text,
-    });
-
-    if (reviewsList.length === 0) {
-      reviewCount.current = 1;
-    } else {
-      reviewCount.current += 1;
-    }
-
-    if (reviewCount.current === reviewsList.length) {
-      reviewCount.current = 0;
-    }
-    setTimeout(() => {
-      setIsReviewsWidgetHide(false);
-    }, 200);
-  }, 5000);
-
   useEffect(() => {
     getUserTariff();
     getUserProfile();
@@ -246,10 +179,6 @@ const CheckoutPage = (props: any) => {
       toast.error(t('tariff.not_paid'));
       sessionStorage.removeItem('redirectedToPayView');
     }
-
-    setTimeout(() => {
-      getRecallsInfo();
-    }, 15000);
   }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -377,19 +306,7 @@ const CheckoutPage = (props: any) => {
           <Button className='checkout-warning-modal__btn' block color='mint'>{t('checkout.warning_modal.btn')}</Button>
         </Modal.Main>
       </Modal>
-      <div className='checkout-widgets'>
-        <UsersWidget
-          active={isUsersWidgetActive}
-          count={usersCount}
-        />
-        <ReviewsWidget
-          active={isReviewsWidgetActive}
-          fadeAnimation={isReviewsWidgetHide}
-          image={reviewActive.image}
-          name={reviewActive.name}
-          text={reviewActive.text}
-        />
-      </div>
+      <UsersWidgets />
       <section className='checkout-tpl-sect'>
         <div className='container'>
           <div className='row'>
