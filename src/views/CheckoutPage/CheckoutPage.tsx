@@ -1,19 +1,20 @@
+/* eslint-disable global-require */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  getImagePath
+  getImagePath,
 } from 'utils';
 import { InputError } from 'types';
-import { 
-  getAppTariff, 
-  fetchUserProfile, 
+import {
+  getAppTariff,
+  fetchUserProfile,
   getPaymentMethods,
-  payCreditCard
+  payCreditCard,
 } from 'api';
 
 // Components
@@ -34,6 +35,11 @@ import './CheckoutPage.sass';
 
 import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
 import { ReactComponent as LockIcon } from 'assets/img/icons/lock-icon.svg';
+import { ReactComponent as UsersIcon } from 'assets/img/icons/three-users-icon.svg';
+import { ReactComponent as ProofIcon } from 'assets/img/icons/proof-icon.svg';
+import { ReactComponent as StarIcon } from 'assets/img/icons/star-icon.svg';
+
+import { mockData } from './mockData';
 
 const checkoutFormDefault = {
   payment_type: 'credit_card',
@@ -43,15 +49,14 @@ const checkoutFormDefault = {
   card_cvv: null,
   card_month: null,
   card_year: null,
-  discount_code: null
+  discount_code: null,
 };
 
 const CheckoutPage = (props: any) => {
-
-  const t = (code: string, placeholders?: any) => 
+  const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
-  const [checkoutForm, setCheckoutForm] = useState({...checkoutFormDefault});
+  const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
 
   const [tariffData, setTariffData] = useState<any>({
@@ -62,34 +67,52 @@ const CheckoutPage = (props: any) => {
     next_tariff: {
       price_text: null,
       days: null,
-      tariff: null
-    }
+      tariff: null,
+    },
   });
   const [tariffLoading, setTariffLoading] = useState<boolean>(true);
   const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
 
   const [paymentMethods, setPaymentMethods] = useState<any>({
     cards: [],
-    others: []
+    others: [],
   });
   const [paymentMethodsLoading, setPaymentMethodsLoading] = useState<boolean>(true);
   const [paymentMethodsLoadingError, setPaymentMethodsLoadingError] = useState<boolean>(false);
 
   const [profileData, setProfileData] = useState<any>({
-    name: t('checkout.title.user_name')
-  });  
+    name: t('checkout.title.user_name'),
+  });
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
 
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
+  const [isUsersWidgetActive, setIsUsersWidgetActive] = useState<boolean>(false);
+  const [usersCount, setUsersCount] = useState<number>(3456);
+
+  const [isReviewsWidgetActive, setIsReviewsWidgetActive] = useState<boolean>(false);
+  const [isReviewActive, setIsReviewActive] = useState<{
+    image: string,
+    name: string,
+    desc: string,
+    stars: number,
+    proofService: boolean,
+  }>({
+    image: null,
+    name: null,
+    desc: null,
+    stars: null,
+    proofService: null,
+  });
+
   const getUserTariff = () => {
     setTariffLoading(true);
     setTariffLoadingError(false);
 
     getAppTariff('d7')
-      .then(response => {
+      .then((response) => {
         setTariffLoading(false);
 
         if (response.data.success && response.data.data) {
@@ -105,14 +128,14 @@ const CheckoutPage = (props: any) => {
             next_tariff: {
               days: next_tariff_data.days || null,
               tariff: next_tariff_data.tariff || null,
-              price_text: next_tariff_data.price_text || null
-            }
+              price_text: next_tariff_data.price_text || null,
+            },
           });
         } else {
           setTariffLoadingError(true);
         }
       })
-      .catch(error => {
+      .catch(() => {
         setTariffLoading(false);
         setTariffLoadingError(true);
       });
@@ -122,24 +145,24 @@ const CheckoutPage = (props: any) => {
     setProfileLoading(true);
 
     fetchUserProfile()
-      .then(response => {
+      .then((response) => {
         setProfileLoading(false);
 
         if (response.data.success && response.data.data) {
           setProfileData({
-            name: response.data.data.name || t('checkout.title.user_name')
+            name: response.data.data.name || t('checkout.title.user_name'),
           });
         } else {
           setProfileData({
-            name: t('checkout.title.user_name')
+            name: t('checkout.title.user_name'),
           });
         }
       })
-      .catch(error => {
+      .catch(() => {
         setProfileLoading(false);
 
         setProfileData({
-          name: t('checkout.title.user_name')
+          name: t('checkout.title.user_name'),
         });
       });
   };
@@ -149,34 +172,61 @@ const CheckoutPage = (props: any) => {
     setPaymentMethodsLoadingError(false);
 
     getPaymentMethods()
-      .then(response => {
+      .then((response) => {
         setPaymentMethodsLoading(false);
 
         if (response.data.success && response.data.data) {
           setPaymentMethods({
             cards: response.data.data.cards || [],
-            others: response.data.data.others || []
+            others: response.data.data.others || [],
           });
         }
       })
-      .catch(error => {
+      .catch(() => {
         setPaymentMethodsLoading(false);
         setPaymentMethodsLoadingError(true);
 
         setProfileData({
-          name: t('checkout.title.user_name')
+          name: t('checkout.title.user_name'),
         });
       });
   };
 
-  useEffect(() =>  {
+  const getReviewData = (index: number) => {
+    setIsReviewActive({
+      ...isReviewActive,
+      image: mockData[index].image,
+      name: mockData[index].name,
+      desc: mockData[index].desc,
+      stars: mockData[index].stars,
+      proofService: mockData[index].proofService,
+    });
+  };
+
+  useEffect(() => {
     getUserTariff();
     getUserProfile();
     getUserPaymentMethods();
+
     if (sessionStorage.getItem('redirectedToPayView') === 'true') {
       toast.error(t('tariff.not_paid'));
       sessionStorage.removeItem('redirectedToPayView');
     }
+
+    setTimeout(() => {
+      setIsUsersWidgetActive(true);
+      setIsReviewsWidgetActive(true);
+      getReviewData(0);
+    }, 0);
+
+    let reviewCount = 1;
+    setInterval(() => {
+      getReviewData(reviewCount);
+      reviewCount += 1;
+      if (reviewCount === mockData.length) {
+        reviewCount = 0;
+      }
+    }, 5000);
   }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -188,35 +238,32 @@ const CheckoutPage = (props: any) => {
       setCheckoutForm,
       checkoutFormErrors,
       setCheckoutFormErrors,
-      element
+      element,
     );
   };
 
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, checkoutFormErrors)
-      .map(msg => ({
+      .map((msg) => ({
         ...msg,
-        message: t('api.ecode.invalid_value')
+        message: t('api.ecode.invalid_value'),
       }));
 
-  const checkoutDiscountFormSubmit = e => {
+  const checkoutDiscountFormSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
     const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setCheckoutFormErrors([
       ...checkoutFormErrors,
-      ...errors
+      ...errors,
     ]);
 
-    if (!hasError) {
-
-    }
+    if (!hasError) { }
   };
 
   const getPayCredictCardParams = () => ({
@@ -226,21 +273,20 @@ const CheckoutPage = (props: any) => {
       number: checkoutForm.card_number.replace(/ /gi, ''),
       year: checkoutForm.card_year,
       month: checkoutForm.card_month,
-      cvv: checkoutForm.card_cvv
+      cvv: checkoutForm.card_cvv,
     },
     contacts: {
       phone: checkoutForm.phone,
-      payer_name: checkoutForm.payer_name
-    }
+      payer_name: checkoutForm.payer_name,
+    },
   });
 
-  const checkoutFormSubmit = async e => {
+  const checkoutFormSubmit = async (e) => {
     e.preventDefault();
 
     const form = e.target;
     const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -250,19 +296,19 @@ const CheckoutPage = (props: any) => {
       setPaymentLoading(true);
 
       payCreditCard(getPayCredictCardParams())
-        .then(response => {
+        .then((response) => {
           setPaymentLoading(false);
-          
+
           const paymentOrder = response.data;
 
           if (paymentOrder) {
             if (paymentOrder.redirect_url) {
-              window.location.href = paymentOrder.redirect_url;  
+              window.location.href = paymentOrder.redirect_url;
             } else if (paymentOrder.status) {
               switch (paymentOrder.status) {
                 case 'ok':
                   toast.success(t('checkout.payment_success'));
-                  setCheckoutForm({...checkoutFormDefault});
+                  setCheckoutForm({ ...checkoutFormDefault });
                   break;
 
                 case 'pending':
@@ -274,7 +320,7 @@ const CheckoutPage = (props: any) => {
                   break;
 
                 default:
-              }              
+              }
             } else {
               toast.error(t('checkout.payment_fail'));
             }
@@ -282,167 +328,267 @@ const CheckoutPage = (props: any) => {
             toast.error(t('checkout.payment_fail'));
           }
         })
-        .catch(error => {
+        .catch(() => {
           setPaymentLoading(false);
           toast.error(t('checkout.payment_fail'));
         });
     }
   };
 
-  const paymentSubmitIsDisabled = () => {
-    return paymentLoading || 
-           tariffLoading || 
-           paymentMethodsLoading || 
-           tariffLoadingError || 
-           paymentMethodsLoadingError;
-  };
+  const paymentSubmitIsDisabled = () => paymentLoading ||
+    tariffLoading ||
+    paymentMethodsLoading ||
+    tariffLoadingError ||
+    paymentMethodsLoadingError;
 
   return (
     <>
       <Modal
         isOpen={isWarningModalOpen}
-        onClose={e => setWarningModalOpen(false)}
-        className="checkout-warning-modal"
+        onClose={() => setWarningModalOpen(false)}
+        className='checkout-warning-modal'
       >
         <Modal.Main>
-          <h5 className="checkout-warning-modal__title">{t('checkout.warning_modal.title')}</h5>
-          <p className="checkout-warning-modal__descr">{t('checkout.warning_modal.descr')}</p>
-          <Button className="checkout-warning-modal__btn" block color="mint">{t('checkout.warning_modal.btn')}</Button>
+          <h5 className='checkout-warning-modal__title'>{t('checkout.warning_modal.title')}</h5>
+          <p className='checkout-warning-modal__descr'>{t('checkout.warning_modal.descr')}</p>
+          <Button className='checkout-warning-modal__btn' block color='mint'>{t('checkout.warning_modal.btn')}</Button>
         </Modal.Main>
       </Modal>
+      <div className='checkout-widgets'>
+        <div className={classNames('checkout-users-quantity', {
+          active: isUsersWidgetActive,
+        })}
+        >
+          <div className='checkout-users-quantity__icon'>
+            <UsersIcon />
+          </div>
+          <div className='checkout-users-quantity__desc'>
+            <div className='checkout-users-quantity__desc-count'>
+              {usersCount}
+            </div>
+            <div className='checkout-users-quantity__desc-text'>
+              {t('checkout.active_users')}
+            </div>
+          </div>
+        </div>
+        <div className={classNames('checkout-reviews', {
+          active: isReviewsWidgetActive,
+        })}
+        >
+          <div className='checkout-reviews__media'>
+            <img src={isReviewActive.image} alt='' />
+          </div>
+          <div className='checkout-reviews__text'>
+            <div className='checkout-reviews__text-name'>
+              {isReviewActive.name}
+            </div>
+            <div className='checkout-reviews__text-desc'>
+              {isReviewActive.desc}
+            </div>
+            <div className='checkout-reviews__text-footer'>
+              <div className='checkout-reviews__text-footer-stars'>
+                <div className='checkout-reviews__text-footer-stars-item'>
+                  <StarIcon />
+                </div>
+                <div className='checkout-reviews__text-footer-stars-item'>
+                  <StarIcon />
+                </div>
+                <div className='checkout-reviews__text-footer-stars-item'>
+                  <StarIcon />
+                </div>
+                <div className='checkout-reviews__text-footer-stars-item'>
+                  <StarIcon />
+                </div>
+                <div className='checkout-reviews__text-footer-stars-item'>
+                  <StarIcon />
+                </div>
+              </div>
+              {isReviewActive.proofService && (
+                <div className='checkout-reviews__text-footer-proof'>
+                  <div className='checkout-reviews__text-footer-proof-img'>
+                    <ProofIcon />
+                  </div>
+                ProofService
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <section className='checkout-tpl-sect'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-12'>
+              <h4 className='sect-subtitle'>{t('checkout.page_title')}</h4>
 
-      <section className="checkout-tpl-sect">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <h4 className="sect-subtitle">{t('checkout.page_title')}</h4>
-
-              <div className="checkout-tpl-container mt-3 mt-sm-5 pt-xl-5">
-                <div className="checkout-person-plan-block">
-                  <h4 className="checkout-person-plan-title">
-                    {profileLoading ? <Spinner /> : <div dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }} />}
+              <div className='checkout-tpl-container mt-3 mt-sm-5 pt-xl-5'>
+                <div className='checkout-person-plan-block'>
+                  <h4 className='checkout-person-plan-title'>
+                    {profileLoading ? (
+                      <Spinner />
+                    ) : (
+                        <div
+                          dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
+                        />
+                      )}
                   </h4>
                 </div>
 
-                <div className="checkout-rewards-block">
-                  <h1 className="checkout-rewards-block__title"><RewardIcon className="mr-3" /> {t('checkout.rewards_title')}</h1>
+                <div className='checkout-rewards-block'>
+                  <h1 className='checkout-rewards-block__title'>
+                    <RewardIcon className='mr-3' />
+                    {t('checkout.rewards_title')}
+                  </h1>
 
-                  <div className="row mt-5">
-                    <div className="col-lg-3 mb-3 mb-lg-0 pt-2">
-                      
+                  <div className='row mt-5'>
+                    <div className='col-lg-3 mb-3 mb-lg-0 pt-2'>
+
                       <h3>{t('lp.partners_list_title')}</h3>
 
                     </div>
-                    <div className="col-lg-9">
-                      
-                      <div className="app-partners-list">
-                        <span className="app-partners-list__item" style={{ backgroundImage: `url(${require('assets/img/partners/daily-mirror.png')})` }} />
-                        <span className="app-partners-list__item" style={{ backgroundImage: `url(${require('assets/img/partners/forbes.png')})` }} />
-                        <span className="app-partners-list__item" style={{ backgroundImage: `url(${require('assets/img/partners/modesto.png')})` }} />
+                    <div className='col-lg-9'>
+
+                      <div className='app-partners-list'>
+                        <span
+                          className='app-partners-list__item'
+                          style={{ backgroundImage: `url(${require('assets/img/partners/daily-mirror.png')})` }}
+                        />
+                        <span
+                          className='app-partners-list__item'
+                          style={{ backgroundImage: `url(${require('assets/img/partners/forbes.png')})` }}
+                        />
+                        <span
+                          className='app-partners-list__item'
+                          style={{ backgroundImage: `url(${require('assets/img/partners/modesto.png')})` }}
+                        />
                       </div>
 
                     </div>
                   </div>
                 </div>
 
-                <div className="checkout-form-container">
-                  <div className="checkout-reserved-top-block">
-                    <h3 className="checkout-reserved-top-block__title">{t('checkout.reserved_block.title')}</h3>
-                    <h6 className="checkout-reserved-top-block__descr">{t('checkout.reserved_block.descr')}</h6>
-                    <h6 className="checkout-reserved-top-block__countdown_title">{t('checkout.reserved_block.title')}:</h6>
-                    <span className="checkout-reserved-top-block__countdown">
+                <div className='checkout-form-container'>
+                  <div className='checkout-reserved-top-block'>
+                    <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
+                    <h6 className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</h6>
+                    <h6 className='checkout-reserved-top-block__countdown_title'>
+                      {t('checkout.reserved_block.title')}
+                      :
+                    </h6>
+                    <span className='checkout-reserved-top-block__countdown'>
                       <RawCountDown seconds={900} />
                     </span>
                   </div>
 
-                  <div className="text-center mt-5">
-                    <h6 className="checkout-advantages__title mb-5">{t('checkout.advantages_title')}:</h6>
+                  <div className='text-center mt-5'>
+                    <h6 className='checkout-advantages__title mb-5'>
+                      {t('checkout.advantages_title')}
+                      :
+                    </h6>
 
-                    <div className="app-advantages-list list-xs text-left">
-                      <div className="app-advantages-list__item">{t('checkout.advantage_1')}</div>
-                      <div className="app-advantages-list__item">{t('checkout.advantage_2')}</div>
+                    <div className='app-advantages-list list-xs text-left'>
+                      <div className='app-advantages-list__item'>{t('checkout.advantage_1')}</div>
+                      <div className='app-advantages-list__item'>{t('checkout.advantage_2')}</div>
                     </div>
                   </div>
 
-                  <div className="mt-5">
+                  <div className='mt-5'>
                     <ContentLoading
                       isLoading={tariffLoading}
                       isError={tariffLoadingError}
                       fetchData={() => getUserTariff()}
                     >
-                      <div className="checkout-summary-list">
-                        <div className="checkout-summary-item">
-                          <div className="checkout-summary-item__label">{t('checkout.summary.total_title')}</div>
-                          <div className="checkout-summary-item__value"><b>{tariffData.price_text}</b></div>
+                      <div className='checkout-summary-list'>
+                        <div className='checkout-summary-item'>
+                          <div className='checkout-summary-item__label'>{t('checkout.summary.total_title')}</div>
+                          <div className='checkout-summary-item__value'><b>{tariffData.price_text}</b></div>
                         </div>
 
-                        <div className="checkout-summary-item">
-                          <div className="checkout-summary-item__label">{t('checkout.summary.discount_title')}:</div>
-                          <div className="checkout-summary-item__value">
-                            <form className="checkout-discount-form" onSubmit={e => checkoutDiscountFormSubmit(e)}>
-                              <InputField 
-                                className="checkout-discount-form__input"
+                        <div className='checkout-summary-item'>
+                          <div className='checkout-summary-item__label'>
+                            {t('checkout.summary.discount_title')}
+                            :
+                          </div>
+                          <div className='checkout-summary-item__value'>
+                            <form className='checkout-discount-form' onSubmit={(e) => checkoutDiscountFormSubmit(e)}>
+                              <InputField
+                                className='checkout-discount-form__input'
                                 name='discount_code'
                                 invalid={getFieldErrors('discount_code').length > 0}
                                 value={checkoutForm.discount_code}
                                 data-validate='["required"]'
-                                onChange={e => validateOnChange('discount_code', e.target.value, e)}
+                                onChange={(e) => validateOnChange('discount_code', e.target.value, e)}
                                 placeholder='Code'
                               />
 
-                              <Button type="submit" className="checkout-discount-form__btn" color="mint">{t('checkout.discount_btn')}</Button>
+                              <Button
+                                type='submit'
+                                className='checkout-discount-form__btn'
+                                color='mint'
+                              >
+                                {t('checkout.discount_btn')}
+                              </Button>
                             </form>
                           </div>
                         </div>
 
-                        <div className="checkout-summary-item">
-                          <div className="checkout-summary-item__label">{t('checkout.summary.price_after_trial_title')}</div>
-                          <div className="checkout-summary-item__value"><b>{tariffData.next_tariff.price_text}</b></div>
+                        <div className='checkout-summary-item'>
+                          <div className='checkout-summary-item__label'>
+                            {t('checkout.summary.price_after_trial_title')}
+                          </div>
+                          <div className='checkout-summary-item__value'><b>{tariffData.next_tariff.price_text}</b></div>
                         </div>
 
-                        <div className="checkout-summary-item">
-                          <div className="checkout-summary-item__label">{t('checkout.summary.trial_title', { COUNT: tariffData.days })}</div>
-                          <div className="checkout-summary-item__value">
-                            <del className="mr-3">{tariffData.price_old_text}</del>
+                        <div className='checkout-summary-item'>
+                          <div className='checkout-summary-item__label'>
+                            {t('checkout.summary.trial_title', { COUNT: tariffData.days })}
+                          </div>
+                          <div className='checkout-summary-item__value'>
+                            <del className='mr-3'>{tariffData.price_old_text}</del>
                             <b>{tariffData.price_text}</b>
                           </div>
                         </div>
-                      </div>                    
+                      </div>
                     </ContentLoading>
                   </div>
 
-                  <div className="pl-sm-5">
-                    <div className="product-plants-one-tree-block mt-5">
+                  <div className='pl-sm-5'>
+                    <div className='product-plants-one-tree-block mt-5'>
                       <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
                     </div>
                   </div>
 
-                  <hr className="checkout-divider" />
+                  <hr className='checkout-divider' />
 
-                  <img src={getImagePath('checkout/safe-checkout-img-2.png')} className="img-fluid" alt="" />
+                  <img src={getImagePath('checkout/safe-checkout-img-2.png')} className='img-fluid' alt='' />
 
-                  <div className="mt-5">
+                  <div className='mt-5'>
                     <ContentLoading
                       isLoading={paymentMethodsLoading}
                       isError={paymentMethodsLoadingError}
                       fetchData={() => getUserPaymentMethods()}
                     >
-                      <div className="checkout-payment-radio__list">
+                      <div className='checkout-payment-radio__list'>
                         {paymentMethods.cards.length > 0 && (
-                          <CustomRadio 
-                            inline 
-                            className={classNames("checkout-payment-radio", {
-                              'radio-checked': checkoutForm.payment_type === 'credit_card'
+                          <CustomRadio
+                            inline
+                            className={classNames('checkout-payment-radio', {
+                              'radio-checked': checkoutForm.payment_type === 'credit_card',
                             })}
                             checked={checkoutForm.payment_type === 'credit_card'}
-                            value="credit_card"
-                            name="payment_type"
-                            onChange={e => validateOnChange('payment_type', e.target.value, e)}
+                            value='credit_card'
+                            name='payment_type'
+                            onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
                             label={(
-                              <Button className="checkout-payment-radio__btn" spanBtn color="secondary">
-                                <div className="payment-types-img-list">
+                              <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
+                                <div className='payment-types-img-list'>
                                   {paymentMethods.cards.map((card, index) => (
-                                    <img key={index} src={card.logo || null} className="payment-types-img" />  
+                                    <img
+                                      key={index}
+                                      src={card.logo || null}
+                                      className='payment-types-img'
+                                      alt=''
+                                    />
                                   ))}
                                 </div>
                               </Button>
@@ -450,21 +596,22 @@ const CheckoutPage = (props: any) => {
                           />
                         )}
 
-                        {paymentMethods.others.map(method => (
-                          <CustomRadio 
-                            inline 
-                            className={classNames("checkout-payment-radio", {
-                              'radio-checked': checkoutForm.payment_type === method.id
+                        {paymentMethods.others.map((method) => (
+                          <CustomRadio
+                            inline
+                            className={classNames('checkout-payment-radio', {
+                              'radio-checked': checkoutForm.payment_type === method.id,
                             })}
                             checked={checkoutForm.payment_type === method.id}
-                            value="method.id"
-                            name="payment_type"
-                            onChange={e => validateOnChange('payment_type', e.target.value, e)}
+                            value='method.id'
+                            name='payment_type'
+                            onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
                             label={(
-                              <Button className="checkout-payment-radio__btn" spanBtn color="secondary">
-                                <img 
+                              <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
+                                <img
                                   src={method.logo || null}
-                                  className="img-fluid"
+                                  className='img-fluid'
+                                  alt=''
                                 />
                               </Button>
                             )}
@@ -474,8 +621,11 @@ const CheckoutPage = (props: any) => {
                     </ContentLoading>
                   </div>
 
-                  <form className="checkout-pay-form mt-5" onSubmit={e => checkoutFormSubmit(e)}>
-                    <h3 className="checkout-pay-form__title mb-3">{t('checkout.form_title')} <LockIcon className="ml-2" /></h3>
+                  <form className='checkout-pay-form mt-5' onSubmit={(e) => checkoutFormSubmit(e)}>
+                    <h3 className='checkout-pay-form__title mb-3'>
+                      {t('checkout.form_title')}
+                      <LockIcon className='ml-2' />
+                    </h3>
 
                     <FormGroup>
                       <InputField
@@ -485,7 +635,7 @@ const CheckoutPage = (props: any) => {
                         isValid={checkoutForm.payer_name && getFieldErrors('payer_name').length === 0}
                         value={checkoutForm.payer_name}
                         data-validate='["required"]'
-                        onChange={e => validateOnChange('payer_name', e.target.value, e)}
+                        onChange={(e) => validateOnChange('payer_name', e.target.value, e)}
                         errors={getFieldErrors('payer_name')}
                         placeholder=''
                         className='checkout-pay-form__input'
@@ -500,7 +650,7 @@ const CheckoutPage = (props: any) => {
                         isValid={checkoutForm.phone && getFieldErrors('phone').length === 0}
                         value={checkoutForm.phone}
                         data-validate='["required", "number"]'
-                        onChange={e => validateOnChange('phone', e.target.value, e)}
+                        onChange={(e) => validateOnChange('phone', e.target.value, e)}
                         errors={getFieldErrors('phone')}
                         placeholder=''
                         className='checkout-pay-form__input'
@@ -515,19 +665,19 @@ const CheckoutPage = (props: any) => {
                         isValid={checkoutForm.card_number && getFieldErrors('card_number').length === 0}
                         value={checkoutForm.card_number}
                         data-param={19}
-                        placeholderChar=" "
+                        placeholderChar=' '
                         data-validate='["required", "len"]'
-                        mask="1111 1111 1111 1111"
-                        onChange={e => validateOnChange('card_number', e.target.value, e)}
+                        mask='1111 1111 1111 1111'
+                        onChange={(e) => validateOnChange('card_number', e.target.value, e)}
                         errors={getFieldErrors('card_number')}
                         placeholder=''
                         className='checkout-pay-form__input'
                       />
                     </FormGroup>
 
-                    <div className="row">
-                      <div className="col-6 col-xs-3">
-                        
+                    <div className='row'>
+                      <div className='col-6 col-xs-3'>
+
                         <FormGroup>
                           <InputField
                             block
@@ -537,8 +687,8 @@ const CheckoutPage = (props: any) => {
                             isValid={checkoutForm.card_month && getFieldErrors('card_month').length === 0}
                             value={checkoutForm.card_month}
                             data-validate='["required", "len"]'
-                            mask="11"
-                            onChange={e => validateOnChange('card_month', e.target.value, e)}
+                            mask='11'
+                            onChange={(e) => validateOnChange('card_month', e.target.value, e)}
                             errors={getFieldErrors('card_month')}
                             placeholder=''
                             className='checkout-pay-form__input'
@@ -546,10 +696,10 @@ const CheckoutPage = (props: any) => {
                         </FormGroup>
 
                       </div>
-                      <div className="col-6 col-xs-3">
-                        
+                      <div className='col-6 col-xs-3'>
+
                         <FormGroup>
-                          <FormLabel className="text-transparent">{t('checkout.form_card_expiration')}</FormLabel>
+                          <FormLabel className='text-transparent'>{t('checkout.form_card_expiration')}</FormLabel>
                           <InputField
                             block
                             name='card_year'
@@ -557,8 +707,8 @@ const CheckoutPage = (props: any) => {
                             value={checkoutForm.card_year}
                             data-param={4}
                             data-validate='["required", "len"]'
-                            mask="1111"
-                            onChange={e => validateOnChange('card_year', e.target.value, e)}
+                            mask='1111'
+                            onChange={(e) => validateOnChange('card_year', e.target.value, e)}
                             errors={getFieldErrors('card_year')}
                             placeholder=''
                             className='checkout-pay-form__input'
@@ -566,8 +716,8 @@ const CheckoutPage = (props: any) => {
                         </FormGroup>
 
                       </div>
-                      <div className="col-xs-6 col-sm-4 offset-sm-2">
-                        
+                      <div className='col-xs-6 col-sm-4 offset-sm-2'>
+
                         <FormGroup>
                           <InputField
                             block
@@ -577,22 +727,22 @@ const CheckoutPage = (props: any) => {
                             value={checkoutForm.card_cvv}
                             data-param={3}
                             data-validate='["required", "len"]'
-                            mask="111"
-                            onChange={e => validateOnChange('card_cvv', e.target.value, e)}
+                            mask='111'
+                            onChange={(e) => validateOnChange('card_cvv', e.target.value, e)}
                             errors={getFieldErrors('card_cvv')}
                             placeholder=''
                             className='checkout-pay-form__input'
                           />
                         </FormGroup>
 
-                      </div>  
+                      </div>
                     </div>
 
-                    <div className="text-center mt-3 mt-sm-5">
-                      <Button 
-                        type="submit" 
-                        className="checkout-pay-form__submit" 
-                        color="primary"
+                    <div className='text-center mt-3 mt-sm-5'>
+                      <Button
+                        type='submit'
+                        className='checkout-pay-form__submit'
+                        color='primary'
                         isLoading={paymentLoading}
                         disabled={paymentSubmitIsDisabled()}
                       >
@@ -601,33 +751,34 @@ const CheckoutPage = (props: any) => {
                     </div>
                   </form>
 
-                  <div className="text-center mt-5">
-                    <img src={getImagePath('checkout/guaranteed-checkout-img.png')} className="img-fluid" alt="" />
+                  <div className='text-center mt-5'>
+                    <img src={getImagePath('checkout/guaranteed-checkout-img.png')} className='img-fluid' alt='' />
                   </div>
 
-                  <div className="money-back-guarantee-block mt-4">
+                  <div className='money-back-guarantee-block mt-4'>
                     <div>
-                      <h5 className="money-back-guarantee-block__title">{t('lp.money_back_title')}</h5>
-                      <p className="money-back-guarantee-block__descr">{t('lp.money_back_descr')}</p>
+                      <h5 className='money-back-guarantee-block__title'>{t('lp.money_back_title')}</h5>
+                      <p className='money-back-guarantee-block__descr'>{t('lp.money_back_descr')}</p>
                     </div>
                   </div>
-                </div>                
+                </div>
               </div>
-              
+
             </div>
           </div>
         </div>
       </section>
 
-      <section className="checkout-reserved-block">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              
-              <h4 className="checkout-reserved-block__title">
-                {t('lp.bottom_countdown_title')} {' '}
-                
-                <span className="checkout-reserved-block__countdown">
+      <section className='checkout-reserved-block'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-12'>
+
+              <h4 className='checkout-reserved-block__title'>
+                {t('lp.bottom_countdown_title')}
+                {' '}
+
+                <span className='checkout-reserved-block__countdown'>
                   <RawCountDown seconds={900} />
                 </span>
               </h4>
