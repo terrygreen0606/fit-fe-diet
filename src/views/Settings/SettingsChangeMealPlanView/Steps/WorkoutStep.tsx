@@ -38,7 +38,7 @@ const WorkoutStep = ({
 
         setUserActivityLevel(userActLevel);
       }
-    }).catch(() => toast.error(t('mp.form.error')))
+    }).catch(() => toast.error(t('common.error')))
       .finally(() => setIsLoadingPage(false));
   }, []);
 
@@ -53,7 +53,7 @@ const WorkoutStep = ({
           toast.success(t('mp.form.success'));
         }
       })
-      .catch(() => toast.error(t('mp.form.error')))
+      .catch(() => toast.error(t('common.error')))
       .finally(() => setIsLoadingButton(false));
   };
 

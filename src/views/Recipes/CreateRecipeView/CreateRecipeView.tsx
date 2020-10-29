@@ -422,7 +422,7 @@ const CreateRecipeView = (props: any) => {
           }
         })
         .catch(() => {
-          toast.error(t('recipe.create.error'));
+          toast.error(t('common.error'));
         });
     }
   };
@@ -716,7 +716,7 @@ const CreateRecipeView = (props: any) => {
                       totalWeight: prevTotalWeight,
                     });
 
-                    toast.error(t('recipe.update_measurement.error'));
+                    toast.error(t('common.error'));
                   });
 
                   setActiveDeleteIngrModal(false);

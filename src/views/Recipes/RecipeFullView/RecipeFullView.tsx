@@ -528,7 +528,7 @@ const RecipeFullView = (props: any) => {
                                   setIsBlockActive(false);
                                 }
                               }).catch(() => {
-                                toast.error(t('recipe.add_note.error'));
+                                toast.error(t('common.error'));
                               });
                             }}
                             className='recipe__notes-modal-btn'
