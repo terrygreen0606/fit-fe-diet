@@ -55,7 +55,7 @@ const MealsStep = ({
           updateMealsCnt(mealsCnt);
         }
       })
-      .catch(() => toast.error(t('mp.form.error')))
+      .catch(() => toast.error(t('common.error')))
       .finally(() => setIsLoadingButton(false));
   };
 

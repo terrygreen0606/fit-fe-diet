@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 const tagManagerArgs = {
-  gtmId: 'GTM-5BF52MF',
+  gtmId: 'GTM-W3FPKZ5',
 };
 
 TagManager.initialize(tagManagerArgs);

@@ -54,7 +54,7 @@ const GoalStep = ({
         updateActiveStep(steps.metrics);
         updateUserGoal(response.data.data.goal);
       }
-    }).catch(() => toast.error(t('mp.form.error')))
+    }).catch(() => toast.error(t('common.error')))
       .finally(() => setIsLoadingButton(false));
   };
 

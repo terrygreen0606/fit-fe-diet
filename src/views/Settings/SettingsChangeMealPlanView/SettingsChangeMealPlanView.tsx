@@ -38,8 +38,8 @@ const SettingsChangeMealPlanView = (props: any) => {
     height: null,
     weight: null,
     weight_goal: null,
-    ignore_cuisine_ids: [],
-    diseases: [],
+    ignore_cuisine_ids: null,
+    diseases: null,
     meals_cnt: null,
     act_level: null,
   });
@@ -68,13 +68,13 @@ const SettingsChangeMealPlanView = (props: any) => {
           height,
           weight,
           weight_goal,
-          ignore_cuisine_ids: [...ignore_cuisine_ids],
-          diseases: [...diseases],
+          ignore_cuisine_ids: ignore_cuisine_ids || [],
+          diseases: diseases || [],
           meals_cnt,
           act_level,
         });
       }
-    }).catch(() => toast.error(t('mp.form.error')))
+    }).catch(() => toast(t('common.error')))
       .finally(() => setIsLoadingPage(false));
   }, []);
 
@@ -151,9 +151,7 @@ const SettingsChangeMealPlanView = (props: any) => {
         />
       </div>
       <ProfileLayout>
-        <div
-          className='change-meal-plan card-bg'
-        >
+        <div className='change-meal-plan card-bg'>
           <ProgressLine
             activeStepIndex={activeStep}
             steps={[
@@ -222,8 +220,8 @@ const SettingsChangeMealPlanView = (props: any) => {
             )}
             {activeStep === steps.meals && (
               <MealsStep
-                updateActiveStep={updateActiveStep}
                 userMealsCnt={userData.meals_cnt}
+                updateActiveStep={updateActiveStep}
                 updateMealsCnt={updateMealsCnt}
               />
             )}

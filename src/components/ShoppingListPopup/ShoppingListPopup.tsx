@@ -109,7 +109,7 @@ const ShoppingListPopup = ({
 
       setShoppingList([...updatedShoppingList]);
 
-      toast.error(t('shop_list.update.error'));
+      toast.error(t('common.error'));
     }).finally(() => {
       setTimeout(() => {
         updatedShoppingList[itemIndex].is_disable = false;
@@ -135,7 +135,7 @@ const ShoppingListPopup = ({
         }
       })
       .catch(() => {
-        toast.error(t('shop_list.update.error'));
+        toast.error(t('common.error'));
 
         setShoppingList([...prevShoppingList]);
       }).finally(() => {

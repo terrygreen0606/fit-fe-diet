@@ -51,7 +51,7 @@ const DiseasesStep = ({
 
         setIsLoadingPage(false);
       }
-    }).catch(() => toast.error(t('mp.form.error')))
+    }).catch(() => toast.error(t('common.error')))
       .finally(() => setIsLoadingPage(false));
   }, []);
 
