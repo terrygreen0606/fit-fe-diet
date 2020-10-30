@@ -1,3 +1,3 @@
-import WidgetsUserCountCount from './WidgetsUserCount';
+import WidgetsUserCount from './WidgetsUserCount';
 
-export default WidgetsUserCountCount;
+export default WidgetsUserCount;
