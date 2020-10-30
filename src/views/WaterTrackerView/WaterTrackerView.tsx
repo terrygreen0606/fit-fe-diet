@@ -255,7 +255,7 @@ const WaterTrackerView = (props: any) => {
           }
         })
         .catch(() => {
-          toast.error(t('wt.add_drink.error'));
+          toast.error(t('common.error'));
         });
     }
   };
@@ -269,7 +269,7 @@ const WaterTrackerView = (props: any) => {
         setDeleteDrinkId(null);
       }
     }).catch(() => {
-      toast.error(t('wt.remove_drink.error'));
+      toast.error(t('common.error'));
     }).finally(() => {
       setIsBlockActive(false);
     });

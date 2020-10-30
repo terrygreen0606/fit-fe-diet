@@ -232,7 +232,7 @@ const ShoppingListView = (props: any) => {
 
       setShoppingList([...updatedShoppingList]);
 
-      toast.error(t('shop_list.update.error'));
+      toast.error(t('common.error'));
     }).finally(() => {
       setIsSyncResponseActive(true);
 
@@ -263,7 +263,7 @@ const ShoppingListView = (props: any) => {
         }
       })
       .catch(() => {
-        toast.error(t('shop_list.update.error'));
+        toast.error(t('common.error'));
 
         setShoppingList([...prevShoppingList]);
       }).finally(() => setIsSyncResponseActive(true));
@@ -324,7 +324,7 @@ const ShoppingListView = (props: any) => {
           weight: null,
         });
       }).catch(() => {
-        toast.error(t('shop_list.update.error'));
+        toast.error(t('common.error'));
       });
     }
   };
