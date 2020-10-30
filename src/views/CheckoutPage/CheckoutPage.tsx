@@ -30,7 +30,7 @@ import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import FormValidator from 'utils/FormValidator';
-import UsersWidgets from 'components/UsersWidgets';
+import Widgets from 'components/Widgets';
 
 import './CheckoutPage.sass';
 
@@ -306,7 +306,7 @@ const CheckoutPage = (props: any) => {
           <Button className='checkout-warning-modal__btn' block color='mint'>{t('checkout.warning_modal.btn')}</Button>
         </Modal.Main>
       </Modal>
-      <UsersWidgets />
+      <Widgets />
       <section className='checkout-tpl-sect'>
         <div className='container'>
           <div className='row'>
