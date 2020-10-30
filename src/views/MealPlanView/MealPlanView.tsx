@@ -143,6 +143,15 @@ const MealPlanView = (props: any) => {
 
           const todayTs = moment(today.setHours(-(new Date().getTimezoneOffset() / 60), 0, 0, 0)).unix();
 
+          if (list.length === 0) {
+            for (let i = 0; i < 7; i += 86400) {
+              updatedMealPlan.push({
+                date_ts: todayTs + i,
+                list: [],
+              });
+            }
+          }
+
           list.forEach((item, itemIndex) => {
             if (item.date_ts !== todayTs && itemIndex === 0) {
               for (let i = todayTs; i < item.date_ts; i += 86400) {
@@ -180,6 +189,7 @@ const MealPlanView = (props: any) => {
               });
             }
           });
+
           if (updatedMealPlan.length !== 7) {
             for (let i = updatedMealPlan.length; updatedMealPlan.length < 7; i++) {
               const newTime = {
