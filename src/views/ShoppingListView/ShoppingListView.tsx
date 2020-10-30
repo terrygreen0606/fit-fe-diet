@@ -71,7 +71,7 @@ const ShoppingListView = (props: any) => {
 
   const [addIngredientErrors, setAddIngredientErrors] = useState<any[]>([]);
 
-  const [dateSync, setDateSync] = useState<number>(0);
+  const [dateSync, setDateSync] = useState<number>(null);
   const [isSyncResponseActive, setIsSyncResponseActive] = useState<boolean>(true);
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
@@ -368,9 +368,9 @@ const ShoppingListView = (props: any) => {
                     </div>
                     <div className='shop-list card-bg'>
                       <div className='shop-list__header'>
-                        <h5 className='shop-list__header-title'>
+                        <h2 className='shop-list__header-title'>
                           {t('shop_list.to_buy', { COUNT: shoppingList.filter((item) => !item.is_bought).length })}
-                        </h5>
+                        </h2>
                         <div className='shop-list__header-buttons'>
                           <button
                             type='button'
