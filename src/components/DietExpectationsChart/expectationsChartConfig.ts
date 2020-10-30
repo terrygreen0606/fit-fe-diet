@@ -1,4 +1,10 @@
-export const data = {
+export const data = ({
+  pointBackgroundColor1,
+  pointBackgroundColor2,
+  pointBorderColor,
+  backgroundColor,
+  borderColor,
+}: any) => ({
   labels: [],
   datasets: [
     {
@@ -7,9 +13,9 @@ export const data = {
         const index = context.dataIndex;
 
         if (index === 1) {
-          return '#F5827D';
+          return pointBackgroundColor1;
         } else if (index === 3) {
-          return '#0FC1A1';
+          return pointBackgroundColor2;
         } else {
           return 'transparent';
         }
@@ -32,14 +38,14 @@ export const data = {
           return 0;
         }
       },
-      pointBorderColor:'#fff',
-      backgroundColor: '#106EE8',
-      borderColor: '#106EE8',
+      pointBorderColor,
+      backgroundColor,
+      borderColor,
       borderWidth: 2,
       data: []
     }
   ],
-};
+});
 
 export const options = {
   legend: {
