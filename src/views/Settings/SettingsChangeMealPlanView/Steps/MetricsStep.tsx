@@ -111,7 +111,7 @@ const MetricsStep = ({
           toast.success(t('mp.form.success'));
         }
       })
-      .catch(() => toast.error(t('mp.form.error')));
+      .catch(() => toast.error(t('common.error')));
   };
 
   const updateChangeMealSubmit = (e, isShowAlert = false) => {
@@ -156,7 +156,7 @@ const MetricsStep = ({
           }
         })
         .catch((error) => {
-          toast.error(t('mp.form.error'));
+          toast.error(t('common.error'));
 
           if (error.response && error.response.status >= 400 && error.response.status < 500) {
             try {
