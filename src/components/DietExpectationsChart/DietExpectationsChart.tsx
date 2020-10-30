@@ -11,6 +11,7 @@ import './DietExpectationsChart.sass';
 import { data as chartData, options as chartOptions } from './expectationsChartConfig';
 
 type ChartProps = {
+  color?: 'orange' | 'blue';
   predictedDate: number;
   measurement: 'us' | 'si';
   weight: number;
@@ -18,7 +19,12 @@ type ChartProps = {
   localePhrases: any;
 };
 
+const ChartPropsDefault = {
+  color: 'orange',
+};
+
 const DietExpectationsChart = ({
+  color,
   predictedDate,
   measurement,
   weight,
@@ -74,6 +80,43 @@ const DietExpectationsChart = ({
     return data;
   };
 
+  const getChartColors = () => {
+    let chartColors = {};
+
+    switch (color) {
+      case 'orange':
+        chartColors = {
+          pointBackgroundColor1: '#F5827D',
+          pointBackgroundColor2: '#0FC1A1',
+          pointBorderColor: '#fff',
+          backgroundColor: '#FFEBB4',
+          borderColor: '#FFBE00',
+        };
+        break;
+
+      case 'blue':
+        chartColors = {
+          pointBackgroundColor1: '#F5827D',
+          pointBackgroundColor2: '#0FC1A1',
+          pointBorderColor: '#fff',
+          backgroundColor: '#106EE8',
+          borderColor: '#106EE8',
+        };
+        break;
+
+      default:
+        chartColors = {
+          pointBackgroundColor1: '#F5827D',
+          pointBackgroundColor2: '#0FC1A1',
+          pointBorderColor: '#fff',
+          backgroundColor: '#FFEBB4',
+          borderColor: '#FFBE00',
+        };
+    }
+
+    return chartColors;
+  };
+
   const getChartCommonData = () => {
     let data = [];
 
@@ -96,11 +139,13 @@ const DietExpectationsChart = ({
       ];
     }
 
+    const chartCommonData = chartData(getChartColors());
+
     return {
-      ...chartData,
+      ...chartCommonData,
       labels: getChartLabels(),
       datasets: [{
-        ...chartData.datasets[0],
+        ...chartCommonData.datasets[0],
         data: getChartData(),
       }, {
         borderColor: '#CDCDCD',
@@ -154,13 +199,6 @@ const DietExpectationsChart = ({
     },
   });
 
-  const getPredictedDate = () => {
-    let monthLocale = new Date(predictedDate * 1000).toLocaleString(window.navigator.language, { month: 'long' });
-    monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
-
-    return `${monthLocale} ${moment(new Date(predictedDate * 1000)).format('DD')}`;
-  };
-
   return (
     <div className='dietExpectation__chart_wrap'>
       <span
@@ -172,7 +210,7 @@ const DietExpectationsChart = ({
       </span>
 
       <span
-        className='dietExpectation__chart_fitlope-plan-label'
+        className={classNames('dietExpectation__chart_fitlope-plan-label', `color_${color}`)}
         dangerouslySetInnerHTML={{ __html: t('signup.chart.fitlope_plan_label') }}
       />
 
@@ -184,5 +222,7 @@ const DietExpectationsChart = ({
     </div>
   );
 };
+
+DietExpectationsChart.defaultProps = ChartPropsDefault;
 
 export default DietExpectationsChart;
