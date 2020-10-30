@@ -5,12 +5,12 @@ import { getTranslate } from 'utils';
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import '../Widgets.sass';
+import '../SalesWidgets.sass';
 
 import { ReactComponent as ProofIcon } from 'assets/img/icons/proof-icon.svg';
 import { ReactComponent as StarIcon } from 'assets/img/icons/star-yellow-icon.svg';
 
-type WidgetsReviewsProps = {
+type ReviewsWidgetProps = {
   active: boolean;
   fadeAnimation: boolean;
   data: {
@@ -21,12 +21,12 @@ type WidgetsReviewsProps = {
   localePhrases: any;
 };
 
-const WidgetsReviews = ({
+const ReviewsWidget = ({
   active,
   fadeAnimation,
   data,
   localePhrases,
-}: WidgetsReviewsProps) => {
+}: ReviewsWidgetProps) => {
   const t = (code: string) =>
     getTranslate(localePhrases, code);
 
@@ -81,4 +81,4 @@ const WidgetsReviews = ({
   );
 };
 
-export default WithTranslate(WidgetsReviews);
+export default WithTranslate(ReviewsWidget);

@@ -5,26 +5,26 @@ import { getTranslate } from 'utils';
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import '../Widgets.sass';
+import '../SalesWidgets.sass';
 
 // Icons
 import { ReactComponent as UsersIcon } from 'assets/img/icons/three-users-icon.svg';
 
-type WidgetsUserCountProps = {
+type UserCountWidgetProps = {
   count: number;
   localePhrases: any;
   active?: boolean;
 };
 
-const WidgetsUserCountDefaultProps = {
+const UserCountWidgetDefaultProps = {
   active: true,
 };
 
-const WidgetsUserCount = ({
+const UserCountWidget = ({
   count,
   localePhrases,
   active,
-}: WidgetsUserCountProps) => {
+}: UserCountWidgetProps) => {
   const t = (code: string) =>
     getTranslate(localePhrases, code);
 
@@ -48,6 +48,6 @@ const WidgetsUserCount = ({
   );
 };
 
-WidgetsUserCount.defaultProps = WidgetsUserCountDefaultProps;
+UserCountWidget.defaultProps = UserCountWidgetDefaultProps;
 
-export default WithTranslate(WidgetsUserCount);
+export default WithTranslate(UserCountWidget);

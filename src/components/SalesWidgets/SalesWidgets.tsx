@@ -11,12 +11,12 @@ import { getRecallsData } from 'api';
 // Components
 import useInterval from 'components/hooks/useInterval';
 import WithTranslate from 'components/hoc/WithTranslate';
-import WidgetsReviews from './WidgetsReviews';
-import WidgetsUserCount from './WidgetsUserCount';
+import ReviewsWidget from './ReviewsWidget';
+import UserCountWidget from './UserCountWidget';
 
-import './Widgets.sass';
+import './SalesWidgets.sass';
 
-const Widgets = (props: any) => {
+const SalesWidgets = (props: any) => {
   const t = (code: string) =>
     getTranslate(props.localePhrases, code);
 
@@ -92,11 +92,11 @@ const Widgets = (props: any) => {
 
   return (
     <div className='widgets'>
-      <WidgetsUserCount
+      <UserCountWidget
         active={isUsersWidgetActive}
         count={usersCount}
       />
-      <WidgetsReviews
+      <ReviewsWidget
         active={isReviewsWidgetActive}
         fadeAnimation={isReviewsWidgetHide}
         data={reviewActive}
@@ -105,4 +105,4 @@ const Widgets = (props: any) => {
   );
 };
 
-export default WithTranslate(Widgets);
+export default WithTranslate(SalesWidgets);
