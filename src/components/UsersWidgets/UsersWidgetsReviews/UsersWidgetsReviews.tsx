@@ -13,18 +13,18 @@ import { ReactComponent as StarIcon } from 'assets/img/icons/star-yellow-icon.sv
 type UsersWidgetsReviewsProps = {
   active: boolean;
   fadeAnimation: boolean;
-  image: string;
-  name: string;
-  text: string;
+  data: {
+    image: string,
+    name: string,
+    text: string,
+  };
   localePhrases: any;
 };
 
 const UsersWidgetsReviews = ({
   active,
   fadeAnimation,
-  image,
-  name,
-  text,
+  data,
   localePhrases,
 }: UsersWidgetsReviewsProps) => {
   const t = (code: string) =>
@@ -40,16 +40,16 @@ const UsersWidgetsReviews = ({
       <div
         className='reviews-widget__media'
         style={{
-          backgroundImage: `url(${image})`,
+          backgroundImage: `url(${data.image})`,
         }}
       >
       </div>
       <div className='reviews-widget__text'>
         <div className='reviews-widget__text-name'>
-          {name}
+          {data.name}
         </div>
         <div className='reviews-widget__text-desc'>
-          {text}
+          {data.text}
         </div>
         <div className='reviews-widget__text-footer'>
           <div className='reviews-widget__text-footer-stars'>

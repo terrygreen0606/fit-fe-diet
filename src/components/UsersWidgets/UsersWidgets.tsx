@@ -82,26 +82,24 @@ const UsersWidgets = (props: any) => {
     setTimeout(() => {
       setIsReviewsWidgetHide(false);
     }, 200);
-  }, 2000);
+  }, 5000);
 
   useEffect(() => {
     setTimeout(() => {
       getRecallsInfo();
-    }, 3000);
+    }, 15000);
   }, []);
 
   return (
     <div className='widgets'>
-      <UsersWidgetsReviews
+      <UsersWidgetsCount
         active={isUsersWidgetActive}
         count={usersCount}
       />
-      <UsersWidgetsCount
+      <UsersWidgetsReviews
         active={isReviewsWidgetActive}
         fadeAnimation={isReviewsWidgetHide}
-        image={reviewActive.image}
-        name={reviewActive.name}
-        text={reviewActive.text}
+        data={reviewActive}
       />
     </div>
   );
