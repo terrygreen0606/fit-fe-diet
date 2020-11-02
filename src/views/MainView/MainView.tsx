@@ -9,16 +9,11 @@ import WithTranslate from 'components/hoc/WithTranslate';
 const MainView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const a = null;
-
   return (
     <>
       <Helmet>
         <title>{t('app.title.main')}</title>
       </Helmet>
-      {a.map((item) => (
-        <div>{item.id}</div>
-      ))}
     </>
   );
 };
