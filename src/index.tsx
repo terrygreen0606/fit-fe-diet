@@ -22,9 +22,10 @@ chartConfig();
 
 if (process.env.NODE_ENV !== 'development') {
   Sentry.init({
-    dsn: 'https://cae1d1cda83d48fe8d39302cc41f90cd@sentry.io/1509568',
-    integrations: [new Integrations.BrowserTracing()],
-
+    dsn: 'https://f1154bae773842c18680ac069212382c@o270063.ingest.sentry.io/5493417',
+    integrations: [
+      new Integrations.BrowserTracing(),
+    ],
     // We recommend adjusting this value in production, or using tracesSampler
     // for finer control
     tracesSampleRate: 1.0,
