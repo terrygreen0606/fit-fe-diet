@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTranslate, getImagePath } from 'utils';
-import { getAppTariff, getAppReviews } from 'api';
+import { getAppTariffs, getAppReviews } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -11,8 +11,10 @@ import Button from 'components/common/Forms/Button';
 import CountDown from 'components/common/CountDown';
 import RawCountDown from 'components/common/RawCountDown';
 import SliderSimple from 'components/common/SliderSimple';
-import Accordeon from 'components/common/Accordeon';
+import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
+import TariffPlanSelect from 'components/TariffPlanSelect';
+import SalesWidgets from 'components/SalesWidgets';
 
 import './AfterSignupPage.sass';
 
@@ -32,36 +34,47 @@ const AfterSignupPage = ({
   measurement,
   localePhrases,
 }: any) => {
-  const [tariffLoading, setTariffLoading] = useState<boolean>(false);
-  const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
-
   const [reviewsLoading, setReviewsLoading] = useState<boolean>(false);
   const [reviewsLoadingError, setReviewsLoadingError] = useState<boolean>(false);
 
   const [reviewsList, setReviewsList] = useState<any[]>([]);
+
+  const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
+  const [tariffsLoading, setTariffsLoading] = useState<boolean>(false);
+  const [tariffsLoadingError, setTariffsLoadingError] = useState<boolean>(false);
+
+  const [activeTariffId, setActiveTariffId] = useState<any>(null);
+
   const [tariffData, setTariffData] = useState<any>({
     price_text: null,
     price_old_text: null,
   });
 
-  const getUserTariff = () => {
-    setTariffLoading(true);
-    setTariffLoadingError(false);
+  const getUserTariffs = () => {
+    setTariffsLoading(true);
+    setTariffsLoadingError(false);
 
-    getAppTariff('d7')
+    getAppTariffs()
       .then(({ data }) => {
-        setTariffLoading(false);
+        if (data.success && data.data) {
+          if (data.data.length) {
+            setTariffsDataList(data.data);
 
-        if (data.data) {
-          setTariffData({
-            price_text: data.data.price_text || null,
-            price_old_text: data.data.price_old_text || null,
-          });
+            if (data.data.length > 1) {
+              setActiveTariffId(data.data[1].id);
+            } else if (data.data.length > 0) {
+              setActiveTariffId(data.data[0].id);
+            }
+          }
+        } else {
+          setTariffsLoadingError(true);
         }
       })
       .catch(() => {
-        setTariffLoading(false);
-        setTariffLoadingError(true);
+        setTariffsLoadingError(true);
+      })
+      .finally(() => {
+        setTariffsLoading(false);
       });
   };
 
@@ -84,7 +97,7 @@ const AfterSignupPage = ({
   };
 
   useEffect(() => {
-    getUserTariff();
+    getUserTariffs();
     getUserReviews();
   }, []);
 
@@ -124,6 +137,28 @@ const AfterSignupPage = ({
     return welcomeDescrGoalText;
   };
 
+  const getActiveTariffData = () => {
+    let activeTariffData = {
+      currency: null,
+      months: null,
+      price: null,
+    };
+
+    const activeTariff = tariffsDataList.find((tariff) => tariff.id === activeTariffId);
+
+    if (activeTariff) {
+      const { price_text, months, currency } = activeTariff;
+
+      activeTariffData = {
+        currency,
+        price: price_text,
+        months,
+      };
+    }
+
+    return activeTariffData;
+  };
+
   return (
     <>
       <section className='after-signup-header-sect'>
@@ -131,35 +166,38 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-xl-6 after-signup-header-content-col'>
 
-              <h1>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
+              <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
+
               {isAfterSignup && (
-                <h4
-                  className='mt-xl-5 mt-4'
+                <h2
+                  className='mt-5 mt-xl-4 fw-bold'
                   dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }}
                 />
               )}
 
-              <div className='text-center mt-xl-5 mt-4'>
+              <div className='text-center mt-4'>
                 <CountDown seconds={900} />
 
                 <ContentLoading
-                  isLoading={tariffLoading}
-                  isError={tariffLoadingError}
-                  fetchData={() => getUserTariff()}
+                  isLoading={tariffsLoading}
+                  isError={tariffsLoadingError}
+                  fetchData={() => getUserTariffs()}
                 >
-                  <h4
-                    className='fw-regular mt-xl-5 mt-4'
-                    dangerouslySetInnerHTML={{
-                      __html: t('lp.selling_text', {
-                        OLD_VALUE: tariffData.price_old_text,
-                        AMOUNT: tariffData.price_text,
-                      }),
-                    }}
-                  />
+                  {tariffsDataList.length > 0 && (
+                    <h2
+                      className='fw-regular mt-4'
+                      dangerouslySetInnerHTML={{
+                        __html: t('lp.selling_text', {
+                          OLD_VALUE: tariffsDataList[0].price_old_month_text,
+                          AMOUNT: tariffsDataList[0].price_month_text,
+                        }),
+                      }}
+                    />
+                  )}
                 </ContentLoading>
 
                 <Link to='/checkout' className='link-raw'>
-                  <Button color='primary-shadow' className='mt-3'>{t('button.reveal_plan')}</Button>
+                  <Button color='primary-shadow' className='mt-3' size='lg'>{t('button.select_plan')}</Button>
                 </Link>
 
                 <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
@@ -169,54 +207,55 @@ const AfterSignupPage = ({
             <div className='col-xl-6 mt-5 mt-xl-0 after-signup-header-chart-col'>
 
               <div className='after-signup-header-chart-col_content'>
-                {isAfterSignup && (
-                  <DietExpectationsChart
-                    weight={afterSignupWeight}
-                    weightGoal={afterSignupWeightGoal}
-                    predictedDate={afterSignupPredictDate}
-                    measurement={measurement}
-                    localePhrases={localePhrases}
-                  />
-                )}
+                <ContentLoading
+                  isLoading={reviewsLoading}
+                  isError={reviewsLoadingError}
+                  fetchData={() => getUserReviews()}
+                >
+                  <SliderSimple
+                    className='app-reviews-slider app-reviews-slider--1'
+                    dots
+                    autoplay
+                    autoplaySpeed={2000}
+                    slides={reviewsList.map((review) => (
+                      <div className='app-reviews-slider__item'>
+                        <div
+                          className='app-reviews-slider__item_img'
+                          style={{ backgroundImage: `url(${review.image || null})` }}
+                        />
 
-                <div className='app-review-single-item'>
-                  <ContentLoading
-                    isLoading={reviewsLoading}
-                    isError={reviewsLoadingError}
-                    fetchData={() => getUserReviews()}
-                  >
-                    {reviewsList.slice(0, 1).map((review) => (
-                      <>
-                        <div className='app-review-single-item_img_wrap'>
-                          <span
-                            className='app-review-single-item_img'
-                            style={{ backgroundImage: `url(${review.image || null})` }}
-                          />
-                        </div>
+                        <div className='app-reviews-slider__item_content_wrap'>
+                          <div className='app-reviews-slider__item_img_wrap'>
+                            <span
+                              className='app-reviews-slider__item_author_img'
+                              style={{ backgroundImage: `url(${review.image})` }}
+                            />
+                          </div>
 
-                        <div className='app-review-single-item_content'>
-                          <p className='app-review-single-item_descr'>{review.text || null}</p>
-                          <div className='app-review-single-item_footer'>
-                            <div className='rate-stars_list'>
-                              <StarFillIcon className='rate-stars_item' />
-                              <StarFillIcon className='rate-stars_item' />
-                              <StarFillIcon className='rate-stars_item' />
-                              <StarFillIcon className='rate-stars_item' />
-                              <StarFillIcon className='rate-stars_item' />
+                          <div className='app-reviews-slider__item_content'>
+                            <p className='app-reviews-slider__item_descr'>{review.text}</p>
+                            <div className='app-reviews-slider__item_footer'>
+                              <div className='rate-stars_list'>
+                                <StarFillIcon className='rate-stars_item' />
+                                <StarFillIcon className='rate-stars_item' />
+                                <StarFillIcon className='rate-stars_item' />
+                                <StarFillIcon className='rate-stars_item' />
+                                <StarFillIcon className='rate-stars_item' />
+                              </div>
+                              <h6 className='app-reviews-slider__item_author'>
+                                <b>
+                                  {'- '}
+                                  {review.name}
+                                </b>
+                                , Fitlope user
+                              </h6>
                             </div>
-                            <h6 className='app-review-single-item_author'>
-                              <b>
-                                {'- '}
-                                {review.name || null}
-                              </b>
-                              , Fitlope user
-                            </h6>
                           </div>
                         </div>
-                      </>
+                      </div>
                     ))}
-                  </ContentLoading>
-                </div>
+                  />
+                </ContentLoading>
               </div>
 
             </div>
@@ -227,12 +266,12 @@ const AfterSignupPage = ({
       <section className='after-signup-intro-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-6 d-none d-xl-block text-right'>
+            <div className='col-4 d-none d-xl-block text-left'>
 
-              <img src={getImagePath('register/expectations_step.png')} alt='' className='img-fluid flip-x' />
+              <img src={getImagePath('phone-frame-img.png')} alt='' className='img-fluid flip-x' />
 
             </div>
-            <div className='col-xl-6 mt-xl-0 after-signup-intro-content-col'>
+            <div className='col-xl-8 mt-xl-0 after-signup-intro-content-col'>
 
               <h5>{t('lp.partners_list_title')}</h5>
 
@@ -265,7 +304,31 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-xl-4 offset-xl-2 py-xl-5'>
 
-              <div dangerouslySetInnerHTML={{ __html: t('lp.reviews_sect_content') }}></div>
+              <h2 className='fw-bold'>{t('lp.reviews_sect.title')}</h2>
+              <p className='mt-45'>{t('lp.reviews_sect.descr')}</p>
+              <h4 className='mt-4 fw-bold'>{t('lp.reviews_sect.subtitle')}</h4>
+
+              {reviewsList.length > 0 && (
+                <div className='app-review-rate-single mt-5'>
+                  <div className='rate-stars_list'>
+                    <StarFillIcon className='rate-stars_item' />
+                    <StarFillIcon className='rate-stars_item' />
+                    <StarFillIcon className='rate-stars_item' />
+                    <StarFillIcon className='rate-stars_item' />
+                    <StarFillIcon className='rate-stars_item' />
+                  </div>
+
+                  <h6 className='app-review-rate-single__author'>
+                    <b>
+                      {'- '}
+                      {reviewsList[0].name}
+                    </b>
+                    , Fitlope user
+                  </h6>
+                </div>
+              )}
+
+              <Button color='primary-shadow' size='lg' className='mt-5'>{t('button.select_plan')}</Button>
 
             </div>
             <div className='col-xl-5 offset-xl-1 mt-5 mt-xl-0'>
@@ -276,89 +339,20 @@ const AfterSignupPage = ({
                 fetchData={() => getUserReviews()}
               >
                 <SliderSimple
-                  className='app-reviews-slider app-reviews-slider--1'
+                  className='app-reviews-slider app-reviews-slider--3'
                   dots
-                  autoplay
-                  autoplaySpeed={2000}
-                  slides={reviewsList.map((review) => (
-                    <div className='app-reviews-slider__item'>
-                      <div
-                        className='app-reviews-slider__item_img'
-                        style={{ backgroundImage: `url(${review.image || null})` }}
-                      />
-
-                      <div className='app-reviews-slider__item_content'>
-                        <p className='app-reviews-slider__item_descr'>{review.text || null}</p>
-                        <h6 className='app-reviews-slider__item_author'>
-                          {review.name || null}
-                          , Fitlope user
-                        </h6>
-                      </div>
-                    </div>
-                  ))}
-                />
-              </ContentLoading>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='after-signup-faq-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-xl-5'>
-
-              <ContentLoading
-                isLoading={reviewsLoading}
-                isError={reviewsLoadingError}
-                fetchData={() => getUserReviews()}
-              >
-                <SliderSimple
-                  className='app-reviews-slider app-reviews-slider--2'
-                  nav
                   autoplay
                   autoplaySpeed={3000}
                   slides={reviewsList.map((review) => (
                     <div className='app-reviews-slider__item'>
                       <div
                         className='app-reviews-slider__item_img'
-                        style={{ backgroundImage: `url(${review.image || null})` }}
+                        style={{ backgroundImage: `url(${review.image})` }}
                       />
-                      <p className='app-reviews-slider__item_descr'>{review.text || null}</p>
-                      <h6 className='app-reviews-slider__item_author'>
-                        {review.name || null}
-                        , Fitlope user
-                      </h6>
                     </div>
                   ))}
                 />
               </ContentLoading>
-
-            </div>
-            <div className='col-xl-6 offset-xl-1'>
-
-              <h2 className='mb-45'>{t('lp.faq.title')}</h2>
-
-              <Accordeon
-                items={[
-                  {
-                    id: 0,
-                    title: t('lp.faq.q1'),
-                    content: <div dangerouslySetInnerHTML={{ __html: t('lp.faq.a1') }}></div>,
-                  },
-                  {
-                    id: 1,
-                    title: t('lp.faq.q2'),
-                    content: <div dangerouslySetInnerHTML={{ __html: t('lp.faq.a2') }}></div>,
-                  },
-                  {
-                    id: 2,
-                    title: t('lp.faq.q3'),
-                    content: <div dangerouslySetInnerHTML={{ __html: t('lp.faq.a3') }}></div>,
-                  },
-                ]}
-              />
 
             </div>
           </div>
@@ -370,7 +364,7 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-xl-6'>
 
-              <h2 className='mb-5'>{t('lp.advantages_title')}</h2>
+              <h2 className='mb-5 fw-bold'>{t('lp.advantages_title')}</h2>
 
               <div className='app-advantages-list'>
                 <div className='app-advantages-list__item'>{t('lp.advantage_1')}</div>
@@ -379,7 +373,7 @@ const AfterSignupPage = ({
               </div>
 
             </div>
-            <div className='col-xl-6'>
+            <div className='col-xl-6 mt-5 mt-xl-0'>
 
               {isAfterSignup && (
                 <DietExpectationsChart
@@ -423,54 +417,203 @@ const AfterSignupPage = ({
               <h2 className='sect-title title-center'>{t('lp.start_today_title')}</h2>
 
               <ContentLoading
-                isLoading={tariffLoading}
-                isError={tariffLoadingError}
-                fetchData={() => getUserTariff()}
+                isLoading={tariffsLoading}
+                isError={tariffsLoadingError}
+                fetchData={() => getUserTariffs()}
               >
-                <h4
-                  className='fw-regular mt-xl-5 mt-4'
-                  dangerouslySetInnerHTML={{
-                    __html: t('lp.selling_text', {
-                      OLD_VALUE: tariffData.price_old_text,
-                      AMOUNT: tariffData.price_text,
-                    }),
-                  }}
-                />
+                {tariffsDataList.length > 0 && (
+                  <h2
+                    className='fw-regular mt-4'
+                    dangerouslySetInnerHTML={{
+                      __html: t('lp.selling_text', {
+                        OLD_VALUE: tariffsDataList[0].price_old_month_text,
+                        AMOUNT: tariffsDataList[0].price_month_text,
+                      }),
+                    }}
+                  />
+                )}
               </ContentLoading>
 
               <Link to='/checkout' className='link-raw'>
-                <Button color='primary-shadow' className='mt-xl-5 mt-4'>{t('button.reveal_plan')}</Button>
+                <Button
+                  color='primary-shadow'
+                  className='mt-4'
+                  size='lg'
+                  block
+                  style={{ maxWidth: '500px' }}
+                >
+                  {t('button.activate_plan')}
+                </Button>
               </Link>
 
               <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
 
-              <div className='product-plants-one-tree-block mt-5'>
-                <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
+              <div className='app-partners-list mt-5 pt-5'>
+                <span
+                  className='app-partners-list__item'
+                  style={{ backgroundImage: `url(${dailyMirrorImg})` }}
+                />
+                <span
+                  className='app-partners-list__item'
+                  style={{ backgroundImage: `url(${forbesImg})` }}
+                />
+                <span
+                  className='app-partners-list__item'
+                  style={{ backgroundImage: `url(${modestoImg})` }}
+                />
               </div>
 
             </div>
           </div>
         </div>
+      </section>
 
-        <section className='checkout-reserved-block'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-12'>
+      <section className='after-signup-plan-select-sect'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-12'>
 
-                <h4 className='checkout-reserved-block__title'>
-                  {t('lp.bottom_countdown_title')}
-                  {' '}
-
-                  <span className='checkout-reserved-block__countdown'>
-                    <RawCountDown seconds={900} />
-                  </span>
-                </h4>
-
+              <div className='checkout-reserved-top-block'>
+                <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
+                <h6 className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</h6>
+                <h6 className='checkout-reserved-top-block__countdown_title'>
+                  {t('checkout.reserved_block.title')}
+                  :
+                </h6>
+                <span className='checkout-reserved-top-block__countdown'>
+                  <RawCountDown seconds={900} />
+                </span>
               </div>
+
+              <div className='row'>
+                <div className='col-xl-6'>
+
+                  <h2 className='mb-5 fw-bold text-center'>{t('lp.select_plan_title')}</h2>
+
+                  <TariffPlanSelect
+                    tariffs={tariffsDataList.map(({
+                      id,
+                      months,
+                      price_month_text,
+                      price_old_month_text,
+                      price_text,
+                    }) => ({
+                      id,
+                      price: price_text,
+                      priceMonth: price_month_text,
+                      priceOldMonth: price_old_month_text,
+                      months,
+                    }))}
+                    value={activeTariffId}
+                    onChange={(id) => setActiveTariffId(id)}
+                    specialOfferIndex={1}
+                    localePhrases={localePhrases}
+                  />
+
+                  <img src={getImagePath('checkout/safe-checkout-img-2.png')} className='img-fluid' alt='' />
+
+                </div>
+                <div className='col-xl-6 pl-xl-5 mt-5 mt-xl-0'>
+
+                  <h2 className='mb-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
+
+                  <div className='advantages-checklist'>
+                    {Array(6).fill(1).map((el, elIndex) => (
+                      <div className='advantages-checklist-item'>
+                        <h6 className='advantages-checklist-item__title'>
+                          {t(`lp.plan.advantage${elIndex}.title`)}
+                        </h6>
+
+                        <div className='advantages-checklist-item__content'>
+                          {t(`lp.plan.advantage${elIndex}.descr`)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+              </div>
+
             </div>
           </div>
-        </section>
+        </div>
       </section>
+
+      <section className='after-signup-payment-form'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-lg-8 offset-lg-2 col-xl-6 offset-xl-3'>
+
+              <h3 className='mb-5 fw-bold text-center'>Please Select your payment method</h3>
+
+              <CheckoutPaymentFormCard
+                tariffId={activeTariffId}
+                currency={getActiveTariffData().currency}
+                localePhrases={localePhrases}
+              />
+
+              <p
+                className='mt-4 after-signup-payment-form__total'
+                dangerouslySetInnerHTML={{
+                  __html: t('checkout.form_card.total_title', {
+                    AMOUNT: getActiveTariffData().price,
+                    COUNT: getActiveTariffData().months,
+                  }),
+                }}
+              />
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className='after-signup-faq-sect'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-12'>
+
+              <h2 className='sect-title title-center'>{t('lp.faq.title')}</h2>
+
+              <div className='row mt-xl-5 pt-lg-5'>
+                <div className='col-lg-6'>
+
+                  <h5 className='mb-5 fw-bold text-center'>{t('lp.faq.q1')}</h5>
+                  <p>{t('lp.faq.a1')}</p>
+
+                </div>
+                <div className='col-lg-6 mt-5 mt-lg-0'>
+
+                  <h5 className='mb-5 fw-bold text-center'>{t('lp.faq.q2')}</h5>
+                  <p>{t('lp.faq.a2')}</p>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className='checkout-reserved-block mb-4 blue-style'>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-12'>
+
+              <h4 className='checkout-reserved-block__title'>
+                {t('lp.bottom_countdown_title')}
+                {' '}
+
+                <span className='checkout-reserved-block__countdown'>
+                  <RawCountDown seconds={900} />
+                </span>
+              </h4>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <SalesWidgets />
     </>
   );
 };
