@@ -247,7 +247,8 @@ const AfterSignupPage = ({
                                   {'- '}
                                   {review.name}
                                 </b>
-                                , Fitlope user
+                                {', '}
+                                {t('common.app_user')}
                               </h6>
                             </div>
                           </div>
@@ -323,7 +324,8 @@ const AfterSignupPage = ({
                       {'- '}
                       {reviewsList[0].name}
                     </b>
-                    , Fitlope user
+                    {', '}
+                    {t('common.app_user')}
                   </h6>
                 </div>
               )}
@@ -544,7 +546,7 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-lg-8 offset-lg-2 col-xl-6 offset-xl-3'>
 
-              <h3 className='mb-5 fw-bold text-center'>Please Select your payment method</h3>
+              <h3 className='mb-5 fw-bold text-center'>{t('lp.select_payment.title')}</h3>
 
               <CheckoutPaymentFormCard
                 tariffId={activeTariffId}
