@@ -29,8 +29,7 @@ const checkoutFormDefault = {
   phone: null,
   card_number: null,
   card_cvv: null,
-  card_month: null,
-  card_year: null,
+  card_month_year: null,
   discount_code: null,
 };
 
@@ -78,8 +77,8 @@ const CheckoutPaymentFormCard = ({
     currency,
     card: {
       number: checkoutForm.card_number.replace(/ /gi, ''),
-      year: checkoutForm.card_year.split('')[1],
-      month: checkoutForm.card_month.split('')[0],
+      year: checkoutForm.card_month_year.split('/')[1],
+      month: checkoutForm.card_month_year.split('/')[0],
       cvv: checkoutForm.card_cvv,
     },
     contacts: {
@@ -174,16 +173,16 @@ const CheckoutPaymentFormCard = ({
             <FormGroup>
               <InputField
                 block
-                name='card_month'
-                data-param={2}
+                name='card_month_year'
+                data-param={7}
                 label={`${t('checkout.form_card.expiry_date')}*:`}
-                isValid={checkoutForm.card_month && getFieldErrors('card_month').length === 0}
-                value={checkoutForm.card_month}
+                isValid={checkoutForm.card_month_year && getFieldErrors('card_month_year').length === 0}
+                value={checkoutForm.card_month_year}
                 data-validate='["required", "len"]'
-                mask='11/11'
-                onChange={(e) => validateOnChange('card_month', e.target.value, e)}
-                errors={getFieldErrors('card_month')}
-                placeholder='MM/YY'
+                mask='11/1111'
+                onChange={(e) => validateOnChange('card_month_year', e.target.value, e)}
+                errors={getFieldErrors('card_month_year')}
+                placeholder='MM/YYYY'
                 className='checkout-payment-card__form_input'
               />
             </FormGroup>
