@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import uuid from 'react-uuid';
 
 import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
-import { getUserInviteLink } from 'api';
+import {
+  getUserInviteLink,
+  fetchUserProfile,
+  getUserInvitedFriends,
+} from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -16,17 +21,37 @@ import CopyLinkButton from 'components/common/CopyLinkButton';
 import './ReferralView.sass';
 
 const ReferralView = (props: any) => {
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
-  const [inviteLink, setInviteLink] = useState('');
+  const [inviteLink, setInviteLink] = useState<string>('');
+
+  const [userName, setUserName] = useState<string>('');
+
+  const [invitedMembers, setInvitedMembers] = useState<any[]>([]);
 
   useEffect(() => {
     let cleanComponent = false;
-    getUserInviteLink().then((response) => {
-      if (response.data.success && response.data.data) {
-        if (!cleanComponent) setInviteLink(response.data.data.url);
-      }
-    }).catch(() => { });
+    if (!cleanComponent) {
+      getUserInviteLink().then((response) => {
+        if (response.data.success && response.data.data) {
+          setInviteLink(response.data.data.url);
+        }
+      }).catch(() => { });
+
+      fetchUserProfile().then((response) => {
+        if (response.data.success && response.data.data) {
+          const { data } = response.data;
+          setUserName(`${data.name} ${data.surname}`);
+        }
+      }).catch(() => { });
+
+      getUserInvitedFriends().then((response) => {
+        if (response.data.success && response.data.data) {
+          response.data.data.list.map((item) => item.id = uuid());
+          setInvitedMembers([...response.data.data.list]);
+        }
+      }).catch(() => { });
+    }
 
     return () => cleanComponent = true;
   }, []);
@@ -86,6 +111,54 @@ const ReferralView = (props: any) => {
                   className='referral__media'
                 />
               </div>
+            </div>
+          </div>
+          <div className='referral__invited'>
+            <h2 className='referral__invited-title'>
+              {t('referral.invited.title', { NAME: userName })}
+            </h2>
+            <div className='referral__invited-list'>
+              <div className='referral__invited-list-head'>
+                <div className='referral__invited-list-item'>
+                  {t('referral.invited.email')}
+                </div>
+                <div className='referral__invited-list-item'>
+                  {t('referral.invited.user')}
+                </div>
+                <div className='referral__invited-list-item'>
+                  {t('referral.invited.paid')}
+                </div>
+              </div>
+              {invitedMembers.map((item) => (
+                <div
+                  key={item.id}
+                  className='referral__invited-list-row'
+                >
+                  <div className='referral__invited-list-item'>
+                    <a href={`mailto:${item.email}`} className='referral__invited-list-email'>
+                      {item.email}
+                    </a>
+                  </div>
+                  {/* need to integration with BE */}
+                  <div className='referral__invited-list-item'>
+                    <div className='referral__invited-list-user-info'>
+                      <div
+                        className='referral__invited-list-user-info-media'
+                        style={{
+                          backgroundImage: 'url(https://fitstg.s3.eu-central-1.amazonaws.com/anna_t.png)',
+                        }}
+                      />
+                      <div className='referral__invited-list-user-info-desc'>
+                        <div className='referral__invited-list-user-info-desc-name'>Gabriel Martinez</div>
+                        <div className='referral__invited-list-user-info-desc-date'>15.08.2020</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='referral__invited-list-item'>
+                    <div className='referral__invited-list-paid active'>Yes</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

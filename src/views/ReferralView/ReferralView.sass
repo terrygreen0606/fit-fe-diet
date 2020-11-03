@@ -25,7 +25,7 @@
 
   &__description
     margin-bottom: 30px
-    font-size: 20px
+    font-size: 16px
     line-height: 1.67
 
   &__invite-link
@@ -69,7 +69,124 @@
     margin-top: 55px
     margin-bottom: 50px
 
-@media only screen and(max-width: 767px)
+  &__invited
+    margin-top: 50px
+
+    &-title
+      margin-bottom: 60px
+
+    &-list
+      margin-bottom: 50px
+      text-align: center
+
+      @media (max-width: 992px)
+        margin: 0 -30px 50px
+
+      &-head
+        display: flex
+        align-items: center
+        padding: 40px 80px
+        background-color: #F1F1F1
+        font-size: 22px
+        font-weight: bold
+
+        @media (max-width: 992px)
+          padding: 30px 20px
+          font-size: 16px
+
+      &-row
+        display: flex
+        align-items: center
+        width: calc(100% - 60px)
+        margin: 0 auto
+        padding: 38px 0
+
+        @media (max-width: 992px)
+          width: 100% 
+          padding: 20px
+
+        &:not(:last-child)
+          border-bottom: 1px solid #D2D2D2
+      
+      &-item
+        width: 33.33%
+        overflow: hidden
+
+        &:nth-child(1)
+          text-align: left
+
+        &:nth-child(2)
+          text-align: center
+
+        &:nth-child(3)
+          text-align: right
+
+      &-email
+        color: $black
+        text-decoration: none
+        border-bottom: 1px solid
+        transition: 0.2s border-bottom ease
+
+        @media (max-width: 992px)
+          font-size: 14px
+
+        &:hover
+          border-bottom: 1px solid transparent
+
+      &-user-info
+        display: flex
+        align-items: center
+        justify-content: center
+
+        @media (max-width: 992px)
+          flex-wrap: wrap
+
+        &-media
+          width: 70px
+          height: 70px
+          border-radius: 50%
+          overflow: hidden
+          background-size: contain
+
+          @media (max-width: 992px)
+            width: 56px
+            height: 56px
+            margin-bottom: 10px
+
+        &-desc
+          padding-left: 38px
+          text-align: left
+
+          @media (max-width: 992px)
+            width: 100%
+            padding-left: 0
+            text-align: center
+
+          &-name
+            margin-bottom: 6px
+            font-size: 18px
+            line-height: 1.2
+            font-weight: bold
+
+            @media (max-width: 992px)
+              margin-bottom: 3px
+              font-size: 14px
+
+          &-date
+            font-size: 16px
+
+      &-paid
+        font-size: 20px
+        font-weight: bold
+        color: #FF3D00
+
+        @media (max-width: 992px)
+          font-size: 14px
+
+        &.active
+          color: $caribbean-green
+
+@media only screen and (max-width: 767px)
   .referral
     position: relative
 
@@ -142,7 +259,7 @@
       .share-button
         margin: 0 5px
 
-@media only screen and(max-width: 567px)
+@media only screen and (max-width: 567px)
   .referral
     &__container-input
       max-width: initial

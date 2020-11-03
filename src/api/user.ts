@@ -61,3 +61,6 @@ export const getAppReviews = () =>
 
 export const userInviteFamilyByEmail = (email: string) =>
   axios.put(`/user/invite-family/${email}`);
+
+export const getUserInvitedFriends = () =>
+  axios.get('/user/friends');
