@@ -6,6 +6,7 @@ import {
   getAppPublicSettings,
 } from 'api';
 import { setLocaleLang, setLocalePhrases, setAppSetting } from 'store/actions';
+import { initSentry } from 'utils/initSentry';
 
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
@@ -120,6 +121,10 @@ export const appSetting = (
       }));
     }
 
+    const FITLOPE_USER_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
+
+    initSentry(FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn);
+
     if (localesLoad) {
       await dispatch(loadLocales());
     }
@@ -129,6 +134,10 @@ export const appSetting = (
     } else {
       dispatch(setAppSetting(FITLOPE_PUBLIC_SETTINGS));
     }
+
+    const FITLOPE_PUBLIC_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_PUBLIC_SETTINGS'));
+
+    initSentry(FITLOPE_PUBLIC_SETTINGS_UPDATED.sentry_dsn);
 
     if (localesLoad) {
       await dispatch(loadLocales());
