@@ -58,25 +58,68 @@
           margin-bottom: 15px
 
   &__item
+    position: relative
     display: flex
     align-items: center
     min-height: 55px
     padding-left: 105px
-    background-image: url('../img/icons/arrow-right-highlight-circle.svg')
-    background-size: 46px
-    background-repeat: no-repeat
-    background-position: center left
     font-weight: normal
     font-size: 18px
     line-height: 29px
     color: #000000
     &:not(:last-child)
-      margin-bottom: 45px
+      margin-bottom: 35px
+    &::before
+      content: ''
+      position: absolute
+      top: 5px
+      left: 0
+      display: inline-block
+      width: 46px
+      height: 46px
+      border-radius: 100%
+      background-color: $steel-blue
+      background-image: url('../img/icons/arrow-right-white-icon.svg')
+      background-size: 20px
+      background-repeat: no-repeat
+      background-position: center center
 
     @media only screen and (max-width : 768px)
       padding-left: 80px
       font-size: 16px
       line-height: 20px
+
+
+//
+.advantages-checklist
+  &-item
+    &:not(:last-child)
+      margin-bottom: 25px
+    &__title
+      position: relative
+      margin: 0
+      padding-left: 25px
+      font-size: 24px
+      line-height: 29px
+      font-weight: 700
+      &::before
+        position: absolute
+        top: 5px
+        left: 0
+        content: ''
+        display: inline-block
+        width: 17px
+        height: 17px
+        background-image: url('../img/icons/check-blue-icon.svg')
+        background-size: contain
+        background-repeat: no-repeat
+        background-position: left center
+    &_descr
+      margin: 0
+      font-size: 24px
+      line-height: 32px
+      font-weight: 400
+
 
 // Money back block
 .money-back-guarantee-block
@@ -88,6 +131,7 @@
   padding-left: 165px
   border: 1px solid $steel-blue
   border-radius: 20px
+  background-color: #fff
   background-image: url('../img/checkout/money-back-img.svg')
   background-position: 45px 25px
   background-size: 75px
@@ -137,6 +181,8 @@
   padding: 19px
   background: linear-gradient(180deg, rgba(252, 196, 113, 0.8) 0%, rgba(218, 121, 8, 0.8) 68.23%)
   text-align: center
+  &.blue-style
+    background: $steel-blue
   &__title
     font-weight: bold
     font-size: 36px
@@ -202,60 +248,44 @@
       line-height: 1.2
       background-color: #ffffff
 
-// App single review
-.app-review-single-item
+
+// Reivew rate single
+.app-review-rate-single
   display: flex
-  align-items: flex-start
-  min-height: 150px
-  padding: 25px
-  padding-right: 10px
-  background-color: #fff
-  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
-  border-radius: 20px
-  &_content
-    margin-left: 15px
-    padding: 10px 0
-  &_img
-    display: inline-block
-    width: 98px
-    height: 98px
-    border-radius: 100%
-    background-size: cover
-    background-repeat: no-repeat
-    background-position: top center
-  &_descr
-    font-weight: 400
-    font-size: 18px
-    line-height: 22px
-    color: #000000
-  &_author
+  align-items: center
+  flex-wrap: wrap
+  &__author
     margin: 0
-    margin-left: 17px
+    margin-left: 27px
     font-weight: 400
     font-size: 18px
     line-height: 22px
-    color: $steel-blue
-  &_footer
-    display: flex
-    align-items: center
-    margin-top: 15px
 
-  @media only screen and (max-width : 768px)
-    padding: 15px
 
-    &_img
-      width: 80px
-      height: 80px
-    &_content
-      padding: 0
-    &_descr, &_author
-      font-size: 14px
-      line-height: 17px
-    .rate-stars
-      &_item
-        width: 13px
-        height: 13px
-        &:not(:last-child)
-          margin-right: 3px
+// Checout reserved block
+.checkout-reserved-top-block
+  max-width: 589px
+  margin: 0 auto
+  padding: 50px
+  background-color: $steel-blue
+  color: #fff
+  text-align: center
+
+  @media (max-width: 768px)
+    padding: 35px 20px
+
+  &__title
+    text-align: center
+    color: #FFFFFF
+  &__descr
+    margin-top: 35px
+  &__countdown
+    font-size: 40px
+    line-height: 60px
+    font-weight: 700
+    &_title
+      margin-top: 45px
+      font-weight: 400
+    
 
 @import "media"
