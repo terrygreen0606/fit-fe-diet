@@ -121,6 +121,10 @@ export const appSetting = (
       }));
     }
 
+    const FITLOPE_USER_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
+
+    initSentry(FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn);
+
     if (localesLoad) {
       await dispatch(loadLocales());
     }
@@ -131,14 +135,14 @@ export const appSetting = (
       dispatch(setAppSetting(FITLOPE_PUBLIC_SETTINGS));
     }
 
+    const FITLOPE_PUBLIC_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_PUBLIC_SETTINGS'));
+
+    initSentry(FITLOPE_PUBLIC_SETTINGS_UPDATED.sentry_dsn);
+
     if (localesLoad) {
       await dispatch(loadLocales());
     }
   }
-
-  const FITLOPE_USER_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
-
-  initSentry(FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn);
 
   axios.interceptors.response.use((response) => {
     const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem('FITLOPE_IS_AUTHENTICATED');
