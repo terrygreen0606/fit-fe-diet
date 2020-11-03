@@ -114,13 +114,11 @@ export const appSetting = (
   if (isAuthenticated) {
     if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
       await dispatch(fetchUserSettings());
-      initSentry(FITLOPE_USER_SETTINGS.sentry_dsn);
     } else {
       dispatch(setAppSetting({
         ...FITLOPE_USER_SETTINGS,
         is_private: true,
       }));
-      initSentry(FITLOPE_USER_SETTINGS.sentry_dsn);
     }
 
     if (localesLoad) {
@@ -137,6 +135,10 @@ export const appSetting = (
       await dispatch(loadLocales());
     }
   }
+
+  const FITLOPE_USER_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
+
+  initSentry(FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn);
 
   axios.interceptors.response.use((response) => {
     const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem('FITLOPE_IS_AUTHENTICATED');
