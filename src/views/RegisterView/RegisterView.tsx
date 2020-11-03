@@ -36,7 +36,6 @@ const registerDataDefault: RegisterDataType = {
   weight_goal: null,
   predicted_date: null,
   tpl_signup: null,
-  goal: null,
   ignore_cuisine_ids: [],
   diseases: [],
   act_levels: [],

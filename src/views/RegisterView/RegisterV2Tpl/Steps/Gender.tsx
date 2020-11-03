@@ -22,7 +22,7 @@ const Gender = ({
   registerDataErrors,
   setRegisterDataErrors,
   setRegisterView,
-  localePhrases
+  localePhrases,
 }: any) => {
   const [validateLoading, setValidateLoading] = useState(false);
 
@@ -79,7 +79,7 @@ const Gender = ({
       })
         .then((response) => {
           setValidateLoading(false);
-          setRegisterView('AGE');
+          setRegisterView('NOT_EATING');
         })
         .catch((error) => {
           setValidateLoading(false);

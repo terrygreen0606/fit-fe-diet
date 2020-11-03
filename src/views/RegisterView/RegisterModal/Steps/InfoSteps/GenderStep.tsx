@@ -32,8 +32,9 @@ const GenderStep = ({
 
   useEffect(() => {
     const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[1] = t('register.gender_step');
-    currStepTitles[2] = t('register.not_eating_step');
+    currStepTitles[0] = t('register.gender_step');
+    currStepTitles[1] = t('register.age_step');
+    currStepTitles[2] = t('register.height_step');
 
     setStepTitles([...currStepTitles]);
 
