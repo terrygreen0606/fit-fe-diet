@@ -11,8 +11,8 @@ import { RegisterViewType } from './types';
 import './RegisterV2Tpl.sass';
 
 const registerViewsList: RegisterViewType[] = [
-  'GENDER',     // 0
-  'NOT_EATING',         // 1
+  'GENDER',         // 0
+  'NOT_EATING',     // 1
   'AGE',            // 2
   'BACK_ISSUES',    // 3
   'HEALTH_PROBLEMS',// 4
