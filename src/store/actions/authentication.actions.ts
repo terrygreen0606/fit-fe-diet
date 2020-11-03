@@ -1,6 +1,4 @@
 import axios from 'utils/axios';
-import * as Sentry from '@sentry/react';
-import { Integrations } from '@sentry/tracing';
 import {
   userAcknowledge,
   loadPhrases,
@@ -8,6 +6,7 @@ import {
   getAppPublicSettings,
 } from 'api';
 import { setLocaleLang, setLocalePhrases, setAppSetting } from 'store/actions';
+import { initSentry } from 'utils/initSentry';
 
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
@@ -115,23 +114,13 @@ export const appSetting = (
   if (isAuthenticated) {
     if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
       await dispatch(fetchUserSettings());
+      initSentry(FITLOPE_USER_SETTINGS.sentry_dsn);
     } else {
-      if (process.env.NODE_ENV !== 'development') {
-        Sentry.init({
-          dsn: FITLOPE_USER_SETTINGS.sentry_dsn,
-          integrations: [
-            new Integrations.BrowserTracing(),
-          ],
-          // We recommend adjusting this value in production, or using tracesSampler
-          // for finer control
-          tracesSampleRate: 1.0,
-        });
-      }
-
       dispatch(setAppSetting({
         ...FITLOPE_USER_SETTINGS,
         is_private: true,
       }));
+      initSentry(FITLOPE_USER_SETTINGS.sentry_dsn);
     }
 
     if (localesLoad) {
