@@ -114,6 +114,8 @@ export const appSetting = (
 
   if (isAuthenticated) {
     if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
+      await dispatch(fetchUserSettings());
+    } else {
       if (process.env.NODE_ENV !== 'development') {
         Sentry.init({
           dsn: FITLOPE_USER_SETTINGS.sentry_dsn,
@@ -126,8 +128,6 @@ export const appSetting = (
         });
       }
 
-      await dispatch(fetchUserSettings());
-    } else {
       dispatch(setAppSetting({
         ...FITLOPE_USER_SETTINGS,
         is_private: true,
