@@ -115,18 +115,18 @@ const ReferralView = (props: any) => {
           </div>
           <div className='referral__invited'>
             <h2 className='referral__invited-title'>
-              {t('referral.invited.title', { NAME: userName })}
+              {t('referral.invite.title', { NAME: userName })}
             </h2>
             <div className='referral__invited-list'>
               <div className='referral__invited-list-head'>
                 <div className='referral__invited-list-item'>
-                  {t('referral.invited.email')}
+                  {t('referral.invite.email')}
                 </div>
                 <div className='referral__invited-list-item'>
-                  {t('referral.invited.user')}
+                  {t('referral.invite.user')}
                 </div>
                 <div className='referral__invited-list-item'>
-                  {t('referral.invited.paid')}
+                  {t('referral.invite.paid')}
                 </div>
               </div>
               {invitedMembers.map((item) => (
