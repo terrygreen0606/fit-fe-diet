@@ -1,4 +1,6 @@
 import axios from 'utils/axios';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
 import {
   userAcknowledge,
   loadPhrases,
@@ -55,6 +57,18 @@ export const fetchUserSettings = () => async (dispatch) => {
       localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', headers['fitlope-checksum-settings']);
 
       if (data.success && data.data) {
+        if (process.env.NODE_ENV !== 'development') {
+          Sentry.init({
+            dsn: data.data.sentry_dsn,
+            integrations: [
+              new Integrations.BrowserTracing(),
+            ],
+            // We recommend adjusting this value in production, or using tracesSampler
+            // for finer control
+            tracesSampleRate: 1.0,
+          });
+        }
+
         dispatch(setAppSetting({
           ...data.data,
           is_private: true,
