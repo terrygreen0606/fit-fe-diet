@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import uuid from 'react-uuid';
+import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
@@ -32,25 +33,31 @@ const ReferralView = (props: any) => {
   useEffect(() => {
     let cleanComponent = false;
     if (!cleanComponent) {
-      getUserInviteLink().then((response) => {
-        if (response.data.success && response.data.data) {
-          setInviteLink(response.data.data.url);
+      getUserInviteLink().then(({ data }) => {
+        if (data.success && data.data) {
+          setInviteLink(data.data.url);
+        } else {
+          toast.error(t('common.error'));
         }
-      }).catch(() => { });
+      }).catch(() => toast.error(t('common.error')));
 
-      fetchUserProfile().then((response) => {
-        if (response.data.success && response.data.data) {
-          const { data } = response.data;
+      fetchUserProfile().then(({ data }) => {
+        if (data.success && data.data) {
           setUserName(`${data.name} ${data.surname}`);
+        } else {
+          toast.error(t('common.error'));
         }
-      }).catch(() => { });
+      }).catch(() => toast.error(t('common.error')));
 
-      getUserInvitedFriends().then((response) => {
-        if (response.data.success && response.data.data) {
-          response.data.data.list.map((item) => item.id = uuid());
-          setInvitedMembers([...response.data.data.list]);
+      getUserInvitedFriends().then(({ data }) => {
+        if (data.success && data.data) {
+          data.data.list.map((item) => item.id = uuid());
+          console.log('data.data.list', data.data.list);
+          setInvitedMembers([...data.data.list]);
+        } else {
+          toast.error(t('common.error'));
         }
-      }).catch(() => { });
+      }).catch(() => toast.error(t('common.error')));
     }
 
     return () => cleanComponent = true;

@@ -74,7 +74,7 @@ const SettingsChangeMealPlanView = (props: any) => {
           act_level,
         });
       }
-    }).catch(() => toast(t('common.error')))
+    }).catch(() => toast.error(t('common.error')))
       .finally(() => setIsLoadingPage(false));
   }, []);
 
