@@ -42,7 +42,7 @@ const PlanReadyStep = ({
 
       <h4 id='register_title_final_welcome' className='register_title mb-xl-4'>
         {t('register.plan_ready_title', { NAME: registerData.name })}
-        `,`
+        ,
       </h4>
       <h5 className='register_title mt-md-2'>{t('register.plan_ready_subtitle')}</h5>
 
