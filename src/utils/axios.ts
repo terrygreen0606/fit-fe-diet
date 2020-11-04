@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let baseURL = '';
+let baseURL = 'https://fitlope.com/api';
 
 if (process.env.REACT_APP_ENV === 'development') {
   baseURL = 'http://localhost:8080/api';
