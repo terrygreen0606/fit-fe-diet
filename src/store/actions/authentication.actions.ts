@@ -7,6 +7,7 @@ import {
 } from 'api';
 import { setLocaleLang, setLocalePhrases, setAppSetting } from 'store/actions';
 import { initSentry } from 'utils/initSentry';
+import { xhrStatuses } from 'constants/statuses';
 
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
@@ -85,17 +86,19 @@ export const loadLocales = (reloadLocales: boolean = false) => async (dispatch) 
   }
 
   axios.interceptors.response.use((response) => {
-    const FITLOPE_CHECKSUM_I18N = localStorage.getItem('FITLOPE_CHECKSUM_I18N');
-    const FITLOPE_CHECKSUM_I18N_HEADER = response.headers['fitlope-checksum-i18n'];
+    if (response.status === xhrStatuses['OK']) {
+      const FITLOPE_CHECKSUM_I18N = localStorage.getItem('FITLOPE_CHECKSUM_I18N');
+      const FITLOPE_CHECKSUM_I18N_HEADER = response.headers['fitlope-checksum-i18n'];
 
-    if (FITLOPE_CHECKSUM_I18N_HEADER !== FITLOPE_CHECKSUM_I18N) {
-      localStorage.setItem('FITLOPE_CHECKSUM_I18N', FITLOPE_CHECKSUM_I18N_HEADER);
+      if (FITLOPE_CHECKSUM_I18N_HEADER !== FITLOPE_CHECKSUM_I18N) {
+        localStorage.setItem('FITLOPE_CHECKSUM_I18N', FITLOPE_CHECKSUM_I18N_HEADER);
 
-      if (response.config.url === '/i18n/load') {
-        return response;
+        if (response.config.url === '/i18n/load') {
+          return response;
+        }
+
+        dispatch(fetchLocales());
       }
-
-      dispatch(fetchLocales());
     }
 
     return response;
@@ -145,25 +148,27 @@ export const appSetting = (
   }
 
   axios.interceptors.response.use((response) => {
-    const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem('FITLOPE_IS_AUTHENTICATED');
-    const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
-    const FITLOPE_CHECKSUM_SETTINGS_HEADER = response.headers['fitlope-checksum-settings'];
+    if (response.status === xhrStatuses['OK']) {
+      const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem('FITLOPE_IS_AUTHENTICATED');
+      const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
+      const FITLOPE_CHECKSUM_SETTINGS_HEADER = response.headers['fitlope-checksum-settings'];
 
-    if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
-      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', FITLOPE_CHECKSUM_SETTINGS_HEADER);
-    }
-
-    if (response.config.url === '/app/public-settings' || response.config.url === '/app/settings') {
-      return response;
-    }
-
-    if (FITLOPE_IS_AUTHENTICATED === 'true') {
       if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
-        dispatch(fetchUserSettings());
+        localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', FITLOPE_CHECKSUM_SETTINGS_HEADER);
       }
-    } else if (!FITLOPE_IS_AUTHENTICATED || FITLOPE_IS_AUTHENTICATED === 'false') {
-      if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
-        dispatch(fetchPublicSettings());
+
+      if (response.config.url === '/app/public-settings' || response.config.url === '/app/settings') {
+        return response;
+      }
+
+      if (FITLOPE_IS_AUTHENTICATED === 'true') {
+        if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
+          dispatch(fetchUserSettings());
+        }
+      } else if (!FITLOPE_IS_AUTHENTICATED || FITLOPE_IS_AUTHENTICATED === 'false') {
+        if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
+          dispatch(fetchPublicSettings());
+        }
       }
     }
 
