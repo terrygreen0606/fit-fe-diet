@@ -1,5 +1,7 @@
+/* eslint-disable no-shadow */
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
@@ -59,16 +61,19 @@ const DashboardView = (props: any) => {
           <div className='dashboard__user card-bg'>
             <div className='dashboard__user-personal-data'>
               <div className='dashboard__user-personal-data-name'>
-                <span>{`${t('common.hello')} Anna`}</span>
-                <button
-                  type='button'
+                <span>{`${t('common.hello')} Andrei`}</span>
+                <Link
+                  to={routes.changeMealSettings}
                   className='dashboard__user-personal-data-name-settings'
                 >
                   <SettingsIcon />
-                </button>
+                </Link>
               </div>
               <div className='dashboard__user-personal-data_container'>
-                <div className='dashboard__user-personal-data-media dashboard__user-personal-data-media_online'>
+                <Link
+                  to={routes.personalSettings}
+                  className='dashboard__user-personal-data-media dashboard__user-personal-data-media_online'
+                >
                   <img
                     src='https://fitstg.s3.eu-central-1.amazonaws.com/anna_t.png'
                     alt=''
@@ -79,7 +84,7 @@ const DashboardView = (props: any) => {
                   >
                     <PenIcon />
                   </button>
-                </div>
+                </Link>
                 <div className='dashboard__user-personal-data-activity'>
                   <div className='dashboard__user-personal-data-activity-last-login'>
                     <div className='dashboard__user-personal-data-activity-last-login-description'>
@@ -93,9 +98,10 @@ const DashboardView = (props: any) => {
                     <div className='dashboard__user-personal-data-activity-subscription-description'>
                       {`${t('common.subscription_title')}:`}
                     </div>
-                    <div className='dashboard__user-personal-data-activity-subscription-date'>
-                      {t('dashboard.tariff.end', { COUNT: 20 })}
-                    </div>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: t('dashboard.tariff.end', { COUNT: 20 }) }}
+                      className='dashboard__user-personal-data-activity-subscription-date'
+                    />
                   </div>
                 </div>
               </div>
@@ -299,14 +305,14 @@ const DashboardView = (props: any) => {
                     {`${t('dashboard.daily_rate')}:`}
                   </div>
                   <div className='dashboard__cards-item_water-rate-norm'>
-                    {`2000 ${t('common.ml_label')}`}
+                    {`${2800} ${t('common.ml_label')}`}
                   </div>
                   <div className='dashboard__cards-item_water-rate-now'>
-                    {`1000 ${t('common.ml_label')}`}
+                    {`${1400} ${t('common.ml_label')}`}
                   </div>
                 </div>
                 <div className='dashboard__cards-item_water-rate-media'>
-                  50%
+                  {`${50}%`}
                 </div>
               </div>
             </div>
@@ -335,4 +341,6 @@ const DashboardView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(DashboardView));
+export default WithTranslate(connect((state: any) => ({
+  settings: state.settings,
+}))(DashboardView));
