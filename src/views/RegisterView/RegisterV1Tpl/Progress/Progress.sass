@@ -1,0 +1,217 @@
+@import '../../../../assets/sass/vars'
+
+
+.registerModal
+  &_steps_wrap
+    position: relative
+    flex: 0 0 700px
+    margin-right: calc((100% - 700px - 360px - 520px) / 2)
+    margin-top: -48px
+    margin-bottom: -100px
+    background-position: center left
+    background-repeat: no-repeat
+    background-size: 100%
+    overflow: hidden
+    z-index: 1
+    &::before
+      content: ''
+      position: absolute
+      top: calc(50% - 25px)
+      transform: translateY(-50%)
+      right: calc(100% - 360px)
+      z-index: -1
+      width: 100%
+      height: 100%
+      border-radius: 100%
+      background-color: $steel-blue
+      opacity: .76        
+    &_step1
+      .registerModal_step:nth-child(1)
+        top: calc(50% - 45.5px - 25px)
+        right: calc(100% - 360px - 45px)
+        .registerModal_step_label
+          font-weight: bold
+      .registerModal_step:nth-child(2)
+        top: calc(68% - 31px - 25px)
+        right: calc(100% - 360px)
+        .registerModal_step_label
+          font-size: 24px
+          line-height: 29px
+          color: rgba(255,255,255,0.8)
+        .registerModal_step_mark
+          flex: 0 0 62px
+          width: 62px
+          height: 62px
+          border-width: 14px
+      .registerModal_step:nth-child(3)
+        top: calc(84% - 15px - 25px)
+        right: calc(100% - 360px + 75px)
+        .registerModal_step_label
+          font-weight: normal
+          font-size: 18px
+          line-height: 22px
+          color: rgba(255, 255, 255, 0.5)
+        .registerModal_step_mark
+          flex: 0 0 30px
+          width: 30px
+          height: 30px
+          border-width: 7px
+    &_step2
+      .registerModal_step:nth-child(1)
+        top: 23%
+        right: calc(100% - 360px + 15px)
+        .registerModal_step_label
+          font-size: 24px
+          line-height: 29px
+          color: rgba(255,255,255,0.8)
+        .registerModal_step_mark
+          flex: 0 0 62px
+          width: 62px
+          height: 62px
+          border-width: 14px
+      .registerModal_step:nth-child(2)
+        top: calc(50% - 45.5px - 25px)
+        right: calc(100% - 360px - 45px)
+        .registerModal_step_label
+          font-weight: bold
+      .registerModal_step:nth-child(3)
+        top: 67%
+        right: calc(100% - 360px + 15px)
+        .registerModal_step_label
+          font-size: 24px
+          line-height: 29px
+          color: rgba(255,255,255,0.8)
+        .registerModal_step_mark
+          flex: 0 0 62px
+          width: 62px
+          height: 62px
+          border-width: 14px
+    &_step3
+      .registerModal_step:nth-child(1)
+        top: 9.5%
+        right: calc(100% - 360px + 100px)
+        .registerModal_step_label
+          font-weight: normal
+          font-size: 18px
+          line-height: 22px
+          color: rgba(255, 255, 255, 0.5)
+        .registerModal_step_mark
+          flex: 0 0 30px
+          width: 30px
+          height: 30px
+          border-width: 7px
+      .registerModal_step:nth-child(2)
+        top: calc(25% - 31px - 25px)
+        right: calc(100% - 360px + 25px)
+        .registerModal_step_label
+          font-size: 24px
+          line-height: 29px
+          color: rgba(255,255,255,0.8)
+        .registerModal_step_mark
+          flex: 0 0 62px
+          width: 62px
+          height: 62px
+          border-width: 14px
+      .registerModal_step:nth-child(3)
+        top: calc(50% - 45.5px - 25px)
+        right: calc(100% - 360px - 45px)
+        .registerModal_step_label
+          font-weight: bold
+  &_step
+    position: absolute
+    display: flex
+    align-items: center
+    justify-content: flex-end
+    background-size: 100%
+    background-position: center center
+    cursor: pointer
+    +mt(.35s)  
+    &.active
+      .registerModal_step_label
+        font-size: 32px
+        font-weight: bold
+        line-height: 39px
+      .registerModal_step_mark
+        flex: 0 0 91px
+        width: 91px
+        height: 91px
+        margin-left: 35px
+        border-width: 20px
+    &_label
+      margin-bottom: 0
+      padding-left: 30px
+      color: #fff
+      font-weight: 400
+    &_mark
+      margin-left: 30px
+      border-radius: 100%
+      background-color: $steel-blue
+      border-color: #fff
+      border-style: solid
+      box-shadow: 0 3px 5px #BAC2D2
+
+
+@media only screen and (max-width : 1200px)
+  .registerModal
+    &_steps_wrap
+      display: flex
+      width: 100%
+      height: 180px
+      margin: 0
+      flex: 0 0 100%
+      justify-content: space-between
+      align-items: center
+      overflow: unset
+      position: relative
+      left: -31px
+      background-size: 300px
+      background-position: calc(50% + 31px) 100%
+      &::before
+        top: 0
+        left: 0
+        width: calc(100% + 31px)
+        height: 220px
+        border-radius: 0
+    &_step
+      position: static
+      z-index: 5
+      transition: none
+      &:nth-child(1)
+        order: 1
+        &.active
+          order: 4
+      &:nth-child(2)
+        order: 3
+      &:nth-child(3)
+        order: 5
+        &.active
+          order: 2
+      &:not(.active)
+        padding-top: 50px
+      &.active
+        flex-wrap: wrap
+        justify-content: center
+        flex: 0 0 calc(100% - 62px)
+        .registerModal_step_mark
+          margin: 0
+          flex: 0 0 60px !important
+          width: 60px !important
+          height: 60px !important
+        .registerModal_step_label
+          display: block
+          width: 100%
+          margin-bottom: 20px
+          padding: 0
+          text-align: center
+          font-size: 18px !important
+          line-height: 22px !important
+          color: #fff
+          font-weight: bold
+      &_label
+        display: none
+      &_mark
+        flex: 0 0 62px !important
+        width: 62px !important
+        height: 62px !important
+        margin: 0 !important
+        border-width: 14px !important

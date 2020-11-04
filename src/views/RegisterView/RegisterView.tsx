@@ -10,6 +10,7 @@ import { getSignUpData } from 'api';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
 import RegisterModal from './RegisterModal';
+import RegisterV1Tpl from './RegisterV1Tpl';
 import RegisterV2Tpl from './RegisterV2Tpl';
 
 import './RegisterView.sass';
@@ -124,6 +125,55 @@ const RegisterView = ({
     }
   }, [measurement]);
 
+  const getRegisterView = () => {
+    const { tpl } = queryString.parse(location.search);
+    let registerView = null;
+
+    switch (tpl) {
+      case '1':
+        registerView = (
+          <RegisterV1Tpl
+            isOpen
+            registerData={registerData}
+            setRegisterData={setRegisterData}
+            registerDataErrors={registerDataErrors}
+            setRegisterDataErrors={setRegisterDataErrors}
+            location={location}
+            history={history}
+          />
+        );
+        break;
+
+      case '2':
+        registerView = (
+          <RegisterV2Tpl
+            registerData={registerData}
+            setRegisterData={setRegisterData}
+            registerDataErrors={registerDataErrors}
+            setRegisterDataErrors={setRegisterDataErrors}
+            location={location}
+            history={history}
+          />
+        );
+        break;
+
+      default:
+        registerView = (
+          <RegisterV1Tpl
+            isOpen
+            registerData={registerData}
+            setRegisterData={setRegisterData}
+            registerDataErrors={registerDataErrors}
+            setRegisterDataErrors={setRegisterDataErrors}
+            location={location}
+            history={history}
+          />
+        );
+    }
+
+    return registerView;
+  };
+
   return (
     <>
       <Helmet>
@@ -136,37 +186,15 @@ const RegisterView = ({
         fetchData={() => loadRegisterSettings()}
         spinSize='lg'
       >
-
-      {queryString.parse(location.search).tpl === '2' ? (
-        <RegisterV2Tpl
-          registerData={registerData}
-          setRegisterData={setRegisterData}
-          registerDataErrors={registerDataErrors}
-          setRegisterDataErrors={setRegisterDataErrors}
-          location={location}
-          history={history}
-        />
-      ) : (
-        <RegisterModal
-          isOpen
-          registerData={registerData}
-          setRegisterData={setRegisterData}
-          registerDataErrors={registerDataErrors}
-          setRegisterDataErrors={setRegisterDataErrors}
-          location={location}
-          history={history}
-        />
-      )}
+        {getRegisterView()}
       </ContentLoading>
     </>
   );
 };
 
-export default WithTranslate(
-  connect(
-    (state: any) => ({
-      measurement: state.settings.measurement,
-    }),
-    null,
-  )
-(RegisterView));
+export default WithTranslate(connect(
+  (state: any) => ({
+    measurement: state.settings.measurement,
+  }),
+  null,
+)(RegisterView));
