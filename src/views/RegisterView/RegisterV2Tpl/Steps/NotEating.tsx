@@ -65,7 +65,7 @@ const NotEating = ({
         className='register_v2tpl_btn'
         color='primary'
         size='lg'
-        onClick={() => setRegisterView('GENDER')}
+        onClick={() => setRegisterView('AGE')}
       >
         Next
       </Button>

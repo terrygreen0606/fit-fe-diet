@@ -26,7 +26,8 @@
       cursor: pointer
 
       svg, img
-        width: 100%
+        max-width: 100%
+        height: auto
 
       &:hover
         svg path
@@ -172,7 +173,7 @@
           font-size: 20px
           line-height: 1.2
           font-weight: bold
-          color: $caribbean-green
+          color: $steel-blue
 
         &-description
           font-size: 18px
@@ -485,9 +486,13 @@
         &-subscription
           &-description
             font-size: 16px
+            font-weight: 500
 
           &-date
             font-size: 16px
+
+            span
+              color: $steel-blue
 
     &-progress
       flex-basis: 100%

@@ -306,7 +306,9 @@ const CheckoutPage = (props: any) => {
           <Button className='checkout-warning-modal__btn' block color='mint'>{t('checkout.warning_modal.btn')}</Button>
         </Modal.Main>
       </Modal>
+      
       <SalesWidgets />
+
       <section className='checkout-tpl-sect'>
         <div className='container'>
           <div className='row'>

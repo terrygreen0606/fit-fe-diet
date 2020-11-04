@@ -56,6 +56,9 @@ export const getAppTariff = (id: string) =>
 export const getActiveAppTariff = () =>
   axios.get('/user/tariff');
 
+export const getAppTariffs = () =>
+  axios.get('/app/get-tariffs');
+
 export const getAppReviews = () =>
   axios.get('/app/reviews');
 
