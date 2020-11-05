@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
 } else if (window.location.origin === 'https://appstgby.fitlope.com') {
     baseURL = 'https://stgby.fitlope.com/api';
   } else {
-    baseURL = 'https://fitlope.com//api';
+    baseURL = 'https://fitlope.com/api';
   }
 
 const instance = axios.create({
