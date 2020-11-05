@@ -48,7 +48,7 @@ const Header = (props: any) => {
 
                     <Link to='/register' className='link-raw'>
                       <Button className='mobile-auth-btn ml-2 mr-4' color='secondary'>
-                        {t('button.sign_up')}
+                        {t('login.submit')}
                       </Button>
                     </Link>
                   </>
