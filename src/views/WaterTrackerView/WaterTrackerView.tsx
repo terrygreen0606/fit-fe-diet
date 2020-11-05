@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-case-declarations */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -20,7 +21,7 @@ import {
   userUpdateMeasurement,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
-import { setAppSetting } from 'store/actions';
+import { setAppSetting, toggleSetting } from 'store/actions';
 
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
@@ -48,7 +49,11 @@ import {
 const WaterTrackerView = (props: any) => {
   const t = (code: string, placeholder?: any) => getTranslate(props.localePhrases, code, placeholder);
 
-  const { settings } = props;
+  const {
+    settings,
+    storage,
+    toggleSetting,
+  } = props;
 
   const [trackerPeriod, setTrackerPeriod] = useState<string>(periods.week);
 
@@ -391,7 +396,9 @@ const WaterTrackerView = (props: any) => {
             <h1 className='waterTracker_title sect-subtitle'>
               {t('wt.head_title')}
             </h1>
-            <Banner items={bannerData} />
+            {storage.isActiveWaterTrackerBanner && (
+              <Banner items={bannerData} onAction={() => toggleSetting('isActiveWaterTrackerBanner')} />
+            )}
             <div className='row'>
               <ul className='waterTracker_period'>
                 <li
@@ -585,8 +592,7 @@ const WaterTrackerView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(
-  (state: any) => ({
-    settings: state.settings,
-  }), { setAppSetting },
-)(WaterTrackerView));
+export default WithTranslate(connect((state: any) => ({
+  settings: state.settings,
+  storage: state.storage,
+}), { setAppSetting, toggleSetting })(WaterTrackerView));

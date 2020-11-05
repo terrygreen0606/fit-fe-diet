@@ -262,7 +262,12 @@ const RecipeFullView = (props: any) => {
                               active: image.isActive,
                             })}
                           >
-                            <a href={image.url} target='_blank' rel='noreferrer'>
+                            <a
+                              href={image.url}
+                              target='_blank'
+                              rel='noreferrer'
+                              className='recipe__main-info-media-slide-link'
+                            >
                               <img src={image.url} alt='' />
                             </a>
                           </div>

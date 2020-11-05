@@ -11,8 +11,7 @@ import {
 } from 'utils';
 import { InputError } from 'types';
 import {
-  getAppTariff,
-  fetchUserProfile,
+  getPaymentTariff, fetchUserProfile,
   getPaymentMethods,
   payCreditCard,
 } from 'api';
@@ -55,17 +54,7 @@ const CheckoutPage = (props: any) => {
   const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
 
-  const [tariffData, setTariffData] = useState<any>({
-    price_text: null,
-    currency: null,
-    tariff: null,
-    price_old_text: null,
-    next_tariff: {
-      price_text: null,
-      days: null,
-      tariff: null,
-    },
-  });
+  const [tariffData, setTariffData] = useState<any>(null);
   const [tariffLoading, setTariffLoading] = useState<boolean>(true);
   const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
 
@@ -85,30 +74,16 @@ const CheckoutPage = (props: any) => {
 
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
-  const getUserTariff = () => {
+  const getUserPaymentTariff = () => {
     setTariffLoading(true);
     setTariffLoadingError(false);
 
-    getAppTariff('d7')
-      .then((response) => {
+    getPaymentTariff()
+      .then(({ data }) => {
         setTariffLoading(false);
 
-        if (response.data.success && response.data.data) {
-          const tariff_data = response.data.data;
-          const next_tariff_data = response.data.data.next_tariff || tariffData.next_tariff;
-
-          setTariffData({
-            price_text: tariff_data.price_text || null,
-            price_old_text: tariff_data.price_old_text || null,
-            currency: tariff_data.currency || null,
-            days: tariff_data.days || null,
-            tariff: tariff_data.tariff || null,
-            next_tariff: {
-              days: next_tariff_data.days || null,
-              tariff: next_tariff_data.tariff || null,
-              price_text: next_tariff_data.price_text || null,
-            },
-          });
+        if (data.success && data.data) {
+          setTariffData(data.data);
         } else {
           setTariffLoadingError(true);
         }
@@ -171,7 +146,7 @@ const CheckoutPage = (props: any) => {
   };
 
   useEffect(() => {
-    getUserTariff();
+    getUserPaymentTariff();
     getUserProfile();
     getUserPaymentMethods();
 
@@ -201,6 +176,16 @@ const CheckoutPage = (props: any) => {
         message: t('api.ecode.invalid_value'),
       }));
 
+  const getTariffDataValue = (property: string) => {
+    let dataEl = null;
+
+    if (tariffData && tariffData[property]) {
+      dataEl = tariffData[property];
+    }
+
+    return dataEl;
+  };
+
   const checkoutDiscountFormSubmit = (e) => {
     e.preventDefault();
 
@@ -219,8 +204,8 @@ const CheckoutPage = (props: any) => {
   };
 
   const getPayCredictCardParams = () => ({
-    article_id: tariffData.tariff,
-    currency: tariffData.currency,
+    article_id: getTariffDataValue('tariff'),
+    currency: getTariffDataValue('currency'),
     card: {
       number: checkoutForm.card_number.replace(/ /gi, ''),
       year: checkoutForm.card_year,
@@ -287,7 +272,8 @@ const CheckoutPage = (props: any) => {
     }
   };
 
-  const paymentSubmitIsDisabled = () => paymentLoading ||
+  const paymentSubmitIsDisabled = () =>
+    paymentLoading ||
     tariffLoading ||
     paymentMethodsLoading ||
     tariffLoadingError ||
@@ -306,7 +292,7 @@ const CheckoutPage = (props: any) => {
           <Button className='checkout-warning-modal__btn' block color='mint'>{t('checkout.warning_modal.btn')}</Button>
         </Modal.Main>
       </Modal>
-      
+
       <SalesWidgets />
 
       <section className='checkout-tpl-sect'>
@@ -390,12 +376,16 @@ const CheckoutPage = (props: any) => {
                     <ContentLoading
                       isLoading={tariffLoading}
                       isError={tariffLoadingError}
-                      fetchData={() => getUserTariff()}
+                      fetchData={() => getUserPaymentTariff()}
                     >
                       <div className='checkout-summary-list'>
                         <div className='checkout-summary-item'>
                           <div className='checkout-summary-item__label'>{t('checkout.summary.total_title')}</div>
-                          <div className='checkout-summary-item__value'><b>{tariffData.price_text}</b></div>
+                          <div className='checkout-summary-item__value'>
+                            <del>{getTariffDataValue('price_old_text')}</del>
+                            {' '}
+                            <b>{getTariffDataValue('price_text')}</b>
+                          </div>
                         </div>
 
                         <div className='checkout-summary-item'>
@@ -423,23 +413,6 @@ const CheckoutPage = (props: any) => {
                                 {t('checkout.discount_btn')}
                               </Button>
                             </form>
-                          </div>
-                        </div>
-
-                        <div className='checkout-summary-item'>
-                          <div className='checkout-summary-item__label'>
-                            {t('checkout.summary.price_after_trial_title')}
-                          </div>
-                          <div className='checkout-summary-item__value'><b>{tariffData.next_tariff.price_text}</b></div>
-                        </div>
-
-                        <div className='checkout-summary-item'>
-                          <div className='checkout-summary-item__label'>
-                            {t('checkout.summary.trial_title', { COUNT: tariffData.days })}
-                          </div>
-                          <div className='checkout-summary-item__value'>
-                            <del className='mr-3'>{tariffData.price_old_text}</del>
-                            <b>{tariffData.price_text}</b>
                           </div>
                         </div>
                       </div>
