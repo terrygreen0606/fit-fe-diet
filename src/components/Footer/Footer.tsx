@@ -157,6 +157,11 @@ const Footer = (props: any) => {
                   {t('footer.menu_water_tracker')}
                 </Link>
               </li>
+              <li>
+                <Link to={routes.dashboard} className='mainFooter_menuList_item'>
+                  {t('footer.menu_dashboard')}
+                </Link>
+              </li>
             </ul>
           </div>
           <div className='col-6 col-md-3 text-right'>

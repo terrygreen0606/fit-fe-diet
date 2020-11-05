@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { getApiBaseUrl } from 'utils';
 
-export const baseURL = 'https://stgby.fitlope.com/api';
+const baseURL = getApiBaseUrl();
 
 const instance = axios.create({
   baseURL,

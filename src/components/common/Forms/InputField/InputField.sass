@@ -14,7 +14,7 @@
   box-shadow: none
   appearance: none
   transition: border-color .2s ease
-  &:not(:disabled):not(:read-only):not(.is-invalid):not(:invalid)
+  &:not(:disabled):not(:read-only):not(.is-invalid)
     &:hover
       border-color: lighten($black, 30%) !important
   &::-webkit-input-placeholder
@@ -40,7 +40,7 @@
   &.input-block
     display: block
     width: 100%
-  &.is-invalid, &:invalid
+  &.is-invalid
     border-color: $red !important
   &.is-valid
     &:not(:placeholder-shown)

@@ -25,8 +25,6 @@
       align-items: center
       flex-basis: 59%
       max-height: 220px
-      border-radius: 27px
-      overflow: hidden
 
       @media (max-width: 767px)
         flex-basis: calc(100% - 55px)
@@ -40,8 +38,15 @@
 
         &.active
           position: initial
+          height: 100%
           opacity: 1
           visibility: visible
+
+        &-link
+          height: 100%
+          display: block
+          border-radius: 27px
+          overflow: hidden
 
         img
           max-width: 100%
