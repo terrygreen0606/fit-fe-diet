@@ -40,12 +40,12 @@ const getErrorMsg = (code, param) => {
       return `Value should be less than ${param}`;
 
     case 'min-max':
-      let data = param.split(',')
-      return `Values should be less than ${data[1]} and greater than ${data[0]}`
+      let data = param.split(',');
+      return `Values should be less than ${data[1]} and greater than ${data[0]}`;
 
     case 'list':
       return `Values doesn't contain ${param}`;
-    
+
     default:
       return '';
   }
@@ -70,7 +70,7 @@ const FormValidator = {
 
     const isCheckbox = element.type === 'checkbox';
     const value = isCheckbox ? element.checked : element.value;
-    const name = element.name;
+    const { name } = element;
 
     if (!name) throw new Error('Input name must not be empty.');
 
@@ -83,7 +83,7 @@ const FormValidator = {
     if (validations && validations.length) {
       /*  Result of each validation must be true if the input is invalid
                 and false if valid. */
-      validations.forEach(m => {
+      validations.forEach((m) => {
         switch (m) {
           case 'required':
             result[m] = isCheckbox ? value === false : validator.isEmpty(value);
@@ -118,10 +118,10 @@ const FormValidator = {
             result[m] = value && value.length > 0 ? !validator.isLength(value.replace('_', ''), { min: param, max: param }) : false;
             break;
           case 'min':
-            result[m] = value && value.length > 0 ? !validator.isInt(value, { min: validator.toInt(param) }) : false;
+            result[m] = value && value.length > 0 ? !validator.isFloat(value, { min: validator.toInt(param) }) : false;
             break;
           case 'max':
-            result[m] = value && value.length > 0 ? !validator.isInt(value, { max: validator.toInt(param) }) : false;
+            result[m] = value && value.length > 0 ? !validator.isFloat(value, { max: validator.toInt(param) }) : false;
             break;
           case 'min-max':
             /* pass the min & max value in the the data-param like this data-param="0,12"
@@ -129,7 +129,7 @@ const FormValidator = {
             */
             const data = param.split(',');
             result[m] = value && value.length > 0 ?
-              !(validator.isInt(value, { min: validator.toInt(data[0]) }) && validator.isInt(value, { max: validator.toInt(data[1]) }))
+              !(validator.isFloat(value, { min: validator.toInt(data[0]) }) && validator.isFloat(value, { max: validator.toInt(data[1]) }))
               : false;
             break;
           case 'list':
@@ -143,11 +143,11 @@ const FormValidator = {
     }
 
     const newErrors = Object.keys(result)
-      .filter(error => result[error])
-      .map(errorCode => ({
+      .filter((error) => result[error])
+      .map((errorCode) => ({
         field: name,
         code: errorCode,
-        message: getErrorMsg(errorCode, param)
+        message: getErrorMsg(errorCode, param),
       }));
 
     return newErrors;
@@ -164,7 +164,7 @@ const FormValidator = {
     let errors = [];
     let hasError = false;
 
-    inputs.filter(input => input.getAttribute('data-validate')).forEach(input => {
+    inputs.filter((input) => input.getAttribute('data-validate')).forEach((input) => {
       const newErrors = this.validate(input);
 
       errors = [...errors, ...newErrors];
@@ -174,9 +174,9 @@ const FormValidator = {
 
     return {
       errors,
-      hasError
+      hasError,
     };
-  }
+  },
 };
 
 export default FormValidator;

@@ -144,6 +144,8 @@ const WeightStep = ({
             height='md'
             type={registerData.measurement === 'us' ? 'text' : 'number'}
             min={0}
+            max={400}
+            step='0.1'
             autoFocus
             value={registerData.weight}
             data-param='30,400'
