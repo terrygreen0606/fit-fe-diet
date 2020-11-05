@@ -91,14 +91,14 @@ const MealPlanView = (props: any) => {
   }, [tourStep]);
 
   useEffect(() => {
-    if (storage.isActiveMealPlanTutorial || tourStep > 0) {
+    if (isActiveTutorial || tourStep > 0) {
       document.querySelector('body').classList.add('overflow-y-hidden');
       document.body.style.marginRight = `${scrollbarWidth}px`;
     } else {
       document.querySelector('body').classList.remove('overflow-y-hidden');
       document.body.style.marginRight = '0px';
     }
-  }, [storage.isActiveMealPlanTutorial, tourStep]);
+  }, [isActiveTutorial, tourStep]);
 
   const onActivitiesChange = (e) => {
     e.persist();
