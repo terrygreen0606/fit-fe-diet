@@ -2,13 +2,22 @@ import axios from 'axios';
 
 let baseURL = '';
 
-if (process.env.NODE_ENV === 'development') {
-  baseURL = 'http://localhost:8080/api';
-} else if (window.location.origin === 'https://appstgby.fitlope.com') {
+switch (process.env.REACT_APP_ENV) {
+  case 'development':
+    baseURL = 'http://localhost:8080/api';
+    break;
+
+  case 'staging':
     baseURL = 'https://stgby.fitlope.com/api';
-  } else {
+    break;
+
+  case 'production':
     baseURL = 'https://fitlope.com/api';
-  }
+    break;
+
+  default:
+    baseURL = 'https://fitlope.com/api';
+}
 
 const instance = axios.create({
   baseURL,
