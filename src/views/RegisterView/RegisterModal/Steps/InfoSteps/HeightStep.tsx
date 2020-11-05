@@ -156,7 +156,9 @@ const HeightStep = ({
             block
             height='md'
             type={registerData.measurement === 'us' ? 'text' : 'number'}
-            min={0}
+            min={50}
+            max={250}
+            step='0.1'
             autoFocus
             value={registerData.height}
             name='height'

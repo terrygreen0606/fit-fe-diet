@@ -47,9 +47,9 @@ const HeightWeight = ({
 
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, registerDataErrors)
-      .map(msg => ({
+      .map((msg) => ({
         ...msg,
-        message: t('api.ecode.invalid_value')
+        message: t('api.ecode.invalid_value'),
       }));
 
   const registerInfoSubmit = (e) => {
@@ -134,6 +134,8 @@ const HeightWeight = ({
                   value={registerData.height}
                   name='height'
                   autoFocus
+                  min={50}
+                  max={250}
                   data-param='50,250'
                   data-validate='["required", "min-max"]'
                   onChange={(e) => validateOnChange('height', e.target.value, e)}
@@ -155,6 +157,8 @@ const HeightWeight = ({
                   height='md'
                   type='number'
                   value={registerData.weight}
+                  min={30}
+                  max={400}
                   data-param='30,400'
                   data-validate='["required", "min-max"]'
                   name='weight'

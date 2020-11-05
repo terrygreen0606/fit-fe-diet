@@ -147,7 +147,7 @@ const AgeStep = ({
             data-param='16,100'
             name='age'
             value={registerData.age}
-            data-validate='["required", "min-max"]'
+            data-validate='["required", "min-max", "integer"]'
             invalid={getFieldErrors('age').length > 0}
             isValid={isFieldValid('age')}
             onChange={(e) => validateOnChange('age', e.target.value, e)}

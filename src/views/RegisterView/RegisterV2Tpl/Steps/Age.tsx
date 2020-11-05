@@ -112,7 +112,7 @@ const Age = ({
       <form className='mt-5 pt-4' onSubmit={(e) => registerInfoSubmit(e)}>
         <div className='row'>
           <div className='col-8 offset-3 col-xs-7 offset-xs-4 col-md-4 offset-md-5 pl-md-2'>
-            
+
             <div>
               <FormGroup className='register_v2tpl_fg_inline mb-0' inline>
                 <InputField
@@ -125,7 +125,7 @@ const Age = ({
                   data-param='16,100'
                   name='age'
                   value={registerData.age}
-                  data-validate='["required", "min-max"]'
+                  data-validate='["required", "min-max", "integer"]'
                   invalid={getFieldErrors('age').length > 0}
                   onChange={(e) => validateOnChange('age', e.target.value, e)}
                   placeholder=''
