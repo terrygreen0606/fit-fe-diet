@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getTranslate, getImagePath } from 'utils';
-import { getActiveAppTariff, getUserInviteLink } from 'api';
+import { getUserInviteLink } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -57,9 +58,11 @@ const AfterCheckoutPage = ({
 
               <p>{t('checkout.thankyou.trial_subscr')}</p>
 
-              <Button className='mt-4 mt-sm-5' size='lg' color='primary' block style={{ maxWidth: '580px' }}>
-                {t('checkout.thankyou.button.dashboard')}
-              </Button>
+              <Link to='/' className='link-raw'>
+                <Button className='mt-4 mt-sm-5' size='lg' color='primary' block style={{ maxWidth: '580px' }}>
+                  {t('checkout.thankyou.button.dashboard')}
+                </Button>
+              </Link>
 
             </div>
           </div>
@@ -151,15 +154,17 @@ const AfterCheckoutPage = ({
               />
 
               <div className='mt-5 pt-md-5'>
-                <Button
-                  className='after-checkout__dashboard_btn'
-                  size='lg'
-                  color='primary'
-                  block
-                  style={{ maxWidth: '700px' }}
-                >
-                  {t('checkout.thankyou.button.personal_dashboard')}
-                </Button>
+                <Link to='/' className='link-raw'>
+                  <Button
+                    className='after-checkout__dashboard_btn'
+                    size='lg'
+                    color='primary'
+                    block
+                    style={{ maxWidth: '700px' }}
+                  >
+                    {t('checkout.thankyou.button.personal_dashboard')}
+                  </Button>
+                </Link>
               </div>
 
             </div>

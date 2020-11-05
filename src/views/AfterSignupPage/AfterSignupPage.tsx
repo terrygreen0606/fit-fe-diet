@@ -188,8 +188,8 @@ const AfterSignupPage = ({
                       className='fw-regular mt-4'
                       dangerouslySetInnerHTML={{
                         __html: t('lp.selling_text', {
-                          OLD_VALUE: tariffsDataList[0].price_old_month_text,
-                          AMOUNT: tariffsDataList[0].price_month_text,
+                          OLD_VALUE: tariffsDataList[0].price_old_monthly_text,
+                          AMOUNT: tariffsDataList[0].price_monthly_text,
                         }),
                       }}
                     />
@@ -330,7 +330,11 @@ const AfterSignupPage = ({
                 </div>
               )}
 
-              <Button color='primary-shadow' size='lg' className='mt-5'>{t('button.select_plan')}</Button>
+              <Link to='/checkout' className='link-raw'>
+                <Button color='primary-shadow' size='lg' className='mt-5'>
+                  {t('button.select_plan')}
+                </Button>
+              </Link>
 
             </div>
             <div className='col-xl-5 offset-xl-1 mt-5 mt-xl-0'>
@@ -428,8 +432,8 @@ const AfterSignupPage = ({
                     className='fw-regular mt-4'
                     dangerouslySetInnerHTML={{
                       __html: t('lp.selling_text', {
-                        OLD_VALUE: tariffsDataList[0].price_old_month_text,
-                        AMOUNT: tariffsDataList[0].price_month_text,
+                        OLD_VALUE: tariffsDataList[0].price_old_monthly_text,
+                        AMOUNT: tariffsDataList[0].price_monthly_text,
                       }),
                     }}
                   />
@@ -496,14 +500,14 @@ const AfterSignupPage = ({
                     tariffs={tariffsDataList.map(({
                       id,
                       months,
-                      price_month_text,
-                      price_old_month_text,
+                      price_monthly_text,
+                      price_old_monthly_text,
                       price_text,
                     }) => ({
                       id,
                       price: price_text,
-                      priceMonth: price_month_text,
-                      priceOldMonth: price_old_month_text,
+                      priceMonth: price_monthly_text,
+                      priceOldMonth: price_old_monthly_text,
                       months,
                     }))}
                     value={activeTariffId}
