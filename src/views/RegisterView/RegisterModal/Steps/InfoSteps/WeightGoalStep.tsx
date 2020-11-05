@@ -144,7 +144,9 @@ const WeightGoalStep = ({
             height='md'
             type={registerData.measurement === 'us' ? 'text' : 'number'}
             autoFocus
-            min={0}
+            min={30}
+            max={400}
+            step='0.1'
             value={registerData.weight_goal}
             data-param='30,400'
             data-validate={`["required"${
