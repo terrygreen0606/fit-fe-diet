@@ -1,11 +1,12 @@
 /* eslint-disable no-shadow */
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
-import { getTranslate } from 'utils';
+import { getTranslate, convertTime } from 'utils';
+import { getUserDashboard } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -33,14 +34,122 @@ import ProgressChart from './ProgressChart';
 
 import './DashboardView.sass';
 
-import { data, labels } from './mockDatasChart';
-
 const DashboardView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(
     props.localePhrases,
     code,
     placeholders,
   );
+
+  type UserDashboardDataParams = {
+    bloodPressure: {
+      bpm: number,
+      bp: string,
+    };
+    lastLogin: string;
+    mealPlan: boolean;
+    name: string;
+    pointsData: number[];
+    pointsLabel: string[];
+    rewards: {
+      description: string,
+      name: string,
+      place: number,
+    }[];
+    shoppingList: {
+      bought: number,
+      notBought: number,
+    };
+    subDays: number;
+    userpic: string;
+    waterTracker: {
+      completed: number,
+      completedPercent: number,
+      dailyGoal: number,
+      unit: string,
+    };
+    workoutPlan: {
+      levelI18nCode: 1,
+      minutes: 5,
+      nameI18n: string,
+    };
+  };
+
+  const [userDashboardData, setUserDashboardData] = useState<UserDashboardDataParams>({
+    bloodPressure: {
+      bpm: null,
+      bp: null,
+    },
+    lastLogin: null,
+    mealPlan: null,
+    name: null,
+    pointsData: [],
+    pointsLabel: [],
+    rewards: [],
+    shoppingList: {
+      bought: null,
+      notBought: null,
+    },
+    subDays: null,
+    userpic: null,
+    waterTracker: {
+      completed: null,
+      completedPercent: null,
+      dailyGoal: null,
+      unit: null,
+    },
+    workoutPlan: {
+      levelI18nCode: null,
+      minutes: null,
+      nameI18n: null,
+    },
+  });
+
+  const setData = (data) => {
+    const updatedPointsData = data.points.map((item) => item.points);
+    const updatedPointsLabel = data.points.map((item) => `${item.date}`);
+
+    return ({
+      bloodPressure: {
+        bpm: data.blood_pressure.bpm,
+        bp: data.blood_pressure.bp,
+      },
+      lastLogin: convertTime(data.last_login),
+      mealPlan: data.meal_plan,
+      name: data.name,
+      pointsData: [...updatedPointsData],
+      pointsLabel: [...updatedPointsLabel],
+      rewards: [...data.rewards],
+      shoppingList: {
+        bought: data.shopping_list.bought,
+        notBought: data.shopping_list.notBought,
+      },
+      subDays: data.sub_days,
+      userpic: data.userpic,
+      waterTracker: {
+        completed: data.water_tracker.completed,
+        completedPercent: data.water_tracker.completed_percent,
+        dailyGoal: data.water_tracker.daily_goal,
+        unit: data.water_tracker.unit,
+      },
+      workoutPlan: {
+        levelI18nCode: data.workout_plan.level_i18n_code,
+        minutes: data.workout_plan.minutes,
+        nameI18n: data.workout_plan.name_i18n,
+      },
+    });
+  };
+
+  useEffect(() => {
+    getUserDashboard().then(({ data }) => {
+      if (data.data && data.success) {
+        console.log(data.data);
+        setUserDashboardData(setData(data.data));
+      } else {
+        toast.error(t('common.error'));
+      }
+    }).catch(() => toast.error(t('common.error')));
+  }, []);
 
   return (
     <>
@@ -61,7 +170,7 @@ const DashboardView = (props: any) => {
           <div className='dashboard__user card-bg'>
             <div className='dashboard__user-personal-data'>
               <div className='dashboard__user-personal-data-name'>
-                <span>{`${t('common.hello')} Andrei`}</span>
+                <span>{`${t('common.hello')} ${userDashboardData.name}`}</span>
                 <Link
                   to={routes.changeMealSettings}
                   className='dashboard__user-personal-data-name-settings'
@@ -75,7 +184,7 @@ const DashboardView = (props: any) => {
                   className='dashboard__user-personal-data-media dashboard__user-personal-data-media_online'
                 >
                   <img
-                    src='https://fitstg.s3.eu-central-1.amazonaws.com/anna_t.png'
+                    src={userDashboardData.userpic}
                     alt=''
                   />
                   <button
@@ -91,7 +200,7 @@ const DashboardView = (props: any) => {
                       {`${t('dashboard.last_login')}:`}
                     </div>
                     <div className='dashboard__user-personal-data-activity-last-login-date'>
-                      12.05.2020
+                      {userDashboardData.lastLogin}
                     </div>
                   </div>
                   <div className='dashboard__user-personal-data-activity-subscription'>
@@ -99,7 +208,10 @@ const DashboardView = (props: any) => {
                       {`${t('common.subscription_title')}:`}
                     </div>
                     <div
-                      dangerouslySetInnerHTML={{ __html: t('dashboard.tariff.end', { COUNT: 20 }) }}
+                      dangerouslySetInnerHTML={{
+                        __html: t('dashboard.tariff.end',
+                        { COUNT: userDashboardData.subDays }),
+                      }}
                       className='dashboard__user-personal-data-activity-subscription-date'
                     />
                   </div>
@@ -111,39 +223,31 @@ const DashboardView = (props: any) => {
                 {`${t('dashboard.progress_title')}:`}
               </div>
               <div className='dashboard__user-progress-chart'>
-                <ProgressChart data={data} labels={labels} />
+                <ProgressChart data={userDashboardData.pointsData} labels={userDashboardData.pointsLabel} />
               </div>
             </div>
             <div className='dashboard__user-rewards'>
               <div className='dashboard__user-rewards-title'>
                 {`${t('dashboard.rewards_title')}:`}
               </div>
-              <div className='dashboard__user-rewards-item'>
-                <div className='dashboard__user-rewards-item-media'>
-                  <FirstPlaceIcon />
-                </div>
-                <div className='dashboard__user-rewards-item-text'>
-                  <div className='dashboard__user-rewards-item-text-title'>
-                    {t('dashboard.trophy')}
+              {userDashboardData.rewards.map((item) => (
+                <div
+                  key={item.place}
+                  className='dashboard__user-rewards-item'
+                >
+                  <div className='dashboard__user-rewards-item-media'>
+                    <FirstPlaceIcon />
                   </div>
-                  <div className='dashboard__user-rewards-item-text-description'>
-                    {t('dashboard.rewards_description')}
-                  </div>
-                </div>
-              </div>
-              <div className='dashboard__user-rewards-item'>
-                <div className='dashboard__user-rewards-item-media'>
-                  <SecondPlaceIcon />
-                </div>
-                <div className='dashboard__user-rewards-item-text'>
-                  <div className='dashboard__user-rewards-item-text-title'>
-                    {t('dashboard.trophy')}
-                  </div>
-                  <div className='dashboard__user-rewards-item-text-description'>
-                    {t('dashboard.rewards_description')}
+                  <div className='dashboard__user-rewards-item-text'>
+                    <div className='dashboard__user-rewards-item-text-title'>
+                      {item.name}
+                    </div>
+                    <div className='dashboard__user-rewards-item-text-description'>
+                      {item.description}
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className='dashboard__cards'>
@@ -341,6 +445,4 @@ const DashboardView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect((state: any) => ({
-  settings: state.settings,
-}))(DashboardView));
+export default WithTranslate(DashboardView);

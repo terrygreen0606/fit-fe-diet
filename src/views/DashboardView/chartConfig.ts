@@ -13,9 +13,6 @@ export default {
             fontColor: '#878787',
             fontSize: 10,
             padding: 15,
-            callback() {
-              return '13.05';
-            },
           },
         },
       ],
