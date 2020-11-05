@@ -217,138 +217,141 @@ const FavouriteRecipesView = (props: any) => {
               </div>
             </div>
           </div>
-          <div className='favourites-recipes__banner'>
-            {t('recipe.favourites.banner')}
-          </div>
           <ContentLoading
             isLoading={isLoadingRecipes}
             isError={false}
             spinSize='lg'
           >
-            <div className='favourites-recipes__list'>
-              {recipesList.map((item) => (
-                <div
-                  key={item.id}
-                  className='favourites-recipes__list-item'
-                >
-                  <div className='favourites-recipes__list-item-media'>
-                    <Link
-                      to={routes.getRecipeFullView(item.id)}
-                      style={{
-                        backgroundImage: `url(${item.image_url})`,
-                      }}
-                      className='favourites-recipes__list-item-media-img'
+            {recipesList.length === 0 ? (
+              <div className='favourites-recipes__banner'>
+                {t('recipe.favourites.banner')}
+              </div>
+              ) : (
+                <div className='favourites-recipes__list'>
+                  {recipesList.map((item) => (
+                    <div
+                      key={item.id}
+                      className='favourites-recipes__list-item'
                     >
-                      <CursorTouchIcon className='favourites-recipes__list-item-media-touch' />
-                    </Link>
-                    <button
-                      type='button'
-                      onClick={() => {
-                        likeRecipe(item.id).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            getRecipesListFunc();
-                          }
-                        }).catch(() => { });
-                      }}
-                      className={classnames('favourites-recipes__list-item-media-like', {
-                        active: item.is_liked,
-                      })}
-                    >
-                      <HeartFilledIcon />
-                    </button>
-                  </div>
-                  <div className='favourites-recipes__list-item-text'>
-                    <div className='d-flex flex-wrap'>
-                      <div className='favourites-recipes__list-item-text-info'>
+                      <div className='favourites-recipes__list-item-media'>
                         <Link
                           to={routes.getRecipeFullView(item.id)}
-                          className='favourites-recipes__list-item-text-info-title'
+                          style={{
+                            backgroundImage: `url(${item.image_url})`,
+                          }}
+                          className='favourites-recipes__list-item-media-img'
                         >
-                          {item.name_i18n}
+                          <CursorTouchIcon className='favourites-recipes__list-item-media-touch' />
                         </Link>
-                        <div className='favourites-recipes__list-item-text-info-meals'>
-                          {item.mealtime_codes.map((mealTimeItem) => (
-                            <span key={mealTimeItem.code}>
-                              {t(mealTimeItem.i18n_code)}
-                            </span>
-                          ))}
-                        </div>
-                        <div className='favourites-recipes__list-item-text-info-footer'>
-                          {item.time && (
-                            <div className='favourites-recipes__list-item-text-info-footer-item'>
-                              {t('common.min', { COUNT: item.time })}
-                            </div>
-                          )}
-                          {item.cost_level && (
-                            <div className='favourites-recipes__list-item-text-info-footer-item'>
-                              {costLevelLabel[item.cost_level]}
-                            </div>
-                          )}
-                        </div>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            likeRecipe(item.id).then((response) => {
+                              if (response.data.success && response.data.data) {
+                                getRecipesListFunc();
+                              }
+                            }).catch(() => { });
+                          }}
+                          className={classnames('favourites-recipes__list-item-media-like', {
+                            active: item.is_liked,
+                          })}
+                        >
+                          <HeartFilledIcon />
+                        </button>
                       </div>
-                      <div className='favourites-recipes__list-item-text-desc'>
-                        <div className='favourites-recipes__list-item-text-desc-preparation'>
-                          {item.preparation_i18n?.length >= 50 ? (
-                            `${item.preparation_i18n.substr(0, 50)}...`
-                          ) : (
-                              item.preparation_i18n
-                            )}
+                      <div className='favourites-recipes__list-item-text'>
+                        <div className='d-flex flex-wrap'>
+                          <div className='favourites-recipes__list-item-text-info'>
+                            <Link
+                              to={routes.getRecipeFullView(item.id)}
+                              className='favourites-recipes__list-item-text-info-title'
+                            >
+                              {item.name_i18n}
+                            </Link>
+                            <div className='favourites-recipes__list-item-text-info-meals'>
+                              {item.mealtime_codes.map((mealTimeItem) => (
+                                <span key={mealTimeItem.code}>
+                                  {t(mealTimeItem.i18n_code)}
+                                </span>
+                              ))}
+                            </div>
+                            <div className='favourites-recipes__list-item-text-info-footer'>
+                              {item.time && (
+                                <div className='favourites-recipes__list-item-text-info-footer-item'>
+                                  {t('common.min', { COUNT: item.time })}
+                                </div>
+                              )}
+                              {item.cost_level && (
+                                <div className='favourites-recipes__list-item-text-info-footer-item'>
+                                  {costLevelLabel[item.cost_level]}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className='favourites-recipes__list-item-text-desc'>
+                            <div className='favourites-recipes__list-item-text-desc-preparation'>
+                              {item.preparation_i18n?.length >= 50 ? (
+                                `${item.preparation_i18n.substr(0, 50)}...`
+                              ) : (
+                                  item.preparation_i18n
+                                )}
+                            </div>
+                            <div className='favourites-recipes__list-item-text-desc-composition'>
+                              <div className='favourites-recipes__list-item-text-desc-composition-item'>
+                                <span>
+                                  {t('common.fat')}
+                                </span>
+                                <span>
+                                  {`${item.fat} ${checkMeasurement()}`}
+                                </span>
+                              </div>
+                              <div className='favourites-recipes__list-item-text-desc-composition-item'>
+                                <span>
+                                  {t('common.protein')}
+                                </span>
+                                <span>
+                                  {`${item.protein} ${checkMeasurement()}`}
+                                </span>
+                              </div>
+                              <div className='favourites-recipes__list-item-text-desc-composition-item'>
+                                <span>
+                                  {t('common.carbohydrate')}
+                                </span>
+                                <span>
+                                  {`${item.carbohydrate} ${checkMeasurement()}`}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className='favourites-recipes__list-item-text-desc-composition'>
-                          <div className='favourites-recipes__list-item-text-desc-composition-item'>
-                            <span>
-                              {t('common.fat')}
-                            </span>
-                            <span>
-                              {`${item.fat} ${checkMeasurement()}`}
-                            </span>
-                          </div>
-                          <div className='favourites-recipes__list-item-text-desc-composition-item'>
-                            <span>
-                              {t('common.protein')}
-                            </span>
-                            <span>
-                              {`${item.protein} ${checkMeasurement()}`}
-                            </span>
-                          </div>
-                          <div className='favourites-recipes__list-item-text-desc-composition-item'>
-                            <span>
-                              {t('common.carbohydrate')}
-                            </span>
-                            <span>
-                              {`${item.carbohydrate} ${checkMeasurement()}`}
-                            </span>
-                          </div>
+                        <div className='favourites-recipes__list-item-text-shop-list'>
+                          <Button
+                            color='gray'
+                            onClick={() => addToShopList(item.id)}
+                            className='favourites-recipes__list-item-text-shop-list-btn'
+                          >
+                            <ShoppingCartIcon />
+                            {t('recipe.favourites.shopping_list')}
+                            <ContentLoading
+                              isLoading={activeItemIdShopBtn === item.id}
+                              isError={false}
+                              spinSize='sm'
+                            />
+                          </Button>
                         </div>
                       </div>
                     </div>
-                    <div className='favourites-recipes__list-item-text-shop-list'>
-                      <Button
-                        color='gray'
-                        onClick={() => addToShopList(item.id)}
-                        className='favourites-recipes__list-item-text-shop-list-btn'
-                      >
-                        <ShoppingCartIcon />
-                        {t('recipe.favourites.shopping_list')}
-                        <ContentLoading
-                          isLoading={activeItemIdShopBtn === item.id}
-                          isError={false}
-                          spinSize='sm'
-                        />
-                      </Button>
-                    </div>
-                  </div>
+                  ))}
+                  {recipesListPageInfo.total_pages > 1 && (
+                    <Pagination
+                      currentItem={recipesListPageInfo.page}
+                      lastPage={recipesListPageInfo.total_pages}
+                      getClickedPage={getClickedPage}
+                      quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
+                    />
+                  )}
                 </div>
-              ))}
-              {recipesListPageInfo.total_pages > 1 && (
-                <Pagination
-                  currentItem={recipesListPageInfo.page}
-                  lastPage={recipesListPageInfo.total_pages}
-                  getClickedPage={getClickedPage}
-                  quantityButtons={recipesListPageInfo.total_pages > 5 ? 5 : recipesListPageInfo.total_pages}
-                />
-              )}
-            </div>
+            )}
           </ContentLoading>
         </div>
       </section>
