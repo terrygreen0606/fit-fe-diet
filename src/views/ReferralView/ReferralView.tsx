@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import uuid from 'react-uuid';
 import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
-import { getTranslate } from 'utils';
+import { getTranslate, convertTime } from 'utils';
 import {
   getUserInviteLink,
   fetchUserProfile,
@@ -30,34 +31,51 @@ const ReferralView = (props: any) => {
 
   const [invitedMembers, setInvitedMembers] = useState<any[]>([]);
 
+  const getInviteLink = () => {
+    getUserInviteLink().then(({ data }) => {
+      if (data.success && data.data) {
+        setInviteLink(data.data.url);
+      } else {
+        toast.error(t('common.error'));
+      }
+    }).catch(() => toast.error(t('common.error')));
+  };
+
+  const getUserProfile = () => {
+    fetchUserProfile().then(({ data }) => {
+      if (data.success && data.data) {
+        setUserName(`${data.data.name} ${data.data.surname || ''}`);
+      } else {
+        toast.error(t('common.error'));
+      }
+    }).catch(() => toast.error(t('common.error')));
+  };
+
+  const getInvitedFriends = () => {
+    getUserInvitedFriends().then(({ data }) => {
+      if (data.success && data.data) {
+        data.data.list.map((item) => {
+          item.id = uuid();
+
+          item.date = convertTime(item.invited_ts);
+        });
+
+        console.log('data.data.list', data.data.list);
+        setInvitedMembers([...data.data.list]);
+      } else {
+        toast.error(t('common.error'));
+      }
+    }).catch(() => toast.error(t('common.error')));
+  };
+
   useEffect(() => {
     let cleanComponent = false;
     if (!cleanComponent) {
-      getUserInviteLink().then(({ data }) => {
-        if (data.success && data.data) {
-          setInviteLink(data.data.url);
-        } else {
-          toast.error(t('common.error'));
-        }
-      }).catch(() => toast.error(t('common.error')));
+      getInviteLink();
 
-      fetchUserProfile().then(({ data }) => {
-        if (data.success && data.data) {
-          setUserName(`${data.name} ${data.surname}`);
-        } else {
-          toast.error(t('common.error'));
-        }
-      }).catch(() => toast.error(t('common.error')));
+      getUserProfile();
 
-      getUserInvitedFriends().then(({ data }) => {
-        if (data.success && data.data) {
-          data.data.list.map((item) => item.id = uuid());
-          console.log('data.data.list', data.data.list);
-          setInvitedMembers([...data.data.list]);
-        } else {
-          toast.error(t('common.error'));
-        }
-      }).catch(() => toast.error(t('common.error')));
+      getInvitedFriends();
     }
 
     return () => cleanComponent = true;
@@ -101,7 +119,7 @@ const ReferralView = (props: any) => {
                     {t('common.or')}
                   </span>
                 </div>
-                <InviteEmail />
+                <InviteEmail onCompleted={() => getInvitedFriends()} />
                 <div className='referral__socials'>
                   <ShareButtons
                     shareLink={inviteLink}
@@ -146,23 +164,38 @@ const ReferralView = (props: any) => {
                       {item.email}
                     </a>
                   </div>
-                  {/* need to integration with BE */}
                   <div className='referral__invited-list-item'>
                     <div className='referral__invited-list-user-info'>
                       <div
                         className='referral__invited-list-user-info-media'
                         style={{
-                          backgroundImage: 'url(https://fitstg.s3.eu-central-1.amazonaws.com/anna_t.png)',
+                          backgroundImage: `url(${item.image})`,
                         }}
                       />
                       <div className='referral__invited-list-user-info-desc'>
-                        <div className='referral__invited-list-user-info-desc-name'>Gabriel Martinez</div>
-                        <div className='referral__invited-list-user-info-desc-date'>15.08.2020</div>
+                        <div className='referral__invited-list-user-info-desc-name'>
+                          {item.name}
+                        </div>
+                        <div className='referral__invited-list-user-info-desc-date'>
+                          {item.date}
+                        </div>
+                        <div className='referral__invited-list-user-info-desc-status'>
+                          {t(item.status_i18n)}
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div className='referral__invited-list-item'>
-                    <div className='referral__invited-list-paid active'>Yes</div>
+                    <div className={classnames('referral__invited-list-paid', {
+                      active: item.is_paid,
+                    })}
+                    >
+                      {item.is_paid ? (
+                        t('common.yes')
+                      ) : (
+                        t('common.no')
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

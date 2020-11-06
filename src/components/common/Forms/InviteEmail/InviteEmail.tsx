@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
 import {
   validateFieldOnChange,
@@ -21,16 +20,22 @@ import { ReactComponent as ArrowRight } from 'assets/img/icons/arrow-right-gray-
 
 type InviteEmailProps = {
   className?: string;
+  onCompleted?: () => void;
   localePhrases: any;
 };
 
 const InviteEmailDefaultProps = {
   className: '',
+  onCompleted: () => {},
 };
 
-const InviteEmail = (props: InviteEmailProps) => {
+const InviteEmail = ({
+  className,
+  onCompleted,
+  localePhrases,
+}: InviteEmailProps) => {
   const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+    getTranslate(localePhrases, code, placeholders);
 
   const [inviteFriendsForm, setInviteFriendsForm] = useState({
     email: '',
@@ -73,6 +78,7 @@ const InviteEmail = (props: InviteEmailProps) => {
           if (response.data.success) {
             setInviteFriendsForm({ ...inviteFriendsForm, email: '' });
             toast.success(t('referral.email_sent'));
+            onCompleted();
           }
         })
         .catch(() => {
@@ -88,7 +94,7 @@ const InviteEmail = (props: InviteEmailProps) => {
     <form
       onSubmit={(e) => inviteFriendsSubmit(e)}
       className={classNames('referral__container-input', {
-        [props.className]: props.className,
+        [className]: className,
       })}
     >
       <InputField
