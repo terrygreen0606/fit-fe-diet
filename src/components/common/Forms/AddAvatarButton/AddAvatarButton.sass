@@ -1,0 +1,42 @@
+@import '../../../../assets/sass/_vars'
+
+.update-avatar-button
+  position: relative
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 74px
+  height: 74px
+  background-color: #C4C4C4
+  border-radius: 50%
+  border: none
+  cursor: pointer
+  transition: 0.2s background-color ease
+  
+  &-input
+    display: none
+
+  svg,
+  img
+    max-witdh: 30px
+    height: auto
+
+  &-plus
+    position: absolute
+    bottom: 10px
+    right: -14px
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 30px
+    height: 30px
+    background-color: $caribbean-green
+    border-radius: 50%
+
+    &::before
+      content: '+'
+      font-size: 30px
+      color: $white
+
+.update-avatar-button:hover
+  background-color: darken(#c4c4c4, 10%)
