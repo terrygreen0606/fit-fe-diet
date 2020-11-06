@@ -29,60 +29,20 @@ const Footer = (props: any) => {
     <footer className='mainFooter'>
       <div className='container'>
         <div className='row'>
-          <div className='col-6 col-md-3'>
-            <h6 className='mainFooter_menuList_title'>
-              {t('footer.menu_title_support')}
-            </h6>
-
-            <ul className='mainFooter_menuList'>
-              <li>
-                <a
-                  href={generatePublicUrl('blogs')}
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_blog')}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={generatePublicUrl('recipes')}
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_recipes')}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={generatePublicUrl('challenge')}
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_challenge')}
-                </a>
-              </li>
-              <li>
-                <Link
-                  to={routes.nutritionPlanWeight}
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_nutrition_plan_weights')}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to={routes.personalSettings}
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_personal_settings')}
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className='col-6 col-md-3'>
+          <div className='col-6 col-md-4'>
             <h6 className='mainFooter_menuList_title'>
               {t('footer.menu_title_project')}
             </h6>
 
             <ul className='mainFooter_menuList'>
+              <li>
+                <a
+                  href={generatePublicUrl('about')}
+                  className='mainFooter_menuList_item'
+                >
+                  {t('footer.menu_about')}
+                </a>
+              </li>
               <li>
                 <a
                   href={generatePublicUrl('contacts')}
@@ -108,11 +68,6 @@ const Footer = (props: any) => {
                 </a>
               </li>
               <li>
-                <Link to={routes.createRecipe} className='mainFooter_menuList_item'>
-                  {t('footer.menu_create_recipe')}
-                </Link>
-              </li>
-              <li>
                 <a
                   href={generatePublicUrl('media-inquiries')}
                   className='mainFooter_menuList_item'
@@ -120,14 +75,6 @@ const Footer = (props: any) => {
                   {t('footer.menu_media_inquiries')}
                 </a>
               </li>
-            </ul>
-          </div>
-          <div className='col-6 col-md-3'>
-            <h6 className='mainFooter_menuList_title'>
-              {t('footer.menu_nutrition')}
-            </h6>
-
-            <ul className='mainFooter_menuList'>
               <li>
                 <a
                   href={generatePublicUrl('trees')}
@@ -136,35 +83,33 @@ const Footer = (props: any) => {
                   {t('footer.menu_trees')}
                 </a>
               </li>
+            </ul>
+          </div>
+          <div className='col-6 col-md-4'>
+            <h6 className='mainFooter_menuList_title'>
+              {t('footer.menu_title_support')}
+            </h6>
+
+            <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href={generatePublicUrl('stories')}
+                  href={generatePublicUrl('blogs')}
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_stories')}
+                  {t('footer.menu_blog')}
                 </a>
               </li>
               <li>
                 <a
-                  href={generatePublicUrl('testimonials')}
+                  href={generatePublicUrl('recipes')}
                   className='mainFooter_menuList_item'
                 >
-                  {t('footer.menu_testimonials')}
+                  {t('footer.menu_recipes')}
                 </a>
-              </li>
-              <li>
-                <Link to={routes.waterTracker} className='mainFooter_menuList_item'>
-                  {t('footer.menu_water_tracker')}
-                </Link>
-              </li>
-              <li>
-                <Link to={routes.dashboard} className='mainFooter_menuList_item'>
-                  {t('footer.menu_dashboard')}
-                </Link>
               </li>
             </ul>
           </div>
-          <div className='col-6 col-md-3 text-right'>
+          <div className='col-6 col-md-4 text-right'>
             <div className='mainFooter_logo_wrap'>
               <Link to='/' className='mainFooter_logo' />
               <div className='mainFooter_company d-md-block d-none'>

@@ -62,11 +62,11 @@ const Header = (props: any) => {
 
               <nav className='mainHeader_menuList'>
                 <NavLink
-                  to={routes.trainings}
+                  to={routes.mealPlan}
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
                 >
-                  {t('header.menu_trainings')}
+                  {t('header.menu_mp')}
                 </NavLink>
 
                 <NavLink
@@ -78,19 +78,19 @@ const Header = (props: any) => {
                 </NavLink>
 
                 <NavLink
-                  to={routes.changeMealSettings}
+                  to={routes.waterTracker}
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
                 >
-                  {t('mp.change.title')}
+                  {t('header.menu_wt')}
                 </NavLink>
 
                 <NavLink
-                  to={routes.mealPlan}
+                  to={routes.personalSettings}
                   className='mainHeader_menuList_item'
                   activeClassName='mainHeader_menuList_item_active'
                 >
-                  {t('mp.title')}
+                  {t('header.menu_settings')}
                 </NavLink>
 
                 <ShoppingListCart visible={isAuthenticated && settings.paid_until} />
