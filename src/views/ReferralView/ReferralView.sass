@@ -103,6 +103,10 @@
         @media (max-width: 992px)
           padding: 20px
 
+        .referral__invited-list-item:first-child
+          padding-bottom: 10px
+          overflow-x: auto
+
         &:not(:last-child)
           border-bottom: 1px solid #D2D2D2
       
@@ -110,13 +114,13 @@
         width: 33.33%
         overflow: hidden
 
-        &:nth-child(1)
+        &:first-child
           text-align: left
 
         &:nth-child(2)
           text-align: center
 
-        &:nth-child(3)
+        &:last-child
           text-align: right
 
       &-email
