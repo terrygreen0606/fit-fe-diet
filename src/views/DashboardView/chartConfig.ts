@@ -18,7 +18,16 @@ export default {
       ],
       xAxes: [
         {
-          display: false,
+          gridLines: {
+            tickMarkLength: 4,
+            borderDash: [4, 4],
+            drawTicks: false,
+          },
+          ticks: {
+            fontColor: '#878787',
+            fontSize: 10,
+            padding: 15,
+          },
         },
       ],
     },

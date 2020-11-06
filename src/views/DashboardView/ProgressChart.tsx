@@ -32,7 +32,7 @@ const ProgressChart = ({
       },
       options,
     });
-  });
+  }, [labels.length, data.length]);
 
   return <canvas ref={chartContainer} />;
 };
