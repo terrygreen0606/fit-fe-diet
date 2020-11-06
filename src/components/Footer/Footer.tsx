@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getTranslate, generatePublicUrl } from 'utils';
 
-import { routes } from 'constants/routes';
-
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
 
@@ -16,6 +14,7 @@ import './Footer.sass';
 import { ReactComponent as YoutubeIcon } from '../../assets/img/icons/youtube-icon.svg';
 import { ReactComponent as FacebookIcon } from '../../assets/img/icons/facebook-icon.svg';
 import { ReactComponent as InstaIcon } from '../../assets/img/icons/insta-icon.svg';
+import { ReactComponent as PinterestIcon } from '../../assets/img/icons/pinterest-icon.svg';
 // import { ReactComponent as Logo } from '../../assets/img/logo-footer.svg';
 
 const Footer = (props: any) => {
@@ -130,6 +129,11 @@ const Footer = (props: any) => {
                 <li>
                   <a href='https://www.youtube.com/channel/UC4LGxoe4iAIc9M-PXcH274Q/' className='social-link'>
                     <YoutubeIcon className='social-icon' />
+                  </a>
+                </li>
+                <li>
+                  <a href='https://www.pinterest.com/fitlope/' className='social-link'>
+                    <PinterestIcon className='social-icon' />
                   </a>
                 </li>
               </ul>
