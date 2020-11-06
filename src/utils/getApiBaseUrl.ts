@@ -3,8 +3,7 @@ export const getApiBaseUrl = () => {
 
   switch (process.env.REACT_APP_ENV) {
     case 'development':
-      // apiBaseURL = 'http://localhost:8080/api';
-      apiBaseURL = 'https://stgby.fitlope.com/api';
+      apiBaseURL = 'http://localhost:8080/api';
       break;
 
     case 'staging':
