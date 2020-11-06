@@ -60,7 +60,6 @@ const ReferralView = (props: any) => {
           item.date = convertTime(item.invited_ts);
         });
 
-        console.log('data.data.list', data.data.list);
         setInvitedMembers([...data.data.list]);
       } else {
         toast.error(t('common.error'));
