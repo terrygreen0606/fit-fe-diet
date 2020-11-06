@@ -53,8 +53,8 @@ export const getPublicShopListUrl = (txt: number = 0) =>
 export const getAppTariff = (id: string) =>
   axios.get(`/app/tariff/${id}`);
 
-export const getActiveAppTariff = () =>
-  axios.get('/user/tariff');
+export const getPaymentTariff = () =>
+  axios.get('/payment/checkout-tariff');
 
 export const getAppTariffs = () =>
   axios.get('/app/get-tariffs');
@@ -67,3 +67,6 @@ export const userInviteFamilyByEmail = (email: string) =>
 
 export const getUserInvitedFriends = () =>
   axios.get('/user/friends');
+
+export const getUserDashboard = () =>
+  axios.get('/user/dashboard');

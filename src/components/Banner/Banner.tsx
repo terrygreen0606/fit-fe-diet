@@ -16,11 +16,13 @@ type BannerProps = {
     }
   ];
   localePhrases: [];
+  onAction: () => void,
 };
 
 const Banner = ({
   items,
   localePhrases,
+  onAction,
 }: BannerProps) => {
   const t = (code: string, placeholders?: any) => getTranslate(
     localePhrases,
@@ -77,6 +79,7 @@ const Banner = ({
           onClick={() => {
             if (items.length - 1 === bannerStep) {
               setIsBannerActive(false);
+              onAction();
               return;
             }
             setBannerStep((prev) => prev + 1);
@@ -86,7 +89,10 @@ const Banner = ({
         </Button>
         <button
           type='button'
-          onClick={() => setIsBannerActive(false)}
+          onClick={() => {
+            setIsBannerActive(false);
+            onAction();
+          }}
           className='banner-btn-skip'
         >
           {t('common.skip')}

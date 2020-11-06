@@ -1,59 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { getTranslate, getImagePath } from 'utils';
-import { getActiveAppTariff, getUserInviteLink } from 'api';
+import { getUserInviteLink } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
-import ContentLoading from 'components/hoc/ContentLoading';
 import Button from 'components/common/Forms/Button';
 import InviteEmail from 'components/common/Forms/InviteEmail';
 import ShareButtons from 'components/ShareButtons';
 
 import './AfterCheckoutPage.sass';
 
-const AfterCheckoutPage = (props: any) => {
+const AfterCheckoutPage = ({
+  paid_until,
+  localePhrases,
+}: any) => {
   const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
-
-  const [activeTariffData, setActiveTariffData] = useState({
-    next_apply_in_days: null,
-    tariff_until_ts: null,
-    next_price_text: null,
-  });
-
-  const [isTariffLoading, setTariffLoading] = useState<boolean>(true);
-  const [isTariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
-
-  const getActiveTariff = () => {
-    setTariffLoading(true);
-    setTariffLoadingError(false);
-
-    getActiveAppTariff()
-      .then((response) => {
-        setTariffLoading(false);
-
-        const { data } = response;
-
-        if (data.success && data.data) {
-          setActiveTariffData({
-            next_apply_in_days: data.data.next_tariff.apply_in_days,
-            tariff_until_ts: data.data.tariff_until_ts,
-            next_price_text: data.data.next_tariff.price_text,
-          });
-        } else {
-          setTariffLoadingError(true);
-        }
-      })
-      .catch(() => {
-        setTariffLoading(false);
-        setTariffLoadingError(true);
-      });
-  };
-
-  useEffect(() => {
-    getActiveTariff();
-  }, []);
+    getTranslate(localePhrases, code, placeholders);
 
   const getTariffDate = (date) => {
     let dateStr = '';
@@ -78,32 +43,26 @@ const AfterCheckoutPage = (props: any) => {
               <p>{t('checkout.thankyou.header_descr')}</p>
 
               <div className='mt-4 mt-sm-5 pt-lg-5'>
-                <ContentLoading
-                  isLoading={isTariffLoading}
-                  isError={isTariffLoadingError}
-                  fetchData={() => getActiveTariff()}
-                >
+                {paid_until > 0 ? (
                   <h2
                     dangerouslySetInnerHTML={{
                       __html: t('checkout.thankyou.trial_info', {
-                        COUNT: `
-                          <span class='text-steel-blue'>
-                          ${getTariffDate(activeTariffData.tariff_until_ts)}
-                          </span>
-                        `,
-                        AMOUNT: 'Y',
-                        PERIOD: t('common.days', { COUNT: activeTariffData.next_apply_in_days }),
+                        PERIOD: getTariffDate(paid_until),
                       }),
                     }}
                   />
-                </ContentLoading>
+                ) : (
+                  <h2>{t('checkout.thankyou.trial_info.waiting')}</h2>
+                )}
               </div>
 
               <p>{t('checkout.thankyou.trial_subscr')}</p>
 
-              <Button className='mt-4 mt-sm-5' size='lg' color='primary' block style={{ maxWidth: '580px' }}>
-                {t('checkout.thankyou.button.dashboard')}
-              </Button>
+              <Link to='/' className='link-raw'>
+                <Button className='mt-4 mt-sm-5' size='lg' color='primary' block style={{ maxWidth: '580px' }}>
+                  {t('checkout.thankyou.button.dashboard')}
+                </Button>
+              </Link>
 
             </div>
           </div>
@@ -195,15 +154,17 @@ const AfterCheckoutPage = (props: any) => {
               />
 
               <div className='mt-5 pt-md-5'>
-                <Button
-                  className='after-checkout__dashboard_btn'
-                  size='lg'
-                  color='primary'
-                  block
-                  style={{ maxWidth: '700px' }}
-                >
-                  {t('checkout.thankyou.button.personal_dashboard')}
-                </Button>
+                <Link to='/' className='link-raw'>
+                  <Button
+                    className='after-checkout__dashboard_btn'
+                    size='lg'
+                    color='primary'
+                    block
+                    style={{ maxWidth: '700px' }}
+                  >
+                    {t('checkout.thankyou.button.personal_dashboard')}
+                  </Button>
+                </Link>
               </div>
 
             </div>
@@ -214,4 +175,11 @@ const AfterCheckoutPage = (props: any) => {
   );
 };
 
-export default WithTranslate(AfterCheckoutPage);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      paid_until: state.settings.paid_until,
+    }),
+    null,
+  )(AfterCheckoutPage),
+);

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-underscore-dangle */
 import React, {
   useState,
@@ -26,7 +27,7 @@ import {
   syncShoppingList,
 } from 'api';
 import FormValidator from 'utils/FormValidator';
-import { setAppSetting } from 'store/actions';
+import { setAppSetting, toggleSetting } from 'store/actions';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -54,7 +55,11 @@ import { mockData, colourStylesSelect } from './dataForShoppingList';
 const ShoppingListView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
-  const { settings } = props;
+  const {
+    settings,
+    storage,
+    toggleSetting,
+  } = props;
 
   const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
@@ -545,7 +550,9 @@ const ShoppingListView = (props: any) => {
                     </div>
                   </>
                 )}
-              <Banner items={mockData} />
+                {storage.isActiveShoppingListBanner && (
+                  <Banner items={mockData} onAction={() => toggleSetting('isActiveShoppingListBanner')} />
+                )}
             </div>
           )}
       </section>
@@ -555,4 +562,5 @@ const ShoppingListView = (props: any) => {
 
 export default WithTranslate(connect((state: any) => ({
   settings: state.settings,
-}), { setAppSetting })(ShoppingListView));
+  storage: state.storage,
+}), { setAppSetting, toggleSetting })(ShoppingListView));

@@ -234,7 +234,7 @@
       color: #fff
     
     &_workout-description
-      margin-top: -50px
+      margin-top: -30px
       text-align: right
 
       &-name
@@ -456,6 +456,14 @@
 
 @media only screen and (max-width: 768px)
   .dashboard__user
+    margin-bottom: 0px
+    padding: 20px 0
+
+    &.card-bg
+      border-radius: 0
+      box-shadow: none
+      background-color: transparent
+
     &-personal-data
       margin-bottom: 30px
       padding-bottom: 30px
@@ -515,6 +523,7 @@
   .dashboard__cards
     &-item
       flex-basis: 100%
+      margin-bottom: 10px
 
       &-head
         margin-bottom: 10px
@@ -543,14 +552,14 @@
           font-size: 14px
 
         &-level
-          font-size: 12px
+          font-size: 14px
 
         &-time
           svg
             max-width: 10px
 
           &-quantity
-            font-size: 10px
+            font-size: 14px
 
       &_shopping
         .dashboard__cards-item-head-media
@@ -568,10 +577,10 @@
         &-notifications-item
           &-description
             &-title
-              font-size: 12px
+              font-size: 14px
 
             &-content
-              font-size: 10px
+              font-size: 14px
           
           &-media
             svg, img
@@ -613,11 +622,19 @@
 
 @media only screen and (max-width: 414px)
   .dashboard__user
-    padding: 20px 15px
+    &-personal-data-media
+      width: 60px
+
+      &::after
+        bottom: 3px
+        right: 1px
+
+    &-progress-chart
+      max-width: 270px
 
   .dashboard__cards
-    &-item
-      &_water
-        &-rate
-          &-media
-            margin-left: 80px
+    &-item_water-rate-media
+      margin-left: 60px
+
+    &-item_blood-datas-item-media
+      margin-right: 6px

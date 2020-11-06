@@ -111,7 +111,7 @@ const HealthProblems = ({
           className='register-back-icon mr-5'
           onClick={() => prevStep()}
         />
-        {isAskDiseasesView ? `${t('register.diseases_title')}:` : t('register.diseases_ask_title')}
+        {isAskDiseasesView ? t('register.diseases_ask_title') : t('register.diseases_title')}
       </h3>
 
       {isAskDiseasesView ? (

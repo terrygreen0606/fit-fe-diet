@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -56,14 +57,17 @@ import {
 } from './dataForMealPlanView';
 
 const MealPlanView = (props: any) => {
-  const { localePhrases, afterSignup } = props;
+  const {
+    localePhrases,
+    storage,
+    settings,
+    toggleSetting,
+  } = props;
   const { width } = useWindowSize();
-  const [afterSignUp, setAfterSignUp] = useState(afterSignup);
+  const [isActiveTutorial, setIsActiveTutorial] = useState(storage.isActiveMealPlanTutorial);
   const [tourStep, setTourStep] = useState(0);
   const { scrollbarWidth } = getScrollbarSize();
   const [todayActivities, setTodayActivities] = useState(['workout_add']);
-
-  const { settings, storage } = props;
 
   const [days, setDays] = useState<any[]>([]);
 
@@ -80,26 +84,21 @@ const MealPlanView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
-  const onAction = () => {
-    setAfterSignUp(false);
-    setTourStep(1);
-  };
-
   useEffect(() => {
-    if (tourStep === 3) props.changeSetting('afterSignup', false);
+    if (tourStep === 3) toggleSetting('isActiveMealPlanTutorial');
 
     tourStepFunction(width, tourStep);
   }, [tourStep]);
 
   useEffect(() => {
-    if (afterSignUp || tourStep > 0) {
+    if (isActiveTutorial || tourStep > 0) {
       document.querySelector('body').classList.add('overflow-y-hidden');
       document.body.style.marginRight = `${scrollbarWidth}px`;
     } else {
       document.querySelector('body').classList.remove('overflow-y-hidden');
       document.body.style.marginRight = '0px';
     }
-  }, [afterSignUp, tourStep]);
+  }, [isActiveTutorial, tourStep]);
 
   const onActivitiesChange = (e) => {
     e.persist();
@@ -297,15 +296,18 @@ const MealPlanView = (props: any) => {
           currentPage={t('mp.title')}
         />
       </div>
-      {afterSignUp && (
+      {isActiveTutorial && (
         <SiteTour
           data={mockData}
-          onAction={onAction}
+          onAction={() => {
+            setIsActiveTutorial(false);
+            setTourStep(1);
+          }}
           localePhrases={localePhrases}
         />
       )}
 
-      {(tourStep > 0 || afterSignUp) && <div className='hint_sect_backdrop' />}
+      {(tourStep > 0 || isActiveTutorial) && <div className='hint_sect_backdrop' />}
 
       <ContentLoading
         isLoading={isMealPlanLoading}
@@ -570,7 +572,7 @@ const MealPlanView = (props: any) => {
                     </div>
                   </div>
                 </div>
-                {!storage.completedMealPlanTraining && (
+                {storage.isActiveMealPlanBanner && (
                   <Advantages
                     icon1={CookCutIcon}
                     icon2={MealIcon}
@@ -584,7 +586,7 @@ const MealPlanView = (props: any) => {
                     advantage3Desc={t('nutrition.plan.feat3_desc')}
                     isShowBtn
                     onClickShowBtn={() => {
-                      props.toggleSetting('completedMealPlanTraining');
+                      toggleSetting('isActiveMealPlanBanner');
                     }}
                   />
                 )}
@@ -600,6 +602,5 @@ export default WithTranslate(
   connect((state: any) => ({
     settings: state.settings,
     storage: state.storage,
-    afterSignup: state.storage.afterSignup,
   }), { toggleSetting, changeSetting })(MealPlanView),
 );

@@ -24,3 +24,4 @@ export * from './getMealIcon';
 export * from './convertTime';
 export * from './getLangUser';
 export * from './getCookie';
+export * from './getApiBaseUrl';

@@ -17,7 +17,6 @@ const ProgressChart = ({
   labels,
 }: LineChartProps) => {
   const [chartContainer] = useState(createRef<HTMLCanvasElement>());
-
   useEffect(() => {
     new Chart(chartContainer.current.getContext('2d'), {
       type: 'bar',
@@ -26,20 +25,14 @@ const ProgressChart = ({
         datasets: [
           {
             data,
-            backgroundColor: [
-              '#106EE8',
-              '#106EE8',
-              '#106EE8',
-              '#106EE8',
-              '#106EE8',
-            ],
-            barPercentage: [0.12, 0.12, 0.12, 0.12, 0.12],
+            backgroundColor: '#106EE8',
+            barPercentage: 0.12,
           },
         ],
       },
       options,
     });
-  });
+  }, [labels.length, data.length]);
 
   return <canvas ref={chartContainer} />;
 };
