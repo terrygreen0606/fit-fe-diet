@@ -2,11 +2,83 @@
 
 
 .checkout-payment-card
-  padding: 51px 20px 43px
-  background: #FCFCFC
-  border: 1px solid #E8E8E8
-  border-radius: 20px
+  display: block
+  max-width: 680px
+  margin: 0 auto
   &__title
     display: flex
     align-items: center
     margin-bottom: 47px
+  &__total
+    flex: 22
+  &__form
+    padding: 51px 20px 43px
+    background: #FCFCFC
+    border: 1px solid #E8E8E8
+    border-radius: 20px
+    .fgLabel
+      font-weight: 400
+      font-size: 16px
+      line-height: 14px
+      color: #000000
+    &_installments
+      &__list
+        display: flex
+        flex-wrap: wrap
+      &__item
+        flex: 0 0 calc(50% - 17px)
+        max-width: calc(50% - 17px)
+        margin-bottom: 20px
+
+        &:nth-child(2n)
+          margin-left: 34px
+
+        .fgLabel
+          margin-bottom: 22px
+
+        @media only screen and (max-width : 576px)
+          flex: 0 0 100%
+          max-width: 100%
+          &:nth-child(2n)
+            margin-left: 0
+          
+          .fgLabel
+            margin-bottom: 12px
+      &__radio
+        display: flex
+        width: 100%
+        height: calc(100% - 13px - 21px)
+        padding: 0
+        .radiomark
+          top: 13px
+          left: 15px
+          width: 31px
+          height: 31px
+          background-color: #f0f0f0
+          box-shadow: 0px 3px 5px #BAC2D2
+          border: 4px solid #fff
+        input:checked ~ .radiomark
+          background-color: $steel-blue
+          background-image: url('../../assets/img/icons/check-icon.svg')
+          background-size: 70%
+          background-repeat: no-repeat
+          background-position: center center
+          border: 4px solid #fff
+          box-shadow: 0px 3px 5px #BAC2D2
+        &_btn
+          width: 100%
+          height: 100%
+          padding: 13px
+          padding-left: 57px
+          background: #FFFFFF
+          border: 1px solid #CDCDCD
+          border-radius: 5px
+        &_title
+          color: rgba($steel-blue, .7)
+          font-size: 20px
+          font-weight: 700
+          line-height: 23px
+        &_descr
+          color: #979797
+          font-size: 14px
+          line-height: 14px
