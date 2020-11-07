@@ -33,7 +33,9 @@ type NutritionPlanCardProps = {
   time?: number,
   desc?: string,
   costLevel?: string,
-  isLoadingShopBtn?,
+  isLoadingShopBtn?: boolean,
+  isLoadingCheckedBtn?: boolean,
+  isLoadingReloadBtn?: boolean,
 };
 
 const NutritionPlanCardDefaultProps = {
@@ -51,6 +53,8 @@ const NutritionPlanCardDefaultProps = {
   desc: '',
   costLevel: '',
   isLoadingShopBtn: false,
+  isLoadingCheckedBtn: false,
+  isLoadingReloadBtn: false,
 };
 
 const NutritionPlanCard = ({
@@ -72,6 +76,8 @@ const NutritionPlanCard = ({
   desc,
   costLevel,
   isLoadingShopBtn,
+  isLoadingCheckedBtn,
+  isLoadingReloadBtn,
 }: NutritionPlanCardProps) => {
   const t = (code: string, placeholders?: any) => getTranslate(
     localePhrases,
@@ -143,7 +149,13 @@ const NutritionPlanCard = ({
                   {t('recipe.replace')}
                 </div>
                 <div className='nutrition-plan-card-controls-item-reload-icon'>
-                  <ReloadGrayIcon />
+                  <ContentLoading
+                    isLoading={isLoadingReloadBtn}
+                    isError={false}
+                    spinSize='xs'
+                  >
+                    <ReloadGrayIcon />
+                  </ContentLoading>
                 </div>
               </div>
             </button>
@@ -182,7 +194,13 @@ const NutritionPlanCard = ({
               nutrition-plan-card-controls-item-icon
               nutrition-plan-card-controls-item-icon-checked'
               >
-                <CheckedIcon />
+                <ContentLoading
+                  isLoading={isLoadingCheckedBtn}
+                  isError={false}
+                  spinSize='xs'
+                >
+                  <CheckedIcon />
+                </ContentLoading>
               </div>
             </button>
           )}
