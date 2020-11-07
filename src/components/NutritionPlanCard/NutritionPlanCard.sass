@@ -245,7 +245,7 @@
             fill: #DAD7D7
 
     &-item.active,
-    &-item:hover
+    &-item.active:hover
       .nutrition-plan-card-controls-item-icon-shop
         svg path
           fill: #555E63
@@ -255,6 +255,15 @@
 
         svg path
           fill: $white
+
+    &-item:hover
+      .nutrition-plan-card-controls-item-icon-shop
+        svg path
+          fill: #555E63
+
+      .nutrition-plan-card-controls-item-icon-checked
+        svg path
+          fill: #555E63
 
     &-item-reload
       position: relative

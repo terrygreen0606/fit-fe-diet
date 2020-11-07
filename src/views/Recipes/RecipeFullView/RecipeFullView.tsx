@@ -810,7 +810,8 @@ const RecipeFullView = (props: any) => {
             </div>
           </div>
         </div>
-      )}
+      )
+      }
     </>
   );
 };
