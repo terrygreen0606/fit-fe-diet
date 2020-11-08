@@ -78,6 +78,8 @@ const MealPlanView = (props: any) => {
   const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
   const [isMealPlanLoading, setIsMealPlanLoading] = useState<boolean>(true);
   const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
+  const [activeItemIdReloadBtn, setActiveItemIdReloadBtn] = useState<string>(null);
+  const [activeItemIdCheckedBtn, setActiveItemIdCheckedBtn] = useState<string>(null);
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
@@ -230,28 +232,28 @@ const MealPlanView = (props: any) => {
   };
 
   const prepareRecipeFunc = (mealPlanItemIndex: number, recipeItemIndex: number, recipeId: string) => {
+    setActiveItemIdCheckedBtn(recipeId);
     const updatedMealPlan = [...mealPlan];
-    updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex].is_prepared =
-      !updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex].is_prepared;
 
-    setMealPlan([...updatedMealPlan]);
-
-    prepareRecipe(recipeId).catch(() => {
+    prepareRecipe(recipeId).then(() => {
       updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex].is_prepared =
         !updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex].is_prepared;
 
       setMealPlan([...updatedMealPlan]);
-    });
+    }).catch(() => toast(t('common.error')))
+      .finally(() => setActiveItemIdCheckedBtn(null));
   };
 
   const updateRecipe = (dateTs: number, recipeId: string, mealPlanItemIndex: number, recipeItemIndex: number) => {
+    setActiveItemIdReloadBtn(recipeId);
     changeRecipeInMealPlan(dateTs, recipeId).then((response) => {
       if (response.data.success && response.data.data) {
         const updatedMealPlan = [...mealPlan];
         updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex] = response.data.data;
         setMealPlan([...updatedMealPlan]);
       }
-    }).catch(() => { });
+    }).catch(() => toast.error(t('common.error')))
+      .finally(() => setActiveItemIdReloadBtn(null));
   };
 
   const addToShopList = (itemId: string) => {
@@ -436,6 +438,7 @@ const MealPlanView = (props: any) => {
                                   linkToRecipe={{
                                     pathname: routes.getRecipeFullView(recipeItem.id),
                                     fromMealPlan: true,
+                                    dateTs: mealPlan[dayItemIndex].date_ts,
                                   }}
                                   favouriteActive={recipeItem.is_liked}
                                   checkedActive={recipeItem.is_prepared}
@@ -453,6 +456,8 @@ const MealPlanView = (props: any) => {
                                       recipeItemIndex,
                                     )}
                                   isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
+                                  isLoadingReloadBtn={activeItemIdReloadBtn === recipeItem.id}
+                                  isLoadingCheckedBtn={activeItemIdCheckedBtn === recipeItem.id}
                                 />
                               </div>
                             ))}

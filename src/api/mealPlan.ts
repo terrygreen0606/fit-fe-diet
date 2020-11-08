@@ -1,6 +1,6 @@
 import axios from 'utils/axios';
 
-export const getMealPlan = () => 
+export const getMealPlan = () =>
   axios.get('meal-plan/list');
 
 export const changeRecipeInMealPlan = (date_ts: number, recipe_id: string) =>
