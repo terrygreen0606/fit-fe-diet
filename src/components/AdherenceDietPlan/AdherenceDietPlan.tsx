@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import WithTranslate from 'components/hoc/WithTranslate';
 import { getTranslate } from 'utils';
 
 import { ReactComponent as RewardImage } from 'assets/img/reward-img.svg';
 
 import './AdherenceDietPlan.sass';
+import { routes } from 'constants/routes';
 
 type AdherenceDietPlanProps = {
   todayProgress: number;
@@ -45,12 +47,12 @@ const AdherenceDietPlan = ({
           <div className='adherence-diet-card-progress-desc-title'>
             {t('mp.week_progress')}
           </div>
-          <a
-            href='/'
+          <Link
+            to={routes.nutritionPlanWeight}
             className='adherence-diet-card-progress-desc-link'
           >
             {t('mp.report')}
-          </a>
+          </Link>
         </div>
         <div className='adherence-diet-card-progress-line'>
           <div

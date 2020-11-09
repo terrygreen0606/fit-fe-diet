@@ -1,14 +1,6 @@
 @import '../../assets/sass/vars'
 
 .waterTracker
-  margin-bottom: 180px
-
-  @media (max-width: 768px)
-    margin-bottom: 70px
-
-  >.container:nth-child(2)
-    margin-bottom: 25px
-
   .water-drop
     display: flex
     flex-direction: column
@@ -166,6 +158,9 @@
       opacity: 0
       visibility: hidden 
 
+      @media (max-width: 768px)
+        font-size: 16px
+
       &.active
         opacity: 1
         visibility: visible
@@ -274,11 +269,13 @@
       cursor: pointer
 
       @media (max-width: 1024px)
-        margin: 0
+        flex-direction: row
         flex-basis: calc(33.33% - 20px)
+        height: 80px
+        margin: 0
         margin-bottom: 20px
 
-      @media (max-width: 450px)
+      @media (max-width: 500px)
         flex-basis: calc(50% - 10px)
 
       &-media
@@ -288,8 +285,9 @@
           display: flex
           align-items: center
           justify-content: flex-end
-          max-width: 30px
-          max-height: 70px
+          width: 30px
+          margin-bottom: 0
+          margin-right: 10px
 
         svg
           max-width: 100%
@@ -375,7 +373,7 @@
 
 @media (max-width: 568px)
   .waterTracker_period
-    margin: 30px 0
+    margin: 0
 
   .waterTracker_period li
     margin: 0 15px

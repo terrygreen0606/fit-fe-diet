@@ -1,6 +1,10 @@
 @import '../../assets/sass/vars'
 
 .how-exercise-plan-works
+  &-title
+    font-size: 24px
+    font-weight: bold
+
   &-sect
     font-size: 16px
 
@@ -13,6 +17,9 @@
       padding-top: 40px
       padding-bottom: 50px
       color: #fff
+
+      @media (max-width: 768px)
+        padding-top: 60px
 
       h5, h4
         color: #fff
@@ -50,6 +57,7 @@
       display: flex
       align-items: flex-end
       justify-content: flex-start
+      margin-bottom: 24px
       height: 100px
       padding-left: 35px
 
@@ -72,7 +80,7 @@
       justify-items: flex-start
 
       &:not(:last-child)
-        margin-bottom: 70px
+        margin-bottom: 45px
         
       h5, p
         margin-top: unset !important
@@ -90,6 +98,7 @@
       &-wrap
         height: unset
         display: inline-flex
+        margin-bottom: 0
         padding-left: 0
         padding-right: 35px
         align-items: flex-start

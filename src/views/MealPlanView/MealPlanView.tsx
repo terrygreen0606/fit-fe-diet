@@ -53,7 +53,7 @@ import HintStep from './HintStep';
 import {
   mockData,
   tourStepFunction,
-  dataForTodayActivities,
+  todayActivitiesData,
 } from './dataForMealPlanView';
 
 const MealPlanView = (props: any) => {
@@ -67,7 +67,6 @@ const MealPlanView = (props: any) => {
   const [isActiveTutorial, setIsActiveTutorial] = useState(storage.isActiveMealPlanTutorial);
   const [tourStep, setTourStep] = useState(0);
   const { scrollbarWidth } = getScrollbarSize();
-  const [todayActivities, setTodayActivities] = useState(['workout_add']);
 
   const [days, setDays] = useState<any[]>([]);
 
@@ -75,7 +74,6 @@ const MealPlanView = (props: any) => {
 
   const [daysToEndSubscription, setDaysToEndSubscription] = useState<number>(0);
 
-  const [isNoAccess, setIsNoAccess] = useState<boolean>(false);
   const [isMealPlanLoading, setIsMealPlanLoading] = useState<boolean>(true);
   const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
   const [activeItemIdReloadBtn, setActiveItemIdReloadBtn] = useState<string>(null);
@@ -101,16 +99,6 @@ const MealPlanView = (props: any) => {
       document.body.style.marginRight = '0px';
     }
   }, [isActiveTutorial, tourStep]);
-
-  const onActivitiesChange = (e) => {
-    e.persist();
-    return e.target.checked
-      ? setTodayActivities((prev) => [...prev, e.target.value])
-      : setTodayActivities((prev) => [
-        ...prev.slice(0, prev.indexOf(e.target.value)),
-        ...prev.slice(prev.indexOf(e.target.value) + 1),
-      ]);
-  };
 
   useEffect(() => {
     let cleanComponent = false;
@@ -210,7 +198,6 @@ const MealPlanView = (props: any) => {
       const currentDate = new Date().valueOf();
       const diff = (paidBeforeDate - currentDate) / (60 * 60 * 24 * 1000);
       setDaysToEndSubscription(Math.round(diff));
-      setIsNoAccess(false);
     }
 
     return () => cleanComponent = true;
@@ -287,17 +274,6 @@ const MealPlanView = (props: any) => {
       <Helmet>
         <title>{t('app.title.nutrition_plan')}</title>
       </Helmet>
-      <div className='container'>
-        <Breadcrumb
-          routes={[
-            {
-              url: routes.main,
-              name: t('breadcrumb.main'),
-            },
-          ]}
-          currentPage={t('mp.title')}
-        />
-      </div>
       {isActiveTutorial && (
         <SiteTour
           data={mockData}
@@ -316,198 +292,55 @@ const MealPlanView = (props: any) => {
         isError={false}
         spinSize='lg'
       >
-        {isNoAccess ? (
+        <section className='nutrition-plan-card-list-sect'>
           <div className='container'>
-            <div>
-              <span className='sect-subtitle'>
-                {t('common.no_access')}
-              </span>
-            </div>
-          </div>
-        ) : (
-            <section className='nutrition-plan-card-list-sect'>
-              <div className='container'>
-                <div className='row'>
-                  <div
-                    className={classnames(
-                      'nutrition-plan-card-list-col nutrition-plan-list',
-                      {
-                        hinted: tourStep === 2,
-                      },
-                    )}
-                  >
-                    <div className='nutrition-plan-card-list-header'>
-                      <h2 className='nutrition-plan-card-list-title'>
-                        {t('mp.list.title')}
-                      </h2>
-                      <div className='nutrition-plan-card-list-controls'>
-                        <button
-                          type='button'
-                          onClick={() => downloadTxtFile()}
-                          className='nutrition-plan-card-list-controls-item'
-                        >
-                          <FileDyskIcon />
-                        </button>
-                        <button
-                          type='button'
-                          onClick={() => window.print()}
-                          className='nutrition-plan-card-list-controls-item'
-                        >
-                          <PrintIcon />
-                        </button>
-                        <div ref={changedBlockRef}>
-                          <button
-                            type='button'
-                            onClick={() => setIsBlockActive(!isBlockActive)}
-                            className='nutrition-plan-card-list-controls-item'
-                          >
-                            <ShareIcon />
-                          </button>
-                          <ShareButtons
-                            visible={isBlockActive}
-                            items={['twitter']}
-                            fetchData={() => getMealPlanText().then((response) => {
-                              if (response.data.success && response.data.data) {
-                                return {
-                                  link: window.location.origin,
-                                  text: response.data.data.content,
-                                };
-                              }
-                            }).catch(() => { })}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className='nutrition-plan-card-list-date'>
-                      {days.map((item, itemIndex) => (
-                        <button
-                          key={item.id}
-                          id={item.id}
-                          type='button'
-                          onClick={() => {
-                            const scrollElements = document.querySelectorAll('[data-scroll]');
-                            scrollElements.forEach((scrollItem) => {
-                              if (+scrollItem.getAttribute('data-scroll') === item.id) {
-                                scrollItem.scrollIntoView({ behavior: 'smooth' });
-                              }
-                            });
-                          }}
-                          className={classnames('nutrition-plan-card-list-date-item card-bg', {
-                            active: itemIndex === 0,
-                          })}
-                        >
-                          <div
-                            className='nutrition-plan-card-list-date-item-number'
-                          >
-                            {item.dayNumber}
-                          </div>
-                          <div className='nutrition-plan-card-list-date-item-day-week'>
-                            {item.dayLabel}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                    <div className='nutrition-plan-card-list-recipes'>
-                      {days.map((dayItem, dayItemIndex) => (
-                        <div
-                          key={dayItem.id}
-                          data-scroll={dayItem.id}
-                          className='nutrition-plan-card-list-recipes-item card-bg'
-                        >
-                          <div className='nutrition-plan-card-list-recipes-item-title'>
-                            <CalendarIcon />
-                            <span>
-                              {t('mp.date.desc', { PERIOD: dayItem.dayFullInfo })}
-                            </span>
-                          </div>
-                          <ContentLoading
-                            isLoading={mealPlan[dayItemIndex]?.list?.length === 0}
-                            isError={false}
-                            spinSize='lg'
-                            label={t('mp.generating_recipes')}
-                          />
-                          <div className='row'>
-                            {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
-                              <div
-                                key={recipeItem.id}
-                                className='col-xl-6'
-                              >
-                                <NutritionPlanCard
-                                  title={recipeItem.name_i18n}
-                                  imgSrc={recipeItem.image_url}
-                                  linkToRecipe={{
-                                    pathname: routes.getRecipeFullView(recipeItem.id),
-                                    fromMealPlan: true,
-                                    dateTs: mealPlan[dayItemIndex].date_ts,
-                                  }}
-                                  favouriteActive={recipeItem.is_liked}
-                                  checkedActive={recipeItem.is_prepared}
-                                  time={recipeItem.time}
-                                  desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
-                                  costLevel={costLevelLabel[recipeItem.cost_level]}
-                                  onClickFavourite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickChecked={() => prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                                  onClickShopCart={() => addToShopList(recipeItem.id)}
-                                  onClickReload={() =>
-                                    updateRecipe(
-                                      mealPlan[dayItemIndex].date_ts,
-                                      recipeItem.id,
-                                      dayItemIndex,
-                                      recipeItemIndex,
-                                    )}
-                                  isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
-                                  isLoadingReloadBtn={activeItemIdReloadBtn === recipeItem.id}
-                                  isLoadingCheckedBtn={activeItemIdCheckedBtn === recipeItem.id}
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {tourStep === 2 && (
-                      <HintStep
-                        hintStep={2}
-                        onClick={() => setTourStep(3)}
-                        text={t('tour.hint.step2')}
-                        closeText={t('common.understand')}
-                      />
-                    )}
-                  </div>
-                  <div className='nutrition-plan-info-col'>
-                    <div
-                      className={classnames('nutrition-plan-info-col-today-activities', {
-                        hinted: tourStep === 1,
-                      })}
+            <Breadcrumb
+              routes={[
+                {
+                  url: routes.main,
+                  name: t('breadcrumb.main'),
+                },
+              ]}
+              currentPage={t('mp.title')}
+            />
+            <div className='nutrition-plan-card-list-sect-wrap'>
+              <div
+                className={classnames(
+                  'nutrition-plan-card-list-col nutrition-plan-list',
+                  {
+                    hinted: tourStep === 2,
+                  },
+                )}
+              >
+                <div className='nutrition-plan-card-list-header'>
+                  <h2 className='nutrition-plan-card-list-title'>
+                    {t('mp.list.title')}
+                  </h2>
+                  <div className='nutrition-plan-card-list-controls'>
+                    <button
+                      type='button'
+                      onClick={() => downloadTxtFile()}
+                      className='nutrition-plan-card-list-controls-item'
                     >
-                      <TodayActivities
-                        name={t('trainings.today_activities')}
-                        items={dataForTodayActivities}
-                        todayActivities={todayActivities}
-                        onChange={onActivitiesChange}
-                        type='checkbox'
-                      />
-                      {tourStep === 1 && (
-                        <HintStep
-                          hintStep={1}
-                          onClick={() => setTourStep(2)}
-                          text={t('tour.hint.step1')}
-                          closeText={t('common.understand')}
-                        />
-                      )}
-                    </div>
-
-                    <AdherenceDietPlan
-                      todayProgress={0}
-                      weekProgress={20}
-                    />
-
-                    <div className='nutrition-plan-socials card-bg'>
-                      <h2 className='nutrition-plan-socials-title'>
-                        {t('socials.share.title')}
-                      </h2>
+                      <FileDyskIcon />
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => window.print()}
+                      className='nutrition-plan-card-list-controls-item'
+                    >
+                      <PrintIcon />
+                    </button>
+                    <div ref={changedBlockRef}>
+                      <button
+                        type='button'
+                        onClick={() => setIsBlockActive(!isBlockActive)}
+                        className='nutrition-plan-card-list-controls-item'
+                      >
+                        <ShareIcon />
+                      </button>
                       <ShareButtons
-                        visible
+                        visible={isBlockActive}
                         items={['twitter']}
                         fetchData={() => getMealPlanText().then((response) => {
                           if (response.data.success && response.data.data) {
@@ -519,85 +352,206 @@ const MealPlanView = (props: any) => {
                         }).catch(() => { })}
                       />
                     </div>
-
-                    <div className='nutrition-plan-usage-time-card card-bg mt-5'>
-                      <div className='nutrition-plan-usage-time-card-img text-left'>
-                        <ClockIcon />
-                      </div>
-
-                      <div className='nutrition-plan-usage-time-card-content'>
-                        <h2>
-                          {t('nutrition.active_time')}
-                        </h2>
-                        <p
-                          dangerouslySetInnerHTML={
-                            { __html: t('nutrition.days_use', { COUNT: daysToEndSubscription }) }
-                          }
-                        />
-                        <Link to={routes.checkout} className='nutrition-plan-usage-time-card-content-link'>
-                          <Button className='mt-3' color='primary'>
-                            {t('nutrition.subscription')}
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-
-                    <div
-                      className={classnames(
-                        'nutrition-plan-diet-settings-card-back',
-                        {
-                          hinted: tourStep === 3,
-                        },
-                      )}
-                    >
-                      <div className='nutrition-plan-diet-settings-card card-bg mt-5'>
-                        <div className='nutrition-plan-diet-settings-card-img text-left'>
-                          <MealIcon />
-                        </div>
-
-                        <div className='nutrition-plan-diet-settings-card-content'>
-                          <h2>{t('personal.menu_diet')}</h2>
-                          <p>{t('nutrition.settings.text')}</p>
-                          <Link to={routes.changeMealSettings} className='nutrition-plan-usage-time-card-content-link'>
-                            <Button className='mt-3' outline color='secondary'>
-                              {t('nutrition.starter')}
-                            </Button>
-                          </Link>
-                        </div>
-
-                        {tourStep === 3 && (
-                          <HintStep
-                            hintStep={3}
-                            onClick={() => setTourStep(0)}
-                            text={t('tour.hint.step3')}
-                            closeText={t('common.understand')}
-                          />
-                        )}
-                      </div>
-                    </div>
                   </div>
                 </div>
-                {storage.isActiveMealPlanBanner && (
-                  <Advantages
-                    icon1={CookCutIcon}
-                    icon2={MealIcon}
-                    icon3={DumbbellIcon}
-                    mainTitle={t('nutrition.plan.title')}
-                    advantage1Title={t('nutrition.plan.feat1_title')}
-                    advantage1Desc={t('nutrition.plan.feat1_desc')}
-                    advantage2Title={t('nutrition.plan.feat2_title')}
-                    advantage2Desc={t('nutrition.plan.feat2_desc')}
-                    advantage3Title={t('nutrition.plan.feat3_title')}
-                    advantage3Desc={t('nutrition.plan.feat3_desc')}
-                    isShowBtn
-                    onClickShowBtn={() => {
-                      toggleSetting('isActiveMealPlanBanner');
-                    }}
+                <div className='nutrition-plan-card-list-date'>
+                  {days.map((item, itemIndex) => (
+                    <button
+                      key={item.id}
+                      id={item.id}
+                      type='button'
+                      onClick={() => {
+                        const scrollElements = document.querySelectorAll('[data-scroll]');
+                        scrollElements.forEach((scrollItem) => {
+                          if (+scrollItem.getAttribute('data-scroll') === item.id) {
+                            scrollItem.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        });
+                      }}
+                      className={classnames('nutrition-plan-card-list-date-item card-bg', {
+                        active: itemIndex === 0,
+                      })}
+                    >
+                      <div
+                        className='nutrition-plan-card-list-date-item-number'
+                      >
+                        {item.dayNumber}
+                      </div>
+                      <div className='nutrition-plan-card-list-date-item-day-week'>
+                        {item.dayLabel}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                <div className='nutrition-plan-card-list-recipes'>
+                  {days.map((dayItem, dayItemIndex) => (
+                    <div
+                      key={dayItem.id}
+                      data-scroll={dayItem.id}
+                      className='nutrition-plan-card-list-recipes-item card-bg'
+                    >
+                      <div className='nutrition-plan-card-list-recipes-item-title'>
+                        <CalendarIcon />
+                        <span>
+                          {t('mp.date.desc', { PERIOD: dayItem.dayFullInfo })}
+                        </span>
+                      </div>
+                      <ContentLoading
+                        isLoading={mealPlan[dayItemIndex]?.list?.length === 0}
+                        isError={false}
+                        spinSize='lg'
+                        label={t('mp.generating_recipes')}
+                      />
+                      <div className='row'>
+                        {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
+                          <div
+                            key={recipeItem.id}
+                            className='col-xl-6'
+                          >
+                            <NutritionPlanCard
+                              title={recipeItem.name_i18n}
+                              imgSrc={recipeItem.image_url}
+                              linkToRecipe={{
+                                pathname: routes.getRecipeFullView(recipeItem.id),
+                                fromMealPlan: true,
+                                dateTs: mealPlan[dayItemIndex].date_ts,
+                              }}
+                              favouriteActive={recipeItem.is_liked}
+                              checkedActive={recipeItem.is_prepared}
+                              time={recipeItem.time}
+                              desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
+                              costLevel={costLevelLabel[recipeItem.cost_level]}
+                              onClickFavourite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                              onClickChecked={() => prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
+                              onClickShopCart={() => addToShopList(recipeItem.id)}
+                              onClickReload={() =>
+                                updateRecipe(
+                                  mealPlan[dayItemIndex].date_ts,
+                                  recipeItem.id,
+                                  dayItemIndex,
+                                  recipeItemIndex,
+                                )}
+                              isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
+                              isLoadingReloadBtn={activeItemIdReloadBtn === recipeItem.id}
+                              isLoadingCheckedBtn={activeItemIdCheckedBtn === recipeItem.id}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {tourStep === 2 && (
+                  <HintStep
+                    hintStep={2}
+                    onClick={() => setTourStep(3)}
+                    text={t('tour.hint.step2')}
+                    closeText={t('common.understand')}
                   />
                 )}
               </div>
-            </section>
-          )}
+              <div className='nutrition-plan-info-col'>
+                <div
+                  className={classnames('nutrition-plan-info-col-today-activities', {
+                    hinted: tourStep === 1,
+                  })}
+                >
+                  <TodayActivities
+                    title={t('trainings.today_activities')}
+                    items={todayActivitiesData}
+                  />
+                  {tourStep === 1 && (
+                    <HintStep
+                      hintStep={1}
+                      onClick={() => setTourStep(2)}
+                      text={t('tour.hint.step1')}
+                      closeText={t('common.understand')}
+                    />
+                  )}
+                </div>
+
+                <AdherenceDietPlan
+                  todayProgress={0}
+                  weekProgress={20}
+                />
+
+                <div className='nutrition-plan-usage-time-card card-bg mt-5'>
+                  <div className='nutrition-plan-usage-time-card-img text-left'>
+                    <ClockIcon />
+                  </div>
+
+                  <div className='nutrition-plan-usage-time-card-content'>
+                    <h2>
+                      {t('nutrition.active_time')}
+                    </h2>
+                    <p
+                      dangerouslySetInnerHTML={
+                        { __html: t('nutrition.days_use', { COUNT: daysToEndSubscription }) }
+                      }
+                    />
+                    <Link to={routes.checkout} className='nutrition-plan-usage-time-card-content-link'>
+                      <Button className='mt-3' color='primary'>
+                        {t('nutrition.subscription')}
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                <div
+                  className={classnames(
+                    'nutrition-plan-diet-settings-card-back',
+                    {
+                      hinted: tourStep === 3,
+                    },
+                  )}
+                >
+                  <div className='nutrition-plan-diet-settings-card card-bg mt-5'>
+                    <div className='nutrition-plan-diet-settings-card-img text-left'>
+                      <MealIcon />
+                    </div>
+
+                    <div className='nutrition-plan-diet-settings-card-content'>
+                      <h2>{t('personal.menu_diet')}</h2>
+                      <p>{t('nutrition.settings.text')}</p>
+                      <Link to={routes.changeMealSettings} className='nutrition-plan-usage-time-card-content-link'>
+                        <Button className='mt-3' outline color='secondary'>
+                          {t('nutrition.starter')}
+                        </Button>
+                      </Link>
+                    </div>
+
+                    {tourStep === 3 && (
+                      <HintStep
+                        hintStep={3}
+                        onClick={() => setTourStep(0)}
+                        text={t('tour.hint.step3')}
+                        closeText={t('common.understand')}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {storage.isActiveMealPlanBanner && (
+              <Advantages
+                icon1={CookCutIcon}
+                icon2={MealIcon}
+                icon3={DumbbellIcon}
+                mainTitle={t('nutrition.plan.title')}
+                advantage1Title={t('nutrition.plan.feat1_title')}
+                advantage1Desc={t('nutrition.plan.feat1_desc')}
+                advantage2Title={t('nutrition.plan.feat2_title')}
+                advantage2Desc={t('nutrition.plan.feat2_desc')}
+                advantage3Title={t('nutrition.plan.feat3_title')}
+                advantage3Desc={t('nutrition.plan.feat3_desc')}
+                isShowBtn
+                onClickShowBtn={() => {
+                  toggleSetting('isActiveMealPlanBanner');
+                }}
+              />
+            )}
+          </div>
+        </section>
       </ContentLoading>
     </>
   );

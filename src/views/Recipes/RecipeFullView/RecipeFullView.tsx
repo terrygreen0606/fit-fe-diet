@@ -225,7 +225,7 @@ const RecipeFullView = (props: any) => {
         </div>
       )}
       {isAvailabilityRecipe && (
-        <div className='recipe'>
+        <section className='recipe'>
           <div className='container'>
             <Breadcrumb
               routes={
@@ -809,9 +809,8 @@ const RecipeFullView = (props: any) => {
               </div>
             </div>
           </div>
-        </div>
-      )
-      }
+        </section>
+      )}
     </>
   );
 };

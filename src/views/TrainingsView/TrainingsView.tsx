@@ -6,7 +6,6 @@ import { routes } from 'constants/routes';
 
 import WeekDays from 'components/WeekDays';
 import TrainingCard from 'components/TrainingCard';
-import TodayActivities from 'components/TodayActivities';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import { getTranslate, getImagePath } from 'utils';
@@ -19,7 +18,6 @@ import { ReactComponent as WorkoutSettingsIcon } from 'assets/img/icons/workout-
 
 import {
   dataForWeekWorkout,
-  dataForTodayActivities,
   workPlace,
 } from './mockDataForTrainings';
 
@@ -27,7 +25,6 @@ import './TrainingsView.sass';
 
 const TrainingsView: React.FC = (props: any) => {
   const [weekWorkout, setWeekWorkout] = useState('wed');
-  const [todayActivities, setTodayActivities] = useState(['workout_add']);
 
   const t = (code: string, placeholders?: any) => getTranslate(
     props.localePhrases,
@@ -36,16 +33,6 @@ const TrainingsView: React.FC = (props: any) => {
   );
 
   const onWorkoutChange = (e) => setWeekWorkout(e.target.value);
-
-  const onActivitiesChange = (e) => {
-    e.persist();
-    return e.target.checked
-      ? setTodayActivities((prev) => [...prev, e.target.value])
-      : setTodayActivities((prev) => [
-        ...prev.slice(0, prev.indexOf(e.target.value)),
-        ...prev.slice(prev.indexOf(e.target.value) + 1),
-      ]);
-  };
 
   return (
     <>
@@ -126,13 +113,6 @@ const TrainingsView: React.FC = (props: any) => {
               </div>
             </div>
             <div className='training-plan-info-col'>
-              <TodayActivities
-                name={t('trainings.today_activities')}
-                items={dataForTodayActivities}
-                todayActivities={todayActivities}
-                onChange={onActivitiesChange}
-                type='checkbox'
-              />
               <AdherenceDietPlan
                 className='mb-5 mt-5'
                 todayProgress={0}
