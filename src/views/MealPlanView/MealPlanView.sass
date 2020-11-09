@@ -142,7 +142,16 @@
           font-size: 16px
           transition: 0.2s color, 0.2s font-weight ease
 
-      &-item:hover,
+      &-item:hover
+        @media (min-width: 1025px)
+          background-color: #4596FF
+
+          .nutrition-plan-card-list-date-item-number
+            color: $white
+
+          .nutrition-plan-card-list-date-item-day-week
+            color: $white
+            
       &-item.active
         background-color: #4596FF
 

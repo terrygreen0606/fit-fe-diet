@@ -97,8 +97,7 @@
         stroke: #F27C7C
         transition: 0.2s fill ease
 
-  &-heart.active,
-  &-heart:hover
+  &-heart.active
     svg path
       fill: #F27C7C
 
@@ -257,13 +256,14 @@
           fill: $white
 
     &-item:hover
-      .nutrition-plan-card-controls-item-icon-shop
-        svg path
-          fill: #555E63
+      @media (min-width: 1025px)
+        .nutrition-plan-card-controls-item-icon-shop
+          svg path
+            fill: #555E63
 
-      .nutrition-plan-card-controls-item-icon-checked
-        svg path
-          fill: #555E63
+        .nutrition-plan-card-controls-item-icon-checked
+          svg path
+            fill: #555E63
 
     &-item-reload
       position: relative
@@ -344,6 +344,7 @@
         opacity: 1
       
       .nutrition-plan-card-controls-item-reload-icon
-        svg path
-          fill: $orange-accent
+        @media (min-width: 1025px)
+          svg path
+            fill: $orange-accent
     
