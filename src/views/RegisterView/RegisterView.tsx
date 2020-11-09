@@ -57,8 +57,6 @@ const RegisterView = ({
 
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
   const [registerDataErrors, setRegisterDataErrors] = useState([]);
-
-  const [registerSettings, setRegisterSettings] = useState(null);
   const [registerSettingsLoading, setRegisterSettingsLoading] = useState<boolean>(true);
   const [registerSettingsLoadingError, setRegisterSettingsLoadingError] = useState<boolean>(false);
 
@@ -67,38 +65,36 @@ const RegisterView = ({
     setRegisterSettingsLoadingError(false);
 
     getSignUpData()
-      .then(({ data: responseData }) => {
-        const { data, success } = responseData;
-
+      .then(({ data }) => {
         setRegisterSettingsLoading(false);
 
-        if (success && data) {
-          setRegisterSettings(data);
+        if (data.success && data.data) {
+          const response = data.data;
 
           setRegisterData({
             ...registerData,
             // tpl_signup: data.tpl || null,
             tpl_signup: queryString.parse(location.search).tpl === '2' ? 2 : 1,
-            act_levels: data.act_levels && data.act_levels.length ?
-              data.act_levels.map((activity) => ({
+            act_levels: response.act_levels && response.act_levels.length ?
+              response.act_levels.map((activity) => ({
                 ...activity,
                 checked: null,
               }))
             : [],
-            ignore_cuisine_ids: data.cuisines && data.cuisines.length ?
-              data.cuisines.map((cuisine) => ({
+            ignore_cuisine_ids: response.cuisines && response.cuisines.length ?
+              response.cuisines.map((cuisine) => ({
                 ...cuisine,
                 checked: null,
               }))
             : [],
-            diseases: data.diseases && data.diseases.length ?
-              data.diseases.map((disease) => ({
+            diseases: response.diseases && response.diseases.length ?
+              response.diseases.map((disease) => ({
                 ...disease,
                 checked: null,
               }))
             : [],
-            meal_counts: data.meal_counts && data.meal_counts.length ?
-              data.meal_counts.map((meal_count) => ({
+            meal_counts: response.meal_counts && response.meal_counts.length ?
+              response.meal_counts.map((meal_count) => ({
                 ...meal_count,
                 checked: null,
               }))
@@ -131,9 +127,8 @@ const RegisterView = ({
 
     switch (tpl) {
       case '1':
-        registerView = (
+      registerView = (
           <RegisterV1Tpl
-            isOpen
             registerData={registerData}
             setRegisterData={setRegisterData}
             registerDataErrors={registerDataErrors}
@@ -157,10 +152,23 @@ const RegisterView = ({
         );
         break;
 
+      case '3':
+        registerView = (
+          <RegisterModal
+            isOpen
+            registerData={registerData}
+            setRegisterData={setRegisterData}
+            registerDataErrors={registerDataErrors}
+            setRegisterDataErrors={setRegisterDataErrors}
+            location={location}
+            history={history}
+          />
+        );
+        break;
+
       default:
         registerView = (
           <RegisterV1Tpl
-            isOpen
             registerData={registerData}
             setRegisterData={setRegisterData}
             registerDataErrors={registerDataErrors}

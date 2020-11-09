@@ -107,14 +107,14 @@ const WeightGoal = ({
 
   return (
     <>
-      <h1 className='register_v2tpl_title mb-5'>{t('register.v2.weight_goal_step_title')}</h1>
+      <h1 className='register_v2_title mb-5'>{t('register.v2.weight_goal_step_title')}</h1>
 
       <form className='mt-5 pt-4' onSubmit={(e) => registerInfoSubmit(e)}>
         <div className='row'>
           <div className='col-8 offset-3 col-xs-7 offset-xs-4 col-md-4 offset-md-5 pl-md-2'>
 
             <div>
-              <FormGroup className='register_v2tpl_fg_inline mb-0' inline>
+              <FormGroup className='register_v2_fg_inline mb-0' inline>
                 <InputField
                   block
                   height='md'
@@ -141,7 +141,7 @@ const WeightGoal = ({
         </div>
 
         <Button
-          className='register_v2tpl_btn mt-5'
+          className='register_v2_btn mt-5'
           type='submit'
           color='primary'
           size='lg'

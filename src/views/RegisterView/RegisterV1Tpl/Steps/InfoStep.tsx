@@ -31,24 +31,12 @@ const InfoStep = ({
   registerDataErrors,
   setRegisterDataErrors,
   setRegisterView,
-  stepTitlesDefault,
-  setStepTitles,
   localePhrases,
 }: any) => {
   const [weightPredictionLoading, setWeightPredictionLoading] = useState(false);
 
-  const t = (code: string) => getTranslate(localePhrases, code);
-
-  useEffect(() => {
-    const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[2] = t('register.not_eating_step');
-
-    setStepTitles([...currStepTitles]);
-
-    return () => {
-      setStepTitles([...stepTitlesDefault]);
-    };
-  }, []);
+  const t = (code: string) =>
+    getTranslate(localePhrases, code);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -132,8 +120,8 @@ const InfoStep = ({
   };
 
   return (
-    <div className='register_info'>
-      <h6 className='register_title mb-xl-5 mb-45'>
+    <div className='register_v1_steps_content'>
+      <h6 className='register_v1_title'>
         <AngleLeftIcon
           className='register-back-icon mr-3'
           onClick={() => setRegisterView('GOAL')}
@@ -319,7 +307,7 @@ const InfoStep = ({
           )}
         </div>
 
-        <div className='text-center mt-xl-4 mt-3'>
+        <div className='register_v1_submit'>
           <Button
             style={{ width: '217px' }}
             color='primary'

@@ -1,45 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
-  getTranslate,
-} from 'utils';
+import { getTranslate } from 'utils';
 import { toast } from 'react-toastify';
 import { resetPassword } from 'api';
 import { InputError } from 'types';
 import Helmet from 'react-helmet';
 
 // Components
+import FormValidator from 'utils/FormValidator';
+import WithTranslate from 'components/hoc/WithTranslate';
 import ResetForm from './ResetForm';
 import ResetInfo from './ResetInfo';
 
-import FormValidator from 'utils/FormValidator';
-import WithTranslate from 'components/hoc/WithTranslate';
-
 import '../LoginView/LoginView.sass';
 
-const ResetPassword = (props: any) => {
+const ResetPassword = ({
+  localePhrases,
+}: any) => {
   const [resetPassForm, setResetPassForm] = useState({
-    email: ''
+    email: '',
   });
-
   const [resetPassErrors, setResetPassErrors] = useState<InputError[]>([]);
-
   const [resetPassLoading, setResetPassLoading] = useState<boolean>(false);
-
   const [resetEmailSuccess, setResetEmailSuccess] = useState<boolean>(false);
 
+  useEffect(() => {
+    document.querySelector('.basePageLayoutWrapper').classList.add('auth_layout');
+
+    return () => {
+      document.querySelector('.basePageLayoutWrapper').classList.remove('auth_layout');
+    };
+  }, []);
+
   const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+    getTranslate(localePhrases, code, placeholders);
 
   const resetPassSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
     const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -49,17 +49,17 @@ const ResetPassword = (props: any) => {
       setResetPassLoading(true);
 
       resetPassword(resetPassForm.email)
-        .then(response => {
+        .then(({ data }) => {
           setResetPassLoading(false);
 
-          if (response.data.success) {
+          if (data.success) {
             setResetEmailSuccess(true);
             toast.success(t('reset_password.email.success'));
           } else {
             toast.error(t('reset_password.email.error'));
           }
         })
-        .catch(error => {
+        .catch(() => {
           setResetPassLoading(false);
           toast.error(t('reset_password.email.error'));
         });
@@ -80,7 +80,7 @@ const ResetPassword = (props: any) => {
         <span className='mainHeader_logo d-lg-none-i' />
 
         {resetEmailSuccess ? (
-          <ResetInfo localePhrases={props.localePhrases || {}} />
+          <ResetInfo localePhrases={localePhrases || {}} />
         ) : (
           <ResetForm
             formSubmit={resetPassSubmit}
@@ -89,7 +89,7 @@ const ResetPassword = (props: any) => {
             submitLoading={resetPassLoading}
             errors={resetPassErrors}
             setErrors={setResetPassErrors}
-            localePhrases={props.localePhrases || {}}
+            localePhrases={localePhrases || {}}
           />
         )}
       </div>

@@ -12,8 +12,6 @@ const HealthProblems = ({
   registerData,
   setRegisterData,
   setRegisterView,
-  stepTitlesDefault,
-  setStepTitles,
   localePhrases,
 }: any) => {
   const t = (code: string) => getTranslate(localePhrases, code);
@@ -22,19 +20,6 @@ const HealthProblems = ({
 
   const [isAskDiseasesView, setAskDiseasesView] = useState<boolean>(true);
   const [haveDiseases, setHaveDiseases] = useState<boolean>(null);
-
-  useEffect(() => {
-    const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[0] = t('register.not_eating_step');
-    currStepTitles[1] = t('register.step_health');
-    currStepTitles[2] = t('register.step_workout');
-
-    setStepTitles([...currStepTitles]);
-
-    return () => {
-      setStepTitles([...stepTitlesDefault]);
-    };
-  }, []);
 
   useEffect(() => {
     if (isInitialMount && registerData.diseases.length > 0) {
@@ -105,13 +90,13 @@ const HealthProblems = ({
   };
 
   return (
-    <>
-      <h3 className='register_title mb-xl-5 mb-45'>
+    <div className='register_v1_steps_content'>
+      <h3 className='register_v1_title'>
         <AngleLeftIcon
           className='register-back-icon mr-5'
           onClick={() => prevStep()}
         />
-        {isAskDiseasesView ? `${t('register.diseases_title')}:` : t('register.diseases_ask_title')}
+        {isAskDiseasesView ? t('register.diseases_ask_title') : t('register.diseases_title')}
       </h3>
 
       {isAskDiseasesView ? (
@@ -178,9 +163,8 @@ const HealthProblems = ({
         </div>
       )}
 
-      <div className='text-center'>
+      <div className='register_v1_submit'>
         <Button
-          className='mt-xl-5 mt-45'
           style={{ minWidth: '220px' }}
           color='primary'
           size='lg'
@@ -191,7 +175,7 @@ const HealthProblems = ({
             : t('register.no_diseases_label')}
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

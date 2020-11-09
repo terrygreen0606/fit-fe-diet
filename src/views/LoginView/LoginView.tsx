@@ -53,6 +53,11 @@ const LoginView = (props: any) => {
   useEffect(() => {
     // initGoogleAuth(setLoginGoogleInitLoading, setLoginGoogleLoadingError);
     // initFacebookAuth(setLoginFacebookInitLoading);
+    document.querySelector('.basePageLayoutWrapper').classList.add('auth_layout');
+
+    return () => {
+      document.querySelector('.basePageLayoutWrapper').classList.remove('auth_layout');
+    };
   }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {

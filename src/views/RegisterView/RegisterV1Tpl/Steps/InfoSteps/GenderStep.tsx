@@ -1,16 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
-import {
-  validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
-  getTranslate,
-} from 'utils';
+import { getTranslate } from 'utils';
 
 // Components
 import Button from 'components/common/Forms/Button';
-import FormGroup from 'components/common/Forms/FormGroup';
-import CustomRadio from 'components/common/Forms/CustomRadio';
-import FormValidator from 'utils/FormValidator';
 
 import '../../RegisterV1Tpl.sass';
 
@@ -21,84 +14,44 @@ import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-ico
 const GenderStep = ({
   registerData,
   setRegisterData,
-  registerDataErrors,
-  setRegisterDataErrors,
   setRegisterView,
-  stepTitlesDefault,
-  setStepTitles,
   localePhrases,
 }: any) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
+  const t = (code: string) =>
+    getTranslate(localePhrases, code);
 
-  useEffect(() => {
-    const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[0] = t('register.gender_step');
-    currStepTitles[1] = t('register.age_step');
-    currStepTitles[2] = t('register.height_step');
-
-    setStepTitles([...currStepTitles]);
-
-    return () => {
-      setStepTitles([...stepTitlesDefault]);
-    };
-  }, []);
-
-  const validateOnChange = (name: string, value: any, event, element?) => {
-    validateFieldOnChange(
-      name,
-      value,
-      event,
-      registerData,
-      setRegisterData,
-      registerDataErrors,
-      setRegisterDataErrors,
-      element,
-    );
-  };
-
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+  const [hasError, setHasError] = useState(false);
 
   const nextStep = () => {
     setRegisterView('INFO_AGE');
   };
 
-  const changeRegisterGender = (e: Event & { target: HTMLInputElement }) => {
-    validateOnChange('gender', e.target.value, e);
-    nextStep();
-  };
-
-  const registerInfoSubmit = (e) => {
-    e.preventDefault();
-
-    const form = e.target;
-    const inputs = [...form.elements].filter((i) => ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
-
-    let { errors, hasError } = FormValidator.bulkValidate(inputs);
-
-    if (!registerData.gender) {
-      errors.push({
-        field: 'gender',
-        message: t('api.ecode.invalid_value'),
-      });
-
-      hasError = true;
-    }
-
-    setRegisterDataErrors([...errors]);
-
-    if (!hasError) {
+  const nextStepSubmit = () => {
+    if (registerData.gender === null) {
+      setHasError(true);
+    } else {
       nextStep();
     }
   };
 
+  const changeRegisterGender = (gender: 'm' | 'f') => {
+    setHasError(false);
+
+    setRegisterData({
+      ...registerData,
+      gender,
+    });
+
+    nextStep();
+  };
+
   return (
-    <div className='register_info'>
-      <h3 className='register_title mb-xl-5 mb-45'>
+    <div
+      className={classNames('register_v1_steps_content', {
+        'text-red': hasError,
+      })}
+    >
+      <h3 className='register_v1_title'>
         <AngleLeftIcon
           className='register-back-icon mr-3'
           onClick={() => setRegisterView('GOAL')}
@@ -106,62 +59,41 @@ const GenderStep = ({
         {t('register.gender_step_title')}
       </h3>
 
-      <form className='register_info_form' onSubmit={(e) => registerInfoSubmit(e)}>
-        <FormGroup inline className='mb-5 justify-content-center'>
-          <CustomRadio
-            name='gender'
-            className='register_gender_radio mr-md-5 pr-md-4'
-            label={
-              <>
-                <MaleIcon
-                  className={classNames('genderIcon', {
-                    genderIcon_active: registerData.gender === 'm',
-                  })}
-                />
+      <div className='register_gender_list'>
+        <Button
+          className={classNames('register_gender_btn', {
+            active: registerData.gender === 'f',
+          })}
+          block
+          onClick={() => changeRegisterGender('f')}
+        >
+          <FemaleIcon id='register_gender_female_icon' className='register_gender_icon' />
+          {t('register.form_female')}
+        </Button>
 
-                {t('register.form_male')}
-              </>
-            }
-            value='m'
-            checked={registerData.gender === 'm'}
-            invalid={getFieldErrors('gender').length > 0}
-            inline
-            onChange={(e) => changeRegisterGender(e)}
-          />
+        <Button
+          className={classNames('register_gender_btn', {
+            active: registerData.gender === 'm',
+          })}
+          block
+          onClick={() => changeRegisterGender('m')}
+        >
+          <MaleIcon id='register_gender_male_icon' className='register_gender_icon' />
+          {t('register.form_male')}
+        </Button>
+      </div>
 
-          <CustomRadio
-            name='gender'
-            className='register_gender_radio'
-            label={
-              <>
-                <FemaleIcon
-                  className={classNames('genderIcon', {
-                    genderIcon_active: registerData.gender === 'f',
-                  })}
-                />
-
-                {t('register.form_female')}
-              </>
-            }
-            value='f'
-            checked={registerData.gender === 'f'}
-            invalid={getFieldErrors('gender').length > 0}
-            inline
-            onChange={(e) => changeRegisterGender(e)}
-          />
-        </FormGroup>
-
-        <div className='register_info_form_submit'>
-          <Button
-            style={{ width: '217px' }}
-            color='primary'
-            type='submit'
-            size='lg'
-          >
-            {t('register.form_next')}
-          </Button>
-        </div>
-      </form>
+      <div className='register_v1_submit'>
+        <Button
+          style={{ width: '217px' }}
+          color='primary'
+          type='submit'
+          size='lg'
+          onClick={() => nextStepSubmit()}
+        >
+          {t('register.form_next')}
+        </Button>
+      </div>
     </div>
   );
 };

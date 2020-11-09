@@ -111,7 +111,7 @@ const Gender = ({
   return (
     <>
       <h1
-        className={classNames('register_v2tpl_title', {
+        className={classNames('register_v2_title', {
           'text-red': getFieldErrors('gender').length > 0,
         })}
       >
@@ -122,8 +122,8 @@ const Gender = ({
         <div className='row'>
           <div className='col-8 offset-2'>
 
-            <div className='register_v2tpl_check_list'>
-              <label className='register_v2tpl_check_label'>
+            <div className='register_v2_check_list'>
+              <label className='register_v2_check_label'>
                 <input
                   name='gender'
                   type='radio'
@@ -131,10 +131,10 @@ const Gender = ({
                   data-validate='["required"]'
                   onChange={(e) => validateOnChange('gender', e.target.value, e)}
                 />
-                <div className='register_v2tpl_check_item'>{t('register.form_male')}</div>
+                <div className='register_v2_check_item'>{t('register.form_male')}</div>
               </label>
 
-              <label className='register_v2tpl_check_label'>
+              <label className='register_v2_check_label'>
                 <input
                   name='gender'
                   type='radio'
@@ -142,7 +142,7 @@ const Gender = ({
                   data-validate='["required"]'
                   onChange={(e) => validateOnChange('gender', e.target.value, e)}
                 />
-                <div className='register_v2tpl_check_item'>{t('register.form_female')}</div>
+                <div className='register_v2_check_item'>{t('register.form_female')}</div>
               </label>
             </div>
 
@@ -150,7 +150,7 @@ const Gender = ({
         </div>
 
         <Button
-          className='register_v2tpl_btn mt-5'
+          className='register_v2_btn mt-5'
           type='submit'
           color='primary'
           size='lg'

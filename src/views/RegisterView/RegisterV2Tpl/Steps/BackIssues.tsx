@@ -11,20 +11,20 @@ const BackIssues = ({ setRegisterView, localePhrases }: any) => {
 
   return (
     <>
-      <h1 className='register_v2tpl_title'>{t('register.v2.back_issues.title')}</h1>
+      <h1 className='register_v2_title'>{t('register.v2.back_issues.title')}</h1>
 
       <div className='row'>
         <div className='col-8 offset-2'>
 
-          <div className='register_v2tpl_check_list'>
-            <label className='register_v2tpl_check_label'>
+          <div className='register_v2_check_list'>
+            <label className='register_v2_check_label'>
               <input name='register_back_issues' type='radio' />
-              <div className='register_v2tpl_check_item'>{t('common.no')}</div>
+              <div className='register_v2_check_item'>{t('common.no')}</div>
             </label>
 
-            <label className='register_v2tpl_check_label'>
+            <label className='register_v2_check_label'>
               <input name='register_back_issues' type='radio' />
-              <div className='register_v2tpl_check_item'>{t('common.yes')}</div>
+              <div className='register_v2_check_item'>{t('common.yes')}</div>
             </label>
           </div>
 
@@ -32,7 +32,7 @@ const BackIssues = ({ setRegisterView, localePhrases }: any) => {
       </div>
 
       <Button
-        className='register_v2tpl_btn mt-5'
+        className='register_v2_btn mt-5'
         color='primary'
         size='lg'
         onClick={() => setRegisterView('HEALTH_PROBLEMS')}

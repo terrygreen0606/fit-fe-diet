@@ -18,7 +18,8 @@ const GoalStep = ({
   setRegisterView,
   localePhrases,
 }: any) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
+  const t = (code: string) =>
+    getTranslate(localePhrases, code);
 
   const [hasError, setHasError] = useState(false);
 
@@ -46,9 +47,9 @@ const GoalStep = ({
   };
 
   return (
-    <div className='register_goal'>
+    <div className='register_v1_steps_content'>
       <h3
-        className={classNames('register_title mb-xl-5 mb-45', {
+        className={classNames('register_v1_title', {
           'text-red': hasError,
         })}
       >
@@ -99,9 +100,8 @@ const GoalStep = ({
         </Button>
       </div>
 
-      <div className='text-center'>
+      <div className='register_v1_submit'>
         <Button
-          className='mt-xl-5 mt-45'
           style={{ width: '220px' }}
           color='primary'
           size='lg'

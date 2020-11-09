@@ -4,17 +4,15 @@ import { Link } from 'react-router-dom';
 import { InputError } from 'types';
 
 // Components
-import Modal from 'components/common/Modal';
 import WithTranslate from 'components/hoc/WithTranslate';
-import Progress from './Progress';
+import ProgressLine from 'components/common/ProgressLine';
 import getRegisterStepViewUtil from './getRegisterStepView';
 
-import { RegisterViewType, RegisterStepTitlesType } from './types';
+import { RegisterViewType } from './types';
 
 import './RegisterV1Tpl.sass';
 
 type RegisterV1TplProps = {
-  isOpen: boolean,
   registerData: any,
   setRegisterData: (any) => void,
   registerDataErrors: InputError[],
@@ -22,7 +20,6 @@ type RegisterV1TplProps = {
   cuisinesLoading: boolean,
   cuisinesLoadingError: boolean,
   fetchRecipeCuisines: () => void,
-  onClose?: (e: React.SyntheticEvent) => void,
   history: any,
   location: any,
   localePhrases: any
@@ -53,42 +50,21 @@ const RegisterV1Tpl = ({
   cuisinesLoading,
   cuisinesLoadingError,
   fetchRecipeCuisines,
-  isOpen,
-  onClose,
   localePhrases,
 }: RegisterV1TplProps) => {
   const t = (code: string) => getTranslate(localePhrases, code);
-  const registerStepTitlesDefault: RegisterStepTitlesType = [
-    t('register.step_goal'),
-    t('register.step_info'),
-    t('register.step_join'),
-  ];
 
-  const [registerStep, setRegisterStep] = useState<0 | 1 | 2>(0);
-  const [registerStepTitles, setRegisterStepTitles] = useState<RegisterStepTitlesType>([...registerStepTitlesDefault]);
   const [registerView, setRegisterView] = useState<RegisterViewType>(registerViewsList[0]);
 
   useEffect(() => {
-    let currentRegisterStep: 0 | 1 | 2 = null;
+    document.querySelector('.basePageLayoutWrapper').classList.add('registerv1_layout');
 
-    switch (registerView) {
-      case 'INFO_GENDER':
-        currentRegisterStep = 0;
-        break;
+    return () => {
+      document.querySelector('.basePageLayoutWrapper').classList.remove('registerv1_layout');
+    };
+  }, []);
 
-      case 'READY':
-        currentRegisterStep = 2;
-        break;
-
-      default:
-        currentRegisterStep = 1;
-        break;
-    }
-
-    if (currentRegisterStep !== null) {
-      setRegisterStep(currentRegisterStep);
-    }
-
+  useEffect(() => {
     if (registerView) {
       history.push(`/register${location.search}#${registerView.toLowerCase()}`);
     }
@@ -104,14 +80,13 @@ const RegisterV1Tpl = ({
     cuisinesLoadingError,
     fetchRecipeCuisines,
     localePhrases,
-    registerStepTitlesDefault,
-    setRegisterStepTitles,
     setRegisterView,
     history,
   );
 
   const setStepPrev = () => {
-    const curStepIndex = registerViewsList.findIndex((view) => view === registerView);
+    const curStepIndex = registerViewsList
+      .findIndex((view) => view === registerView);
 
     if (curStepIndex > 0 && curStepIndex !== (registerViewsList.length - 1)) {
       if (registerViewsList[curStepIndex] === 'HEALTH_PROBLEMS') {
@@ -122,29 +97,22 @@ const RegisterV1Tpl = ({
     }
   };
 
+  const getProgressWidth = () => {
+    const index = registerViewsList.findIndex((view) => view === registerView);
+    return Math.round((100 / registerViewsList.length) * index);
+  };
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      className='register_v1tpl'
-    >
-      <Modal.Main className='register_v1tpl_main'>
-        <Link to='/' className='mainHeader_logo register_v1tpl_logo' />
+    <div className='register_v1'>
+      <Link to='/' className='mainHeader_logo register_v1_logo' />
 
-        <Progress
-          step={registerStep}
-          view={registerView}
-          titles={registerStepTitles}
-          setStepPrev={setStepPrev}
-        />
+      <ProgressLine
+        className='register_v1_progress'
+        width={getProgressWidth()}
+      />
 
-        <div className='register_v1tpl_steps_content_wrap'>
-          <div className='register_v1tpl_steps_content'>
-            {getRegisterStepView(registerView)}
-          </div>
-        </div>
-      </Modal.Main>
-    </Modal>
+      {getRegisterStepView(registerView)}
+    </div>
   );
 };
 

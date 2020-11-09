@@ -10,24 +10,10 @@ const NotEatingStep = ({
   registerData,
   setRegisterData,
   setRegisterView,
-  stepTitlesDefault,
-  setStepTitles,
   localePhrases,
 }: any) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
-
-  useEffect(() => {
-    const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[0] = t('register.weight_goal_step');
-    currStepTitles[1] = t('register.not_eating_step');
-    currStepTitles[2] = t('register.plan_create_step');
-
-    setStepTitles([...currStepTitles]);
-
-    return () => {
-      setStepTitles([...stepTitlesDefault]);
-    };
-  }, []);
+  const t = (code: string) =>
+    getTranslate(localePhrases, code);
 
   const removeMealItem = (cuisineId: string) => {
     setRegisterData({
@@ -59,8 +45,8 @@ const NotEatingStep = ({
   };
 
   return (
-    <>
-      <h3 className='register_title mb-xl-5 mb-45'>
+    <div className='register_v1_steps_content'>
+      <h3 className='register_v1_title'>
         <AngleLeftIcon
           className='register-back-icon mr-5'
           onClick={() => setRegisterView('INFO_WEIGHT_GOAL')}
@@ -92,7 +78,7 @@ const NotEatingStep = ({
         ))}
       </div>
 
-      <div className='text-center mt-xl-5 mt-45'>
+      <div className='register_v1_submit'>
         <Button
           style={{ width: '217px' }}
           color='primary'
@@ -105,7 +91,7 @@ const NotEatingStep = ({
             : t('register.eating_all')}
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

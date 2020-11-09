@@ -1,9 +1,6 @@
 import React from 'react';
-import { 
-  RegisterViewType, 
-  RegisterStepTitlesType, 
-} from './types';
 import { InputError } from 'types';
+import { RegisterViewType } from './types';
 
 // Components
 import GoalStep from './Steps/GoalStep';
@@ -31,10 +28,8 @@ export default (
   cuisinesLoadingError: boolean,
   fetchRecipeCuisines: () => any,
   localePhrases: any,
-  registerStepTitlesDefault: RegisterStepTitlesType,
-  setRegisterStepTitles: (any) => void,
   setRegisterView: (any) => void,
-  history: any
+  history: any,
 ) => {
   let registerStepView = null;
 
@@ -55,8 +50,6 @@ export default (
         <PlanProgressStep
           registerData={registerData}
           setRegisterData={setRegisterData}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           setRegisterView={setRegisterView}
           localePhrases={localePhrases || {}}
         />
@@ -67,8 +60,6 @@ export default (
       registerStepView = (
         <ExpectationsStep
           registerData={registerData}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           setRegisterView={setRegisterView}
           localePhrases={localePhrases || {}}
         />
@@ -81,8 +72,6 @@ export default (
           registerData={registerData}
           setRegisterData={setRegisterData}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );
@@ -94,8 +83,6 @@ export default (
           registerData={registerData}
           setRegisterData={setRegisterData}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );
@@ -105,8 +92,6 @@ export default (
       registerStepView = (
         <PlanReadyStep
           registerData={registerData}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           setRegisterView={setRegisterView}
           history={history}
           localePhrases={localePhrases || {}}
@@ -120,8 +105,6 @@ export default (
           registerData={registerData}
           setRegisterData={setRegisterData}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           cuisinesLoading={cuisinesLoading}
           cuisinesLoadingError={cuisinesLoadingError}
           fetchRecipeCuisines={fetchRecipeCuisines}
@@ -137,8 +120,6 @@ export default (
           setRegisterData={setRegisterData}
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           setRegisterView={setRegisterView}
           localePhrases={localePhrases || {}}
         />
@@ -153,8 +134,6 @@ export default (
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );
@@ -168,8 +147,6 @@ export default (
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );
@@ -183,8 +160,6 @@ export default (
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );
@@ -198,8 +173,6 @@ export default (
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );
@@ -213,8 +186,6 @@ export default (
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );
@@ -228,8 +199,6 @@ export default (
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
-          stepTitlesDefault={registerStepTitlesDefault}
-          setStepTitles={setRegisterStepTitles}
           localePhrases={localePhrases || {}}
         />
       );

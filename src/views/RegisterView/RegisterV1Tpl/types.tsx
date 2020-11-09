@@ -13,5 +13,3 @@ export type RegisterViewType =
   'INFO_WEIGHT_GOAL' | 
   'JOIN' | 
   'READY';
-
-export type RegisterStepTitlesType = [string, string, string];

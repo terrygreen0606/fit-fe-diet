@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -26,26 +26,12 @@ const AgeStep = ({
   registerDataErrors,
   setRegisterDataErrors,
   setRegisterView,
-  stepTitlesDefault,
-  setStepTitles,
   localePhrases,
 }: any) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
+  const t = (code: string) =>
+    getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
-
-  useEffect(() => {
-    const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[0] = t('register.gender_step');
-    currStepTitles[1] = t('register.age_step');
-    currStepTitles[2] = t('register.height_step');
-
-    setStepTitles([...currStepTitles]);
-
-    return () => {
-      setStepTitles([...stepTitlesDefault]);
-    };
-  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -114,9 +100,7 @@ const AgeStep = ({
               });
 
               setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-              
-            }
+            } catch {}
           }
         })
         .finally(() => {
@@ -126,8 +110,8 @@ const AgeStep = ({
   };
 
   return (
-    <div className='register_info'>
-      <h3 className='register_title mb-xl-5 mb-45'>
+    <div className='register_v1_steps_content'>
+      <h3 className='register_v1_title'>
         <AngleLeftIcon
           className='register-back-icon mr-3'
           onClick={() => setRegisterView('INFO_GENDER')}
@@ -160,7 +144,7 @@ const AgeStep = ({
           <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
         ))}
 
-        <div className='register_info_form_submit'>
+        <div className='register_v1_submit'>
           <Button
             style={{ width: '217px' }}
             color='primary'

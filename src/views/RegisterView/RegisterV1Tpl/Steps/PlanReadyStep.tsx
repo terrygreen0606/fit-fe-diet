@@ -12,41 +12,27 @@ const listFeatureImg = require('assets/img/features/list-feature.png');
 
 const PlanReadyStep = ({
   registerData,
-  stepTitlesDefault,
-  setStepTitles,
   userLogin: userAuthLogin,
   history,
   localePhrases,
 }: any) => {
-  const t = (code: string, placeholders?: any) => getTranslate(localePhrases, code, placeholders);
-
-  useEffect(() => {
-    const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[0] = t('register.expect_step');
-    currStepTitles[1] = t('register.step_confirm');
-    currStepTitles[2] = t('register.ready_step');
-
-    setStepTitles([...currStepTitles]);
-
-    return () => {
-      setStepTitles([...stepTitlesDefault]);
-    };
-  }, []);
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(localePhrases, code, placeholders);
 
   return (
-    <div className='mt-xl-5 pt-xl-5 text-center'>
+    <div className='register_v1_steps_content'>
       <span
         className='diet-plan-feature-icon mb-5 d-none d-md-inline-block'
         style={{ backgroundImage: `url(${listFeatureImg})` }}
       />
 
-      <h4 id='register_title_final_welcome' className='register_title mb-xl-4'>
+      <h4 id='register_v1_title_final_welcome' className='register_v1_title mb-xl-4'>
         {t('register.plan_ready_title', { NAME: registerData.name })}
         `,`
       </h4>
-      <h5 className='register_title mt-md-2'>{t('register.plan_ready_subtitle')}</h5>
+      <h5 className='register_v1_title mt-md-2'>{t('register.plan_ready_subtitle')}</h5>
 
-      <div className='text-center mt-md-5 mt-4'>
+      <div className='register_v1_submit'>
         <Button
           style={{ maxWidth: '355px' }}
           color='primary'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -26,26 +26,12 @@ const WeightStep = ({
   registerDataErrors,
   setRegisterDataErrors,
   setRegisterView,
-  stepTitlesDefault,
-  setStepTitles,
   localePhrases,
 }: any) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
+  const t = (code: string) =>
+    getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
-
-  useEffect(() => {
-    const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[0] = t('register.height_step');
-    currStepTitles[1] = t('register.weight_step');
-    currStepTitles[2] = t('register.weight_goal_step');
-
-    setStepTitles([...currStepTitles]);
-
-    return () => {
-      setStepTitles([...stepTitlesDefault]);
-    };
-  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -93,7 +79,7 @@ const WeightStep = ({
         measurement,
       })
         .then(({ data }) => {
-          if (data.success) {            
+          if (data.success) {
             setRegisterView('INFO_WEIGHT_GOAL');
           } else {
             toast.error(t('register.error_msg'));
@@ -116,9 +102,7 @@ const WeightStep = ({
               });
 
               setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-
-            }
+            } catch {}
           }
         })
         .finally(() => {
@@ -128,8 +112,8 @@ const WeightStep = ({
   };
 
   return (
-    <div className='register_info'>
-      <h3 className='register_title mb-xl-5 mb-45'>
+    <div className='register_v1_steps_content'>
+      <h3 className='register_v1_title'>
         <AngleLeftIcon
           className='register-back-icon mr-3'
           onClick={() => setRegisterView('INFO_HEIGHT')}
@@ -166,7 +150,7 @@ const WeightStep = ({
           <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
         ))}
 
-        <div className='register_info_form_submit'>
+        <div className='register_v1_submit'>
           <Button
             style={{ width: '217px' }}
             color='primary'

@@ -5,16 +5,15 @@ type ResetInfoProps = {
   localePhrases: any;
 };
 
-const ResetInfo = (props: ResetInfoProps) => {
-
-  console.log(props.localePhrases)
-
+const ResetInfo = ({
+  localePhrases,
+}: ResetInfoProps) => {
   const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+    getTranslate(localePhrases, code, placeholders);
 
   return (
-    <div className="loginScreen_form">
-      <p className="loginScreen_descr">{t('reset_password.email_sent')}</p>
+    <div className='loginScreen_form'>
+      <p className='loginScreen_descr'>{t('reset_password.email_sent')}</p>
     </div>
   );
 };

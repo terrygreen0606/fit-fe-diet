@@ -105,7 +105,7 @@ const Age = ({
 
   return (
     <>
-      <h1 className='register_v2tpl_title mb-5'>
+      <h1 className='register_v2_title mb-5'>
         {t('register.age_step_title')}
       </h1>
 
@@ -114,7 +114,7 @@ const Age = ({
           <div className='col-8 offset-3 col-xs-7 offset-xs-4 col-md-4 offset-md-5 pl-md-2'>
 
             <div>
-              <FormGroup className='register_v2tpl_fg_inline mb-0' inline>
+              <FormGroup className='register_v2_fg_inline mb-0' inline>
                 <InputField
                   block
                   height='md'
@@ -141,7 +141,7 @@ const Age = ({
         </div>
 
         <Button
-          className='register_v2tpl_btn mt-5'
+          className='register_v2_btn mt-5'
           color='primary'
           type='submit'
           size='lg'

@@ -36,27 +36,27 @@ const HealthProblems = ({
 
   return (
     <>
-      <h1 className='register_v2tpl_title'>{t('register.diseases_title')}</h1>
+      <h1 className='register_v2_title'>{t('register.diseases_title')}</h1>
 
       <div className='row'>
         <div className='col-8 offset-2'>
 
-          <div className='register_v2tpl_check_list'>
+          <div className='register_v2_check_list'>
             {registerData.diseases.map(({ code, checked, i18n_code }) => (
-              <label className='register_v2tpl_check_label'>
+              <label className='register_v2_check_label'>
                 <input
                   name='register_health_problem'
                   type='checkbox'
                   checked={checked}
                   onChange={(e) => changeDiseaseState(code, e.target.checked)}
                 />
-                <div className='register_v2tpl_check_item'>{t(i18n_code)}</div>
+                <div className='register_v2_check_item'>{t(i18n_code)}</div>
               </label>
             ))}
           </div>
 
           <Button
-            className='register_v2tpl_btn mt-5'
+            className='register_v2_btn mt-5'
             color='primary'
             size='lg'
             onClick={() => setRegisterView('DAY_MEALPLAN')}

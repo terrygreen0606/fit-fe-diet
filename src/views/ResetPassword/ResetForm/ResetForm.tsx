@@ -21,40 +21,48 @@ type ResetFormProps = {
   localePhrases: any;
 };
 
-const ResetForm = (props: ResetFormProps) => {
+const ResetForm = ({
+  form,
+  setForm,
+  errors,
+  setErrors,
+  formSubmit,
+  submitLoading,
+  localePhrases,
+}: ResetFormProps) => {
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
       value,
       event,
-      props.form,
-      props.setForm,
-      props.errors,
-      props.setErrors,
+      form,
+      setForm,
+      errors,
+      setErrors,
       element
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, props.errors)
+    getFieldErrorsUtil(field, errors)
       .map(msg => ({
         ...msg,
         message: t('api.ecode.invalid_value')
       }));
 
   const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+    getTranslate(localePhrases, code, placeholders);
 
   return (
-    <form className='loginScreen_form' onSubmit={(e) => props.formSubmit(e)}>
+    <form className='loginScreen_form' onSubmit={(e) => formSubmit(e)}>
       <FormGroup>
         <InputField
           name='email'
           label={t('login.form_email')}
           data-validate='["required", "email"]'
           errors={getFieldErrors('email')}
-          value={props.form.email}
+          value={form.email}
           autoComplete="email"
           autoFocus={1}
           onChange={(e) => validateOnChange('email', e.target.value, e)}
@@ -69,7 +77,7 @@ const ResetForm = (props: ResetFormProps) => {
         color='secondary'
         size='lg'
         block
-        isLoading={props.submitLoading}
+        isLoading={submitLoading}
       >
         {t('reset_password.submit')}
       </Button>

@@ -13,26 +13,11 @@ const Workout = ({
   registerData,
   setRegisterData,
   setRegisterView,
-  setStepTitles,
-  stepTitlesDefault,
   localePhrases,
 }: any) => {
   const t = (code: string) => getTranslate(localePhrases, code);
 
   const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    const currStepTitles = [...stepTitlesDefault];
-    currStepTitles[0] = t('register.step_health');
-    currStepTitles[1] = t('register.step_workout');
-    currStepTitles[2] = t('register.expect_step');
-
-    setStepTitles([...currStepTitles]);
-
-    return () => {
-      setStepTitles([...stepTitlesDefault]);
-    };
-  }, []);
 
   const nextStep = () => {
     if (registerData.goal === 0) {
@@ -79,9 +64,9 @@ const Workout = ({
   };
 
   return (
-    <>
+    <div className='register_v1_steps_content'>
       <h3
-        className={classNames('register_title mb-xl-5 mb-45', {
+        className={classNames('register_v1_title', {
           'text-red': hasError,
         })}
       >
@@ -110,9 +95,8 @@ const Workout = ({
         ))}
       </div>
 
-      <div className='text-center'>
+      <div className='register_v1_submit'>
         <Button
-          className='mt-xl-5 mt-45'
           style={{ width: '220px' }}
           color='primary'
           size='lg'
@@ -121,7 +105,7 @@ const Workout = ({
           {t('register.form_next')}
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -49,7 +49,7 @@ const ExpectationsGraph = ({
 
       <div className='text-center mt-4'>
         <Button
-          className='register_v2tpl_btn'
+          className='register_v2_btn'
           style={{ maxWidth: '355px' }}
           color='primary'
           type='submit'
