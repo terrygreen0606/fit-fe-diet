@@ -25,6 +25,7 @@ import Button from 'components/common/Forms/Button';
 import ContentLoading from 'components/hoc/ContentLoading';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
+import AddAvatarButton from 'components/common/Forms/AddAvatarButton';
 
 import './SettingsPersonalView.sass';
 
@@ -156,9 +157,7 @@ const SettingsPersonalView = (props: any) => {
               });
 
               setPersonalDataFormErrors(formErrorsTemp);
-            } catch {
-
-            }
+            } catch { }
           }
         });
     }
@@ -193,6 +192,10 @@ const SettingsPersonalView = (props: any) => {
               className='profile-settings-personal-form'
               onSubmit={(e) => personalDataFormSubmit(e)}
             >
+
+              <FormGroup inline>
+                <AddAvatarButton />
+              </FormGroup>
 
               <FormGroup inline>
                 <FormLabel>{t('register.form_name')}</FormLabel>

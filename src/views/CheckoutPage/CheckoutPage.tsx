@@ -13,15 +13,11 @@ import { InputError } from 'types';
 import {
   getPaymentTariff, fetchUserProfile,
   getPaymentMethods,
-  payCreditCard,
 } from 'api';
 
 // Components
-import FormGroup from 'components/common/Forms/FormGroup';
-import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import CustomRadio from 'components/common/Forms/CustomRadio';
-import CreditCardNumberField from 'components/common/Forms/CreditCardNumberField';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import RawCountDown from 'components/common/RawCountDown';
@@ -30,26 +26,20 @@ import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import FormValidator from 'utils/FormValidator';
 import SalesWidgets from 'components/SalesWidgets';
+import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
 import './CheckoutPage.sass';
 
 import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
-import { ReactComponent as LockIcon } from 'assets/img/icons/lock-icon.svg';
 
 const checkoutFormDefault = {
   payment_type: 'credit_card',
-  payer_name: null,
-  phone: null,
-  card_number: null,
-  card_cvv: null,
-  card_month: null,
-  card_year: null,
   discount_code: null,
 };
 
-const CheckoutPage = (props: any) => {
+const CheckoutPage = ({ localePhrases }: any) => {
   const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+    getTranslate(localePhrases, code, placeholders);
 
   const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
@@ -98,12 +88,12 @@ const CheckoutPage = (props: any) => {
     setProfileLoading(true);
 
     fetchUserProfile()
-      .then((response) => {
+      .then(({ data }) => {
         setProfileLoading(false);
 
-        if (response.data.success && response.data.data) {
+        if (data.success && data.data) {
           setProfileData({
-            name: response.data.data.name || t('checkout.title.user_name'),
+            name: data.data.name || t('checkout.title.user_name'),
           });
         } else {
           setProfileData({
@@ -125,13 +115,13 @@ const CheckoutPage = (props: any) => {
     setPaymentMethodsLoadingError(false);
 
     getPaymentMethods()
-      .then((response) => {
+      .then(({ data }) => {
         setPaymentMethodsLoading(false);
 
-        if (response.data.success && response.data.data) {
+        if (data.success && data.data) {
           setPaymentMethods({
-            cards: response.data.data.cards || [],
-            others: response.data.data.others || [],
+            cards: data.data.cards || [],
+            others: data.data.others || [],
           });
         }
       })
@@ -200,84 +190,8 @@ const CheckoutPage = (props: any) => {
       ...errors,
     ]);
 
-    if (!hasError) { }
+    if (!hasError) {}
   };
-
-  const getPayCredictCardParams = () => ({
-    article_id: getTariffDataValue('tariff'),
-    currency: getTariffDataValue('currency'),
-    card: {
-      number: checkoutForm.card_number.replace(/ /gi, ''),
-      year: checkoutForm.card_year,
-      month: checkoutForm.card_month,
-      cvv: checkoutForm.card_cvv,
-    },
-    contacts: {
-      phone: checkoutForm.phone,
-      payer_name: checkoutForm.payer_name,
-    },
-  });
-
-  const checkoutFormSubmit = async (e) => {
-    e.preventDefault();
-
-    const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
-
-    const { errors, hasError } = FormValidator.bulkValidate(inputs);
-
-    setCheckoutFormErrors([...errors]);
-
-    if (!hasError) {
-      setPaymentLoading(true);
-
-      payCreditCard(getPayCredictCardParams())
-        .then((response) => {
-          setPaymentLoading(false);
-
-          const paymentOrder = response.data;
-
-          if (paymentOrder) {
-            if (paymentOrder.redirect_url) {
-              window.location.href = paymentOrder.redirect_url;
-            } else if (paymentOrder.status) {
-              switch (paymentOrder.status) {
-                case 'ok':
-                  toast.success(t('checkout.payment_success'));
-                  setCheckoutForm({ ...checkoutFormDefault });
-                  break;
-
-                case 'pending':
-                  toast.warning(t('checkout.payment_pending'));
-                  break;
-
-                case 'fail':
-                  toast.error(t('checkout.payment_fail'));
-                  break;
-
-                default:
-              }
-            } else {
-              toast.error(t('checkout.payment_fail'));
-            }
-          } else {
-            toast.error(t('checkout.payment_fail'));
-          }
-        })
-        .catch(() => {
-          setPaymentLoading(false);
-          toast.error(t('checkout.payment_fail'));
-        });
-    }
-  };
-
-  const paymentSubmitIsDisabled = () =>
-    paymentLoading ||
-    tariffLoading ||
-    paymentMethodsLoading ||
-    tariffLoadingError ||
-    paymentMethodsLoadingError;
 
   return (
     <>
@@ -438,7 +352,6 @@ const CheckoutPage = (props: any) => {
                       <div className='checkout-payment-radio__list'>
                         {paymentMethods.cards.length > 0 && (
                           <CustomRadio
-                            inline
                             className={classNames('checkout-payment-radio', {
                               'radio-checked': checkoutForm.payment_type === 'credit_card',
                             })}
@@ -465,7 +378,6 @@ const CheckoutPage = (props: any) => {
 
                         {paymentMethods.others.map((method) => (
                           <CustomRadio
-                            inline
                             className={classNames('checkout-payment-radio', {
                               'radio-checked': checkoutForm.payment_type === method.id,
                             })}
@@ -488,146 +400,11 @@ const CheckoutPage = (props: any) => {
                     </ContentLoading>
                   </div>
 
-                  <form className='checkout-pay-form mt-5' onSubmit={(e) => checkoutFormSubmit(e)}>
-                    <h3 className='checkout-pay-form__title mb-3'>
-                      {t('checkout.form_title')}
-                      <LockIcon className='ml-2' />
-                    </h3>
-
-                    <FormGroup>
-                      <InputField
-                        block
-                        name='payer_name'
-                        label={`${t('checkout.form_name')}*:`}
-                        isValid={checkoutForm.payer_name && getFieldErrors('payer_name').length === 0}
-                        value={checkoutForm.payer_name}
-                        data-validate='["required"]'
-                        onChange={(e) => validateOnChange('payer_name', e.target.value, e)}
-                        errors={getFieldErrors('payer_name')}
-                        placeholder=''
-                        className='checkout-pay-form__input'
-                      />
-                    </FormGroup>
-
-                    <FormGroup>
-                      <InputField
-                        block
-                        name='phone'
-                        label={`${t('checkout.form_phone')}*:`}
-                        isValid={checkoutForm.phone && getFieldErrors('phone').length === 0}
-                        value={checkoutForm.phone}
-                        data-validate='["required", "number"]'
-                        onChange={(e) => validateOnChange('phone', e.target.value, e)}
-                        errors={getFieldErrors('phone')}
-                        placeholder=''
-                        className='checkout-pay-form__input'
-                      />
-                    </FormGroup>
-
-                    <FormGroup>
-                      <CreditCardNumberField
-                        block
-                        name='card_number'
-                        label={`${t('checkout.form_card_number')}*:`}
-                        isValid={checkoutForm.card_number && getFieldErrors('card_number').length === 0}
-                        value={checkoutForm.card_number}
-                        data-param={19}
-                        placeholderChar=' '
-                        data-validate='["required", "len"]'
-                        mask='1111 1111 1111 1111'
-                        onChange={(e) => validateOnChange('card_number', e.target.value, e)}
-                        errors={getFieldErrors('card_number')}
-                        placeholder=''
-                        className='checkout-pay-form__input'
-                      />
-                    </FormGroup>
-
-                    <div className='row'>
-                      <div className='col-6 col-xs-3'>
-
-                        <FormGroup>
-                          <InputField
-                            block
-                            name='card_month'
-                            data-param={2}
-                            label={`${t('checkout.form_card_expiration')}*:`}
-                            isValid={checkoutForm.card_month && getFieldErrors('card_month').length === 0}
-                            value={checkoutForm.card_month}
-                            data-validate='["required", "len"]'
-                            mask='11'
-                            onChange={(e) => validateOnChange('card_month', e.target.value, e)}
-                            errors={getFieldErrors('card_month')}
-                            placeholder=''
-                            className='checkout-pay-form__input'
-                          />
-                        </FormGroup>
-
-                      </div>
-                      <div className='col-6 col-xs-3'>
-
-                        <FormGroup>
-                          <FormLabel className='text-transparent'>{t('checkout.form_card_expiration')}</FormLabel>
-                          <InputField
-                            block
-                            name='card_year'
-                            isValid={checkoutForm.card_year && getFieldErrors('card_year').length === 0}
-                            value={checkoutForm.card_year}
-                            data-param={4}
-                            data-validate='["required", "len"]'
-                            mask='1111'
-                            onChange={(e) => validateOnChange('card_year', e.target.value, e)}
-                            errors={getFieldErrors('card_year')}
-                            placeholder=''
-                            className='checkout-pay-form__input'
-                          />
-                        </FormGroup>
-
-                      </div>
-                      <div className='col-xs-6 col-sm-4 offset-sm-2'>
-
-                        <FormGroup>
-                          <InputField
-                            block
-                            name='card_cvv'
-                            label={`${t('checkout.form_card_cvv')}*:`}
-                            isValid={checkoutForm.card_cvv && getFieldErrors('card_cvv').length === 0}
-                            value={checkoutForm.card_cvv}
-                            data-param={3}
-                            data-validate='["required", "len"]'
-                            mask='111'
-                            onChange={(e) => validateOnChange('card_cvv', e.target.value, e)}
-                            errors={getFieldErrors('card_cvv')}
-                            placeholder=''
-                            className='checkout-pay-form__input'
-                          />
-                        </FormGroup>
-
-                      </div>
-                    </div>
-
-                    <div className='text-center mt-3 mt-sm-5'>
-                      <Button
-                        type='submit'
-                        className='checkout-pay-form__submit'
-                        color='primary'
-                        isLoading={paymentLoading}
-                        disabled={paymentSubmitIsDisabled()}
-                      >
-                        {t('button.checkout_start')}
-                      </Button>
-                    </div>
-                  </form>
-
-                  <div className='text-center mt-5'>
-                    <img src={getImagePath('checkout/guaranteed-checkout-img.png')} className='img-fluid' alt='' />
-                  </div>
-
-                  <div className='money-back-guarantee-block mt-4'>
-                    <div>
-                      <h5 className='money-back-guarantee-block__title'>{t('lp.money_back_title')}</h5>
-                      <p className='money-back-guarantee-block__descr'>{t('lp.money_back_descr')}</p>
-                    </div>
-                  </div>
+                  <CheckoutPaymentFormCard
+                    className='mt-5'
+                    tariff={tariffData}
+                    localePhrases={localePhrases}
+                  />
                 </div>
               </div>
 

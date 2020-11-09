@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import uuid from 'react-uuid';
+import { toast } from 'react-toastify';
 
 import { routes } from 'constants/routes';
-import { getTranslate } from 'utils';
-import { getUserInviteLink } from 'api';
+import { getTranslate, convertTime } from 'utils';
+import {
+  getUserInviteLink,
+  fetchUserProfile,
+  getUserInvitedFriends,
+} from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -16,17 +23,59 @@ import CopyLinkButton from 'components/common/CopyLinkButton';
 import './ReferralView.sass';
 
 const ReferralView = (props: any) => {
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+  const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
-  const [inviteLink, setInviteLink] = useState('');
+  const [inviteLink, setInviteLink] = useState<string>('');
+
+  const [userName, setUserName] = useState<string>('');
+
+  const [invitedMembers, setInvitedMembers] = useState<any[]>([]);
+
+  const getInviteLink = () => {
+    getUserInviteLink().then(({ data }) => {
+      if (data.success && data.data) {
+        setInviteLink(data.data.url);
+      } else {
+        toast.error(t('common.error'));
+      }
+    }).catch(() => toast.error(t('common.error')));
+  };
+
+  const getUserProfile = () => {
+    fetchUserProfile().then(({ data }) => {
+      if (data.success && data.data) {
+        setUserName(`${data.data.name} ${data.data.surname || ''}`);
+      } else {
+        toast.error(t('common.error'));
+      }
+    }).catch(() => toast.error(t('common.error')));
+  };
+
+  const getInvitedFriends = () => {
+    getUserInvitedFriends().then(({ data }) => {
+      if (data.success && data.data) {
+        data.data.list.map((item) => {
+          item.id = uuid();
+
+          item.date = convertTime(item.invited_ts);
+        });
+
+        setInvitedMembers([...data.data.list]);
+      } else {
+        toast.error(t('common.error'));
+      }
+    }).catch(() => toast.error(t('common.error')));
+  };
 
   useEffect(() => {
     let cleanComponent = false;
-    getUserInviteLink().then((response) => {
-      if (response.data.success && response.data.data) {
-        if (!cleanComponent) setInviteLink(response.data.data.url);
-      }
-    }).catch(() => { });
+    if (!cleanComponent) {
+      getInviteLink();
+
+      getUserProfile();
+
+      getInvitedFriends();
+    }
 
     return () => cleanComponent = true;
   }, []);
@@ -69,7 +118,7 @@ const ReferralView = (props: any) => {
                     {t('common.or')}
                   </span>
                 </div>
-                <InviteEmail />
+                <InviteEmail onCompleted={() => getInvitedFriends()} />
                 <div className='referral__socials'>
                   <ShareButtons
                     shareLink={inviteLink}
@@ -86,6 +135,69 @@ const ReferralView = (props: any) => {
                   className='referral__media'
                 />
               </div>
+            </div>
+          </div>
+          <div className='referral__invited'>
+            <h2 className='referral__invited-title'>
+              {t('referral.invite.title', { NAME: userName })}
+            </h2>
+            <div className='referral__invited-list'>
+              <div className='referral__invited-list-head'>
+                <div className='referral__invited-list-item'>
+                  {t('referral.invite.email')}
+                </div>
+                <div className='referral__invited-list-item'>
+                  {t('referral.invite.user')}
+                </div>
+                <div className='referral__invited-list-item'>
+                  {t('referral.invite.paid')}
+                </div>
+              </div>
+              {invitedMembers.map((item) => (
+                <div
+                  key={item.id}
+                  className='referral__invited-list-row'
+                >
+                  <div className='referral__invited-list-item'>
+                    <a href={`mailto:${item.email}`} className='referral__invited-list-email'>
+                      {item.email}
+                    </a>
+                  </div>
+                  <div className='referral__invited-list-item'>
+                    <div className='referral__invited-list-user-info'>
+                      <div
+                        className='referral__invited-list-user-info-media'
+                        style={{
+                          backgroundImage: `url(${item.image})`,
+                        }}
+                      />
+                      <div className='referral__invited-list-user-info-desc'>
+                        <div className='referral__invited-list-user-info-desc-name'>
+                          {item.name}
+                        </div>
+                        <div className='referral__invited-list-user-info-desc-date'>
+                          {item.date}
+                        </div>
+                        <div className='referral__invited-list-user-info-desc-status'>
+                          {t(item.status_i18n)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='referral__invited-list-item'>
+                    <div className={classnames('referral__invited-list-paid', {
+                      active: item.is_paid,
+                    })}
+                    >
+                      {item.is_paid ? (
+                        t('common.yes')
+                      ) : (
+                        t('common.no')
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

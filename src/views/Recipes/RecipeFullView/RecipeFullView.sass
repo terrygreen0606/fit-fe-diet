@@ -16,7 +16,7 @@
     margin-bottom: 70px
 
     @media (max-width: 767px)
-      padding: 42px 30px 15px
+      padding: 42px 30px 45px
       flex-wrap: wrap
 
     &-media
@@ -216,6 +216,15 @@
           path
             fill: $black
             transition: fill 0.2s ease
+        
+        .loadingSpinner_wrap
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+
+          svg path
+            fill: $black
 
       &-button.active
         .recipe__main-info-desc-button-wrap::before
@@ -226,6 +235,9 @@
 
       &-button_cart
         right: 88px
+
+      &-button_reload
+        right: 166px
 
   &__additional-info
     padding-left: 100px

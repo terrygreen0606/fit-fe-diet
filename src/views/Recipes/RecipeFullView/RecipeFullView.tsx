@@ -25,6 +25,7 @@ import {
   deleteRecipe,
   addRecipeNote,
   addToShoppingListByRecipes,
+  changeRecipeInMealPlan,
 } from 'api';
 
 // Components
@@ -36,6 +37,7 @@ import Modal from 'components/common/Modal';
 import InputField from 'components/common/Forms/InputField';
 import ShareButtons from 'components/ShareButtons';
 import useOutsideClick from 'components/hooks/useOutsideClick';
+import ContentLoading from 'components/hoc/ContentLoading';
 
 import './RecipeFullView.sass';
 
@@ -51,7 +53,7 @@ import { ReactComponent as CursorTouchLogo } from 'assets/img/icons/cursor-touch
 import { ReactComponent as CloseIconLogo } from 'assets/img/icons/close-icon.svg';
 import { ReactComponent as ArrowLeftLogo } from 'assets/img/icons/angle-left-icon.svg';
 import { ReactComponent as ArrowRightLogo } from 'assets/img/icons/angle-right-icon.svg';
-// import { ReactComponent as ReloadGrayIcon } from 'assets/img/icons/reload-gray-icon.svg';
+import { ReactComponent as ReloadGrayIcon } from 'assets/img/icons/reload-gray-icon.svg';
 
 const RecipeFullView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
@@ -75,6 +77,10 @@ const RecipeFullView = (props: any) => {
   });
 
   const [addNoteFormErrors, setAddNoteFormErrors] = useState([]);
+
+  const [isActiveReloadRequest, setIsActiveReloadRequest] = useState<boolean>(false);
+  const [isActiveShopListRequest, setIsActiveShopListRequest] = useState<boolean>(false);
+  const [isActiveCheckedRequest, setIsActiveCheckedRequest] = useState<boolean>(false);
 
   const getFieldErrors = (field: string) => getFieldErrorsUtil(field, addNoteFormErrors);
 
@@ -376,19 +382,52 @@ const RecipeFullView = (props: any) => {
                     >
                       <HeartFilledIcon />
                     </button>
+                    {props.location.fromMealPlan && (
+                      <button
+                        type='button'
+                        onClick={() => {
+                          setIsActiveReloadRequest(true);
+                          changeRecipeInMealPlan(props.location.dateTs, recipeId).then((response) => {
+                            if (response.data.success && response.data.data) {
+                              toast.success(t('recipe.success_update'));
+                            }
+                          }).catch(() => toast.error(t('common.error')))
+                            .finally(() => setIsActiveReloadRequest(false));
+                        }}
+                        className='recipe__main-info-desc-button recipe__main-info-desc-button_reload'
+                      >
+                        <div className='recipe__main-info-desc-button-wrap'>
+                          <ContentLoading
+                            isLoading={isActiveReloadRequest}
+                            isError={false}
+                            spinSize='xs'
+                          >
+                            <ReloadGrayIcon className='recipe__main-info-desc-button-icon' />
+                          </ContentLoading>
+                        </div>
+                      </button>
+                    )}
                     <button
                       type='button'
                       onClick={() => {
+                        setIsActiveShopListRequest(true);
                         addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then((response) => {
                           if (response.data.success && response.data.data) {
                             toast.success(t('recipe.update_shopping_list.success'));
                           }
-                        }).catch(() => { });
+                        }).catch(() => toast.error(t('common.error')))
+                          .finally(() => setIsActiveShopListRequest(false));
                       }}
                       className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
                     >
                       <div className='recipe__main-info-desc-button-wrap'>
-                        <CartButtonIcon className='recipe__main-info-desc-button-icon' />
+                        <ContentLoading
+                          isLoading={isActiveShopListRequest}
+                          isError={false}
+                          spinSize='xs'
+                        >
+                          <CartButtonIcon className='recipe__main-info-desc-button-icon' />
+                        </ContentLoading>
                       </div>
                     </button>
                     <button
@@ -397,10 +436,7 @@ const RecipeFullView = (props: any) => {
                         active: recipeData.isPrepared,
                       })}
                       onClick={() => {
-                        setRecipeData({
-                          ...recipeData,
-                          isPrepared: !recipeData.isPrepared,
-                        });
+                        setIsActiveCheckedRequest(true);
                         prepareRecipe(recipeId).then((response) => {
                           if (response.data.success && response.data.data) {
                             setRecipeData({
@@ -413,11 +449,17 @@ const RecipeFullView = (props: any) => {
                             ...recipeData,
                             isPrepared: !recipeData.isPrepared,
                           });
-                        });
+                        }).finally(() => setIsActiveCheckedRequest(false));
                       }}
                     >
                       <div className='recipe__main-info-desc-button-wrap'>
-                        <CheckedIcon className='recipe__main-info-desc-button-icon' />
+                        <ContentLoading
+                          isLoading={isActiveCheckedRequest}
+                          isError={false}
+                          spinSize='xs'
+                        >
+                          <CheckedIcon className='recipe__main-info-desc-button-icon' />
+                        </ContentLoading>
                       </div>
                     </button>
                   </div>
@@ -768,7 +810,8 @@ const RecipeFullView = (props: any) => {
             </div>
           </div>
         </div>
-      )}
+      )
+      }
     </>
   );
 };

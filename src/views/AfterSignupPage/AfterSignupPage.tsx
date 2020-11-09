@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import uuid from 'react-uuid';
 import { getTranslate, getImagePath } from 'utils';
 import { getAppTariffs, getAppReviews } from 'api';
 
@@ -45,11 +46,6 @@ const AfterSignupPage = ({
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
 
-  const [tariffData, setTariffData] = useState<any>({
-    price_text: null,
-    price_old_text: null,
-  });
-
   const getUserTariffs = () => {
     setTariffsLoading(true);
     setTariffsLoadingError(false);
@@ -61,9 +57,9 @@ const AfterSignupPage = ({
             setTariffsDataList(data.data);
 
             if (data.data.length > 1) {
-              setActiveTariffId(data.data[1].id);
+              setActiveTariffId(data.data[1].tariff);
             } else if (data.data.length > 0) {
-              setActiveTariffId(data.data[0].id);
+              setActiveTariffId(data.data[0].tariff);
             }
           }
         } else {
@@ -87,7 +83,10 @@ const AfterSignupPage = ({
         setReviewsLoading(false);
 
         if (data.data && data.data.length) {
-          setReviewsList(data.data);
+          setReviewsList(data.data.map((review) => ({
+            ...review,
+            id: uuid(),
+          })));
         }
       })
       .catch(() => {
@@ -138,25 +137,8 @@ const AfterSignupPage = ({
   };
 
   const getActiveTariffData = () => {
-    let activeTariffData = {
-      currency: null,
-      months: null,
-      price: null,
-    };
-
-    const activeTariff = tariffsDataList.find((tariff) => tariff.id === activeTariffId);
-
-    if (activeTariff) {
-      const { price_text, months, currency } = activeTariff;
-
-      activeTariffData = {
-        currency,
-        price: price_text,
-        months,
-      };
-    }
-
-    return activeTariffData;
+    const activeTariff = tariffsDataList.find((tariff) => tariff.tariff === activeTariffId);
+    return activeTariff;
   };
 
   return (
@@ -217,23 +199,28 @@ const AfterSignupPage = ({
                     dots
                     autoplay
                     autoplaySpeed={2000}
-                    slides={reviewsList.map((review) => (
-                      <div className='app-reviews-slider__item'>
+                    slides={reviewsList.map(({
+                      id,
+                      image,
+                      name,
+                      text,
+                    }) => (
+                      <div key={id} className='app-reviews-slider__item'>
                         <div
                           className='app-reviews-slider__item_img'
-                          style={{ backgroundImage: `url(${review.image || null})` }}
+                          style={{ backgroundImage: `url(${image})` }}
                         />
 
                         <div className='app-reviews-slider__item_content_wrap'>
                           <div className='app-reviews-slider__item_img_wrap'>
                             <span
                               className='app-reviews-slider__item_author_img'
-                              style={{ backgroundImage: `url(${review.image})` }}
+                              style={{ backgroundImage: `url(${image})` }}
                             />
                           </div>
 
                           <div className='app-reviews-slider__item_content'>
-                            <p className='app-reviews-slider__item_descr'>{review.text}</p>
+                            <p className='app-reviews-slider__item_descr'>{text}</p>
                             <div className='app-reviews-slider__item_footer'>
                               <div className='rate-stars_list'>
                                 <StarFillIcon className='rate-stars_item' />
@@ -245,7 +232,7 @@ const AfterSignupPage = ({
                               <h6 className='app-reviews-slider__item_author'>
                                 <b>
                                   {'- '}
-                                  {review.name}
+                                  {name}
                                 </b>
                                 {', '}
                                 {t('common.app_user')}
@@ -349,11 +336,11 @@ const AfterSignupPage = ({
                   dots
                   autoplay
                   autoplaySpeed={3000}
-                  slides={reviewsList.map((review) => (
-                    <div className='app-reviews-slider__item'>
+                  slides={reviewsList.map(({ id, image }) => (
+                    <div key={id} className='app-reviews-slider__item'>
                       <div
                         className='app-reviews-slider__item_img'
-                        style={{ backgroundImage: `url(${review.image})` }}
+                        style={{ backgroundImage: `url(${image})` }}
                       />
                     </div>
                   ))}
@@ -498,13 +485,13 @@ const AfterSignupPage = ({
 
                   <TariffPlanSelect
                     tariffs={tariffsDataList.map(({
-                      id,
+                      tariff,
                       months,
                       price_monthly_text,
                       price_old_monthly_text,
                       price_text,
                     }) => ({
-                      id,
+                      id: tariff,
                       price: price_text,
                       priceMonth: price_monthly_text,
                       priceOldMonth: price_old_monthly_text,
@@ -524,14 +511,14 @@ const AfterSignupPage = ({
                   <h2 className='mb-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
                   <div className='advantages-checklist'>
-                    {Array(6).fill(1).map((el, elIndex) => (
-                      <div className='advantages-checklist-item'>
+                    {Array(6).fill(uuid()).map((id, index) => (
+                      <div key={id} className='advantages-checklist-item'>
                         <h6 className='advantages-checklist-item__title'>
-                          {t(`lp.plan.advantage${elIndex}.title`)}
+                          {t(`lp.plan.advantage${index}.title`)}
                         </h6>
 
                         <div className='advantages-checklist-item__content'>
-                          {t(`lp.plan.advantage${elIndex}.descr`)}
+                          {t(`lp.plan.advantage${index}.descr`)}
                         </div>
                       </div>
                     ))}
@@ -548,24 +535,13 @@ const AfterSignupPage = ({
       <section className='after-signup-payment-form'>
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-8 offset-lg-2 col-xl-6 offset-xl-3'>
+            <div className='col-12'>
 
               <h3 className='mb-5 fw-bold text-center'>{t('lp.select_payment.title')}</h3>
 
               <CheckoutPaymentFormCard
-                tariffId={activeTariffId}
-                currency={getActiveTariffData().currency}
+                tariff={getActiveTariffData()}
                 localePhrases={localePhrases}
-              />
-
-              <p
-                className='mt-4 after-signup-payment-form__total'
-                dangerouslySetInnerHTML={{
-                  __html: t('checkout.form_card.total_title', {
-                    AMOUNT: getActiveTariffData().price,
-                    COUNT: getActiveTariffData().months,
-                  }),
-                }}
               />
 
             </div>
