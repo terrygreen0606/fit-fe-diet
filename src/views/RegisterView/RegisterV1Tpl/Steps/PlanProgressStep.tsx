@@ -6,15 +6,14 @@ import { getUserWeightPrediction } from 'api';
 // Components
 import LinearProgress from 'components/common/LinearProgress';
 
-import '../RegisterV2Tpl.sass';
-
-const PlanProgress = ({
+const PlanProgressStep = ({
   registerData,
   setRegisterData,
   setRegisterView,
   localePhrases,
 }: any) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
+  const t = (code: string) =>
+    getTranslate(localePhrases, code);
 
   const [progressTitle, setProgressTitle] = useState(t('register.plan_progress_descr1'));
 
@@ -33,7 +32,7 @@ const PlanProgress = ({
 
     if (registerData.goal === 0) {
       setTimeout(() => {
-        setRegisterView('CONFIRM');
+        setRegisterView('HEALTH_PROBLEMS');
       }, 10000);
     } else {
       getUserWeightPrediction({
@@ -50,25 +49,30 @@ const PlanProgress = ({
           });
 
           setTimeout(() => {
-            setRegisterView('EXPECTATIONS');
+            setRegisterView('HEALTH_PROBLEMS');
           }, 9000);
         } else {
           toast.error(t('register.weight_predict_error_msg'));
         }
-      }).catch((error) => {
+      }).catch(() => {
         toast.error(t('register.weight_predict_error_msg'));
       });
     }
   }, []);
 
   return (
-    <div className='px-5'>
-      <h1 className='mb-2 mb-xl-5 fw-regular'>{t('register.plan_progress_title')}</h1>
+    <div className='register_v1_steps_content'>
+      <h5 className='mb-2 mb-xl-5 fw-regular'>{t('register.plan_progress_title')}</h5>
+
       <span className='site-logo mb-2 mb-xl-4' />
-      <h3 className='register_v2_title'>{progressTitle}</h3>
-      <LinearProgress color='green' />
+
+      <LinearProgress />
+
+      <br />
+
+      <p>{progressTitle}</p>
     </div>
   );
 };
 
-export default PlanProgress;
+export default PlanProgressStep;

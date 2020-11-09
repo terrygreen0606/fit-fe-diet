@@ -36,22 +36,22 @@ const NotEating = ({
 
   return (
     <>
-      <h1 className='register_v2tpl_title'>{t('register.v2.not_eating_title')}</h1>
+      <h1 className='register_v2_title'>{t('register.v2.not_eating_title')}</h1>
 
       <div className='row'>
         <div className='col-10 offset-1'>
 
-          <div className='register_v2tpl_eating_list'>
+          <div className='register_v2_eating_list'>
             {registerData.ignore_cuisine_ids.map(({ id, name, image }) => (
-              <label key={id} className='register_v2tpl_eating_label register_v2tpl_check_label'>
+              <label key={id} className='register_v2_eating_label register_v2_check_label'>
                 <input
                   name='register_not_eating'
                   type='checkbox'
                   onChange={(e) => changeCuisineState(id, e.target.checked)}
                 />
 
-                <div key={id} className='register_v2tpl_check_item register_v2tpl_eating_item'>
-                  <img src={image} className='register_v2tpl_eating_item_icon' alt='' />
+                <div key={id} className='register_v2_check_item register_v2_eating_item'>
+                  <img src={image} className='register_v2_eating_item_icon' alt='' />
                   <span>{name}</span>
                 </div>
               </label>
@@ -62,7 +62,7 @@ const NotEating = ({
       </div>
 
       <Button
-        className='register_v2tpl_btn'
+        className='register_v2_btn'
         color='primary'
         size='lg'
         onClick={() => setRegisterView('AGE')}

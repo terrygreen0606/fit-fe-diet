@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { InputError } from 'types';
 import {
   validateFieldOnChange,
@@ -11,21 +10,23 @@ import { toast } from 'react-toastify';
 import Helmet from 'react-helmet';
 
 // Components
+import FormValidator from 'utils/FormValidator';
+import WithTranslate from 'components/hoc/WithTranslate';
 import SaveForm from './SaveForm';
 import SaveInfo from './SaveInfo';
 
-import FormGroup from 'components/common/Forms/FormGroup';
-import InputField from 'components/common/Forms/InputField';
-import Button from 'components/common/Forms/Button';
-import FormValidator from 'utils/FormValidator';
-import WithTranslate from 'components/hoc/WithTranslate';
-
 import '../LoginView/LoginView.sass';
 
-const SaveNewPassword = (props: any) => {
+const SaveNewPassword = ({
+  match,
+  localePhrases,
+}: any) => {
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(localePhrases, code, placeholders);
+
   const [resetPassForm, setResetPassForm] = useState({
     password: null,
-    password2: null
+    password2: null,
   });
 
   const [resetPassErrors, setResetPassErrors] = useState<InputError[]>([]);
@@ -33,6 +34,14 @@ const SaveNewPassword = (props: any) => {
   const [resetPassLoading, setResetPassLoading] = useState<boolean>(false);
 
   const [resetPasswordSuccess, setResetPasswordSuccess] = useState<boolean>(false);
+
+  useEffect(() => {
+    document.querySelector('.basePageLayoutWrapper').classList.add('auth_layout');
+
+    return () => {
+      document.querySelector('.basePageLayoutWrapper').classList.remove('auth_layout');
+    };
+  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -43,27 +52,23 @@ const SaveNewPassword = (props: any) => {
       setResetPassForm,
       resetPassErrors,
       setResetPassErrors,
-      element
+      element,
     );
   };
 
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, resetPassErrors)
-      .map(msg => ({
+      .map((msg) => ({
         ...msg,
-        message: t('api.ecode.invalid_value')
+        message: t('api.ecode.invalid_value'),
       }));
-
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
 
   const resetPassSubmit = (e) => {
     e.preventDefault();
 
     const form = e.target;
     const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -72,8 +77,8 @@ const SaveNewPassword = (props: any) => {
     if (!hasError) {
       setResetPassLoading(true);
 
-      saveResetPassword(resetPassForm.password, props.match.params.token)
-        .then(response => {
+      saveResetPassword(resetPassForm.password, match.params.token)
+        .then((response) => {
           setResetPassLoading(false);
 
           if (response.data.success) {
@@ -83,7 +88,7 @@ const SaveNewPassword = (props: any) => {
             toast.error(t('reset_password.pass.error'));
           }
         })
-        .catch(error => {
+        .catch((error) => {
           setResetPassLoading(false);
           toast.error(t('reset_password.pass.error'));
         });
@@ -104,7 +109,7 @@ const SaveNewPassword = (props: any) => {
         <span className='mainHeader_logo d-lg-none-i' />
 
         {resetPasswordSuccess ? (
-          <SaveInfo localePhrases={props.localePhrases || {}} />
+          <SaveInfo localePhrases={localePhrases || {}} />
         ) : (
           <SaveForm
             formSubmit={resetPassSubmit}
@@ -113,7 +118,7 @@ const SaveNewPassword = (props: any) => {
             submitLoading={resetPassLoading}
             errors={resetPassErrors}
             setErrors={setResetPassErrors}
-            localePhrases={props.localePhrases || {}}
+            localePhrases={localePhrases || {}}
           />
         )}
       </div>
@@ -122,4 +127,3 @@ const SaveNewPassword = (props: any) => {
 };
 
 export default WithTranslate(SaveNewPassword);
-

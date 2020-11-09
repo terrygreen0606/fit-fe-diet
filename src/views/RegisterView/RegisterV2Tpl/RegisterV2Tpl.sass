@@ -1,11 +1,12 @@
 @import '../../../assets/sass/vars'
 
 
-.register_v2tpl
+.register_v2
   padding-top: 50px
 
   @media only screen and (max-width : 576px)
     padding-top: 20px
+
   &_content
     margin-top: 90px
     padding: 20px
@@ -19,15 +20,18 @@
       overflow-x: hidden
       margin-top: 50px
       +scrollStyle(7px)
+
   &_title
     margin-bottom: 80px
     text-align: center
 
     @media only screen and (max-width : 1200px)
       margin-bottom: 40px
+      
   &_btn
     min-width: 220px
     margin-top: 20px  
+
   &_check
     &_item
       display: inline-flex
@@ -54,35 +58,40 @@
         color: $steel-blue
         background-color: #fff
         box-shadow: 3px 4px 26px -9px $steel-blue
+        
     &_list
-      .register_v2tpl_check_item
+      .register_v2_check_item
         margin-bottom: 39px
+
         @media only screen and (max-width : 576px)
           margin-bottom: 19px
-      .register_v2tpl_check_label
+
+      .register_v2_check_label
         &:last-child
-          .register_v2tpl_check_item
+          .register_v2_check_item
             margin-bottom: 0
     &_label
       input
         display: none
-        &:checked ~ .register_v2tpl_check_item
+        &:checked ~ .register_v2_check_item
           font-weight: bold
           color: #fff
           background-color: $steel-blue
           border-color: $steel-blue
+
   &_eating
     &_list
       display: flex
       align-items: flex-start
       justify-content: center
       flex-wrap: wrap
-      .register_v2tpl_eating_label
+      .register_v2_eating_label
         display: flex
         width: calc(50% - 7px)
         margin-bottom: 29px
         &:nth-child(2n + 1)
           margin-right: 14px
+
         @media only screen and (max-width : 576px)
           width: 100%
           margin-bottom: 19px
@@ -95,12 +104,14 @@
       &_icon
         margin-right: 10px
         height: 24px
+
   &_fg_inline
     flex-wrap: nowrap !important
     &.formGroup_inline
       .fg-input
         @media only screen and (max-width : 480px)
           flex: 0 0 calc(100% - 95px) !important
+
     .fgLabel
       margin-bottom: 0 !important
       margin-right: 0

@@ -22,7 +22,7 @@ const Goal = ({
 
   return (
     <>
-      <h1 className='register_v2tpl_title'>{t('register.help_achieve_goal')}</h1>
+      <h1 className='register_v2_title'>{t('register.help_achieve_goal')}</h1>
 
       <div className='row'>
         <div className='col-md-8 offset-md-2'>
@@ -81,7 +81,7 @@ const Goal = ({
           </div>
 
           <Button
-            className='register_v2tpl_btn mt-5'
+            className='register_v2_btn mt-5'
             color='primary'
             size='lg'
             onClick={() => setRegisterView('NOT_EATING')}

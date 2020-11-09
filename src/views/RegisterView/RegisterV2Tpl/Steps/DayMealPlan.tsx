@@ -54,7 +54,7 @@ const DayMealPlan = ({
   return (
     <>
       <h1
-        className={classNames('register_v2tpl_title', {
+        className={classNames('register_v2_title', {
           'text-red': hasError
         })}
       >
@@ -64,16 +64,16 @@ const DayMealPlan = ({
       <div className='row'>
         <div className='col-8 offset-2'>
 
-          <div className='register_v2tpl_check_list'>
+          <div className='register_v2_check_list'>
             {registerData.meal_counts.map(({ value, checked, i18n_code }) => (
-              <label key={value} className='register_v2tpl_check_label'>
+              <label key={value} className='register_v2_check_label'>
                 <input
                   name='register_day_meal_plan'
                   type='radio'
                   checked={checked}
                   onChange={(e) => changeMealCountState(value, e.target.checked)}
                 />
-                <div className='register_v2tpl_check_item'>{t(i18n_code)}</div>
+                <div className='register_v2_check_item'>{t(i18n_code)}</div>
               </label>
             ))}
           </div>
@@ -82,7 +82,7 @@ const DayMealPlan = ({
       </div>
 
       <Button
-        className='register_v2tpl_btn mt-5'
+        className='register_v2_btn mt-5'
         color='primary'
         size='lg'
         onClick={() => nextStep()}

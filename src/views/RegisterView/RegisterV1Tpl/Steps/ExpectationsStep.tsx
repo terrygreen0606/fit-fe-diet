@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getTranslate } from 'utils';
 import moment from 'moment';
 
@@ -6,9 +6,7 @@ import moment from 'moment';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import Button from 'components/common/Forms/Button';
 
-import '../RegisterV2Tpl.sass';
-
-const ExpectationsGraph = ({
+const ExpectationsStep = ({
   registerData,
   setRegisterView,
   localePhrases,
@@ -27,19 +25,18 @@ const ExpectationsGraph = ({
   };
 
   return (
-    <div className='text-center'>
-      <h1 className='mb-xl-4 mb-2 fw-regular'>{t('register.expect_title')}</h1>
+    <div className='register_v1_steps_content'>
+      <h5 className='mb-xl-4 mb-2 fw-regular'>{t('register.expect_title')}</h5>
 
-      <h2 className='mb-45 text-steel-blue'>
+      <h4 className='mb-xl-5 mb-3 text-steel-blue'>
         {t(I18N_MEASUREMENT, { COUNT: weight_goal })}
         {' '}
         {t('register.expect_date_by')}
         {' '}
         {getPredictedDate()}
-      </h2>
+      </h4>
 
       <DietExpectationsChart
-        color='blue'
         weight={weight}
         weightGoal={weight_goal}
         predictedDate={predicted_date}
@@ -47,15 +44,14 @@ const ExpectationsGraph = ({
         localePhrases={localePhrases}
       />
 
-      <div className='text-center mt-4'>
+      <div className='register_v1_submit'>
         <Button
-          className='register_v2_btn'
           style={{ maxWidth: '355px' }}
           color='primary'
           type='submit'
           size='lg'
           block
-          onClick={() => setRegisterView('CONFIRM')}
+          onClick={() => setRegisterView('JOIN')}
         >
           {t('button.continue')}
         </Button>
@@ -64,4 +60,4 @@ const ExpectationsGraph = ({
   );
 };
 
-export default ExpectationsGraph;
+export default ExpectationsStep;

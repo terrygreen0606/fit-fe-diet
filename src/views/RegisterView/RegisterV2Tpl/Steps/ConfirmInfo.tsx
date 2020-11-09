@@ -241,7 +241,7 @@ const ConfirmInfo = ({
 
             <div className='text-center'>
               <Button
-                className='register_v2tpl_btn mt-5'
+                className='register_v2_btn mt-5'
                 style={{ maxWidth: '355px' }}
                 color='primary'
                 type='submit'

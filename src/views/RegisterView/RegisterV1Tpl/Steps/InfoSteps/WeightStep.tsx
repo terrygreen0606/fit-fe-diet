@@ -4,8 +4,8 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
-import { toast } from 'react-toastify';
 import { InputError } from 'types';
+import { toast } from 'react-toastify';
 import { userValidate } from 'api';
 
 // Components
@@ -16,11 +16,11 @@ import InputField from 'components/common/Forms/InputField';
 import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 import FormValidator from 'utils/FormValidator';
 
-import '../RegisterV2Tpl.sass';
+import '../../RegisterV1Tpl.sass';
 
 import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
 
-const Age = ({ 
+const WeightStep = ({
   registerData,
   setRegisterData,
   registerDataErrors,
@@ -28,7 +28,8 @@ const Age = ({
   setRegisterView,
   localePhrases,
 }: any) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
+  const t = (code: string) =>
+    getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
 
@@ -52,6 +53,9 @@ const Age = ({
         message: t('api.ecode.invalid_value'),
       }));
 
+  const isFieldValid = (field: string) =>
+    getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
+
   const registerInfoSubmit = (e) => {
     e.preventDefault();
 
@@ -66,19 +70,22 @@ const Age = ({
       setValidateLoading(true);
 
       const {
-        age,
+        weight,
+        measurement,
       } = registerData;
 
       userValidate({
-        age,
+        weight,
+        measurement,
       })
-        .then((response) => {
-          setValidateLoading(false);
-          setRegisterView('BACK_ISSUES');
+        .then(({ data }) => {
+          if (data.success) {
+            setRegisterView('INFO_WEIGHT_GOAL');
+          } else {
+            toast.error(t('register.error_msg'));
+          }
         })
         .catch((error) => {
-          setValidateLoading(false);
-
           toast.error(t('register.error_msg'));
 
           if (error.response && error.response.status >= 400 && error.response.status < 500) {
@@ -95,63 +102,68 @@ const Age = ({
               });
 
               setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-              
-            }
+            } catch {}
           }
+        })
+        .finally(() => {
+          setValidateLoading(false);
         });
     }
   };
 
   return (
-    <>
-      <h1 className='register_v2_title mb-5'>
-        {t('register.age_step_title')}
-      </h1>
+    <div className='register_v1_steps_content'>
+      <h3 className='register_v1_title'>
+        <AngleLeftIcon
+          className='register-back-icon mr-3'
+          onClick={() => setRegisterView('INFO_HEIGHT')}
+        />
+        {t('register.weight_step_title')}
+      </h3>
 
-      <form className='mt-5 pt-4' onSubmit={(e) => registerInfoSubmit(e)}>
-        <div className='row'>
-          <div className='col-8 offset-3 col-xs-7 offset-xs-4 col-md-4 offset-md-5 pl-md-2'>
+      <form className='register_info_form' onSubmit={(e) => registerInfoSubmit(e)}>
+        <FormGroup className='register_info_fg mb-0' inline>
+          <InputField
+            block
+            height='md'
+            type={registerData.measurement === 'us' ? 'text' : 'number'}
+            min={0}
+            autoFocus
+            value={registerData.weight}
+            data-param='30,400'
+            data-validate={`["required"${
+              registerData.measurement === 'si' ? ', "min-max"' : ''
+            }]`}
+            name='weight'
+            invalid={getFieldErrors('weight').length > 0}
+            isValid={isFieldValid('weight')}
+            onChange={(e) => validateOnChange('weight', e.target.value, e)}
+            placeholder=''
+          />
+          <FormLabel>
+            {registerData.measurement === 'us' && t('common.lbs_label')}
+            {registerData.measurement === 'si' && t('common.kg_label')}
+          </FormLabel>
+        </FormGroup>
 
-            <div>
-              <FormGroup className='register_v2_fg_inline mb-0' inline>
-                <InputField
-                  block
-                  height='md'
-                  type='number'
-                  autoFocus
-                  min={16}
-                  max={100}
-                  data-param='16,100'
-                  name='age'
-                  value={registerData.age}
-                  data-validate='["required", "min-max", "integer"]'
-                  invalid={getFieldErrors('age').length > 0}
-                  onChange={(e) => validateOnChange('age', e.target.value, e)}
-                  placeholder=''
-                />
-                <FormLabel>{t('common.age_yo')}</FormLabel>
-              </FormGroup>
+        {getFieldErrors('weight').slice(0, 1).map((error, i) => (
+          <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
+        ))}
 
-              {getFieldErrors('age').slice(0, 1).map((error, i) => (
-                <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
-              ))}
-            </div>
-          </div>
+        <div className='register_v1_submit'>
+          <Button
+            style={{ width: '217px' }}
+            color='primary'
+            type='submit'
+            size='lg'
+            isLoading={validateLoading}
+          >
+            {t('register.form_next')}
+          </Button>
         </div>
-
-        <Button
-          className='register_v2_btn mt-5'
-          color='primary'
-          type='submit'
-          size='lg'
-          isLoading={validateLoading}
-        >
-          {t('register.form_next')}
-        </Button>
       </form>
-    </>
+    </div>
   );
 };
 
-export default Age;
+export default WeightStep;

@@ -88,7 +88,7 @@ const RegisterV2Tpl = ({
   };
 
   return (
-    <div className='register_v2tpl'>
+    <div className='register_v2'>
       <ProgressLine
         steps={[{
           text: t('register.v2.welcome_step'),
@@ -100,7 +100,7 @@ const RegisterV2Tpl = ({
         activeStepIndex={registerStep + 1}
       />
 
-      <div className='register_v2tpl_content'>
+      <div className='register_v2_content'>
         {getRegisterStepView(registerView)}
       </div>
     </div>
