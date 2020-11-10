@@ -13,7 +13,10 @@ interface InitAppProps extends RouteComponentProps {
 const InitApp = ({ history, children }: InitAppProps) => {
   window.addEventListener('beforeinstallprompt', (e) => {
     window['beforeinstallprompt'] = e;
-    if (history.location.pathname.indexOf(routes.register) > -1) {
+    if (
+      history.location.pathname.indexOf(routes.register) > -1 ||
+      history.location.pathname.indexOf(routes.afterSignup) > -1
+    ) {
       e.preventDefault();
     }
   });
