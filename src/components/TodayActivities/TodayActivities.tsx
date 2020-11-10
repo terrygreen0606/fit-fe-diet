@@ -1,62 +1,59 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import { getTranslate } from 'utils';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 
-import TodayActivityItem, { ItemProps } from './TodayActivityItem';
-
 import './TodayActivities.sass';
 
-type TodayActivitiesProps = {
-  items: ItemProps[],
-  todayActivities: string[],
-  onChange: (any) => void,
-  type: 'radio' | 'checkbox',
-  localePhrases: [];
-  name?: string,
-};
+import { ReactComponent as CheckedIcon } from 'assets/img/icons/checked-icon.svg';
 
-const TodayActivitiesPropsDefault = {
-  name: '',
+type TodayActivitiesProps = {
+  title: string;
+  items: {
+    id: number;
+    title: string;
+    icon: any;
+    link: string;
+  }[];
+  localePhrases: any;
 };
 
 const TodayActivities = ({
-  items, todayActivities, onChange, type, localePhrases, name,
+  title,
+  items,
+  localePhrases,
 }: TodayActivitiesProps) => {
   const t = (code: string) => getTranslate(localePhrases, code);
 
   return (
     <>
-      <h2 className='today-activities-activity-title'>
-        {name}
+      <h2 className='today-activities__title'>
+        {title}
       </h2>
-      <div className='today-activities-activity-list'>
-        {
-          items.map((item) => (
-            <label key={item.text}>
-              <input
-                type={type}
-                value={item.value}
-                onChange={onChange}
-                checked={todayActivities.includes(item.value)}
-                disabled={item.disabled}
-              />
-              <TodayActivityItem
-                active={todayActivities.includes(item.value)}
-                value={item.value}
-                icon={item.icon}
-                text={t(item.text)}
-                disabled={item.disabled}
-              />
-            </label>
-          ))
-        }
+      <div className='today-activities__list'>
+        {items.map((item) => (
+          <Link
+            key={item.id}
+            to={item.link}
+            className='today-activities__item card-bg'
+          >
+            <div className='today-activities__item-media'>
+              {item.icon}
+            </div>
+            <div className='today-activities__item-desc'>
+              {t(item.title)}
+            </div>
+            <div className='today-activities__item-checked-icon'>
+              <CheckedIcon />
+            </div>
+          </Link>
+        ))}
       </div>
     </>
   );
 };
-
-TodayActivities.defaultProps = TodayActivitiesPropsDefault;
 
 export default WithTranslate(TodayActivities);

@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/style-prop-object */
 import React, { useState, useEffect } from 'react';
@@ -147,7 +148,7 @@ const SettingsPersonalView = (props: any) => {
             try {
               const validateErrors = JSON.parse(error.response.data.message);
 
-              let formErrorsTemp: InputError[] = [...personalDataFormErrors];
+              const formErrorsTemp: InputError[] = [...personalDataFormErrors];
 
               Object.keys(validateErrors).map((field) => {
                 formErrorsTemp.push({

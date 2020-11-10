@@ -163,6 +163,7 @@
 
         svg
           max-width: 100%
+          height: auto
 
       &-text
         flex: 1
@@ -506,19 +507,38 @@
       flex-basis: 100%
       padding: 0
       border-right: none
-
+    
     &-rewards
+      display: flex
+      flex-wrap: wrap
       margin-top: 30px
       padding-top: 30px
       border-top: 1px solid #E8E8E8
       flex-basis: 100%
       padding-left: 0
 
+      &-title
+        width: 100%
+
       &-item
-        align-items: center
+        width: 50%
+        align-items: flex-start
+
+        &-media
+          max-width: 25px
 
         &-text
-          padding-left: 20px
+          padding-right: 5px
+          padding-left: 10px
+
+          &-title
+            font-size: 18px
+
+          &-desc
+            font-size: 14px
+      
+      &-item:not(:first-child)
+        margin-top: 0
 
   .dashboard__cards
     &-item
@@ -630,7 +650,8 @@
         right: 1px
 
     &-progress-chart
-      max-width: 270px
+      .chartjs-render-monitor
+        max-width: 100%
 
   .dashboard__cards
     &-item_water-rate-media

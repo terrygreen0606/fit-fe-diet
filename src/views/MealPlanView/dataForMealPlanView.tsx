@@ -1,6 +1,8 @@
+import React from 'react';
+
+import { routes } from 'constants/routes';
 import { getImagePath } from 'utils';
 
-import { ReactComponent as DumbbellIcon } from 'assets/img/icons/dumbbell-icon.svg';
 import { ReactComponent as WeighScaleIcon } from 'assets/img/icons/weigh-scale-icon.svg';
 import { ReactComponent as WaterGlassIcon } from 'assets/img/icons/water-glass-icon.svg';
 
@@ -52,20 +54,17 @@ export const tourStepFunction = (width, tourStep) => {
   }
 };
 
-export const dataForTodayActivities = [
+export const todayActivitiesData = [
   {
-    icon: DumbbellIcon,
-    text: 'trainings.add.workout',
-    value: 'workout_add',
+    id: 0,
+    icon: <WeighScaleIcon />,
+    title: 'trainings.add.weight',
+    link: routes.nutritionPlanWeight,
   },
   {
-    icon: WeighScaleIcon,
-    text: 'trainings.add.weight',
-    value: 'weight_add',
-  },
-  {
-    icon: WaterGlassIcon,
-    text: 'trainings.wt',
-    value: 'water_tracker',
+    id: 1,
+    icon: <WaterGlassIcon />,
+    title: 'trainings.wt',
+    link: routes.waterTracker,
   },
 ];

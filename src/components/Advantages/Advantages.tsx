@@ -53,7 +53,7 @@ const Advantages = ({
           <div className='col-12 px-md-4 justify-content-between'>
             <div className='how-exercise-plan-works-col d-flex align-items-center'>
 
-              <h4>{mainTitle}</h4>
+              <h4 className='how-exercise-plan-works-title'>{mainTitle}</h4>
 
             </div>
             <div className='how-exercise-plan-works-col'>
@@ -63,7 +63,7 @@ const Advantages = ({
               </div>
 
               <div className='how-exercise-plan-works-text'>
-                <h5 className='mt-4 mb-4'>{advantage1Title}</h5>
+                <h4 className='mb-4'>{advantage1Title}</h4>
                 <p>{advantage1Desc}</p>
               </div>
 
@@ -75,7 +75,7 @@ const Advantages = ({
               </div>
 
               <div className='how-exercise-plan-works-text'>
-                <h5 className='mt-4 mb-4'>{advantage2Title}</h5>
+                <h4 className='mb-4'>{advantage2Title}</h4>
                 <p>{advantage2Desc}</p>
               </div>
 
@@ -87,7 +87,7 @@ const Advantages = ({
               </div>
 
               <div className='how-exercise-plan-works-text'>
-                <h5 className='mt-4 mb-4'>{advantage3Title}</h5>
+                <h4 className='mb-4'>{advantage3Title}</h4>
                 <p>{advantage3Desc}</p>
               </div>
 

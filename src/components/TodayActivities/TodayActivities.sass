@@ -1,108 +1,109 @@
 @import '../../assets/sass/vars'
 
 
-.today-activities-activity
-  &-title
+.today-activities
+  &__title
     margin-bottom: 50px
 
     @media (max-width: 768px)
       margin-bottom: 20px
-    
-  &-list
+
+  &__list
     display: flex
     flex-wrap: wrap
-    justify-content: space-between
 
-    input
-      display: none
-
-    input:checked + .today-activities-activity-card .today-activities-activity-card-checkmark
-      opacity: 1
-
-    label
-      margin-bottom: 20px
-
-      @media (max-width: 600px)
-        display: block
-        width: 100%
-
-  &-card
-    max-width: 140px
+  &__item
     position: relative
-    padding: 40px 20px 25px
+    width: calc(33.33% - 18px)
+    padding: 40px 14px 25px
     text-align: center
-    cursor: pointer
-    @media (max-width: 768px)
+    text-decoration: none
+    transition: 0.2s box-shadow ease
+
+    @media (max-width: 1200px)
       display: flex
-      max-width: 210px
-      padding: 14px 18px
-      justify-content: center
       align-items: center
-      margin-right: 26px
-
-    @media (max-width: 600px)
-      justify-content: flex-start
-      max-width: initial
       width: 100%
+      margin-bottom: 10px
 
-    &:hover, &.active
-      color: $white
-      .today-activities-activity-card
-        &-icon
-          fill: $white
-          path
-            fill: $white
-          &-wrap
-            border-color: $steel-blue
-            background-color: $steel-blue
-        &-title
-          color: $steel-blue
+    &-media
+      display: flex
+      align-items: center
+      justify-content: center
+      margin: 0 auto 22px
+      width: 74px
+      height: 74px
+      border: 1px solid #EDEDED
+      border-radius: 13px
+      transition: 0.2s box-shadow, 0.2s background-color ease
 
-    &.disabled
-      opacity: .6
-      cursor: default
+      @media (max-width: 1200px)
+        width: 60px
+        height: 60px
+        margin: 0
 
-    &-title
-      margin-top: 0
-      line-height: 22px
-      font-weight: 400
-      @media (max-width: 768px)
-        margin-top: 0
-        font-size: 14px
-        line-height: 17px
-    &-checkmark
+      svg
+        max-width: 50px
+        max-height: 50px
+        
+        path,
+        rect
+          transition: 0.2s fill ease
+
+    &-desc
+      color: $black
+      transition: 0.2s color ease
+
+      @media (max-width: 1200px)
+        flex: 1
+        padding-left: 10px
+
+    &-checked-icon
       position: absolute
       top: -12px
       right: -12px
-      display: inline-block
+      display: flex
+      align-items: center
+      justify-content: center
       width: 43px
       height: 43px
+      border-radius: 50%
+      box-shadow: 3px -3px 10px rgba(0, 0, 0, 0.08) 
+      border: 9px solid $white
       background-color: $bright-green
-      background-image: url('../../assets/img/icons/check-icon.svg')
-      background-repeat: no-repeat
-      background-position: center center
-      border-radius: 100%
-      box-shadow: 3px -3px 10px rgba(0, 0, 0, 0.08)
-      border: 8px solid $white
       opacity: 0
-      @media (max-width: 768px)
-        right: 0
-    &-icon
-      width: 80%
-      &-wrap
-        display: inline-flex
-        justify-content: center
-        align-items: center
-        margin-bottom: 20px
-        width: 73px
-        height: 76px
-        border: 1px solid #EDEDED
-        border-radius: 13px
-        +mt(.2s)
-        @media (max-width: 768px)
-          border-radius: 5px
-          height: 73  px
-          margin: 0
+      visibility: hidden
+      transition: 0.2s opacity ease
 
-        @media (max-width: 600px)
-          margin-right: 20px
+      svg,
+      img
+        width: 14px
+        height: auto
+
+  &__item:not(:first-child)
+    margin-left: 27px
+
+    @media (max-width: 1200px)
+      margin-left: 0
+
+  &__item:hover,
+  &__item.active
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.08)
+    
+    .today-activities__item-media
+      background-color: $steel-blue
+      box-shadow: 0px 4px 4px rgba(187, 187, 187, 0.25)
+
+      svg
+        path,
+        rect
+          fill: $white
+
+    .today-activities__item-desc
+      color: $steel-blue
+
+  &__item.active
+    .today-activities__item-checked-icon
+      opacity: 1
+      visibility: visible
+

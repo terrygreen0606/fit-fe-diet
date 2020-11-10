@@ -311,7 +311,7 @@ const WaterTrackerView = (props: any) => {
       <Helmet>
         <title>{t('app.title.water_tracker')}</title>
       </Helmet>
-      <div className='waterTracker'>
+      <section className='waterTracker'>
         <Modal
           withCloseBtn
           shouldCloseOnOverlayClick
@@ -587,7 +587,7 @@ const WaterTrackerView = (props: any) => {
             </div>
           </ContentLoading>
         </div>
-      </div>
+      </section>
     </>
   );
 };
