@@ -17,9 +17,11 @@ const ExpectationsStep = ({
   const I18N_MEASUREMENT = registerData.measurement === 'si' ? 'common.kg' : 'common.lbs';
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setRegisterView('JOIN_EMAIL');
     }, 10000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const t = (code: string, placeholders?: any) =>
@@ -44,7 +46,7 @@ const ExpectationsStep = ({
     <div className='register_v1_steps_content'>
       <AngleLeftIcon
         className='register_v1_back_icon'
-        onClick={() => setRegisterView('DAY_MEALPLAN')}
+        onClick={() => setRegisterView('NOT_EATING')}
       />
 
       <h3 className='mb-3 fw-regular'>{t('register.expect_title')}</h3>

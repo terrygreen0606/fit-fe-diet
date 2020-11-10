@@ -40,7 +40,15 @@ const DietExpectationsChart = ({
     let monthLocale = new Date(dateStr).toLocaleString(window.navigator.language, { month: 'short' });
     monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
 
-    return `${moment(new Date(dateStr)).format('DD')} ${monthLocale}`;
+    let predictedDate = null;
+
+    if (moment(new Date(dateStr)).format('YYYY') === moment().format('YYYY')) {
+      predictedDate = moment(new Date(dateStr)).format('DD');
+    } else {
+      predictedDate = moment(new Date(dateStr)).format('DD YYYY');
+    }
+
+    return `${predictedDate} ${monthLocale}`;
   };
 
   const getChartLabels = () => ([
@@ -204,7 +212,11 @@ const DietExpectationsChart = ({
   });
 
   return (
-    <div className='dietExpectation__chart_wrap'>
+    <div
+      className={classNames('dietExpectation__chart_wrap', {
+        chart_raise: weight < weightGoal,
+      })}
+    >
       <span
         className={classNames('dietExpectation__chart_fitlope-plan-label', `color_${color}`)}
         dangerouslySetInnerHTML={{ __html: t('signup.chart.fitlope_plan_label') }}
