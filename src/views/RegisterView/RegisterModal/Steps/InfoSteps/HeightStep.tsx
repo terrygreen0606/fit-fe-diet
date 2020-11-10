@@ -167,7 +167,7 @@ const HeightStep = ({
             invalid={getFieldErrors('height').length > 0}
             isValid={isFieldValid('height')}
             onChange={(e) => validateOnChange('height', e.target.value, e)}
-            placeholder=''
+            placeholder={t('register.height.placeholder')}
           />
           <FormLabel>
             {registerData.measurement === 'us' && t('common.ft_label')}

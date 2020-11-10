@@ -135,7 +135,7 @@ const JoinEmailStep = ({
             data-validate='["email", "required"]'
             onChange={(e) => validateOnChange('email', e.target.value, e)}
             errors={getFieldErrors('email')}
-            placeholder=''
+            placeholder={t('register.email.placeholder')}
           />
         </FormGroup>
 

@@ -135,7 +135,7 @@ const AgeStep = ({
             invalid={getFieldErrors('age').length > 0}
             isValid={isFieldValid('age')}
             onChange={(e) => validateOnChange('age', e.target.value, e)}
-            placeholder=''
+            placeholder={t('register.age.placeholder')}
           />
           <FormLabel>{t('common.age_yo')}</FormLabel>
         </FormGroup>

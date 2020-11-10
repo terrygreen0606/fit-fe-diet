@@ -86,10 +86,10 @@ const RegisterV1Tpl = ({
     const index = registerViewsList.findIndex((view) => view === registerView);
 
     if (index === 0) {
-      return 5;
+      return 20;
     }
 
-    return Math.round((100 / registerViewsList.length) * index);
+    return Math.round((80 / (registerViewsList.length - 1)) * index) + 20;
   };
 
   return (

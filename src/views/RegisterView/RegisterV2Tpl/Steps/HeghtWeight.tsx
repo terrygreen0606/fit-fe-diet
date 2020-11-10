@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
+import React, { useState } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -137,7 +136,7 @@ const HeightWeight = ({
                   data-validate='["required", "min-max"]'
                   onChange={(e) => validateOnChange('height', e.target.value, e)}
                   invalid={getFieldErrors('height').length > 0}
-                  placeholder=''
+                  placeholder={t('register.height.placeholder')}
                 />
                 <FormLabel>{t('common.cm_label')}</FormLabel>
               </FormGroup>
@@ -162,7 +161,7 @@ const HeightWeight = ({
                   name='weight'
                   onChange={(e) => validateOnChange('weight', e.target.value, e)}
                   invalid={getFieldErrors('weight').length > 0}
-                  placeholder=''
+                  placeholder={t('register.weight.placeholder')}
                 />
                 <FormLabel>{t('common.kg_label')}</FormLabel>
               </FormGroup>
