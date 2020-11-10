@@ -14,15 +14,13 @@ const registerViewsList: RegisterViewType[] = [
   'GENDER',         // 0
   'NOT_EATING',     // 1
   'AGE',            // 2
-  'BACK_ISSUES',    // 3
-  'HEALTH_PROBLEMS',// 4
-  'DAY_MEALPLAN',   // 5
-  'HEIGHT_WEIGHT',  // 6
-  'WEIGHT_GOAL',    // 7
-  'PLAN_PROGRESS',  // 8
-  'EXPECTATIONS',   // 9
-  'CONFIRM',        // 10
-  'FINAL',          // 11
+  'DAY_MEALPLAN',   // 3
+  'HEIGHT_WEIGHT',  // 4
+  'WEIGHT_GOAL',    // 5
+  'PLAN_PROGRESS',  // 6
+  'EXPECTATIONS',   // 7
+  'CONFIRM_EMAIL',  // 8
+  'CONFIRM_NAME',   // 9
 ];
 
 const RegisterV2Tpl = ({
@@ -49,7 +47,8 @@ const RegisterV2Tpl = ({
 
       case 'PLAN_PROGRESS':
       case 'EXPECTATIONS':
-      case 'CONFIRM':
+      case 'CONFIRM_NAME':
+      case 'CONFIRM_EMAIL':
       case 'FINAL':
         currentRegisterStep = 2;
         break;
@@ -78,14 +77,6 @@ const RegisterV2Tpl = ({
       setRegisterView,
       localePhrases,
     );
-
-  const setStepPrev = () => {
-    const curStepIndex = registerViewsList.findIndex((view) => view === registerView);
-
-    if (curStepIndex > 0 && curStepIndex !== (registerViewsList.length - 1)) {
-      setRegisterView(registerViewsList[curStepIndex - 1]);
-    }
-  };
 
   return (
     <div className='register_v2'>

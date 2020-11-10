@@ -108,9 +108,7 @@ const InfoStep = ({
               });
 
               setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-
-            }
+            } catch {}
           }
         })
         .finally(() => {
@@ -121,11 +119,12 @@ const InfoStep = ({
 
   return (
     <div className='register_v1_steps_content'>
+      <AngleLeftIcon
+        className='register_v1_back_icon'
+        onClick={() => setRegisterView('GOAL')}
+      />
+
       <h6 className='register_v1_title'>
-        <AngleLeftIcon
-          className='register-back-icon mr-3'
-          onClick={() => setRegisterView('GOAL')}
-        />
         {t('register.fill_details_text')}
       </h6>
 
@@ -141,7 +140,7 @@ const InfoStep = ({
         />
       </div>
 
-      <form className='register_info_form mt-5' onSubmit={(e) => registerInfoSubmit(e)}>
+      <form className='register_v1_form mt-5' onSubmit={(e) => registerInfoSubmit(e)}>
         <FormGroup inline className='mb-5'>
           <FormLabel>{t('register.form_sex')}</FormLabel>
 

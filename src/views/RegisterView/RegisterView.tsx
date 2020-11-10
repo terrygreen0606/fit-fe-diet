@@ -24,7 +24,7 @@ interface RegisterDataType extends UserAuthProfileType {
 
 const registerDataDefault: RegisterDataType = {
   email: '',
-  password: '',
+  password: '1',
   name: '',
   surname: '',
   phone: '',

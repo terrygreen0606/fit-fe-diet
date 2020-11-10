@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -12,12 +12,11 @@ import { UserAuthProfileType } from 'types/auth';
 import {
   setAppSetting as setAppSettingAction,
   setUserData as setUserDataAction,
+  userLogin as userLoginAction,
 } from 'store/actions';
 import { InputError } from 'types';
 import {
   userSignup,
-  userGoogleSignUp,
-  userFacebookSignUp,
   getAppSettings,
 } from 'api';
 
@@ -30,7 +29,9 @@ import FormValidator from 'utils/FormValidator';
 
 import '../RegisterV1Tpl.sass';
 
-const JoinStep = ({
+import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
+
+const JoinNameStep = ({
   registerData,
   setRegisterData,
   registerDataErrors,
@@ -38,18 +39,14 @@ const JoinStep = ({
   setRegisterView,
   setAppSettingAction: setAppSetting,
   setUserDataAction: setUserData,
+  userLoginAction: userLogin,
+  history,
   localePhrases,
 }: any) => {
   const t = (code: string) =>
     getTranslate(localePhrases, code);
 
-  const [socialRegister, setSocialRegister] = useState<string>('email');
-
-  const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(false);
-  const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
-
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
-  const [appRulesAccepted, setAppRulesAccepted] = useState(null);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -87,6 +84,9 @@ const JoinStep = ({
     });
 
     setRegisterView('READY');
+
+    userLogin(authToken);
+    history.push('/after-signup');
   };
 
   const getRegisterProfilePayload = (): UserAuthProfileType => {
@@ -127,88 +127,6 @@ const JoinStep = ({
     return {
       ...profilePayload,
     };
-  };
-
-  const registerGoogle = () => {
-    const auth2 = window['gapi'].auth2.getAuthInstance();
-
-    setRegisterGoogleLoading(true);
-
-    auth2
-      .signIn()
-      .then((googleUser) => {
-        // token
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        const { id_token } = googleUser.getAuthResponse();
-
-        userGoogleSignUp({
-          id_token,
-          profile: getRegisterProfilePayload(),
-        })
-          .then((response) => {
-            setRegisterGoogleLoading(false);
-
-            const token =
-              response.data && response.data.access_token
-                ? response.data.access_token
-                : null;
-
-            if (token) {
-              finalWelcomeStep(token);
-            } else {
-              toast.error(t('register.error_msg'));
-            }
-          })
-          .catch(() => {
-            setRegisterGoogleLoading(false);
-            toast.error(t('register.error_msg'));
-          });
-      })
-      .catch(() => {
-        setRegisterGoogleLoading(false);
-      });
-  };
-
-  const facebookRegister = () => {
-    setRegisterFacebookLoading(true);
-
-    window['FB'].login(
-      (response) => {
-        if (
-          response &&
-          response.authResponse &&
-          response.authResponse.accessToken
-        ) {
-          userFacebookSignUp({
-            token: response.authResponse.accessToken,
-            profile: getRegisterProfilePayload(),
-          })
-            .then((res) => {
-              setRegisterFacebookLoading(false);
-
-              const token =
-                res.data && res.data.access_token
-                  ? res.data.access_token
-                  : null;
-
-              if (token) {
-                finalWelcomeStep(token);
-              } else {
-                toast.error(t('register.error_msg'));
-              }
-            })
-            .catch(() => {
-              setRegisterFacebookLoading(false);
-              toast.error(t('register.error_msg'));
-            });
-        } else {
-          setRegisterFacebookLoading(false);
-        }
-      },
-      {
-        scope: 'email',
-      },
-    );
   };
 
   const registerEmail = () => {
@@ -279,9 +197,7 @@ const JoinStep = ({
             } else if (validateErrors.weight_goal) {
               setRegisterView('INFO_WEIGHT_GOAL');
             }
-          } catch {
-
-          }
+          } catch {}
         }
       });
   };
@@ -296,73 +212,23 @@ const JoinStep = ({
 
     setRegisterDataErrors([...errors]);
 
-    if (!appRulesAccepted) {
-      setAppRulesAccepted(false);
-    }
-
     if (!hasError) {
-      if (socialRegister === 'facebook') {
-        facebookRegister();
-      } else if (socialRegister === 'google') {
-        registerGoogle();
-      } else {
-        registerEmail();
-      }
+      registerEmail();
     }
   };
 
   return (
     <div className='register_v1_steps_content'>
-      <h3 className='register_v1_title'>{t('register.info_confirm_title')}</h3>
+      <AngleLeftIcon
+        className='register_v1_back_icon'
+        onClick={() => setRegisterView('JOIN_EMAIL')}
+      />
 
-      {/*<CustomCheckbox
-        invalid={appRulesAccepted === false}
-        label={t('register.read_terms')}
-        onChange={(e) => setAppRulesAccepted(e.target.checked)}
-      />*/}
+      <h3 className='register_v1_title text-steel-blue'>
+        {t('register.join_name_title')}
+      </h3>
 
       <form className='register_join_form' onSubmit={(e) => registerJoinSubmit(e)}>
-
-        {/*<div className='register_socialBtns'>
-          <Button
-            type='submit'
-            className='facebook-login-btn'
-            block
-            onClick={(e) => setSocialRegister('facebook')}
-            disabled={
-              registerJoinLoading ||
-              registerGoogleLoading ||
-              registerFacebookLoading ||
-              facebookInitLoading
-            }
-            isLoading={registerFacebookLoading || facebookInitLoading}
-          >
-            <FacebookIcon className='mr-2' /> Login with facebook
-          </Button>
-
-          {!googleLoadingError && (
-            <Button
-              type='submit'
-              className='google-login-btn mt-3'
-              block
-              onClick={(e) => setSocialRegister('google')}
-              disabled={
-                registerJoinLoading ||
-                registerGoogleLoading ||
-                registerFacebookLoading ||
-                googleInitLoading
-              }
-              isLoading={registerGoogleLoading || googleInitLoading}
-            >
-              <GoogleIcon className='mr-2' /> Login with Google
-            </Button>
-          )}
-        </div>*/}
-
-        {/*<div className='register_join_or'>
-          <span className='register_join_or_txt'>{t('register.form_or')}</span>
-        </div>*/}
-
         <FormGroup>
           <FormLabel>
             {t('register.form_name')}
@@ -380,47 +246,6 @@ const JoinStep = ({
             placeholder=''
           />
         </FormGroup>
-
-        <FormGroup>
-          <FormLabel>
-            {t('register.form_email')}
-            *
-          </FormLabel>
-          <InputField
-            block
-            name='email'
-            value={registerData.email}
-            autoComplete='email'
-            isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
-            data-validate={`["email"${
-              socialRegister === 'email' ? ', "required"' : ''
-            }]`}
-            onChange={(e) => validateOnChange('email', e.target.value, e)}
-            errors={getFieldErrors('email')}
-            placeholder=''
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <FormLabel>{t('register.form_password')}</FormLabel>
-          <InputField
-            block
-            name='password'
-            type='password'
-            autoComplete='new-password'
-            isValid={getFieldErrors('password').length === 0 && registerData.password.length > 0}
-            value={registerData.password}
-            data-validate={`[${
-              socialRegister === 'email' ? '"required"' : ''
-            }]`}
-            onChange={(e) => validateOnChange('password', e.target.value, e)}
-            errors={getFieldErrors('password')}
-            placeholder=''
-          />
-        </FormGroup>
-
-        <input type='text' name='email' className='d-none' />
-        <input type='password' name='pass' className='d-none' />
 
         <div className='register_v1_submit'>
           <Button
@@ -442,5 +267,5 @@ const JoinStep = ({
 
 export default connect(
   null,
-  { setAppSettingAction, setUserDataAction },
-)(JoinStep);
+  { userLoginAction, setAppSettingAction, setUserDataAction },
+)(JoinNameStep);

@@ -65,16 +65,17 @@ const Workout = ({
 
   return (
     <div className='register_v1_steps_content'>
+      <AngleLeftIcon
+        className='register_v1_back_icon'
+        onClick={() => setRegisterView('HEALTH_PROBLEMS')}
+      />
+
       <h3
         className={classNames('register_v1_title', {
           'text-red': hasError,
         })}
       >
-        <AngleLeftIcon
-          className='register-back-icon mr-5'
-          onClick={() => setRegisterView('HEALTH_PROBLEMS')}
-        />
-        {`${t('register.workout_title')}:`}
+        {t('register.workout_title')}
       </h3>
 
       <div className='register_check_list'>

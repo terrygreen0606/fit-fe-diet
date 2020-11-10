@@ -89,7 +89,7 @@ const Workout = ({
           className='register-back-icon mr-5'
           onClick={() => setRegisterView('HEALTH_PROBLEMS')}
         />
-        {`${t('register.workout_title')}:`}
+        {t('register.workout_title')}
       </h3>
 
       <div className='register_check_list'>

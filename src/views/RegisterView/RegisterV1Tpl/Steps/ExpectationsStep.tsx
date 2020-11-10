@@ -6,6 +6,8 @@ import moment from 'moment';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import Button from 'components/common/Forms/Button';
 
+import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
+
 const ExpectationsStep = ({
   registerData,
   setRegisterView,
@@ -13,6 +15,12 @@ const ExpectationsStep = ({
 }: any) => {
   const { weight, weight_goal, predicted_date } = registerData;
   const I18N_MEASUREMENT = registerData.measurement === 'si' ? 'common.kg' : 'common.lbs';
+
+  useEffect(() => {
+    setTimeout(() => {
+      setRegisterView('JOIN_EMAIL');
+    }, 10000);
+  }, []);
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
@@ -26,15 +34,20 @@ const ExpectationsStep = ({
 
   return (
     <div className='register_v1_steps_content'>
-      <h5 className='mb-xl-4 mb-2 fw-regular'>{t('register.expect_title')}</h5>
+      <AngleLeftIcon
+        className='register_v1_back_icon'
+        onClick={() => setRegisterView('DAY_MEALPLAN')}
+      />
 
-      <h4 className='mb-xl-5 mb-3 text-steel-blue'>
+      <h3 className='mb-3 fw-regular'>{t('register.expect_title')}</h3>
+
+      <h2 className='mb-xl-5 mb-3 fw-bold text-steel-blue'>
         {t(I18N_MEASUREMENT, { COUNT: weight_goal })}
         {' '}
         {t('register.expect_date_by')}
         {' '}
         {getPredictedDate()}
-      </h4>
+      </h2>
 
       <DietExpectationsChart
         weight={weight}
@@ -51,11 +64,13 @@ const ExpectationsStep = ({
           type='submit'
           size='lg'
           block
-          onClick={() => setRegisterView('JOIN')}
+          onClick={() => setRegisterView('JOIN_EMAIL')}
         >
           {t('button.continue')}
         </Button>
       </div>
+
+      <p className='text-center mt-3'>{t('register.expectations.redirect_text')}</p>
     </div>
   );
 };

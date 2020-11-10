@@ -16,7 +16,8 @@ import Workout from './Steps/Workout';
 import ExpectationsStep from './Steps/ExpectationsStep';
 import PlanReadyStep from './Steps/PlanReadyStep';
 import HealthProblems from './Steps/HealthProblems';
-import JoinStep from './Steps/JoinStep';
+import JoinNameStep from './Steps/JoinNameStep';
+import JoinEmailStep from './Steps/JoinEmailStep';
 
 export default (
   registerView: RegisterViewType,
@@ -113,9 +114,23 @@ export default (
       );
       break;
 
-    case 'JOIN':
+    case 'JOIN_NAME':
       registerStepView = (
-        <JoinStep
+        <JoinNameStep
+          registerData={registerData}
+          setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
+          setRegisterView={setRegisterView}
+          history={history}
+          localePhrases={localePhrases || {}}
+        />
+      );
+      break;
+
+    case 'JOIN_EMAIL':
+      registerStepView = (
+        <JoinEmailStep
           registerData={registerData}
           setRegisterData={setRegisterData}
           registerDataErrors={registerDataErrors}
