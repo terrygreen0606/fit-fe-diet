@@ -37,7 +37,17 @@
 @media only screen and (max-width : 576px)
   .mainFooter_short
     &_menuList
+      display: flex
+      align-items: center
+      justify-content: center
+      flex-wrap: wrap
+
+      &_item
+        margin: 5px 10px
+        font-size: 18px
+
       li
         &:not(:last-child)
+          margin-right: 0
           &::after
-            top: 5px
+            display: none
