@@ -18,7 +18,7 @@ const DayMealPlan = ({
   const [hasError, setHasError] = useState(false);
 
   const nextStep = () => {
-    if (registerData.meal_counts.find(meal_count => meal_count.checked)) {
+    if (registerData.meal_counts.find((meal_count) => meal_count.checked)) {
       setHasError(false);
       setRegisterView('HEIGHT_WEIGHT');
     } else {
@@ -29,10 +29,10 @@ const DayMealPlan = ({
   const changeMealCountState = (value: number, checked: boolean) => {
     setHasError(false);
 
-    const index = registerData.meal_counts.findIndex(meal_count => meal_count.value === value);
+    const index = registerData.meal_counts.findIndex((meal_count) => meal_count.value === value);
 
     if (index >= 0) {
-      let meal_counts = registerData.meal_counts.map(meal_count => ({
+      const meal_counts = registerData.meal_counts.map((meal_count) => ({
         ...meal_count,
         checked: false,
       }));
@@ -55,7 +55,7 @@ const DayMealPlan = ({
     <>
       <h1
         className={classNames('register_v2_title', {
-          'text-red': hasError
+          'text-red': hasError,
         })}
       >
         {t('register.v2.meal_plan.title')}

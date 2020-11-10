@@ -17,9 +17,11 @@ const ExpectationsGraph = ({
   const I18N_MEASUREMENT = registerData.measurement === 'si' ? 'common.kg' : 'common.lbs';
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setRegisterView('CONFIRM');
     }, 10000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const t = (code: string, placeholders?: any) =>

@@ -117,9 +117,7 @@ const HeightStep = ({
               });
 
               setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-
-            }
+            } catch {}
           }
         })
         .finally(() => {

@@ -120,9 +120,7 @@ const InfoStep = ({
               });
 
               setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-
-            }
+            } catch {}
           }
         })
         .finally(() => {

@@ -9,6 +9,9 @@ import {
   setAppSetting as setAppSettingAction,
   setUserData as setUserDataAction,
 } from 'store/actions';
+import { InputError } from 'types';
+import { toast } from 'react-toastify';
+import { userValidate } from 'api';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -31,6 +34,8 @@ const JoinEmailStep = ({
 }: any) => {
   const t = (code: string) =>
     getTranslate(localePhrases, code);
+
+  const [validateLoading, setValidateLoading] = useState(false);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -63,7 +68,43 @@ const JoinEmailStep = ({
     setRegisterDataErrors([...errors]);
 
     if (!hasError) {
-      setRegisterView('JOIN_NAME');
+      setValidateLoading(true);
+
+      const {
+        email,
+      } = registerData;
+
+      userValidate({
+        email,
+      })
+        .then(({ data }) => {
+          if (data.success) {
+            setRegisterView('JOIN_NAME');
+          } else {
+            toast.error(t('register.error_msg'));
+          }
+        })
+        .catch(({ response }) => {
+          toast.error(t('register.error_msg'));
+
+          if (response && response.status >= 400 && response.status < 500) {
+            const validateErrors = response.data.message;
+
+            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+
+            Object.keys(validateErrors).map((field) => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field],
+              });
+            });
+
+            setRegisterDataErrors(registerDataErrorsTemp);
+          }
+        })
+        .finally(() => {
+          setValidateLoading(false);
+        });
     }
   };
 
@@ -89,6 +130,7 @@ const JoinEmailStep = ({
             name='email'
             value={registerData.email}
             autoComplete='email'
+            readOnly={validateLoading}
             isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
             data-validate='["email", "required"]'
             onChange={(e) => validateOnChange('email', e.target.value, e)}
@@ -106,6 +148,7 @@ const JoinEmailStep = ({
             type='submit'
             block
             size='lg'
+            isLoading={validateLoading}
             color='primary'
           >
             {t('register.form_next')}

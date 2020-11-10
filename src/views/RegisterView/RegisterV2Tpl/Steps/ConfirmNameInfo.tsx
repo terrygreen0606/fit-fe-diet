@@ -198,6 +198,7 @@ const ConfirmInfo = ({
                 name='name'
                 autoFocus
                 value={registerData.name}
+                readOnly={registerJoinLoading}
                 data-validate='["required"]'
                 onChange={(e) => validateOnChange('name', e.target.value, e)}
                 errors={getFieldErrors('name')}

@@ -36,17 +36,25 @@ const PlanProgress = ({
         setRegisterView('CONFIRM');
       }, 10000);
     } else {
+      const {
+        measurement,
+        height,
+        weight,
+        weight_goal,
+        goal,
+      } = registerData;
+
       getUserWeightPrediction({
-        measurement: registerData.measurement,
-        height: registerData.height,
-        weight: registerData.weight,
-        weight_goal: registerData.weight_goal,
-        goal: registerData.goal,
-      }).then((response) => {
-        if (response.data && response.data.data) {
+        measurement,
+        height,
+        weight,
+        weight_goal,
+        goal,
+      }).then(({ data }) => {
+        if (data && data.data) {
           setRegisterData({
             ...registerData,
-            predicted_date: response.data.data.predicted_date,
+            predicted_date: data.data.predicted_date,
           });
 
           setTimeout(() => {

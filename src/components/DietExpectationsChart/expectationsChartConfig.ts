@@ -9,18 +9,18 @@ export const data = ({
   datasets: [
     {
       lineTension: 0.5,
-      pointBackgroundColor: context => {
+      pointBackgroundColor: (context) => {
         const index = context.dataIndex;
 
         if (index === 1) {
           return pointBackgroundColor1;
         } else if (index === 3) {
           return pointBackgroundColor2;
-        } else {
-          return 'transparent';
         }
+
+        return 'transparent';
       },
-      pointRadius: context => {
+      pointRadius: (context) => {
         const index = context.dataIndex;
 
         if (index === 1 || index === 3) {
@@ -29,27 +29,27 @@ export const data = ({
 
         return 0;
       },
-      pointBorderWidth: context => {
+      pointBorderWidth: (context) => {
         const index = context.dataIndex;
 
         if (index === 1 || index === 3) {
           return 6;
         }
-        
+
         return 0;
       },
       pointBorderColor,
       backgroundColor,
       borderColor,
       borderWidth: 2,
-      data: []
-    }
+      data: [],
+    },
   ],
 });
 
 export const options = {
   legend: {
-    display: false
+    display: false,
   },
   scales: {
     yAxes: [{
@@ -58,19 +58,17 @@ export const options = {
     xAxes: [{
       display: false,
 
-    }]
+    }],
   },
   responsive: true,
   showAllTooltips: true,
   tooltips: {
-    filter: (tooltipItem, data) => {
-      const label = data.labels[tooltipItem.index];
-      
+    filter: (tooltipItem) => {
       if (tooltipItem.index === 1 || tooltipItem.index === 3) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     },
     backgroundColor: '#FFF',
     titleFontFamily: '"SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
@@ -89,5 +87,5 @@ export const options = {
     bodyAlign: 'center',
     bodyFontSize: 14,
     displayColors: false,
-  }
+  },
 };

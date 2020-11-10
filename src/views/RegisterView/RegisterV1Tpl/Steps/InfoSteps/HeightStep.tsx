@@ -86,24 +86,22 @@ const HeightStep = ({
             toast.error(t('register.error_msg'));
           }
         })
-        .catch((error) => {
+        .catch(({ response }) => {
           toast.error(t('register.error_msg'));
 
-          if (error.response && error.response.status >= 400 && error.response.status < 500) {
-            try {
-              const validateErrors = JSON.parse(error.response.data.message);
+          if (response && response.status >= 400 && response.status < 500) {
+            const validateErrors = response.data.message;
 
-              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
 
-              Object.keys(validateErrors).map((field) => {
-                registerDataErrorsTemp.push({
-                  field,
-                  message: validateErrors[field],
-                });
+            Object.keys(validateErrors).map((field) => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field],
               });
+            });
 
-              setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {}
+            setRegisterDataErrors(registerDataErrorsTemp);
           }
         })
         .finally(() => {
@@ -142,6 +140,7 @@ const HeightStep = ({
             min={0}
             autoFocus
             value={registerData.height}
+            readOnly={validateLoading}
             name='height'
             data-param='50,250'
             data-validate={`["required"${

@@ -127,7 +127,7 @@ const RegisterView = ({
 
     switch (tpl) {
       case '1':
-      registerView = (
+        registerView = (
           <RegisterV1Tpl
             registerData={registerData}
             setRegisterData={setRegisterData}

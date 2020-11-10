@@ -240,6 +240,7 @@ const JoinNameStep = ({
             autoFocus
             isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
             value={registerData.name}
+            readOnly={registerJoinLoading}
             data-validate='["required"]'
             onChange={(e) => validateOnChange('name', e.target.value, e)}
             errors={getFieldErrors('name')}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { getTranslate } from 'utils';
 
 // Components
@@ -28,7 +28,7 @@ const NotEatingStep = ({
     const index = registerData.ignore_cuisine_ids.findIndex((cuisine) => cuisine.id === id);
 
     if (index >= 0) {
-      const ignore_cuisine_ids = registerData.ignore_cuisine_ids;
+      const { ignore_cuisine_ids } = registerData;
 
       if (ignore_cuisine_ids[index]) {
         ignore_cuisine_ids[index] = {
