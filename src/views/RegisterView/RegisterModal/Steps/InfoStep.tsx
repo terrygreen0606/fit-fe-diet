@@ -217,7 +217,7 @@ const InfoStep = ({
                 data-validate='["required", "min-max"]'
                 onChange={(e) => validateOnChange('age', e.target.value, e)}
                 invalid={getFieldErrors('age').length > 0}
-                placeholder=''
+                placeholder={t('register.age.placeholder')}
               />
               <FormLabel>{t('common.age_yo')}</FormLabel>
             </FormGroup>
@@ -241,7 +241,7 @@ const InfoStep = ({
                 data-validate='["required", "min-max"]'
                 onChange={(e) => validateOnChange('height', e.target.value, e)}
                 invalid={getFieldErrors('height').length > 0}
-                placeholder=''
+                placeholder={t('register.height.placeholder')}
               />
               <FormLabel>
                 {registerData.measurement === 'us' && t('common.ft_label')}

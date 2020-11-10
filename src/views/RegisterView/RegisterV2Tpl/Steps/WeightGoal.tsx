@@ -125,7 +125,7 @@ const WeightGoal = ({
                   autoFocus
                   onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
                   invalid={getFieldErrors('weight_goal').length > 0}
-                  placeholder=''
+                  placeholder={t('register.weight_goal.placeholder')}
                 />
                 <FormLabel>{t('common.kg_label')}</FormLabel>
               </FormGroup>

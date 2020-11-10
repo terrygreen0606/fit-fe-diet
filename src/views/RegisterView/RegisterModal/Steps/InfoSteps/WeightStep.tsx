@@ -154,7 +154,7 @@ const WeightStep = ({
             invalid={getFieldErrors('weight').length > 0}
             isValid={isFieldValid('weight')}
             onChange={(e) => validateOnChange('weight', e.target.value, e)}
-            placeholder=''
+            placeholder={t('register.weight.placeholder')}
           />
           <FormLabel>
             {registerData.measurement === 'us' && t('common.lbs_label')}

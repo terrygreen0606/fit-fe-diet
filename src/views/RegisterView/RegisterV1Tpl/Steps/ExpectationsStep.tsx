@@ -16,14 +16,6 @@ const ExpectationsStep = ({
   const { weight, weight_goal, predicted_date } = registerData;
   const I18N_MEASUREMENT = registerData.measurement === 'si' ? 'common.kg' : 'common.lbs';
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setRegisterView('JOIN_EMAIL');
-    }, 10000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 

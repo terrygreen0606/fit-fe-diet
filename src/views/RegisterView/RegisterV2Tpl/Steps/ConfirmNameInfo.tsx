@@ -203,7 +203,7 @@ const ConfirmInfo = ({
                 onChange={(e) => validateOnChange('name', e.target.value, e)}
                 errors={getFieldErrors('name')}
                 isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
-                placeholder=''
+                placeholder={t('register.name.placeholder')}
               />
             </FormGroup>
 
@@ -217,7 +217,7 @@ const ConfirmInfo = ({
                 block
                 isLoading={registerJoinLoading}
               >
-                {t('button.continue')}
+                {t('register.form_next')}
               </Button>
             </div>
           </form>

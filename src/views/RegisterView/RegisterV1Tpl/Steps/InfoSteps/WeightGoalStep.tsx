@@ -138,7 +138,7 @@ const WeightGoalStep = ({
             invalid={getFieldErrors('weight_goal').length > 0}
             isValid={isFieldValid('weight_goal')}
             onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
-            placeholder=''
+            placeholder={t('register.weight_goal.placeholder')}
           />
           <FormLabel>
             {registerData.measurement === 'us' && t('common.lbs_label')}

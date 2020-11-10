@@ -13,8 +13,6 @@ import { setAppSetting, setUserData } from 'store/actions';
 import { InputError } from 'types';
 import {
   userSignup,
-  userGoogleSignUp,
-  userFacebookSignUp,
   getAppSettings,
 } from 'api';
 
@@ -32,13 +30,10 @@ const JoinStep = (props: any) => {
 
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const [socialRegister, setSocialRegister] = useState<string>('email');
-
   const [registerGoogleLoading, setRegisterGoogleLoading] = useState<boolean>(false);
   const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
-  const [appRulesAccepted, setAppRulesAccepted] = useState(null);
 
   useEffect(() => {
     const currStepTitles = [...props.stepTitlesDefault];
@@ -131,94 +126,12 @@ const JoinStep = (props: any) => {
     };
   };
 
-  const registerGoogle = () => {
-    const auth2 = window['gapi'].auth2.getAuthInstance();
-
-    setRegisterGoogleLoading(true);
-
-    auth2
-      .signIn()
-      .then((googleUser) => {
-        // token
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        const { id_token } = googleUser.getAuthResponse();
-
-        userGoogleSignUp({
-          id_token,
-          profile: getRegisterProfilePayload(),
-        })
-          .then((response) => {
-            setRegisterGoogleLoading(false);
-
-            const token =
-              response.data && response.data.access_token
-                ? response.data.access_token
-                : null;
-
-            if (token) {
-              finalWelcomeStep(token);
-            } else {
-              toast.error(t('register.error_msg'));
-            }
-          })
-          .catch(() => {
-            setRegisterGoogleLoading(false);
-            toast.error(t('register.error_msg'));
-          });
-      })
-      .catch(() => {
-        setRegisterGoogleLoading(false);
-      });
-  };
-
-  const facebookRegister = () => {
-    setRegisterFacebookLoading(true);
-
-    window['FB'].login(
-      (response) => {
-        if (
-          response &&
-          response.authResponse &&
-          response.authResponse.accessToken
-        ) {
-          userFacebookSignUp({
-            token: response.authResponse.accessToken,
-            profile: getRegisterProfilePayload(),
-          })
-            .then((res) => {
-              setRegisterFacebookLoading(false);
-
-              const token =
-                res.data && res.data.access_token
-                  ? res.data.access_token
-                  : null;
-
-              if (token) {
-                finalWelcomeStep(token);
-              } else {
-                toast.error(t('register.error_msg'));
-              }
-            })
-            .catch(() => {
-              setRegisterFacebookLoading(false);
-              toast.error(t('register.error_msg'));
-            });
-        } else {
-          setRegisterFacebookLoading(false);
-        }
-      },
-      {
-        scope: 'email',
-      },
-    );
-  };
-
   const registerEmail = () => {
     setRegisterJoinLoading(true);
 
     userSignup({
       email: props.registerData.email,
-      password: props.registerData.password,
+      password: '1',
       ...getRegisterProfilePayload(),
     }).then(({ data }) => {
         const token =
@@ -298,18 +211,8 @@ const JoinStep = (props: any) => {
 
     props.setRegisterDataErrors([...errors]);
 
-    if (!appRulesAccepted) {
-      setAppRulesAccepted(false);
-    }
-
     if (!hasError) {
-      if (socialRegister === 'facebook') {
-        facebookRegister();
-      } else if (socialRegister === 'google') {
-        registerGoogle();
-      } else {
-        registerEmail();
-      }
+      registerEmail();
     }
   };
 
@@ -317,54 +220,7 @@ const JoinStep = (props: any) => {
     <div className='register_join'>
       <h3 className='register_title mb-xl-5 mb-45 text-center'>{t('register.info_confirm_title')}</h3>
 
-      {/*<CustomCheckbox
-        invalid={appRulesAccepted === false}
-        label={t('register.read_terms')}
-        onChange={(e) => setAppRulesAccepted(e.target.checked)}
-      />*/}
-
       <form className='register_join_form mt-4 px-xl-5' onSubmit={(e) => registerJoinSubmit(e)}>
-
-        {/*<div className='register_socialBtns'>
-          <Button
-            type='submit'
-            className='facebook-login-btn'
-            block
-            onClick={(e) => setSocialRegister('facebook')}
-            disabled={
-              registerJoinLoading ||
-              registerGoogleLoading ||
-              registerFacebookLoading ||
-              props.facebookInitLoading
-            }
-            isLoading={registerFacebookLoading || props.facebookInitLoading}
-          >
-            <FacebookIcon className='mr-2' /> Login with facebook
-          </Button>
-
-          {!props.googleLoadingError && (
-            <Button
-              type='submit'
-              className='google-login-btn mt-3'
-              block
-              onClick={(e) => setSocialRegister('google')}
-              disabled={
-                registerJoinLoading ||
-                registerGoogleLoading ||
-                registerFacebookLoading ||
-                props.googleInitLoading
-              }
-              isLoading={registerGoogleLoading || props.googleInitLoading}
-            >
-              <GoogleIcon className='mr-2' /> Login with Google
-            </Button>
-          )}
-        </div>*/}
-
-        {/*<div className='register_join_or'>
-          <span className='register_join_or_txt'>{t('register.form_or')}</span>
-        </div>*/}
-
         <FormGroup>
           <FormLabel>
             {t('register.form_name')}
@@ -379,7 +235,7 @@ const JoinStep = (props: any) => {
             data-validate='["required"]'
             onChange={(e) => validateOnChange('name', e.target.value, e)}
             errors={getFieldErrors('name')}
-            placeholder=''
+            placeholder={t('register.name.placeholder')}
           />
         </FormGroup>
 
@@ -394,35 +250,14 @@ const JoinStep = (props: any) => {
             value={registerData.email}
             autoComplete='email'
             isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
-            data-validate={`["email"${
-              socialRegister === 'email' ? ', "required"' : ''
-            }]`}
+            data-validate='["email", "required"]'
             onChange={(e) => validateOnChange('email', e.target.value, e)}
             errors={getFieldErrors('email')}
-            placeholder=''
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <FormLabel>{t('register.form_password')}</FormLabel>
-          <InputField
-            block
-            name='password'
-            type='password'
-            autoComplete='new-password'
-            isValid={getFieldErrors('password').length === 0 && registerData.password.length > 0}
-            value={registerData.password}
-            data-validate={`[${
-              socialRegister === 'email' ? '"required"' : ''
-            }]`}
-            onChange={(e) => validateOnChange('password', e.target.value, e)}
-            errors={getFieldErrors('password')}
-            placeholder=''
+            placeholder={t('register.email.placeholder')}
           />
         </FormGroup>
 
         <input type='text' name='email' className='d-none' />
-        <input type='password' name='pass' className='d-none' />
 
         <div className='text-center mt-xl-5 mt-45'>
           <Button

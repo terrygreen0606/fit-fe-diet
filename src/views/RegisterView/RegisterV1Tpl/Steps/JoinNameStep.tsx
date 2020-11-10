@@ -101,7 +101,7 @@ const JoinNameStep = ({
 
     let act_level = null;
 
-    const act_level_checked = act_levels.find(level => level.checked);
+    const act_level_checked = act_levels.find((level) => level.checked);
 
     if (act_level_checked) {
       act_level = act_level_checked.value;
@@ -244,7 +244,7 @@ const JoinNameStep = ({
             data-validate='["required"]'
             onChange={(e) => validateOnChange('name', e.target.value, e)}
             errors={getFieldErrors('name')}
-            placeholder=''
+            placeholder={t('register.name.placeholder')}
           />
         </FormGroup>
 
@@ -258,7 +258,7 @@ const JoinNameStep = ({
             color='primary'
             isLoading={registerJoinLoading}
           >
-            {t('register.form_submit')}
+            {t('register.form_next')}
           </Button>
         </div>
       </form>

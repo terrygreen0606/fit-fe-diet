@@ -120,7 +120,7 @@ const ConfirmInfo = ({
                 onChange={(e) => validateOnChange('email', e.target.value, e)}
                 errors={getFieldErrors('email')}
                 isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
-                placeholder=''
+                placeholder={t('register.email.placeholder')}
               />
             </FormGroup>
 
