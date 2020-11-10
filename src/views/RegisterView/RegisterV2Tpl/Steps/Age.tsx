@@ -74,7 +74,7 @@ const Age = ({
       })
         .then((response) => {
           setValidateLoading(false);
-          setRegisterView('BACK_ISSUES');
+          setRegisterView('DAY_MEALPLAN');
         })
         .catch((error) => {
           setValidateLoading(false);
@@ -95,9 +95,7 @@ const Age = ({
               });
 
               setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-              
-            }
+            } catch {}
           }
         });
     }

@@ -113,15 +113,16 @@ const WeightGoalStep = ({
 
   return (
     <div className='register_v1_steps_content'>
+      <AngleLeftIcon
+        className='register_v1_back_icon'
+        onClick={() => setRegisterView('INFO_WEIGHT')}
+      />
+
       <h3 className='register_v1_title'>
-        <AngleLeftIcon
-          className='register-back-icon mr-3'
-          onClick={() => setRegisterView('INFO_WEIGHT')}
-        />
         {t('register.weight_goal_step_title')}
       </h3>
 
-      <form className='register_info_form' onSubmit={(e) => registerInfoSubmit(e)}>
+      <form className='register_v1_form' onSubmit={(e) => registerInfoSubmit(e)}>
         <FormGroup className='register_info_fg mb-0' inline>
           <InputField
             block

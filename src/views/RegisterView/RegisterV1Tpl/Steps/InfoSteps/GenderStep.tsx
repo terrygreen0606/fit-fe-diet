@@ -9,7 +9,6 @@ import '../../RegisterV1Tpl.sass';
 
 import { ReactComponent as MaleIcon } from 'assets/img/icons/male-icon.svg';
 import { ReactComponent as FemaleIcon } from 'assets/img/icons/female-icon.svg';
-import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
 
 const GenderStep = ({
   registerData,
@@ -52,10 +51,6 @@ const GenderStep = ({
       })}
     >
       <h3 className='register_v1_title'>
-        <AngleLeftIcon
-          className='register-back-icon mr-3'
-          onClick={() => setRegisterView('GOAL')}
-        />
         {t('register.gender_step_title')}
       </h3>
 

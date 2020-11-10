@@ -13,7 +13,8 @@ import HeghtWeight from './Steps/HeghtWeight';
 import WeightGoal from './Steps/WeightGoal';
 import PlanProgress from './Steps/PlanProgress';
 import ExpectationsGraph from './Steps/ExpectationsGraph';
-import ConfirmInfo from './Steps/ConfirmInfo';
+import ConfirmNameInfo from './Steps/ConfirmNameInfo';
+import ConfirmEmailInfo from './Steps/ConfirmEmailInfo';
 import FinalWelcome from './Steps/FinalWelcome';
 
 
@@ -155,9 +156,22 @@ export default (
       );
       break;
 
-    case 'CONFIRM':
+    case 'CONFIRM_EMAIL':
       registerStepView = (
-        <ConfirmInfo
+        <ConfirmEmailInfo
+          registerData={registerData}
+          setRegisterData={setRegisterData}
+          registerDataErrors={registerDataErrors}
+          setRegisterDataErrors={setRegisterDataErrors}
+          setRegisterView={setRegisterView}
+          localePhrases={localePhrases}
+        />
+      );
+      break;
+
+    case 'CONFIRM_NAME':
+      registerStepView = (
+        <ConfirmNameInfo
           registerData={registerData}
           setRegisterData={setRegisterData}
           registerDataErrors={registerDataErrors}

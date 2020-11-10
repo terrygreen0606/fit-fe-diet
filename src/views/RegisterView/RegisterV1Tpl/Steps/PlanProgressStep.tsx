@@ -32,7 +32,7 @@ const PlanProgressStep = ({
 
     if (registerData.goal === 0) {
       setTimeout(() => {
-        setRegisterView('HEALTH_PROBLEMS');
+        setRegisterView('EXPECTATIONS');
       }, 10000);
     } else {
       getUserWeightPrediction({
@@ -49,7 +49,7 @@ const PlanProgressStep = ({
           });
 
           setTimeout(() => {
-            setRegisterView('HEALTH_PROBLEMS');
+            setRegisterView('EXPECTATIONS');
           }, 9000);
         } else {
           toast.error(t('register.weight_predict_error_msg'));
@@ -62,7 +62,7 @@ const PlanProgressStep = ({
 
   return (
     <div className='register_v1_steps_content'>
-      <h5 className='mb-2 mb-xl-5 fw-regular'>{t('register.plan_progress_title')}</h5>
+      <h4 className='mb-2 mb-xl-5 fw-bold'>{t('register.plan_progress_title')}</h4>
 
       <span className='site-logo mb-2 mb-xl-4' />
 

@@ -91,57 +91,52 @@ const HealthProblems = ({
 
   return (
     <div className='register_v1_steps_content'>
+      <AngleLeftIcon
+        className='register_v1_back_icon'
+        onClick={() => prevStep()}
+      />
+
       <h3 className='register_v1_title'>
-        <AngleLeftIcon
-          className='register-back-icon mr-5'
-          onClick={() => prevStep()}
-        />
         {isAskDiseasesView ? t('register.diseases_ask_title') : t('register.diseases_title')}
       </h3>
 
       {isAskDiseasesView ? (
-        <div className='row'>
-          <div className='col-8 offset-2'>
+        <div className='register_check_list'>
+          <label className='register_check_item'>
+            <input
+              name='register_ask_health_problem'
+              value='yes'
+              type='radio'
+              checked={haveDiseases === true}
+              onChange={() => {}}
+            />
+            <Button
+              className='register_check_btn'
+              block
+              spanBtn
+              onClick={() => haveDiseaseChange('yes')}
+            >
+              {t('common.yes')}
+            </Button>
+          </label>
 
-            <div className='register_check_list'>
-              <label className='register_check_item'>
-                <input
-                  name='register_ask_health_problem'
-                  value='yes'
-                  type='radio'
-                  checked={haveDiseases === true}
-                  onChange={() => {}}
-                />
-                <Button
-                  className='register_check_btn'
-                  block
-                  spanBtn
-                  onClick={() => haveDiseaseChange('yes')}
-                >
-                  {t('common.yes')}
-                </Button>
-              </label>
-
-              <label className='register_check_item'>
-                <input
-                  name='register_ask_health_problem'
-                  value='no'
-                  type='radio'
-                  checked={haveDiseases === false}
-                  onChange={() => {}}
-                />
-                <Button
-                  className='register_check_btn'
-                  block
-                  spanBtn
-                  onClick={() => haveDiseaseChange('no')}
-                >
-                  {t('common.no')}
-                </Button>
-              </label>
-            </div>
-
-          </div>
+          <label className='register_check_item'>
+            <input
+              name='register_ask_health_problem'
+              value='no'
+              type='radio'
+              checked={haveDiseases === false}
+              onChange={() => {}}
+            />
+            <Button
+              className='register_check_btn'
+              block
+              spanBtn
+              onClick={() => haveDiseaseChange('no')}
+            >
+              {t('common.no')}
+            </Button>
+          </label>
         </div>
       ) : (
         <div className='register_check_list'>

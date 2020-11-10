@@ -46,11 +46,12 @@ const NotEatingStep = ({
 
   return (
     <div className='register_v1_steps_content'>
+      <AngleLeftIcon
+        className='register_v1_back_icon'
+        onClick={() => setRegisterView('INFO_WEIGHT_GOAL')}
+      />
+
       <h3 className='register_v1_title'>
-        <AngleLeftIcon
-          className='register-back-icon mr-5'
-          onClick={() => setRegisterView('INFO_WEIGHT_GOAL')}
-        />
         {t('register.not_eating')}
       </h3>
 

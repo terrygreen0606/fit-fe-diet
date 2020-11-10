@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getTranslate } from 'utils';
 import moment from 'moment';
 
@@ -16,6 +16,12 @@ const ExpectationsGraph = ({
   const { weight, weight_goal, predicted_date } = registerData;
   const I18N_MEASUREMENT = registerData.measurement === 'si' ? 'common.kg' : 'common.lbs';
 
+  useEffect(() => {
+    setTimeout(() => {
+      setRegisterView('CONFIRM');
+    }, 10000);
+  }, []);
+
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
@@ -30,7 +36,7 @@ const ExpectationsGraph = ({
     <div className='text-center'>
       <h1 className='mb-xl-4 mb-2 fw-regular'>{t('register.expect_title')}</h1>
 
-      <h2 className='mb-45 text-steel-blue'>
+      <h2 className='mb-45 text-steel-blue fw-bold'>
         {t(I18N_MEASUREMENT, { COUNT: weight_goal })}
         {' '}
         {t('register.expect_date_by')}
@@ -60,6 +66,8 @@ const ExpectationsGraph = ({
           {t('button.continue')}
         </Button>
       </div>
+
+      <p className='text-center mt-3'>{t('register.expectations.redirect_text')}</p>
     </div>
   );
 };

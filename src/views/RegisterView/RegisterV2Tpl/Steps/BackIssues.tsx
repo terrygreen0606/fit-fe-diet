@@ -35,7 +35,7 @@ const BackIssues = ({ setRegisterView, localePhrases }: any) => {
         className='register_v2_btn mt-5'
         color='primary'
         size='lg'
-        onClick={() => setRegisterView('HEALTH_PROBLEMS')}
+        onClick={() => setRegisterView('DAY_MEALPLAN')}
       >
         {t('register.form_next')}
       </Button>

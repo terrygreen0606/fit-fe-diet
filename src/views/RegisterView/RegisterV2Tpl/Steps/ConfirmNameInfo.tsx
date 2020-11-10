@@ -5,6 +5,8 @@ import {
   getTranslate,
   getCookie,
 } from 'utils';
+import { connect } from 'react-redux';
+import { userLogin as userLoginAction } from 'store/actions';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import { UserAuthProfileType, InputError } from 'types';
@@ -25,6 +27,8 @@ const ConfirmInfo = ({
   registerDataErrors,
   setRegisterDataErrors,
   setRegisterView,
+  userLoginAction: userLogin,
+  history,
   localePhrases,
 }: any) => {
   const t = (code: string, placeholders?: any) =>
@@ -91,7 +95,7 @@ const ConfirmInfo = ({
     }
 
     return {
-      ...profilePayload
+      ...profilePayload,
     };
   };
 
@@ -105,6 +109,8 @@ const ConfirmInfo = ({
     });
 
     setRegisterView('FINAL');
+    userLogin(authToken);
+    history.push('/after-signup');
   };
 
   const registerEmail = () => {
@@ -112,7 +118,7 @@ const ConfirmInfo = ({
 
     userSignup({
       email: registerData.email,
-      password: registerData.password,
+      password: '1',
       ...getRegisterProfilePayload(),
     }).then((response) => {
       setRegisterJoinLoading(false);
@@ -154,9 +160,7 @@ const ConfirmInfo = ({
             } else if (validateErrors.weight_goal) {
               setRegisterView('WEIGHT_GOAL');
             }
-          } catch {
-
-          }
+          } catch {}
         }
       });
   };
@@ -202,43 +206,6 @@ const ConfirmInfo = ({
               />
             </FormGroup>
 
-            <FormGroup>
-              <FormLabel>
-                {t('register.form_email')}
-                *
-              </FormLabel>
-              <InputField
-                block
-                name='email'
-                autoComplete="email"
-                value={registerData.email}
-                data-validate='["email", "required"]'
-                onChange={e => validateOnChange('email', e.target.value, e)}
-                errors={getFieldErrors('email')}
-                isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
-                placeholder=''
-              />
-            </FormGroup>
-
-            <FormGroup className='mb-0'>
-              <FormLabel>{t('register.form_password')}</FormLabel>
-              <InputField
-                block
-                name='password'
-                autoComplete="new-password"
-                type='password'
-                value={registerData.password}
-                data-validate='["required"]'
-                onChange={(e) => validateOnChange('password', e.target.value, e)}
-                errors={getFieldErrors('password')}
-                isValid={getFieldErrors('password').length === 0 && registerData.password.length > 0}
-                placeholder=''
-              />
-            </FormGroup>
-
-            <input type="text" name="email" className="d-none" />
-            <input type="password" name="pass" className="d-none" />
-
             <div className='text-center'>
               <Button
                 className='register_v2_btn mt-5'
@@ -260,4 +227,7 @@ const ConfirmInfo = ({
   );
 };
 
-export default ConfirmInfo;
+export default connect(
+  null,
+  { userLoginAction },
+)(ConfirmInfo);

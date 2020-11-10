@@ -114,11 +114,12 @@ const HeightStep = ({
 
   return (
     <div className='register_v1_steps_content'>
+      <AngleLeftIcon
+        className='register_v1_back_icon'
+        onClick={() => setRegisterView('INFO_AGE')}
+      />
+
       <h3 className='register_v1_title'>
-        <AngleLeftIcon
-          className='register-back-icon mr-3'
-          onClick={() => setRegisterView('INFO_AGE')}
-        />
         {t('register.height_step_title')}
       </h3>
 
@@ -132,7 +133,7 @@ const HeightStep = ({
         })}
       />
 
-      <form className='register_info_form mt-4 pt-md-5' onSubmit={(e) => registerInfoSubmit(e)}>
+      <form className='register_v1_form mt-4 pt-md-5' onSubmit={(e) => registerInfoSubmit(e)}>
         <FormGroup className='register_info_fg mb-0' inline>
           <InputField
             block
