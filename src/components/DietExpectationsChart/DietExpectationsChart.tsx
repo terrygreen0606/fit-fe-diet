@@ -164,6 +164,10 @@ const DietExpectationsChart = ({
         title: (tooltipItem) => {
           if (tooltipItem.length > 0) {
             if (tooltipItem[0].datasetIndex > 0) {
+              if (tooltipItem[0].index === 3) {
+                return t('signup.chart.standart_plan_label');
+              }
+
               return null;
             }
 
@@ -201,14 +205,6 @@ const DietExpectationsChart = ({
 
   return (
     <div className='dietExpectation__chart_wrap'>
-      <span
-        className={classNames('dietExpectation__chart_standart-plan-label', {
-          chart_raise: weight < weightGoal,
-        })}
-      >
-        {t('signup.chart.standart_plan_label')}
-      </span>
-
       <span
         className={classNames('dietExpectation__chart_fitlope-plan-label', `color_${color}`)}
         dangerouslySetInnerHTML={{ __html: t('signup.chart.fitlope_plan_label') }}

@@ -219,32 +219,31 @@
   &_eating
     &_list
       display: flex
-      align-items: flex-start
       justify-content: center
       flex-wrap: wrap
-      .register_eating_item
-        margin-right: 19px
-        margin-bottom: 24px
     &_label
+      margin-right: 19px
+      margin-bottom: 24px
       cursor: pointer
       input
         display: none
         &:checked ~ .register_eating_item
           font-weight: bold
           color: #fff
-          border-color: $seashell-pink
-          background-color: $seashell-pink
+          border-color: $steel-blue
+          background-color: $steel-blue
     &_item
       display: inline-flex
       align-items: center
-      justify-content: space-between
-      height: 42px
+      justify-content: center
+      min-height: 56px
+      height: 100%
       padding: 0 10px
-      border: 1px solid $caribbean-green
+      border: 1px solid #000
       background-color: #fff
       border-radius: 5px
-      font-size: 18px
-      line-height: 18px
+      font-size: 20px
+      line-height: 24px
       font-weight: 400
       color: #000
       span
@@ -254,12 +253,26 @@
         margin-right: 10px
         height: 24px
       &:hover
-        box-shadow: 3px 4px 26px -9px $caribbean-green
+        box-shadow: 3px 4px 26px -9px $steel-blue
+        border-color: $steel-blue
       &.active
         font-weight: bold
         color: #fff
         border-color: $steel-blue
         background-color: $steel-blue
+
+    @media only screen and (max-width : 768px)
+      &_label
+        display: block
+        flex: 0 0 calc(50% - 6px)
+        max-width: calc(50% - 6px)
+        margin-right: 0
+        &:nth-child(2n)
+          margin-left: 12px
+
+      &_item
+        width: 100%
+
   &_info_fg
     display: flex
     flex-wrap: nowrap !important
@@ -335,20 +348,6 @@
           margin-top: 150px
 
 
-@media only screen and (max-width : 768px)
-  .register
-    &_eating
-      &_list
-        .register_eating_item
-          display: flex
-          width: calc(50% - 6px)
-          margin: 0
-          margin-bottom: 11px
-          height: 59px
-          justify-content: center
-          &:nth-child(2n + 1)
-            margin-right: 12px
-
 @media only screen and (max-width : 576px)
   .register
     &_check
@@ -370,9 +369,3 @@
         margin-top: 50px
         &_submit
           margin-top: 50px
-    &_eating
-      &_list
-        .register_eating_item
-          width: 100%
-          &:nth-child(2n + 1)
-            margin-right: 0
