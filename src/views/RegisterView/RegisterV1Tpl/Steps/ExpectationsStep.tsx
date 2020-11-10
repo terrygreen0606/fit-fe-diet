@@ -29,7 +29,15 @@ const ExpectationsStep = ({
     let monthLocale = new Date(predicted_date * 1000).toLocaleString(window.navigator.language, { month: 'long' });
     monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
 
-    return `${monthLocale} ${moment(new Date(predicted_date * 1000)).format('DD')}`;
+    let predictedDate = null;
+
+    if (moment(new Date(predicted_date * 1000)).format('YYYY') === moment().format('YYYY')) {
+      predictedDate = moment(new Date(predicted_date * 1000)).format('DD');
+    } else {
+      predictedDate = moment(new Date(predicted_date * 1000)).format('DD YYYY');
+    }
+
+    return `${monthLocale} ${predictedDate}`;
   };
 
   return (

@@ -25,18 +25,18 @@ export const data = ({
 
         if (index === 1 || index === 3) {
           return 12;
-        } else {
-          return 0;
         }
+
+        return 0;
       },
       pointBorderWidth: context => {
         const index = context.dataIndex;
 
         if (index === 1 || index === 3) {
           return 6;
-        } else {
-          return 0;
         }
+        
+        return 0;
       },
       pointBorderColor,
       backgroundColor,
