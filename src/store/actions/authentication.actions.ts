@@ -126,7 +126,9 @@ export const appSetting = (
 
     const FITLOPE_USER_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
 
-    initSentry(FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn);
+    if (FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn) {
+      initSentry(FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn);
+    }
 
     if (localesLoad) {
       await dispatch(loadLocales());
@@ -140,7 +142,9 @@ export const appSetting = (
 
     const FITLOPE_PUBLIC_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_PUBLIC_SETTINGS'));
 
-    initSentry(FITLOPE_PUBLIC_SETTINGS_UPDATED.sentry_dsn);
+    if (FITLOPE_PUBLIC_SETTINGS_UPDATED.sentry_dsn) {
+      initSentry(FITLOPE_PUBLIC_SETTINGS_UPDATED.sentry_dsn);
+    }
 
     if (localesLoad) {
       await dispatch(loadLocales());
