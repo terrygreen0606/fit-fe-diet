@@ -101,7 +101,6 @@ const WeightGoalStep = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         })
         .finally(() => {

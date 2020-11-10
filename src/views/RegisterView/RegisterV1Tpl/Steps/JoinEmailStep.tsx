@@ -100,7 +100,6 @@ const JoinEmailStep = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         })
         .finally(() => {

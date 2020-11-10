@@ -89,7 +89,6 @@ const ConfirmInfo = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         })
         .finally(() => {

@@ -102,7 +102,6 @@ const HeightStep = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         })
         .finally(() => {

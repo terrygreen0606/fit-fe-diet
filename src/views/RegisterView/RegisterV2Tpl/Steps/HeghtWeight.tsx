@@ -98,7 +98,6 @@ const HeightWeight = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         });
     }

@@ -99,7 +99,6 @@ const AgeStep = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         })
         .finally(() => {

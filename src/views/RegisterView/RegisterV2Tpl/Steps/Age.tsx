@@ -94,7 +94,6 @@ const Age = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         });
     }

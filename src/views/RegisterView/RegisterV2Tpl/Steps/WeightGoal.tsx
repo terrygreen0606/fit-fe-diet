@@ -96,7 +96,6 @@ const WeightGoal = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         });
     }

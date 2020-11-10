@@ -99,7 +99,6 @@ const Gender = ({
             });
 
             setRegisterDataErrors(registerDataErrorsTemp);
-
           }
         });
     }
