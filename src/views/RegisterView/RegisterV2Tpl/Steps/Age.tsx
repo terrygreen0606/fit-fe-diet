@@ -18,9 +18,7 @@ import FormValidator from 'utils/FormValidator';
 
 import '../RegisterV2Tpl.sass';
 
-import { ReactComponent as AngleLeftIcon } from 'assets/img/icons/angle-left-icon.svg';
-
-const Age = ({ 
+const Age = ({
   registerData,
   setRegisterData,
   registerDataErrors,
@@ -72,30 +70,31 @@ const Age = ({
       userValidate({
         age,
       })
-        .then((response) => {
-          setValidateLoading(false);
-          setRegisterView('DAY_MEALPLAN');
+        .then(({ data }) => {
+          if (data.success) {
+            setValidateLoading(false);
+            setRegisterView('DAY_MEALPLAN');
+          } else {
+            toast.error(t('register.error_msg'));
+          }
         })
-        .catch((error) => {
-          setValidateLoading(false);
-
+        .catch(({ response }) => {
           toast.error(t('register.error_msg'));
 
-          if (error.response && error.response.status >= 400 && error.response.status < 500) {
-            try {
-              const validateErrors = JSON.parse(error.response.data.message);
+          if (response && response.status >= 400 && response.status < 500) {
+            const validateErrors = response.data.message;
 
-              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
 
-              Object.keys(validateErrors).map((field) => {
-                registerDataErrorsTemp.push({
-                  field,
-                  message: validateErrors[field],
-                });
+            Object.keys(validateErrors).map((field) => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field],
               });
+            });
 
-              setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {}
+            setRegisterDataErrors(registerDataErrorsTemp);
+
           }
         });
     }
@@ -122,6 +121,7 @@ const Age = ({
                   max={100}
                   data-param='16,100'
                   name='age'
+                  readOnly={validateLoading}
                   value={registerData.age}
                   data-validate='["required", "min-max", "integer"]'
                   invalid={getFieldErrors('age').length > 0}

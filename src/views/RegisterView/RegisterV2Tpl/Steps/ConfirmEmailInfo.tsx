@@ -3,12 +3,10 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  getCookie,
 } from 'utils';
-import axios from 'utils/axios';
+import { InputError } from 'types';
 import { toast } from 'react-toastify';
-import { UserAuthProfileType, InputError } from 'types';
-import { userSignup } from 'api';
+import { userValidate } from 'api';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -30,7 +28,7 @@ const ConfirmInfo = ({
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
-  const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
+  const [validateLoading, setValidateLoading] = useState(false);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -59,7 +57,44 @@ const ConfirmInfo = ({
     setRegisterDataErrors([...errors]);
 
     if (!hasError) {
-      setRegisterView('WEIGHT_GOAL');
+      setValidateLoading(true);
+
+      const {
+        email,
+      } = registerData;
+
+      userValidate({
+        email,
+      })
+        .then(({ data }) => {
+          if (data.success) {
+            setRegisterView('WEIGHT_GOAL');
+          } else {
+            toast.error(t('register.error_msg'));
+          }
+        })
+        .catch(({ response }) => {
+          toast.error(t('register.error_msg'));
+
+          if (response && response.status >= 400 && response.status < 500) {
+            const validateErrors = response.data.message;
+
+            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+
+            Object.keys(validateErrors).map((field) => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field],
+              });
+            });
+
+            setRegisterDataErrors(registerDataErrorsTemp);
+
+          }
+        })
+        .finally(() => {
+          setValidateLoading(false);
+        });
     }
   };
 
@@ -82,6 +117,7 @@ const ConfirmInfo = ({
                 autoComplete='email'
                 value={registerData.email}
                 data-validate='["email", "required"]'
+                readOnly={validateLoading}
                 onChange={(e) => validateOnChange('email', e.target.value, e)}
                 errors={getFieldErrors('email')}
                 isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
@@ -99,8 +135,8 @@ const ConfirmInfo = ({
                 color='primary'
                 type='submit'
                 size='lg'
+                isLoading={validateLoading}
                 block
-                isLoading={registerJoinLoading}
               >
                 {t('button.continue')}
               </Button>

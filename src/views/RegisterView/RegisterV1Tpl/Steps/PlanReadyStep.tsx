@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { getTranslate } from 'utils';
 import { connect } from 'react-redux';
 import { userLogin } from 'store/actions';

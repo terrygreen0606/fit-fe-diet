@@ -78,28 +78,25 @@ const WeightGoal = ({
           setValidateLoading(false);
           setRegisterView('PLAN_PROGRESS');
         })
-        .catch((error) => {
+        .catch(({ response }) => {
           setValidateLoading(false);
 
           toast.error(t('register.error_msg'));
 
-          if (error.response && error.response.status >= 400 && error.response.status < 500) {
-            try {
-              const validateErrors = JSON.parse(error.response.data.message);
+          if (response && response.status >= 400 && response.status < 500) {
+            const validateErrors = response.data.message;
 
-              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
 
-              Object.keys(validateErrors).map((field) => {
-                registerDataErrorsTemp.push({
-                  field,
-                  message: validateErrors[field],
-                });
+            Object.keys(validateErrors).map((field) => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field],
               });
+            });
 
-              setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
+            setRegisterDataErrors(registerDataErrorsTemp);
 
-            }
           }
         });
     }
@@ -125,6 +122,7 @@ const WeightGoal = ({
                   data-param='30,400'
                   data-validate='["required", "min-max"]'
                   name='weight_goal'
+                  readOnly={validateLoading}
                   autoFocus
                   onChange={(e) => validateOnChange('weight_goal', e.target.value, e)}
                   invalid={getFieldErrors('weight_goal').length > 0}

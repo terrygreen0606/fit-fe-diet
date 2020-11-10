@@ -116,9 +116,7 @@ const WeightStep = ({
               });
 
               setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
-
-            }
+            } catch {}
           }
         })
         .finally(() => {

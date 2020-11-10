@@ -83,24 +83,23 @@ const AgeStep = ({
             toast.error(t('register.error_msg'));
           }
         })
-        .catch((error) => {
+        .catch(({ response }) => {
           toast.error(t('register.error_msg'));
 
-          if (error.response && error.response.status >= 400 && error.response.status < 500) {
-            try {
-              const validateErrors = JSON.parse(error.response.data.message);
+          if (response && response.status >= 400 && response.status < 500) {
+            const validateErrors = response.data.message;
 
-              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
 
-              Object.keys(validateErrors).map((field) => {
-                registerDataErrorsTemp.push({
-                  field,
-                  message: validateErrors[field],
-                });
+            Object.keys(validateErrors).map((field) => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field],
               });
+            });
 
-              setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {}
+            setRegisterDataErrors(registerDataErrorsTemp);
+
           }
         })
         .finally(() => {
@@ -130,6 +129,7 @@ const AgeStep = ({
             min={16}
             max={100}
             data-param='16,100'
+            readOnly={validateLoading}
             name='age'
             value={registerData.age}
             data-validate='["required", "min-max"]'

@@ -80,28 +80,25 @@ const HeightWeight = ({
           setValidateLoading(false);
           setRegisterView('WEIGHT_GOAL');
         })
-        .catch((error) => {
+        .catch(({ response }) => {
           setValidateLoading(false);
 
           toast.error(t('register.error_msg'));
 
-          if (error.response && error.response.status >= 400 && error.response.status < 500) {
-            try {
-              const validateErrors = JSON.parse(error.response.data.message);
+          if (response && response.status >= 400 && response.status < 500) {
+            const validateErrors = response.data.message;
 
-              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
 
-              Object.keys(validateErrors).map((field) => {
-                registerDataErrorsTemp.push({
-                  field,
-                  message: validateErrors[field],
-                });
+            Object.keys(validateErrors).map((field) => {
+              registerDataErrorsTemp.push({
+                field,
+                message: validateErrors[field],
               });
+            });
 
-              setRegisterDataErrors(registerDataErrorsTemp);
-            } catch {
+            setRegisterDataErrors(registerDataErrorsTemp);
 
-            }
           }
         });
     }
@@ -136,6 +133,7 @@ const HeightWeight = ({
                   autoFocus
                   min={50}
                   max={250}
+                  readOnly={validateLoading}
                   data-param='50,250'
                   data-validate='["required", "min-max"]'
                   onChange={(e) => validateOnChange('height', e.target.value, e)}
@@ -159,6 +157,7 @@ const HeightWeight = ({
                   value={registerData.weight}
                   min={30}
                   max={400}
+                  readOnly={validateLoading}
                   data-param='30,400'
                   data-validate='["required", "min-max"]'
                   name='weight'

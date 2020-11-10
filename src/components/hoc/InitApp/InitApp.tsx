@@ -33,6 +33,8 @@ const InitApp = ({ history, children }: InitAppProps) => {
         history.push(routes.checkout);
       }
     }
+
+    throw error;
   });
 
   return (

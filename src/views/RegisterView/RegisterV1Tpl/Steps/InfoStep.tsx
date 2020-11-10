@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import {
   validateFieldOnChange,
@@ -202,6 +202,7 @@ const InfoStep = ({
                 max={100}
                 data-param='12,100'
                 name='age'
+                readOnly={weightPredictionLoading}
                 value={registerData.age}
                 data-validate='["required", "min-max"]'
                 onChange={(e) => validateOnChange('age', e.target.value, e)}
@@ -226,6 +227,7 @@ const InfoStep = ({
                 type='number'
                 value={registerData.height}
                 name='height'
+                readOnly={weightPredictionLoading}
                 data-param='50,250'
                 data-validate='["required", "min-max"]'
                 onChange={(e) => validateOnChange('height', e.target.value, e)}
@@ -257,6 +259,7 @@ const InfoStep = ({
                 height='md'
                 type='number'
                 value={registerData.weight}
+                readOnly={weightPredictionLoading}
                 data-param='30,400'
                 data-validate='["required", "min-max"]'
                 name='weight'
@@ -285,6 +288,7 @@ const InfoStep = ({
                   height='md'
                   type='number'
                   value={registerData.weight_goal}
+                  readOnly={weightPredictionLoading}
                   data-param='30,400'
                   data-validate='["required", "min-max"]'
                   name='weight_goal'
