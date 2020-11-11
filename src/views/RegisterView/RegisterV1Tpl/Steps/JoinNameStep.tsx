@@ -15,6 +15,7 @@ import {
   userLogin as userLoginAction,
 } from 'store/actions';
 import { InputError } from 'types';
+import queryString from 'query-string';
 import {
   userSignup,
   getAppSettings,
@@ -41,6 +42,7 @@ const JoinNameStep = ({
   setUserDataAction: setUserData,
   userLoginAction: userLogin,
   history,
+  location,
   localePhrases,
 }: any) => {
   const t = (code: string) =>
@@ -122,6 +124,12 @@ const JoinNameStep = ({
 
     if (ref_code) {
       profilePayload.ref_code = ref_code;
+    }
+
+    const { ps } = queryString.parse(location.search);
+
+    if (ps) {
+      profilePayload.price_set = ps;
     }
 
     return {

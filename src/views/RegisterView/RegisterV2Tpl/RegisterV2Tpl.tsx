@@ -75,6 +75,8 @@ const RegisterV2Tpl = ({
       registerDataErrors,
       setRegisterDataErrors,
       setRegisterView,
+      history,
+      location,
       localePhrases,
     );
 

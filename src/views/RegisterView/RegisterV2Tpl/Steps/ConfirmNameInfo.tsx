@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { userLogin as userLoginAction } from 'store/actions';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
+import queryString from 'query-string';
 import { UserAuthProfileType, InputError } from 'types';
 import { userSignup } from 'api';
 
@@ -29,6 +30,7 @@ const ConfirmInfo = ({
   setRegisterView,
   userLoginAction: userLogin,
   history,
+  location,
   localePhrases,
 }: any) => {
   const t = (code: string, placeholders?: any) =>
@@ -92,6 +94,12 @@ const ConfirmInfo = ({
 
     if (ref_code) {
       profilePayload.ref_code = ref_code;
+    }
+
+    const { ps } = queryString.parse(location.search);
+
+    if (ps) {
+      profilePayload.price_set = ps;
     }
 
     return {
