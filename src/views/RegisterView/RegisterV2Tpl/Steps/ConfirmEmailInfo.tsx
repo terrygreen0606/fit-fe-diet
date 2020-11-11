@@ -68,7 +68,7 @@ const ConfirmInfo = ({
       })
         .then(({ data }) => {
           if (data.success) {
-            setRegisterView('WEIGHT_GOAL');
+            setRegisterView('CONFIRM_NAME');
           } else {
             toast.error(t('register.error_msg'));
           }
