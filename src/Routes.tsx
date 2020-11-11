@@ -28,7 +28,6 @@ const SettingsChangeMealPlanView = React.lazy(() => import('./views/Settings/Set
 const SettingsPersonalView = React.lazy(() => import('./views/Settings/SettingsPersonalView'));
 const NotFound = React.lazy(() => import('./views/NotFound'));
 const FavouriteRecipesView = React.lazy(() => import('./views/Recipes/FavouriteRecipesView'));
-const DashboardView = React.lazy(() => import('./views/DashboardView'));
 const SettingsFaqView = React.lazy(() => import('./views/Settings/SettingsFaqView'));
 const SettingsFamilyView = React.lazy(() => import('./views/Settings/SettingsFamilyView'));
 const ReferralView = React.lazy(() => import('./views/ReferralView'));
@@ -189,16 +188,6 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <FavouriteRecipesView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
-      path={routes.dashboard}
-      component={(props: any) => (
-        <Layout {...props}>
-          <DashboardView {...props} />
         </Layout>
       )}
       exact
