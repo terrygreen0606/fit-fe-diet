@@ -48,8 +48,6 @@ const SettingsSubscriptionPlan = (props: any) => {
     let cleanComponent = false;
 
     if (!cleanComponent) {
-      setPaidUntilDate(new Date(settings.paid_until * 1000).toLocaleDateString(settings.language));
-
       getCheckoutTariff().then(({ data }) => {
         if (data.data && data.success) {
           setTariffData({
@@ -66,16 +64,32 @@ const SettingsSubscriptionPlan = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (priceText.current?.innerText) {
-      for (let i = 1; priceText.current.clientWidth < priceTextWrap.current.clientWidth; i++) {
-        priceText.current.style.fontSize = `${16 + i}px`;
-        if (priceText.current.clientWidth >= priceTextWrap.current.clientWidth) {
-          priceText.current.style.fontSize = `${16 + i - 1}px`;
-          break;
+    let cleanComponent = false;
+
+    if (!cleanComponent) {
+      if (priceText.current?.innerText) {
+        for (let i = 1; priceText.current.clientWidth < priceTextWrap.current.clientWidth; i++) {
+          priceText.current.style.fontSize = `${16 + i}px`;
+          if (priceText.current.clientWidth >= priceTextWrap.current.clientWidth) {
+            priceText.current.style.fontSize = `${16 + i - 1}px`;
+            break;
+          }
         }
       }
     }
+
+    return () => cleanComponent = true;
   }, [tariffData.priceMonthly, isLoadingPage]);
+
+  useEffect(() => {
+    let cleanComponent = false;
+
+    if (!cleanComponent) {
+      setPaidUntilDate(new Date(settings.paid_until * 1000).toLocaleDateString(settings.language));
+    }
+
+    return () => cleanComponent = true;
+  }, [settings.paid_until]);
 
   return (
     <>
@@ -103,64 +117,72 @@ const SettingsSubscriptionPlan = (props: any) => {
             <h2 className='subsciption-plan__title'>
               {t('subscription.title')}
             </h2>
-            <h2 className='subsciption-plan__subtitle'>
-              {t('subscription.current_plan')}
-            </h2>
-            <div className='subsciption-plan__current card-bg'>
-              <div className='subsciption-plan__current-desc'>
-                <div className='subsciption-plan__current-desc-item'>
-                  <div className='subsciption-plan__current-desc-item-media'>
-                    <PersonalProgramIcon />
-                  </div>
-                  <div className='subsciption-plan__current-desc-item-text'>
-                    {t('subscription.personal_program')}
-                  </div>
-                </div>
-                <div className='subsciption-plan__current-desc-item'>
-                  <div className='subsciption-plan__current-desc-item-media'>
-                    <ShoppingListFoodIcon />
-                  </div>
-                  <div className='subsciption-plan__current-desc-item-text'>
-                    {t('subscription.shopping_list')}
-                  </div>
-                </div>
-                <div className='subsciption-plan__current-desc-item'>
-                  <div className='subsciption-plan__current-desc-item-media'>
-                    <HealthTrackerIcon />
-                  </div>
-                  <div className='subsciption-plan__current-desc-item-text'>
-                    {t('subscription.health_tracker')}
-                  </div>
-                </div>
-              </div>
-              <div className='subsciption-plan__current-data'>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: t('subscription.expires', { PERIOD: paidUntilDate }),
-                  }}
-                  className='subsciption-plan__current-data-expires'
-                />
-                <div className='subsciption-plan__current-data-duration'>
-                  {t('subscription.months', { COUNT: tariffData.months })}
-                </div>
-                <div className='subsciption-plan__current-data-price'>
-                  <div
-                    ref={priceTextWrap}
-                    className='subsciption-plan__current-data-price-count-wrap'
-                  >
-                    <div
-                      ref={priceText}
-                      className='subsciption-plan__current-data-price-count'
-                    >
-                      {tariffData.priceMonthly}
+            {settings.paid_until ? (
+              <>
+                <h2 className='subsciption-plan__subtitle'>
+                  {t('subscription.current_plan')}
+                </h2>
+                <div className='subsciption-plan__current card-bg'>
+                  <div className='subsciption-plan__current-desc'>
+                    <div className='subsciption-plan__current-desc-item'>
+                      <div className='subsciption-plan__current-desc-item-media'>
+                        <PersonalProgramIcon />
+                      </div>
+                      <div className='subsciption-plan__current-desc-item-text'>
+                        {t('subscription.personal_program')}
+                      </div>
+                    </div>
+                    <div className='subsciption-plan__current-desc-item'>
+                      <div className='subsciption-plan__current-desc-item-media'>
+                        <ShoppingListFoodIcon />
+                      </div>
+                      <div className='subsciption-plan__current-desc-item-text'>
+                        {t('subscription.shopping_list')}
+                      </div>
+                    </div>
+                    <div className='subsciption-plan__current-desc-item'>
+                      <div className='subsciption-plan__current-desc-item-media'>
+                        <HealthTrackerIcon />
+                      </div>
+                      <div className='subsciption-plan__current-desc-item-text'>
+                        {t('subscription.health_tracker')}
+                      </div>
                     </div>
                   </div>
-                  <div className='subsciption-plan__current-data-price-month'>
-                    {` / ${t('common.months_reduction')}`}
+                  <div className='subsciption-plan__current-data'>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: t('subscription.expires', { PERIOD: paidUntilDate }),
+                      }}
+                      className='subsciption-plan__current-data-expires'
+                    />
+                    <div className='subsciption-plan__current-data-duration'>
+                      {t('subscription.months', { COUNT: tariffData.months })}
+                    </div>
+                    <div className='subsciption-plan__current-data-price'>
+                      <div
+                        ref={priceTextWrap}
+                        className='subsciption-plan__current-data-price-count-wrap'
+                      >
+                        <div
+                          ref={priceText}
+                          className='subsciption-plan__current-data-price-count'
+                        >
+                          {tariffData.priceMonthly}
+                        </div>
+                      </div>
+                      <div className='subsciption-plan__current-data-price-month'>
+                        {` / ${t('common.months_reduction')}`}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </>
+            ) : (
+                <h2 className='mb-5'>
+                  {t('subscription.not_paid')}
+                </h2>
+              )}
             <div className='subsciption-plan__buttons'>
               {/* <div className='subsciption-plan__buttons-cancelable'>
               <button
