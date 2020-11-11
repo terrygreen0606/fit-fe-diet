@@ -31,6 +31,7 @@ export default (
   localePhrases: any,
   setRegisterView: (any) => void,
   history: any,
+  location: any,
 ) => {
   let registerStepView = null;
 
@@ -123,6 +124,7 @@ export default (
           setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
           history={history}
+          location={location}
           localePhrases={localePhrases || {}}
         />
       );

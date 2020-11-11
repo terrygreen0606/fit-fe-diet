@@ -101,6 +101,7 @@ const RegisterV1Tpl = ({
     localePhrases,
     setRegisterView,
     history,
+    location,
   );
 
   const getProgressWidth = () => {

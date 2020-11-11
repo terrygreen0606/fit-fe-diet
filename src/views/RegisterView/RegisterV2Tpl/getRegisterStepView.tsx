@@ -17,7 +17,6 @@ import ConfirmNameInfo from './Steps/ConfirmNameInfo';
 import ConfirmEmailInfo from './Steps/ConfirmEmailInfo';
 import FinalWelcome from './Steps/FinalWelcome';
 
-
 export default (
   registerView: RegisterViewType,
   registerData: any,
@@ -25,6 +24,8 @@ export default (
   registerDataErrors: InputError[],
   setRegisterDataErrors: (errors: InputError[]) => void,
   setRegisterView: (RegisterViewType) => void,
+  history: any,
+  location: any,
   localePhrases: any,
 ) => {
   let registerStepView = null;
@@ -177,6 +178,8 @@ export default (
           registerDataErrors={registerDataErrors}
           setRegisterDataErrors={setRegisterDataErrors}
           setRegisterView={setRegisterView}
+          history={history}
+          location={location}
           localePhrases={localePhrases}
         />
       );
