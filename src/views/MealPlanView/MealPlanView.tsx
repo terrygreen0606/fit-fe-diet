@@ -489,7 +489,7 @@ const MealPlanView = (props: any) => {
                         { __html: t('nutrition.days_use', { COUNT: daysToEndSubscription }) }
                       }
                     />
-                    <Link to={routes.checkout} className='nutrition-plan-usage-time-card-content-link'>
+                    <Link to={routes.subscriptionPlanSettings} className='nutrition-plan-usage-time-card-content-link'>
                       <Button className='mt-3' color='primary'>
                         {t('nutrition.subscription')}
                       </Button>

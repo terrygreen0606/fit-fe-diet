@@ -3,6 +3,9 @@
 .subsciption-plan
   padding: 36px 40px
 
+  @media (max-width: 992px)
+    padding: 25px 30px
+
   &__title
     margin-bottom: 36px
 
@@ -16,31 +19,73 @@
     padding: 30px 50px 40px
     border: 1px solid $steel-blue
 
+    @media (max-width: 992px)
+      flex-wrap: wrap
+      margin-bottom: 20px
+      padding: 15px
+
     &-desc
       display: flex
       justify-content: space-between
       width: 74%
+
+      @media (max-width: 992px)
+        width: 100%
+
+      @media (max-width: 350px)
+        flex-wrap: wrap
 
       &-item
         width: 33.33%
         padding: 0 10px
         text-align: center
 
+        @media (max-width: 992px)
+          padding: 0
+
+        @media (max-width: 350px)
+          width: 100%
+          margin-bottom: 20px
+
         &-media
           min-height: 46px
           margin-bottom: 10px
 
+          @media (max-width: 350px)
+            margin-bottom: 0px
+
         &-text
           font-weight: bold
           font-size: 16px
+          line-height: 1.2
+
+          @media (max-width: 992px)
+            font-size: 12px
     
     &-data
       width: 26%
       text-align: right
 
+      @media (max-width: 992px)
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: space-between
+        flex-wrap: wrap
+        padding-top: 10px
+
+      @media (max-width: 400px)
+        justify-content: center
+        text-align: center
+
       &-expires
         margin-bottom: 20px
         font-weight: bold
+
+        @media (max-width: 992px)
+          width: 100%
+          text-align: center
+          font-size: 16px
 
         span
           color: $steel-blue
@@ -50,31 +95,63 @@
         font-size: 24px
         line-height: 1.2
         font-weight: bold
+
+        @media (max-width: 992px)
+          width: 50%
+          text-align: left
+
+        @media (max-width: 400px)
+          width: 100%
+          text-align: center
       
       &-price
         display: flex
         align-items: center
         justify-content: flex-end
 
+        @media (max-width: 992px)
+          width: 50%
+
+        @media (max-width: 400px)
+          width: 100%
+          justify-content: center
+        
+        &-count-wrap
+          flex: 1
+          max-width: 160px
+
         &-count
-          font-size: 36px
+          display: inline-block
+          font-size: 20px
           line-height: 1.2
           font-weight: bold
           color: $steel-blue
 
         &-month
+          width: 51px
           padding-left: 5px
 
   &__buttons
-    position: relative
     display: flex
     align-items: center
     justify-content: space-between
     margin-bottom: 50px
 
+    @media (max-width: 992px)
+      flex-wrap: wrap
+      justify-content: center
+
+    a
+      text-decoration: none
+
     &-cancelable
       display: flex
       align-items: center
+
+      @media (max-width: 992px)
+        justify-content: center
+        width: 100%
+        margin-bottom: 20px
 
       &-item
         padding: 0
@@ -86,16 +163,28 @@
         transition: 0.2s color ease
         cursor: pointer
 
+        @media (max-width: 992px)
+          margin: 0 10px
+          font-size: 16px
+
         &:hover
           color: $steel-blue
 
         &:not(:first-child)
           margin-left: 40px
+
+          @media (max-width: 992px)
+            margin-left: 0
     
     &-extend
       padding: 9px 49px
       font-size: 24px
       line-height: 1.2
+
+      @media (max-width: 400px)
+        width: 100%
+        padding: 9px 10px
+        font-size: 20px
 
   &__info
     h1,
@@ -109,9 +198,16 @@
       font-size: 18px
       font-weight: bold
 
+      @media (max-width: 992px)
+        margin-top: 40px
+        margin-bottom: 20px
+
     p
       margin-bottom: 40px
       line-height: 1.2
+
+      @media (max-width: 992px)
+        margin-bottom: 10px
 
     a
       color: $steel-blue
