@@ -65,11 +65,7 @@ const RegisterV1Tpl = ({
     };
   }, []);
 
-  useEffect(() => {
-    if (registerView) {
-      history.push(`/register${location.search}#${registerView.toLowerCase()}`);
-    }
-
+  const stepsRunAnimation = () => {
     clearTimeout(stepsAnimationClean);
 
     if (registerStepsRef.current) {
@@ -86,6 +82,18 @@ const RegisterV1Tpl = ({
       }, 2500);
 
       setStepsAnimationClean(timeout);
+    }
+  };
+
+  useEffect(() => {
+    if (registerView) {
+      history.push(`/register${location.search}#${registerView.toLowerCase()}`);
+    }
+
+    const index = registerViewsList.findIndex((view) => view === registerView);
+
+    if (index !== 0) {
+      stepsRunAnimation();
     }
   }, [registerView]);
 
