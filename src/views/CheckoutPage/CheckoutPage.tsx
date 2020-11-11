@@ -11,7 +11,7 @@ import {
 } from 'utils';
 import { InputError } from 'types';
 import {
-  getPaymentTariff, fetchUserProfile,
+  getCheckoutTariff, fetchUserProfile,
   getPaymentMethods,
 } from 'api';
 
@@ -68,7 +68,7 @@ const CheckoutPage = ({ localePhrases }: any) => {
     setTariffLoading(true);
     setTariffLoadingError(false);
 
-    getPaymentTariff()
+    getCheckoutTariff()
       .then(({ data }) => {
         setTariffLoading(false);
 
@@ -190,7 +190,7 @@ const CheckoutPage = ({ localePhrases }: any) => {
       ...errors,
     ]);
 
-    if (!hasError) {}
+    if (!hasError) { }
   };
 
   return (
