@@ -71,8 +71,6 @@ const ExpectationsStep = ({
           {t('button.continue')}
         </Button>
       </div>
-
-      <p className='text-center mt-3'>{t('register.expectations.redirect_text')}</p>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { getTranslate } from 'utils';
 import { Link } from 'react-router-dom';
 import { InputError } from 'types';
@@ -54,6 +54,9 @@ const RegisterV1Tpl = ({
 
   const [registerView, setRegisterView] = useState<RegisterViewType>(registerViewsList[0]);
 
+  const registerStepsRef = useRef(null);
+  const [stepsAnimationClean, setStepsAnimationClean] = useState(null);
+
   useEffect(() => {
     document.querySelector('.basePageLayoutWrapper').classList.add('registerv1_layout');
 
@@ -65,6 +68,24 @@ const RegisterV1Tpl = ({
   useEffect(() => {
     if (registerView) {
       history.push(`/register${location.search}#${registerView.toLowerCase()}`);
+    }
+
+    clearTimeout(stepsAnimationClean);
+
+    if (registerStepsRef.current) {
+      registerStepsRef.current.classList.remove('fadeInOut-25');
+
+      setTimeout(() => {
+        registerStepsRef.current.classList.add('fadeInOut-25');
+      }, 0);
+
+      const timeout = setTimeout(() => {
+        if (registerStepsRef.current) {
+          registerStepsRef.current.classList.remove('fadeInOut-25');
+        }
+      }, 2500);
+
+      setStepsAnimationClean(timeout);
     }
   }, [registerView]);
 
@@ -89,6 +110,10 @@ const RegisterV1Tpl = ({
       return 20;
     }
 
+    if (index === registerViewsList.length - 1) {
+      return 95;
+    }
+
     return Math.round((80 / (registerViewsList.length - 1)) * index) + 20;
   };
 
@@ -101,7 +126,9 @@ const RegisterV1Tpl = ({
         width={getProgressWidth()}
       />
 
-      {getRegisterStepView(registerView)}
+      <div className='register_v1_steps' ref={registerStepsRef}>
+        {getRegisterStepView(registerView)}
+      </div>
     </div>
   );
 };
