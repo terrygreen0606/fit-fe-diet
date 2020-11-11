@@ -9,6 +9,7 @@ import {
   getTranslate,
   getImagePath,
 } from 'utils';
+import Helmet from 'react-helmet';
 import { InputError } from 'types';
 import {
   getPaymentTariff, fetchUserProfile,
@@ -59,8 +60,6 @@ const CheckoutPage = ({ localePhrases }: any) => {
     name: t('checkout.title.user_name'),
   });
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
-
-  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
@@ -195,6 +194,10 @@ const CheckoutPage = ({ localePhrases }: any) => {
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.checkout')}</title>
+      </Helmet>
+
       <Modal
         isOpen={isWarningModalOpen}
         onClose={() => setWarningModalOpen(false)}

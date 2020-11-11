@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getTranslate, getImagePath } from 'utils';
@@ -34,6 +35,10 @@ const AfterCheckoutPage = ({
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.checkout_thankyou')}</title>
+      </Helmet>
+
       <section className='text-center'>
         <div className='container'>
           <div className='row'>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import uuid from 'react-uuid';
+import Helmet from 'react-helmet';
 import { getTranslate, getImagePath } from 'utils';
 import { getAppTariffs, getAppReviews } from 'api';
 
@@ -143,6 +144,10 @@ const AfterSignupPage = ({
 
   return (
     <>
+      <Helmet>
+        <title>{t('app.title.after_signup')}</title>
+      </Helmet>
+
       <section className='after-signup-header-sect'>
         <div className='container'>
           <div className='row'>
