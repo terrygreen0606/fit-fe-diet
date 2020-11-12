@@ -14,11 +14,15 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 export const SET_AUTH_CHECKING = 'SET_AUTH_CHECKING';
 export const SET_USER_DATA = 'SET_USER_DATA';
 
-export const setUserData = (userData: any) => ({ type: SET_USER_DATA, userData });
+export const setUserData = (userData: any) => ({
+  type: SET_USER_DATA,
+  userData,
+});
 
-export const setAuthChecking = (isAuthChecking: boolean) => (
-  { type: SET_AUTH_CHECKING, isAuthChecking }
-);
+export const setAuthChecking = (isAuthChecking: boolean) => ({
+  type: SET_AUTH_CHECKING,
+  isAuthChecking,
+});
 
 export const userLogin = (token: string) => {
   sessionStorage.setItem('FITLOPE_IS_AUTHENTICATED', 'true');
@@ -28,49 +32,77 @@ export const userLogin = (token: string) => {
 export const fetchLocales = () => async (dispatch) => {
   const userLang = window.navigator.language;
 
-  await loadPhrases(userLang).then(({ data, headers }) => {
-    localStorage.setItem('FITLOPE_CHECKSUM_I18N', headers['fitlope-checksum-i18n']);
+  await loadPhrases(userLang)
+    .then(({ data, headers }) => {
+      localStorage.setItem(
+        'FITLOPE_CHECKSUM_I18N',
+        headers['fitlope-checksum-i18n'],
+      );
 
-    if (data.success && data.data) {
-      dispatch(setLocalePhrases(data.data));
-      localStorage.setItem('FITLOPE_LOCALE_LANG', userLang);
-      localStorage.setItem('FITLOPE_LOCALE_PHRASES', JSON.stringify(data.data));
-    }
-  }).catch(() => { });
+      if (data.success && data.data) {
+        dispatch(setLocalePhrases(data.data));
+        localStorage.setItem('FITLOPE_LOCALE_LANG', userLang);
+        localStorage.setItem(
+          'FITLOPE_LOCALE_PHRASES',
+          JSON.stringify(data.data),
+        );
+      }
+    })
+    .catch(() => {});
 };
 
 export const fetchPublicSettings = () => async (dispatch) => {
   await getAppPublicSettings()
     .then(({ data, headers }) => {
-      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', headers['fitlope-checksum-settings']);
+      localStorage.setItem(
+        'FITLOPE_CHECKSUM_SETTINGS',
+        headers['fitlope-checksum-settings'],
+      );
 
       if (data.success && data.data) {
         dispatch(setAppSetting(data.data));
-        localStorage.setItem('FITLOPE_PUBLIC_SETTINGS', JSON.stringify(data.data));
+        localStorage.setItem(
+          'FITLOPE_PUBLIC_SETTINGS',
+          JSON.stringify(data.data),
+        );
       }
-    }).catch(() => { });
+    })
+    .catch(() => {});
 };
 
 export const fetchUserSettings = () => async (dispatch) => {
   await getAppSettings()
     .then(({ data, headers }) => {
-      localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', headers['fitlope-checksum-settings']);
+      localStorage.setItem(
+        'FITLOPE_CHECKSUM_SETTINGS',
+        headers['fitlope-checksum-settings'],
+      );
 
       if (data.success && data.data) {
-        dispatch(setAppSetting({
-          ...data.data,
-          is_private: true,
-        }));
-        localStorage.setItem('FITLOPE_USER_SETTINGS', JSON.stringify(data.data));
+        dispatch(
+          setAppSetting({
+            ...data.data,
+            is_private: true,
+          }),
+        );
+        localStorage.setItem(
+          'FITLOPE_USER_SETTINGS',
+          JSON.stringify(data.data),
+        );
       }
-    }).catch(() => { });
+    })
+    .catch(() => {});
 };
 
-export const loadLocales = (reloadLocales: boolean = false) => async (dispatch) => {
+export const loadLocales = (reloadLocales: boolean = false) => async (
+  dispatch,
+) => {
   const LOCALIZATION_DEV = true;
   const FITLOPE_CHECKSUM_I18N = localStorage.getItem('FITLOPE_CHECKSUM_I18N');
   const FITLOPE_LOCALE_LANG = localStorage.getItem('FITLOPE_LOCALE_LANG');
-  const FITLOPE_LOCALE_PHRASES = JSON.parse(localStorage.getItem('FITLOPE_LOCALE_PHRASES'));
+  const FITLOPE_LOCALE_PHRASES = JSON.parse(
+    localStorage.getItem('FITLOPE_LOCALE_PHRASES'),
+  );
   const userLang = window.navigator.language;
 
   if (
@@ -87,11 +119,17 @@ export const loadLocales = (reloadLocales: boolean = false) => async (dispatch) 
 
   axios.interceptors.response.use((response) => {
     if (response.status === xhrStatuses['OK']) {
-      const FITLOPE_CHECKSUM_I18N = localStorage.getItem('FITLOPE_CHECKSUM_I18N');
-      const FITLOPE_CHECKSUM_I18N_HEADER = response.headers['fitlope-checksum-i18n'];
+      const FITLOPE_CHECKSUM_I18N = localStorage.getItem(
+        'FITLOPE_CHECKSUM_I18N',
+      );
+      const FITLOPE_CHECKSUM_I18N_HEADER =
+        response.headers['fitlope-checksum-i18n'];
 
       if (FITLOPE_CHECKSUM_I18N_HEADER !== FITLOPE_CHECKSUM_I18N) {
-        localStorage.setItem('FITLOPE_CHECKSUM_I18N', FITLOPE_CHECKSUM_I18N_HEADER);
+        localStorage.setItem(
+          'FITLOPE_CHECKSUM_I18N',
+          FITLOPE_CHECKSUM_I18N_HEADER,
+        );
 
         if (response.config.url === '/i18n/load') {
           return response;
@@ -110,23 +148,36 @@ export const appSetting = (
   localesLoad: boolean = true,
 ) => async (dispatch) => {
   const SETTINGS_DEV = true;
-  const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
-  const FITLOPE_PUBLIC_SETTINGS: any = JSON.parse(localStorage.getItem('FITLOPE_PUBLIC_SETTINGS'));
-  const FITLOPE_USER_SETTINGS: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
+  const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem(
+    'FITLOPE_CHECKSUM_SETTINGS',
+  );
+  const FITLOPE_PUBLIC_SETTINGS: any = JSON.parse(
+    localStorage.getItem('FITLOPE_PUBLIC_SETTINGS'),
+  );
+  const FITLOPE_USER_SETTINGS: any = JSON.parse(
+    localStorage.getItem('FITLOPE_USER_SETTINGS'),
+  );
 
   if (isAuthenticated) {
     if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
       await dispatch(fetchUserSettings());
     } else {
-      dispatch(setAppSetting({
-        ...FITLOPE_USER_SETTINGS,
-        is_private: true,
-      }));
+      dispatch(
+        setAppSetting({
+          ...FITLOPE_USER_SETTINGS,
+          is_private: true,
+        }),
+      );
     }
 
-    const FITLOPE_USER_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
+    const FITLOPE_USER_SETTINGS_UPDATED: any = JSON.parse(
+      localStorage.getItem('FITLOPE_USER_SETTINGS'),
+    );
 
-    if (FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn) {
+    if (
+      FITLOPE_USER_SETTINGS_UPDATED &&
+      FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn
+    ) {
       initSentry(FITLOPE_USER_SETTINGS_UPDATED.sentry_dsn);
     }
 
@@ -134,15 +185,24 @@ export const appSetting = (
       await dispatch(loadLocales());
     }
   } else {
-    if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_PUBLIC_SETTINGS) {
+    if (
+      SETTINGS_DEV ||
+      !FITLOPE_CHECKSUM_SETTINGS ||
+      !FITLOPE_PUBLIC_SETTINGS
+    ) {
       await dispatch(fetchPublicSettings());
     } else {
       dispatch(setAppSetting(FITLOPE_PUBLIC_SETTINGS));
     }
 
-    const FITLOPE_PUBLIC_SETTINGS_UPDATED: any = JSON.parse(localStorage.getItem('FITLOPE_PUBLIC_SETTINGS'));
+    const FITLOPE_PUBLIC_SETTINGS_UPDATED: any = JSON.parse(
+      localStorage.getItem('FITLOPE_PUBLIC_SETTINGS'),
+    );
 
-    if (FITLOPE_PUBLIC_SETTINGS_UPDATED.sentry_dsn) {
+    if (
+      FITLOPE_PUBLIC_SETTINGS_UPDATED &&
+      FITLOPE_PUBLIC_SETTINGS_UPDATED.sentry_dsn
+    ) {
       initSentry(FITLOPE_PUBLIC_SETTINGS_UPDATED.sentry_dsn);
     }
 
@@ -153,15 +213,26 @@ export const appSetting = (
 
   axios.interceptors.response.use((response) => {
     if (response.status === xhrStatuses['OK']) {
-      const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem('FITLOPE_IS_AUTHENTICATED');
-      const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem('FITLOPE_CHECKSUM_SETTINGS');
-      const FITLOPE_CHECKSUM_SETTINGS_HEADER = response.headers['fitlope-checksum-settings'];
+      const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem(
+        'FITLOPE_IS_AUTHENTICATED',
+      );
+      const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem(
+        'FITLOPE_CHECKSUM_SETTINGS',
+      );
+      const FITLOPE_CHECKSUM_SETTINGS_HEADER =
+        response.headers['fitlope-checksum-settings'];
 
       if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
-        localStorage.setItem('FITLOPE_CHECKSUM_SETTINGS', FITLOPE_CHECKSUM_SETTINGS_HEADER);
+        localStorage.setItem(
+          'FITLOPE_CHECKSUM_SETTINGS',
+          FITLOPE_CHECKSUM_SETTINGS_HEADER,
+        );
       }
 
-      if (response.config.url === '/app/public-settings' || response.config.url === '/app/settings') {
+      if (
+        response.config.url === '/app/public-settings' ||
+        response.config.url === '/app/settings'
+      ) {
         return response;
       }
 
@@ -169,7 +240,10 @@ export const appSetting = (
         if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
           dispatch(fetchUserSettings());
         }
-      } else if (!FITLOPE_IS_AUTHENTICATED || FITLOPE_IS_AUTHENTICATED === 'false') {
+      } else if (
+        !FITLOPE_IS_AUTHENTICATED ||
+        FITLOPE_IS_AUTHENTICATED === 'false'
+      ) {
         if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
           dispatch(fetchPublicSettings());
         }
@@ -186,19 +260,21 @@ export const authCheck = () => async (dispatch) => {
   dispatch(setAuthChecking(true));
 
   if (token) {
-    userAcknowledge(token).then(async ({ data }) => {
-      if (data && data.access_token) {
-        localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    userAcknowledge(token)
+      .then(async ({ data }) => {
+        if (data && data.access_token) {
+          localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-        dispatch(userLogin(data.access_token));
-        await dispatch(appSetting(true));
+          dispatch(userLogin(data.access_token));
+          await dispatch(appSetting(true));
+          dispatch(setAuthChecking(false));
+        }
+      })
+      .catch(async () => {
+        await dispatch(appSetting(false));
         dispatch(setAuthChecking(false));
-      }
-    }).catch(async () => {
-      await dispatch(appSetting(false));
-      dispatch(setAuthChecking(false));
-    });
+      });
   } else {
     await dispatch(appSetting(false));
     dispatch(setAuthChecking(false));
