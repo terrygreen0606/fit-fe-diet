@@ -143,8 +143,8 @@ const JoinStep = (props: any) => {
 
         if (getCookie('acceptFamilyCode')) {
           const familyCode = getCookie('acceptFamilyCode');
-          acceptInviteToFamily(familyCode).then(({ data }) => {
-            if (data.success) {
+          acceptInviteToFamily(familyCode).then((response) => {
+            if (response.data.success) {
               toast.success(t('family.accept.success'));
               document.cookie = 'acceptFamilyCode;expires=Thu, 01 Jan 1970 00:00:01 GMT';
             }

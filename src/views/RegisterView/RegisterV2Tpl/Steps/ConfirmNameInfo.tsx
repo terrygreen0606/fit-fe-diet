@@ -11,7 +11,7 @@ import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import { UserAuthProfileType, InputError } from 'types';
-import { userSignup } from 'api';
+import { userSignup, acceptInviteToFamily } from 'api';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -135,6 +135,16 @@ const ConfirmInfo = ({
           response.data && response.data.access_token
             ? response.data.access_token
             : null;
+
+        if (getCookie('acceptFamilyCode')) {
+          const familyCode = getCookie('acceptFamilyCode');
+          acceptInviteToFamily(familyCode).then((res) => {
+            if (res.data.success) {
+              toast.success(t('family.accept.success'));
+              document.cookie = 'acceptFamilyCode;expires=Thu, 01 Jan 1970 00:00:01 GMT';
+            }
+          }).catch(() => toast.error('common.error'));
+        }
 
         if (token) {
           finalWelcomeStep(token);

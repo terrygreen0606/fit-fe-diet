@@ -19,6 +19,7 @@ import queryString from 'query-string';
 import {
   userSignup,
   getAppSettings,
+  acceptInviteToFamily,
 } from 'api';
 
 // Components
@@ -149,6 +150,16 @@ const JoinNameStep = ({
           data && data.access_token
             ? data.access_token
             : null;
+
+        if (getCookie('acceptFamilyCode')) {
+          const familyCode = getCookie('acceptFamilyCode');
+          acceptInviteToFamily(familyCode).then((response) => {
+            if (response.data.success) {
+              toast.success(t('family.accept.success'));
+              document.cookie = 'acceptFamilyCode;expires=Thu, 01 Jan 1970 00:00:01 GMT';
+            }
+          }).catch(() => toast.error('common.error'));
+        }
 
         if (token) {
           localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
