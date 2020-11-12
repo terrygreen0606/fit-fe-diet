@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import {
   validateFieldOnChange,
@@ -14,6 +15,7 @@ import { InputError } from 'types';
 import {
   userSignup,
   getAppSettings,
+  acceptInviteToFamily,
 } from 'api';
 
 // Components
@@ -138,6 +140,15 @@ const JoinStep = (props: any) => {
           data && data.access_token
             ? data.access_token
             : null;
+
+        if (getCookie('acceptFamilyCode')) {
+          const familyCode = getCookie('acceptFamilyCode');
+          acceptInviteToFamily(familyCode).then(({ data }) => {
+            if (data.success) {
+              toast.success(t('family.accept.success'));
+            }
+          }).catch(() => toast.error('common.error'));
+        }
 
         if (token) {
           localStorage.setItem('FITLOPE_AUTH_TOKEN', token);

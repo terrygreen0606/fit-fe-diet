@@ -8,6 +8,7 @@ import BasePage from 'components/hoc/BasePage';
 import Layout from 'components/hoc/Layout';
 import PrivateRoute from 'components/common/PrivateRoute';
 import AuthRoute from 'components/common/AuthRoute';
+import PublicRoute from 'components/common/PublicRoute';
 
 import { routes } from 'constants/routes';
 
@@ -40,6 +41,7 @@ const CheckoutPage = React.lazy(() => import('./views/CheckoutPage'));
 const AfterCheckoutPage = React.lazy(() => import('./views/AfterCheckoutPage'));
 const SettingsPaymentHistoryView = React.lazy(() => import('./views/Settings/SettingsPaymentHistoryView'));
 const SettingsSubscriptionPlan = React.lazy(() => import('./views/Settings/SettingsSubscriptionPlan'));
+const JoinFamily = React.lazy(() => import('./views/JoinFamily'));
 
 const Routes = () => (
   <Switch>
@@ -268,6 +270,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <SettingsSubscriptionPlan {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PublicRoute
+      path={routes.joinFamily}
+      component={(props: any) => (
+        <Layout {...props}>
+          <JoinFamily {...props} />
         </Layout>
       )}
       exact
