@@ -28,7 +28,6 @@ const SettingsChangeMealPlanView = React.lazy(() => import('./views/Settings/Set
 const SettingsPersonalView = React.lazy(() => import('./views/Settings/SettingsPersonalView'));
 const NotFound = React.lazy(() => import('./views/NotFound'));
 const FavouriteRecipesView = React.lazy(() => import('./views/Recipes/FavouriteRecipesView'));
-const DashboardView = React.lazy(() => import('./views/DashboardView'));
 const SettingsFaqView = React.lazy(() => import('./views/Settings/SettingsFaqView'));
 const SettingsFamilyView = React.lazy(() => import('./views/Settings/SettingsFamilyView'));
 const ReferralView = React.lazy(() => import('./views/ReferralView'));
@@ -40,6 +39,7 @@ const AfterSignupPage = React.lazy(() => import('./views/AfterSignupPage'));
 const CheckoutPage = React.lazy(() => import('./views/CheckoutPage'));
 const AfterCheckoutPage = React.lazy(() => import('./views/AfterCheckoutPage'));
 const SettingsPaymentHistoryView = React.lazy(() => import('./views/Settings/SettingsPaymentHistoryView'));
+const SettingsSubscriptionPlan = React.lazy(() => import('./views/Settings/SettingsSubscriptionPlan'));
 
 const Routes = () => (
   <Switch>
@@ -194,16 +194,6 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.dashboard}
-      component={(props: any) => (
-        <Layout {...props}>
-          <DashboardView {...props} />
-        </Layout>
-      )}
-      exact
-    />
-
-    <PrivateRoute
       path={routes.faqSettings}
       component={(props: any) => (
         <Layout {...props}>
@@ -268,6 +258,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <SettingsPaymentHistoryView {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path={routes.subscriptionPlanSettings}
+      component={(props: any) => (
+        <Layout {...props}>
+          <SettingsSubscriptionPlan {...props} />
         </Layout>
       )}
       exact

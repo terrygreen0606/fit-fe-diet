@@ -11,7 +11,6 @@ export const routes = {
   changeMealSettings: '/settings/change-meal-plan',
   personalSettings: '/settings/personal',
   favouritesRecipes: '/recipes/favourites',
-  dashboard: '/dashboard',
   faqSettings: '/settings/faq',
   referral: '/referral',
   familySettings: '/settings/family',
@@ -27,4 +26,5 @@ export const routes = {
   afterCheckout: '/checkout/thankyou',
   getRecipeFullView: (recipeId: string) => `/recipe/${recipeId}`,
   paymentHistorySettings: '/settings/payment-history',
+  subscriptionPlanSettings: '/settings/subscription-plan',
 };

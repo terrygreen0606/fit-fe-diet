@@ -21,9 +21,9 @@ const ProfileSidebar = (props: any) => {
   return (
     <div className='profile-menu-sidebar'>
       <div className='profile-menu-card card-bg'>
-        <h5 className='profile-menu-title'>
-          {t('profile.menu_title_payments')}
-        </h5>
+        <h2 className='profile-menu-title'>
+          {t('profile.menu_title_settings')}
+        </h2>
 
         <ul className='profile-menu-list'>
           <li>
@@ -65,14 +65,14 @@ const ProfileSidebar = (props: any) => {
       </div>
 
       <div className='profile-menu-card card-bg mt-3'>
-        <h5 className='profile-menu-title'>
-          {t('profile.menu_title_settings')}
-        </h5>
+        <h2 className='profile-menu-title'>
+          {t('profile.menu_title_payments')}
+        </h2>
 
         <ul className='profile-menu-list'>
           <li>
             <NavLink
-              to='/settings'
+              to={routes.subscriptionPlanSettings}
               activeClassName='active'
               exact
               className='profile-menu-list-item'
@@ -97,9 +97,9 @@ const ProfileSidebar = (props: any) => {
       </div>
 
       <div className='profile-menu-card card-bg mt-3'>
-        <h5 className='profile-menu-title'>
+        <h2 className='profile-menu-title'>
           {t('profile.menu_title_support')}
-        </h5>
+        </h2>
 
         <ul className='profile-menu-list'>
           <li>

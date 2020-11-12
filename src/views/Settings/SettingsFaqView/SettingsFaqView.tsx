@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 
 import { routes } from 'constants/routes';
@@ -58,4 +57,4 @@ const SettingsFaqView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(SettingsFaqView));
+export default WithTranslate(SettingsFaqView);
