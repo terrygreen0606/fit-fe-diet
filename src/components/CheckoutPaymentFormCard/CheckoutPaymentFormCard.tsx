@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import {
@@ -7,6 +7,7 @@ import {
   getTranslate,
   getImagePath,
 } from 'utils';
+import { routes } from 'constants/routes';
 import { InputError } from 'types';
 import { payCreditCard } from 'api';
 
@@ -24,6 +25,9 @@ import './CheckoutPaymentFormCard.sass';
 
 import { ReactComponent as LockIcon } from 'assets/img/icons/lock-icon.svg';
 import { ReactComponent as CreditCardIcon } from 'assets/img/icons/credit-card-icon.svg';
+import { ReactComponent as WarningIcon } from 'assets/img/icons/warning-icon.svg';
+
+import { getCardFieldFormat } from './getCardFieldFormat';
 
 const checkoutFormDefault = {
   payment_type: 'credit_card',
@@ -40,23 +44,59 @@ const checkoutFormDefault = {
 type CheckoutPaymentFormCardProps = {
   className?: string;
   tariff: any;
+  isPaymentError?: boolean;
+  paymentErrors?: string[];
+  history: any;
   localePhrases: any;
 };
 
 const CheckoutPaymentFormCardPropsDefault = {
   className: null,
+  isPaymentError: null,
+  paymentErrors: null,
 };
 
 const CheckoutPaymentFormCard = ({
   className,
   tariff,
+  isPaymentError,
+  paymentErrors,
+  history,
   localePhrases,
 }: CheckoutPaymentFormCardProps) => {
   const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
+
+  const paymentErrorRef = useRef<any>(null);
+
+  const [isCheckoutPaymentError, setCheckoutPaymentError] = useState<boolean>(false);
+  const [paymentErrorsList, setPaymentErrorsList] = useState<string[]>([]);
+
   const [phoneErrors, setPhoneErrors] = useState<InputError[]>([]);
 
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isPaymentError !== null) {
+      setCheckoutPaymentError(isPaymentError);
+    }
+  }, [isPaymentError]);
+
+  useEffect(() => {
+    if (isCheckoutPaymentError === true) {
+      setTimeout(() => {
+        paymentErrorRef?.current?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+      }, 100);
+    }
+  }, [isCheckoutPaymentError]);
+
+  useEffect(() => {
+    if (paymentErrors !== null) {
+      setPaymentErrorsList([
+        ...paymentErrors,
+      ]);
+    }
+  }, [paymentErrors]);
 
   useEffect(() => {
     setCheckoutFormErrors([
@@ -112,7 +152,7 @@ const CheckoutPaymentFormCard = ({
   };
 
   const isShowInstallments = () =>
-    getTariffDataValue('country') === 'br';
+    getTariffDataValue('country') === 'br' || true;
 
   const getPayCredictCardParams = () => {
     const {
@@ -164,26 +204,35 @@ const CheckoutPaymentFormCard = ({
 
     if (!hasError && phoneErrors.length === 0) {
       setPaymentLoading(true);
+      setCheckoutPaymentError(false);
+      setPaymentErrorsList([]);
 
       payCreditCard(getPayCredictCardParams())
         .then((response) => {
           const paymentOrder = response.data;
 
           if (paymentOrder) {
-            if (paymentOrder.redirect_url) {
-              window.location.href = paymentOrder.redirect_url;
-            } else if (paymentOrder.status) {
+            if (paymentOrder.status) {
               switch (paymentOrder.status) {
                 case 'ok':
                   toast.success(t('checkout.payment_success'));
                   setCheckoutForm({ ...checkoutFormDefault });
+                  history.push(routes.afterCheckout);
                   break;
 
                 case 'pending':
-                  toast.warning(t('checkout.payment_pending'));
+                  if (paymentOrder.redirect_url) {
+                    window.location.href = paymentOrder.redirect_url;
+                  } else {
+                    toast.warning(t('checkout.payment_pending'));
+                  }
                   break;
 
                 case 'fail':
+                  setCheckoutPaymentError(true);
+                  setPaymentErrorsList(paymentOrder.errors_i18n
+                    ? paymentOrder.errors_i18n.filter((error) => error.length > 0)
+                    : []);
                   toast.error(t('checkout.payment_fail'));
                   break;
 
@@ -196,8 +245,23 @@ const CheckoutPaymentFormCard = ({
             toast.error(t('checkout.payment_fail'));
           }
         })
-        .catch(() => {
+        .catch(({ response }) => {
           toast.error(t('checkout.payment_fail'));
+          setCheckoutPaymentError(true);
+
+          if (response && response.status >= 400 && response.status < 500) {
+            const validateErrors = response.data.message;
+            const checkoutFormErrorsTemp: InputError[] = [...checkoutFormErrors];
+
+            Object.keys(validateErrors).map((field) => {
+              checkoutFormErrorsTemp.push({
+                field: getCardFieldFormat(field),
+                message: validateErrors[field],
+              });
+            });
+
+            setCheckoutFormErrors(checkoutFormErrorsTemp);
+          }
         })
         .finally(() => {
           setPaymentLoading(false);
@@ -211,6 +275,24 @@ const CheckoutPaymentFormCard = ({
         [className]: className,
       })}
     >
+      {isCheckoutPaymentError && (
+        <div ref={paymentErrorRef} className='checkout-payment-card__error mb-5'>
+          <h3 className='checkout-payment-card__error__title'>
+            <WarningIcon className='checkout-payment-card__error__icon mr-3' />
+            {' '}
+            {t('checkout.payment.error.title')}
+          </h3>
+
+          {paymentErrorsList.length > 0 && (
+            <ul>
+              {paymentErrorsList.map((error_i18n) => (
+                <li>{error_i18n}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
       <form className='checkout-payment-card__form' onSubmit={(e) => checkoutFormSubmit(e)}>
         <h3 className='checkout-payment-card__title'>
           <CreditCardIcon className='mr-2' />
@@ -225,9 +307,8 @@ const CheckoutPaymentFormCard = ({
             label={`${t('checkout.form_card_number')}*:`}
             isValid={isFieldValid('cardNumber')}
             value={checkoutForm.cardNumber}
-            data-param={19}
-            data-validate='["required", "len"]'
-            mask='1111 1111 1111 1111'
+            data-param='15,19'
+            data-validate='["required", "max-max-len", "integer"]'
             onChange={(e) => validateOnChange('cardNumber', e.target.value, e)}
             errors={getFieldErrors('cardNumber')}
             placeholder='1245 8769 0987 0945'
@@ -265,9 +346,8 @@ const CheckoutPaymentFormCard = ({
                 label={`${t('checkout.form_card.cvc_cvv')}*:`}
                 isValid={isFieldValid('cardCvv')}
                 value={checkoutForm.cardCvv}
-                data-param={3}
-                data-validate='["required", "len"]'
-                mask='111'
+                data-param='3,4'
+                data-validate='["required", "max-max-len", "integer"]'
                 onChange={(e) => validateOnChange('cardCvv', e.target.value, e)}
                 errors={getFieldErrors('cardCvv')}
                 placeholder='123'
@@ -303,7 +383,7 @@ const CheckoutPaymentFormCard = ({
             data-validate='["required", "number"]'
             onChange={(value, e) => validateOnChange('phone', value, e)}
             checkIsValid={(isValid: boolean) => {
-              if (!isValid && isFieldValid('phone')) {
+              {/*if (!isValid && isFieldValid('phone')) {
                 setPhoneErrors([{
                   field: 'phone',
                   code: 'required',
@@ -311,7 +391,7 @@ const CheckoutPaymentFormCard = ({
                 }]);
               } else if (getFieldErrors('phone').length > 0 && isValid) {
                 setPhoneErrors([]);
-              }
+              }*/}
             }}
             errors={getFieldErrors('phone')}
           />

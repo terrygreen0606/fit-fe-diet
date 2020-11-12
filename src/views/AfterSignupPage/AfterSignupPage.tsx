@@ -34,6 +34,7 @@ const AfterSignupPage = ({
   afterSignupWeightGoal,
   afterSignupPredictDate,
   measurement,
+  history,
   localePhrases,
 }: any) => {
   const [reviewsLoading, setReviewsLoading] = useState<boolean>(false);
@@ -546,6 +547,7 @@ const AfterSignupPage = ({
 
               <CheckoutPaymentFormCard
                 tariff={getActiveTariffData()}
+                history={history}
                 localePhrases={localePhrases}
               />
 

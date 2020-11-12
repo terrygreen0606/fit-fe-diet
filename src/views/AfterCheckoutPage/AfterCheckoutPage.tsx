@@ -24,10 +24,10 @@ const AfterCheckoutPage = ({
   const getTariffDate = (date) => {
     let dateStr = '';
 
-    if (moment(date).format('YYYY') === moment(new Date()).format('YYYY')) {
-      dateStr = moment(date).format('DD.MM.YYYY');
+    if (moment(new Date(date * 1000)).format('YYYY') === moment().format('YYYY')) {
+      dateStr = moment(new Date(date * 1000)).format('DD.MM');
     } else {
-      dateStr = moment(date).format('DD.MM');
+      dateStr = moment(new Date(date * 1000)).format('DD.MM.YYYY');
     }
 
     return dateStr;

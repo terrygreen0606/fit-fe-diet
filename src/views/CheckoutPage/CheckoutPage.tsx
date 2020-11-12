@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import {
@@ -35,7 +35,6 @@ import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import './CheckoutPage.sass';
 
 import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
-import { ReactComponent as WarningIcon } from 'assets/img/icons/warning-icon.svg';
 
 const checkoutFormDefault = {
   payment_type: 'credit_card',
@@ -54,8 +53,6 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
   const [tariffData, setTariffData] = useState<any>(null);
   const [tariffLoading, setTariffLoading] = useState<boolean>(true);
   const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
-
-  const paymentErrorRef = useRef<any>(null);
 
   const [paymentStatusData, setPaymentStatusData] = useState<any>(null);
   const [paymentStatusLoading, setPaymentStatusLoading] = useState<boolean>(false);
@@ -105,7 +102,12 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
         if (data.success && data.data) {
           const paymentStatus = data.data;
 
-          setPaymentStatusData(paymentStatus);
+          setPaymentStatusData({
+            ...paymentStatus,
+            errors_i18n: paymentStatus.errors_i18n
+              ? paymentStatus.errors_i18n.filter((error) => error.length > 0)
+              : [],
+          });
 
           if (paymentStatus.status === 'fail') {
             setPaymentStatusError(true);
@@ -189,12 +191,6 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
       sessionStorage.removeItem('redirectedToPayView');
     }
   }, []);
-
-  useEffect(() => {
-    if (paymentStatusError === true && paymentErrorRef.current) {
-      paymentErrorRef.current.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
-    }
-  }, [setPaymentStatusError]);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -471,27 +467,12 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
                       </ContentLoading>
                     </div>
 
-                    {paymentStatusError && (
-                      <div ref={paymentErrorRef} className='checkout-payment-error mt-5'>
-                        <h3 className='checkout-payment-error__title'>
-                          <WarningIcon className='checkout-payment-error__icon mr-3' />
-                          {' '}
-                          {t('checkout.payment.error.title')}
-                        </h3>
-
-                        {paymentStatusData && paymentStatusData.errors_i18n ? (
-                          <ul>
-                            {paymentStatusData.errors_i18n.map((error_i18n) => (
-                              <li>{error_i18n}</li>
-                            ))}
-                          </ul>
-                        ) : null}
-                      </div>
-                    )}
-
                     <CheckoutPaymentFormCard
                       className='mt-5'
                       tariff={tariffData}
+                      isPaymentError={paymentStatusError}
+                      paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
+                      history={history}
                       localePhrases={localePhrases}
                     />
                   </div>
