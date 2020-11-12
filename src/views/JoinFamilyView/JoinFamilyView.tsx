@@ -30,7 +30,6 @@ const JoinFamilyView = (props: any) => {
       }).catch(() => toast.error(t('common.error')));
     } else {
       document.cookie = `acceptFamilyCode=${familyCode}`;
-      document.cookie = 'acceptFamilyCode=;expires=Thu, 01 Jan 1970 00:00:01 GMT';
       history.push(routes.login);
     }
   }, []);
