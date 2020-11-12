@@ -115,7 +115,7 @@ export const appSetting = (
   const FITLOPE_USER_SETTINGS: any = JSON.parse(localStorage.getItem('FITLOPE_USER_SETTINGS'));
 
   if (isAuthenticated) {
-    if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
+    if (!SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
       await dispatch(fetchUserSettings());
     } else {
       dispatch(setAppSetting({
@@ -132,7 +132,7 @@ export const appSetting = (
       await dispatch(loadLocales());
     }
   } else {
-    if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_PUBLIC_SETTINGS) {
+    if (!SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_PUBLIC_SETTINGS) {
       await dispatch(fetchPublicSettings());
     } else {
       dispatch(setAppSetting(FITLOPE_PUBLIC_SETTINGS));
