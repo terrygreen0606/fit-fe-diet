@@ -159,7 +159,7 @@ export const appSetting = (
   );
 
   if (isAuthenticated) {
-    if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
+    if (!SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
       await dispatch(fetchUserSettings());
     } else {
       dispatch(
@@ -186,7 +186,7 @@ export const appSetting = (
     }
   } else {
     if (
-      SETTINGS_DEV ||
+      !SETTINGS_DEV ||
       !FITLOPE_CHECKSUM_SETTINGS ||
       !FITLOPE_PUBLIC_SETTINGS
     ) {

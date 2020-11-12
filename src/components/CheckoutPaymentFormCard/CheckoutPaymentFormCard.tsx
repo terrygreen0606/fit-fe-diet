@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import {
@@ -15,6 +15,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import CreditCardNumberField from 'components/common/Forms/CreditCardNumberField';
+import PhoneInput from 'components/common/Forms/PhoneInput';
 import CustomRadio from 'components/common/Forms/CustomRadio';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
@@ -53,8 +54,16 @@ const CheckoutPaymentFormCard = ({
 }: CheckoutPaymentFormCardProps) => {
   const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
+  const [phoneErrors, setPhoneErrors] = useState<InputError[]>([]);
 
   const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCheckoutFormErrors([
+      ...checkoutFormErrors,
+      ...phoneErrors,
+    ]);
+  }, [phoneErrors]);
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
@@ -153,7 +162,7 @@ const CheckoutPaymentFormCard = ({
 
     setCheckoutFormErrors([...errors]);
 
-    if (!hasError) {
+    if (!hasError && phoneErrors.length === 0) {
       setPaymentLoading(true);
 
       payCreditCard(getPayCredictCardParams())
@@ -284,7 +293,7 @@ const CheckoutPaymentFormCard = ({
         </FormGroup>
 
         <FormGroup>
-          <InputField
+          <PhoneInput
             block
             name='phone'
             className='checkout-payment-card__form_input'
@@ -292,9 +301,19 @@ const CheckoutPaymentFormCard = ({
             isValid={isFieldValid('phone')}
             value={checkoutForm.phone}
             data-validate='["required", "number"]'
-            onChange={(e) => validateOnChange('phone', e.target.value, e)}
+            onChange={(value, e) => validateOnChange('phone', value, e)}
+            checkIsValid={(isValid: boolean) => {
+              if (!isValid && isFieldValid('phone')) {
+                setPhoneErrors([{
+                  field: 'phone',
+                  code: 'required',
+                  message: t('api.ecode.invalid_value'),
+                }]);
+              } else if (getFieldErrors('phone').length > 0 && isValid) {
+                setPhoneErrors([]);
+              }
+            }}
             errors={getFieldErrors('phone')}
-            placeholder='9876543210'
           />
         </FormGroup>
 
