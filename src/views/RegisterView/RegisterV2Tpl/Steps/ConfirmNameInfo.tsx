@@ -136,6 +136,12 @@ const ConfirmInfo = ({
             ? response.data.access_token
             : null;
 
+        if (token) {
+          finalWelcomeStep(token);
+        } else {
+          toast.error(t('register.error_msg'));
+        }
+
         if (getCookie('acceptFamilyCode')) {
           const familyCode = getCookie('acceptFamilyCode');
           acceptInviteToFamily(familyCode).then((res) => {
@@ -143,13 +149,7 @@ const ConfirmInfo = ({
               toast.success(t('family.accept.success'));
               document.cookie = 'acceptFamilyCode;expires=Thu, 01 Jan 1970 00:00:01 GMT';
             }
-          }).catch(() => toast.error('common.error'));
-        }
-
-        if (token) {
-          finalWelcomeStep(token);
-        } else {
-          toast.error(t('register.error_msg'));
+          }).catch(() => toast.error(t('common.error')));
         }
       })
       .catch((error) => {
