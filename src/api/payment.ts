@@ -9,3 +9,6 @@ export const getPaymentMethods = () =>
 
 export const payCreditCard = (params: creditCardPayParams) =>
   axios.post('/payment/card', params);
+
+export const getCheckoutTariff = () =>
+  axios.get('/payment/checkout-tariff');
