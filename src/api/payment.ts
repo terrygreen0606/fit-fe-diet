@@ -12,3 +12,12 @@ export const payCreditCard = (params: creditCardPayParams) =>
 
 export const getCheckoutTariff = () =>
   axios.get('/payment/checkout-tariff');
+
+export const getAppTariff = (id: string) =>
+  axios.get(`/app/tariff/${id}`);
+
+export const getAppTariffs = () =>
+  axios.get('/app/get-tariffs');
+
+export const getPaymentStatus = (id: string) =>
+  axios.get(`/payment/status/${id}`);

@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import {
@@ -11,9 +11,12 @@ import {
 } from 'utils';
 import Helmet from 'react-helmet';
 import { InputError } from 'types';
+import { routes } from 'constants/routes';
+import queryString from 'query-string';
 import {
   getCheckoutTariff, fetchUserProfile,
   getPaymentMethods,
+  getPaymentStatus,
 } from 'api';
 
 // Components
@@ -32,15 +35,18 @@ import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import './CheckoutPage.sass';
 
 import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
+import { ReactComponent as WarningIcon } from 'assets/img/icons/warning-icon.svg';
 
 const checkoutFormDefault = {
   payment_type: 'credit_card',
   discount_code: null,
 };
 
-const CheckoutPage = ({ localePhrases }: any) => {
+const CheckoutPage = ({ history, location, localePhrases }: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
+
+  const { order: orderId } = queryString.parse(location.search);
 
   const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
@@ -48,6 +54,13 @@ const CheckoutPage = ({ localePhrases }: any) => {
   const [tariffData, setTariffData] = useState<any>(null);
   const [tariffLoading, setTariffLoading] = useState<boolean>(true);
   const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
+
+  const paymentErrorRef = useRef<any>(null);
+
+  const [paymentStatusData, setPaymentStatusData] = useState<any>(null);
+  const [paymentStatusLoading, setPaymentStatusLoading] = useState<boolean>(false);
+  const [paymentStatusLoadingError, setPaymentStatusLoadingError] = useState<boolean>(false);
+  const [paymentStatusError, setPaymentStatusError] = useState<boolean>(false);
 
   const [paymentMethods, setPaymentMethods] = useState<any>({
     cards: [],
@@ -80,6 +93,34 @@ const CheckoutPage = ({ localePhrases }: any) => {
       .catch(() => {
         setTariffLoading(false);
         setTariffLoadingError(true);
+      });
+  };
+
+  const getUserPaymentStatus = () => {
+    setPaymentStatusLoading(true);
+    setPaymentStatusLoadingError(false);
+
+    getPaymentStatus(orderId.toString())
+      .then(({ data }) => {
+        if (data.success && data.data) {
+          const paymentStatus = data.data;
+
+          setPaymentStatusData(paymentStatus);
+
+          if (paymentStatus.status === 'fail') {
+            setPaymentStatusError(true);
+          } else {
+            history.push(routes.afterCheckout);
+          }
+        } else {
+          setPaymentStatusError(true);
+        }
+      })
+      .catch(() => {
+        setPaymentStatusLoadingError(true);
+      })
+      .finally(() => {
+        setPaymentStatusLoading(false);
       });
   };
 
@@ -139,11 +180,21 @@ const CheckoutPage = ({ localePhrases }: any) => {
     getUserProfile();
     getUserPaymentMethods();
 
+    if (orderId) {
+      getUserPaymentStatus();
+    }
+
     if (sessionStorage.getItem('redirectedToPayView') === 'true') {
       toast.error(t('tariff.not_paid'));
       sessionStorage.removeItem('redirectedToPayView');
     }
   }, []);
+
+  useEffect(() => {
+    if (paymentStatusError === true && paymentErrorRef.current) {
+      paymentErrorRef.current.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+    }
+  }, [setPaymentStatusError]);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -189,7 +240,7 @@ const CheckoutPage = ({ localePhrases }: any) => {
       ...errors,
     ]);
 
-    if (!hasError) { }
+    if (!hasError) {}
   };
 
   return (
@@ -212,228 +263,264 @@ const CheckoutPage = ({ localePhrases }: any) => {
 
       <SalesWidgets />
 
-      <section className='checkout-tpl-sect'>
+      <section>
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
+
               <h4 className='sect-subtitle'>{t('checkout.page_title')}</h4>
 
-              <div className='checkout-tpl-container mt-3 mt-sm-5 pt-xl-5'>
-                <div className='checkout-person-plan-block'>
-                  <h4 className='checkout-person-plan-title'>
-                    {profileLoading ? (
-                      <Spinner />
-                    ) : (
-                        <div
-                          dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
-                        />
-                      )}
-                  </h4>
-                </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <div className='checkout-rewards-block'>
-                  <h1 className='checkout-rewards-block__title'>
-                    <RewardIcon className='mr-3' />
-                    {t('checkout.rewards_title')}
-                  </h1>
+      <ContentLoading
+        isLoading={paymentStatusLoading}
+        isError={paymentStatusLoadingError}
+        fetchData={() => getUserPaymentStatus()}
+        spinSize='lg'
+      >
+        <section className='checkout-tpl-sect'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-12'>
 
-                  <div className='row mt-5'>
-                    <div className='col-lg-3 mb-3 mb-lg-0 pt-2'>
-
-                      <h3>{t('lp.partners_list_title')}</h3>
-
-                    </div>
-                    <div className='col-lg-9'>
-
-                      <div className='app-partners-list'>
-                        <span
-                          className='app-partners-list__item'
-                          style={{ backgroundImage: `url(${require('assets/img/partners/daily-mirror.png')})` }}
-                        />
-                        <span
-                          className='app-partners-list__item'
-                          style={{ backgroundImage: `url(${require('assets/img/partners/forbes.png')})` }}
-                        />
-                        <span
-                          className='app-partners-list__item'
-                          style={{ backgroundImage: `url(${require('assets/img/partners/modesto.png')})` }}
-                        />
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-                <div className='checkout-form-container'>
-                  <div className='checkout-reserved-top-block'>
-                    <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
-                    <h6 className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</h6>
-                    <h6 className='checkout-reserved-top-block__countdown_title'>
-                      {t('checkout.reserved_block.title')}
-                      :
-                    </h6>
-                    <span className='checkout-reserved-top-block__countdown'>
-                      <RawCountDown seconds={900} />
-                    </span>
-                  </div>
-
-                  <div className='text-center mt-5'>
-                    <h6 className='checkout-advantages__title mb-5'>
-                      {t('checkout.advantages_title')}
-                      :
-                    </h6>
-
-                    <div className='app-advantages-list list-xs text-left'>
-                      <div className='app-advantages-list__item'>{t('checkout.advantage_1')}</div>
-                      <div className='app-advantages-list__item'>{t('checkout.advantage_2')}</div>
-                    </div>
-                  </div>
-
-                  <div className='mt-5'>
-                    <ContentLoading
-                      isLoading={tariffLoading}
-                      isError={tariffLoadingError}
-                      fetchData={() => getUserPaymentTariff()}
-                    >
-                      <div className='checkout-summary-list'>
-                        <div className='checkout-summary-item'>
-                          <div className='checkout-summary-item__label'>{t('checkout.summary.total_title')}</div>
-                          <div className='checkout-summary-item__value'>
-                            <del>{getTariffDataValue('price_old_text')}</del>
-                            {' '}
-                            <b>{getTariffDataValue('price_text')}</b>
-                          </div>
-                        </div>
-
-                        <div className='checkout-summary-item'>
-                          <div className='checkout-summary-item__label'>
-                            {t('checkout.summary.discount_title')}
-                            :
-                          </div>
-                          <div className='checkout-summary-item__value'>
-                            <form className='checkout-discount-form' onSubmit={(e) => checkoutDiscountFormSubmit(e)}>
-                              <InputField
-                                className='checkout-discount-form__input'
-                                name='discount_code'
-                                invalid={getFieldErrors('discount_code').length > 0}
-                                value={checkoutForm.discount_code}
-                                data-validate='["required"]'
-                                onChange={(e) => validateOnChange('discount_code', e.target.value, e)}
-                                placeholder='Code'
-                              />
-
-                              <Button
-                                type='submit'
-                                className='checkout-discount-form__btn'
-                                color='mint'
-                              >
-                                {t('checkout.discount_btn')}
-                              </Button>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </ContentLoading>
-                  </div>
-
-                  <div className='pl-sm-5'>
-                    <div className='product-plants-one-tree-block mt-5'>
-                      <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
-                    </div>
-                  </div>
-
-                  <hr className='checkout-divider' />
-
-                  <img src={getImagePath('checkout/safe-checkout-img-2.png')} className='img-fluid' alt='' />
-
-                  <div className='mt-5'>
-                    <ContentLoading
-                      isLoading={paymentMethodsLoading}
-                      isError={paymentMethodsLoadingError}
-                      fetchData={() => getUserPaymentMethods()}
-                    >
-                      <div className='checkout-payment-radio__list'>
-                        {paymentMethods.cards.length > 0 && (
-                          <CustomRadio
-                            className={classNames('checkout-payment-radio', {
-                              'radio-checked': checkoutForm.payment_type === 'credit_card',
-                            })}
-                            checked={checkoutForm.payment_type === 'credit_card'}
-                            value='credit_card'
-                            name='payment_type'
-                            onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
-                            label={(
-                              <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
-                                <div className='payment-types-img-list'>
-                                  {paymentMethods.cards.map((card) => (
-                                    <img
-                                      key={card.id}
-                                      src={card.logo || null}
-                                      className='payment-types-img'
-                                      alt=''
-                                    />
-                                  ))}
-                                </div>
-                              </Button>
-                            )}
+                <div className='checkout-tpl-container mt-3 mt-sm-5 pt-xl-5'>
+                  <div className='checkout-person-plan-block'>
+                    <h4 className='checkout-person-plan-title'>
+                      {profileLoading ? (
+                        <Spinner />
+                      ) : (
+                          <div
+                            dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
                           />
                         )}
-
-                        {paymentMethods.others.map((method) => (
-                          <CustomRadio
-                            className={classNames('checkout-payment-radio', {
-                              'radio-checked': checkoutForm.payment_type === method.id,
-                            })}
-                            checked={checkoutForm.payment_type === method.id}
-                            value='method.id'
-                            name='payment_type'
-                            onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
-                            label={(
-                              <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
-                                <img
-                                  src={method.logo || null}
-                                  className='img-fluid'
-                                  alt=''
-                                />
-                              </Button>
-                            )}
-                          />
-                        ))}
-                      </div>
-                    </ContentLoading>
+                    </h4>
                   </div>
 
-                  <CheckoutPaymentFormCard
-                    className='mt-5'
-                    tariff={tariffData}
-                    localePhrases={localePhrases}
-                  />
+                  <div className='checkout-rewards-block'>
+                    <h1 className='checkout-rewards-block__title'>
+                      <RewardIcon className='mr-3' />
+                      {t('checkout.rewards_title')}
+                    </h1>
+
+                    <div className='row mt-5'>
+                      <div className='col-lg-3 mb-3 mb-lg-0 pt-2'>
+
+                        <h3>{t('lp.partners_list_title')}</h3>
+
+                      </div>
+                      <div className='col-lg-9'>
+
+                        <div className='app-partners-list'>
+                          <span
+                            className='app-partners-list__item'
+                            style={{ backgroundImage: `url(${require('assets/img/partners/daily-mirror.png')})` }}
+                          />
+                          <span
+                            className='app-partners-list__item'
+                            style={{ backgroundImage: `url(${require('assets/img/partners/forbes.png')})` }}
+                          />
+                          <span
+                            className='app-partners-list__item'
+                            style={{ backgroundImage: `url(${require('assets/img/partners/modesto.png')})` }}
+                          />
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='checkout-form-container'>
+                    <div className='checkout-reserved-top-block'>
+                      <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
+                      <h6 className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</h6>
+                      <h6 className='checkout-reserved-top-block__countdown_title'>
+                        {t('checkout.reserved_block.title')}
+                        :
+                      </h6>
+                      <span className='checkout-reserved-top-block__countdown'>
+                        <RawCountDown seconds={900} />
+                      </span>
+                    </div>
+
+                    <div className='text-center mt-5'>
+                      <h6 className='checkout-advantages__title mb-5'>
+                        {t('checkout.advantages_title')}
+                        :
+                      </h6>
+
+                      <div className='app-advantages-list list-xs text-left'>
+                        <div className='app-advantages-list__item'>{t('checkout.advantage_1')}</div>
+                        <div className='app-advantages-list__item'>{t('checkout.advantage_2')}</div>
+                      </div>
+                    </div>
+
+                    <div className='mt-5'>
+                      <ContentLoading
+                        isLoading={tariffLoading}
+                        isError={tariffLoadingError}
+                        fetchData={() => getUserPaymentTariff()}
+                      >
+                        <div className='checkout-summary-list'>
+                          <div className='checkout-summary-item'>
+                            <div className='checkout-summary-item__label'>{t('checkout.summary.total_title')}</div>
+                            <div className='checkout-summary-item__value'>
+                              <del>{getTariffDataValue('price_old_text')}</del>
+                              {' '}
+                              <b>{getTariffDataValue('price_text')}</b>
+                            </div>
+                          </div>
+
+                          <div className='checkout-summary-item'>
+                            <div className='checkout-summary-item__label'>
+                              {t('checkout.summary.discount_title')}
+                              :
+                            </div>
+                            <div className='checkout-summary-item__value'>
+                              <form className='checkout-discount-form' onSubmit={(e) => checkoutDiscountFormSubmit(e)}>
+                                <InputField
+                                  className='checkout-discount-form__input'
+                                  name='discount_code'
+                                  invalid={getFieldErrors('discount_code').length > 0}
+                                  value={checkoutForm.discount_code}
+                                  data-validate='["required"]'
+                                  onChange={(e) => validateOnChange('discount_code', e.target.value, e)}
+                                  placeholder='Code'
+                                />
+
+                                <Button
+                                  type='submit'
+                                  className='checkout-discount-form__btn'
+                                  color='mint'
+                                >
+                                  {t('checkout.discount_btn')}
+                                </Button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </ContentLoading>
+                    </div>
+
+                    <div className='pl-sm-5'>
+                      <div className='product-plants-one-tree-block mt-5'>
+                        <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
+                      </div>
+                    </div>
+
+                    <hr className='checkout-divider' />
+
+                    <img src={getImagePath('checkout/safe-checkout-img-2.png')} className='img-fluid' alt='' />
+
+                    <div className='mt-5'>
+                      <ContentLoading
+                        isLoading={paymentMethodsLoading}
+                        isError={paymentMethodsLoadingError}
+                        fetchData={() => getUserPaymentMethods()}
+                      >
+                        <div className='checkout-payment-radio__list'>
+                          {paymentMethods.cards.length > 0 && (
+                            <CustomRadio
+                              className={classNames('checkout-payment-radio', {
+                                'radio-checked': checkoutForm.payment_type === 'credit_card',
+                              })}
+                              checked={checkoutForm.payment_type === 'credit_card'}
+                              value='credit_card'
+                              name='payment_type'
+                              onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
+                              label={(
+                                <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
+                                  <div className='payment-types-img-list'>
+                                    {paymentMethods.cards.map((card) => (
+                                      <img
+                                        key={card.id}
+                                        src={card.logo || null}
+                                        className='payment-types-img'
+                                        alt=''
+                                      />
+                                    ))}
+                                  </div>
+                                </Button>
+                              )}
+                            />
+                          )}
+
+                          {paymentMethods.others.map((method) => (
+                            <CustomRadio
+                              className={classNames('checkout-payment-radio', {
+                                'radio-checked': checkoutForm.payment_type === method.id,
+                              })}
+                              checked={checkoutForm.payment_type === method.id}
+                              value='method.id'
+                              name='payment_type'
+                              onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
+                              label={(
+                                <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
+                                  <img
+                                    src={method.logo || null}
+                                    className='img-fluid'
+                                    alt=''
+                                  />
+                                </Button>
+                              )}
+                            />
+                          ))}
+                        </div>
+                      </ContentLoading>
+                    </div>
+
+                    {paymentStatusError && (
+                      <div ref={paymentErrorRef} className='checkout-payment-error mt-5'>
+                        <h3 className='checkout-payment-error__title'>
+                          <WarningIcon className='checkout-payment-error__icon mr-3' />
+                          {' '}
+                          {t('checkout.payment.error.title')}
+                        </h3>
+
+                        {paymentStatusData && paymentStatusData.errors_i18n ? (
+                          <ul>
+                            {paymentStatusData.errors_i18n.map((error_i18n) => (
+                              <li>{error_i18n}</li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </div>
+                    )}
+
+                    <CheckoutPaymentFormCard
+                      className='mt-5'
+                      tariff={tariffData}
+                      localePhrases={localePhrases}
+                    />
+                  </div>
                 </div>
+
               </div>
-
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className='checkout-reserved-block'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-12'>
+        <section className='checkout-reserved-block'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-12'>
 
-              <h4 className='checkout-reserved-block__title'>
-                {t('lp.bottom_countdown_title')}
-                {' '}
+                <h4 className='checkout-reserved-block__title'>
+                  {t('lp.bottom_countdown_title')}
+                  {' '}
 
-                <span className='checkout-reserved-block__countdown'>
-                  <RawCountDown seconds={900} />
-                </span>
-              </h4>
+                  <span className='checkout-reserved-block__countdown'>
+                    <RawCountDown seconds={900} />
+                  </span>
+                </h4>
 
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ContentLoading>
     </>
   );
 };
