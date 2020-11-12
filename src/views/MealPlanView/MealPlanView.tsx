@@ -360,65 +360,65 @@ const MealPlanView = (props: any) => {
                       </div>
                       <div className='row'>
                         {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
-                          recipeItem.is_generated ? (
-                            <React.Fragment key={recipeItem.key_id}>
-                              {recipeItem.id ? (
-                                <div className='col-xl-6'>
-                                  <NutritionPlanCard
-                                    title={recipeItem.name_i18n}
-                                    imgSrc={recipeItem.image_url}
-                                    linkToRecipe={{
-                                      pathname: routes.getRecipeFullView(recipeItem.id),
-                                      fromMealPlan: true,
-                                      dateTs: mealPlan[dayItemIndex].date_ts,
-                                    }}
-                                    favouriteActive={recipeItem.is_liked}
-                                    checkedActive={recipeItem.is_prepared}
-                                    time={recipeItem.time}
-                                    desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
-                                    costLevel={costLevelLabel[recipeItem.cost_level]}
-                                    onClickFavourite={() => likeRecipeFunc(
-                                      dayItemIndex,
-                                      recipeItemIndex,
-                                      recipeItem.id,
-                                    )}
-                                    onClickChecked={() => prepareRecipeFunc(
-                                      dayItemIndex,
-                                      recipeItemIndex,
-                                      recipeItem.id,
-                                    )}
-                                    onClickShopCart={() => addToShopList(recipeItem.id)}
-                                    onClickReload={() =>
-                                      updateRecipe(
-                                        mealPlan[dayItemIndex].date_ts,
-                                        recipeItem.id,
+                          !recipeItem.is_generated && !recipeItem.id ? (
+                            <div key={recipeItem.key_id} className='col-xl-6'>
+                              <div className='card-bg nutrition-plan-empty-recipe'>
+                                <ContentLoading
+                                  isLoading
+                                  isError={false}
+                                  spinSize='lg'
+                                  label={t('mp.generating_recipes')}
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                              <React.Fragment key={recipeItem.key_id}>
+                                {recipeItem.id ? (
+                                  <div className='col-xl-6'>
+                                    <NutritionPlanCard
+                                      title={recipeItem.name_i18n}
+                                      imgSrc={recipeItem.image_url}
+                                      linkToRecipe={{
+                                        pathname: routes.getRecipeFullView(recipeItem.id),
+                                        fromMealPlan: true,
+                                        dateTs: mealPlan[dayItemIndex].date_ts,
+                                      }}
+                                      favouriteActive={recipeItem.is_liked}
+                                      checkedActive={recipeItem.is_prepared}
+                                      time={recipeItem.time}
+                                      desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
+                                      costLevel={costLevelLabel[recipeItem.cost_level]}
+                                      onClickFavourite={() => likeRecipeFunc(
                                         dayItemIndex,
                                         recipeItemIndex,
+                                        recipeItem.id,
                                       )}
-                                    isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
-                                    isLoadingReloadBtn={activeItemIdReloadBtn === recipeItem.id}
-                                    isLoadingCheckedBtn={activeItemIdCheckedBtn === recipeItem.id}
-                                  />
-                                </div>
-                              ) : (
-                                  <div className='col-xl-6'>
-                                    <div className='card-bg nutrition-plan-empty-recipe'>
-                                      {t('mp.no_found_recipe')}
-                                    </div>
+                                      onClickChecked={() => prepareRecipeFunc(
+                                        dayItemIndex,
+                                        recipeItemIndex,
+                                        recipeItem.id,
+                                      )}
+                                      onClickShopCart={() => addToShopList(recipeItem.id)}
+                                      onClickReload={() =>
+                                        updateRecipe(
+                                          mealPlan[dayItemIndex].date_ts,
+                                          recipeItem.id,
+                                          dayItemIndex,
+                                          recipeItemIndex,
+                                        )}
+                                      isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
+                                      isLoadingReloadBtn={activeItemIdReloadBtn === recipeItem.id}
+                                      isLoadingCheckedBtn={activeItemIdCheckedBtn === recipeItem.id}
+                                    />
                                   </div>
-                                )}
-                            </React.Fragment>
-                          ) : (
-                              <div key={recipeItem.key_id} className='col-xl-6'>
-                                <div className='card-bg nutrition-plan-empty-recipe'>
-                                  <ContentLoading
-                                    isLoading
-                                    isError={false}
-                                    spinSize='lg'
-                                    label={t('mp.generating_recipes')}
-                                  />
-                                </div>
-                              </div>
+                                ) : (
+                                    <div className='col-xl-6'>
+                                      <div className='card-bg nutrition-plan-empty-recipe'>
+                                        {t('mp.no_found_recipe')}
+                                      </div>
+                                    </div>
+                                  )}
+                              </React.Fragment>
                             )
                         ))}
                       </div>
