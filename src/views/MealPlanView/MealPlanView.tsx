@@ -4,8 +4,8 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { toast } from 'react-toastify';
+import uuid from 'react-uuid';
 
 import {
   getTranslate,
@@ -123,71 +123,33 @@ const MealPlanView = (props: any) => {
 
       setDays(updatedDays);
 
-      getMealPlan().then((response) => {
-        if (response.data.success && response.data.data) {
+      getMealPlan().then(({ data }) => {
+        if (data.success && data.data) {
           const updatedMealPlan = [];
-          const { list } = response.data.data;
+          const { list } = data.data;
 
-          const today = new Date();
-
-          const todayTs = moment(today.setHours(-(new Date().getTimezoneOffset() / 60), 0, 0, 0)).unix();
-
-          if (list.length === 0) {
-            for (let i = 0; i < 7; i += 86400) {
-              updatedMealPlan.push({
-                date_ts: todayTs + i,
-                list: [],
-              });
-            }
-          }
+          list.map((item) => item.key_id = uuid());
 
           list.forEach((item, itemIndex) => {
-            if (item.date_ts !== todayTs && itemIndex === 0) {
-              for (let i = todayTs; i < item.date_ts; i += 86400) {
-                updatedMealPlan.push({
-                  date_ts: i,
-                  list: [],
-                });
-              }
-            }
             if (itemIndex === 0) {
               updatedMealPlan.push({
                 date_ts: item.date_ts,
                 list: [item],
               });
-            } else {
-              updatedMealPlan.find((findItem, findItemIndex) => {
+            } else if (list[itemIndex].date_ts === list[itemIndex - 1].date_ts) {
+              updatedMealPlan.find((findItem) => {
                 if (findItem.date_ts === item.date_ts) {
                   findItem.list.push(item);
-                  return;
                 }
-                if (updatedMealPlan.length - 1 === findItemIndex) {
-                  if (item.date_ts - updatedMealPlan[findItemIndex].date_ts !== 86400) {
-                    for (let i = updatedMealPlan[findItemIndex].date_ts + 86400; i < item.date_ts; i += 86400) {
-                      updatedMealPlan.push({
-                        date_ts: i,
-                        list: [],
-                      });
-                    }
-                  }
-                  updatedMealPlan.push({
-                    date_ts: item.date_ts,
-                    list: [item],
-                  });
-                }
+              });
+            } else {
+              updatedMealPlan.push({
+                date_ts: item.date_ts,
+                list: [item],
               });
             }
           });
 
-          if (updatedMealPlan.length !== 7) {
-            for (let i = updatedMealPlan.length; updatedMealPlan.length < 7; i++) {
-              const newTime = {
-                date_ts: updatedMealPlan[updatedMealPlan.length - 1].date_ts + 86400,
-                list: [],
-              };
-              updatedMealPlan.push(newTime);
-            }
-          }
           setMealPlan(updatedMealPlan);
         }
       }).catch(() => { }).finally(() => {
@@ -396,46 +358,68 @@ const MealPlanView = (props: any) => {
                           {t('mp.date.desc', { PERIOD: dayItem.dayFullInfo })}
                         </span>
                       </div>
-                      <ContentLoading
-                        isLoading={mealPlan[dayItemIndex]?.list?.length === 0}
-                        isError={false}
-                        spinSize='lg'
-                        label={t('mp.generating_recipes')}
-                      />
                       <div className='row'>
                         {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
-                          <div
-                            key={recipeItem.id}
-                            className='col-xl-6'
-                          >
-                            <NutritionPlanCard
-                              title={recipeItem.name_i18n}
-                              imgSrc={recipeItem.image_url}
-                              linkToRecipe={{
-                                pathname: routes.getRecipeFullView(recipeItem.id),
-                                fromMealPlan: true,
-                                dateTs: mealPlan[dayItemIndex].date_ts,
-                              }}
-                              favouriteActive={recipeItem.is_liked}
-                              checkedActive={recipeItem.is_prepared}
-                              time={recipeItem.time}
-                              desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
-                              costLevel={costLevelLabel[recipeItem.cost_level]}
-                              onClickFavourite={() => likeRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                              onClickChecked={() => prepareRecipeFunc(dayItemIndex, recipeItemIndex, recipeItem.id)}
-                              onClickShopCart={() => addToShopList(recipeItem.id)}
-                              onClickReload={() =>
-                                updateRecipe(
-                                  mealPlan[dayItemIndex].date_ts,
-                                  recipeItem.id,
-                                  dayItemIndex,
-                                  recipeItemIndex,
+                          recipeItem.is_generated ? (
+                            <React.Fragment key={recipeItem.key_id}>
+                              {recipeItem.id ? (
+                                <div className='col-xl-6'>
+                                  <NutritionPlanCard
+                                    title={recipeItem.name_i18n}
+                                    imgSrc={recipeItem.image_url}
+                                    linkToRecipe={{
+                                      pathname: routes.getRecipeFullView(recipeItem.id),
+                                      fromMealPlan: true,
+                                      dateTs: mealPlan[dayItemIndex].date_ts,
+                                    }}
+                                    favouriteActive={recipeItem.is_liked}
+                                    checkedActive={recipeItem.is_prepared}
+                                    time={recipeItem.time}
+                                    desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
+                                    costLevel={costLevelLabel[recipeItem.cost_level]}
+                                    onClickFavourite={() => likeRecipeFunc(
+                                      dayItemIndex,
+                                      recipeItemIndex,
+                                      recipeItem.id,
+                                    )}
+                                    onClickChecked={() => prepareRecipeFunc(
+                                      dayItemIndex,
+                                      recipeItemIndex,
+                                      recipeItem.id,
+                                    )}
+                                    onClickShopCart={() => addToShopList(recipeItem.id)}
+                                    onClickReload={() =>
+                                      updateRecipe(
+                                        mealPlan[dayItemIndex].date_ts,
+                                        recipeItem.id,
+                                        dayItemIndex,
+                                        recipeItemIndex,
+                                      )}
+                                    isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
+                                    isLoadingReloadBtn={activeItemIdReloadBtn === recipeItem.id}
+                                    isLoadingCheckedBtn={activeItemIdCheckedBtn === recipeItem.id}
+                                  />
+                                </div>
+                              ) : (
+                                  <div className='col-xl-6'>
+                                    <div className='card-bg nutrition-plan-empty-recipe'>
+                                      {t('mp.no_found_recipe')}
+                                    </div>
+                                  </div>
                                 )}
-                              isLoadingShopBtn={activeItemIdShopBtn === recipeItem.id}
-                              isLoadingReloadBtn={activeItemIdReloadBtn === recipeItem.id}
-                              isLoadingCheckedBtn={activeItemIdCheckedBtn === recipeItem.id}
-                            />
-                          </div>
+                            </React.Fragment>
+                          ) : (
+                              <div key={recipeItem.key_id} className='col-xl-6'>
+                                <div className='card-bg nutrition-plan-empty-recipe'>
+                                  <ContentLoading
+                                    isLoading
+                                    isError={false}
+                                    spinSize='lg'
+                                    label={t('mp.generating_recipes')}
+                                  />
+                                </div>
+                              </div>
+                            )
                         ))}
                       </div>
                     </div>
