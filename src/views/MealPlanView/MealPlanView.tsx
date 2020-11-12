@@ -126,9 +126,9 @@ const MealPlanView = (props: any) => {
       getMealPlan().then(({ data }) => {
         if (data.success && data.data) {
           const updatedMealPlan = [];
-          const { list } = data.data;
+          const list = data.data.list || [];
 
-          list.map((item) => item.key_id = uuid());
+          list.forEach((item) => item.key_id = uuid());
 
           list.forEach((item, itemIndex) => {
             if (itemIndex === 0) {
