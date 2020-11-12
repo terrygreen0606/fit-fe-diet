@@ -10,9 +10,7 @@ import { acceptInviteToFamily } from 'api';
 import WithTranslate from 'components/hoc/WithTranslate';
 import ContentLoading from 'components/hoc/ContentLoading';
 
-import './JoinFamily.sass';
-
-const JoinFamily = (props: any) => {
+const JoinFamilyView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
@@ -32,6 +30,7 @@ const JoinFamily = (props: any) => {
       }).catch(() => toast.error(t('common.error')));
     } else {
       document.cookie = `acceptFamilyCode=${familyCode}`;
+      document.cookie = 'acceptFamilyCode=;expires=Thu, 01 Jan 1970 00:00:01 GMT';
       history.push(routes.login);
     }
   }, []);
@@ -54,4 +53,4 @@ const JoinFamily = (props: any) => {
 
 export default WithTranslate(connect((state: any) => ({
   isAuth: state.auth.isAuthenticated,
-}), null)(JoinFamily));
+}), null)(JoinFamilyView));

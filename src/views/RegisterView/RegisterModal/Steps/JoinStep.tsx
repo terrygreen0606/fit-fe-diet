@@ -146,6 +146,7 @@ const JoinStep = (props: any) => {
           acceptInviteToFamily(familyCode).then(({ data }) => {
             if (data.success) {
               toast.success(t('family.accept.success'));
+              document.cookie = 'acceptFamilyCode;expires=Thu, 01 Jan 1970 00:00:01 GMT';
             }
           }).catch(() => toast.error('common.error'));
         }

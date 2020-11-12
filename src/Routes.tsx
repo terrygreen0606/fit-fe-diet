@@ -41,7 +41,7 @@ const CheckoutPage = React.lazy(() => import('./views/CheckoutPage'));
 const AfterCheckoutPage = React.lazy(() => import('./views/AfterCheckoutPage'));
 const SettingsPaymentHistoryView = React.lazy(() => import('./views/Settings/SettingsPaymentHistoryView'));
 const SettingsSubscriptionPlan = React.lazy(() => import('./views/Settings/SettingsSubscriptionPlan'));
-const JoinFamily = React.lazy(() => import('./views/JoinFamily'));
+const JoinFamilyView = React.lazy(() => import('./views/JoinFamilyView'));
 
 const Routes = () => (
   <Switch>
@@ -279,7 +279,7 @@ const Routes = () => (
       path={routes.joinFamily}
       component={(props: any) => (
         <Layout {...props}>
-          <JoinFamily {...props} />
+          <JoinFamilyView {...props} />
         </Layout>
       )}
       exact
