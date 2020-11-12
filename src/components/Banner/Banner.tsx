@@ -42,7 +42,9 @@ const Banner = ({
       bannerRef.current.classList.remove('fadeInOut');
 
       setTimeout(() => {
-        bannerRef.current.classList.add('fadeInOut');
+        if (bannerRef.current) {
+          bannerRef.current.classList.add('fadeInOut');
+        }
       }, 0);
 
       const timeout = setTimeout(() => {

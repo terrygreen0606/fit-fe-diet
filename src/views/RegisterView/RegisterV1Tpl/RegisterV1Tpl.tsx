@@ -72,7 +72,9 @@ const RegisterV1Tpl = ({
       registerStepsRef.current.classList.remove('fadeInOut-25');
 
       setTimeout(() => {
-        registerStepsRef.current.classList.add('fadeInOut-25');
+        if (registerStepsRef.current) {
+          registerStepsRef.current.classList.add('fadeInOut-25');
+        }
       }, 0);
 
       const timeout = setTimeout(() => {
