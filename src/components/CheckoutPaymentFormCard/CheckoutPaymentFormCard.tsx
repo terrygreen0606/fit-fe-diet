@@ -152,7 +152,7 @@ const CheckoutPaymentFormCard = ({
   };
 
   const isShowInstallments = () =>
-    getTariffDataValue('country') === 'br' || true;
+    getTariffDataValue('country') === 'br';
 
   const getPayCredictCardParams = () => {
     const {
