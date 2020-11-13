@@ -27,4 +27,5 @@ export const routes = {
   getRecipeFullView: (recipeId: string) => `/recipe/${recipeId}`,
   paymentHistorySettings: '/settings/payment-history',
   subscriptionPlanSettings: '/settings/subscription-plan',
+  joinFamily: '/join-family/:id',
 };

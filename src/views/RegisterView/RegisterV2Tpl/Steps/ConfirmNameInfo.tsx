@@ -4,6 +4,7 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getCookie,
+  deleteCookie,
 } from 'utils';
 import { connect } from 'react-redux';
 import { userLogin as userLoginAction } from 'store/actions';
@@ -11,7 +12,7 @@ import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import { UserAuthProfileType, InputError } from 'types';
-import { userSignup } from 'api';
+import { userSignup, acceptInviteToFamily } from 'api';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -140,6 +141,17 @@ const ConfirmInfo = ({
           finalWelcomeStep(token);
         } else {
           toast.error(t('register.error_msg'));
+        }
+
+        const familyCode = getCookie('acceptFamilyCode');
+
+        if (familyCode) {
+          acceptInviteToFamily(familyCode).then((res) => {
+            if (res.data.success) {
+              toast.success(t('family.accept.success'));
+              deleteCookie('acceptFamilyCode');
+            }
+          }).catch(() => toast.error(t('common.error')));
         }
       })
       .catch((error) => {

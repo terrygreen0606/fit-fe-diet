@@ -1,9 +1,11 @@
+/* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getCookie,
+  deleteCookie,
 } from 'utils';
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
@@ -14,6 +16,7 @@ import { InputError } from 'types';
 import {
   userSignup,
   getAppSettings,
+  acceptInviteToFamily,
 } from 'api';
 
 // Components
@@ -161,6 +164,17 @@ const JoinStep = (props: any) => {
           finalWelcomeStep(token);
         } else {
           toast.error(t('register.error_msg'));
+        }
+
+        const familyCode = getCookie('acceptFamilyCode');
+
+        if (familyCode) {
+          acceptInviteToFamily(familyCode).then((response) => {
+            if (response.data.success) {
+              toast.success(t('family.accept.success'));
+              deleteCookie('acceptFamilyCode');
+            }
+          }).catch(() => toast.error(t('common.error')));
         }
       })
       .catch((error) => {

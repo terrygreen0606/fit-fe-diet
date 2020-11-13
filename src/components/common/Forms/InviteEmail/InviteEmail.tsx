@@ -82,7 +82,7 @@ const InviteEmail = ({
           }
         })
         .catch(() => {
-          toast.error(t('referral.error'));
+          toast.error(t('common.error'));
         })
         .finally(() => {
           setIsRequestSent(false);
