@@ -281,7 +281,7 @@ const MainView = (props: any) => {
                     )}
                 </div>
               </Link>
-              <Link
+              {/* <Link
                 to={routes.trainings}
                 className='
                 dashboard__cards-item
@@ -316,7 +316,7 @@ const MainView = (props: any) => {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </Link> */}
               <Link
                 to={routes.shoppingList}
                 className='
