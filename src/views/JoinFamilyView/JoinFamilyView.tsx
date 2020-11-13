@@ -23,11 +23,9 @@ const JoinFamilyView = (props: any) => {
     const familyCode = pathName[pathName.length - 1];
 
     if (isAuth) {
-      acceptInviteToFamily(familyCode).then(({ data }) => {
-        if (data.success) {
-          setIsLoadingPage(false);
-        }
-      }).catch(() => toast.error(t('common.error')));
+      acceptInviteToFamily(familyCode)
+        .catch(() => toast.error(t('common.error')))
+        .finally(() => setIsLoadingPage(false));
     } else {
       document.cookie = `acceptFamilyCode=${familyCode}`;
       history.push(routes.login);
