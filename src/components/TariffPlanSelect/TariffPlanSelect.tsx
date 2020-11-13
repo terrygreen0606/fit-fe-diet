@@ -37,8 +37,30 @@ const TariffPlanSelect = ({
   const tariffPlanList = useRef(null);
 
   useEffect(() => {
-    console.log(tariffPlanList.current.children);
-  }, []);
+    const pricesTextWrap = tariffPlanList.current?.querySelectorAll('.tariff-plan__item-price-now-count-wrap');
+    const pricesText = tariffPlanList.current?.querySelectorAll('.tariff-plan__item-price-now-count');
+
+    const checkingElements = [];
+
+    for (let i = 0; i < pricesTextWrap.length; i++) {
+      checkingElements.push({
+        parent: pricesTextWrap[i],
+        child: pricesText[i],
+      });
+    }
+
+    checkingElements.forEach((item) => {
+      if (item.child.innerText) {
+        for (let i = 1; item.child.clientWidth < item.parent.clientWidth; i++) {
+          item.child.style.fontSize = `${16 + i}px`;
+          if (item.child.clientWidth >= item.parent.clientWidth) {
+            item.child.style.fontSize = `${16 + i - 1}px`;
+            break;
+          }
+        }
+      }
+    });
+  }, [tariffPlanList.current?.children?.length]);
 
   return (
     <div className='tariff-plan__list' ref={tariffPlanList}>
