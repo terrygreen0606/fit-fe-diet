@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { getTranslate } from 'utils';
 
@@ -34,8 +34,14 @@ const TariffPlanSelect = ({
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
+  const tariffPlanList = useRef(null);
+
+  useEffect(() => {
+    console.log(tariffPlanList.current.children);
+  }, []);
+
   return (
-    <div className='tariff-plan__list'>
+    <div className='tariff-plan__list' ref={tariffPlanList}>
       {tariffs.map(({
         id,
         months,
