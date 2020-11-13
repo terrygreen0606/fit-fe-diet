@@ -46,7 +46,6 @@
 .bttn_sm
   padding: 8px 21px
 
-
 .bttn_lg
   padding: 16.5px 22px
   font-size: 24px
@@ -68,6 +67,12 @@ button.bttn
 .bttnBlock
   width: 100%
 
+.bttnPulse
+  animation-name: pulse
+  animation-iteration-count: infinite
+  animation-duration: 1s
+  animation-fill-mode: both
+
 .bttn_default
   &.bttnOutline
     &:hover
@@ -87,8 +92,8 @@ button.bttn
 
   &:hover
     color: #fff
-    background-color: $bright-green
-    box-shadow: 0 5px 15px $bright-green
+    background-color: #0da826
+    box-shadow: 0 5px 15px #0da826
     svg
       fill: #fff
       path
@@ -113,7 +118,7 @@ button.bttn
 
   &:hover
     color: #fff
-    background-color: $bright-green
+    background-color: #0da826
     box-shadow: 0 5px 15px $yellow-accent
     svg
       fill: #fff
@@ -253,3 +258,15 @@ button.bttn
 
   &:hover
     color: #000
+
+
+@keyframes pulse
+  0%
+    -webkit-transform:scaleX(1)
+    transform: scaleX(1)
+  50%
+    -webkit-transform: scale3d(1.05,1.05,1.05)
+    transform: scale3d(1.05,1.05,1.05)
+  to
+    -webkit-transform:scaleX(1)
+    transform:scaleX(1)

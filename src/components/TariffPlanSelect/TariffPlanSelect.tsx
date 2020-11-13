@@ -96,7 +96,7 @@ const TariffPlanSelect = ({
             </div>
 
             <div className='tariff-plan__item-price'>
-              <div className='tariff-plan__item-price-old'>{`${priceOldMonth} ${t('common.months_reduction')}`}</div>
+              <div className='tariff-plan__item-price-old'>{`${priceOldMonth} / ${t('common.months_reduction')}`}</div>
 
               <div className='tariff-plan__item-price-now'>
                 <div className='tariff-plan__item-price-now-count-wrap'>
@@ -105,7 +105,7 @@ const TariffPlanSelect = ({
               </div>
 
               <div className='tariff-plan__item-price-together'>
-                {t('checkout.plan.total_price', { AMOUNT: price })}
+                {t('common.paycycle_period', { PERIOD: t('common.month').toLowerCase() })}
               </div>
             </div>
 
