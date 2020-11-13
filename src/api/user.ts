@@ -10,15 +10,20 @@ import {
 export const deleteFamilyMembers = (email: string) =>
   axios.delete(`/user/family/${email}`);
 
-export const fetchUserProfile = () => axios.get('/user/profile');
+export const fetchUserProfile = () =>
+  axios.get('/user/profile');
 
-export const getUserFamily = () => axios.get('/user/family');
+export const getUserFamily = () =>
+  axios.get('/user/family');
 
-export const getUserInviteLink = () => axios.get('/user/invite-link');
+export const getUserInviteLink = () =>
+  axios.get('/user/invite-link');
 
-export const getUserSettings = () => axios.get('/app/settings');
+export const getUserSettings = () =>
+  axios.get('/app/settings');
 
-export const getUserWeightChart = () => axios.get('/user/weight-chart');
+export const getUserWeightChart = () =>
+  axios.get('/user/weight-chart');
 
 export const getUserWeightPrediction = (params: UserWeightPredictionParams) =>
   axios.get('/user/weight-prediction', {
@@ -45,14 +50,17 @@ export const userUpdateMeasurement = (measurement: string) =>
 export const getPublicShopListUrl = (txt: number = 0) =>
   axios.get(`/user/shopping-list-url?txt=${txt}`);
 
-export const getAppReviews = () => axios.get('/app/reviews');
+export const getAppReviews = () =>
+  axios.get('/app/reviews');
 
 export const userInviteFamilyByEmail = (email: string) =>
   axios.put(`/user/invite-family/${email}`);
 
-export const getUserInvitedFriends = () => axios.get('/user/friends');
+export const getUserInvitedFriends = () =>
+  axios.get('/user/friends');
 
-export const getUserDashboard = () => axios.get('/user/dashboard');
+export const getUserDashboard = () =>
+  axios.get('/user/dashboard');
 
 export const acceptInviteToFamily = (code: string) =>
   axios.put(`/user/family-joined/${code}`);

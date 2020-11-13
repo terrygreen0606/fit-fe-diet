@@ -26,7 +26,7 @@ type InviteEmailProps = {
 
 const InviteEmailDefaultProps = {
   className: '',
-  onCompleted: () => { },
+  onCompleted: () => {},
 };
 
 const InviteEmail = ({
