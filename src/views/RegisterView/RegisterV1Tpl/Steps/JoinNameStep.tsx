@@ -4,6 +4,7 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getCookie,
+  deleteCookie,
 } from 'utils';
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
@@ -175,12 +176,13 @@ const JoinNameStep = ({
           toast.error(t('register.error_msg'));
         }
 
-        if (getCookie('acceptFamilyCode')) {
-          const familyCode = getCookie('acceptFamilyCode');
+        const familyCode = getCookie('acceptFamilyCode');
+
+        if (familyCode) {
           acceptInviteToFamily(familyCode).then((response) => {
             if (response.data.success) {
               toast.success(t('family.accept.success'));
-              document.cookie = 'acceptFamilyCode;expires=Thu, 01 Jan 1970 00:00:01 GMT';
+              deleteCookie('acceptFamilyCode');
             }
           }).catch(() => toast.error(t('common.error')));
         }

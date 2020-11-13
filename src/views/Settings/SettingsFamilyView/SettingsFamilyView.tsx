@@ -157,49 +157,53 @@ const SettingsFamilyView = (props: any) => {
             isError={false}
             spinSize='lg'
           >
-            {userFamily.length !== 3 && (
-              <>
-                <h2 className='family__title'>
-                  {t('family.invite_link.title')}
-                </h2>
-                {/* <div className='family__invite-link'>
-              <p className='family__invite-link-desc'>
-                {t('family.invite_link.desc')}
-              </p>
-              <CopyLinkButton text={inviteLink} />
-            </div>
-            <div className='family__separator'>
-              <span className='family__separator-text'>{t('common.or')}</span>
-            </div> */}
-                <form
-                  onSubmit={(e) => inviteEmailSubmit(e)}
-                  className='family__invite-email'
-                >
-                  <div className='family__invite-email-input-wrap'>
-                    <InputField
-                      name='email'
-                      data-validate='["email", "required"]'
-                      errors={getFieldErrors('email')}
-                      value={inviteEmailForm.email}
-                      onChange={(e) => validateOnChange('email', e.target.value, e)}
-                      label={t('family.invite_email.desc')}
-                      className='family__invite-email-input'
-                    />
-                  </div>
-                  <div className='family__invite-email-button-wrap'>
-                    <Button
-                      type='submit'
-                      color='secondary'
-                      size='lg'
-                      className='family__invite-email-button'
-                      isLoading={isRequestSent}
-                    >
-                      {!isRequestSent && t('family.invite_email.button')}
-                    </Button>
-                  </div>
-                </form>
-              </>
-            )}
+            {/* <div className='family__invite-link'>
+                <p className='family__invite-link-desc'>
+                  {t('family.invite_link.desc')}
+                </p>
+                <CopyLinkButton text={inviteLink} />
+              </div>
+              <div className='family__separator'>
+                <span className='family__separator-text'>{t('common.or')}</span>
+              </div> */}
+            {userFamily.length === 3 ? (
+              <h2 className='family__title'>
+                {t('family.invite.max_size')}
+              </h2>
+            ) : (
+                <>
+                  <h2 className='family__title'>
+                    {t('family.invite_link.title')}
+                  </h2>
+                  <form
+                    onSubmit={(e) => inviteEmailSubmit(e)}
+                    className='family__invite-email'
+                  >
+                    <div className='family__invite-email-input-wrap'>
+                      <InputField
+                        name='email'
+                        data-validate='["email", "required"]'
+                        errors={getFieldErrors('email')}
+                        value={inviteEmailForm.email}
+                        onChange={(e) => validateOnChange('email', e.target.value, e)}
+                        label={t('family.invite_email.desc')}
+                        className='family__invite-email-input'
+                      />
+                    </div>
+                    <div className='family__invite-email-button-wrap'>
+                      <Button
+                        type='submit'
+                        color='secondary'
+                        size='lg'
+                        className='family__invite-email-button'
+                        isLoading={isRequestSent}
+                      >
+                        {!isRequestSent && t('family.invite_email.button')}
+                      </Button>
+                    </div>
+                  </form>
+                </>
+              )}
             <div>
               <h2 className='family__title'>
                 {t('family.invite.title')}
