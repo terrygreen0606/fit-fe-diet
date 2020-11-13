@@ -195,61 +195,54 @@ const AfterSignupPage = ({
             <div className='col-xl-6 mt-5 mt-xl-0 after-signup-header-chart-col'>
 
               <div className='after-signup-header-chart-col_content'>
-                <ContentLoading
-                  isLoading={reviewsLoading}
-                  isError={reviewsLoadingError}
-                  fetchData={() => getUserReviews()}
-                >
-                  <SliderSimple
-                    className='app-reviews-slider app-reviews-slider--1'
-                    dots
-                    autoplay
-                    autoplaySpeed={2000}
-                    slides={reviewsList.map(({
-                      id,
-                      image,
-                      name,
-                      text,
-                    }) => (
-                      <div key={id} className='app-reviews-slider__item'>
-                        <div
-                          className='app-reviews-slider__item_img'
-                          style={{ backgroundImage: `url(${image})` }}
-                        />
+                {isAfterSignup && (
+                  <DietExpectationsChart
+                    weight={afterSignupWeight}
+                    weightGoal={afterSignupWeightGoal}
+                    predictedDate={afterSignupPredictDate}
+                    measurement={measurement}
+                    localePhrases={localePhrases}
+                  />
+                )}
 
-                        <div className='app-reviews-slider__item_content_wrap'>
-                          <div className='app-reviews-slider__item_img_wrap'>
-                            <span
-                              className='app-reviews-slider__item_author_img'
-                              style={{ backgroundImage: `url(${image})` }}
-                            />
-                          </div>
+                <div className='app-review-single-item'>
+                  <ContentLoading
+                    isLoading={reviewsLoading}
+                    isError={reviewsLoadingError}
+                    fetchData={() => getUserReviews()}
+                  >
+                    {reviewsList.slice(0, 1).map((review) => (
+                      <>
+                        <div className='app-review-single-item_img_wrap'>
+                          <span
+                            className='app-review-single-item_img'
+                            style={{ backgroundImage: `url(${review.image || null})` }}
+                          />
+                        </div>
 
-                          <div className='app-reviews-slider__item_content'>
-                            <p className='app-reviews-slider__item_descr'>{text}</p>
-                            <div className='app-reviews-slider__item_footer'>
-                              <div className='rate-stars_list'>
-                                <StarFillIcon className='rate-stars_item' />
-                                <StarFillIcon className='rate-stars_item' />
-                                <StarFillIcon className='rate-stars_item' />
-                                <StarFillIcon className='rate-stars_item' />
-                                <StarFillIcon className='rate-stars_item' />
-                              </div>
-                              <h6 className='app-reviews-slider__item_author'>
-                                <b>
-                                  {'- '}
-                                  {name}
-                                </b>
-                                {', '}
-                                {t('common.app_user')}
-                              </h6>
+                        <div className='app-review-single-item_content'>
+                          <p className='app-review-single-item_descr'>{review.text || null}</p>
+                          <div className='app-review-single-item_footer'>
+                            <div className='rate-stars_list'>
+                              <StarFillIcon className='rate-stars_item' />
+                              <StarFillIcon className='rate-stars_item' />
+                              <StarFillIcon className='rate-stars_item' />
+                              <StarFillIcon className='rate-stars_item' />
+                              <StarFillIcon className='rate-stars_item' />
                             </div>
+                            <h6 className='app-review-single-item_author'>
+                              <b>
+                                {'- '}
+                                {review.name || null}
+                              </b>
+                              , Fitlope user
+                            </h6>
                           </div>
                         </div>
-                      </div>
+                      </>
                     ))}
-                  />
-                </ContentLoading>
+                  </ContentLoading>
+                </div>
               </div>
 
             </div>

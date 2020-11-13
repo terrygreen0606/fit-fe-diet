@@ -376,6 +376,7 @@ const CheckoutPaymentFormCard = ({
           <PhoneInput
             block
             name='phone'
+            country={getTariffDataValue('country')}
             className='checkout-payment-card__form_input'
             label={`${t('checkout.form_phone')}*:`}
             isValid={isFieldValid('phone')}
