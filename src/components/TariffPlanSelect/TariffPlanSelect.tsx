@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { getTranslate } from 'utils';
 
@@ -34,8 +34,38 @@ const TariffPlanSelect = ({
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
+  const tariffPlanList = useRef(null);
+
+  useEffect(() => {
+    if (tariffPlanList.current && tariffPlanList.current?.children?.length > 0) {
+      const pricesTextWrap = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price-now-count-wrap') || [];
+      const pricesText = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price-now-count') || [];
+
+      const checkingElements = [];
+
+      for (let i = 0; i < pricesTextWrap.length; i++) {
+        checkingElements.push({
+          parent: pricesTextWrap[i],
+          child: pricesText[i],
+        });
+      }
+
+      checkingElements.forEach((item) => {
+        if (item.child.innerText) {
+          for (let i = 1; item.child.clientWidth < item.parent.clientWidth; i++) {
+            item.child.style.fontSize = `${16 + i}px`;
+            if (item.child.clientWidth >= item.parent.clientWidth) {
+              item.child.style.fontSize = `${16 + i - 1}px`;
+              break;
+            }
+          }
+        }
+      });
+    }
+  }, [tariffPlanList.current?.children?.length]);
+
   return (
-    <div className='tariff-plan__list'>
+    <div className='tariff-plan__list' ref={tariffPlanList}>
       {tariffs.map(({
         id,
         months,
@@ -66,15 +96,11 @@ const TariffPlanSelect = ({
             </div>
 
             <div className='tariff-plan__item-price'>
-              <div className='tariff-plan__item-price-old'>{priceOldMonth}</div>
+              <div className='tariff-plan__item-price-old'>{`${priceOldMonth} ${t('common.months_reduction')}`}</div>
 
               <div className='tariff-plan__item-price-now'>
                 <div className='tariff-plan__item-price-now-count-wrap'>
                   <div className='tariff-plan__item-price-now-count'>{priceMonth}</div>
-                </div>
-
-                <div className='tariff-plan__item-price-now-paycycle-wrap'>
-                  <div className='tariff-plan__item-price-now-paycycle'>{t('common.months_reduction')}</div>
                 </div>
               </div>
 

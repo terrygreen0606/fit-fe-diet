@@ -57,12 +57,16 @@ const SettingsFamilyView = (props: any) => {
 
   const [isRequestSent, setIsRequestSent] = useState<boolean>(false);
 
+  const [activeItemDeleteBtn, setAcitveItemDeleteBtn] = useState<string>(null);
+
   const deleteFromFamily = (email: string, index: number) => {
+    setAcitveItemDeleteBtn(email);
     deleteFamilyMembers(email).then(() => {
       const updatedFamily = [...userFamily];
       updatedFamily.splice(index, 1);
       setUserFamily(updatedFamily);
-    }).catch(() => toast.error(t('common.error')));
+    }).catch(() => toast.error(t('common.error')))
+      .finally(() => setAcitveItemDeleteBtn(null));
   };
 
   const getFamily = () => {
@@ -244,7 +248,14 @@ const SettingsFamilyView = (props: any) => {
                         type='button'
                         className='family__list-item-close'
                       >
-                        <CloseIcon />
+                        <ContentLoading
+                          isLoading={activeItemDeleteBtn === member.email}
+                          isError={false}
+                          spinSize='xs'
+                          color='#9A9A9A'
+                        >
+                          <CloseIcon />
+                        </ContentLoading>
                       </button>
                     )}
                   </div>
