@@ -17,7 +17,7 @@ import ContentLoading from 'components/hoc/ContentLoading';
 // Icons
 import { ReactComponent as SettingsIcon } from 'assets/img/icons/settings-icon.svg';
 import { ReactComponent as PenIcon } from 'assets/img/icons/pen-icon.svg';
-import { ReactComponent as FirstPlaceIcon } from 'assets/img/icons/first-place-icon.svg';
+// import { ReactComponent as FirstPlaceIcon } from 'assets/img/icons/first-place-icon.svg';
 import { ReactComponent as DietIcon } from 'assets/img/icons/diet-icon.svg';
 import { ReactComponent as WorkoutIcon } from 'assets/img/icons/workout-icon.svg';
 import { ReactComponent as ClockTimeIcon } from 'assets/img/icons/clock-time-icon.svg';
@@ -25,9 +25,9 @@ import { ReactComponent as PlayIcon } from 'assets/img/icons/play-icon.svg';
 import { ReactComponent as CartIcon } from 'assets/img/icons/cart-icon.svg';
 import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
 import { ReactComponent as NotificationIcon } from 'assets/img/icons/notification-icon.svg';
-import { ReactComponent as BloodIcon } from 'assets/img/icons/blood-icon.svg';
-import { ReactComponent as PressureIcon } from 'assets/img/icons/pressure-icon.svg';
-import { ReactComponent as HeartIcon } from 'assets/img/icons/heart-filled-icon.svg';
+// import { ReactComponent as BloodIcon } from 'assets/img/icons/blood-icon.svg';
+// import { ReactComponent as PressureIcon } from 'assets/img/icons/pressure-icon.svg';
+// import { ReactComponent as HeartIcon } from 'assets/img/icons/heart-filled-icon.svg';
 import { ReactComponent as WaterCheckIcon } from 'assets/img/icons/water-check-icon.svg';
 import { ReactComponent as HandShakeIcon } from 'assets/img/icons/handshake-icon.svg';
 
@@ -42,7 +42,7 @@ const MainView = (props: any) => {
     placeholders,
   );
 
-  const { settings } = props;
+  const { settings, location } = props;
 
   type UserDashboardDataParams = {
     bloodPressure: {
@@ -145,6 +145,13 @@ const MainView = (props: any) => {
   };
 
   useEffect(() => {
+    if (Object.prototype.hasOwnProperty.call(location, 'joinFamily')) {
+      if (location.joinFamily) {
+        toast.success(t('family.accept.success'));
+      } else {
+        toast.error(t('common.error'));
+      }
+    }
     getUserDashboard().then(({ data }) => {
       if (data.data && data.success) {
         setUserDashboardData(setData(data.data));
@@ -304,12 +311,9 @@ const MainView = (props: any) => {
                   </div>
                   <div className='dashboard__cards-item_workout-description-play'>
                     <div className='dashboard__cards-item_workout-description-play-duration' />
-                    <a
-                      href='/'
-                      className='dashboard__cards-item_workout-description-play-button'
-                    >
+                    <div className='dashboard__cards-item_workout-description-play-button'>
                       <PlayIcon className='dashboard__cards-item_workout-description-play-icon' />
-                    </a>
+                    </div>
                   </div>
                 </div>
               </Link>
