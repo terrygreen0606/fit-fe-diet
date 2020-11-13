@@ -185,7 +185,7 @@ const AfterSignupPage = ({
                 </ContentLoading>
 
                 <Link to='/checkout' className='link-raw'>
-                  <Button color='primary-shadow' className='mt-3' size='lg'>{t('button.select_plan')}</Button>
+                  <Button pulse color='primary-shadow' className='mt-3' size='lg'>{t('button.select_plan')}</Button>
                 </Link>
 
                 <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
@@ -267,7 +267,7 @@ const AfterSignupPage = ({
             </div>
             <div className='col-xl-8 mt-xl-0 after-signup-intro-content-col'>
 
-              <h5>{t('lp.partners_list_title')}</h5>
+              <h5 className='fw-bold'>{t('lp.partners_list_title')}</h5>
 
               <div className='app-partners-list'>
                 <span
@@ -287,6 +287,22 @@ const AfterSignupPage = ({
               <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
 
               <div className='mt-4 mt-xl-5' dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
+
+              <div className='mt-5 pt-3 pb-5'>
+                <Link to='/checkout' className='link-raw'>
+                  <Button
+                    pulse
+                    color='primary-shadow'
+                    size='lg'
+                    block
+                    style={{ maxWidth: '380px' }}
+                  >
+                    {t('button.activate_plan')}
+                  </Button>
+                </Link>
+
+                <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+              </div>
 
             </div>
           </div>
@@ -324,7 +340,7 @@ const AfterSignupPage = ({
               )}
 
               <Link to='/checkout' className='link-raw'>
-                <Button color='primary-shadow' size='lg' className='mt-5'>
+                <Button pulse color='primary-shadow' size='lg' className='mt-5'>
                   {t('button.select_plan')}
                 </Button>
               </Link>
@@ -435,6 +451,7 @@ const AfterSignupPage = ({
 
               <Link to='/checkout' className='link-raw'>
                 <Button
+                  pulse
                   color='primary-shadow'
                   className='mt-4'
                   size='lg'
@@ -447,19 +464,23 @@ const AfterSignupPage = ({
 
               <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
 
-              <div className='app-partners-list mt-5 pt-5'>
-                <span
-                  className='app-partners-list__item'
-                  style={{ backgroundImage: `url(${dailyMirrorImg})` }}
-                />
-                <span
-                  className='app-partners-list__item'
-                  style={{ backgroundImage: `url(${forbesImg})` }}
-                />
-                <span
-                  className='app-partners-list__item'
-                  style={{ backgroundImage: `url(${modestoImg})` }}
-                />
+              <div className='app-partners-list__wrap mt-5 pt-5'>
+                <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
+
+                <div className='app-partners-list'>
+                  <span
+                    className='app-partners-list__item'
+                    style={{ backgroundImage: `url(${dailyMirrorImg})` }}
+                  />
+                  <span
+                    className='app-partners-list__item'
+                    style={{ backgroundImage: `url(${forbesImg})` }}
+                  />
+                  <span
+                    className='app-partners-list__item'
+                    style={{ backgroundImage: `url(${modestoImg})` }}
+                  />
+                </div>
               </div>
 
             </div>
@@ -509,15 +530,13 @@ const AfterSignupPage = ({
                     localePhrases={localePhrases}
                   />
 
-                  <img src={getImagePath('checkout/safe-checkout-img-2.png')} className='img-fluid' alt='' />
-
                 </div>
                 <div className='col-xl-6 pl-xl-5 mt-5 mt-xl-0'>
 
                   <h2 className='mb-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
                   <div className='advantages-checklist'>
-                    {Array(6).fill(uuid()).map((id, index) => (
+                    {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
                       <div key={id} className='advantages-checklist-item'>
                         <h6 className='advantages-checklist-item__title'>
                           {t(`lp.plan.advantage${index}.title`)}
@@ -529,6 +548,8 @@ const AfterSignupPage = ({
                       </div>
                     ))}
                   </div>
+
+                  <img src={getImagePath('checkout/safe-checkout-img-2.png')} className='img-fluid mt-5' alt='' />
 
                 </div>
               </div>
@@ -588,14 +609,22 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-12'>
 
-              <h4 className='checkout-reserved-block__title'>
-                {t('lp.bottom_countdown_title')}
-                {' '}
+              <div className='checkout-reserved-block__wrap'>
+                <h4 className='checkout-reserved-block__title'>
+                  {t('lp.bottom_countdown_title')}
+                  {' '}
 
-                <span className='checkout-reserved-block__countdown'>
-                  <RawCountDown seconds={900} />
-                </span>
-              </h4>
+                  <span className='checkout-reserved-block__countdown'>
+                    <RawCountDown seconds={900} />
+                  </span>
+                </h4>
+
+                <Link to='/checkout' className='link-raw'>
+                  <Button pulse color='primary-shadow'>
+                    {t('button.reveal_plan')}
+                  </Button>
+                </Link>
+              </div>
 
             </div>
           </div>

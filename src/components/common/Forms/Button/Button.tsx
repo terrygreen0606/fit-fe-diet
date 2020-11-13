@@ -15,6 +15,7 @@ interface ButtonProps {
   outline?: boolean;
   block?: boolean;
   isLoading?: boolean;
+  pulse?: boolean;
   spanBtn?: boolean,
   active?: boolean;
   disabled?: boolean;
@@ -58,6 +59,7 @@ const Button = (props: ButtonProps) => {
     children,
     disabled,
     ariaLabel,
+    pulse,
     isLoading,
     innerRef,
     ...attributes
@@ -84,6 +86,7 @@ const Button = (props: ButtonProps) => {
           bttnBlock: block,
           bttnOutline: outline,
           bttnWithIcon: icon,
+          bttnPulse: pulse,
         }
       )}
       onClick={onClick}

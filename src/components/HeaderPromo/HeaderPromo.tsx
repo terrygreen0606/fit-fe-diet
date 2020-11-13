@@ -14,7 +14,7 @@ const HeaderPromo = (props: any) => {
     getTranslate(props.localePhrases, code, placeholders);
 
   return (
-    <header className="main-promo-header">
+    <header className='main-promo-header'>
       <div className='container'>
         <div className='row'>
           <div className='col-xs-4'>
@@ -24,7 +24,11 @@ const HeaderPromo = (props: any) => {
           </div>
           <div className='col-xs-8 mt-2 mt-xs-0 text-xs-right'>
             
-            <Link to="/checkout" className="link-raw"><Button className="main-promo-header__btn" color="primary-shadow">{t('button.reveal_plan')}</Button></Link>
+            <Link to='/checkout' className='link-raw'>
+              <Button className='main-promo-header__btn' pulse color='primary-shadow'>
+                {t('button.reveal_plan')}
+              </Button>
+            </Link>
 
           </div>
         </div>  
