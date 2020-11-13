@@ -360,7 +360,7 @@ const WaterTrackerView = (props: any) => {
                 data-validate='["min", "required"]'
                 errors={getFieldErrors('amount')}
                 value={addDrinkForm.amount}
-                onChange={(e) => validateOnChange('amount', e.target.value, e)}
+                onChange={(e) => validateOnChange('amount', +e.target.value, e)}
                 min={settings.measurement === 'si' ? 50 : 2}
                 className='waterTracker_popup-form-input'
                 label={t('wt.value')}

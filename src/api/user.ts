@@ -64,3 +64,6 @@ export const getUserDashboard = () =>
 
 export const acceptInviteToFamily = (code: string) =>
   axios.put(`/user/family-joined/${code}`);
+
+export const getUserTodayActivity = () =>
+  axios.get('/user/today-activity');

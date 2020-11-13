@@ -53,18 +53,3 @@ export const tourStepFunction = (width, tourStep) => {
     if (tourStep === 3) { step3Element?.scrollIntoView(scrollIntoViewOptions); }
   }
 };
-
-export const todayActivitiesData = [
-  {
-    id: 0,
-    icon: <WeighScaleIcon />,
-    title: 'trainings.add.weight',
-    link: routes.nutritionPlanWeight,
-  },
-  {
-    id: 1,
-    icon: <WaterGlassIcon />,
-    title: 'trainings.wt',
-    link: routes.waterTracker,
-  },
-];
