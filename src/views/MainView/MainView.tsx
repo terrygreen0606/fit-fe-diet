@@ -226,7 +226,7 @@ const MainView = (props: any) => {
                   <ProgressChart data={userDashboardData.pointsData} labels={userDashboardData.pointsLabel} />
                 </div>
               </div>
-              <div className='dashboard__user-rewards'>
+              {/* <div className='dashboard__user-rewards'>
                 <div className='dashboard__user-rewards-title'>
                   {`${t('dashboard.rewards_title')}:`}
                 </div>
@@ -248,7 +248,7 @@ const MainView = (props: any) => {
                     </div>
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
             <div className='dashboard__cards'>
               <Link
@@ -350,7 +350,7 @@ const MainView = (props: any) => {
                   </div>
                 </div>
               </Link>
-              <Link
+              {/* <Link
                 to={routes.main}
                 className='
                 dashboard__cards-item
@@ -383,7 +383,7 @@ const MainView = (props: any) => {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </Link> */}
               <Link
                 to={routes.waterTracker}
                 className='
