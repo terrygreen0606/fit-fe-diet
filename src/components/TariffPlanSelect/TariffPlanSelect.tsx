@@ -94,15 +94,11 @@ const TariffPlanSelect = ({
             </div>
 
             <div className='tariff-plan__item-price'>
-              <div className='tariff-plan__item-price-old'>{priceOldMonth}</div>
+              <div className='tariff-plan__item-price-old'>{`${priceOldMonth} ${t('common.months_reduction')}`}</div>
 
               <div className='tariff-plan__item-price-now'>
                 <div className='tariff-plan__item-price-now-count-wrap'>
                   <div className='tariff-plan__item-price-now-count'>{priceMonth}</div>
-                </div>
-
-                <div className='tariff-plan__item-price-now-paycycle-wrap'>
-                  <div className='tariff-plan__item-price-now-paycycle'>{t('common.months_reduction')}</div>
                 </div>
               </div>
 
