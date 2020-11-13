@@ -2,6 +2,8 @@
 import validator from 'validator';
 
 const getErrorMsg = (code, param) => {
+  let data = '';
+
   switch (code) {
     case 'required':
       return 'Field is required';
@@ -30,6 +32,10 @@ const getErrorMsg = (code, param) => {
     case 'maxlen':
       return `Max length ${param}`;
 
+    case 'min-max-len':
+      data = param.split(',');
+      return `Min length ${data[0]}, Max length ${data[1]}`;
+
     case 'len':
       return `Length should be ${param}`;
 
@@ -40,7 +46,7 @@ const getErrorMsg = (code, param) => {
       return `Value should be less than ${param}`;
 
     case 'min-max':
-      let data = param.split(',');
+      data = param.split(',');
       return `Values should be less than ${data[1]} and greater than ${data[0]}`;
 
     case 'list':
@@ -79,6 +85,7 @@ const FormValidator = {
     const validations = JSON.parse(element.getAttribute('data-validate'));
 
     const result = []; // [validate_code]: true (if has validation error)
+    let data = '';
 
     if (validations && validations.length) {
       /*  Result of each validation must be true if the input is invalid
@@ -114,6 +121,10 @@ const FormValidator = {
           case 'maxlen':
             result[m] = value && value.length > 0 ? !validator.isLength(value, { max: param }) : false;
             break;
+          case 'max-max-len':
+            data = param.split(',');
+            result[m] = value && value.length > 0 ? !validator.isLength(value, { min: validator.toInt(data[0]), max: validator.toInt(data[1]) }) : false;
+            break;
           case 'len':
             result[m] = value && value.length > 0 ? !validator.isLength(value.replace('_', ''), { min: param, max: param }) : false;
             break;
@@ -127,7 +138,7 @@ const FormValidator = {
             /* pass the min & max value in the the data-param like this data-param="0,12"
              min:0 , max:12
             */
-            const data = param.split(',');
+            data = param.split(',');
             result[m] = value && value.length > 0 ?
               !(validator.isFloat(value, { min: validator.toInt(data[0]) }) && validator.isFloat(value, { max: validator.toInt(data[1]) }))
               : false;
