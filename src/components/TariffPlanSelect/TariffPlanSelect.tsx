@@ -38,8 +38,8 @@ const TariffPlanSelect = ({
 
   useEffect(() => {
     if (tariffPlanList.current && tariffPlanList.current?.children?.length > 0) {
-      const pricesTextWrap = tariffPlanList.current.querySelectorAll('.tariff-plan__item-price-now-count-wrap') || [];
-      const pricesText = tariffPlanList.current.querySelectorAll('.tariff-plan__item-price-now-count') || [];
+      const pricesTextWrap = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price-now-count-wrap') || [];
+      const pricesText = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price-now-count') || [];
 
       const checkingElements = [];
 
