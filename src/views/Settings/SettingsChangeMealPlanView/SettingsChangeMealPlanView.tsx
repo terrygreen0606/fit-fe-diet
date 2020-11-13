@@ -14,7 +14,6 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Breadcrumb from 'components/Breadcrumb';
 import ProgressLine from 'components/ProgressLine';
 import ContentLoading from 'components/hoc/ContentLoading';
-import GoalStep from './Steps/GoalStep';
 import MetricsStep from './Steps/MetricsStep';
 import NotEatingStep from './Steps/NotEatingStep';
 import DiseasesStep from './Steps/DiseasesStep';
@@ -29,7 +28,7 @@ const SettingsChangeMealPlanView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
-  const [activeStep, setActiveStep] = useState(steps.goal);
+  const [activeStep, setActiveStep] = useState(steps.metrics);
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const [userData, setUserData] = useState({
     goal: null,
@@ -80,13 +79,6 @@ const SettingsChangeMealPlanView = (props: any) => {
 
   const updateActiveStep = (value: number) => {
     setActiveStep(value);
-  };
-
-  const updateUserGoal = (value: number) => {
-    setUserData({
-      ...userData,
-      goal: value,
-    });
   };
 
   const updateUserMetrics = (value: {
@@ -156,10 +148,6 @@ const SettingsChangeMealPlanView = (props: any) => {
             activeStepIndex={activeStep}
             steps={[
               {
-                text: t('mp.progress.goal'),
-                onClick: () => setActiveStep(steps.goal),
-              },
-              {
                 text: t('mp.progress.metrics'),
                 onClick: () => setActiveStep(steps.metrics),
               },
@@ -186,13 +174,6 @@ const SettingsChangeMealPlanView = (props: any) => {
             isError={false}
             spinSize='lg'
           >
-            {activeStep === steps.goal && (
-              <GoalStep
-                userGoal={userData.goal}
-                updateActiveStep={updateActiveStep}
-                updateUserGoal={updateUserGoal}
-              />
-            )}
             {activeStep === steps.metrics && (
               <MetricsStep
                 userGender={userData.gender}

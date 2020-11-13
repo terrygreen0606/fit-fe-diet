@@ -1,8 +1,7 @@
 export const steps = {
-  goal: 1,
-  metrics: 2,
-  notEating: 3,
-  diseases: 4,
-  meals: 5,
-  workout: 6,
+  metrics: 1,
+  notEating: 2,
+  diseases: 3,
+  meals: 4,
+  workout: 5,
 };
