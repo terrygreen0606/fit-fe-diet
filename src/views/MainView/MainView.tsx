@@ -162,7 +162,9 @@ const MainView = (props: any) => {
       // Get a visitor identifier when you'd like to.
       const result = await requestHashData.get();
 
-      getUserDashboard(result.visitorId)
+      const totalValue = result.visitorId || null;
+
+      getUserDashboard(totalValue)
         .then(({ data }) => {
           if (data.data && data.success) {
             setUserDashboardData(setData(data.data));
