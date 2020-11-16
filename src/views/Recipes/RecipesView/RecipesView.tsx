@@ -14,7 +14,6 @@ import {
   getRecipeCuisines,
   getRecipesList,
   likeRecipe,
-  prepareRecipe,
   addToShoppingListByRecipes,
 } from 'api';
 
@@ -51,7 +50,6 @@ const RecipesView = (props: any) => {
 
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
   const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
-  const [activeItemIdCheckedBtn, setActiveItemIdCheckedBtn] = useState<string>(null);
   const [enteredInputValue, setEnteredInputValue] = useState<boolean>(false);
 
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(t('recipe.search_by_recipes'));
@@ -170,18 +168,6 @@ const RecipesView = (props: any) => {
 
       setRecipesList([...updatedRecipesList]);
     });
-  };
-
-  const prepareRecipeFunc = (itemIndex: number, recipeId: string) => {
-    setActiveItemIdCheckedBtn(recipeId);
-    const updatedRecipesList = [...recipesList];
-
-    prepareRecipe(recipeId).then(() => {
-      updatedRecipesList[itemIndex].is_prepared = !updatedRecipesList[itemIndex].is_prepared;
-
-      setRecipesList([...updatedRecipesList]);
-    }).catch(() => toast.error(t('common.error')))
-      .finally(() => setActiveItemIdCheckedBtn(null));
   };
 
   const addToShopList = (itemId: string) => {
@@ -383,12 +369,9 @@ const RecipesView = (props: any) => {
                         time={item.time}
                         costLevel={costLevelLabel[item.cost_level]}
                         favouriteActive={item.is_liked}
-                        checkedActive={item.is_prepared}
                         onClickFavourite={() => likeRecipeFunc(itemIndex, item.id)}
-                        onClickChecked={() => prepareRecipeFunc(itemIndex, item.id)}
                         onClickShopCart={() => addToShopList(item.id)}
                         isLoadingShopBtn={activeItemIdShopBtn === item.id}
-                        isLoadingCheckedBtn={activeItemIdCheckedBtn === item.id}
                       />
                     </div>
                   ))}
