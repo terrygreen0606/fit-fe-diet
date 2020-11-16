@@ -198,7 +198,7 @@ const AfterSignupPage = ({
                   {t('button.select_plan')}
                 </Button>
 
-                <img className='after-signup-header-arrow' src={getImagePath('testtest.png')} alt='' />
+                <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
               </div>
 
             </div>
@@ -287,7 +287,7 @@ const AfterSignupPage = ({
                 />
               </div>
 
-              <img className='after-signup-intro-arrow' src={getImagePath('arrow-black.png')} alt='' />
+              <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
 
               <div className='mt-4 mt-xl-5' dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
 
@@ -303,7 +303,7 @@ const AfterSignupPage = ({
                   {t('button.activate_plan')}
                 </Button>
 
-                <img className='after-signup-start-today-arrow' src={getImagePath('testtest.png')} alt='' />
+                <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
               </div>
 
             </div>
@@ -351,7 +351,7 @@ const AfterSignupPage = ({
                   {t('button.select_plan')}
                 </Button>
 
-                <img className='after-signup-start-today-arrow' src={getImagePath('testtest.png')} alt='' />
+                <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
               </div>
 
             </div>
@@ -468,7 +468,7 @@ const AfterSignupPage = ({
                 {t('button.activate_plan')}
               </Button>
 
-              <img className='after-signup-start-today-arrow' src={getImagePath('testtest.png')} alt='' />
+              <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
 
               <div className='app-partners-list__wrap mt-5 pt-5'>
                 <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
