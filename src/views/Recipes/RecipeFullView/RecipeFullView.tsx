@@ -174,10 +174,13 @@ const RecipeFullView = (props: any) => {
           id: uuid(),
         }));
 
+        const isActivePreparedRecipe = props.location.isActivePrepared || false;
+
         setRecipeData({
           ...preparedRecipeData,
           images: updatedImages,
           preparation: updatedPreparation,
+          isPrepared: isActivePreparedRecipe,
         });
 
         setAddNoteForm({ ...addNoteForm, note });
@@ -289,15 +292,15 @@ const RecipeFullView = (props: any) => {
       .finally(() => setIsActiveShopListRequest(false));
   };
 
-  const checkRecipe = () => {
+  const prepareRecipeClick = () => {
     setIsActiveCheckedRequest(true);
 
-    prepareRecipe(recipeId)
-      .then((response) => {
-        if (response.data.success && response.data.data) {
+    prepareRecipe(props.location.dateTs, recipeId)
+      .then(({ data }) => {
+        if (data.success && data.data) {
           setRecipeData({
             ...recipeData,
-            isPrepared: response.data.data.is_prepared,
+            isPrepared: data.data.is_prepared,
           });
         }
       })
@@ -496,7 +499,7 @@ const RecipeFullView = (props: any) => {
                           className={classnames('recipe__main-info-desc-button', {
                             active: recipeData.isPrepared,
                           })}
-                          onClick={() => checkRecipe()}
+                          onClick={() => prepareRecipeClick()}
                         >
                           <div className='recipe__main-info-desc-button-wrap'>
                             <ContentLoading

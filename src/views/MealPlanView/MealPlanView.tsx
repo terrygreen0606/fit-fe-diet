@@ -164,7 +164,7 @@ const MealPlanView = (props: any) => {
     return () => cleanComponent = true;
   }, [settings.paid_until, settings.is_private]);
 
-  const likeRecipeFunc = (mealPlanItemIndex: number, recipeItemIndex: number, recipeId: string) => {
+  const likeRecipeClick = (mealPlanItemIndex: number, recipeItemIndex: number, recipeId: string) => {
     const updatedMealPlan = [...mealPlan];
     updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex].is_liked =
       !updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex].is_liked;
@@ -179,11 +179,16 @@ const MealPlanView = (props: any) => {
     });
   };
 
-  const prepareRecipeFunc = (mealPlanItemIndex: number, recipeItemIndex: number, recipeId: string) => {
+  const prepareRecipeClick = (
+    mealPlanItemIndex: number,
+    recipeItemIndex: number,
+    recipeId: string,
+    dateTs: string,
+  ) => {
     setActiveItemIdCheckedBtn(recipeId);
     const updatedMealPlan = [...mealPlan];
 
-    prepareRecipe(recipeId).then(() => {
+    prepareRecipe(dateTs, recipeId).then(() => {
       updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex].is_prepared =
         !updatedMealPlan[mealPlanItemIndex].list[recipeItemIndex].is_prepared;
 
@@ -381,21 +386,23 @@ const MealPlanView = (props: any) => {
                                         pathname: routes.getRecipeFullView(recipeItem.id),
                                         fromMealPlan: true,
                                         dateTs: mealPlan[dayItemIndex].date_ts,
+                                        isActivePrepared: recipeItem.is_prepared,
                                       }}
                                       favouriteActive={recipeItem.is_liked}
                                       checkedActive={recipeItem.is_prepared}
                                       time={recipeItem.time}
                                       desc={recipeItem.desc_i18n ? `${recipeItem.desc_i18n.substr(0, 50)}...` : ''}
                                       costLevel={costLevelLabel[recipeItem.cost_level]}
-                                      onClickFavourite={() => likeRecipeFunc(
+                                      onClickFavourite={() => likeRecipeClick(
                                         dayItemIndex,
                                         recipeItemIndex,
                                         recipeItem.id,
                                       )}
-                                      onClickChecked={() => prepareRecipeFunc(
+                                      onClickChecked={() => prepareRecipeClick(
                                         dayItemIndex,
                                         recipeItemIndex,
                                         recipeItem.id,
+                                        recipeItem.date_ts,
                                       )}
                                       onClickShopCart={() => addToShopList(recipeItem.id)}
                                       onClickReload={() =>

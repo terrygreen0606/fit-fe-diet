@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import axios from 'utils/axios';
 
 type CreateRecipeParams = {
@@ -35,13 +36,10 @@ export const getRecipeData = (
     `/recipe/${id}?with_similar=${withSimilar}&with_note=${withNote}&with_wines=${withWines}&ext_ingredients=${ext_ingredients}`,
   );
 
-export const likeRecipe = (recipeId: string) => 
+export const likeRecipe = (recipeId: string) =>
   axios.put(`/recipe/like/${recipeId}`);
 
-export const prepareRecipe = (recipeId: string) => 
-  axios.put(`/recipe/prepared/${recipeId}`);
-
-export const deleteRecipe = (recipeId: string) => 
+export const deleteRecipe = (recipeId: string) =>
   axios.delete(`/recipe/${recipeId}`);
 
 export const addRecipeNote = (
@@ -55,7 +53,7 @@ export const addRecipeNote = (
     },
   );
 
-export const getMealTimes = () => 
+export const getMealTimes = () =>
   axios.get('recipe/mealtimes');
 
 export const getRecipesList = (
