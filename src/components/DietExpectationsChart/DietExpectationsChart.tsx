@@ -40,15 +40,17 @@ const DietExpectationsChart = ({
     let monthLocale = new Date(dateStr).toLocaleString(window.navigator.language, { month: 'short' });
     monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
 
-    let predictedDate = null;
+    let predictedDayShort = null;
+    let predictedDateShortYear = null;
 
     if (moment(new Date(dateStr)).format('YYYY') === moment().format('YYYY')) {
-      predictedDate = moment(new Date(dateStr)).format('DD');
+      predictedDayShort = moment(new Date(dateStr)).format('DD');
     } else {
-      predictedDate = moment(new Date(dateStr)).format('DD YYYY');
+      predictedDayShort = moment(new Date(dateStr)).format('DD');
+      predictedDateShortYear = moment(new Date(dateStr)).format('YYYY');
     }
 
-    return `${predictedDate} ${monthLocale}`;
+    return `${predictedDayShort} ${monthLocale} ${predictedDateShortYear}`;
   };
 
   const getChartLabels = () => ([

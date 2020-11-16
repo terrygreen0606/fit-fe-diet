@@ -126,6 +126,7 @@ const PhoneInput = (props: PhoneInputProps) => {
       )}
 
       <ReactPhoneInput
+        {...finalAttributes}
         value={value}
         isValid={(curValue, country) => {
           if (checkIsValid && country['format'] && curValue) {
