@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
 import { getTranslate, getImagePath } from 'utils';
@@ -57,12 +56,6 @@ const AfterSignupPage = ({
         if (data.success && data.data) {
           if (data.data.length) {
             setTariffsDataList(data.data);
-
-            if (data.data.length > 1) {
-              setActiveTariffId(data.data[1].tariff);
-            } else if (data.data.length > 0) {
-              setActiveTariffId(data.data[0].tariff);
-            }
           }
         } else {
           setTariffsLoadingError(true);
@@ -143,8 +136,12 @@ const AfterSignupPage = ({
     return activeTariff;
   };
 
-  const scrollToCheckoutForm = () => {
+  const scrollToTariffsSelectForm = () => {
     document.getElementById('afterSignupTariffs')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+  };
+
+  const scrollToCheckoutForm = () => {
+    document.getElementById('afterSignupPaymentForm')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
   };
 
   return (
@@ -189,7 +186,7 @@ const AfterSignupPage = ({
                 </ContentLoading>
 
                 <Button
-                  onClick={() => scrollToCheckoutForm()}
+                  onClick={() => scrollToTariffsSelectForm()}
                   pulse
                   color='primary-shadow'
                   className='mt-3'
@@ -297,7 +294,7 @@ const AfterSignupPage = ({
                   color='primary-shadow'
                   size='lg'
                   block
-                  onClick={() => scrollToCheckoutForm()}
+                  onClick={() => scrollToTariffsSelectForm()}
                   style={{ maxWidth: '380px' }}
                 >
                   {t('button.activate_plan')}
@@ -346,7 +343,7 @@ const AfterSignupPage = ({
                   pulse
                   color='primary-shadow'
                   size='lg'
-                  onClick={() => scrollToCheckoutForm()}
+                  onClick={() => scrollToTariffsSelectForm()}
                 >
                   {t('button.select_plan')}
                 </Button>
@@ -355,7 +352,7 @@ const AfterSignupPage = ({
               </div>
 
             </div>
-            <div className='col-xl-5 offset-xl-1 mt-5 mt-xl-0'>
+            <div className='col-xl-6 mt-5 mt-xl-0'>
 
               <ContentLoading
                 isLoading={reviewsLoading}
@@ -411,17 +408,14 @@ const AfterSignupPage = ({
             <div className='col-12 mt-5 pt-xl-5'>
 
               <div className='row'>
-                <div className='col-xl-6'>
+                <div className='col-xl-6 text-center'>
 
-                  <div className='money-back-guarantee-block'>
-                    <h5 className='money-back-guarantee-block__title'>{t('lp.money_back_title')}</h5>
-                    <p className='money-back-guarantee-block__descr'>{t('lp.money_back_descr')}</p>
-                  </div>
+                  <img src={t('checkout.social.img')} className='img-fluid' alt='' />
 
                 </div>
                 <div className='col-xl-6 mt-4 mt-xl-0 text-center'>
 
-                  <img src={getImagePath('checkout/safe-checkout-img.png')} className='img-fluid' alt='' />
+                  <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
 
                 </div>
               </div>
@@ -462,7 +456,7 @@ const AfterSignupPage = ({
                 className='mt-4'
                 size='lg'
                 block
-                onClick={() => scrollToCheckoutForm()}
+                onClick={() => scrollToTariffsSelectForm()}
                 style={{ maxWidth: '500px' }}
               >
                 {t('button.activate_plan')}
@@ -533,7 +527,13 @@ const AfterSignupPage = ({
                       months,
                     }))}
                     value={activeTariffId}
-                    onChange={(id) => setActiveTariffId(id)}
+                    onChange={(id) => {
+                      if (activeTariffId === null) {
+                        scrollToCheckoutForm();
+                      }
+
+                      setActiveTariffId(id);
+                    }}
                     specialOfferIndex={1}
                     localePhrases={localePhrases}
                   />
@@ -557,7 +557,7 @@ const AfterSignupPage = ({
                     ))}
                   </div>
 
-                  <img src={getImagePath('checkout/safe-checkout-img-2.png')} className='img-fluid mt-5' alt='' />
+                  <img src={t('checkout.safe.img2')} className='img-fluid mt-5' alt='' />
 
                 </div>
               </div>
@@ -567,12 +567,12 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <section className='after-signup-payment-form'>
+      <section className='after-signup-payment-form-sect'>
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
 
-              <h3 className='mb-5 fw-bold text-center'>{t('lp.select_payment.title')}</h3>
+              <h3 id='afterSignupPaymentForm' className='mb-5 fw-bold text-center'>{t('lp.select_payment.title')}</h3>
 
               <CheckoutPaymentFormCard
                 tariff={getActiveTariffData()}
@@ -592,7 +592,7 @@ const AfterSignupPage = ({
 
               <h2 className='sect-title title-center'>{t('lp.faq.title')}</h2>
 
-              <div className='row mt-xl-5 pt-lg-5'>
+              <div className='row mt-xl-5'>
                 <div className='col-lg-6'>
 
                   <h5 className='mb-5 fw-bold text-center'>{t('lp.faq.q1')}</h5>
@@ -630,7 +630,7 @@ const AfterSignupPage = ({
                 <Button
                   pulse
                   color='primary-shadow'
-                  onClick={() => scrollToCheckoutForm()}
+                  onClick={() => scrollToTariffsSelectForm()}
                 >
                   {t('button.reveal_plan')}
                 </Button>
