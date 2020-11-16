@@ -14,7 +14,7 @@ export type UserAuthProfileType = {
   diseases?: string[],
   act_levels?: string[],
   meal_counts?: any[],
-  request_hash: string,
+  request_hash?: string,
 };
 
 export type UserFacebookSignUpParams = {
