@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import requestHash from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType } from 'types/auth';
 import { setAppSetting, setUserData } from 'store/actions';
 import { InputError } from 'types';
@@ -136,18 +136,18 @@ const JoinStep = (props: any) => {
 
     (async () => {
       // We recommend to call `load` at application startup.
-      const fp = await FingerprintJS.load();
+      const requestHashData = await requestHash.load();
 
       // The FingerprintJS agent is ready.
       // Get a visitor identifier when you'd like to.
-      const result = await fp.get();
+      const result = await requestHashData.get();
 
       // This is the visitor identifier:
       const { visitorId } = result;
       userSignup({
         email: props.registerData.email,
         password: '1',
-        request_hash: visitorId,
+        request_hash: visitorId || null,
         ...getRegisterProfilePayload(),
       }).then(({ data }) => {
         const token =

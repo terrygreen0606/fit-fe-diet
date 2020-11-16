@@ -11,7 +11,7 @@ import {
 } from 'utils';
 import { toast } from 'react-toastify';
 import axios from 'utils/axios';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import requestHash from '@fingerprintjs/fingerprintjs';
 import {
   userLogin as userAuthLogin,
   userGoogleSignIn,
@@ -105,11 +105,11 @@ const LoginView = (props: any) => {
 
       (async () => {
         // We recommend to call `load` at application startup.
-        const fp = await FingerprintJS.load();
+        const requestHashData = await requestHash.load();
 
         // The FingerprintJS agent is ready.
         // Get a visitor identifier when you'd like to.
-        const result = await fp.get();
+        const result = await requestHashData.get();
 
         userAuthLogin(loginForm.email, loginForm.password, result.visitorId)
           .then((response) => {

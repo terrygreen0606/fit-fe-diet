@@ -59,7 +59,7 @@ export const userInviteFamilyByEmail = (email: string) =>
 export const getUserInvitedFriends = () =>
   axios.get('/user/friends');
 
-export const getUserDashboard = (request_hash?: string) =>
+export const getUserDashboard = (request_hash: string = null) =>
   axios.post('/user/dashboard', {
     request_hash,
   });

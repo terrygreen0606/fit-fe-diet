@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
 import uuid from 'react-uuid';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import requestHash from '@fingerprintjs/fingerprintjs';
 
 import { routes } from 'constants/routes';
 import { getTranslate, convertTime, getLangUser } from 'utils';
@@ -156,19 +156,21 @@ const MainView = (props: any) => {
 
     (async () => {
       // We recommend to call `load` at application startup.
-      const fp = await FingerprintJS.load();
+      const requestHashData = await requestHash.load();
 
       // The FingerprintJS agent is ready.
       // Get a visitor identifier when you'd like to.
-      const result = await fp.get();
+      const result = await requestHashData.get();
 
-      getUserDashboard(result.visitorId).then(({ data }) => {
-        if (data.data && data.success) {
-          setUserDashboardData(setData(data.data));
-        } else {
-          toast.error(t('common.error'));
-        }
-      }).catch(() => toast.error(t('common.error')))
+      getUserDashboard(result.visitorId)
+        .then(({ data }) => {
+          if (data.data && data.success) {
+            setUserDashboardData(setData(data.data));
+          } else {
+            toast.error(t('common.error'));
+          }
+        })
+        .catch(() => toast.error(t('common.error')))
         .finally(() => setIsLoadingDashboard(false));
     })();
   }, []);

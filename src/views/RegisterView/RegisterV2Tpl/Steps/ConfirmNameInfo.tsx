@@ -11,7 +11,7 @@ import { userLogin as userLoginAction } from 'store/actions';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import requestHash from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType, InputError } from 'types';
 import { userSignup, acceptInviteToFamily } from 'api';
 
@@ -127,11 +127,11 @@ const ConfirmInfo = ({
     setRegisterJoinLoading(true);
     (async () => {
       // We recommend to call `load` at application startup.
-      const fp = await FingerprintJS.load();
+      const requestHashData = await requestHash.load();
 
       // The FingerprintJS agent is ready.
       // Get a visitor identifier when you'd like to.
-      const result = await fp.get();
+      const result = await requestHashData.get();
 
       // This is the visitor identifier:
       const { visitorId } = result;
@@ -139,7 +139,7 @@ const ConfirmInfo = ({
       userSignup({
         email: registerData.email,
         password: '1',
-        request_hash: visitorId,
+        request_hash: visitorId || null,
         ...getRegisterProfilePayload(),
       }).then((response) => {
         setRegisterJoinLoading(false);

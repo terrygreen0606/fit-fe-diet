@@ -1,3 +1,4 @@
+import { requestHash } from '@fingerprintjs/fingerprintjs';
 import axios from 'utils/axios';
 import {
   UserAuthProfileType,
@@ -35,7 +36,7 @@ export const userGoogleSignUp = (params: UserGoogleSignUpParams) =>
 export const userLogin = (
   email: string,
   password: string,
-  request_hash?: string,
+  request_hash: string = null,
   ) =>
   axios.post('/user/login', {
     email,
