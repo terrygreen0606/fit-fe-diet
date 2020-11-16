@@ -123,6 +123,7 @@ const RecipeFullView = (props: any) => {
     isOwner: null,
     similar: [],
     wines: [],
+    note: null,
   });
 
   const getRecipeDataFunc = (data) => ({
@@ -149,6 +150,7 @@ const RecipeFullView = (props: any) => {
     isOwner: data.is_owner,
     similar: data.similar,
     wines: data.wines,
+    note: data.note,
   });
 
   const getRecipe = (recipeIdArg: string) => {
@@ -315,6 +317,11 @@ const RecipeFullView = (props: any) => {
           toast.success(t('recipe.add_note.success'));
 
           setIsBlockActive(false);
+
+          setRecipeData({
+            ...recipeData,
+            note: addNoteForm.note,
+          });
         }
       })
       .catch(() => {
@@ -573,9 +580,15 @@ const RecipeFullView = (props: any) => {
                   <div ref={changedBlockRef} className='recipe__actions-button-wrap'>
                     <button
                       type='button'
-                      onClick={() => setIsBlockActive(!isBlockActive)}
+                      onClick={() => {
+                        setIsBlockActive(!isBlockActive);
+                        setAddNoteForm({
+                          ...addNoteForm,
+                          note: recipeData.note,
+                        });
+                      }}
                       className={classnames('recipe__actions-button card-bg', {
-                        active: isBlockActive || addNoteForm.note,
+                        active: isBlockActive || recipeData.note,
                       })}
                     >
                       <div className='recipe__actions-button-media'>
