@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType } from 'types/auth';
 import { setAppSetting, setUserData } from 'store/actions';
 import { InputError } from 'types';
@@ -37,8 +38,21 @@ const JoinStep = (props: any) => {
   const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
+  const [requestHash, setRequestHash] = useState<string>(null);
 
   useEffect(() => {
+    (async () => {
+      // We recommend to call `load` at application startup.
+      const fp = await FingerprintJS.load();
+
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      const result = await fp.get();
+
+      // This is the visitor identifier:
+      setRequestHash(result.visitorId);
+    })();
+
     const currStepTitles = [...props.stepTitlesDefault];
     currStepTitles[0] = t('register.expect_step');
     currStepTitles[1] = t('register.step_confirm');
@@ -124,6 +138,10 @@ const JoinStep = (props: any) => {
       profilePayload.ref_code = ref_code;
     }
 
+    if (requestHash) {
+      profilePayload.request_hash = requestHash;
+    }
+
     return {
       ...profilePayload,
     };
@@ -137,46 +155,46 @@ const JoinStep = (props: any) => {
       password: '1',
       ...getRegisterProfilePayload(),
     }).then(({ data }) => {
-        const token =
-          data && data.access_token
-            ? data.access_token
-            : null;
+      const token =
+        data && data.access_token
+          ? data.access_token
+          : null;
 
-        if (token) {
-          localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
-          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      if (token) {
+        localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-          getAppSettings()
-            .then(({ data: settingsData }) => {
-              setRegisterJoinLoading(false);
+        getAppSettings()
+          .then(({ data: settingsData }) => {
+            setRegisterJoinLoading(false);
 
-              if (settingsData.success && settingsData.data) {
-                props.setAppSetting(settingsData.data);
-              } else {
-                toast.error(t('register.error_msg'));
-              }
-            })
-            .catch(() => {
+            if (settingsData.success && settingsData.data) {
+              props.setAppSetting(settingsData.data);
+            } else {
               toast.error(t('register.error_msg'));
-              setRegisterJoinLoading(false);
-            });
-
-          finalWelcomeStep(token);
-        } else {
-          toast.error(t('register.error_msg'));
-        }
-
-        const familyCode = getCookie('acceptFamilyCode');
-
-        if (familyCode) {
-          acceptInviteToFamily(familyCode).then((response) => {
-            if (response.data.success) {
-              toast.success(t('family.accept.success'));
-              deleteCookie('acceptFamilyCode');
             }
-          }).catch(() => toast.error(t('common.error')));
-        }
-      })
+          })
+          .catch(() => {
+            toast.error(t('register.error_msg'));
+            setRegisterJoinLoading(false);
+          });
+
+        finalWelcomeStep(token);
+      } else {
+        toast.error(t('register.error_msg'));
+      }
+
+      const familyCode = getCookie('acceptFamilyCode');
+
+      if (familyCode) {
+        acceptInviteToFamily(familyCode).then((response) => {
+          if (response.data.success) {
+            toast.success(t('family.accept.success'));
+            deleteCookie('acceptFamilyCode');
+          }
+        }).catch(() => toast.error(t('common.error')));
+      }
+    })
       .catch((error) => {
         setRegisterJoinLoading(false);
 

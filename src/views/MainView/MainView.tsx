@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
 import uuid from 'react-uuid';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 import { routes } from 'constants/routes';
 import { getTranslate, convertTime, getLangUser } from 'utils';
@@ -19,9 +20,9 @@ import { ReactComponent as SettingsIcon } from 'assets/img/icons/settings-icon.s
 import { ReactComponent as PenIcon } from 'assets/img/icons/pen-icon.svg';
 // import { ReactComponent as FirstPlaceIcon } from 'assets/img/icons/first-place-icon.svg';
 import { ReactComponent as DietIcon } from 'assets/img/icons/diet-icon.svg';
-import { ReactComponent as WorkoutIcon } from 'assets/img/icons/workout-icon.svg';
-import { ReactComponent as ClockTimeIcon } from 'assets/img/icons/clock-time-icon.svg';
-import { ReactComponent as PlayIcon } from 'assets/img/icons/play-icon.svg';
+// import { ReactComponent as WorkoutIcon } from 'assets/img/icons/workout-icon.svg';
+// import { ReactComponent as ClockTimeIcon } from 'assets/img/icons/clock-time-icon.svg';
+// import { ReactComponent as PlayIcon } from 'assets/img/icons/play-icon.svg';
 import { ReactComponent as CartIcon } from 'assets/img/icons/cart-icon.svg';
 import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
 import { ReactComponent as NotificationIcon } from 'assets/img/icons/notification-icon.svg';
@@ -152,14 +153,24 @@ const MainView = (props: any) => {
         toast.error(t('common.error'));
       }
     }
-    getUserDashboard().then(({ data }) => {
-      if (data.data && data.success) {
-        setUserDashboardData(setData(data.data));
-      } else {
-        toast.error(t('common.error'));
-      }
-    }).catch(() => toast.error(t('common.error')))
-      .finally(() => setIsLoadingDashboard(false));
+
+    (async () => {
+      // We recommend to call `load` at application startup.
+      const fp = await FingerprintJS.load();
+
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      const result = await fp.get();
+
+      getUserDashboard(result.visitorId).then(({ data }) => {
+        if (data.data && data.success) {
+          setUserDashboardData(setData(data.data));
+        } else {
+          toast.error(t('common.error'));
+        }
+      }).catch(() => toast.error(t('common.error')))
+        .finally(() => setIsLoadingDashboard(false));
+    })();
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType } from 'types/auth';
 import {
   setAppSetting as setAppSettingAction,
@@ -51,6 +52,22 @@ const JoinNameStep = ({
     getTranslate(localePhrases, code);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
+
+  const [requestHash, setRequestHash] = useState<string>(null);
+
+  useEffect(() => {
+    (async () => {
+      // We recommend to call `load` at application startup.
+      const fp = await FingerprintJS.load();
+
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      const result = await fp.get();
+
+      // This is the visitor identifier:
+      setRequestHash(result.visitorId);
+    })();
+  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -134,6 +151,10 @@ const JoinNameStep = ({
       profilePayload.price_set = ps;
     }
 
+    if (requestHash) {
+      profilePayload.request_hash = requestHash;
+    }
+
     return {
       ...profilePayload,
     };
@@ -147,46 +168,46 @@ const JoinNameStep = ({
       password: registerData.password,
       ...getRegisterProfilePayload(),
     }).then(({ data }) => {
-        const token =
-          data && data.access_token
-            ? data.access_token
-            : null;
+      const token =
+        data && data.access_token
+          ? data.access_token
+          : null;
 
-        if (token) {
-          localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
-          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      if (token) {
+        localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-          getAppSettings()
-            .then(({ data: settingsData }) => {
-              setRegisterJoinLoading(false);
+        getAppSettings()
+          .then(({ data: settingsData }) => {
+            setRegisterJoinLoading(false);
 
-              if (settingsData.success && settingsData.data) {
-                setAppSetting(settingsData.data);
-              } else {
-                toast.error(t('register.error_msg'));
-              }
-            })
-            .catch(() => {
+            if (settingsData.success && settingsData.data) {
+              setAppSetting(settingsData.data);
+            } else {
               toast.error(t('register.error_msg'));
-              setRegisterJoinLoading(false);
-            });
-
-          finalWelcomeStep(token);
-        } else {
-          toast.error(t('register.error_msg'));
-        }
-
-        const familyCode = getCookie('acceptFamilyCode');
-
-        if (familyCode) {
-          acceptInviteToFamily(familyCode).then((response) => {
-            if (response.data.success) {
-              toast.success(t('family.accept.success'));
-              deleteCookie('acceptFamilyCode');
             }
-          }).catch(() => toast.error(t('common.error')));
-        }
-      })
+          })
+          .catch(() => {
+            toast.error(t('register.error_msg'));
+            setRegisterJoinLoading(false);
+          });
+
+        finalWelcomeStep(token);
+      } else {
+        toast.error(t('register.error_msg'));
+      }
+
+      const familyCode = getCookie('acceptFamilyCode');
+
+      if (familyCode) {
+        acceptInviteToFamily(familyCode).then((response) => {
+          if (response.data.success) {
+            toast.success(t('family.accept.success'));
+            deleteCookie('acceptFamilyCode');
+          }
+        }).catch(() => toast.error(t('common.error')));
+      }
+    })
       .catch((error) => {
         setRegisterJoinLoading(false);
 
@@ -218,7 +239,7 @@ const JoinNameStep = ({
             } else if (validateErrors.weight_goal) {
               setRegisterView('INFO_WEIGHT_GOAL');
             }
-          } catch {}
+          } catch { }
         }
       });
   };

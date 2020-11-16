@@ -59,8 +59,10 @@ export const userInviteFamilyByEmail = (email: string) =>
 export const getUserInvitedFriends = () =>
   axios.get('/user/friends');
 
-export const getUserDashboard = () =>
-  axios.get('/user/dashboard');
+export const getUserDashboard = (request_hash?: string) =>
+  axios.post('/user/dashboard', {
+    request_hash,
+  });
 
 export const acceptInviteToFamily = (code: string) =>
   axios.put(`/user/family-joined/${code}`);
