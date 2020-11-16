@@ -12,7 +12,9 @@ type SpinnerProps = {
 };
 
 const SpinnerDefaultProps = {
-  size: 'sm'
+  size: 'sm',
+  color: null,
+  className: null,
 };
 
 const Spinner = ({
@@ -20,11 +22,10 @@ const Spinner = ({
   color,
   className,
 }: SpinnerProps) => {
-
-  const getSpinnerSize = (size: string) => {
+  const getSpinnerSize = (spinnerSize: string) => {
     let spinSize = null;
 
-    switch (size) {
+    switch (spinnerSize) {
       case 'xs':
         spinSize = 18;
         break;
@@ -40,6 +41,9 @@ const Spinner = ({
       case 'lg':
         spinSize = 45;
         break;
+
+      default:
+        spinSize = 25;
     }
 
     return spinSize;

@@ -7,7 +7,7 @@ export const getImagePath = (imagePath: string) => {
   // eslint-disable-next-line
   const localImg = require(`assets/img/${imagePath}`);
 
-  return process.env.NODE_ENV === 'development'
+  return process.env.NODE_ENV === 'development' || localImg.search('data:image') > -1
     ? localImg
     : `https://fitdev.s3.amazonaws.com/assets/app/media/${s3ImgPath}`;
 };

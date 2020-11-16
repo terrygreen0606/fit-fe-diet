@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { getTranslate } from 'utils';
+import useWindowSize from 'components/hooks/useWindowSize';
+import useDebounce from 'components/hooks/useDebounce';
 
 import './TariffPlanSelect.sass';
 
@@ -31,6 +33,9 @@ const TariffPlanSelect = ({
   specialOfferIndex,
   localePhrases,
 }: TariffPlanSelectProps) => {
+  const { width: windowWidth } = useWindowSize();
+  const debounceWindowWidth = useDebounce(windowWidth, 500);
+
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
@@ -53,6 +58,11 @@ const TariffPlanSelect = ({
       checkingElements.forEach((item) => {
         if (item.child.innerText) {
           for (let i = 1; item.child.clientWidth < item.parent.clientWidth; i++) {
+            if (debounceWindowWidth <= 400 && 16 + i > 30) {
+              item.child.style.fontSize = `${30}px`;
+              break;
+            }
+
             item.child.style.fontSize = `${16 + i}px`;
             if (item.child.clientWidth >= item.parent.clientWidth) {
               item.child.style.fontSize = `${16 + i - 1}px`;
@@ -62,7 +72,7 @@ const TariffPlanSelect = ({
         }
       });
     }
-  }, [tariffPlanList.current?.children?.length]);
+  }, [tariffPlanList.current?.children?.length, debounceWindowWidth]);
 
   return (
     <div className='tariff-plan__list' ref={tariffPlanList}>

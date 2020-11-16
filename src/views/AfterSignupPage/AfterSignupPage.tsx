@@ -143,6 +143,10 @@ const AfterSignupPage = ({
     return activeTariff;
   };
 
+  const scrollToCheckoutForm = () => {
+    document.getElementById('afterSignupTariffs')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+  };
+
   return (
     <>
       <Helmet>
@@ -184,11 +188,17 @@ const AfterSignupPage = ({
                   )}
                 </ContentLoading>
 
-                <Link to='/checkout' className='link-raw'>
-                  <Button pulse color='primary-shadow' className='mt-3' size='lg'>{t('button.select_plan')}</Button>
-                </Link>
+                <Button
+                  onClick={() => scrollToCheckoutForm()}
+                  pulse
+                  color='primary-shadow'
+                  className='mt-3'
+                  size='lg'
+                >
+                  {t('button.select_plan')}
+                </Button>
 
-                <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+                <img className='after-signup-header-arrow' src={getImagePath('testtest.png')} alt='' />
               </div>
 
             </div>
@@ -255,10 +265,10 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-4 d-none d-xl-block text-left'>
 
-              <img src={getImagePath('phone-frame-img.png')} alt='' className='img-fluid flip-x' />
+              <img src={t('lp.phone_overview.gif')} alt='' className='img-fluid' />
 
             </div>
-            <div className='col-xl-8 mt-xl-0 after-signup-intro-content-col'>
+            <div className='col-xl-8 pl-xl-5 mt-xl-0 after-signup-intro-content-col'>
 
               <h5 className='fw-bold'>{t('lp.partners_list_title')}</h5>
 
@@ -277,24 +287,23 @@ const AfterSignupPage = ({
                 />
               </div>
 
-              <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
+              <img className='after-signup-intro-arrow' src={getImagePath('arrow-black.png')} alt='' />
 
               <div className='mt-4 mt-xl-5' dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
 
-              <div className='mt-5 pt-3 pb-5'>
-                <Link to='/checkout' className='link-raw'>
-                  <Button
-                    pulse
-                    color='primary-shadow'
-                    size='lg'
-                    block
-                    style={{ maxWidth: '380px' }}
-                  >
-                    {t('button.activate_plan')}
-                  </Button>
-                </Link>
+              <div className='mt-5 pt-3 pb-5 text-center text-xl-left'>
+                <Button
+                  pulse
+                  color='primary-shadow'
+                  size='lg'
+                  block
+                  onClick={() => scrollToCheckoutForm()}
+                  style={{ maxWidth: '380px' }}
+                >
+                  {t('button.activate_plan')}
+                </Button>
 
-                <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+                <img className='after-signup-start-today-arrow' src={getImagePath('testtest.png')} alt='' />
               </div>
 
             </div>
@@ -332,11 +341,18 @@ const AfterSignupPage = ({
                 </div>
               )}
 
-              <Link to='/checkout' className='link-raw'>
-                <Button pulse color='primary-shadow' size='lg' className='mt-5'>
+              <div className='mt-5 text-center text-xl-left'>
+                <Button
+                  pulse
+                  color='primary-shadow'
+                  size='lg'
+                  onClick={() => scrollToCheckoutForm()}
+                >
                   {t('button.select_plan')}
                 </Button>
-              </Link>
+
+                <img className='after-signup-start-today-arrow' src={getImagePath('testtest.png')} alt='' />
+              </div>
 
             </div>
             <div className='col-xl-5 offset-xl-1 mt-5 mt-xl-0'>
@@ -383,15 +399,13 @@ const AfterSignupPage = ({
             </div>
             <div className='col-xl-6 mt-5 mt-xl-0'>
 
-              {isAfterSignup && (
-                <DietExpectationsChart
-                  weight={afterSignupWeight}
-                  weightGoal={afterSignupWeightGoal}
-                  predictedDate={afterSignupPredictDate}
-                  measurement={measurement}
-                  localePhrases={localePhrases}
-                />
-              )}
+              <iframe
+                className='after-signup-video-frame'
+                title={t('lp.video.title')}
+                src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
+                width='100%'
+                height='400'
+              />
 
             </div>
             <div className='col-12 mt-5 pt-xl-5'>
@@ -442,20 +456,19 @@ const AfterSignupPage = ({
                 )}
               </ContentLoading>
 
-              <Link to='/checkout' className='link-raw'>
-                <Button
-                  pulse
-                  color='primary-shadow'
-                  className='mt-4'
-                  size='lg'
-                  block
-                  style={{ maxWidth: '500px' }}
-                >
-                  {t('button.activate_plan')}
-                </Button>
-              </Link>
+              <Button
+                pulse
+                color='primary-shadow'
+                className='mt-4'
+                size='lg'
+                block
+                onClick={() => scrollToCheckoutForm()}
+                style={{ maxWidth: '500px' }}
+              >
+                {t('button.activate_plan')}
+              </Button>
 
-              <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+              <img className='after-signup-start-today-arrow' src={getImagePath('testtest.png')} alt='' />
 
               <div className='app-partners-list__wrap mt-5 pt-5'>
                 <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
@@ -499,9 +512,11 @@ const AfterSignupPage = ({
               </div>
 
               <div className='row'>
-                <div className='col-xl-6'>
+                <div className='col-md-6'>
 
-                  <h2 className='mb-5 fw-bold text-center'>{t('lp.select_plan_title')}</h2>
+                  <h2 id='afterSignupTariffs' className='mb-5 fw-bold text-center'>
+                    {t('lp.select_plan_title')}
+                  </h2>
 
                   <TariffPlanSelect
                     tariffs={tariffsDataList.map(({
@@ -524,7 +539,7 @@ const AfterSignupPage = ({
                   />
 
                 </div>
-                <div className='col-xl-6 pl-xl-5 mt-5 mt-xl-0'>
+                <div className='col-md-6 pl-xl-5 mt-5 mt-xl-0'>
 
                   <h2 className='mb-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
@@ -612,11 +627,13 @@ const AfterSignupPage = ({
                   </span>
                 </h4>
 
-                <Link to='/checkout' className='link-raw'>
-                  <Button pulse color='primary-shadow'>
-                    {t('button.reveal_plan')}
-                  </Button>
-                </Link>
+                <Button
+                  pulse
+                  color='primary-shadow'
+                  onClick={() => scrollToCheckoutForm()}
+                >
+                  {t('button.reveal_plan')}
+                </Button>
               </div>
 
             </div>
