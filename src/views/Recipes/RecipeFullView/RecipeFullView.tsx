@@ -176,8 +176,6 @@ const RecipeFullView = (props: any) => {
 
         const isActivePreparedRecipe = props.location.isActivePrepared || false;
 
-        console.log('props.location', props.location);
-
         setRecipeData({
           ...preparedRecipeData,
           images: updatedImages,
