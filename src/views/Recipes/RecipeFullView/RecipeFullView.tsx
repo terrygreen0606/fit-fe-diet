@@ -204,6 +204,124 @@ const RecipeFullView = (props: any) => {
     recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
+  const prevSlide = () => {
+    const updatedImages = [...recipeData.images];
+
+    updatedImages.find((findImage, findImageIndex) => {
+      if (findImage.isActive === true) {
+        updatedImages[findImageIndex].isActive = false;
+        if (findImageIndex === 0) {
+          updatedImages[updatedImages.length - 1].isActive = true;
+        } else {
+          updatedImages[findImageIndex - 1].isActive = true;
+        }
+        return updatedImages;
+      }
+    });
+
+    setRecipeData({ ...recipeData, images: updatedImages });
+  };
+
+  const nextSlide = () => {
+    const updatedImages = [...recipeData.images];
+
+    updatedImages.find((findImage, findImageIndex) => {
+      if (findImage.isActive === true) {
+        updatedImages[findImageIndex].isActive = false;
+        if (findImageIndex === updatedImages.length - 1) {
+          updatedImages[0].isActive = true;
+        } else {
+          updatedImages[findImageIndex + 1].isActive = true;
+        }
+        return updatedImages;
+      }
+    });
+
+    setRecipeData({ ...recipeData, images: updatedImages });
+  };
+
+  const likeRecipeClick = () => {
+    setRecipeData({
+      ...recipeData,
+      isLiked: !recipeData.isLiked,
+    });
+
+    likeRecipe(recipeId)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          setRecipeData({
+            ...recipeData,
+            isLiked: response.data.data.is_liked,
+          });
+        }
+      })
+      .catch(() => {
+        setRecipeData({
+          ...recipeData,
+          isLiked: !recipeData.isLiked,
+        });
+      });
+  };
+
+  const changeRecipe = () => {
+    setIsActiveReloadRequest(true);
+    changeRecipeInMealPlan(props.location.dateTs, recipeId)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.success_update'));
+        }
+      })
+      .catch(() => toast.error(t('common.error')))
+      .finally(() => setIsActiveReloadRequest(false));
+  };
+
+  const addToShoppingList = () => {
+    setIsActiveShopListRequest(true);
+    addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.update_shopping_list.success'));
+        }
+      })
+      .catch(() => toast.error(t('common.error')))
+      .finally(() => setIsActiveShopListRequest(false));
+  };
+
+  const checkRecipe = () => {
+    setIsActiveCheckedRequest(true);
+
+    prepareRecipe(recipeId)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          setRecipeData({
+            ...recipeData,
+            isPrepared: response.data.data.is_prepared,
+          });
+        }
+      })
+      .catch(() => {
+        setRecipeData({
+          ...recipeData,
+          isPrepared: !recipeData.isPrepared,
+        });
+      })
+      .finally(() => setIsActiveCheckedRequest(false));
+  };
+
+  const addRecipeNoteClick = () => {
+    addRecipeNote(recipeId, addNoteForm.note)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.add_note.success'));
+
+          setIsBlockActive(false);
+        }
+      })
+      .catch(() => {
+        toast.error(t('common.error'));
+      });
+  };
+
   return (
     <>
       <Helmet>
@@ -282,46 +400,14 @@ const RecipeFullView = (props: any) => {
                           <>
                             <button
                               type='button'
-                              onClick={() => {
-                                const updatedImages = [...recipeData.images];
-
-                                updatedImages.find((findImage, findImageIndex) => {
-                                  if (findImage.isActive === true) {
-                                    updatedImages[findImageIndex].isActive = false;
-                                    if (findImageIndex === 0) {
-                                      updatedImages[updatedImages.length - 1].isActive = true;
-                                    } else {
-                                      updatedImages[findImageIndex - 1].isActive = true;
-                                    }
-                                    return updatedImages;
-                                  }
-                                });
-
-                                setRecipeData({ ...recipeData, images: updatedImages });
-                              }}
+                              onClick={() => prevSlide()}
                               className='recipe__main-info-media-button recipe__main-info-media-prev'
                             >
                               <ArrowLeftLogo />
                             </button>
                             <button
                               type='button'
-                              onClick={() => {
-                                const updatedImages = [...recipeData.images];
-
-                                updatedImages.find((findImage, findImageIndex) => {
-                                  if (findImage.isActive === true) {
-                                    updatedImages[findImageIndex].isActive = false;
-                                    if (findImageIndex === updatedImages.length - 1) {
-                                      updatedImages[0].isActive = true;
-                                    } else {
-                                      updatedImages[findImageIndex + 1].isActive = true;
-                                    }
-                                    return updatedImages;
-                                  }
-                                });
-
-                                setRecipeData({ ...recipeData, images: updatedImages });
-                              }}
+                              onClick={() => nextSlide()}
                               className='recipe__main-info-media-button recipe__main-info-media-next'
                             >
                               <ArrowRightLogo />
@@ -357,25 +443,7 @@ const RecipeFullView = (props: any) => {
                     </div>
                     <button
                       type='button'
-                      onClick={() => {
-                        setRecipeData({
-                          ...recipeData,
-                          isLiked: !recipeData.isLiked,
-                        });
-                        likeRecipe(recipeId).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            setRecipeData({
-                              ...recipeData,
-                              isLiked: response.data.data.is_liked,
-                            });
-                          }
-                        }).catch(() => {
-                          setRecipeData({
-                            ...recipeData,
-                            isLiked: !recipeData.isLiked,
-                          });
-                        });
-                      }}
+                      onClick={() => likeRecipeClick()}
                       className={classnames('recipe__main-info-desc-heart', {
                         active: recipeData.isLiked,
                       })}
@@ -386,15 +454,7 @@ const RecipeFullView = (props: any) => {
                       {props.location.fromMealPlan && (
                         <button
                           type='button'
-                          onClick={() => {
-                            setIsActiveReloadRequest(true);
-                            changeRecipeInMealPlan(props.location.dateTs, recipeId).then((response) => {
-                              if (response.data.success && response.data.data) {
-                                toast.success(t('recipe.success_update'));
-                              }
-                            }).catch(() => toast.error(t('common.error')))
-                              .finally(() => setIsActiveReloadRequest(false));
-                          }}
+                          onClick={() => changeRecipe()}
                           className='recipe__main-info-desc-button recipe__main-info-desc-button_reload'
                         >
                           <div className='recipe__main-info-desc-button-wrap'>
@@ -410,15 +470,7 @@ const RecipeFullView = (props: any) => {
                       )}
                       <button
                         type='button'
-                        onClick={() => {
-                          setIsActiveShopListRequest(true);
-                          addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then((response) => {
-                            if (response.data.success && response.data.data) {
-                              toast.success(t('recipe.update_shopping_list.success'));
-                            }
-                          }).catch(() => toast.error(t('common.error')))
-                            .finally(() => setIsActiveShopListRequest(false));
-                        }}
+                        onClick={() => addToShoppingList()}
                         className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
                       >
                         <div className='recipe__main-info-desc-button-wrap'>
@@ -437,22 +489,7 @@ const RecipeFullView = (props: any) => {
                           className={classnames('recipe__main-info-desc-button', {
                             active: recipeData.isPrepared,
                           })}
-                          onClick={() => {
-                            setIsActiveCheckedRequest(true);
-                            prepareRecipe(recipeId).then((response) => {
-                              if (response.data.success && response.data.data) {
-                                setRecipeData({
-                                  ...recipeData,
-                                  isPrepared: response.data.data.is_prepared,
-                                });
-                              }
-                            }).catch(() => {
-                              setRecipeData({
-                                ...recipeData,
-                                isPrepared: !recipeData.isPrepared,
-                              });
-                            }).finally(() => setIsActiveCheckedRequest(false));
-                          }}
+                          onClick={() => checkRecipe()}
                         >
                           <div className='recipe__main-info-desc-button-wrap'>
                             <ContentLoading
@@ -571,17 +608,7 @@ const RecipeFullView = (props: any) => {
                           <Button
                             color='primary'
                             disabled={!addNoteForm.note}
-                            onClick={() => {
-                              addRecipeNote(recipeId, addNoteForm.note).then((response) => {
-                                if (response.data.success && response.data.data) {
-                                  toast.success(t('recipe.add_note.success'));
-
-                                  setIsBlockActive(false);
-                                }
-                              }).catch(() => {
-                                toast.error(t('common.error'));
-                              });
-                            }}
+                            onClick={() => addRecipeNoteClick()}
                             className='recipe__notes-modal-btn'
                           >
                             {t('recipe.add_note.save')}
