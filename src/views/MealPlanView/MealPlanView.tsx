@@ -53,7 +53,6 @@ import HintStep from './HintStep';
 import {
   mockData,
   tourStepFunction,
-  todayActivitiesData,
 } from './dataForMealPlanView';
 
 const MealPlanView = (props: any) => {
@@ -440,10 +439,7 @@ const MealPlanView = (props: any) => {
                     hinted: tourStep === 1,
                   })}
                 >
-                  <TodayActivities
-                    title={t('trainings.today_activities')}
-                    items={todayActivitiesData}
-                  />
+                  <TodayActivities />
                   {tourStep === 1 && (
                     <HintStep
                       hintStep={1}
