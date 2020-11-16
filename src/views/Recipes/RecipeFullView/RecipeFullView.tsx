@@ -123,6 +123,7 @@ const RecipeFullView = (props: any) => {
     isOwner: null,
     similar: [],
     wines: [],
+    note: null,
   });
 
   const getRecipeDataFunc = (data) => ({
@@ -149,6 +150,7 @@ const RecipeFullView = (props: any) => {
     isOwner: data.is_owner,
     similar: data.similar,
     wines: data.wines,
+    note: data.note,
   });
 
   const getRecipe = (recipeIdArg: string) => {
@@ -202,6 +204,129 @@ const RecipeFullView = (props: any) => {
   const scrollToTop = () => {
     const recipeInfoBlock = document.querySelector('.recipe__main-info');
     recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const prevSlide = () => {
+    const updatedImages = [...recipeData.images];
+
+    updatedImages.find((findImage, findImageIndex) => {
+      if (findImage.isActive === true) {
+        updatedImages[findImageIndex].isActive = false;
+        if (findImageIndex === 0) {
+          updatedImages[updatedImages.length - 1].isActive = true;
+        } else {
+          updatedImages[findImageIndex - 1].isActive = true;
+        }
+        return updatedImages;
+      }
+    });
+
+    setRecipeData({ ...recipeData, images: updatedImages });
+  };
+
+  const nextSlide = () => {
+    const updatedImages = [...recipeData.images];
+
+    updatedImages.find((findImage, findImageIndex) => {
+      if (findImage.isActive === true) {
+        updatedImages[findImageIndex].isActive = false;
+        if (findImageIndex === updatedImages.length - 1) {
+          updatedImages[0].isActive = true;
+        } else {
+          updatedImages[findImageIndex + 1].isActive = true;
+        }
+        return updatedImages;
+      }
+    });
+
+    setRecipeData({ ...recipeData, images: updatedImages });
+  };
+
+  const likeRecipeClick = () => {
+    setRecipeData({
+      ...recipeData,
+      isLiked: !recipeData.isLiked,
+    });
+
+    likeRecipe(recipeId)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          setRecipeData({
+            ...recipeData,
+            isLiked: response.data.data.is_liked,
+          });
+        }
+      })
+      .catch(() => {
+        setRecipeData({
+          ...recipeData,
+          isLiked: !recipeData.isLiked,
+        });
+      });
+  };
+
+  const changeRecipe = () => {
+    setIsActiveReloadRequest(true);
+    changeRecipeInMealPlan(props.location.dateTs, recipeId)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.success_update'));
+        }
+      })
+      .catch(() => toast.error(t('common.error')))
+      .finally(() => setIsActiveReloadRequest(false));
+  };
+
+  const addToShoppingList = () => {
+    setIsActiveShopListRequest(true);
+    addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.update_shopping_list.success'));
+        }
+      })
+      .catch(() => toast.error(t('common.error')))
+      .finally(() => setIsActiveShopListRequest(false));
+  };
+
+  const checkRecipe = () => {
+    setIsActiveCheckedRequest(true);
+
+    prepareRecipe(recipeId)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          setRecipeData({
+            ...recipeData,
+            isPrepared: response.data.data.is_prepared,
+          });
+        }
+      })
+      .catch(() => {
+        setRecipeData({
+          ...recipeData,
+          isPrepared: !recipeData.isPrepared,
+        });
+      })
+      .finally(() => setIsActiveCheckedRequest(false));
+  };
+
+  const addRecipeNoteClick = () => {
+    addRecipeNote(recipeId, addNoteForm.note)
+      .then((response) => {
+        if (response.data.success && response.data.data) {
+          toast.success(t('recipe.add_note.success'));
+
+          setIsBlockActive(false);
+
+          setRecipeData({
+            ...recipeData,
+            note: addNoteForm.note,
+          });
+        }
+      })
+      .catch(() => {
+        toast.error(t('common.error'));
+      });
   };
 
   return (
@@ -282,46 +407,14 @@ const RecipeFullView = (props: any) => {
                           <>
                             <button
                               type='button'
-                              onClick={() => {
-                                const updatedImages = [...recipeData.images];
-
-                                updatedImages.find((findImage, findImageIndex) => {
-                                  if (findImage.isActive === true) {
-                                    updatedImages[findImageIndex].isActive = false;
-                                    if (findImageIndex === 0) {
-                                      updatedImages[updatedImages.length - 1].isActive = true;
-                                    } else {
-                                      updatedImages[findImageIndex - 1].isActive = true;
-                                    }
-                                    return updatedImages;
-                                  }
-                                });
-
-                                setRecipeData({ ...recipeData, images: updatedImages });
-                              }}
+                              onClick={() => prevSlide()}
                               className='recipe__main-info-media-button recipe__main-info-media-prev'
                             >
                               <ArrowLeftLogo />
                             </button>
                             <button
                               type='button'
-                              onClick={() => {
-                                const updatedImages = [...recipeData.images];
-
-                                updatedImages.find((findImage, findImageIndex) => {
-                                  if (findImage.isActive === true) {
-                                    updatedImages[findImageIndex].isActive = false;
-                                    if (findImageIndex === updatedImages.length - 1) {
-                                      updatedImages[0].isActive = true;
-                                    } else {
-                                      updatedImages[findImageIndex + 1].isActive = true;
-                                    }
-                                    return updatedImages;
-                                  }
-                                });
-
-                                setRecipeData({ ...recipeData, images: updatedImages });
-                              }}
+                              onClick={() => nextSlide()}
                               className='recipe__main-info-media-button recipe__main-info-media-next'
                             >
                               <ArrowRightLogo />
@@ -357,111 +450,66 @@ const RecipeFullView = (props: any) => {
                     </div>
                     <button
                       type='button'
-                      onClick={() => {
-                        setRecipeData({
-                          ...recipeData,
-                          isLiked: !recipeData.isLiked,
-                        });
-                        likeRecipe(recipeId).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            setRecipeData({
-                              ...recipeData,
-                              isLiked: response.data.data.is_liked,
-                            });
-                          }
-                        }).catch(() => {
-                          setRecipeData({
-                            ...recipeData,
-                            isLiked: !recipeData.isLiked,
-                          });
-                        });
-                      }}
+                      onClick={() => likeRecipeClick()}
                       className={classnames('recipe__main-info-desc-heart', {
                         active: recipeData.isLiked,
                       })}
                     >
                       <HeartFilledIcon />
                     </button>
-                    {props.location.fromMealPlan && (
+                    <div className='recipe__main-info-desc-controls'>
+                      {props.location.fromMealPlan && (
+                        <button
+                          type='button'
+                          onClick={() => changeRecipe()}
+                          className='recipe__main-info-desc-button recipe__main-info-desc-button_reload'
+                        >
+                          <div className='recipe__main-info-desc-button-wrap'>
+                            <ContentLoading
+                              isLoading={isActiveReloadRequest}
+                              isError={false}
+                              spinSize='xs'
+                            >
+                              <ReloadGrayIcon className='recipe__main-info-desc-button-icon' />
+                            </ContentLoading>
+                          </div>
+                        </button>
+                      )}
                       <button
                         type='button'
-                        onClick={() => {
-                          setIsActiveReloadRequest(true);
-                          changeRecipeInMealPlan(props.location.dateTs, recipeId).then((response) => {
-                            if (response.data.success && response.data.data) {
-                              toast.success(t('recipe.success_update'));
-                            }
-                          }).catch(() => toast.error(t('common.error')))
-                            .finally(() => setIsActiveReloadRequest(false));
-                        }}
-                        className='recipe__main-info-desc-button recipe__main-info-desc-button_reload'
+                        onClick={() => addToShoppingList()}
+                        className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
                       >
                         <div className='recipe__main-info-desc-button-wrap'>
                           <ContentLoading
-                            isLoading={isActiveReloadRequest}
+                            isLoading={isActiveShopListRequest}
                             isError={false}
                             spinSize='xs'
                           >
-                            <ReloadGrayIcon className='recipe__main-info-desc-button-icon' />
+                            <CartButtonIcon className='recipe__main-info-desc-button-icon' />
                           </ContentLoading>
                         </div>
                       </button>
-                    )}
-                    <button
-                      type='button'
-                      onClick={() => {
-                        setIsActiveShopListRequest(true);
-                        addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            toast.success(t('recipe.update_shopping_list.success'));
-                          }
-                        }).catch(() => toast.error(t('common.error')))
-                          .finally(() => setIsActiveShopListRequest(false));
-                      }}
-                      className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
-                    >
-                      <div className='recipe__main-info-desc-button-wrap'>
-                        <ContentLoading
-                          isLoading={isActiveShopListRequest}
-                          isError={false}
-                          spinSize='xs'
+                      {props.location.fromMealPlan && (
+                        <button
+                          type='button'
+                          className={classnames('recipe__main-info-desc-button', {
+                            active: recipeData.isPrepared,
+                          })}
+                          onClick={() => checkRecipe()}
                         >
-                          <CartButtonIcon className='recipe__main-info-desc-button-icon' />
-                        </ContentLoading>
-                      </div>
-                    </button>
-                    <button
-                      type='button'
-                      className={classnames('recipe__main-info-desc-button', {
-                        active: recipeData.isPrepared,
-                      })}
-                      onClick={() => {
-                        setIsActiveCheckedRequest(true);
-                        prepareRecipe(recipeId).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            setRecipeData({
-                              ...recipeData,
-                              isPrepared: response.data.data.is_prepared,
-                            });
-                          }
-                        }).catch(() => {
-                          setRecipeData({
-                            ...recipeData,
-                            isPrepared: !recipeData.isPrepared,
-                          });
-                        }).finally(() => setIsActiveCheckedRequest(false));
-                      }}
-                    >
-                      <div className='recipe__main-info-desc-button-wrap'>
-                        <ContentLoading
-                          isLoading={isActiveCheckedRequest}
-                          isError={false}
-                          spinSize='xs'
-                        >
-                          <CheckedIcon className='recipe__main-info-desc-button-icon' />
-                        </ContentLoading>
-                      </div>
-                    </button>
+                          <div className='recipe__main-info-desc-button-wrap'>
+                            <ContentLoading
+                              isLoading={isActiveCheckedRequest}
+                              isError={false}
+                              spinSize='xs'
+                            >
+                              <CheckedIcon className='recipe__main-info-desc-button-icon' />
+                            </ContentLoading>
+                          </div>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className='recipe__additional-info'>
@@ -532,9 +580,15 @@ const RecipeFullView = (props: any) => {
                   <div ref={changedBlockRef} className='recipe__actions-button-wrap'>
                     <button
                       type='button'
-                      onClick={() => setIsBlockActive(!isBlockActive)}
+                      onClick={() => {
+                        setIsBlockActive(!isBlockActive);
+                        setAddNoteForm({
+                          ...addNoteForm,
+                          note: recipeData.note,
+                        });
+                      }}
                       className={classnames('recipe__actions-button card-bg', {
-                        active: isBlockActive || addNoteForm.note,
+                        active: isBlockActive || recipeData.note,
                       })}
                     >
                       <div className='recipe__actions-button-media'>
@@ -567,17 +621,7 @@ const RecipeFullView = (props: any) => {
                           <Button
                             color='primary'
                             disabled={!addNoteForm.note}
-                            onClick={() => {
-                              addRecipeNote(recipeId, addNoteForm.note).then((response) => {
-                                if (response.data.success && response.data.data) {
-                                  toast.success(t('recipe.add_note.success'));
-
-                                  setIsBlockActive(false);
-                                }
-                              }).catch(() => {
-                                toast.error(t('common.error'));
-                              });
-                            }}
+                            onClick={() => addRecipeNoteClick()}
                             className='recipe__notes-modal-btn'
                           >
                             {t('recipe.add_note.save')}

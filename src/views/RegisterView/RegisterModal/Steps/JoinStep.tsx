@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import {
@@ -10,6 +11,7 @@ import {
 import { connect } from 'react-redux';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
+import requestHash from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType } from 'types/auth';
 import { setAppSetting, setUserData } from 'store/actions';
 import { InputError } from 'types';
@@ -101,7 +103,7 @@ const JoinStep = (props: any) => {
 
     let act_level = null;
 
-    const act_level_checked = act_levels.find(level => level.checked);
+    const act_level_checked = act_levels.find((level) => level.checked);
 
     if (act_level_checked) {
       act_level = act_level_checked.value;
@@ -132,11 +134,22 @@ const JoinStep = (props: any) => {
   const registerEmail = () => {
     setRegisterJoinLoading(true);
 
-    userSignup({
-      email: props.registerData.email,
-      password: '1',
-      ...getRegisterProfilePayload(),
-    }).then(({ data }) => {
+    (async () => {
+      // We recommend to call `load` at application startup.
+      const requestHashData = await requestHash.load();
+
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      const result = await requestHashData.get();
+
+      // This is the visitor identifier:
+      const { visitorId } = result;
+      userSignup({
+        email: props.registerData.email,
+        password: '1',
+        request_hash: visitorId || null,
+        ...getRegisterProfilePayload(),
+      }).then(({ data }) => {
         const token =
           data && data.access_token
             ? data.access_token
@@ -177,42 +190,41 @@ const JoinStep = (props: any) => {
           }).catch(() => toast.error(t('common.error')));
         }
       })
-      .catch((error) => {
-        setRegisterJoinLoading(false);
+        .catch((error) => {
+          setRegisterJoinLoading(false);
 
-        toast.error(t('register.error_msg'));
+          toast.error(t('register.error_msg'));
 
-        if (error.response && error.response.status >= 400 && error.response.status < 500) {
-          try {
-            const validateErrors = JSON.parse(error.response.data.message);
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
 
-            const registerDataErrorsTemp: InputError[] = [...props.registerDataErrors];
+              const registerDataErrorsTemp: InputError[] = [...props.registerDataErrors];
 
-            Object.keys(validateErrors).map((field) => {
-              registerDataErrorsTemp.push({
-                field,
-                message: validateErrors[field],
+              Object.keys(validateErrors).map((field) => {
+                registerDataErrorsTemp.push({
+                  field,
+                  message: validateErrors[field],
+                });
               });
-            });
 
-            props.setRegisterDataErrors(registerDataErrorsTemp);
+              props.setRegisterDataErrors(registerDataErrorsTemp);
 
-            if (validateErrors.gender) {
-              props.setRegisterView('INFO_GENDER');
-            } else if (validateErrors.age) {
-              props.setRegisterView('INFO_AGE');
-            } else if (validateErrors.height) {
-              props.setRegisterView('INFO_HEIGHT');
-            } else if (validateErrors.weight) {
-              props.setRegisterView('INFO_WEIGHT');
-            } else if (validateErrors.weight_goal) {
-              props.setRegisterView('INFO_WEIGHT_GOAL');
-            }
-          } catch {
-
+              if (validateErrors.gender) {
+                props.setRegisterView('INFO_GENDER');
+              } else if (validateErrors.age) {
+                props.setRegisterView('INFO_AGE');
+              } else if (validateErrors.height) {
+                props.setRegisterView('INFO_HEIGHT');
+              } else if (validateErrors.weight) {
+                props.setRegisterView('INFO_WEIGHT');
+              } else if (validateErrors.weight_goal) {
+                props.setRegisterView('INFO_WEIGHT_GOAL');
+              }
+            } catch { }
           }
-        }
-      });
+        });
+    })();
   };
 
   const registerJoinSubmit = (e) => {

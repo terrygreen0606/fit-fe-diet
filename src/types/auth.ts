@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 export type UserAuthProfileType = {
   name: string,
   surname: string,
@@ -12,7 +13,8 @@ export type UserAuthProfileType = {
   ignore_cuisine_ids?: string[],
   diseases?: string[],
   act_levels?: string[],
-  meal_counts?: any[]
+  meal_counts?: any[],
+  request_hash?: string,
 };
 
 export type UserFacebookSignUpParams = {

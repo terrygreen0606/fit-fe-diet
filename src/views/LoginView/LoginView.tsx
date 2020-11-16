@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,11 +11,12 @@ import {
 } from 'utils';
 import { toast } from 'react-toastify';
 import axios from 'utils/axios';
+import requestHash from '@fingerprintjs/fingerprintjs';
 import {
   userLogin as userAuthLogin,
   userGoogleSignIn,
   userFacebookSignIn,
-  getAppSettings
+  getAppSettings,
 } from 'api';
 import { userLogin, setAppSetting } from 'store/actions';
 import Helmet from 'react-helmet';
@@ -46,7 +48,7 @@ const LoginView = (props: any) => {
   const [loginGoogleLoadingError, setLoginGoogleLoadingError] = useState(false);
 
   const [loginFacebookInitLoading, setLoginFacebookInitLoading] = useState(
-    false
+    false,
   );
   const [loginFacebookLoading, setLoginFacebookLoading] = useState(false);
 
@@ -60,6 +62,9 @@ const LoginView = (props: any) => {
     };
   }, []);
 
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(props.localePhrases, code, placeholders);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -69,19 +74,16 @@ const LoginView = (props: any) => {
       setLoginForm,
       loginErrors,
       setLoginErrors,
-      element
+      element,
     );
   };
 
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, loginErrors)
-      .map(msg => ({
+      .map((msg) => ({
         ...msg,
-        message: t('api.ecode.invalid_value')
+        message: t('api.ecode.invalid_value'),
       }));
-
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
 
   const userClientLogin = (authToken: string) => {
     props.userLogin(authToken);
@@ -92,8 +94,7 @@ const LoginView = (props: any) => {
 
     const form = e.target;
     const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName)
-    );
+      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
 
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
@@ -102,42 +103,51 @@ const LoginView = (props: any) => {
     if (!hasError) {
       setLoginLoading(true);
 
-      userAuthLogin(loginForm.email, loginForm.password)
-        .then((response) => {
-          const token =
-            response.data && response.data.access_token
-              ? response.data.access_token
-              : null;
+      (async () => {
+        // We recommend to call `load` at application startup.
+        const requestHashData = await requestHash.load();
 
-          if (token) {
-            localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
-            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-            
-            getAppSettings()
-              .then(response => {
-                setLoginLoading(false);
+        // The FingerprintJS agent is ready.
+        // Get a visitor identifier when you'd like to.
+        const result = await requestHashData.get();
 
-                if (response.data.success && response.data.data) {
-                  props.setAppSetting({
-                    ...response.data.data,
-                    is_private: true,
-                  });
-                }
-              })
-              .catch(error => {
-                toast.error(t('register.error_msg'));
-                setLoginLoading(false);
-              });
+        userAuthLogin(loginForm.email, loginForm.password, result.visitorId)
+          .then((response) => {
+            const token =
+              response.data && response.data.access_token
+                ? response.data.access_token
+                : null;
 
-            userClientLogin(token);
-          } else {
+            if (token) {
+              localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
+              axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+              getAppSettings()
+                .then((response) => {
+                  setLoginLoading(false);
+
+                  if (response.data.success && response.data.data) {
+                    props.setAppSetting({
+                      ...response.data.data,
+                      is_private: true,
+                    });
+                  }
+                })
+                .catch((error) => {
+                  toast.error(t('register.error_msg'));
+                  setLoginLoading(false);
+                });
+
+              userClientLogin(token);
+            } else {
+              toast.error(t('register.error_msg'));
+            }
+          })
+          .catch((error) => {
+            setLoginLoading(false);
             toast.error(t('register.error_msg'));
-          }
-        })
-        .catch((error) => {
-          setLoginLoading(false);
-          toast.error(t('register.error_msg'));
-        });
+          });
+      })();
     }
   };
 
@@ -213,7 +223,7 @@ const LoginView = (props: any) => {
       },
       {
         scope: 'email',
-      }
+      },
     );
   };
 
@@ -238,7 +248,7 @@ const LoginView = (props: any) => {
               data-validate='["required", "email"]'
               errors={getFieldErrors('email')}
               value={loginForm.email}
-              autoComplete="email"
+              autoComplete='email'
               autoFocus={1}
               onChange={(e) => validateOnChange('email', e.target.value, e)}
               placeholder={t('login.email_placeholder')}
@@ -249,11 +259,11 @@ const LoginView = (props: any) => {
           <FormGroup>
             <InputField
               name='password'
-              type="password"
+              type='password'
               label={t('login.form_password')}
               data-validate='["required"]'
               errors={getFieldErrors('password')}
-              autoComplete="new-password"
+              autoComplete='new-password'
               value={loginForm.password}
               onChange={(e) => validateOnChange('password', e.target.value, e)}
               placeholder={t('login.password_placeholder')}
@@ -261,8 +271,8 @@ const LoginView = (props: any) => {
             />
           </FormGroup>
 
-          <input type="text" name="email" className="d-none" />
-          <input type="password" name="pass" className="d-none" />
+          <input type='text' name='email' className='d-none' />
+          <input type='password' name='pass' className='d-none' />
 
           <Button
             className='loginScreen_btn mb-45'
@@ -276,10 +286,12 @@ const LoginView = (props: any) => {
             {t('login.submit')}
           </Button>
 
-          <Link to="/reset-password" className='loginScreen_link link link-bold link-blue'>{t('login.forgot_pass')}</Link>
+          <Link to='/reset-password' className='loginScreen_link link link-bold link-blue'>
+            {t('login.forgot_pass')}
+          </Link>
         </form>
 
-        {/*<div className='loginScreen_socialBtns mt-4'>
+        {/* <div className='loginScreen_socialBtns mt-4'>
           <Button
             className='facebook-login-btn mr-3'
             onClick={(e) => facebookLogin()}
@@ -309,12 +321,12 @@ const LoginView = (props: any) => {
               <GoogleIcon className='mr-2' /> Login with Google
             </Button>
           )}
-        </div>*/}
+        </div> */}
       </div>
     </>
   );
 };
 
 export default WithTranslate(
-  connect(null, { userLogin, setAppSetting }
-)(LoginView));
+  connect(null, { userLogin, setAppSetting })(LoginView),
+);

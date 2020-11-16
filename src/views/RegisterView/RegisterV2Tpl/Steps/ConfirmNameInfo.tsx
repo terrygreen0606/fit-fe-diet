@@ -11,6 +11,7 @@ import { userLogin as userLoginAction } from 'store/actions';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
+import requestHash from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType, InputError } from 'types';
 import { userSignup, acceptInviteToFamily } from 'api';
 
@@ -124,13 +125,24 @@ const ConfirmInfo = ({
 
   const registerEmail = () => {
     setRegisterJoinLoading(true);
+    (async () => {
+      // We recommend to call `load` at application startup.
+      const requestHashData = await requestHash.load();
 
-    userSignup({
-      email: registerData.email,
-      password: '1',
-      ...getRegisterProfilePayload(),
-    }).then((response) => {
-      setRegisterJoinLoading(false);
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      const result = await requestHashData.get();
+
+      // This is the visitor identifier:
+      const { visitorId } = result;
+
+      userSignup({
+        email: registerData.email,
+        password: '1',
+        request_hash: visitorId || null,
+        ...getRegisterProfilePayload(),
+      }).then((response) => {
+        setRegisterJoinLoading(false);
 
         const token =
           response.data && response.data.access_token
@@ -154,35 +166,36 @@ const ConfirmInfo = ({
           }).catch(() => toast.error(t('common.error')));
         }
       })
-      .catch((error) => {
-        setRegisterJoinLoading(false);
-        toast.error(t('register.error_msg'));
+        .catch((error) => {
+          setRegisterJoinLoading(false);
+          toast.error(t('register.error_msg'));
 
-        if (error.response && error.response.status >= 400 && error.response.status < 500) {
-          try {
-            const validateErrors = JSON.parse(error.response.data.message);
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
 
-            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
 
-            Object.keys(validateErrors).map((field) => {
-              registerDataErrorsTemp.push({
-                field,
-                message: validateErrors[field],
+              Object.keys(validateErrors).map((field) => {
+                registerDataErrorsTemp.push({
+                  field,
+                  message: validateErrors[field],
+                });
               });
-            });
 
-            setRegisterDataErrors(registerDataErrorsTemp);
+              setRegisterDataErrors(registerDataErrorsTemp);
 
-            if (validateErrors.gender) {
-              setRegisterView('GENDER');
-            } else if (validateErrors.height || validateErrors.weight) {
-              setRegisterView('HEIGHT_WEIGHT');
-            } else if (validateErrors.weight_goal) {
-              setRegisterView('WEIGHT_GOAL');
-            }
-          } catch {}
-        }
-      });
+              if (validateErrors.gender) {
+                setRegisterView('GENDER');
+              } else if (validateErrors.height || validateErrors.weight) {
+                setRegisterView('HEIGHT_WEIGHT');
+              } else if (validateErrors.weight_goal) {
+                setRegisterView('WEIGHT_GOAL');
+              }
+            } catch { }
+          }
+        });
+    })();
   };
 
   const registerJoinSubmit = (e) => {
