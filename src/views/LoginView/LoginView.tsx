@@ -111,7 +111,6 @@ const LoginView = (props: any) => {
         // Get a visitor identifier when you'd like to.
         const result = await fp.get();
 
-        // This is the visitor identifier:
         userAuthLogin(loginForm.email, loginForm.password, result.visitorId)
           .then((response) => {
             const token =

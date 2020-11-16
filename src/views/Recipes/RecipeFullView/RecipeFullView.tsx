@@ -382,86 +382,90 @@ const RecipeFullView = (props: any) => {
                     >
                       <HeartFilledIcon />
                     </button>
-                    {props.location.fromMealPlan && (
+                    <div className='recipe__main-info-desc-controls'>
+                      {props.location.fromMealPlan && (
+                        <button
+                          type='button'
+                          onClick={() => {
+                            setIsActiveReloadRequest(true);
+                            changeRecipeInMealPlan(props.location.dateTs, recipeId).then((response) => {
+                              if (response.data.success && response.data.data) {
+                                toast.success(t('recipe.success_update'));
+                              }
+                            }).catch(() => toast.error(t('common.error')))
+                              .finally(() => setIsActiveReloadRequest(false));
+                          }}
+                          className='recipe__main-info-desc-button recipe__main-info-desc-button_reload'
+                        >
+                          <div className='recipe__main-info-desc-button-wrap'>
+                            <ContentLoading
+                              isLoading={isActiveReloadRequest}
+                              isError={false}
+                              spinSize='xs'
+                            >
+                              <ReloadGrayIcon className='recipe__main-info-desc-button-icon' />
+                            </ContentLoading>
+                          </div>
+                        </button>
+                      )}
                       <button
                         type='button'
                         onClick={() => {
-                          setIsActiveReloadRequest(true);
-                          changeRecipeInMealPlan(props.location.dateTs, recipeId).then((response) => {
+                          setIsActiveShopListRequest(true);
+                          addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then((response) => {
                             if (response.data.success && response.data.data) {
-                              toast.success(t('recipe.success_update'));
+                              toast.success(t('recipe.update_shopping_list.success'));
                             }
                           }).catch(() => toast.error(t('common.error')))
-                            .finally(() => setIsActiveReloadRequest(false));
+                            .finally(() => setIsActiveShopListRequest(false));
                         }}
-                        className='recipe__main-info-desc-button recipe__main-info-desc-button_reload'
+                        className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
                       >
                         <div className='recipe__main-info-desc-button-wrap'>
                           <ContentLoading
-                            isLoading={isActiveReloadRequest}
+                            isLoading={isActiveShopListRequest}
                             isError={false}
                             spinSize='xs'
                           >
-                            <ReloadGrayIcon className='recipe__main-info-desc-button-icon' />
+                            <CartButtonIcon className='recipe__main-info-desc-button-icon' />
                           </ContentLoading>
                         </div>
                       </button>
-                    )}
-                    <button
-                      type='button'
-                      onClick={() => {
-                        setIsActiveShopListRequest(true);
-                        addToShoppingListByRecipes([recipeData.id], recipeData.servingsCnt).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            toast.success(t('recipe.update_shopping_list.success'));
-                          }
-                        }).catch(() => toast.error(t('common.error')))
-                          .finally(() => setIsActiveShopListRequest(false));
-                      }}
-                      className='recipe__main-info-desc-button recipe__main-info-desc-button_cart'
-                    >
-                      <div className='recipe__main-info-desc-button-wrap'>
-                        <ContentLoading
-                          isLoading={isActiveShopListRequest}
-                          isError={false}
-                          spinSize='xs'
+                      {props.location.fromMealPlan && (
+                        <button
+                          type='button'
+                          className={classnames('recipe__main-info-desc-button', {
+                            active: recipeData.isPrepared,
+                          })}
+                          onClick={() => {
+                            setIsActiveCheckedRequest(true);
+                            prepareRecipe(recipeId).then((response) => {
+                              if (response.data.success && response.data.data) {
+                                setRecipeData({
+                                  ...recipeData,
+                                  isPrepared: response.data.data.is_prepared,
+                                });
+                              }
+                            }).catch(() => {
+                              setRecipeData({
+                                ...recipeData,
+                                isPrepared: !recipeData.isPrepared,
+                              });
+                            }).finally(() => setIsActiveCheckedRequest(false));
+                          }}
                         >
-                          <CartButtonIcon className='recipe__main-info-desc-button-icon' />
-                        </ContentLoading>
-                      </div>
-                    </button>
-                    <button
-                      type='button'
-                      className={classnames('recipe__main-info-desc-button', {
-                        active: recipeData.isPrepared,
-                      })}
-                      onClick={() => {
-                        setIsActiveCheckedRequest(true);
-                        prepareRecipe(recipeId).then((response) => {
-                          if (response.data.success && response.data.data) {
-                            setRecipeData({
-                              ...recipeData,
-                              isPrepared: response.data.data.is_prepared,
-                            });
-                          }
-                        }).catch(() => {
-                          setRecipeData({
-                            ...recipeData,
-                            isPrepared: !recipeData.isPrepared,
-                          });
-                        }).finally(() => setIsActiveCheckedRequest(false));
-                      }}
-                    >
-                      <div className='recipe__main-info-desc-button-wrap'>
-                        <ContentLoading
-                          isLoading={isActiveCheckedRequest}
-                          isError={false}
-                          spinSize='xs'
-                        >
-                          <CheckedIcon className='recipe__main-info-desc-button-icon' />
-                        </ContentLoading>
-                      </div>
-                    </button>
+                          <div className='recipe__main-info-desc-button-wrap'>
+                            <ContentLoading
+                              isLoading={isActiveCheckedRequest}
+                              isError={false}
+                              spinSize='xs'
+                            >
+                              <CheckedIcon className='recipe__main-info-desc-button-icon' />
+                            </ContentLoading>
+                          </div>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className='recipe__additional-info'>

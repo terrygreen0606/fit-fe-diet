@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -39,21 +39,6 @@ const ConfirmInfo = ({
     getTranslate(localePhrases, code, placeholders);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
-  const [requestHash, setRequestHash] = useState<string>(null);
-
-  useEffect(() => {
-    (async () => {
-      // We recommend to call `load` at application startup.
-      const fp = await FingerprintJS.load();
-
-      // The FingerprintJS agent is ready.
-      // Get a visitor identifier when you'd like to.
-      const result = await fp.get();
-
-      // This is the visitor identifier:
-      setRequestHash(result.visitorId);
-    })();
-  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -119,10 +104,6 @@ const ConfirmInfo = ({
       profilePayload.price_set = ps;
     }
 
-    if (requestHash) {
-      profilePayload.request_hash = requestHash;
-    }
-
     return {
       ...profilePayload,
     };
@@ -144,65 +125,77 @@ const ConfirmInfo = ({
 
   const registerEmail = () => {
     setRegisterJoinLoading(true);
+    (async () => {
+      // We recommend to call `load` at application startup.
+      const fp = await FingerprintJS.load();
 
-    userSignup({
-      email: registerData.email,
-      password: '1',
-      ...getRegisterProfilePayload(),
-    }).then((response) => {
-      setRegisterJoinLoading(false);
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      const result = await fp.get();
 
-      const token =
-        response.data && response.data.access_token
-          ? response.data.access_token
-          : null;
+      // This is the visitor identifier:
+      const { visitorId } = result;
 
-      if (token) {
-        finalWelcomeStep(token);
-      } else {
-        toast.error(t('register.error_msg'));
-      }
-
-      const familyCode = getCookie('acceptFamilyCode');
-
-      if (familyCode) {
-        acceptInviteToFamily(familyCode).then((res) => {
-          if (res.data.success) {
-            toast.success(t('family.accept.success'));
-            deleteCookie('acceptFamilyCode');
-          }
-        }).catch(() => toast.error(t('common.error')));
-      }
-    })
-      .catch((error) => {
+      userSignup({
+        email: registerData.email,
+        password: '1',
+        request_hash: visitorId,
+        ...getRegisterProfilePayload(),
+      }).then((response) => {
         setRegisterJoinLoading(false);
-        toast.error(t('register.error_msg'));
 
-        if (error.response && error.response.status >= 400 && error.response.status < 500) {
-          try {
-            const validateErrors = JSON.parse(error.response.data.message);
+        const token =
+          response.data && response.data.access_token
+            ? response.data.access_token
+            : null;
 
-            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
-
-            Object.keys(validateErrors).map((field) => {
-              registerDataErrorsTemp.push({
-                field,
-                message: validateErrors[field],
-              });
-            });
-
-            setRegisterDataErrors(registerDataErrorsTemp);
-
-            if (validateErrors.gender) {
-              setRegisterView('GENDER');
-            } else if (validateErrors.height || validateErrors.weight) {
-              setRegisterView('HEIGHT_WEIGHT');
-            } else if (validateErrors.weight_goal) {
-              setRegisterView('WEIGHT_GOAL');
-            }
-          } catch { }
+        if (token) {
+          finalWelcomeStep(token);
+        } else {
+          toast.error(t('register.error_msg'));
         }
-      });
+
+        const familyCode = getCookie('acceptFamilyCode');
+
+        if (familyCode) {
+          acceptInviteToFamily(familyCode).then((res) => {
+            if (res.data.success) {
+              toast.success(t('family.accept.success'));
+              deleteCookie('acceptFamilyCode');
+            }
+          }).catch(() => toast.error(t('common.error')));
+        }
+      })
+        .catch((error) => {
+          setRegisterJoinLoading(false);
+          toast.error(t('register.error_msg'));
+
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
+
+              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+
+              Object.keys(validateErrors).map((field) => {
+                registerDataErrorsTemp.push({
+                  field,
+                  message: validateErrors[field],
+                });
+              });
+
+              setRegisterDataErrors(registerDataErrorsTemp);
+
+              if (validateErrors.gender) {
+                setRegisterView('GENDER');
+              } else if (validateErrors.height || validateErrors.weight) {
+                setRegisterView('HEIGHT_WEIGHT');
+              } else if (validateErrors.weight_goal) {
+                setRegisterView('WEIGHT_GOAL');
+              }
+            } catch { }
+          }
+        });
+    })();
   };
 
   const registerJoinSubmit = (e) => {

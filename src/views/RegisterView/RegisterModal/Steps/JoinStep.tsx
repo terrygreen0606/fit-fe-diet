@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import {
@@ -38,21 +39,8 @@ const JoinStep = (props: any) => {
   const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
-  const [requestHash, setRequestHash] = useState<string>(null);
 
   useEffect(() => {
-    (async () => {
-      // We recommend to call `load` at application startup.
-      const fp = await FingerprintJS.load();
-
-      // The FingerprintJS agent is ready.
-      // Get a visitor identifier when you'd like to.
-      const result = await fp.get();
-
-      // This is the visitor identifier:
-      setRequestHash(result.visitorId);
-    })();
-
     const currStepTitles = [...props.stepTitlesDefault];
     currStepTitles[0] = t('register.expect_step');
     currStepTitles[1] = t('register.step_confirm');
@@ -115,7 +103,7 @@ const JoinStep = (props: any) => {
 
     let act_level = null;
 
-    const act_level_checked = act_levels.find(level => level.checked);
+    const act_level_checked = act_levels.find((level) => level.checked);
 
     if (act_level_checked) {
       act_level = act_level_checked.value;
@@ -138,10 +126,6 @@ const JoinStep = (props: any) => {
       profilePayload.ref_code = ref_code;
     }
 
-    if (requestHash) {
-      profilePayload.request_hash = requestHash;
-    }
-
     return {
       ...profilePayload,
     };
@@ -150,87 +134,97 @@ const JoinStep = (props: any) => {
   const registerEmail = () => {
     setRegisterJoinLoading(true);
 
-    userSignup({
-      email: props.registerData.email,
-      password: '1',
-      ...getRegisterProfilePayload(),
-    }).then(({ data }) => {
-      const token =
-        data && data.access_token
-          ? data.access_token
-          : null;
+    (async () => {
+      // We recommend to call `load` at application startup.
+      const fp = await FingerprintJS.load();
 
-      if (token) {
-        localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      const result = await fp.get();
 
-        getAppSettings()
-          .then(({ data: settingsData }) => {
-            setRegisterJoinLoading(false);
+      // This is the visitor identifier:
+      const { visitorId } = result;
+      userSignup({
+        email: props.registerData.email,
+        password: '1',
+        request_hash: visitorId,
+        ...getRegisterProfilePayload(),
+      }).then(({ data }) => {
+        const token =
+          data && data.access_token
+            ? data.access_token
+            : null;
 
-            if (settingsData.success && settingsData.data) {
-              props.setAppSetting(settingsData.data);
-            } else {
+        if (token) {
+          localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+          getAppSettings()
+            .then(({ data: settingsData }) => {
+              setRegisterJoinLoading(false);
+
+              if (settingsData.success && settingsData.data) {
+                props.setAppSetting(settingsData.data);
+              } else {
+                toast.error(t('register.error_msg'));
+              }
+            })
+            .catch(() => {
               toast.error(t('register.error_msg'));
-            }
-          })
-          .catch(() => {
-            toast.error(t('register.error_msg'));
-            setRegisterJoinLoading(false);
-          });
-
-        finalWelcomeStep(token);
-      } else {
-        toast.error(t('register.error_msg'));
-      }
-
-      const familyCode = getCookie('acceptFamilyCode');
-
-      if (familyCode) {
-        acceptInviteToFamily(familyCode).then((response) => {
-          if (response.data.success) {
-            toast.success(t('family.accept.success'));
-            deleteCookie('acceptFamilyCode');
-          }
-        }).catch(() => toast.error(t('common.error')));
-      }
-    })
-      .catch((error) => {
-        setRegisterJoinLoading(false);
-
-        toast.error(t('register.error_msg'));
-
-        if (error.response && error.response.status >= 400 && error.response.status < 500) {
-          try {
-            const validateErrors = JSON.parse(error.response.data.message);
-
-            const registerDataErrorsTemp: InputError[] = [...props.registerDataErrors];
-
-            Object.keys(validateErrors).map((field) => {
-              registerDataErrorsTemp.push({
-                field,
-                message: validateErrors[field],
-              });
+              setRegisterJoinLoading(false);
             });
 
-            props.setRegisterDataErrors(registerDataErrorsTemp);
-
-            if (validateErrors.gender) {
-              props.setRegisterView('INFO_GENDER');
-            } else if (validateErrors.age) {
-              props.setRegisterView('INFO_AGE');
-            } else if (validateErrors.height) {
-              props.setRegisterView('INFO_HEIGHT');
-            } else if (validateErrors.weight) {
-              props.setRegisterView('INFO_WEIGHT');
-            } else if (validateErrors.weight_goal) {
-              props.setRegisterView('INFO_WEIGHT_GOAL');
-            }
-          } catch {
-
-          }
+          finalWelcomeStep(token);
+        } else {
+          toast.error(t('register.error_msg'));
         }
-      });
+
+        const familyCode = getCookie('acceptFamilyCode');
+
+        if (familyCode) {
+          acceptInviteToFamily(familyCode).then((response) => {
+            if (response.data.success) {
+              toast.success(t('family.accept.success'));
+              deleteCookie('acceptFamilyCode');
+            }
+          }).catch(() => toast.error(t('common.error')));
+        }
+      })
+        .catch((error) => {
+          setRegisterJoinLoading(false);
+
+          toast.error(t('register.error_msg'));
+
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
+
+              const registerDataErrorsTemp: InputError[] = [...props.registerDataErrors];
+
+              Object.keys(validateErrors).map((field) => {
+                registerDataErrorsTemp.push({
+                  field,
+                  message: validateErrors[field],
+                });
+              });
+
+              props.setRegisterDataErrors(registerDataErrorsTemp);
+
+              if (validateErrors.gender) {
+                props.setRegisterView('INFO_GENDER');
+              } else if (validateErrors.age) {
+                props.setRegisterView('INFO_AGE');
+              } else if (validateErrors.height) {
+                props.setRegisterView('INFO_HEIGHT');
+              } else if (validateErrors.weight) {
+                props.setRegisterView('INFO_WEIGHT');
+              } else if (validateErrors.weight_goal) {
+                props.setRegisterView('INFO_WEIGHT_GOAL');
+              }
+            } catch { }
+          }
+        });
+    })();
   };
 
   const registerJoinSubmit = (e) => {

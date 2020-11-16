@@ -171,22 +171,38 @@
         svg path
           fill: #F27C7C
 
-      &-button
+      &-controls
         position: absolute
+        bottom: 0
         right: 10px
-        bottom: 0px
         transform: translateY(50%)
+        display: flex
+        align-items: center
+        justify-content: flex-end
+
+        @media (max-width: 767px)
+          right: 0
+          width: 100%
+          justify-content: space-between
+          padding: 0 10px
+
+      &-button
+        position: relative
         display: flex
         align-items: center
         justify-content: center
         width: 66px
         height: 66px
         padding: 0
+        margin-left: 10px
         border-radius: 50%
         box-shadow: 0px 3px 5px #BAC2D2
         background-color: $white
         border: none
         cursor: pointer
+
+        @media (max-width: 767px)
+          margin-left: 0
 
         &-wrap
           display: flex
@@ -232,12 +248,6 @@
 
         .recipe__main-info-desc-button-icon path
           fill: $white
-
-      &-button_cart
-        right: 88px
-
-      &-button_reload
-        right: 166px
 
   &__additional-info
     padding-left: 100px

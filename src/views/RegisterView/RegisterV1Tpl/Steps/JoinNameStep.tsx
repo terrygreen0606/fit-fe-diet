@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -52,22 +52,6 @@ const JoinNameStep = ({
     getTranslate(localePhrases, code);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
-
-  const [requestHash, setRequestHash] = useState<string>(null);
-
-  useEffect(() => {
-    (async () => {
-      // We recommend to call `load` at application startup.
-      const fp = await FingerprintJS.load();
-
-      // The FingerprintJS agent is ready.
-      // Get a visitor identifier when you'd like to.
-      const result = await fp.get();
-
-      // This is the visitor identifier:
-      setRequestHash(result.visitorId);
-    })();
-  }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
@@ -151,10 +135,6 @@ const JoinNameStep = ({
       profilePayload.price_set = ps;
     }
 
-    if (requestHash) {
-      profilePayload.request_hash = requestHash;
-    }
-
     return {
       ...profilePayload,
     };
@@ -163,85 +143,98 @@ const JoinNameStep = ({
   const registerEmail = () => {
     setRegisterJoinLoading(true);
 
-    userSignup({
-      email: registerData.email,
-      password: registerData.password,
-      ...getRegisterProfilePayload(),
-    }).then(({ data }) => {
-      const token =
-        data && data.access_token
-          ? data.access_token
-          : null;
+    (async () => {
+      // We recommend to call `load` at application startup.
+      const fp = await FingerprintJS.load();
 
-      if (token) {
-        localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      // The FingerprintJS agent is ready.
+      // Get a visitor identifier when you'd like to.
+      const result = await fp.get();
 
-        getAppSettings()
-          .then(({ data: settingsData }) => {
-            setRegisterJoinLoading(false);
+      // This is the visitor identifier:
+      const { visitorId } = result;
 
-            if (settingsData.success && settingsData.data) {
-              setAppSetting(settingsData.data);
-            } else {
+      userSignup({
+        email: registerData.email,
+        password: registerData.password,
+        request_hash: visitorId,
+        ...getRegisterProfilePayload(),
+      }).then(({ data }) => {
+        const token =
+          data && data.access_token
+            ? data.access_token
+            : null;
+
+        if (token) {
+          localStorage.setItem('FITLOPE_AUTH_TOKEN', token);
+          axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+          getAppSettings()
+            .then(({ data: settingsData }) => {
+              setRegisterJoinLoading(false);
+
+              if (settingsData.success && settingsData.data) {
+                setAppSetting(settingsData.data);
+              } else {
+                toast.error(t('register.error_msg'));
+              }
+            })
+            .catch(() => {
               toast.error(t('register.error_msg'));
-            }
-          })
-          .catch(() => {
-            toast.error(t('register.error_msg'));
-            setRegisterJoinLoading(false);
-          });
-
-        finalWelcomeStep(token);
-      } else {
-        toast.error(t('register.error_msg'));
-      }
-
-      const familyCode = getCookie('acceptFamilyCode');
-
-      if (familyCode) {
-        acceptInviteToFamily(familyCode).then((response) => {
-          if (response.data.success) {
-            toast.success(t('family.accept.success'));
-            deleteCookie('acceptFamilyCode');
-          }
-        }).catch(() => toast.error(t('common.error')));
-      }
-    })
-      .catch((error) => {
-        setRegisterJoinLoading(false);
-
-        toast.error(t('register.error_msg'));
-
-        if (error.response && error.response.status >= 400 && error.response.status < 500) {
-          try {
-            const validateErrors = JSON.parse(error.response.data.message);
-
-            const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
-
-            Object.keys(validateErrors).map((field) => {
-              registerDataErrorsTemp.push({
-                field,
-                message: validateErrors[field],
-              });
+              setRegisterJoinLoading(false);
             });
 
-            setRegisterDataErrors(registerDataErrorsTemp);
-
-            if (validateErrors.gender) {
-              setRegisterView('INFO_GENDER');
-            } else if (validateErrors.age) {
-              setRegisterView('INFO_AGE');
-            } else if (validateErrors.height) {
-              setRegisterView('INFO_HEIGHT');
-            } else if (validateErrors.weight) {
-              setRegisterView('INFO_WEIGHT');
-            } else if (validateErrors.weight_goal) {
-              setRegisterView('INFO_WEIGHT_GOAL');
-            }
-          } catch { }
+          finalWelcomeStep(token);
+        } else {
+          toast.error(t('register.error_msg'));
         }
-      });
+
+        const familyCode = getCookie('acceptFamilyCode');
+
+        if (familyCode) {
+          acceptInviteToFamily(familyCode).then((response) => {
+            if (response.data.success) {
+              toast.success(t('family.accept.success'));
+              deleteCookie('acceptFamilyCode');
+            }
+          }).catch(() => toast.error(t('common.error')));
+        }
+      })
+        .catch((error) => {
+          setRegisterJoinLoading(false);
+
+          toast.error(t('register.error_msg'));
+
+          if (error.response && error.response.status >= 400 && error.response.status < 500) {
+            try {
+              const validateErrors = JSON.parse(error.response.data.message);
+
+              const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
+
+              Object.keys(validateErrors).map((field) => {
+                registerDataErrorsTemp.push({
+                  field,
+                  message: validateErrors[field],
+                });
+              });
+
+              setRegisterDataErrors(registerDataErrorsTemp);
+
+              if (validateErrors.gender) {
+                setRegisterView('INFO_GENDER');
+              } else if (validateErrors.age) {
+                setRegisterView('INFO_AGE');
+              } else if (validateErrors.height) {
+                setRegisterView('INFO_HEIGHT');
+              } else if (validateErrors.weight) {
+                setRegisterView('INFO_WEIGHT');
+              } else if (validateErrors.weight_goal) {
+                setRegisterView('INFO_WEIGHT_GOAL');
+              }
+            } catch { }
+          }
+        });
+    })();
   };
 
   const registerJoinSubmit = (e) => {
