@@ -1,4 +1,3 @@
-import { requestHash } from '@fingerprintjs/fingerprintjs';
 import axios from 'utils/axios';
 import {
   UserAuthProfileType,
