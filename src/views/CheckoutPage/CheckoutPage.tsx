@@ -408,7 +408,7 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
 
                     <hr className='checkout-divider' />
 
-                    <img src={getImagePath('checkout/safe-checkout-img-2.png')} className='img-fluid' alt='' />
+                    <img src={t('checkout.safe.img2')} className='img-fluid' alt='' />
 
                     <div className='mt-5'>
                       <ContentLoading

@@ -497,13 +497,16 @@ const CheckoutPaymentFormCard = ({
             block
             style={{ maxWidth: '320px' }}
             isLoading={paymentLoading}
+            disabled={!tariff}
           >
             <LockIcon className='mr-2' />
             {t('button.pay_now')}
           </Button>
+
+          {!tariff && <p className='text-red'>{t('checkout.tariff.select.error.msg')}</p>}
         </div>
 
-        <img className='mt-5 img-fluid' src={getImagePath('checkout/guaranteed-checkout-img.png')} alt='' />
+        <img className='mt-5 img-fluid' src={t('checkout.guaranteed.img')} alt='' />
 
         <div className='money-back-guarantee-block mt-4'>
           <h5 className='money-back-guarantee-block__title'>{t('lp.money_back_title')}</h5>
