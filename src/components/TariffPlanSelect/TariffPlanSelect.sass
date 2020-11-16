@@ -16,7 +16,7 @@
     &:hover
       box-shadow: 0px 0px 12px $bright-green
 
-    @media (max-width: 560px)
+    @media (max-width: 400px)
       flex-wrap: wrap
       justify-content: center
       padding: 40px 20px 50px
@@ -33,7 +33,7 @@
             background-image: url('../../assets/img/icons/check-icon.svg')
         
     &-radio
-      flex-basis: 56px
+      flex: 0 0 56px
       height: 56px
       border-radius: 50%
       background-color: #F0F0F0
@@ -42,12 +42,21 @@
       background-size: 65%
       background-repeat: no-repeat
       background-position: center center
+
+      @media (max-width: 992px)
+        flex: 0 0 45px
+        height: 45px
+
     &-text
       flex-basis: 55%
       padding-right: 25px
       padding-left: 30px
 
-      @media (max-width: 560px)
+      @media (max-width: 992px)
+        padding-left: 20px
+        padding-right: 10px
+
+      @media (max-width: 400px)
         flex-basis: 100%
         padding-right: 0
         padding-left: 0
@@ -60,13 +69,18 @@
         line-height: 40px
         font-weight: bold
 
-        @media (max-width: 560px)
+        @media (max-width: 992px)
+          font-size: 22px
+          line-height: 27px
+
+        @media (max-width: 400px)
           margin-bottom: 4px
 
       &-desc
+        margin-top: 17px
         padding-left: 0
         font-size: 18px
-        line-height: 40px
+        line-height: 25px
         color: #878787
         list-style-type: none
 
@@ -77,7 +91,7 @@
       flex-basis: calc(45% - 56px)
       text-align: right
 
-      @media (max-width: 560px)
+      @media (max-width: 400px)
         flex-basis: 100%
         text-align: center
 
@@ -94,7 +108,7 @@
         margin: 12px auto
         color: #1D1D1B
 
-        @media (max-width: 560px)
+        @media (max-width: 400px)
           margin: 0 auto
 
         &-count

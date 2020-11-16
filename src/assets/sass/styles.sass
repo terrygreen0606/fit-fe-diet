@@ -13,6 +13,9 @@
     background-position: center center
     background-image: url('https://fitstg.s3.eu-central-1.amazonaws.com/logo-header.svg')
 
+    @media only screen and (max-width : 480px)
+      width: 100px
+
 .diet-plan-feature-icon
   position: relative
   flex: 0 0 150px
@@ -226,10 +229,22 @@
 
 // Partners
 .app-partners-list
+  display: flex
+  flex-wrap: wrap
   &__wrap
-    display: inline-flex
+    display: flex
     flex-wrap: wrap
     justify-content: center
+    .app-partners-list
+      flex: 0 0 calc(100% - 120px)
+      &__title
+        flex: 0 0 100px
+
+      @media only screen and (max-width : 768px)
+        flex: 0 0 100%
+        &__title
+          flex: 0 0 100%
+          margin-bottom: 25px
   &__title
     margin-right: 20px
     padding-top: 10px
@@ -242,11 +257,21 @@
     background-size: contain
     background-repeat: no-repeat
     background-position: center center
+
+    @media only screen and (max-width : 480px)
+      width: calc(50% - 10px)
+      flex: 0 0 calc(50% - 10px)
+      margin-right: 0
+
+      &:nth-child(2n)
+        margin-left: 20px
+
     &:not(:last-child)
       margin-right: 35px
-
       @media only screen and (max-width : 768px)
         margin-right: 20px
+      @media only screen and (max-width : 480px)
+        margin-right: 0
 
 // STars list
 .rate-stars

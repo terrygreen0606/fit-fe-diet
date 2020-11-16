@@ -32,10 +32,14 @@
 
     .app-review-single-item
       position: relative
+      
   .after-signup-header-arrow
     position: absolute
     bottom: -60px
     right: -105px
+    
+    @media only screen and (max-width : 768px)
+      display: none
 
 
 .after-signup-header-chart-col_content
@@ -55,11 +59,17 @@
 
 .after-signup-intro-content-col
   position: relative
-  padding-right: 100px
+
+  @media only screen and (min-width : 992px)
+    padding-right: 100px
+  
   .after-signup-intro-arrow
     position: absolute
     right: -50px
     top: 0
+
+    @media only screen and (max-width : 992px)
+      display: none
 
 
 .after-signup-reviews-sect
@@ -90,6 +100,11 @@
     padding-bottom: 45px
 
 
+.after-signup-video-frame
+  @media only screen and (max-width : 480px)
+    height: 270px
+
+
 .after-signup-faq-sect
   padding-bottom: 80px
 
@@ -118,3 +133,6 @@
   .after-signup-start-today-arrow
     right: -120px
     bottom: 40px
+
+    @media only screen and (max-width : 992px)
+      display: none
