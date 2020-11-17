@@ -209,7 +209,7 @@ const ShoppingListView = (props: any) => {
         }
       }
     }).catch(() => { });
-  }, isSyncResponseActive ? 5000 : null);
+  }, isSyncResponseActive ? 15000 : null);
 
   const toggleCheckbox = (itemIndex: number, itemId: string) => {
     const updatedShoppingList = [...shoppingList];
@@ -550,9 +550,9 @@ const ShoppingListView = (props: any) => {
                     </div>
                   </>
                 )}
-                {storage.isActiveShoppingListBanner && (
-                  <Banner items={mockData} onAction={() => toggleSetting('isActiveShoppingListBanner')} />
-                )}
+              {storage.isActiveShoppingListBanner && (
+                <Banner items={mockData} onAction={() => toggleSetting('isActiveShoppingListBanner')} />
+              )}
             </div>
           )}
       </section>

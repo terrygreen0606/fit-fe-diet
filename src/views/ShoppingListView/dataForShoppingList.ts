@@ -39,17 +39,17 @@ export const colourStylesSelect = {
 export const mockData = [
   {
     title: 'shop_list.slide.title_1',
-    desc: 'tour.step1.text',
+    desc: 'shop_list.slide.desc_1',
     image: getImagePath('shopping-list/s1_image.png'),
   },
   {
     title: 'shop_list.slide.title_2',
-    desc: 'tour.step1.text',
+    desc: 'shop_list.slide.desc_2',
     image: getImagePath('shopping-list/s2_image.png'),
   },
   {
     title: 'shop_list.slide.title_3',
-    desc: 'tour.step1.text',
+    desc: 'shop_list.slide.desc_3',
     image: getImagePath('shopping-list/s3_image.png'),
   },
 ];
