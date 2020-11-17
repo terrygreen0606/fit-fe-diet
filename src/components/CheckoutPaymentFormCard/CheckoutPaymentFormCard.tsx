@@ -511,7 +511,7 @@ const CheckoutPaymentFormCard = ({
 
         <img className='mt-5 img-fluid' src={t('checkout.guaranteed.img')} alt='' />
 
-        <div className='money-back-guarantee-block mt-4'>
+        <div className='money-back-guarantee-block mt-4' style={{ backgroundImage: `url(${t('checkout.money_back.img')})` }}>
           <h5 className='money-back-guarantee-block__title'>{t('lp.money_back_title')}</h5>
           <p className='money-back-guarantee-block__descr'>{t('lp.money_back_descr')}</p>
         </div>
