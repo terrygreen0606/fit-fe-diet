@@ -331,11 +331,10 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
                   <div className='checkout-form-container'>
                     <div className='checkout-reserved-top-block'>
                       <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
-                      <h6 className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</h6>
-                      <h6 className='checkout-reserved-top-block__countdown_title'>
-                        {t('checkout.reserved_block.title')}
-                        :
-                      </h6>
+                      <p className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</p>
+                      <p className='checkout-reserved-top-block__countdown_title'>
+                        {t('checkout.reserved_block.countdown.title')}
+                      </p>
                       <span className='checkout-reserved-top-block__countdown'>
                         <RawCountDown seconds={900} />
                       </span>

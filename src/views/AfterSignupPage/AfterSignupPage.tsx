@@ -272,7 +272,7 @@ const AfterSignupPage = ({
       <section className='after-signup-reviews-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-xl-4 offset-xl-2 py-xl-5'>
+            <div className='col-md-6 col-xl-4 offset-xl-2 py-xl-5'>
 
               <h2 className='fw-bold'>{t('lp.reviews_sect.title')}</h2>
               <p className='mt-45'>{t('lp.reviews_sect.descr')}</p>
@@ -313,7 +313,7 @@ const AfterSignupPage = ({
               </div>
 
             </div>
-            <div className='col-xl-6 mt-5 mt-xl-0'>
+            <div className='col-md-6 mt-5 mt-md-0'>
 
               <ContentLoading
                 isLoading={reviewsLoading}
@@ -456,11 +456,10 @@ const AfterSignupPage = ({
 
               <div className='checkout-reserved-top-block'>
                 <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
-                <h6 className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</h6>
-                <h6 className='checkout-reserved-top-block__countdown_title'>
-                  {t('checkout.reserved_block.title')}
-                  :
-                </h6>
+                <p className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</p>
+                <p className='checkout-reserved-top-block__countdown_title'>
+                  {t('checkout.reserved_block.countdown.title')}
+                </p>
                 <span className='checkout-reserved-top-block__countdown'>
                   <RawCountDown seconds={900} />
                 </span>
