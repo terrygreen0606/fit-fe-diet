@@ -69,3 +69,6 @@ export const acceptInviteToFamily = (code: string) =>
 
 export const getUserTodayActivity = () =>
   axios.get('/user/today-activity');
+
+export const userTariffPause = () =>
+  axios.post('/user/pause');
