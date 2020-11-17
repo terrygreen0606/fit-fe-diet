@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import uuid from 'react-uuid';
+import useWindowSize from 'components/hooks/useWindowSize';
+import useDebounce from 'components/hooks/useDebounce';
 
 import './SliderSimple.sass';
 
@@ -13,39 +15,50 @@ type SliderSimpleProps = {
   className?: string;
 };
 
+const SliderSimpleDefaultProps = {
+  nav: null,
+  dots: null,
+  autoplay: null,
+  autoplaySpeed: null,
+  className: null,
+};
+
 const ANIMATE_TIME = 400;
 
-const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }: SliderSimpleProps) => {
-
+const SliderSimple = ({
+  slides,
+  nav,
+  dots,
+  autoplay,
+  autoplaySpeed,
+  className,
+}: SliderSimpleProps) => {
   const [slidesList, setSlidesList] = useState<any[]>([]);
   const [slidesListRender, setSlidesListRender] = useState<boolean>(false);
-  
+
   const [slidesMove, setSlidesMove] = useState<boolean>(false);
   const [slidesNum, setSlidesNum] = useState<number>(0);
-  
+
   const [sliderRef] = useState(React.createRef<HTMLDivElement>());
-    
+
   const [sliderDimensions, setSliderDimensions] = useState<any>({
     containerWidth: null,
     listWidth: null,
     itemWidth: null,
     marginLeft: null,
-    left: 0
+    left: 0,
   });
 
-  const [sliderContainerWidth, setSliderContainerWidth] = useState<number>(null);
-  const [sliderWidth, setSliderWidth] = useState<number>(null);
-  const [sliderItemWidth, setSliderItemWidth] = useState<number>(null);
-  const [sliderMarginLeft, setSliderMarginLeft] = useState<number>(null);
-  const [sliderLeft, setSliderLeft] = useState<number>(null);
+  const { width: windowWidth } = useWindowSize();
+  const debounceWindowWidth = useDebounce(windowWidth, 500);
 
   useEffect(() => {
     if (slides.length && slides.length > 0) {
       setSlidesListRender(true);
 
-      setSlidesList(slides.map(slide => ({
+      setSlidesList(slides.map((slide) => ({
         id: uuid(),
-        item: slide
+        item: slide,
       })));
     }
   }, [slides]);
@@ -62,16 +75,16 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
       }
 
       const sliderUlWidth = slideCount * sliderContainerWidth;
-      
+
       setSliderDimensions({
         ...sliderDimensions,
         containerWidth: sliderContainerWidth,
         listWidth: sliderUlWidth,
         itemWidth: sliderContainerWidth,
-        marginLeft: -sliderContainerWidth
+        marginLeft: -sliderContainerWidth,
       });
     }
-  }, [slidesListRender]);
+  }, [slidesListRender, debounceWindowWidth]);
 
   const moveSlideLeft = () => {
     if (slidesNum === 0) {
@@ -83,23 +96,23 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
     setSlidesMove(true);
     setSliderDimensions({
       ...sliderDimensions,
-      left: +sliderDimensions.itemWidth
+      left: +sliderDimensions.itemWidth,
     });
 
     setTimeout(() => {
       setSlidesMove(false);
 
-      let slidesListTemp = [...slidesList];
+      const slidesListTemp = [...slidesList];
       slidesListTemp.unshift(slidesListTemp.pop());
       setSlidesList([...slidesListTemp]);
 
       setSliderDimensions({
         ...sliderDimensions,
-        left: 0
+        left: 0,
       });
     }, ANIMATE_TIME);
   };
-  
+
   const moveSlideRight = () => {
     if (slidesNum === slides.length - 1) {
       setSlidesNum(0);
@@ -110,19 +123,19 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
     setSlidesMove(true);
     setSliderDimensions({
       ...sliderDimensions,
-      left: -sliderDimensions.itemWidth
+      left: -sliderDimensions.itemWidth,
     });
 
     setTimeout(() => {
       setSlidesMove(false);
 
-      let slidesListTemp = [...slidesList];
+      const slidesListTemp = [...slidesList];
       slidesListTemp.push(slidesListTemp.shift());
       setSlidesList([...slidesListTemp]);
 
       setSliderDimensions({
         ...sliderDimensions,
-        left: 0
+        left: 0,
       });
     }, ANIMATE_TIME);
   };
@@ -144,31 +157,36 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
   });
 
   return (
-    <div className={classNames("slider-simple-wrap", {
-      'has-dots': dots
-    })}>
-      <div ref={sliderRef} className={classNames("slider-simple-container", {
-        [className]: className
-      })}>
+    <div
+      className={classNames('slider-simple-wrap', {
+        'has-dots': dots,
+      })}
+    >
+      <div
+        ref={sliderRef}
+        className={classNames('slider-simple-container', {
+          [className]: className,
+        })}
+      >
         {nav && (
           <>
-            <span className="slider-simple-next" onClick={e => moveSlideRight()} />
-            <span className="slider-simple-prev" onClick={e => moveSlideLeft()} />
+            <span className='slider-simple-next' onClick={() => moveSlideRight()} />
+            <span className='slider-simple-prev' onClick={() => moveSlideLeft()} />
           </>
         )}
-        
-        <div 
-          className={classNames("slider-simple-list", {
-            'slides-move': slidesMove
+
+        <div
+          className={classNames('slider-simple-list', {
+            'slides-move': slidesMove,
           })}
-          style={{ 
-            width: sliderDimensions.listWidth, 
-            marginLeft: sliderDimensions.marginLeft, 
-            left: sliderDimensions.left 
+          style={{
+            width: sliderDimensions.listWidth,
+            marginLeft: sliderDimensions.marginLeft,
+            left: sliderDimensions.left,
           }}
         >
-          {slidesList.map(slide => (
-            <div key={slide.id} className="slider-simple-item" style={{ width: sliderDimensions.itemWidth }}>
+          {slidesList.map((slide) => (
+            <div key={slide.id} className='slider-simple-item' style={{ width: sliderDimensions.itemWidth }}>
               {slide.item}
             </div>
           ))}
@@ -176,11 +194,14 @@ const SliderSimple = ({ slides, nav, dots, autoplay, autoplaySpeed, className }:
       </div>
 
       {dots && (
-        <div className="slider-simple-dots">
+        <div className='slider-simple-dots'>
           {slidesList.map((slide, index) => (
-            <span key={slide.id} className={classNames("slider-simple-dot", {
-              'active': index === slidesNum
-            })}></span>
+            <span
+              key={slide.id}
+              className={classNames('slider-simple-dot', {
+                active: index === slidesNum,
+              })}
+            />
           ))}
         </div>
       )}
