@@ -1,10 +1,4 @@
-import React from 'react';
-
-import { routes } from 'constants/routes';
 import { getImagePath } from 'utils';
-
-import { ReactComponent as WeighScaleIcon } from 'assets/img/icons/weigh-scale-icon.svg';
-import { ReactComponent as WaterGlassIcon } from 'assets/img/icons/water-glass-icon.svg';
 
 export const mockData = [
   {
@@ -17,20 +11,21 @@ export const mockData = [
   {
     slide: 2,
     title: 'tour.step2.title',
-    text: 'tour.step1.text',
+    text: 'tour.step2.text',
     image: getImagePath('tour-after-signup/s2_image.png'),
     btn_text: 'register.next',
   },
   {
     slide: 3,
     title: 'tour.step3.title',
-    text: 'tour.step1.text',
+    text: 'tour.step3.text',
     image: getImagePath('tour-after-signup/s3_image.png'),
     btn_text: 'register.next',
   },
   {
     slide: 4,
     title: 'tour.step4.title',
+    text: 'tour.step4.text',
     image: getImagePath('tour-after-signup/s4_image.png'),
     btn_text: 'tour.start_service',
   },
