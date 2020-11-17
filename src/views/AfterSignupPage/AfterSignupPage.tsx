@@ -211,45 +211,6 @@ const AfterSignupPage = ({
                     localePhrases={localePhrases}
                   />
                 )}
-
-                <div className='app-review-single-item'>
-                  <ContentLoading
-                    isLoading={reviewsLoading}
-                    isError={reviewsLoadingError}
-                    fetchData={() => getUserReviews()}
-                  >
-                    {reviewsList.slice(0, 1).map((review) => (
-                      <>
-                        <div className='app-review-single-item_img_wrap'>
-                          <span
-                            className='app-review-single-item_img'
-                            style={{ backgroundImage: `url(${review.image || null})` }}
-                          />
-                        </div>
-
-                        <div className='app-review-single-item_content'>
-                          <p className='app-review-single-item_descr'>{review.text || null}</p>
-                          <div className='app-review-single-item_footer'>
-                            <div className='rate-stars_list'>
-                              <StarFillIcon className='rate-stars_item' />
-                              <StarFillIcon className='rate-stars_item' />
-                              <StarFillIcon className='rate-stars_item' />
-                              <StarFillIcon className='rate-stars_item' />
-                              <StarFillIcon className='rate-stars_item' />
-                            </div>
-                            <h6 className='app-review-single-item_author'>
-                              <b>
-                                {'- '}
-                                {review.name || null}
-                              </b>
-                              , Fitlope user
-                            </h6>
-                          </div>
-                        </div>
-                      </>
-                    ))}
-                  </ContentLoading>
-                </div>
               </div>
 
             </div>
@@ -260,12 +221,12 @@ const AfterSignupPage = ({
       <section className='after-signup-intro-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-4 d-none d-xl-block text-left'>
+            <div className='col-lg-4 text-center text-lg-left'>
 
-              <img src={t('lp.phone_overview.gif')} alt='' className='img-fluid' />
+              <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
 
             </div>
-            <div className='col-xl-8 pl-xl-5 mt-xl-0 after-signup-intro-content-col'>
+            <div className='col-lg-8 pl-xl-5 mt-5 mt-lg-0 after-signup-intro-content-col'>
 
               <h5 className='fw-bold'>{t('lp.partners_list_title')}</h5>
 
@@ -575,7 +536,8 @@ const AfterSignupPage = ({
               <h3 id='afterSignupPaymentForm' className='mb-5 fw-bold text-center'>{t('lp.select_payment.title')}</h3>
 
               <CheckoutPaymentFormCard
-                tariff={getActiveTariffData()}
+                tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                disabled={!getActiveTariffData()}
                 history={history}
                 localePhrases={localePhrases}
               />
