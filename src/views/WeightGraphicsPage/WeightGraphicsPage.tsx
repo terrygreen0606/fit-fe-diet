@@ -16,7 +16,6 @@ import Breadcrumb from 'components/Breadcrumb';
 import './WeightGraphicsPage.sass';
 
 import { ReactComponent as ImagePlusIcon } from 'assets/img/icons/image-plus-icon.svg';
-import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-icon.svg';
 import { ReactComponent as WeighScaleIcon } from 'assets/img/icons/weigh-scale-icon.svg';
 import { ReactComponent as PlusIcon } from 'assets/img/icons/plus-icon.svg';
 import { ReactComponent as CalendarIcon } from 'assets/img/icons/calendar-icon.svg';
@@ -179,7 +178,6 @@ const WeightGraphicsPage = (props: any) => {
                   Add selfie
                 </Button>
                 <Button className='mt-4 px-2' block color='secondary' outline>
-                  <RewardIcon className='mr-2' />
                   Change the goal
                 </Button>
               </div>
