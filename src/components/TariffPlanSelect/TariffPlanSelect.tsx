@@ -105,7 +105,7 @@ const TariffPlanSelect = ({
             </div>
 
             <div className='tariff-plan__item-price'>
-              <div className='tariff-plan__item-price-old'>{`${priceOldWeek} / ${t('common.months_reduction')}`}</div>
+              <div className='tariff-plan__item-price-old'>{`${priceOldWeek} / ${t('common.week').toLowerCase()}`}</div>
 
               <div className='tariff-plan__item-price-now'>
                 <div className='tariff-plan__item-price-now-count-wrap'>
