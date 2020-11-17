@@ -7,10 +7,12 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
+import classnames from 'classnames';
 
 import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
-import { getCheckoutTariff } from 'api';
+import { getCheckoutTariff, userTariffPause } from 'api';
+import { userLogout } from 'store/actions';
 
 // Components
 import ProfileLayout from 'components/hoc/ProfileLayout';
@@ -18,6 +20,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import ContentLoading from 'components/hoc/ContentLoading';
 import Button from 'components/common/Forms/Button';
 import Breadcrumb from 'components/Breadcrumb';
+import useOutsideClick from 'components/hooks/useOutsideClick';
 
 import './SettingsSubscriptionPlan.sass';
 
@@ -40,6 +43,8 @@ const SettingsSubscriptionPlan = (props: any) => {
     priceMonthly: null,
   });
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(true);
+
+  const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
   const priceTextWrap = useRef(null);
   const priceText = useRef(null);
@@ -90,6 +95,16 @@ const SettingsSubscriptionPlan = (props: any) => {
 
     return () => cleanComponent = true;
   }, [settings.paid_until]);
+
+  const userTariffPauseClick = () => {
+    userTariffPause()
+      .then(({ data }) => {
+        if (data.success) {
+          props.userLogout();
+        }
+      })
+      .catch(() => toast.error(t('common.error')));
+  };
 
   return (
     <>
@@ -184,20 +199,38 @@ const SettingsSubscriptionPlan = (props: any) => {
                 </h2>
               )}
             <div className='subsciption-plan__buttons'>
-              {/* <div className='subsciption-plan__buttons-cancelable'>
-              <button
-                type='button'
-                className='subsciption-plan__buttons-cancelable-item'
-              >
-                {t('subscription.cancel')}
-              </button>
-              <button
-                type='button'
-                className='subsciption-plan__buttons-cancelable-item'
-              >
-                {t('subscription.pause')}
-              </button>
-            </div> */}
+              <div className='subsciption-plan__buttons-cancelable'>
+                {/* <button
+                  type='button'
+                  className='subsciption-plan__buttons-cancelable-item'
+                >
+                  {t('subscription.cancel')}
+                </button> */}
+                <div ref={changedBlockRef}>
+                  <button
+                    type='button'
+                    onClick={() => setIsBlockActive(!isBlockActive)}
+                    className='subsciption-plan__buttons-cancelable-item'
+                  >
+                    {t('subscription.pause')}
+                  </button>
+                  <div className={classnames('subsciption-plan__buttons-pause-modal card-bg', {
+                    active: isBlockActive,
+                  })}
+                  >
+                    <h3 className='subsciption-plan__buttons-pause-modal-title'>
+                      {t('subscription.pause_plan.title')}
+                    </h3>
+                    <Button
+                      color='cancel'
+                      onClick={() => userTariffPauseClick()}
+                      className='subsciption-plan__buttons-pause-modal-btn'
+                    >
+                      {t('subscription.pause_plan.button')}
+                    </Button>
+                  </div>
+                </div>
+              </div>
               <Link to={routes.checkout}>
                 <Button
                   color='secondary'
@@ -222,4 +255,4 @@ const SettingsSubscriptionPlan = (props: any) => {
 
 export default WithTranslate(connect((state: any) => ({
   settings: state.settings,
-}))(SettingsSubscriptionPlan));
+}), { userLogout })(SettingsSubscriptionPlan));
