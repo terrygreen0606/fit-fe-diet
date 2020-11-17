@@ -173,7 +173,7 @@ const CheckoutPaymentFormCard = ({
       currency: getTariffDataValue('currency'),
       card: {
         number: cardNumber.replace(/ /gi, ''),
-        year: cardMonthYear.split('/')[1],
+        year: `20${cardMonthYear.split('/')[1]}`,
         month: cardMonthYear.split('/')[0],
         cvv: cardCvv,
       },
@@ -326,15 +326,15 @@ const CheckoutPaymentFormCard = ({
                 block
                 name='cardMonthYear'
                 className='checkout-payment-card__form_input'
-                data-param={7}
+                data-param={5}
                 label={`${t('checkout.form_card.expiry_date')}*:`}
                 isValid={isFieldValid('cardMonthYear')}
                 value={checkoutForm.cardMonthYear}
                 data-validate='["required", "len"]'
-                mask='11/1111'
+                mask='11/11'
                 onChange={(e) => validateOnChange('cardMonthYear', e.target.value, e)}
                 errors={getFieldErrors('cardMonthYear')}
-                placeholder='MM/YYYY'
+                placeholder={t('checkout.month_year.placeholder')}
               />
             </FormGroup>
 
@@ -371,7 +371,7 @@ const CheckoutPaymentFormCard = ({
             data-validate='["required"]'
             onChange={(e) => validateOnChange('payerName', e.target.value, e)}
             errors={getFieldErrors('payerName')}
-            placeholder='J.Smith'
+            placeholder={t('checkout.name.placeholder')}
           />
         </FormGroup>
 

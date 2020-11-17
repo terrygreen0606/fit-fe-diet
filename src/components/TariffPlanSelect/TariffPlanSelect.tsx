@@ -8,8 +8,8 @@ import './TariffPlanSelect.sass';
 
 type TariffType = {
   id: string;
-  priceMonth: string;
-  priceOldMonth: string;
+  priceWeek: string;
+  priceOldWeek: string;
   price: string;
   months: string;
 };
@@ -79,9 +79,8 @@ const TariffPlanSelect = ({
       {tariffs.map(({
         id,
         months,
-        price,
-        priceMonth,
-        priceOldMonth,
+        priceWeek,
+        priceOldWeek,
       }, tariffIndex) => (
         <label key={id} className='tariff-plan__item-label'>
           <input
@@ -106,16 +105,16 @@ const TariffPlanSelect = ({
             </div>
 
             <div className='tariff-plan__item-price'>
-              <div className='tariff-plan__item-price-old'>{`${priceOldMonth} / ${t('common.months_reduction')}`}</div>
+              <div className='tariff-plan__item-price-old'>{`${priceOldWeek} / ${t('common.months_reduction')}`}</div>
 
               <div className='tariff-plan__item-price-now'>
                 <div className='tariff-plan__item-price-now-count-wrap'>
-                  <div className='tariff-plan__item-price-now-count'>{priceMonth}</div>
+                  <div className='tariff-plan__item-price-now-count'>{priceWeek}</div>
                 </div>
               </div>
 
               <div className='tariff-plan__item-price-together'>
-                {t('common.paycycle_period', { PERIOD: t('common.month').toLowerCase() })}
+                {t('common.paycycle_period', { PERIOD: t('common.week').toLowerCase() })}
               </div>
             </div>
 
