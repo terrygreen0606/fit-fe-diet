@@ -46,6 +46,7 @@ type CheckoutPaymentFormCardProps = {
   tariff: any;
   isPaymentError?: boolean;
   paymentErrors?: string[];
+  disabled?: boolean;
   history: any;
   localePhrases: any;
 };
@@ -54,6 +55,7 @@ const CheckoutPaymentFormCardPropsDefault = {
   className: null,
   isPaymentError: null,
   paymentErrors: null,
+  disabled: null,
 };
 
 const CheckoutPaymentFormCard = ({
@@ -61,6 +63,7 @@ const CheckoutPaymentFormCard = ({
   tariff,
   isPaymentError,
   paymentErrors,
+  disabled,
   history,
   localePhrases,
 }: CheckoutPaymentFormCardProps) => {
@@ -497,13 +500,13 @@ const CheckoutPaymentFormCard = ({
             block
             style={{ maxWidth: '320px' }}
             isLoading={paymentLoading}
-            disabled={!tariff}
+            disabled={!tariff || disabled}
           >
             <LockIcon className='mr-2' />
             {t('button.pay_now')}
           </Button>
 
-          {!tariff && <p className='text-red'>{t('checkout.tariff.select.error.msg')}</p>}
+          {disabled && <p className='text-red'>{t('checkout.tariff.select.error.msg')}</p>}
         </div>
 
         <img className='mt-5 img-fluid' src={t('checkout.guaranteed.img')} alt='' />
@@ -514,15 +517,17 @@ const CheckoutPaymentFormCard = ({
         </div>
       </form>
 
-      <p
-        className='mt-4 checkout-payment-card__total'
-        dangerouslySetInnerHTML={{
-          __html: t('checkout.form_card.total_title', {
-            AMOUNT: getTariffDataValue('price_text'),
-            COUNT: getTariffDataValue('months'),
-          }),
-        }}
-      />
+      {!disabled && (
+        <p
+          className='mt-4 checkout-payment-card__total'
+          dangerouslySetInnerHTML={{
+            __html: t('checkout.form_card.total_title', {
+              AMOUNT: getTariffDataValue('price_text'),
+              COUNT: getTariffDataValue('months'),
+            }),
+          }}
+        />
+      )}
     </div>
   );
 };
