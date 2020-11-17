@@ -13,7 +13,12 @@ import './SideMenu.sass';
 
 import { ReactComponent as CrossIcon } from 'assets/img/icons/cross-icon.svg';
 
-const SideMenu = ({ localePhrases, isAuthenticated, userLogout: userAuthLogout }: any) => {
+const SideMenu = ({
+  localePhrases,
+  isAuthenticated,
+  userLogout: userAuthLogout,
+  paidUntil,
+}: any) => {
   const closeSideMenu = () => {
     document.body.classList.remove('mobile-menu-opened');
   };
@@ -35,24 +40,28 @@ const SideMenu = ({ localePhrases, isAuthenticated, userLogout: userAuthLogout }
         />
 
         <ul className='mobile-menu-list'>
+          {paidUntil > 0 && (
+            <>
+              <li>
+                <Link to={routes.mealPlan} className='mobile-menu-list-item'>
+                  {t('header.menu_mp')}
+                </Link>
+              </li>
+              <li>
+                <Link to={routes.recipes} className='mobile-menu-list-item'>
+                  {t('header.menu_recipes')}
+                </Link>
+              </li>
+              <li>
+                <Link to={routes.waterTracker} className='mobile-menu-list-item'>
+                  {t('header.menu_wt')}
+                </Link>
+              </li>
+            </>
+          )}
           <li>
-            <Link to={routes.trainings} className='mobile-menu-list-item'>
-              {t('header.menu_trainings')}
-            </Link>
-          </li>
-          <li>
-            <Link to={routes.recipes} className='mobile-menu-list-item'>
-              {t('header.menu_recipes')}
-            </Link>
-          </li>
-          <li>
-            <Link to={routes.changeMealSettings} className='mobile-menu-list-item'>
-              {t('mp.change.title')}
-            </Link>
-          </li>
-          <li>
-            <Link to={routes.mealPlan} className='mobile-menu-list-item'>
-              {t('mp.title')}
+            <Link to={routes.personalSettings} className='mobile-menu-list-item'>
+              {t('header.menu_settings')}
             </Link>
           </li>
         </ul>
@@ -73,14 +82,14 @@ const SideMenu = ({ localePhrases, isAuthenticated, userLogout: userAuthLogout }
             </Link>
           </>
         ) : (
-          <button
-            className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
-            type='button'
-            onClick={() => userAuthLogout()}
-          >
-            {t('common.logout')}
-          </button>
-        )}
+            <button
+              className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
+              type='button'
+              onClick={() => userAuthLogout()}
+            >
+              {t('common.logout')}
+            </button>
+          )}
       </div>
     </>
   );
@@ -90,8 +99,8 @@ export default WithTranslate(
   connect(
     (state: any) => ({
       isAuthenticated: state.auth.isAuthenticated,
+      paidUntil: state.settings.paid_until,
     }),
     { userLogout },
   )(SideMenu),
 );
-

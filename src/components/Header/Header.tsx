@@ -61,29 +61,34 @@ const Header = (props: any) => {
               </span>
 
               <nav className='mainHeader_menuList'>
-                <NavLink
-                  to={routes.mealPlan}
-                  className='mainHeader_menuList_item'
-                  activeClassName='mainHeader_menuList_item_active'
-                >
-                  {t('header.menu_mp')}
-                </NavLink>
 
-                <NavLink
-                  to={routes.recipes}
-                  className='mainHeader_menuList_item'
-                  activeClassName='mainHeader_menuList_item_active'
-                >
-                  {t('header.menu_recipes')}
-                </NavLink>
+                {settings.paid_until > 0 && (
+                  <>
+                    <NavLink
+                      to={routes.mealPlan}
+                      className='mainHeader_menuList_item'
+                      activeClassName='mainHeader_menuList_item_active'
+                    >
+                      {t('header.menu_mp')}
+                    </NavLink>
 
-                <NavLink
-                  to={routes.waterTracker}
-                  className='mainHeader_menuList_item'
-                  activeClassName='mainHeader_menuList_item_active'
-                >
-                  {t('header.menu_wt')}
-                </NavLink>
+                    <NavLink
+                      to={routes.recipes}
+                      className='mainHeader_menuList_item'
+                      activeClassName='mainHeader_menuList_item_active'
+                    >
+                      {t('header.menu_recipes')}
+                    </NavLink>
+
+                    <NavLink
+                      to={routes.waterTracker}
+                      className='mainHeader_menuList_item'
+                      activeClassName='mainHeader_menuList_item_active'
+                    >
+                      {t('header.menu_wt')}
+                    </NavLink>
+                  </>
+                )}
 
                 <NavLink
                   to={routes.personalSettings}

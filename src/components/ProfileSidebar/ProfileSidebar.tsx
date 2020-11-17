@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { getTranslate } from 'utils';
 import { routes } from 'constants/routes';
 
@@ -17,6 +18,8 @@ import { ReactComponent as LeafIcon } from 'assets/img/icons/leaf-icon.svg';
 
 const ProfileSidebar = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
+
+  const { paidUntil } = props;
 
   return (
     <div className='profile-menu-sidebar'>
@@ -82,17 +85,19 @@ const ProfileSidebar = (props: any) => {
             </NavLink>
           </li>
 
-          <li>
-            <NavLink
-              to={routes.paymentHistorySettings}
-              activeClassName='active'
-              exact
-              className='profile-menu-list-item'
-            >
-              <ClockIcon className='profile-menu-list-icon' />
-              {t('personal.menu_pay_history')}
-            </NavLink>
-          </li>
+          {paidUntil > 0 && (
+            <li>
+              <NavLink
+                to={routes.paymentHistorySettings}
+                activeClassName='active'
+                exact
+                className='profile-menu-list-item'
+              >
+                <ClockIcon className='profile-menu-list-icon' />
+                {t('personal.menu_pay_history')}
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
 
@@ -129,4 +134,10 @@ const ProfileSidebar = (props: any) => {
   );
 };
 
-export default WithTranslate(ProfileSidebar);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      paidUntil: state.settings.paid_until,
+    }),
+  )(ProfileSidebar),
+);
