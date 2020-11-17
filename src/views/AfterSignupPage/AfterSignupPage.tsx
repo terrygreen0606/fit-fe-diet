@@ -249,7 +249,7 @@ const AfterSignupPage = ({
 
               <div className='mt-4 mt-xl-5' dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
 
-              <div className='mt-5 pt-3 pb-5 text-center text-xl-left'>
+              <div className='after-signup-intro-content-btn mt-5 pt-3 pb-5 text-center text-xl-left'>
                 <Button
                   pulse
                   color='primary-shadow'
