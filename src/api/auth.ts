@@ -26,8 +26,9 @@ export const userFacebookSignUp = (params: UserFacebookSignUpParams) =>
   axios.post('/user/signup-facebook', {
     ...params,
     reg_url: window.location.href,
-    reg_params: Object.keys(queryString.parse(window.location.search)).length > 0
-      ? queryString.parse(window.location.search)
+    reg_params:
+      window.location.search
+      ? JSON.stringify(queryString.parse(window.location.search))
       : '',
   });
 
@@ -40,8 +41,9 @@ export const userGoogleSignUp = (params: UserGoogleSignUpParams) =>
   axios.post('/user/signup-google', {
     ...params,
     reg_url: window.location.href,
-    reg_params: Object.keys(queryString.parse(window.location.search)).length > 0
-      ? queryString.parse(window.location.search)
+    reg_params:
+      window.location.search
+      ? JSON.stringify(queryString.parse(window.location.search))
       : '',
   });
 
@@ -60,8 +62,9 @@ export const userSignup = (params: UserSignupParams) =>
   axios.post('/user/signup', {
     ...params,
     reg_url: window.location.href,
-    reg_params: Object.keys(queryString.parse(window.location.search)).length > 0
-      ? queryString.parse(window.location.search)
+    reg_params:
+      window.location.search
+      ? JSON.stringify(queryString.parse(window.location.search))
       : '',
   });
 
