@@ -177,8 +177,8 @@ const AfterSignupPage = ({
                       className='fw-regular mt-4'
                       dangerouslySetInnerHTML={{
                         __html: t('lp.selling_text', {
-                          OLD_VALUE: tariffsDataList[0].price_old_monthly_text,
-                          AMOUNT: tariffsDataList[0].price_monthly_text,
+                          OLD_VALUE: tariffsDataList[0].price_old_weekly_text,
+                          AMOUNT: tariffsDataList[0].price_weekly_text,
                         }),
                       }}
                     />
@@ -403,8 +403,8 @@ const AfterSignupPage = ({
                     className='fw-regular mt-4'
                     dangerouslySetInnerHTML={{
                       __html: t('lp.selling_text', {
-                        OLD_VALUE: tariffsDataList[0].price_old_monthly_text,
-                        AMOUNT: tariffsDataList[0].price_monthly_text,
+                        OLD_VALUE: tariffsDataList[0].price_old_weekly_text,
+                        AMOUNT: tariffsDataList[0].price_weekly_text,
                       }),
                     }}
                   />
@@ -477,14 +477,14 @@ const AfterSignupPage = ({
                     tariffs={tariffsDataList.map(({
                       tariff,
                       months,
-                      price_monthly_text,
-                      price_old_monthly_text,
+                      price_weekly_text,
+                      price_old_weekly_text,
                       price_text,
                     }) => ({
                       id: tariff,
                       price: price_text,
-                      priceMonth: price_monthly_text,
-                      priceOldMonth: price_old_monthly_text,
+                      priceWeek: price_weekly_text,
+                      priceOldWeek: price_old_weekly_text,
                       months,
                     }))}
                     value={activeTariffId}
