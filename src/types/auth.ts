@@ -15,6 +15,8 @@ export type UserAuthProfileType = {
   act_levels?: string[],
   meal_counts?: any[],
   request_hash?: string,
+  reg_url?: string,
+  reg_params?: string,
 };
 
 export type UserFacebookSignUpParams = {

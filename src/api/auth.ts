@@ -1,4 +1,5 @@
 import axios from 'utils/axios';
+import queryString from 'query-string';
 import {
   UserAuthProfileType,
   UserFacebookSignUpParams,
@@ -22,7 +23,11 @@ export const userFacebookSignIn = (token: string) =>
   });
 
 export const userFacebookSignUp = (params: UserFacebookSignUpParams) =>
-  axios.post('/user/signup-facebook', params);
+  axios.post('/user/signup-facebook', {
+    ...params,
+    reg_url: window.location.href,
+    reg_params: queryString.parse(window.location.search),
+  });
 
 export const userGoogleSignIn = (id_token: string) =>
   axios.post('/user/signin-google', {
@@ -30,7 +35,11 @@ export const userGoogleSignIn = (id_token: string) =>
   });
 
 export const userGoogleSignUp = (params: UserGoogleSignUpParams) =>
-  axios.post('/user/signup-google', params);
+  axios.post('/user/signup-google', {
+    ...params,
+    reg_url: window.location.href,
+    reg_params: queryString.parse(window.location.search),
+  });
 
 export const userLogin = (
   email: string,
@@ -46,6 +55,8 @@ export const userLogin = (
 export const userSignup = (params: UserSignupParams) =>
   axios.post('/user/signup', {
     ...params,
+    reg_url: window.location.href,
+    reg_params: queryString.parse(window.location.search),
   });
 
 export const resetPassword = (email: string) =>
