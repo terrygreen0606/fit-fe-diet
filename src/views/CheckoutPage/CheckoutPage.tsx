@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -34,6 +35,11 @@ import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
 import './CheckoutPage.sass';
 
+import metropolisLogoImg from 'assets/img/partners/metropolis.png';
+import igLogoImg from 'assets/img/partners/ig.png';
+import terraLogoImg from 'assets/img/partners/terra.png';
+import defatoLogoImg from 'assets/img/partners/defato.png';
+
 import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
 
 const checkoutFormDefault = {
@@ -41,7 +47,12 @@ const checkoutFormDefault = {
   discount_code: null,
 };
 
-const CheckoutPage = ({ history, location, localePhrases }: any) => {
+const CheckoutPage = ({
+  language,
+  history,
+  location,
+  localePhrases,
+}: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
@@ -239,6 +250,8 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
     if (!hasError) {}
   };
 
+  const isShowPartners = () => language === 'br';
+
   return (
     <>
       <Helmet>
@@ -309,20 +322,32 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
                       </div>
                       <div className='col-lg-9'>
 
-                        <div className='app-partners-list'>
-                          <span
-                            className='app-partners-list__item'
-                            style={{ backgroundImage: `url(${require('assets/img/partners/daily-mirror.png')})` }}
-                          />
-                          <span
-                            className='app-partners-list__item'
-                            style={{ backgroundImage: `url(${require('assets/img/partners/forbes.png')})` }}
-                          />
-                          <span
-                            className='app-partners-list__item'
-                            style={{ backgroundImage: `url(${require('assets/img/partners/modesto.png')})` }}
-                          />
-                        </div>
+                        {isShowPartners() ? (
+                          <div className='app-partners-list__wrap mt-5 pt-5'>
+                            <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
+
+                            <div className='app-partners-list'>
+                              <span
+                                className='app-partners-list__item'
+                                style={{ backgroundImage: `url(${metropolisLogoImg})` }}
+                              />
+                              <span
+                                className='app-partners-list__item'
+                                style={{ backgroundImage: `url(${igLogoImg})` }}
+                              />
+                              <span
+                                className='app-partners-list__item'
+                                style={{ backgroundImage: `url(${terraLogoImg})` }}
+                              />
+                              <span
+                                className='app-partners-list__item'
+                                style={{ backgroundImage: `url(${defatoLogoImg})` }}
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div style={{ height: '70px' }} />
+                        )}
 
                       </div>
                     </div>
@@ -505,4 +530,11 @@ const CheckoutPage = ({ history, location, localePhrases }: any) => {
   );
 };
 
-export default WithTranslate(CheckoutPage);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      language: state.settings.settings,
+    }),
+    null,
+  )(CheckoutPage),
+);

@@ -19,9 +19,10 @@ import SalesWidgets from 'components/SalesWidgets';
 
 import './AfterSignupPage.sass';
 
-import dailyMirrorImg from 'assets/img/partners/daily-mirror.png';
-import forbesImg from 'assets/img/partners/forbes.png';
-import modestoImg from 'assets/img/partners/modesto.png';
+import metropolisLogoImg from 'assets/img/partners/metropolis.png';
+import igLogoImg from 'assets/img/partners/ig.png';
+import terraLogoImg from 'assets/img/partners/terra.png';
+import defatoLogoImg from 'assets/img/partners/defato.png';
 
 import { ReactComponent as StarFillIcon } from 'assets/img/icons/star-fill-icon.svg';
 
@@ -33,6 +34,7 @@ const AfterSignupPage = ({
   afterSignupWeightGoal,
   afterSignupPredictDate,
   measurement,
+  language,
   history,
   localePhrases,
 }: any) => {
@@ -144,6 +146,8 @@ const AfterSignupPage = ({
     document.getElementById('afterSignupPaymentForm')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
   };
 
+  const isShowPartners = () => language === 'br';
+
   return (
     <>
       <Helmet>
@@ -228,23 +232,31 @@ const AfterSignupPage = ({
             </div>
             <div className='col-lg-8 pl-xl-5 mt-5 mt-lg-0 after-signup-intro-content-col'>
 
-              <h5 className='fw-bold'>{t('lp.partners_list_title')}</h5>
+              {isShowPartners() && (
+                <>
+                  <h5 className='fw-bold'>{t('lp.partners_list_title')}</h5>
 
-              <div className='app-partners-list'>
-                <span
-                  className='app-partners-list__item'
-                  style={{ backgroundImage: `url(${dailyMirrorImg})` }}
-                />
-                <span
-                  className='app-partners-list__item'
-                  style={{ backgroundImage: `url(${forbesImg})` }}
-                />
-                <span
-                  className='app-partners-list__item'
-                  style={{ backgroundImage: `url(${modestoImg})` }}
-                />
-              </div>
-
+                  <div className='app-partners-list'>
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${metropolisLogoImg})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${igLogoImg})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${terraLogoImg})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${defatoLogoImg})` }}
+                    />
+                  </div>
+                </>
+              )}
+              
               <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
 
               <div className='mt-4 mt-xl-5' dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
@@ -411,38 +423,48 @@ const AfterSignupPage = ({
                 )}
               </ContentLoading>
 
-              <Button
-                pulse
-                color='primary-shadow'
-                className='mt-4'
-                size='lg'
-                block
-                onClick={() => scrollToTariffsSelectForm()}
-                style={{ maxWidth: '500px' }}
-              >
-                {t('button.activate_plan')}
-              </Button>
+              <div className='after-signup-start-today-btn-col'>
+                <Button
+                  pulse
+                  color='primary-shadow'
+                  className='mt-4'
+                  size='lg'
+                  block
+                  onClick={() => scrollToTariffsSelectForm()}
+                  style={{ maxWidth: '500px' }}
+                >
+                  {t('button.activate_plan')}
+                </Button>
 
-              <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
-
-              <div className='app-partners-list__wrap mt-5 pt-5'>
-                <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
-
-                <div className='app-partners-list'>
-                  <span
-                    className='app-partners-list__item'
-                    style={{ backgroundImage: `url(${dailyMirrorImg})` }}
-                  />
-                  <span
-                    className='app-partners-list__item'
-                    style={{ backgroundImage: `url(${forbesImg})` }}
-                  />
-                  <span
-                    className='app-partners-list__item'
-                    style={{ backgroundImage: `url(${modestoImg})` }}
-                  />
-                </div>
+                <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
               </div>
+
+              {isShowPartners() ? (
+                <div className='app-partners-list__wrap mt-5 pt-5'>
+                  <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
+
+                  <div className='app-partners-list'>
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${metropolisLogoImg})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${igLogoImg})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${terraLogoImg})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${defatoLogoImg})` }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div style={{ height: '70px' }} />
+              )}
 
             </div>
           </div>
@@ -611,6 +633,7 @@ export default WithTranslate(
   connect(
     (state: any) => ({
       measurement: state.settings.measurement,
+      language: state.settings.settings,
       isAfterSignup: state.auth.userData.isAfterSignup,
       afterSignupName: state.auth.userData.afterSignupName,
       afterSignupGoal: state.auth.userData.afterSignupGoal,
