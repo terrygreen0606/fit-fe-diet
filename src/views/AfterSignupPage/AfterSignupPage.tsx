@@ -191,7 +191,7 @@ const AfterSignupPage = ({
                   )}
                 </ContentLoading>
 
-                <div className="after-signup-header-btn-col">
+                <div className='after-signup-header-btn-col'>
                   <Button
                     onClick={() => scrollToTariffsSelectForm()}
                     pulse
@@ -235,12 +235,7 @@ const AfterSignupPage = ({
       <section className='after-signup-intro-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-4 text-center text-lg-left'>
-
-              <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
-
-            </div>
-            <div className='col-lg-8 pl-xl-5 mt-5 mt-lg-0 after-signup-intro-content-col'>
+            <div className='col-lg-8 order-md-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
 
               {isShowPartners() && (
                 <>
@@ -287,6 +282,11 @@ const AfterSignupPage = ({
               </div>
 
             </div>
+            <div className='col-lg-4 order-md-1 text-center text-lg-left'>
+
+              <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
+
+            </div>
           </div>
         </div>
       </section>
@@ -294,7 +294,7 @@ const AfterSignupPage = ({
       <section className='after-signup-reviews-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-md-6 col-xl-4 offset-xl-2 py-xl-5'>
+            <div className='col-md-6 col-xl-5 offset-xl-1'>
 
               <h2 className='fw-bold'>{t('lp.reviews_sect.title')}</h2>
               <p className='mt-45'>{t('lp.reviews_sect.descr')}</p>
@@ -321,7 +321,7 @@ const AfterSignupPage = ({
                 </div>
               )}
 
-              <div className='mt-5 text-center text-xl-left'>
+              <div className='after-signup-reviews-btn-col mt-5 text-center text-xl-left'>
                 <Button
                   pulse
                   color='primary-shadow'
@@ -388,7 +388,7 @@ const AfterSignupPage = ({
               />
 
             </div>
-            <div className='col-12 mt-5 pt-xl-5'>
+            <div className='col-12 mt-5'>
 
               <div className='row'>
                 <div className='col-xl-6 text-center'>
@@ -450,7 +450,7 @@ const AfterSignupPage = ({
               </div>
 
               {isShowPartners() ? (
-                <div className='app-partners-list__wrap mt-5 pt-5'>
+                <div className='app-partners-list__wrap mt-5'>
                   <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
 
                   <div className='app-partners-list'>
@@ -536,7 +536,7 @@ const AfterSignupPage = ({
                   <h2 className='mb-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
                   <div className='advantages-checklist pt-4'>
-                    {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
+                    {Array(6).fill(1).map((el) => uuid()).map((id, index) => (
                       <div key={id} className='advantages-checklist-item'>
                         <h6 className='advantages-checklist-item__title'>
                           {t(`lp.plan.advantage${index + 1}.title`)}
