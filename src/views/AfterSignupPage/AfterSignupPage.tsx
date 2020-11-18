@@ -189,17 +189,25 @@ const AfterSignupPage = ({
                   )}
                 </ContentLoading>
 
-                <Button
-                  onClick={() => scrollToTariffsSelectForm()}
-                  pulse
-                  color='primary-shadow'
-                  className='mt-3'
-                  size='lg'
-                >
-                  {t('button.select_plan')}
-                </Button>
+                <div className="after-signup-header-btn-col">
+                  <Button
+                    onClick={() => scrollToTariffsSelectForm()}
+                    pulse
+                    color='primary-shadow'
+                    className='mt-3'
+                    size='lg'
+                  >
+                    {t('button.select_plan')}
+                  </Button>
 
-                <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+                  <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+                </div>
+
+                <div className='sale-points__list mt-45'>
+                  <div className='sale-points__item'>{t('lp.sale.point1')}</div>
+                  <div className='sale-points__item'>{t('lp.sale.point2')}</div>
+                  <div className='sale-points__item'>{t('lp.sale.point3')}</div>
+                </div>
               </div>
 
             </div>
@@ -525,21 +533,28 @@ const AfterSignupPage = ({
 
                   <h2 className='mb-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
-                  <div className='advantages-checklist'>
+                  <div className='advantages-checklist pt-4'>
                     {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
                       <div key={id} className='advantages-checklist-item'>
                         <h6 className='advantages-checklist-item__title'>
-                          {t(`lp.plan.advantage${index}.title`)}
+                          {t(`lp.plan.advantage${index + 1}.title`)}
                         </h6>
 
                         <div className='advantages-checklist-item__content'>
-                          {t(`lp.plan.advantage${index}.descr`)}
+                          {t(`lp.plan.advantage${index + 1}.descr`)}
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  <img src={t('checkout.safe.img2')} className='img-fluid mt-5' alt='' />
+                  <div className='text-center'>
+                    <img
+                      src={t('checkout.safe.img2')}
+                      className='img-fluid mt-5'
+                      style={{ maxWidth: '70%' }}
+                      alt=''
+                    />
+                  </div>
 
                 </div>
               </div>
