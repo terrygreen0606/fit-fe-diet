@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Helmet from 'react-helmet';
+import uuid from 'react-uuid';
 
 import { routes } from 'constants/routes';
 import { getTranslate } from 'utils';
@@ -17,15 +18,24 @@ const SettingsFaqView = (props: any) => {
 
   const [faqData] = useState([
     {
-      id: 1,
-      title: t('faq.question'),
-      content: <div dangerouslySetInnerHTML={{ __html: t('faq.answer.description') }}></div>,
+      id: uuid(),
+      title: t('faq.question1'),
+      content: <div dangerouslySetInnerHTML={{ __html: t('faq.answer1') }}></div>,
     },
     {
-      id: 2,
-      title: t('faq.question'),
-      answerTitle: t('faq.answer.title'),
-      content: <div dangerouslySetInnerHTML={{ __html: t('faq.answer.description') }}></div>,
+      id: uuid(),
+      title: t('faq.question2'),
+      content: <div dangerouslySetInnerHTML={{ __html: t('faq.answer2') }}></div>,
+    },
+    {
+      id: uuid(),
+      title: t('faq.question3'),
+      content: <div dangerouslySetInnerHTML={{ __html: t('faq.answer3') }}></div>,
+    },
+    {
+      id: uuid(),
+      title: t('faq.question4'),
+      content: <div dangerouslySetInnerHTML={{ __html: t('faq.answer4') }}></div>,
     },
   ]);
 

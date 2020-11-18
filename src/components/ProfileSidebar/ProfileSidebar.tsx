@@ -116,18 +116,6 @@ const ProfileSidebar = (props: any) => {
               {t('personal.menu_faq')}
             </NavLink>
           </li>
-
-          <li>
-            <NavLink
-              to='/settings'
-              activeClassName='active'
-              exact
-              className='profile-menu-list-item'
-            >
-              <LeafIcon className='profile-menu-list-icon' />
-              {t('personal.menu_freeware')}
-            </NavLink>
-          </li>
         </ul>
       </div>
     </div>
