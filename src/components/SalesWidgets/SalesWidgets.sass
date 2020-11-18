@@ -24,6 +24,8 @@
 
   @media (max-width: 576px)
     width: 110px
+    left: 50%
+    transform: translate(-50%, 100%)
 
   &__media
     flex-basis: 75px
@@ -113,6 +115,9 @@
   opacity: 1
   visibility: visible
 
+  @media (max-width: 576px)
+    transform: translate(-50%, 0%)
+
 .users-widget
   position: fixed
   bottom: 20px
@@ -137,6 +142,8 @@
   
   @media (max-width: 576px)
     width: 110px
+    left: 50%
+    transform: translate(-50%, 100%)
 
   &__icon
     flex-basis: 60px
@@ -177,3 +184,6 @@
   transform: translateX(0%)
   opacity: 1
   visibility: visible
+
+  @media (max-width: 576px)
+    transform: translate(-50%, 0%)
