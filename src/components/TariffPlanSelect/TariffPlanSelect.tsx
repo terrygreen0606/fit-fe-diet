@@ -43,7 +43,7 @@ const TariffPlanSelect = ({
 
   useEffect(() => {
     if (tariffPlanList.current && tariffPlanList.current?.children?.length > 0) {
-      const pricesTextWrap = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price-now-count-wrap') || [];
+      const pricesTextWrap = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price') || [];
       const pricesText = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price-now-count') || [];
 
       const checkingElements = [];
