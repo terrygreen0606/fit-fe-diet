@@ -16,15 +16,29 @@ import UserCountWidget from './UserCountWidget';
 
 import './SalesWidgets.sass';
 
-const SalesWidgets = (props: any) => {
+type SalesWidgetsProps = {
+  isShow?: boolean;
+  isStartShow?: boolean;
+  localePhrases: any;
+};
+
+const SalesWidgetsDefaultProps = {
+  isShow: true,
+  isStartShow: true,
+};
+
+const SalesWidgets = ({
+  isShow,
+  isStartShow,
+  localePhrases,
+}: SalesWidgetsProps) => {
   const t = (code: string) =>
-    getTranslate(props.localePhrases, code);
+    getTranslate(localePhrases, code);
 
   const [isUsersWidgetActive, setIsUsersWidgetActive] = useState<boolean>(false);
   const [usersCount, setUsersCount] = useState<number>(null);
 
   const [isReviewsWidgetActive, setIsReviewsWidgetActive] = useState<boolean>(false);
-  const [isReviewsWidgetHide, setIsReviewsWidgetHide] = useState<boolean>(false);
   const [reviewsList, setReviewsList] = useState<any[]>([]);
   const [reviewActive, setReviewActive] = useState<{
     image: string,
@@ -35,74 +49,104 @@ const SalesWidgets = (props: any) => {
     name: null,
     text: null,
   });
+  const [isActiveInterval, setIsActiveInterval] = useState<boolean>(false);
+
+  const [isStartShowWidgets, setIsStartShowWidgets] = useState<boolean>(false);
 
   const getRecallsInfo = () => {
-    getRecallsData().then((response) => {
-      if (response.data.data && response.data.success) {
-        const { data } = response.data;
+    getRecallsData()
+      .then((response) => {
+        if (response.data.data && response.data.success) {
+          const { data } = response.data;
 
-        setUsersCount(data.active_users);
-        setReviewsList([...data.recalls]);
+          setUsersCount(data.active_users);
+          setReviewsList([...data.recalls]);
 
-        setReviewActive({
-          ...reviewActive,
-          image: data.recalls[0].image,
-          name: data.recalls[0].name,
-          text: data.recalls[0].text,
-        });
+          setReviewActive({
+            ...reviewActive,
+            image: data.recalls[0].image,
+            name: data.recalls[0].name,
+            text: data.recalls[0].text,
+          });
 
-        setIsUsersWidgetActive(true);
-        setIsReviewsWidgetActive(true);
-      } else {
-        toast.error(t('common.error'));
-      }
-    });
+          setIsActiveInterval(true);
+          setIsUsersWidgetActive(true);
+        } else {
+          toast.error(t('common.error'));
+        }
+      })
+      .catch(() => toast.error(t('common.error')));
   };
 
-  const reviewCount = useRef(1);
+  const reviewCount = useRef(0);
 
   useInterval(() => {
-    setIsReviewsWidgetHide(true);
-    setReviewActive({
-      ...reviewActive,
-      image: reviewsList[reviewCount.current]?.image,
-      name: reviewsList[reviewCount.current]?.name,
-      text: reviewsList[reviewCount.current]?.text,
-    });
+    const prevActiveWidget = isUsersWidgetActive ? 'users' : 'reviews';
 
-    if (reviewsList.length === 0) {
-      reviewCount.current = 1;
-    } else {
-      reviewCount.current += 1;
-    }
+    setIsUsersWidgetActive(false);
+    setIsReviewsWidgetActive(false);
+    setIsActiveInterval(false);
 
-    if (reviewCount.current === reviewsList.length) {
-      reviewCount.current = 0;
-    }
     setTimeout(() => {
-      setIsReviewsWidgetHide(false);
-    }, 200);
-  }, 5000);
+      setIsActiveInterval(true);
+      if (prevActiveWidget === 'users') {
+        setReviewActive({
+          ...reviewActive,
+          image: reviewsList[reviewCount.current]?.image,
+          name: reviewsList[reviewCount.current]?.name,
+          text: reviewsList[reviewCount.current]?.text,
+        });
+
+        if (reviewsList.length === 0) {
+          reviewCount.current = 0;
+        } else {
+          reviewCount.current += 1;
+        }
+
+        if (reviewCount.current === reviewsList.length) {
+          reviewCount.current = 0;
+        }
+
+        setIsReviewsWidgetActive(true);
+      } else {
+        setUsersCount(usersCount > 3600 ? usersCount - 100 : usersCount + 100);
+        setIsUsersWidgetActive(true);
+      }
+    }, 4000);
+  }, isActiveInterval && isStartShowWidgets ? 8000 : null);
 
   useEffect(() => {
-    setTimeout(() => {
-      getRecallsInfo();
-    }, 15000);
+    let cleanComponent = false;
+
+    if (!cleanComponent) {
+      setTimeout(() => {
+        getRecallsInfo();
+      }, 15000);
+    }
+
+    return () => cleanComponent = true;
   }, []);
+
+  useEffect(() => {
+    if (isStartShow) {
+      setIsStartShowWidgets(true);
+    }
+  }, [isStartShow]);
 
   return (
     <div className='widgets'>
       <UserCountWidget
-        active={isUsersWidgetActive}
+        active={isUsersWidgetActive && isShow && isStartShowWidgets}
         count={usersCount}
       />
       <ReviewsWidget
-        active={isReviewsWidgetActive}
-        fadeAnimation={isReviewsWidgetHide}
+        active={isReviewsWidgetActive && isShow && isStartShowWidgets}
         data={reviewActive}
       />
     </div>
   );
 };
+
+SalesWidgets.defaultProps = SalesWidgetsDefaultProps;
 
 export default WithTranslate(SalesWidgets);

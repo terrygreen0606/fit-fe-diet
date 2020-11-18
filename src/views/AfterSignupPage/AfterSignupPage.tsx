@@ -16,6 +16,9 @@ import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
 import SalesWidgets from 'components/SalesWidgets';
+import useVisible from 'components/hooks/useVisible';
+import useWindowSize from 'components/hooks/useWindowSize';
+import useDebounce from 'components/hooks/useDebounce';
 
 import './AfterSignupPage.sass';
 
@@ -49,6 +52,42 @@ const AfterSignupPage = ({
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
 
+  const { width: windowWidth } = useWindowSize();
+  const debounceWindowWidth = useDebounce(windowWidth, 500);
+
+  const [isActiveWidgetsOnMobile, setIsActiveWidgetsOnMobile] = useState<boolean>(false);
+  const [isStartActiveWidgets, setIsStartActiveWidgets] = useState<boolean>(false);
+
+  const selectPlanBlockRef = useRef();
+  const isVisibleSelectPlanBlock = useVisible(selectPlanBlockRef);
+  useEffect(() => {
+    if (debounceWindowWidth < 576) {
+      setIsActiveWidgetsOnMobile(isVisibleSelectPlanBlock);
+    }
+  }, [
+    debounceWindowWidth,
+    isVisibleSelectPlanBlock,
+  ]);
+
+  const paymentFormBlockRef = useRef();
+  const isVisiblePaymentFormBlock = useVisible(paymentFormBlockRef);
+  useEffect(() => {
+    if (debounceWindowWidth < 576) {
+      setIsActiveWidgetsOnMobile(isVisiblePaymentFormBlock);
+    }
+  }, [
+    debounceWindowWidth,
+    isVisiblePaymentFormBlock,
+  ]);
+
+  const introBlockRef = useRef();
+  const isVisibleIntroBlock = useVisible(introBlockRef, '-50px');
+  useEffect(() => {
+    setIsStartActiveWidgets(isVisibleIntroBlock);
+  }, [
+    debounceWindowWidth,
+    isVisibleIntroBlock,
+  ]);
   const afterSignupTariffsRef = useRef<any>(null);
 
   const getUserTariffs = () => {
@@ -232,7 +271,7 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <section className='after-signup-intro-sect'>
+      <section ref={introBlockRef} className='after-signup-intro-sect'>
         <div className='container'>
           <div className='row'>
             <div className='col-lg-8 order-md-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
@@ -498,7 +537,7 @@ const AfterSignupPage = ({
               </div>
 
               <div className='row'>
-                <div className='col-md-6'>
+                <div ref={selectPlanBlockRef} className='col-md-6'>
 
                   <h2 ref={afterSignupTariffsRef} className='mb-5 fw-bold text-center'>
                     {t('lp.select_plan_title')}
@@ -566,7 +605,7 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <section className='after-signup-payment-form-sect'>
+      <section ref={paymentFormBlockRef} className='after-signup-payment-form-sect'>
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
@@ -644,7 +683,10 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <SalesWidgets />
+      <SalesWidgets
+        isShow={!isActiveWidgetsOnMobile}
+        isStartShow={isStartActiveWidgets}
+      />
     </>
   );
 };

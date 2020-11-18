@@ -12,7 +12,6 @@ import { ReactComponent as StarIcon } from 'assets/img/icons/star-yellow-icon.sv
 
 type ReviewsWidgetProps = {
   active: boolean;
-  fadeAnimation: boolean;
   data: {
     image: string,
     name: string,
@@ -23,7 +22,6 @@ type ReviewsWidgetProps = {
 
 const ReviewsWidget = ({
   active,
-  fadeAnimation,
   data,
   localePhrases,
 }: ReviewsWidgetProps) => {
@@ -34,7 +32,6 @@ const ReviewsWidget = ({
     <div
       className={classNames('reviews-widget', {
         active,
-        hide: fadeAnimation,
       })}
     >
       <div
