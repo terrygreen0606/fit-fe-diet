@@ -116,17 +116,17 @@ const FormValidator = {
             result[m] = !validator.equals(value, value2);
             break;
           case 'minlen':
-            result[m] = !validator.isLength(value, { min: param });
+            result[m] = !validator.isLength(value?.trim() || '', { min: param });
             break;
           case 'maxlen':
-            result[m] = value && value.length > 0 ? !validator.isLength(value, { max: param }) : false;
+            result[m] = value && value.length > 0 ? !validator.isLength(value?.trim() || '', { max: param }) : false;
             break;
           case 'max-max-len':
             data = param.split(',');
-            result[m] = value && value.length > 0 ? !validator.isLength(value, { min: validator.toInt(data[0]), max: validator.toInt(data[1]) }) : false;
+            result[m] = value && value.length > 0 ? !validator.isLength(value?.trim() || '', { min: validator.toInt(data[0]), max: validator.toInt(data[1]) }) : false;
             break;
           case 'len':
-            result[m] = value && value.length > 0 ? !validator.isLength(value.replace('_', ''), { min: param, max: param }) : false;
+            result[m] = value && value.length > 0 ? !validator.isLength(value?.trim() || ''.replace('_', ''), { min: param, max: param }) : false;
             break;
           case 'min':
             result[m] = value && value.length > 0 ? !validator.isFloat(value, { min: validator.toInt(param) }) : false;

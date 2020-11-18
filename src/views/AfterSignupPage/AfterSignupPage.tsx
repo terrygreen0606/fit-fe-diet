@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
@@ -48,6 +48,8 @@ const AfterSignupPage = ({
   const [tariffsLoadingError, setTariffsLoadingError] = useState<boolean>(false);
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
+
+  const afterSignupTariffsRef = useRef<any>(null);
 
   const getUserTariffs = () => {
     setTariffsLoading(true);
@@ -139,11 +141,11 @@ const AfterSignupPage = ({
   };
 
   const scrollToTariffsSelectForm = () => {
-    document.getElementById('afterSignupTariffs')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+    afterSignupTariffsRef?.current?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
   };
 
   const scrollToCheckoutForm = () => {
-    document.getElementById('afterSignupPaymentForm')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+    document.getElementById('afterSignupPaymentFormRef')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
   };
 
   const isShowPartners = () => language === 'br';
@@ -264,7 +266,7 @@ const AfterSignupPage = ({
                   </div>
                 </>
               )}
-              
+
               <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
 
               <div className='mt-4 mt-xl-5' dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
@@ -498,7 +500,7 @@ const AfterSignupPage = ({
               <div className='row'>
                 <div className='col-md-6'>
 
-                  <h2 id='afterSignupTariffs' className='mb-5 fw-bold text-center'>
+                  <h2 ref={afterSignupTariffsRef} className='mb-5 fw-bold text-center'>
                     {t('lp.select_plan_title')}
                   </h2>
 
@@ -569,11 +571,14 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-12'>
 
-              <h3 id='afterSignupPaymentForm' className='mb-5 fw-bold text-center'>{t('lp.select_payment.title')}</h3>
+              <h3 id='afterSignupPaymentFormRef' className='mb-5 fw-bold text-center'>
+                {t('lp.select_payment.title')}
+              </h3>
 
               <CheckoutPaymentFormCard
                 tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
                 disabled={!getActiveTariffData()}
+                scrollRef={afterSignupTariffsRef}
                 history={history}
                 localePhrases={localePhrases}
               />
