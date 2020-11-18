@@ -535,6 +535,5 @@ export default WithTranslate(
     (state: any) => ({
       language: state.settings.settings,
     }),
-    null,
   )(CheckoutPage),
 );
