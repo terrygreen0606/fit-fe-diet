@@ -26,7 +26,7 @@ const CreditCardNumberField = ({ cards, ...inputProps }: CreditCardNumberFieldPr
     let cardLogo = null;
 
     cards.forEach(({ pattern, logo }) => {
-      if (new RegExp(pattern).test(inputProps.value?.toString().trim() || '')) {
+      if (new RegExp(pattern).test(inputProps.value?.toString().replace(/ /g, '') || '')) {
         cardLogo = logo;
       }
     });
