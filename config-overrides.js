@@ -1,6 +1,8 @@
 /* config-overrides.js */
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const paths = require('react-scripts/config/paths');
 
 const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
@@ -36,6 +38,34 @@ module.exports = function override(config, env) {
 
   let plugins = config.plugins;
 
+  plugins[0] =
+    new HtmlWebpackPlugin(
+      Object.assign(
+        {},
+        {
+          inject: true,
+          hash: true,
+          template: paths.appHtml,
+        },
+        isEnvProduction
+          ? {
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
+          : undefined
+      )
+    );
+
   if (isEnvProduction) {
     plugins[8] =
       new WorkboxWebpackPlugin.GenerateSW({
@@ -57,20 +87,20 @@ module.exports = function override(config, env) {
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
-        filename: 'static/css/[name].[contenthash:8].css',
-        chunkFilename: 'static/css/[name].chunk.[contenthash:8].css',
+        filename: 'static/css/[name].css',
+        chunkFilename: 'static/css/[name].chunk.css',
       });
   }
 
   let output = config.output;
 
   output.filename = isEnvProduction
-    ? 'static/js/[name].[contenthash:8].js'
+    ? 'static/js/[name].js'
     : isEnvDevelopment && 'static/js/bundle.js';
   // TODO: remove this when upgrading to webpack 5
   // There are also additional JS chunk files if you use code splitting.
   output.chunkFilename = isEnvProduction
-    ? 'static/js/[name].chunk.[contenthash:8].js'
+    ? 'static/js/[name].chunk.js'
     : isEnvDevelopment && 'static/js/[name].chunk.js';
 
   return config;
