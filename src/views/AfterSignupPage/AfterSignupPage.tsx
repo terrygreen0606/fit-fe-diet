@@ -565,9 +565,9 @@ const AfterSignupPage = ({
       </section>
 
       <section className='after-signup-payment-form-sect'>
-        <div className='container checkout-payment-card-wrap'>
+        <div className='container'>
           <div className='row'>
-            <div className='col-12'>
+            <div className='col-12 checkout-payment-card__wrap'>
 
               <h3 id='afterSignupPaymentForm' className='mb-5 fw-bold text-center'>{t('lp.select_payment.title')}</h3>
 
