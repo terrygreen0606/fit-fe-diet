@@ -200,10 +200,10 @@ const CheckoutPaymentFormCard = ({
       article_id: getTariffDataValue('tariff'),
       currency: getTariffDataValue('currency'),
       card: {
-        number: cardNumber?.trim(),
+        number: cardNumber?.replace(/ /g, ''),
         year: `20${cardMonthYear.split('/')[1]}`,
         month: cardMonthYear.split('/')[0],
-        cvv: cardCvv?.trim(),
+        cvv: cardCvv?.replace(/ /g, ''),
       },
       contacts: {
         phone,
