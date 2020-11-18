@@ -62,52 +62,53 @@ const Header = (props: any) => {
 
               <nav className='mainHeader_menuList'>
 
-                {settings.paid_until > 0 && (
-                  <>
-                    <NavLink
-                      to={routes.mealPlan}
-                      className='mainHeader_menuList_item'
-                      activeClassName='mainHeader_menuList_item_active'
-                    >
-                      {t('header.menu_mp')}
-                    </NavLink>
-
-                    <NavLink
-                      to={routes.recipes}
-                      className='mainHeader_menuList_item'
-                      activeClassName='mainHeader_menuList_item_active'
-                    >
-                      {t('header.menu_recipes')}
-                    </NavLink>
-
-                    <NavLink
-                      to={routes.waterTracker}
-                      className='mainHeader_menuList_item'
-                      activeClassName='mainHeader_menuList_item_active'
-                    >
-                      {t('header.menu_wt')}
-                    </NavLink>
-                  </>
-                )}
-
-                <NavLink
-                  to={routes.personalSettings}
-                  className='mainHeader_menuList_item'
-                  activeClassName='mainHeader_menuList_item_active'
-                >
-                  {t('header.menu_settings')}
-                </NavLink>
-
-                <ShoppingListCart visible={isAuthenticated && settings.paid_until} />
-
                 {isAuthenticated ? (
-                  <button
-                    type='button'
-                    className='mainHeader_menuList_item'
-                    onClick={() => props.userLogout()}
-                  >
-                    {t('common.logout')}
-                  </button>
+                  <>
+                    {settings.paid_until > 0 && (
+                      <>
+                        <NavLink
+                          to={routes.mealPlan}
+                          className='mainHeader_menuList_item'
+                          activeClassName='mainHeader_menuList_item_active'
+                        >
+                          {t('header.menu_mp')}
+                        </NavLink>
+
+                        <NavLink
+                          to={routes.recipes}
+                          className='mainHeader_menuList_item'
+                          activeClassName='mainHeader_menuList_item_active'
+                        >
+                          {t('header.menu_recipes')}
+                        </NavLink>
+
+                        <NavLink
+                          to={routes.waterTracker}
+                          className='mainHeader_menuList_item'
+                          activeClassName='mainHeader_menuList_item_active'
+                        >
+                          {t('header.menu_wt')}
+                        </NavLink>
+                      </>
+                    )}
+
+                    <NavLink
+                      to={routes.personalSettings}
+                      className='mainHeader_menuList_item'
+                      activeClassName='mainHeader_menuList_item_active'
+                    >
+                      {t('header.menu_settings')}
+                    </NavLink>
+
+                    <ShoppingListCart visible={isAuthenticated && settings.paid_until} />
+                    <button
+                      type='button'
+                      className='mainHeader_menuList_item'
+                      onClick={() => props.userLogout()}
+                    >
+                      {t('common.logout')}
+                    </button>
+                  </>
                 ) : (
                     <>
                       <NavLink
