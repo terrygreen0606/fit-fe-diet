@@ -21,11 +21,11 @@
   &__title
     display: flex
     align-items: center
-    margin-bottom: 47px
+    margin-bottom: 25px
   &__total
     flex: 22
   &__form
-    padding: 51px 20px 43px
+    padding: 30px
     background: #FCFCFC
     border: 1px solid #E8E8E8
     border-radius: 20px
@@ -99,3 +99,64 @@
           color: #979797
           font-size: 14px
           line-height: 14px
+
+.payment-types-img
+  display: inline-block
+  width: 40px
+  flex: 0 0 40px
+  margin-bottom: 3px
+  &:not(:last-child)
+    margin-right: 3px
+  &-list
+    display: inline-flex
+    flex-wrap: wrap
+    align-items: center
+
+.checkout-payment-radio
+  width: 270px
+  padding: 0
+  &__list
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-wrap: wrap
+    .checkout-payment-radio
+      @media (max-width: 768px)
+        flex: 0 0 100%
+        margin: 0
+        &:not(:last-child)
+          margin-bottom: 20px !important
+        &__btn
+          width: 100%
+  &.radio-checked
+    .checkout-payment-radio__btn
+      background-color: $steel-blue
+      border-color: $steel-blue
+  &__btn
+    min-width: 270px
+    height: 82px
+    padding: 20px
+    padding-left: 95px
+    border-radius: 10px
+    border: 1px solid #C4C4C4
+    background-color: #fff
+    justify-content: center
+    &:hover
+      background-color: $steel-blue
+      border-color: $steel-blue
+  .radiomark
+    top: 15px
+    left: 25px
+    width: 45px
+    height: 45px
+    background-color: #f0f0f0
+    border: 9px solid #fff
+    box-shadow: 0px 3px 5px #BAC2D2
+  input
+    &:checked ~ .radiomark
+      border-width: 9px
+      background-color: $steel-blue
+      background-image: url('../../assets/img/icons/check-icon.svg')
+      background-size: 15px
+      background-repeat: no-repeat
+      background-position: center center
