@@ -406,7 +406,6 @@ const CheckoutPaymentFormCard = ({
               logo,
             })) || []}
             className='checkout-payment-card__form_input'
-            isValid={isFieldValid('cardNumber')}
             value={checkoutForm.cardNumber}
             data-param='18,23'
             data-validate='["required", "max-max-len"]'
