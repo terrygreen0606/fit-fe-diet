@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import { routes } from 'constants/routes';
@@ -16,6 +17,8 @@ import './SettingsPaymentHistoryView.sass';
 
 const SettingsPaymentHistoryView = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
+
+  const { language } = props;
 
   const [isSpinnerActive, setIsSpinnerActive] = useState<boolean>(true);
 
@@ -103,7 +106,7 @@ const SettingsPaymentHistoryView = (props: any) => {
                               {item.number}
                             </div>
                             <div className='payment-history__table-date'>
-                              {convertTime(item.created_ts)}
+                              {convertTime(item.created_ts, language)}
                             </div>
                             <div className='payment-history__table-amount'>
                               {item.amount}
@@ -124,4 +127,8 @@ const SettingsPaymentHistoryView = (props: any) => {
   );
 };
 
-export default WithTranslate((SettingsPaymentHistoryView));
+export default WithTranslate(
+  connect((state: any) => ({
+    language: state.settings.language,
+  }))(SettingsPaymentHistoryView),
+);

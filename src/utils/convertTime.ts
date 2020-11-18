@@ -1,4 +1,2 @@
-import { getLangUser } from './getLangUser';
-
-export const convertTime = (unixTsNumber: number, options?: object) =>
-  new Date(unixTsNumber * 1000).toLocaleDateString(getLangUser(), options);
+export const convertTime = (unixTsNumber: number, language: string, options?: object) =>
+  new Date(unixTsNumber * 1000).toLocaleDateString(language, options);

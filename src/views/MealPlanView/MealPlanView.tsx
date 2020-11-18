@@ -7,11 +7,7 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import uuid from 'react-uuid';
 
-import {
-  getTranslate,
-  getScrollbarSize,
-  getLangUser,
-} from 'utils';
+import { getTranslate, getScrollbarSize } from 'utils';
 import { routes } from 'constants/routes';
 import { costLevelLabel } from 'constants/costLevelLabel';
 import {
@@ -109,9 +105,9 @@ const MealPlanView = (props: any) => {
         today.setDate(today.getDate() + i);
         updatedDays.push({
           id: i,
-          dayLabel: today.toLocaleDateString(getLangUser(), { weekday: 'short' }),
-          dayNumber: today.toLocaleDateString(getLangUser(), { day: 'numeric' }),
-          dayFullInfo: today.toLocaleDateString(getLangUser(), {
+          dayLabel: today.toLocaleDateString(settings.language, { weekday: 'short' }),
+          dayNumber: today.toLocaleDateString(settings.language, { day: 'numeric' }),
+          dayFullInfo: today.toLocaleDateString(settings.language, {
             weekday: 'long',
             month: 'long',
             day: 'numeric',

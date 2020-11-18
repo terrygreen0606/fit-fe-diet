@@ -25,6 +25,8 @@ import './ReferralView.sass';
 const ReferralView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
+  const { language } = props;
+
   const [inviteLink, setInviteLink] = useState<string>('');
 
   const [userName, setUserName] = useState<string>('');
@@ -57,7 +59,7 @@ const ReferralView = (props: any) => {
         data.data.list.map((item) => {
           item.id = uuid();
 
-          item.date = convertTime(item.invited_ts);
+          item.date = convertTime(item.invited_ts, language);
         });
 
         setInvitedMembers([...data.data.list]);
@@ -192,8 +194,8 @@ const ReferralView = (props: any) => {
                       {item.is_paid ? (
                         t('common.yes')
                       ) : (
-                        t('common.no')
-                      )}
+                          t('common.no')
+                        )}
                     </div>
                   </div>
                 </div>
@@ -206,4 +208,8 @@ const ReferralView = (props: any) => {
   );
 };
 
-export default WithTranslate(connect(null)(ReferralView));
+export default WithTranslate(
+  connect((state: any) => ({
+    language: state.settings.language,
+  }))(ReferralView),
+);

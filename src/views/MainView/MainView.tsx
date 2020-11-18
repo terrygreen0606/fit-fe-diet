@@ -8,7 +8,7 @@ import uuid from 'react-uuid';
 import requestHash from '@fingerprintjs/fingerprintjs';
 
 import { routes } from 'constants/routes';
-import { getTranslate, convertTime, getLangUser } from 'utils';
+import { getTranslate, convertTime } from 'utils';
 import { getUserDashboard } from 'api';
 
 // Components
@@ -108,21 +108,21 @@ const MainView = (props: any) => {
 
   const setData = (data) => {
     const updatedPointsData = data.points.map((item) => item.points);
-    const updatedPointsLabel = data.points.map((item) => convertTime(item.date, { day: '2-digit', month: '2-digit' }));
+    const updatedPointsLabel = data.points.map((item) => convertTime(item.date, settings.language, { day: '2-digit', month: '2-digit' }));
 
     const updatedRewards = data.rewards.map((item) => ({
       ...item,
       id: uuid(),
     }));
 
-    const today = new Date().toLocaleDateString(getLangUser(), { day: '2-digit', month: '2-digit' });
+    const today = new Date().toLocaleDateString(settings.language, { day: '2-digit', month: '2-digit' });
 
     return ({
       bloodPressure: {
         bpm: data.blood_pressure.bpm,
         bp: data.blood_pressure.bp,
       },
-      lastLogin: convertTime(data.last_login),
+      lastLogin: convertTime(data.last_login, settings.language),
       mealPlan: data.meal_plan,
       name: data.name,
       pointsData: [...updatedPointsData],

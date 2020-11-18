@@ -22,7 +22,6 @@ export * from './getVideo';
 export * from './getWeigthUnit';
 export * from './getMealIcon';
 export * from './convertTime';
-export * from './getLangUser';
 export * from './getCookie';
 export * from './getApiBaseUrl';
 export * from './deleteCookie';
