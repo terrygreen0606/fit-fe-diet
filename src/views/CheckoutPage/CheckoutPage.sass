@@ -9,18 +9,6 @@
     position: relative
     margin-top: -70px
 
-.payment-types-img
-  display: inline-block
-  width: 40px
-  flex: 0 0 40px
-  margin-bottom: 3px
-  &:not(:last-child)
-    margin-right: 3px
-  &-list
-    display: inline-flex
-    flex-wrap: wrap
-    align-items: center
-
 .checkout-form-container
   display: block
   max-width: 680px
@@ -63,7 +51,6 @@
     max-width: 450px
     margin-top: 40px
 
-
 .checkout-divider
   display: block
   margin: 50px 0
@@ -71,10 +58,8 @@
   width: 100%
   height: 1px 
   background-color: #c4c4c4
-
   @media (max-width: 576px)
     margin: 40px 0
-
 
 .checkout-advantages__title
   font-weight: 400
@@ -88,13 +73,11 @@
     display: flex
     justify-content: space-between
     align-items: center
-
     &:first-child
       padding-bottom: 20px
       border-bottom: 1px solid #C4C4C4
     &:not(:last-child)
       margin-bottom: 20px
-    
     &__label
       margin-right: 20px
       font-weight: 400
@@ -106,7 +89,6 @@
       font-size: 22px
       line-height: 36px
       color: #000000
-
     @media (max-width: 768px)
       &__label, &__value
         width: 100%
@@ -136,59 +118,6 @@
     font-size: 18px
     line-height: 22px
     color: #FFFFFF
-
-
-.checkout-payment-radio
-  width: 270px
-  padding: 0
-
-  &__list
-    display: flex
-    align-items: center
-    justify-content: center
-    flex-wrap: wrap
-    .checkout-payment-radio
-      @media (max-width: 768px)
-        flex: 0 0 100%
-        margin: 0
-        &:not(:last-child)
-          margin-bottom: 20px !important
-        &__btn
-          width: 100%
-
-  &.radio-checked
-    .checkout-payment-radio__btn
-      background-color: $steel-blue
-      border-color: $steel-blue
-  &__btn
-    min-width: 270px
-    height: 82px
-    padding: 20px
-    padding-left: 95px
-    border-radius: 10px
-    border: 1px solid #C4C4C4
-    background-color: #fff
-    justify-content: center
-    &:hover
-      background-color: $steel-blue
-      border-color: $steel-blue
-
-  .radiomark
-    top: 15px
-    left: 25px
-    width: 45px
-    height: 45px
-    background-color: #f0f0f0
-    border: 9px solid #fff
-    box-shadow: 0px 3px 5px #BAC2D2
-  input
-    &:checked ~ .radiomark
-      border-width: 9px
-      background-color: $steel-blue
-      background-image: url('../../assets/img/icons/check-icon.svg')
-      background-size: 15px
-      background-repeat: no-repeat
-      background-position: center center
   
 
 .checkout-person-plan
@@ -200,15 +129,12 @@
     background-size: cover
     background-repeat: no-repeat
     background-position: top center
-
     @media (max-width: 768px)
       padding: 59px 27px 52px
-
   &-title
     font-size: 34px
     line-height: 41px
     color: #000
-
     @media (max-width: 768px)
       font-size: 30px
       line-height: 37px
@@ -226,10 +152,8 @@
     align-items: center
     justify-content: center
     color: #000000
-
   @media (max-width: 768px)
     padding: 28px 0
-
     &__title
       font-size: 26px
       line-height: 32px

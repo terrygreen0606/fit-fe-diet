@@ -8,7 +8,6 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  getImagePath,
 } from 'utils';
 import Helmet from 'react-helmet';
 import { InputError } from 'types';
@@ -16,7 +15,6 @@ import { routes } from 'constants/routes';
 import queryString from 'query-string';
 import {
   getCheckoutTariff, fetchUserProfile,
-  getPaymentMethods,
   getPaymentStatus,
 } from 'api';
 
@@ -69,13 +67,6 @@ const CheckoutPage = ({
   const [paymentStatusLoading, setPaymentStatusLoading] = useState<boolean>(false);
   const [paymentStatusLoadingError, setPaymentStatusLoadingError] = useState<boolean>(false);
   const [paymentStatusError, setPaymentStatusError] = useState<boolean>(false);
-
-  const [paymentMethods, setPaymentMethods] = useState<any>({
-    cards: [],
-    others: [],
-  });
-  const [paymentMethodsLoading, setPaymentMethodsLoading] = useState<boolean>(true);
-  const [paymentMethodsLoadingError, setPaymentMethodsLoadingError] = useState<boolean>(false);
 
   const [profileData, setProfileData] = useState<any>({
     name: t('checkout.title.user_name'),
@@ -163,35 +154,9 @@ const CheckoutPage = ({
       });
   };
 
-  const getUserPaymentMethods = () => {
-    setPaymentMethodsLoading(true);
-    setPaymentMethodsLoadingError(false);
-
-    getPaymentMethods()
-      .then(({ data }) => {
-        setPaymentMethodsLoading(false);
-
-        if (data.success && data.data) {
-          setPaymentMethods({
-            cards: data.data.cards || [],
-            others: data.data.others || [],
-          });
-        }
-      })
-      .catch(() => {
-        setPaymentMethodsLoading(false);
-        setPaymentMethodsLoadingError(true);
-
-        setProfileData({
-          name: t('checkout.title.user_name'),
-        });
-      });
-  };
-
   useEffect(() => {
     getUserPaymentTariff();
     getUserProfile();
-    getUserPaymentMethods();
 
     if (orderId) {
       getUserPaymentStatus();
@@ -301,10 +266,10 @@ const CheckoutPage = ({
                       {profileLoading ? (
                         <Spinner />
                       ) : (
-                          <div
-                            dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
-                          />
-                        )}
+                        <div
+                          dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
+                        />
+                      )}
                     </h4>
                   </div>
 
@@ -314,15 +279,15 @@ const CheckoutPage = ({
                       {t('checkout.rewards_title')}
                     </h1>
 
-                    <div className='row mt-5'>
-                      <div className='col-lg-3 mb-3 mb-lg-0 pt-2'>
+                    {isShowPartners() ? (
+                      <div className='row mt-5'>
+                        <div className='col-lg-3 mb-3 mb-lg-0 pt-2'>
 
-                        <h3>{t('lp.partners_list_title')}</h3>
+                          <h3>{t('lp.partners_list_title')}</h3>
 
-                      </div>
-                      <div className='col-lg-9'>
+                        </div>
+                        <div className='col-lg-9'>
 
-                        {isShowPartners() ? (
                           <div className='app-partners-list__wrap mt-5 pt-5'>
                             <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
 
@@ -345,12 +310,12 @@ const CheckoutPage = ({
                               />
                             </div>
                           </div>
-                        ) : (
-                          <div style={{ height: '70px' }} />
-                        )}
 
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div style={{ height: '70px' }} />
+                    )}
                   </div>
 
                   <div className='checkout-form-container'>
@@ -433,63 +398,6 @@ const CheckoutPage = ({
                     <hr className='checkout-divider' />
 
                     <img src={t('checkout.safe.img2')} className='img-fluid' alt='' />
-
-                    <div className='mt-5'>
-                      <ContentLoading
-                        isLoading={paymentMethodsLoading}
-                        isError={paymentMethodsLoadingError}
-                        fetchData={() => getUserPaymentMethods()}
-                      >
-                        <div className='checkout-payment-radio__list'>
-                          {paymentMethods.cards.length > 0 && (
-                            <CustomRadio
-                              className={classNames('checkout-payment-radio', {
-                                'radio-checked': checkoutForm.payment_type === 'credit_card',
-                              })}
-                              checked={checkoutForm.payment_type === 'credit_card'}
-                              value='credit_card'
-                              name='payment_type'
-                              onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
-                              label={(
-                                <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
-                                  <div className='payment-types-img-list'>
-                                    {paymentMethods.cards.map((card) => (
-                                      <img
-                                        key={card.id}
-                                        src={card.logo || null}
-                                        className='payment-types-img'
-                                        alt=''
-                                      />
-                                    ))}
-                                  </div>
-                                </Button>
-                              )}
-                            />
-                          )}
-
-                          {paymentMethods.others.map((method) => (
-                            <CustomRadio
-                              className={classNames('checkout-payment-radio', {
-                                'radio-checked': checkoutForm.payment_type === method.id,
-                              })}
-                              checked={checkoutForm.payment_type === method.id}
-                              value='method.id'
-                              name='payment_type'
-                              onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
-                              label={(
-                                <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
-                                  <img
-                                    src={method.logo || null}
-                                    className='img-fluid'
-                                    alt=''
-                                  />
-                                </Button>
-                              )}
-                            />
-                          ))}
-                        </div>
-                      </ContentLoading>
-                    </div>
 
                     <CheckoutPaymentFormCard
                       className='mt-5'
