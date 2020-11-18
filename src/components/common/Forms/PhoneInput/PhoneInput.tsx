@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import ReactPhoneInput from 'react-phone-input-2';
 import { InputError } from 'types';
-import uuid from 'react-uuid';
+import { phonesRegex } from 'constants/phonesRegex';
 
 // Components
 import FormLabel from '../FormLabel';
@@ -129,8 +129,8 @@ const PhoneInput = (props: PhoneInputProps) => {
         {...finalAttributes}
         value={value}
         isValid={(curValue, country) => {
-          if (checkIsValid && country['format'] && curValue) {
-            checkIsValid(country['format'].split('').filter((char) => char === '.').length === curValue.length);
+          if (checkIsValid && country && country['iso2'] && curValue) {
+            checkIsValid(phonesRegex[country['iso2']?.toUpperCase()]?.test(curValue) || false);
           }
 
           return true;
