@@ -39,49 +39,35 @@ const SideMenu = ({
           className='mobile-side-menu-close-icon'
         />
 
-        <ul className='mobile-menu-list'>
-          {paidUntil > 0 && (
-            <>
-              <li>
-                <Link to={routes.mealPlan} className='mobile-menu-list-item'>
-                  {t('header.menu_mp')}
-                </Link>
-              </li>
-              <li>
-                <Link to={routes.recipes} className='mobile-menu-list-item'>
-                  {t('header.menu_recipes')}
-                </Link>
-              </li>
-              <li>
-                <Link to={routes.waterTracker} className='mobile-menu-list-item'>
-                  {t('header.menu_wt')}
-                </Link>
-              </li>
-            </>
-          )}
-          <li>
-            <Link to={routes.personalSettings} className='mobile-menu-list-item'>
-              {t('header.menu_settings')}
-            </Link>
-          </li>
-        </ul>
-
-        {!isAuthenticated ? (
+        {isAuthenticated ? (
           <>
-            <Link
-              to='/login'
-              className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
-            >
-              {t('login.submit')}
-            </Link>
-            <Link
-              to='/register'
-              className='mt-3 bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
-            >
-              {t('button.register')}
-            </Link>
-          </>
-        ) : (
+            <ul className='mobile-menu-list'>
+              {paidUntil > 0 && (
+                <>
+                  <li>
+                    <Link to={routes.mealPlan} className='mobile-menu-list-item'>
+                      {t('header.menu_mp')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={routes.recipes} className='mobile-menu-list-item'>
+                      {t('header.menu_recipes')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={routes.waterTracker} className='mobile-menu-list-item'>
+                      {t('header.menu_wt')}
+                    </Link>
+                  </li>
+                </>
+              )}
+              <li>
+                <Link to={routes.personalSettings} className='mobile-menu-list-item'>
+                  {t('header.menu_settings')}
+                </Link>
+              </li>
+            </ul>
+
             <button
               className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
               type='button'
@@ -89,6 +75,22 @@ const SideMenu = ({
             >
               {t('common.logout')}
             </button>
+          </>
+        ) : (
+            <>
+              <Link
+                to='/login'
+                className='bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
+              >
+                {t('login.submit')}
+              </Link>
+              <Link
+                to='/register'
+                className='mt-3 bttn bttn_default bttn_md bttnWeight_default bttnBlock bttnOutline'
+              >
+                {t('button.register')}
+              </Link>
+            </>
           )}
       </div>
     </>
