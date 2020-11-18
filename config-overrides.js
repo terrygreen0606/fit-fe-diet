@@ -1,5 +1,6 @@
 /* config-overrides.js */
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
@@ -8,6 +9,7 @@ const imageInlineSizeLimit = parseInt(
 module.exports = function override(config, env) {
   //do stuff with the webpack config...
   const isEnvProduction = env === 'production';
+  const isEnvDevelopment = env === 'development';
 
   let rules = config.module.rules[2].oneOf;
 
@@ -50,7 +52,26 @@ module.exports = function override(config, env) {
           new RegExp('/[^/?]+\\.[^/]+$'),
         ],
       });
+
+    plugins[5] =
+      new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        filename: 'static/css/[name].[contenthash:8].css',
+        chunkFilename: 'static/css/[name].chunk.[contenthash:8].css',
+      });
   }
+
+  let output = config.output;
+
+  output.filename = isEnvProduction
+    ? 'static/js/[name].[contenthash:8].js'
+    : isEnvDevelopment && 'static/js/bundle.js';
+  // TODO: remove this when upgrading to webpack 5
+  // There are also additional JS chunk files if you use code splitting.
+  output.chunkFilename = isEnvProduction
+    ? 'static/js/[name].chunk.[contenthash:8].js'
+    : isEnvDevelopment && 'static/js/[name].chunk.js';
 
   return config;
 }
