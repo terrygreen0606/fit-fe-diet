@@ -58,8 +58,8 @@ const AfterSignupPage = ({
   const [isActiveWidgetsOnMobile, setIsActiveWidgetsOnMobile] = useState<boolean>(false);
   const [isStartActiveWidgets, setIsStartActiveWidgets] = useState<boolean>(false);
 
-  const selectPlanBlock = useRef();
-  const isVisibleSelectPlanBlock = useVisible(selectPlanBlock);
+  const selectPlanBlockRef = useRef();
+  const isVisibleSelectPlanBlock = useVisible(selectPlanBlockRef);
   useEffect(() => {
     if (debounceWindowWidth < 576) {
       setIsActiveWidgetsOnMobile(isVisibleSelectPlanBlock);
@@ -69,8 +69,8 @@ const AfterSignupPage = ({
     isVisibleSelectPlanBlock,
   ]);
 
-  const paymentFormBlock = useRef();
-  const isVisiblePaymentFormBlock = useVisible(paymentFormBlock);
+  const paymentFormBlockRef = useRef();
+  const isVisiblePaymentFormBlock = useVisible(paymentFormBlockRef);
   useEffect(() => {
     if (debounceWindowWidth < 576) {
       setIsActiveWidgetsOnMobile(isVisiblePaymentFormBlock);
@@ -80,8 +80,8 @@ const AfterSignupPage = ({
     isVisiblePaymentFormBlock,
   ]);
 
-  const introBlock = useRef();
-  const isVisibleIntroBlock = useVisible(introBlock, '-50px');
+  const introBlockRef = useRef();
+  const isVisibleIntroBlock = useVisible(introBlockRef, '-50px');
   useEffect(() => {
     setIsStartActiveWidgets(isVisibleIntroBlock);
   }, [
@@ -271,7 +271,7 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <section ref={introBlock} className='after-signup-intro-sect'>
+      <section ref={introBlockRef} className='after-signup-intro-sect'>
         <div className='container'>
           <div className='row'>
             <div className='col-lg-8 order-md-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
@@ -537,7 +537,7 @@ const AfterSignupPage = ({
               </div>
 
               <div className='row'>
-                <div ref={selectPlanBlock} className='col-md-6'>
+                <div ref={selectPlanBlockRef} className='col-md-6'>
 
                   <h2 ref={afterSignupTariffsRef} className='mb-5 fw-bold text-center'>
                     {t('lp.select_plan_title')}
@@ -605,7 +605,7 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <section ref={paymentFormBlock} className='after-signup-payment-form-sect'>
+      <section ref={paymentFormBlockRef} className='after-signup-payment-form-sect'>
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
