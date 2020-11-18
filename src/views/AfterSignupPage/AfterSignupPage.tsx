@@ -496,7 +496,7 @@ const AfterSignupPage = ({
               </div>
 
               <div className='row'>
-                <div className='col-md-6'>
+                <div className='col-md-6 tariff-plan__wrap'>
 
                   <h2 id='afterSignupTariffs' className='mb-5 fw-bold text-center'>
                     {t('lp.select_plan_title')}
@@ -565,7 +565,7 @@ const AfterSignupPage = ({
       </section>
 
       <section className='after-signup-payment-form-sect'>
-        <div className='container'>
+        <div className='container checkout-payment-card-wrap'>
           <div className='row'>
             <div className='col-12'>
 
@@ -639,7 +639,7 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <SalesWidgets />
+      <SalesWidgets isShow />
     </>
   );
 };
