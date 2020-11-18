@@ -18,15 +18,18 @@ import './SalesWidgets.sass';
 
 type SalesWidgetsProps = {
   isShow?: boolean;
+  isStartShow?: boolean;
   localePhrases: any;
 };
 
 const SalesWidgetsDefaultProps = {
   isShow: true,
+  isStartShow: true,
 };
 
 const SalesWidgets = ({
   isShow,
+  isStartShow,
   localePhrases,
 }: SalesWidgetsProps) => {
   const t = (code: string) =>
@@ -47,7 +50,8 @@ const SalesWidgets = ({
     text: null,
   });
   const [isActiveInterval, setIsActiveInterval] = useState<boolean>(false);
-  const [isShowWidgets, setIsShowWidgets] = useState<boolean>(false);
+
+  const [isStartShowWidgets, setIsStartShowWidgets] = useState<boolean>(false);
 
   const getRecallsInfo = () => {
     getRecallsData()
@@ -109,7 +113,7 @@ const SalesWidgets = ({
         setIsUsersWidgetActive(true);
       }
     }, 4000);
-  }, isActiveInterval && isShowWidgets ? 8000 : null);
+  }, isActiveInterval && isStartShowWidgets ? 8000 : null);
 
   useEffect(() => {
     let cleanComponent = false;
@@ -124,21 +128,19 @@ const SalesWidgets = ({
   }, []);
 
   useEffect(() => {
-    let cleanComponent = false;
-
-    if (isShow && !cleanComponent) setIsShowWidgets(true);
-
-    return () => cleanComponent = true;
-  }, [isShow]);
+    if (isStartShow) {
+      setIsStartShowWidgets(true);
+    }
+  }, [isStartShow]);
 
   return (
     <div className='widgets'>
       <UserCountWidget
-        active={isUsersWidgetActive && isShowWidgets}
+        active={isUsersWidgetActive && isShow && isStartShowWidgets}
         count={usersCount}
       />
       <ReviewsWidget
-        active={isReviewsWidgetActive && isShowWidgets}
+        active={isReviewsWidgetActive && isShow && isStartShowWidgets}
         data={reviewActive}
       />
     </div>

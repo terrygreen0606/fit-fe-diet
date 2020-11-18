@@ -17,13 +17,12 @@
   transition: 0.2s opacity ease, 0.2s visibility, transform 0.2s ease-in
 
   @media (max-width: 1024px)
-    width: 180px
+    width: 280px
     padding: 10px 5px
     bottom: 15px
     left: 15px
 
   @media (max-width: 576px)
-    width: 110px
     left: 50%
     transform: translate(-50%, 100%)
 
@@ -41,7 +40,8 @@
       line-height: initial
 
     @media (max-width: 1024px)
-      display: none
+      flex-basis: 60px
+      height: 60px
 
     img
       max-width: 100%
@@ -52,9 +52,6 @@
     padding-left: 13px
     transition: 0.2s opacity ease
     
-    @media (max-width: 1024px)
-      padding-left: 0
-
     &-name
       margin-bottom: 8px
       font-size: 22px
@@ -141,9 +138,9 @@
     left: 15px
   
   @media (max-width: 576px)
-    width: 110px
     left: 50%
     transform: translate(-50%, 100%)
+    text-align: center
 
   &__icon
     flex-basis: 60px

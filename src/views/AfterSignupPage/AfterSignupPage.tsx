@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
@@ -16,6 +16,9 @@ import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
 import SalesWidgets from 'components/SalesWidgets';
+import useVisible from 'components/hooks/useVisible';
+import useWindowSize from 'components/hooks/useWindowSize';
+import useDebounce from 'components/hooks/useDebounce';
 
 import './AfterSignupPage.sass';
 
@@ -48,6 +51,43 @@ const AfterSignupPage = ({
   const [tariffsLoadingError, setTariffsLoadingError] = useState<boolean>(false);
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
+
+  const { width: windowWidth } = useWindowSize();
+  const debounceWindowWidth = useDebounce(windowWidth, 500);
+
+  const [isActiveWidgetsOnMobile, setIsActiveWidgetsOnMobile] = useState<boolean>(false);
+  const [isStartActiveWidgets, setIsStartActiveWidgets] = useState<boolean>(false);
+
+  const selectPlanBlock = useRef();
+  const isVisibleSelectPlanBlock = useVisible(selectPlanBlock);
+  useEffect(() => {
+    if (debounceWindowWidth < 576) {
+      setIsActiveWidgetsOnMobile(isVisibleSelectPlanBlock);
+    }
+  }, [
+    debounceWindowWidth,
+    isVisibleSelectPlanBlock,
+  ]);
+
+  const paymentFormBlock = useRef();
+  const isVisiblePaymentFormBlock = useVisible(paymentFormBlock);
+  useEffect(() => {
+    if (debounceWindowWidth < 576) {
+      setIsActiveWidgetsOnMobile(isVisiblePaymentFormBlock);
+    }
+  }, [
+    debounceWindowWidth,
+    isVisiblePaymentFormBlock,
+  ]);
+
+  const introBlock = useRef();
+  const isVisibleIntroBlock = useVisible(introBlock, '-50px');
+  useEffect(() => {
+    setIsStartActiveWidgets(isVisibleIntroBlock);
+  }, [
+    debounceWindowWidth,
+    isVisibleIntroBlock,
+  ]);
 
   const getUserTariffs = () => {
     setTariffsLoading(true);
@@ -230,7 +270,7 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <section className='after-signup-intro-sect'>
+      <section ref={introBlock} className='after-signup-intro-sect'>
         <div className='container'>
           <div className='row'>
             <div className='col-lg-4 text-center text-lg-left'>
@@ -496,7 +536,7 @@ const AfterSignupPage = ({
               </div>
 
               <div className='row'>
-                <div className='col-md-6'>
+                <div ref={selectPlanBlock} className='col-md-6'>
 
                   <h2 id='afterSignupTariffs' className='mb-5 fw-bold text-center'>
                     {t('lp.select_plan_title')}
@@ -564,7 +604,7 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <section className='after-signup-payment-form-sect'>
+      <section ref={paymentFormBlock} className='after-signup-payment-form-sect'>
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
@@ -639,7 +679,10 @@ const AfterSignupPage = ({
         </div>
       </section>
 
-      <SalesWidgets isShow />
+      <SalesWidgets
+        isShow={!isActiveWidgetsOnMobile}
+        isStartShow={isStartActiveWidgets}
+      />
     </>
   );
 };
