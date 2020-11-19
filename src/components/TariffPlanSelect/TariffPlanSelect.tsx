@@ -55,9 +55,19 @@ const TariffPlanSelect = ({
         });
       }
 
-      checkingElements.forEach((item) => {
+      checkingElements.forEach((item, itemIndex) => {
         if (item?.child?.innerText) {
           for (let i = 1; item.child.clientWidth < item.parent.clientWidth; i++) {
+            if (debounceWindowWidth >= 1200 && 16 + i > 40) {
+              if (itemIndex === 1 && 16 + i > 46) {
+                item.child.style.fontSize = `${46}px`;
+              } else {
+                item.child.style.fontSize = `${40}px`;
+              }
+              
+              break;
+            }
+
             if (debounceWindowWidth < 1200 && 16 + i > 36) {
               item.child.style.fontSize = `${36}px`;
               break;
