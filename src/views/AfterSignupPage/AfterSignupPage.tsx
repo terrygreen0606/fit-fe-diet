@@ -512,8 +512,8 @@ const AfterSignupPage = ({
                   </div>
                 </div>
               ) : (
-                <div style={{ height: '70px' }} />
-              )}
+                  <div style={{ height: '70px' }} />
+                )}
 
             </div>
           </div>

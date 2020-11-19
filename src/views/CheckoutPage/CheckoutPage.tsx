@@ -114,7 +114,11 @@ const CheckoutPage = ({
           if (paymentStatus.status === 'fail') {
             setPaymentStatusError(true);
           } else {
-            history.push(routes.afterCheckout);
+            history.push({
+              pathname: routes.afterCheckout,
+              orderTransactionId: paymentStatus.order_number,
+              orderAmount: paymentStatus.amount_usd,
+            });
           }
         } else {
           setPaymentStatusError(true);
@@ -212,7 +216,7 @@ const CheckoutPage = ({
       ...errors,
     ]);
 
-    if (!hasError) {}
+    if (!hasError) { }
   };
 
   const isShowPartners = () => language === 'br';
@@ -266,10 +270,10 @@ const CheckoutPage = ({
                       {profileLoading ? (
                         <Spinner />
                       ) : (
-                        <div
-                          dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
-                        />
-                      )}
+                          <div
+                            dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
+                          />
+                        )}
                     </h4>
                   </div>
 
@@ -314,8 +318,8 @@ const CheckoutPage = ({
                         </div>
                       </div>
                     ) : (
-                      <div style={{ height: '70px' }} />
-                    )}
+                        <div style={{ height: '70px' }} />
+                      )}
                   </div>
 
                   <div className='checkout-form-container'>
