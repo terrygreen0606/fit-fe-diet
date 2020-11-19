@@ -39,8 +39,6 @@ const AfterCheckoutPage = ({
   useEffect(() => {
     orderAmount = location.orderAmount;
     orderTransactionId = location.orderTransactionId;
-    console.log('orderAmount', orderAmount);
-    console.log('orderTransactionId', orderTransactionId);
     setTimeout(() => {
       window.history.pushState(null, null, '#');
     }, 100);
