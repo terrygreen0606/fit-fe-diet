@@ -248,7 +248,11 @@ const CheckoutPaymentFormCard = ({
                 case 'ok':
                   toast.success(t('checkout.payment_success'));
                   setCheckoutForm({ ...checkoutFormDefault });
-                  history.push(routes.afterCheckout);
+                  history.push({
+                    pathname: routes.afterCheckout,
+                    orderTransactionId: paymentOrder.order_number,
+                    orderAmount: paymentOrder.amount_usd,
+                  });
                   break;
 
                 case 'pending':

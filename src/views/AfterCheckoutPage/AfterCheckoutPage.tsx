@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -17,7 +17,10 @@ import './AfterCheckoutPage.sass';
 const AfterCheckoutPage = ({
   paid_until,
   localePhrases,
+  location,
 }: any) => {
+  let orderAmount: number = null;
+  let orderTransactionId: string = null;
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
@@ -32,6 +35,14 @@ const AfterCheckoutPage = ({
 
     return dateStr;
   };
+
+  useEffect(() => {
+    orderAmount = location.orderAmount;
+    orderTransactionId = location.orderTransactionId;
+    setTimeout(() => {
+      window.history.pushState(null, null, '#');
+    }, 100);
+  }, []);
 
   return (
     <>
@@ -57,8 +68,8 @@ const AfterCheckoutPage = ({
                     }}
                   />
                 ) : (
-                  <h2>{t('checkout.thankyou.trial_info.waiting')}</h2>
-                )}
+                    <h2>{t('checkout.thankyou.trial_info.waiting')}</h2>
+                  )}
               </div>
 
               <p>{t('checkout.thankyou.trial_subscr')}</p>
