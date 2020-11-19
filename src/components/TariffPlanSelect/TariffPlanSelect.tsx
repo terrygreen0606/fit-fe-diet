@@ -97,7 +97,9 @@ const TariffPlanSelect = ({
               'special-offer': specialOfferIndex === tariffIndex,
             })}
           >
-            <div className='tariff-plan__item-radio' />
+            <div className="tariff-plan__item-radio__wrap">
+              <div className='tariff-plan__item-radio' />
+            </div>
 
             <div className='tariff-plan__item-text'>
               <h3 className='tariff-plan__item-text-title'>{t('checkout.plan_title', { COUNT: months })}</h3>
