@@ -58,8 +58,8 @@ const TariffPlanSelect = ({
       checkingElements.forEach((item) => {
         if (item?.child?.innerText) {
           for (let i = 1; item.child.clientWidth < item.parent.clientWidth; i++) {
-            if (debounceWindowWidth <= 400 && 16 + i > 30) {
-              item.child.style.fontSize = `${30}px`;
+            if (16 + i > 28) {
+              item.child.style.fontSize = `${28}px`;
               break;
             }
 
@@ -82,27 +82,29 @@ const TariffPlanSelect = ({
         priceWeek,
         priceOldWeek,
       }, tariffIndex) => (
-          <label key={id} className='tariff-plan__item-label'>
-            <input
-              type='radio'
-              className='tariff-plan__item-label-input'
-              name='tariff_plan_radio'
-              value={id}
-              checked={value === id}
-              onChange={(e) => onChange(e.target.value)}
-            />
+        <label key={id} className='tariff-plan__item-label'>
+          <input
+            type='radio'
+            className='tariff-plan__item-label-input'
+            name='tariff_plan_radio'
+            value={id}
+            checked={value === id}
+            onChange={(e) => onChange(e.target.value)}
+          />
 
-            <div
-              className={classNames('tariff-plan__item', {
-                'special-offer': specialOfferIndex === tariffIndex,
-              })}
-            >
+          <div
+            className={classNames('tariff-plan__item', {
+              'special-offer': specialOfferIndex === tariffIndex,
+            })}
+          >
+            <div className="tariff-plan__item-radio__wrap">
               <div className='tariff-plan__item-radio' />
+            </div>
 
-              <div className='tariff-plan__item-text'>
-                <h3 className='tariff-plan__item-text-title'>{t('checkout.plan_title', { COUNT: months })}</h3>
-                <div className='tariff-plan__item-text-desc'>{t('checkout.plan_descr', { COUNT: months })}</div>
-              </div>
+            <div className='tariff-plan__item-text'>
+              <h3 className='tariff-plan__item-text-title'>{t('checkout.plan_title', { COUNT: months })}</h3>
+              <div className='tariff-plan__item-text-desc'>{t('checkout.plan_descr', { COUNT: months })}</div>
+            </div>
 
               <div className='tariff-plan__item-price'>
                 <div className='tariff-plan__item-price-old'>

@@ -16,11 +16,6 @@
     &:hover
       box-shadow: 0px 0px 12px $bright-green
 
-    @media (max-width: 400px)
-      flex-wrap: wrap
-      justify-content: center
-      padding: 40px 20px 50px
-
     &-label
       display: block
       cursor: pointer
@@ -33,7 +28,8 @@
             background-image: url('../../assets/img/icons/check-icon.svg')
         
     &-radio
-      flex: 0 0 56px
+      display: inline-block
+      width: 56px
       height: 56px
       border-radius: 50%
       background-color: #F0F0F0
@@ -42,36 +38,17 @@
       background-size: 65%
       background-repeat: no-repeat
       background-position: center center
-
-      @media (max-width: 992px)
-        flex: 0 0 45px
-        height: 45px
-
+      &__wrap
+        flex: 0 0 56px
     &-text
-      flex-basis: 55%
+      flex: 65%
       padding-right: 25px
       padding-left: 30px
-
-      @media (max-width: 992px)
-        padding-left: 20px
-        padding-right: 10px
-
-      @media (max-width: 400px)
-        flex-basis: 100%
-        padding-right: 0
-        padding-left: 0
-        text-align: center
-        margin: 35px 0 35px
-
       &-title
         margin-bottom: 10px
-        font-size: 22px
-        line-height: 30px
+        font-size: 24px
+        line-height: 27px
         font-weight: bold
-
-        @media (max-width: 400px)
-          margin-bottom: 4px
-
       &-desc
         margin-top: 17px
         padding-left: 0
@@ -79,34 +56,24 @@
         line-height: 25px
         color: #878787
         list-style-type: none
-
         li:not(:first-child)
           margin-top: 10px
 
     &-price
-      flex-basis: calc(45% - 56px)
+      flex: calc(35% - 56px)
       text-align: right
-
-      @media (max-width: 400px)
-        flex-basis: 100%
-        text-align: center
-
       &-old
         margin-bottom: 1px
-        font-size: 18px
+        font-size: 12px
+        line-height: 15px
         font-weight: 400
-        line-height: 22px
-        font-weight: bold
         color: #000
         text-decoration: line-through
       &-now
         max-width: 180px
-        margin: 12px auto
+        margin: 5px 0
+        margin-left: auto
         color: #1D1D1B
-
-        @media (max-width: 400px)
-          margin: 0 auto
-
         &-count
           display: inline-block
           font-size: 30px
@@ -114,38 +81,68 @@
           font-weight: bold
           &-wrap
             width: 100%
-
       &-together
         color: #000
-        font-size: 18px
-        line-height: 22px
+        font-size: 12px
+        line-height: 15px
         font-weight: 400
-        font-weight: bold
 
     &.special-offer
       position: relative
       .tariff-plan__item-price-now
         color: $bright-green
-        &-count
-          font-size: 36px
       .tariff-plan__item-sale
         position: absolute
         bottom: 0
         left: 50%
         transform: translate(-50%, 50%)
-        width: 315px
-        padding: 8px 10px
+        min-width: 280px
+        max-width: 315px
+        padding: 4px 10px
         text-align: center
         text-transform: uppercase
-        font-size: 18px
+        font-size: 17px
         font-weight: bold
         border-radius: 10px
         background-color: $bright-green
         color: #fff
 
-        @media (max-width: 380px)
-          width: 100%
-          left: 0
-          transform: translate(0)
-          font-size: 16px
-          border-radius: 0
+    @media (max-width: 992px)
+      &-text
+        flex: 50%
+      &-price
+        flex: calc(50% - 23px)
+      &-radio
+        width: 23px
+        height: 23px
+        border-width: 4px
+        &__wrap
+          flex: 0 0 23px
+      &-text
+        padding-left: 20px
+        padding-right: 10px
+
+    @media (max-width: 400px)
+      padding: 8px
+      padding-top: 20px
+      margin-bottom: 21px
+      &.special-offer
+        padding-bottom: 20px
+        .tariff-plan__item-sale
+          max-width: 80%
+          padding-top: 4px
+          padding-bottom: 4px
+          font-size: 14px
+      &-text
+        padding-left: 10px
+        &-title
+          font-size: 22px
+          line-height: 24px
+        &-desc
+          margin-top: 7px
+          font-size: 12px
+          line-height: 24px
+      &-price
+        &-now
+          &-count
+            font-size: 28px
