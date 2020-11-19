@@ -4,9 +4,11 @@ import classNames from 'classnames';
 // Components
 import InputField from 'components/common/Forms/InputField';
 
-import { InputFieldProps } from '../InputField/InputField';
-
 import './CreditCardNumberField.sass';
+
+import CreditCardDefaultLogo from 'assets/img/icons/credit-card-default-icon.svg';
+
+import { InputFieldProps } from '../InputField/InputField';
 
 type CreditCardType = {
   pattern: string;
@@ -23,7 +25,7 @@ const CreditCardNumberFieldDefaultProps = {
 
 const CreditCardNumberField = ({ cards, ...inputProps }: CreditCardNumberFieldProps) => {
   const getCardLogo = () => {
-    let cardLogo = null;
+    let cardLogo = CreditCardDefaultLogo;
 
     cards.forEach(({ pattern, logo }) => {
       if (new RegExp(pattern).test(inputProps.value?.toString().replace(/ /g, '') || '')) {

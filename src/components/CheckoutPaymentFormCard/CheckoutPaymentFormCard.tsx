@@ -17,6 +17,7 @@ import FormLabel from 'components/common/Forms/FormLabel';
 import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 import InputField from 'components/common/Forms/InputField';
 import CreditCardNumberField from 'components/common/Forms/CreditCardNumberField';
+import CreditCardCvvField from 'components/common/Forms/CreditCardCvvField';
 import PhoneInput from 'components/common/Forms/PhoneInput';
 import CustomRadio from 'components/common/Forms/CustomRadio';
 import Button from 'components/common/Forms/Button';
@@ -317,61 +318,6 @@ const CheckoutPaymentFormCard = ({
         [className]: className,
       })}
     >
-      <ContentLoading
-        isLoading={paymentMethodsLoading}
-        isError={paymentMethodsLoadingError}
-        fetchData={() => getUserPaymentMethods()}
-      >
-        <div className='checkout-payment-radio__list mt-5'>
-          {paymentMethods.cards.length > 0 && (
-            <CustomRadio
-              className={classNames('checkout-payment-radio', {
-                'radio-checked': checkoutForm.payment_type === 'credit_card',
-              })}
-              checked={checkoutForm.payment_type === 'credit_card'}
-              value='credit_card'
-              name='payment_type'
-              onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
-              label={(
-                <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
-                  <div className='payment-types-img-list'>
-                    {paymentMethods.cards.map((card) => (
-                      <img
-                        key={card.id}
-                        src={card.logo || null}
-                        className='payment-types-img'
-                        alt=''
-                      />
-                    ))}
-                  </div>
-                </Button>
-              )}
-            />
-          )}
-
-          {paymentMethods.others.map((method) => (
-            <CustomRadio
-              className={classNames('checkout-payment-radio', {
-                'radio-checked': checkoutForm.payment_type === method.id,
-              })}
-              checked={checkoutForm.payment_type === method.id}
-              value='method.id'
-              name='payment_type'
-              onChange={(e) => validateOnChange('payment_type', e.target.value, e)}
-              label={(
-                <Button className='checkout-payment-radio__btn' spanBtn color='secondary'>
-                  <img
-                    src={method.logo || null}
-                    className='img-fluid'
-                    alt=''
-                  />
-                </Button>
-              )}
-            />
-          ))}
-        </div>
-      </ContentLoading>
-
       {isCheckoutPaymentError && (
         <div ref={paymentErrorRef} className='checkout-payment-card__error mt-5'>
           <h3 className='checkout-payment-card__error__title'>
@@ -392,8 +338,21 @@ const CheckoutPaymentFormCard = ({
 
       <form className='checkout-payment-card__form mt-5' onSubmit={(e) => checkoutFormSubmit(e)}>
         <h3 className='checkout-payment-card__title'>
-          <CreditCardIcon className='mr-2' />
-          {t('checkout.form_card.title')}
+          <div className='checkout-payment-card__title_text'>
+            <CreditCardIcon className='mr-2' />
+            {t('checkout.form_card.title')}
+          </div>
+
+          <div className='payment-types-img-list'>
+            {paymentMethods.cards.map((card) => (
+              <img
+                key={card.id}
+                src={card.logo || null}
+                className='payment-types-img'
+                alt=''
+              />
+            ))}
+          </div>
         </h3>
 
         <FormGroup>
@@ -445,7 +404,7 @@ const CheckoutPaymentFormCard = ({
           <div className='col-sm-6'>
 
             <FormGroup>
-              <InputField
+              <CreditCardCvvField
                 block
                 name='cardCvv'
                 className='checkout-payment-card__form_input'
