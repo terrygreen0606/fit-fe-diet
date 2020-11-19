@@ -64,7 +64,7 @@ const TariffPlanSelect = ({
             }
 
             item.child.style.fontSize = `${16 + i}px`;
-            if (item.chiвопроld.clientWidth >= item.parent.clientWidth) {
+            if (item.child.clientWidth >= item.parent.clientWidth) {
               item.child.style.fontSize = `${16 + i - 1}px`;
               break;
             }
