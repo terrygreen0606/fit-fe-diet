@@ -47,7 +47,7 @@
       &-title
         margin-bottom: 10px
         font-size: 24px
-        line-height: 27px
+        line-height: 32px
         font-weight: bold
       &-desc
         margin-top: 17px
@@ -64,8 +64,8 @@
       text-align: right
       &-old
         margin-bottom: 1px
-        font-size: 12px
-        line-height: 15px
+        font-size: 18px
+        line-height: 22px
         font-weight: 400
         color: #000
         text-decoration: line-through
@@ -76,15 +76,15 @@
         color: #1D1D1B
         &-count
           display: inline-block
-          font-size: 30px
+          font-size: 46px
           line-height: 1.2
           font-weight: bold
           &-wrap
             width: 100%
       &-together
         color: #000
-        font-size: 12px
-        line-height: 15px
+        font-size: 18px
+        line-height: 22px
         font-weight: 400
 
     &.special-offer
@@ -107,7 +107,18 @@
         background-color: $bright-green
         color: #fff
 
+    @media (max-width: 1200px)
+      &-price
+        &-now
+          &-count
+            font-size: 36px
+
     @media (max-width: 992px)
+      &-price
+        &-now
+          &-count
+            font-size: 28px
+            line-height: 34px
       &-text
         flex: 50%
       &-price

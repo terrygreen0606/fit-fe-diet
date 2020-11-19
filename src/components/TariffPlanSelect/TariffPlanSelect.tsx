@@ -58,7 +58,12 @@ const TariffPlanSelect = ({
       checkingElements.forEach((item) => {
         if (item?.child?.innerText) {
           for (let i = 1; item.child.clientWidth < item.parent.clientWidth; i++) {
-            if (16 + i > 28) {
+            if (debounceWindowWidth < 1200 && 16 + i > 36) {
+              item.child.style.fontSize = `${36}px`;
+              break;
+            }
+
+            if (debounceWindowWidth < 992 && 16 + i > 28) {
               item.child.style.fontSize = `${28}px`;
               break;
             }
