@@ -58,7 +58,11 @@ const Header = (props: any) => {
 
             <div className='col-8 text-center d-xl-none'>
               <div className='mainHeader_page-title'>
-                {t(pageTitles[location?.pathname] || null)}
+                {location?.pathname.includes('/recipe/') ? (
+                  t(pageTitles[routes.recipeFullView] || null)
+                ) : (
+                    t(pageTitles[location?.pathname] || null)
+                  )}
               </div>
             </div>
 
