@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import requestHash from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType } from 'types/auth';
 import {
-  setAppSetting as setAppSettingAction,
+  setStorageSettings as setStorageSettingsAction,
   setUserData as setUserDataAction,
   userLogin as userLoginAction,
 } from 'store/actions';
@@ -41,7 +41,7 @@ const JoinNameStep = ({
   registerDataErrors,
   setRegisterDataErrors,
   setRegisterView,
-  setAppSettingAction: setAppSetting,
+  setStorageSettingsAction: setStorageSettings,
   setUserDataAction: setUserData,
   userLoginAction: userLogin,
   history,
@@ -86,6 +86,7 @@ const JoinNameStep = ({
       afterSignupWeight: registerData.weight,
       afterSignupWeightGoal: registerData.weight_goal,
       afterSignupPredictDate: registerData.predicted_date,
+      afterSignupNameFirstSection: queryString.parse(location.search).firstsection,
     });
 
     setRegisterView('READY');
@@ -174,7 +175,7 @@ const JoinNameStep = ({
               setRegisterJoinLoading(false);
 
               if (settingsData.success && settingsData.data) {
-                setAppSetting(settingsData.data);
+                setStorageSettings(settingsData.data);
               } else {
                 toast.error(t('register.error_msg'));
               }
@@ -303,5 +304,5 @@ const JoinNameStep = ({
 
 export default connect(
   null,
-  { userLoginAction, setAppSettingAction, setUserDataAction },
+  { userLoginAction, setStorageSettingsAction, setUserDataAction },
 )(JoinNameStep);
