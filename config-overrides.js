@@ -88,7 +88,7 @@ module.exports = function override(config, env) {
         // Options similar to the same options in webpackOptions.output
         // both options are optional
         filename: 'static/css/[name].[contenthash:8].css',
-        chunkFilename: 'static/css/[name].chunk.[contenthash:8].css',
+        chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
       });
   }
 
