@@ -1,0 +1,22 @@
+<svg width="16" height="29" viewBox="0 0 16 29" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="29">
+<rect width="16" height="29" fill="#C4C4C4"/>
+</mask>
+<g mask="url(#mask0)">
+<path d="M6.54554 25.0814C6.27281 26.2148 1.69099 28.1038 1.69099 28.1038L1.90917 7.91847L6.81827 8.35024C6.87281 8.29627 7.20008 22.5447 6.54554 25.0814Z" fill="#1366BF"/>
+<rect x="-18" y="-10" width="44.2473" height="41.9682" fill="url(#pattern0)"/>
+<path d="M15.0546 5.70561C12.7637 8.45816 9.43642 7.0549 1.90915 12.7759C0.763697 13.6394 0.381879 7.48667 1.47279 6.35327C4.03642 3.6547 15.7637 0.0925789 15.7637 0.0925789C15.7637 0.0925789 16.4182 4.08647 15.0546 5.70561Z" fill="#106EE8"/>
+<rect width="16" height="29" fill="url(#pattern1)"/>
+<path d="M14.2363 17.3095C12.0545 20.0621 8.89089 18.6588 1.74543 24.3798C1.69089 24.4338 1.5818 24.4877 1.52725 24.4877C0.599978 24.4338 0.381797 19.0366 1.30907 17.9572C3.76361 15.2586 14.8909 11.6965 14.8909 11.6965C14.8909 11.6965 15.4909 15.6904 14.2363 17.3095Z" fill="#106EE8"/>
+</g>
+<defs>
+<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0"/>
+</pattern>
+<pattern id="pattern1" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image1"/>
+</pattern>
+<image id="image0" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVYAAAFJCAYAAADALwXNAAAACXBIWXMAAC4jAAAuIwF4pT92AAAA"/>
+<image id="image1" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVYAAAFFCAYAAAC37cW2AAAACXBIWXMAAC4jAAAuIwF4pT92AAAA"/>
+</defs>
+</svg>

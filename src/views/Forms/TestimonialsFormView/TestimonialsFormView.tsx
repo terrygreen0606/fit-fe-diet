@@ -115,7 +115,7 @@ const TestimonialsFormView = (props: any) => {
   return (
     <>
       <Helmet>
-        <title>{t('app.title.testimonials.add')}</title>
+        <title>{t('app.title.testimonials')}</title>
       </Helmet>
       <div className='container'>
         <Breadcrumb
@@ -125,7 +125,7 @@ const TestimonialsFormView = (props: any) => {
               name: t('breadcrumb.main'),
             },
           ]}
-          currentPage={t('app.title.testimonials.add')}
+          currentPage={t('app.title.testimonials')}
         />
         <div className='testimonials-form'>
           <h2 className='sect-subtitle'>

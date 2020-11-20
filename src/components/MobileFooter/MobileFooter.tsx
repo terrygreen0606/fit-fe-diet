@@ -1,8 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { routes } from 'constants/routes';
+
 import { ReactComponent as DumbbellIcon } from 'assets/img/icons/dumbbell-icon.svg';
-import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon-white.svg';
+import { ReactComponent as WaterTrackerIcon } from 'assets/img/icons/water-tracker-icon.svg';
 import { ReactComponent as GraphIcon } from 'assets/img/icons/graph-icon.svg';
 import { ReactComponent as PurchaseIcon } from 'assets/img/icons/purchase-icon.svg';
 import { ReactComponent as CutleryIcon } from 'assets/img/icons/cutlery-icon-white.svg';
@@ -14,7 +16,7 @@ const MobileFooter = () => (
     <ul className='mobileFooter_list'>
       <li>
         <NavLink
-          to='/'
+          to={routes.mealPlan}
           className='mobileFooter_list_item'
           activeClassName='active'
           exact
@@ -24,7 +26,7 @@ const MobileFooter = () => (
       </li>
       <li>
         <NavLink
-          to='/'
+          to={routes.shoppingList}
           className='mobileFooter_list_item'
           activeClassName='active'
           exact
@@ -34,7 +36,7 @@ const MobileFooter = () => (
       </li>
       <li>
         <NavLink
-          to='/trainings'
+          to={routes.recipes}
           className='mobileFooter_list_item'
           activeClassName='active'
           exact
@@ -44,7 +46,7 @@ const MobileFooter = () => (
       </li>
       <li>
         <NavLink
-          to='/'
+          to={routes.nutritionPlanWeight}
           className='mobileFooter_list_item'
           activeClassName='active'
           exact
@@ -54,12 +56,12 @@ const MobileFooter = () => (
       </li>
       <li>
         <NavLink
-          to='/'
+          to={routes.waterTracker}
           className='mobileFooter_list_item'
           activeClassName='active'
           exact
         >
-          <BurgerIcon />
+          <WaterTrackerIcon />
         </NavLink>
       </li>
     </ul>

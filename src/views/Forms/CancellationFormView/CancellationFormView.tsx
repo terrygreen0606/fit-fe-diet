@@ -30,7 +30,7 @@ const CancellationFormView = (props: any) => {
               name: t('breadcrumb.main'),
             },
           ]}
-          currentPage={t('cancellation.title')}
+          currentPage={t('app.title.cancellation')}
         />
         <div className='cancellation-form'>
           <h2 className='sect-subtitle'>

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
 import { routes } from 'constants/routes';
+import { pageTitles } from 'constants/pageTitles';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -13,13 +14,18 @@ import ShoppingListCart from 'components/ShoppingListCart';
 import './Header.sass';
 
 import { ReactComponent as BurgerIcon } from 'assets/img/icons/burger-icon.svg';
+import { ReactComponent as MobileLogoIcon } from 'assets/img/icons/logo-header-mobile-icon.svg';
+import { ReactComponent as ArrowBackIcon } from 'assets/img/icons/arrow-back-icon.svg';
 
 const Header = (props: any) => {
   const {
     isAuthenticated,
     localePhrases,
     settings,
+    location,
   } = props;
+
+  const history = useHistory();
 
   const t = (code: string) => getTranslate(localePhrases, code);
 
@@ -33,10 +39,29 @@ const Header = (props: any) => {
         <div className='container'>
           <div className='row'>
             <div className='col-2'>
-              <Link to='/' className='mainHeader_logo' />
+              <Link to={routes.main} className='mainHeader_logo' />
+              {location?.pathname === routes.main ? (
+                <Link to={routes.main} className='mainHeader_logo-mobile'>
+                  <MobileLogoIcon />
+                </Link>
+              ) : (
+                  <button
+                    type='button'
+                    // onClick={() => history.goBack()}
+                    className='mainHeader_back-button'
+                  >
+                    <ArrowBackIcon />
+                  </button>
+                )}
             </div>
 
-            <div className='col-10 text-right'>
+            <div className='col-8 text-center d-xl-none'>
+              <div className='mainHeader_page-title'>
+                {t(pageTitles[location?.pathname] || null)}
+              </div>
+            </div>
+
+            <div className='col-2 col-xl-10 text-right'>
               <span className='header-controls'>
                 {!isAuthenticated && (
                   <>
