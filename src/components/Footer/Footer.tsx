@@ -68,7 +68,7 @@ const Footer = (props: any) => {
               </li>
               <li>
                 <a
-                  href={generatePublicUrl('media-inquiries')}
+                  href={generatePublicUrl('media')}
                   className='mainFooter_menuList_item'
                 >
                   {t('footer.menu_media_inquiries')}
