@@ -101,7 +101,7 @@ module.exports = function override(config, env) {
   // There are also additional JS chunk files if you use code splitting.
   output.chunkFilename = isEnvProduction
     ? 'static/js/[name].[contenthash:8].chunk.js'
-    : isEnvDevelopment && 'static/js/[name].[contenthash:8].chunk.js';
+    : isEnvDevelopment && 'static/js/[name].chunk.js';
 
   // output.libraryTarget = 'umd';
   // output.library = '[name]';
