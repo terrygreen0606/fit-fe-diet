@@ -100,7 +100,7 @@ module.exports = function override(config, env) {
   // TODO: remove this when upgrading to webpack 5
   // There are also additional JS chunk files if you use code splitting.
   output.chunkFilename = isEnvProduction
-    ? 'static/js/[name].chunk.js'
+    ? 'static/js/[name].[contenthash:8].chunk.js'
     : isEnvDevelopment && 'static/js/[name].[contenthash:8].chunk.js';
 
   // output.libraryTarget = 'umd';
