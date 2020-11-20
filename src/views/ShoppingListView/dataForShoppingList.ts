@@ -15,11 +15,13 @@ export const colourStylesSelect = {
   control: (styles) => ({
     ...styles,
     padding: '10px 15px',
+    lineHeight: '1.2',
     border: '1px solid #c6c6c6',
     borderRadius: '0px',
     transition: 'all 0.2s ease',
     boxShadow: 'none',
     cursor: 'pointer',
+    overflow: 'hidden',
     ':hover': {
       border: '1px solid #4d4d4d !important',
     },
@@ -33,6 +35,10 @@ export const colourStylesSelect = {
       backgroundColor: '#CBFFCE',
       color: '#0FC1A1',
     },
+  }),
+  valueContainer: (styles) => ({
+    ...styles,
+    overflow: 'visible',
   }),
 };
 

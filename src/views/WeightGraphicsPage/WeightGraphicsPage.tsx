@@ -80,7 +80,7 @@ const WeightGraphicsPage = (props: any) => {
                 name: t('app.title.nutrition_plan'),
               },
             ]}
-            currentPage={t('nutrition_weights.title')}
+            currentPage={t('app.title.weight_graphic')}
           />
           <div className='row'>
             <div className='weight-graphics-page-graph-col'>

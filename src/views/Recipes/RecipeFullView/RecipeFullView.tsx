@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import uuid from 'react-uuid';
 
@@ -58,11 +58,9 @@ import { ReactComponent as ReloadGrayIcon } from 'assets/img/icons/reload-gray-i
 const RecipeFullView = (props: any) => {
   const t = (code: string, placeholders?: any) => getTranslate(props.localePhrases, code, placeholders);
 
-  const { settings } = props;
+  const { settings, history } = props;
 
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
-
-  const history = useHistory();
 
   const [recipeId, setRecipeId] = useState<string>('');
 

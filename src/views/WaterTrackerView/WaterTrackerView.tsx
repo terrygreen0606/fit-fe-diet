@@ -387,7 +387,7 @@ const WaterTrackerView = (props: any) => {
                 name: t('breadcrumb.main'),
               },
             ]}
-            currentPage={t('wt.head_title')}
+            currentPage={t('app.title.water_tracker')}
           />
           <ContentLoading
             isLoading={isWaterTrackerLoading}
@@ -395,7 +395,7 @@ const WaterTrackerView = (props: any) => {
             spinSize='lg'
           >
             <h1 className='waterTracker_title sect-subtitle'>
-              {t('wt.head_title')}
+              {t('app.title.water_tracker')}
             </h1>
             {storage.isActiveWaterTrackerBanner && (
               <Banner items={bannerData} onAction={() => toggleSetting('isActiveWaterTrackerBanner')} />

@@ -263,7 +263,7 @@ const MealPlanView = (props: any) => {
                   name: t('breadcrumb.main'),
                 },
               ]}
-              currentPage={t('mp.title')}
+              currentPage={t('app.title.meal_plan')}
             />
             <div className='nutrition-plan-card-list-sect-wrap'>
               <div

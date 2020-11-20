@@ -11,10 +11,10 @@
   z-index: 500
   background: #FFFFFF
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08)
-  transition: transform .35s ease
+  transition: transform 0.2s ease
   &_list
-    margin: 0 2em
-    padding: 0
+    margin: 0
+    padding: 0 10px
     list-style-type: none
     display: flex
     flex-direction: row
@@ -25,16 +25,27 @@
       display: flex
       align-items: center
       justify-content: center
-      padding-bottom: 15px
-      padding-top: 20px
+      flex-wrap: wrap
+      padding: 12px 0
       border-bottom: 3px solid transparent
+      text-decoration: none
       svg
-        max-width: 50px
-        height: auto
+        margin-bottom: 8px
+        height: 32px
+        @media only screen and (max-width: 350px)
+          margin-bottom: 0px
       path
         fill: #878787
-
+      &-desc
+        text-align: center
+        font-size: 11px
+        color: #878787
+        transition: 0.2s color ease
+        @media only screen and (max-width: 350px)
+          display: none
       &.active, &:hover
         border-bottom-color: $steel-blue
         path
           fill: $steel-blue
+        .mobileFooter_list_item-desc
+          color: $steel-blue

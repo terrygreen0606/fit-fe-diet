@@ -16,14 +16,14 @@ const FooterShort = (props: any) => {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            
+
             <ul className='mainFooter_short_menuList'>
               <li>
                 <a
                   href={generatePublicUrl('')}
                   className='mainFooter_short_menuList_item'
                 >
-                  {t('footer.menu_home')} 
+                  {t('footer.menu_home')}
                 </a>
               </li>
 
@@ -32,10 +32,10 @@ const FooterShort = (props: any) => {
                   href={generatePublicUrl('trees')}
                   className='mainFooter_short_menuList_item'
                 >
-                  {t('footer.menu_about')} 
+                  {t('footer.menu_about')}
                 </a>
               </li>
-              
+
               <li>
                 <a
                   href={generatePublicUrl('contacts')}
@@ -44,7 +44,7 @@ const FooterShort = (props: any) => {
                   {t('footer.menu_contact')}
                 </a>
               </li>
-              
+
               <li>
                 <a
                   href={generatePublicUrl('terms')}

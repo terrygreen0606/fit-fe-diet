@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom';
 
 import { routes } from 'constants/routes';
 import {
@@ -50,11 +49,9 @@ import {
 } from './selectsDatas';
 
 const CreateRecipeView = (props: any) => {
-  const { localePhrases, settings } = props;
+  const { localePhrases, settings, history } = props;
 
   const t = (code: string, placeholders?: any) => getTranslate(localePhrases, code, placeholders);
-
-  const history = useHistory();
 
   const [createRecipeForm, setCreateRecipeForm] = useState({
     recipeName: '',
