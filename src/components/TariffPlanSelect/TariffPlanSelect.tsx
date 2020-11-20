@@ -64,7 +64,7 @@ const TariffPlanSelect = ({
               } else {
                 item.child.style.fontSize = `${40}px`;
               }
-              
+
               break;
             }
 

@@ -36,6 +36,7 @@ const AfterSignupPage = ({
   afterSignupWeight,
   afterSignupWeightGoal,
   afterSignupPredictDate,
+  afterSignupNameFirstSection,
   measurement,
   language,
   history,
@@ -255,14 +256,26 @@ const AfterSignupPage = ({
             <div className='col-xl-6 mt-5 mt-xl-0 after-signup-header-chart-col'>
 
               <div className='after-signup-header-chart-col_content'>
-                {isAfterSignup && (
-                  <DietExpectationsChart
-                    weight={afterSignupWeight}
-                    weightGoal={afterSignupWeightGoal}
-                    predictedDate={afterSignupPredictDate}
-                    measurement={measurement}
-                    localePhrases={localePhrases}
+                {afterSignupNameFirstSection === 'vid' ? (
+                  <iframe
+                    className='after-signup-video-frame'
+                    title={t('lp.video.title')}
+                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
+                    width='100%'
+                    height='400'
                   />
+                ) : (
+                  <>
+                    {isAfterSignup && (
+                      <DietExpectationsChart
+                        weight={afterSignupWeight}
+                        weightGoal={afterSignupWeightGoal}
+                        predictedDate={afterSignupPredictDate}
+                        measurement={measurement}
+                        localePhrases={localePhrases}
+                      />
+                    )}
+                  </>
                 )}
               </div>
 
@@ -336,7 +349,7 @@ const AfterSignupPage = ({
             <div className='col-md-6 col-xl-5 offset-xl-1'>
 
               <h2 className='fw-bold'>{t('lp.reviews_sect.title')}</h2>
-              <p className='mt-45'>{t('lp.reviews_sect.descr')}</p>
+              <p className='mt-45' dangerouslySetInnerHTML={{ __html: t('lp.reviews_sect.descr') }} />
               <h4 className='mt-4 fw-bold'>{t('lp.reviews_sect.subtitle')}</h4>
 
               {reviewsList.length > 0 && (
@@ -418,13 +431,27 @@ const AfterSignupPage = ({
             </div>
             <div className='col-xl-6 mt-5 mt-xl-0'>
 
-              <iframe
-                className='after-signup-video-frame'
-                title={t('lp.video.title')}
-                src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
-                width='100%'
-                height='400'
-              />
+              {afterSignupNameFirstSection === 'vid' ? (
+                <>
+                  {isAfterSignup && (
+                    <DietExpectationsChart
+                      weight={afterSignupWeight}
+                      weightGoal={afterSignupWeightGoal}
+                      predictedDate={afterSignupPredictDate}
+                      measurement={measurement}
+                      localePhrases={localePhrases}
+                    />
+                  )}
+                </>
+              ) : (
+                <iframe
+                  className='after-signup-video-frame'
+                  title={t('lp.video.title')}
+                  src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
+                  width='100%'
+                  height='400'
+                />
+              )}
 
             </div>
             <div className='col-12 mt-5'>
@@ -696,12 +723,13 @@ export default WithTranslate(
     (state: any) => ({
       measurement: state.settings.measurement,
       language: state.settings.settings,
-      isAfterSignup: state.auth.userData.isAfterSignup,
-      afterSignupName: state.auth.userData.afterSignupName,
-      afterSignupGoal: state.auth.userData.afterSignupGoal,
-      afterSignupWeight: state.auth.userData.afterSignupWeight,
-      afterSignupWeightGoal: state.auth.userData.afterSignupWeightGoal,
-      afterSignupPredictDate: state.auth.userData.afterSignupPredictDate,
+      isAfterSignup: state.storage.isAfterSignup,
+      afterSignupName: state.storage.afterSignupName,
+      afterSignupGoal: state.storage.afterSignupGoal,
+      afterSignupWeight: state.storage.afterSignupWeight,
+      afterSignupWeightGoal: state.storage.afterSignupWeightGoal,
+      afterSignupPredictDate: state.storage.afterSignupPredictDate,
+      afterSignupNameFirstSection: state.storage.afterSignupNameFirstSection,
     }),
     null,
   )(AfterSignupPage),

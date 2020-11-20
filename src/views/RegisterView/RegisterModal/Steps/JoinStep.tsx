@@ -13,7 +13,8 @@ import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import requestHash from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType } from 'types/auth';
-import { setAppSetting, setUserData } from 'store/actions';
+import { setAppSetting, setStorageSettings } from 'store/actions';
+import queryString from 'query-string';
 import { InputError } from 'types';
 import {
   userSignup,
@@ -79,13 +80,14 @@ const JoinStep = (props: any) => {
       token: authToken,
     });
 
-    props.setUserData({
+    props.setStorageSettings({
       isAfterSignup: true,
       afterSignupName: registerData.name,
       afterSignupGoal: registerData.goal,
       afterSignupWeight: registerData.weight,
       afterSignupWeightGoal: registerData.weight_goal,
       afterSignupPredictDate: registerData.predicted_date,
+      afterSignupNameFirstSection: queryString.parse(props.location.search).firstsection,
     });
 
     props.setRegisterView('READY');
@@ -305,5 +307,5 @@ const JoinStep = (props: any) => {
 
 export default connect(
   null,
-  { setAppSetting, setUserData },
+  { setAppSetting, setStorageSettings },
 )(JoinStep);

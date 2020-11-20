@@ -7,7 +7,10 @@ import {
   deleteCookie,
 } from 'utils';
 import { connect } from 'react-redux';
-import { userLogin as userLoginAction } from 'store/actions';
+import {
+  userLogin as userLoginAction,
+  setStorageSettings as setStorageSettingsAction,
+} from 'store/actions';
 import axios from 'utils/axios';
 import { toast } from 'react-toastify';
 import queryString from 'query-string';
@@ -31,6 +34,7 @@ const ConfirmInfo = ({
   setRegisterDataErrors,
   setRegisterView,
   userLoginAction: userLogin,
+  setStorageSettingsAction: setStorageSettings,
   history,
   location,
   localePhrases,
@@ -116,6 +120,16 @@ const ConfirmInfo = ({
     setRegisterData({
       ...registerData,
       token: authToken,
+    });
+
+    setStorageSettings({
+      isAfterSignup: true,
+      afterSignupName: registerData.name,
+      afterSignupGoal: registerData.goal,
+      afterSignupWeight: registerData.weight,
+      afterSignupWeightGoal: registerData.weight_goal,
+      afterSignupPredictDate: registerData.predicted_date,
+      afterSignupNameFirstSection: queryString.parse(location.search).firstsection,
     });
 
     setRegisterView('FINAL');
@@ -263,5 +277,5 @@ const ConfirmInfo = ({
 
 export default connect(
   null,
-  { userLoginAction },
+  { userLoginAction, setStorageSettingsAction },
 )(ConfirmInfo);

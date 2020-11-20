@@ -1,4 +1,4 @@
-import { TOGGLE_SETTING, CHANGE_SETTING } from '../actions';
+import { TOGGLE_SETTING, CHANGE_SETTING, SET_STORAGE_SETTINGS } from '../actions';
 
 const initialSettings = {
   isFullscreen: false,
@@ -6,6 +6,13 @@ const initialSettings = {
   isActiveMealPlanBanner: true,
   isActiveShoppingListBanner: true,
   isActiveWaterTrackerBanner: true,
+  isAfterSignup: false,
+  afterSignupName: null,
+  afterSignupGoal: null,
+  afterSignupWeight: null,
+  afterSignupWeightGoal: null,
+  afterSignupPredictDate: null,
+  afterSignupNameFirstSection: null,
 };
 
 const storageReducer = (state = initialSettings, action) => {
@@ -20,6 +27,12 @@ const storageReducer = (state = initialSettings, action) => {
       return {
         ...state,
         [action.name]: action.value,
+      };
+
+    case SET_STORAGE_SETTINGS:
+      return {
+        ...state,
+        ...action.settings,
       };
 
     default:
