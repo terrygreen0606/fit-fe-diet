@@ -19,6 +19,7 @@ type LayoutProps = {
   [propName: string]: any;
   children: Node,
   location: any,
+  history: any,
 };
 
 // fixme: remove default
@@ -27,6 +28,7 @@ const Layout = ({
   footerType,
   children,
   location,
+  history,
 }: LayoutProps) => {
   const getHeader = () => {
     if (headerType === 'promo') {
@@ -35,6 +37,7 @@ const Layout = ({
     return (
       <Header
         location={location}
+        history={history}
       />
     );
   };

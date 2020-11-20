@@ -1,5 +1,6 @@
+/* eslint-disable no-shadow */
 import React from 'react';
-import { Link, NavLink, useHistory } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 import { getTranslate } from 'utils';
@@ -23,9 +24,9 @@ const Header = (props: any) => {
     localePhrases,
     settings,
     location,
+    userLogout,
+    history,
   } = props;
-
-  const history = useHistory();
 
   const t = (code: string) => getTranslate(localePhrases, code);
 
@@ -47,7 +48,7 @@ const Header = (props: any) => {
               ) : (
                   <button
                     type='button'
-                    // onClick={() => history.goBack()}
+                    onClick={() => history.goBack()}
                     className='mainHeader_back-button'
                   >
                     <ArrowBackIcon />
@@ -129,7 +130,7 @@ const Header = (props: any) => {
                     <button
                       type='button'
                       className='mainHeader_menuList_item'
-                      onClick={() => props.userLogout()}
+                      onClick={() => userLogout()}
                     >
                       {t('common.logout')}
                     </button>
