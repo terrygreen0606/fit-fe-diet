@@ -88,7 +88,7 @@ module.exports = function override(config, env) {
         // Options similar to the same options in webpackOptions.output
         // both options are optional
         filename: 'static/css/[name].css',
-        chunkFilename: 'static/css/[name].chunk.css?v=[contenthash:8]',
+        chunkFilename: 'static/css/[name].chunk.css',
       });
   }
 
@@ -100,7 +100,7 @@ module.exports = function override(config, env) {
   // TODO: remove this when upgrading to webpack 5
   // There are also additional JS chunk files if you use code splitting.
   output.chunkFilename = isEnvProduction
-    ? 'static/js/[name].chunk.js?v=[contenthash:8]'
+    ? 'static/js/[name].chunk.js'
     : isEnvDevelopment && 'static/js/[name].chunk.js';
 
   // output.libraryTarget = 'umd';
