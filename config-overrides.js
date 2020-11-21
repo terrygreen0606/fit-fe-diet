@@ -46,6 +46,7 @@ module.exports = function override(config, env) {
           inject: true,
           hash: true,
           chunks: 'all',
+          cache: false,
           template: paths.appHtml,
         },
         isEnvProduction
