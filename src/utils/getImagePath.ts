@@ -1,3 +1,5 @@
+import { s3CdnPath } from 'constants/s3CdnPath';
+
 export const getImagePath = (imagePath: string) => {
   let s3ImgPath = imagePath;
 
@@ -9,5 +11,5 @@ export const getImagePath = (imagePath: string) => {
 
   return process.env.NODE_ENV === 'development' || localImg.search('data:image') > -1
     ? localImg
-    : `https://fitdev.s3.amazonaws.com/assets/app/media/${s3ImgPath}`;
+    : `${s3CdnPath}/assets/app/media/${s3ImgPath}`;
 };
