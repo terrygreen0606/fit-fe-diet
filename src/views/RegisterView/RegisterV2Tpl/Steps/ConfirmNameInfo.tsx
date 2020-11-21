@@ -132,9 +132,15 @@ const ConfirmInfo = ({
       afterSignupNameFirstSection: queryString.parse(location.search).firstsection,
     });
 
-    setRegisterView('FINAL');
+    history.replace({
+      pathname: history.location.pathname,
+      state: {
+        ...location.state || {},
+        nextPathname: '/after-signup'
+      },
+    });
+
     userLogin(authToken);
-    history.push('/after-signup');
   };
 
   const registerEmail = () => {

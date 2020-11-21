@@ -89,10 +89,15 @@ const JoinNameStep = ({
       afterSignupNameFirstSection: queryString.parse(location.search).firstsection,
     });
 
-    setRegisterView('READY');
+    history.replace({
+      pathname: history.location.pathname,
+      state: {
+        ...location.state || {},
+        nextPathname: '/after-signup'
+      },
+    });
 
     userLogin(authToken);
-    history.push('/after-signup');
   };
 
   const getRegisterProfilePayload = (): UserAuthProfileType => {
