@@ -17,6 +17,7 @@ module.exports = function override(config, env) {
   let rules = config.module.rules[2].oneOf;
   let plugins = config.plugins;
   let output = config.output;
+  let optimization = config.optimization;
 
   rules[0] = {
     test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
@@ -45,7 +46,7 @@ module.exports = function override(config, env) {
         {},
         {
           inject: true,
-          hash: true,
+          // hash: true,
           chunks: 'all',
           cache: false,
           template: paths.appHtml,
@@ -90,8 +91,8 @@ module.exports = function override(config, env) {
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
-        filename: 'static/css/[name].css',
-        chunkFilename: 'static/css/[name].chunk.css',
+        filename: 'static/css/[name].[hash:4].css',
+        chunkFilename: 'static/css/[name].chunk.[hash:4].css',
         ignoreOrder: true,
       });
 
@@ -99,17 +100,34 @@ module.exports = function override(config, env) {
   }
 
   output.filename = isEnvProduction
-    ? 'static/js/[name].js'
+    ? 'static/js/[name].[hash:4].js'
     : isEnvDevelopment && 'static/js/bundle.js';
   // TODO: remove this when upgrading to webpack 5
   // There are also additional JS chunk files if you use code splitting.
   output.chunkFilename = isEnvProduction
-    ? 'static/js/[name].chunk.js'
-    : isEnvDevelopment && 'static/js/[name].chunk.js';
+    ? 'static/js/[name].chunk.[hash:4].js'
+    : isEnvDevelopment && 'static/js/[name].chunk.[hash:4].js';
 
   // output.libraryTarget = 'umd';
   // output.library = '[name]';
   // output.umdNamedDefine = false;
+
+  optimization.splitChunks = {
+    name: true,
+    cacheGroups: {
+      commons: {
+        chunks: 'initial',
+        minChunks: 2
+      },
+      vendors: {
+        test: /[\\/]node_modules[\\/]/,
+        chunks: 'all',
+        priority: -10
+      }
+    }
+  };
+
+  optimization.runtimeChunk = true;
 
   return config;
 }
