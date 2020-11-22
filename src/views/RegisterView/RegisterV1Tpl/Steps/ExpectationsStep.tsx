@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { getTranslate } from 'utils';
+import { connect } from 'react-redux';
+import { getTranslate, getLocaleByLang } from 'utils';
 import moment from 'moment';
 
 // Components
@@ -12,6 +13,7 @@ const ExpectationsStep = ({
   registerData,
   setRegisterView,
   localePhrases,
+  language,
 }: any) => {
   const { weight, weight_goal, predicted_date } = registerData;
   const I18N_MEASUREMENT = registerData.measurement === 'si' ? 'common.kg' : 'common.lbs';
@@ -20,7 +22,7 @@ const ExpectationsStep = ({
     getTranslate(localePhrases, code, placeholders);
 
   const getPredictedDate = () => {
-    let monthLocale = new Date(predicted_date * 1000).toLocaleString(window.navigator.language, { month: 'long' });
+    let monthLocale = new Date(predicted_date * 1000).toLocaleString(getLocaleByLang(language), { month: 'long' });
     monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
 
     let predictedDate = null;
@@ -75,4 +77,8 @@ const ExpectationsStep = ({
   );
 };
 
-export default ExpectationsStep;
+export default connect(
+  (state: any) => ({
+    language: state.settings.language,
+  }),
+)(ExpectationsStep);
