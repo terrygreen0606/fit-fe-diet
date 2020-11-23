@@ -83,3 +83,6 @@ export const getRecipesList = (
     `recipe/?${cuisineIdsQuery}&private=${privateRecipes}&liked=${liked}&page=${page}&filter_type=${filterType}&filter=${filter}`,
   );
 };
+
+export const deleteRecipeNote = (recipeId: string) =>
+  axios.delete(`/recipe/note/${[recipeId]}`);

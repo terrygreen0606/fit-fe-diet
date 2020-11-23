@@ -26,6 +26,7 @@ import {
   addRecipeNote,
   addToShoppingListByRecipes,
   changeRecipeInMealPlan,
+  deleteRecipeNote,
 } from 'api';
 
 // Components
@@ -311,23 +312,40 @@ const RecipeFullView = (props: any) => {
       .finally(() => setIsActiveCheckedRequest(false));
   };
 
-  const addRecipeNoteClick = () => {
-    addRecipeNote(recipeId, addNoteForm.note)
-      .then((response) => {
-        if (response.data.success && response.data.data) {
-          toast.success(t('recipe.add_note.success'));
+  const updateRecipeNoteClick = () => {
+    if (addNoteForm.note) {
+      addRecipeNote(recipeId, addNoteForm.note)
+        .then((response) => {
+          if (response.data.success && response.data.data) {
+            toast.success(t('recipe.add_note.success'));
 
-          setIsBlockActive(false);
+            setIsBlockActive(false);
 
-          setRecipeData({
-            ...recipeData,
-            note: addNoteForm.note,
-          });
-        }
-      })
-      .catch(() => {
-        toast.error(t('common.error'));
-      });
+            setRecipeData({
+              ...recipeData,
+              note: addNoteForm.note,
+            });
+          }
+        })
+        .catch(() => {
+          toast.error(t('common.error'));
+        });
+    } else {
+      deleteRecipeNote(recipeId)
+        .then(({ data }) => {
+          if (data.success) {
+            setIsBlockActive(false);
+
+            setRecipeData({
+              ...recipeData,
+              note: addNoteForm.note,
+            });
+          }
+        })
+        .catch(() => {
+          toast.error(t('common.error'));
+        });
+    }
   };
 
   return (
@@ -621,8 +639,7 @@ const RecipeFullView = (props: any) => {
                           />
                           <Button
                             color='primary'
-                            disabled={!addNoteForm.note}
-                            onClick={() => addRecipeNoteClick()}
+                            onClick={() => updateRecipeNoteClick()}
                             className='recipe__notes-modal-btn'
                           >
                             {t('recipe.add_note.save')}
