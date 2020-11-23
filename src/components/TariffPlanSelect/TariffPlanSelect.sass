@@ -4,6 +4,11 @@
 .tariff-plan
   max-width: 670px
   margin: 0 auto
+  &__list
+    &.not_selected
+      .tariff-plan__item
+        &.special-offer
+          border-color: $bright-green
   &__item
     display: flex
     align-items: center
@@ -39,7 +44,7 @@
       background-repeat: no-repeat
       background-position: center center
       &__wrap
-        flex: 0 0 56px
+        flex: 56px
     &-text
       flex: 65%
       padding-right: 25px
@@ -130,7 +135,7 @@
         height: 23px
         border-width: 4px
         &__wrap
-          flex: 0 0 23px
+          flex: 23px
       &-text
         padding-left: 20px
         padding-right: 10px

@@ -7,6 +7,8 @@
   padding-bottom: 70px !important
   background-color: $steel-blue
   color: #fff
+  @media only screen and (max-width : 1024px)
+    padding-bottom: 20px !important
   &::before
     content: ''
     position: absolute
@@ -23,14 +25,12 @@
     display: flex
     align-items: center
     flex-wrap: wrap
-
     @media only screen and (min-width : 1200px)
       padding-left: 70px
       .app-review-single-item
         width: 580px
         right: 60px
         bottom: 4px
-
     .app-review-single-item
       position: relative
 
@@ -40,7 +40,6 @@
     position: absolute
     bottom: -95px
     right: -90px
-    
     @media only screen and (max-width : 1200px)
       right: 10%
       bottom: -15%
@@ -60,7 +59,6 @@
 
 .after-signup-intro-sect
   padding: 80px 0 40px
-
   @media only screen and (max-width : 1200px)
     padding: 60px 0 20px
 
@@ -80,15 +78,12 @@
 
 .after-signup-intro-content-col
   position: relative
-
   @media only screen and (min-width : 992px)
     padding-right: 100px
-  
   .after-signup-intro-arrow
     position: absolute
     right: -50px
     top: 0
-
     @media only screen and (max-width : 992px)
       display: none
 
@@ -104,6 +99,8 @@
   background-position: top center
   background-size: cover
   color: #fff
+  @media only screen and (max-width : 1200px)
+    padding: 57px 0 28px
   &::before
     content: ''
     position: absolute
@@ -113,10 +110,6 @@
     height: 100%
     background: linear-gradient(89.58deg, #106EE8 20.09%, rgba(16, 110, 232, 0.35) 99.63%)
 
-  @media only screen and (max-width : 1200px)
-    padding: 57px 0 28px
-
-
 .after-signup-reviews-btn-col
   position: relative
   .after-signup-start-today-arrow
@@ -125,26 +118,16 @@
     @media only screen and (max-width : 992px)
       display: none
 
-
 .after-signup-expect-sect
   padding: 70px 0
-
   @media only screen and (max-width : 1200px)
     padding-bottom: 45px
 
-
 .after-signup-video-frame
-  @media only screen and (max-width : 480px)
-    height: 270px
-
+  height: calc(100vw * 0.5)
 
 .after-signup-faq-sect
   padding-bottom: 80px
-
-
-.after-signup-payment-form-sect
-  padding-top: 0
-
 
 .after-signup-start-today-sect
   position: relative

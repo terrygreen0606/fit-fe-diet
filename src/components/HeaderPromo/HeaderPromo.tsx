@@ -1,6 +1,7 @@
 import React from 'react';
 import { getTranslate } from 'utils';
 import { Link } from 'react-router-dom';
+import { scrollToElement } from 'utils';
 import useWindowSize from 'components/hooks/useWindowSize';
 
 // Components
@@ -16,16 +17,16 @@ const HeaderPromo = (props: any) => {
     getTranslate(props.localePhrases, code, placeholders);
 
   const scrollToCheckoutForm = (e) => {
-    const afterSignupTariffs = document.getElementById('afterSignupTariffs');
+    const afterSignupTariffs = document.getElementById('selectTariffPlanBlock');
 
     if (afterSignupTariffs) {
       e.preventDefault();
-      afterSignupTariffs.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+      scrollToElement(document.getElementById('selectTariffPlanBlock'), -30);
     }
   };
 
   return (
-    <header className='main-promo-header'>
+    <header id='mainPromoHeader' className='main-promo-header fixed-top'>
       <div className='container'>
         <div className='row'>
           <div className='col-5 col-xs-4'>
@@ -35,8 +36,17 @@ const HeaderPromo = (props: any) => {
           </div>
           <div className='col-7 col-xs-8 text-right'>
 
-            <Link to='/checkout' className='link-raw' onClick={(e) => scrollToCheckoutForm(e)}>
-              <Button className='main-promo-header__btn' pulse color='primary-shadow'>
+            <Link
+              to='/checkout'
+              className='link-raw'
+              onClick={(e) => scrollToCheckoutForm(e)}
+            >
+              <Button
+                className='main-promo-header__btn'
+                pulse
+                size='sm'
+                color='primary-shadow'
+              >
                 {windowWidth > 480 ? t('button.reveal_plan') : t('button.reveal_plan.short')}
               </Button>
             </Link>
