@@ -19,7 +19,7 @@ const store = configureStore();
 chartConfig();
 
 const tagManagerArgs = {
-  gtmId: 'UA-180656572-2',
+  gtmId: 'GTM-W3FPKZ5',
 };
 
 TagManager.initialize(tagManagerArgs);
