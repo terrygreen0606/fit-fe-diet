@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import React from 'react';
+import classNames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
@@ -56,17 +57,24 @@ const Header = (props: any) => {
                 )}
             </div>
 
-            <div className='col-8 text-center d-xl-none'>
-              <div className='mainHeader_page-title'>
-                {location?.pathname.includes('/recipe/') ? (
-                  t(pageTitles[routes.recipeFullView] || null)
-                ) : (
-                    t(pageTitles[location?.pathname] || null)
-                  )}
+            {isAuthenticated && (
+              <div className='col-8 text-center d-xl-none'>
+                <div className='mainHeader_page-title'>
+                  {location?.pathname.includes('/recipe/') ? (
+                    t(pageTitles[routes.recipeFullView] || null)
+                  ) : (
+                      t(pageTitles[location?.pathname] || null)
+                    )}
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className='col-2 col-xl-10 text-right'>
+            <div
+              className={classNames('text-right', {
+                'col-2 col-xl-10': isAuthenticated,
+                'col-10': !isAuthenticated,
+              })}
+            >
               <span className='header-controls'>
                 {!isAuthenticated && (
                   <>

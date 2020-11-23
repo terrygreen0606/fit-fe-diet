@@ -90,7 +90,12 @@ const TariffPlanSelect = ({
   }, [tariffPlanList.current?.children?.length, debounceWindowWidth]);
 
   return (
-    <div className='tariff-plan__list' ref={tariffPlanList}>
+    <div
+      className={classNames('tariff-plan__list', {
+        not_selected: !value,
+      })}
+      ref={tariffPlanList}
+    >
       {tariffs.map(({
         id,
         months,
@@ -112,7 +117,7 @@ const TariffPlanSelect = ({
               'special-offer': specialOfferIndex === tariffIndex,
             })}
           >
-            <div className="tariff-plan__item-radio__wrap">
+            <div className='tariff-plan__item-radio__wrap'>
               <div className='tariff-plan__item-radio' />
             </div>
 
