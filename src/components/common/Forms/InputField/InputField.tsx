@@ -170,7 +170,8 @@ const InputField = (props: InputFieldProps) => {
     onBlur,
     onFocus,
     ref: innerRef,
-    value: value ? value : '' // eslint-disable-line
+    value: value ? value : '', // eslint-disable-line,
+    pattern: attributes.type === 'number' ? '\d*' : null,
   };
 
   if (!finalAttributes.mask) {
