@@ -40,6 +40,10 @@ export const colourStylesSelect = {
     ...styles,
     overflow: 'visible',
   }),
+  placeholder: (styles) => ({
+    ...styles,
+    lineHeight: 1.3,
+  }),
 };
 
 export const mockData = [

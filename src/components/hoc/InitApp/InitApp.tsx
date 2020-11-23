@@ -47,6 +47,7 @@ const InitApp = ({ history, children }: InitAppProps) => {
   });
 
   useEffect(() => {
+    // if gtag didn't have time to load, the required field is added
     if (window.dataLayer) {
       window.dataLayer.push({ event: 'optimize.activate' });
     }
