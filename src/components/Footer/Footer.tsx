@@ -36,14 +36,6 @@ const Footer = (props: any) => {
             <ul className='mainFooter_menuList'>
               <li>
                 <a
-                  href={generatePublicUrl('about')}
-                  className='mainFooter_menuList_item'
-                >
-                  {t('footer.menu_about')}
-                </a>
-              </li>
-              <li>
-                <a
                   href={generatePublicUrl('contacts')}
                   className='mainFooter_menuList_item'
                 >
