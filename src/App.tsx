@@ -12,11 +12,20 @@ import InitApp from './components/hoc/InitApp';
 
 import './assets/sass/styles.sass';
 
+declare global {
+  interface Window {
+    dataLayer: any;
+  }
+}
+
 const App = (props: any) => {
   const { phrases, isAuthChecking } = props;
 
   useEffect(() => {
     props.initApp();
+    if (window.dataLayer) {
+      window.dataLayer.push({ event: 'optimize.activate' });
+    }
   }, []);
 
   return (
