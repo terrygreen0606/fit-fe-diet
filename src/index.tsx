@@ -4,9 +4,16 @@ import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import chartConfig from 'utils/chartConfig';
 import TagManager from 'react-gtm-module';
+import ReactGA from 'react-ga';
 
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
+
+import {
+  GTM_KEY,
+  GA_KEY,
+  GA_OPTIMIZE_ID,
+} from 'constants/libraryKeys';
 
 import App from './App';
 
@@ -19,10 +26,13 @@ const store = configureStore();
 chartConfig();
 
 const tagManagerArgs = {
-  gtmId: 'GTM-W3FPKZ5',
+  gtmId: GTM_KEY,
 };
 
 TagManager.initialize(tagManagerArgs);
+
+ReactGA.initialize(GA_KEY);
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 ReactDOM.render(
   <Provider store={store}>
