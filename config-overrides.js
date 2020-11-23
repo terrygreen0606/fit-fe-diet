@@ -96,7 +96,7 @@ module.exports = function override(config, env) {
         ignoreOrder: true,
       });
 
-    // output.publicPath = s3CdnPath;
+    output.publicPath = s3CdnPath;
   }
 
   output.filename = isEnvProduction

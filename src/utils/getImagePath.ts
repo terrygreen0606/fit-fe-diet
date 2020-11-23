@@ -11,5 +11,5 @@ export const getImagePath = (imagePath: string) => {
 
   return process.env.NODE_ENV === 'development' || localImg.search('data:image') > -1
     ? localImg
-    : `${s3CdnPath}/assets/app/media/${s3ImgPath}`;
+    : `${s3CdnPath}/media/${s3ImgPath}`;
 };
