@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://fitdev.s3.amazonaws.com/assets/app",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@fingerprintjs/fingerprintjs": "^3.0.3",
