@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import chartConfig from 'utils/chartConfig';
+import TagManager from 'react-gtm-module';
 
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
@@ -16,6 +17,12 @@ import configureStore from './store/store';
 const store = configureStore();
 
 chartConfig();
+
+const tagManagerArgs = {
+  gtmId: 'UA-180656572-2',
+};
+
+TagManager.initialize(tagManagerArgs);
 
 ReactDOM.render(
   <Provider store={store}>
