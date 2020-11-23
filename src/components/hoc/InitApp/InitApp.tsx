@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import axios from 'utils/axios';
 
@@ -8,6 +8,12 @@ import { xhrStatuses } from 'constants/statuses';
 interface InitAppProps extends RouteComponentProps {
   history: any,
   children: any,
+}
+
+declare global {
+  interface Window {
+    dataLayer: any;
+  }
 }
 
 const InitApp = ({ history, children }: InitAppProps) => {
@@ -39,6 +45,13 @@ const InitApp = ({ history, children }: InitAppProps) => {
 
     throw error;
   });
+
+  useEffect(() => {
+    // if gtag didn't have time to load, the required field is added
+    if (window.dataLayer) {
+      window.dataLayer.push({ event: 'optimize.activate' });
+    }
+  }, []);
 
   return (
     <>
