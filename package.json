@@ -53,7 +53,7 @@
   "scripts": {
     "start": "REACT_APP_ENV=development react-app-rewired start",
     "start:win": "set \"REACT_APP_ENV=development\" && react-app-rewired start",
-    "build:staging": "REACT_APP_ENV=staging react-app-rewired build",
+    "build:staging": "PUBLIC_URL=https://fitdev.s3.amazonaws.com/assets/app REACT_APP_ENV=staging react-app-rewired build",
     "build:production": "REACT_APP_ENV=production react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
