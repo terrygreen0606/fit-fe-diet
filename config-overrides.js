@@ -91,8 +91,8 @@ module.exports = function override(config, env) {
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
-        filename: 'static/css/[name].[hash:4].css',
-        chunkFilename: 'static/css/[name].chunk.[hash:4].css',
+        filename: 'css/[name].[hash:4].css',
+        chunkFilename: 'css/[name].chunk.[hash:4].css',
         ignoreOrder: true,
       });
 
@@ -100,12 +100,12 @@ module.exports = function override(config, env) {
   }
 
   output.filename = isEnvProduction
-    ? 'static/js/[name].[hash:4].js'
+    ? 'js/[name].[hash:4].js'
     : isEnvDevelopment && 'static/js/bundle.js';
   // TODO: remove this when upgrading to webpack 5
   // There are also additional JS chunk files if you use code splitting.
   output.chunkFilename = isEnvProduction
-    ? 'static/js/[name].chunk.[hash:4].js'
+    ? 'js/[name].chunk.[hash:4].js'
     : isEnvDevelopment && 'static/js/[name].chunk.[hash:4].js';
 
   // output.libraryTarget = 'umd';
