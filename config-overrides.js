@@ -3,7 +3,6 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const paths = require('react-scripts/config/paths');
-const { s3CdnPath } = require('./src/constants/s3CdnPath');
 
 const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
@@ -95,8 +94,6 @@ module.exports = function override(config, env) {
         chunkFilename: 'static/css/[name].chunk.[hash:4].css',
         ignoreOrder: true,
       });
-
-    output.publicPath = s3CdnPath;
   }
 
   output.filename = isEnvProduction
