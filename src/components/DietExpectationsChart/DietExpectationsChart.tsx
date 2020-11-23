@@ -1,5 +1,6 @@
 import React from 'react';
-import { getTranslate } from 'utils';
+import { connect } from 'react-redux';
+import { getTranslate, getLocaleByLang } from 'utils';
 import moment from 'moment';
 import classNames from 'classnames';
 
@@ -11,12 +12,13 @@ import './DietExpectationsChart.sass';
 import { data as chartData, options as chartOptions } from './expectationsChartConfig';
 
 type ChartProps = {
-  color?: 'orange' | 'blue';
+  color?: 'orange' | 'blue' | string;
   predictedDate: number;
   measurement: 'us' | 'si';
   weight: number;
   weightGoal: number;
   localePhrases: any;
+  language: any;
 };
 
 const ChartPropsDefault = {
@@ -30,6 +32,7 @@ const DietExpectationsChart = ({
   weight,
   weightGoal,
   localePhrases,
+  language,
 }: ChartProps) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
@@ -37,7 +40,7 @@ const DietExpectationsChart = ({
   const I18N_MEASUREMENT = measurement === 'si' ? 'common.kg' : 'common.lbs';
 
   const getShortDate = (dateStr: string) => {
-    let monthLocale = new Date(dateStr).toLocaleString(window.navigator.language, { month: 'short' });
+    let monthLocale = new Date(dateStr).toLocaleString(getLocaleByLang(language), { month: 'short' });
     monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
 
     let predictedDayShort = null;
@@ -239,4 +242,8 @@ const DietExpectationsChart = ({
 
 DietExpectationsChart.defaultProps = ChartPropsDefault;
 
-export default DietExpectationsChart;
+export default connect(
+  (state: any) => ({
+    language: state.settings.language,
+  }),
+)(DietExpectationsChart);

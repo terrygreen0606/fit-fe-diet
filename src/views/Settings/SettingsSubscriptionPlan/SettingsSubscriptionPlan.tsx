@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import classnames from 'classnames';
 
 import { routes } from 'constants/routes';
-import { getTranslate } from 'utils';
+import { getTranslate, getLocaleByLang } from 'utils';
 import { getCheckoutTariff, userTariffPause } from 'api';
 import { userLogout } from 'store/actions';
 
@@ -90,7 +90,7 @@ const SettingsSubscriptionPlan = (props: any) => {
     let cleanComponent = false;
 
     if (!cleanComponent) {
-      setPaidUntilDate(new Date(settings.paid_until * 1000).toLocaleDateString(settings.language));
+      setPaidUntilDate(new Date(settings.paid_until * 1000).toLocaleDateString(getLocaleByLang(settings.language)));
     }
 
     return () => cleanComponent = true;

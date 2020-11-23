@@ -25,3 +25,4 @@ export * from './convertTime';
 export * from './getCookie';
 export * from './getApiBaseUrl';
 export * from './deleteCookie';
+export * from './getLocaleByLang';
