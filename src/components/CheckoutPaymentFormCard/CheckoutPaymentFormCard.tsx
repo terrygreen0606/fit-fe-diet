@@ -384,6 +384,7 @@ const CheckoutPaymentFormCard = ({
             invalid={getFieldErrors('cardNumber').length > 0}
             placeholderChar=' '
             placeholder='1245 8769 0987 0123'
+            pattern='number'
           />
 
           {getFieldErrors('cardNumber').slice(0, 1).map((error, errorIndex) => (
@@ -408,6 +409,7 @@ const CheckoutPaymentFormCard = ({
                 onChange={(e) => validateOnChange('cardMonthYear', e.target.value, e)}
                 errors={getFieldErrors('cardMonthYear')}
                 placeholder={t('checkout.month_year.placeholder')}
+                pattern='number'
               />
             </FormGroup>
 
@@ -429,6 +431,7 @@ const CheckoutPaymentFormCard = ({
                 mask='1111'
                 placeholderChar=' '
                 placeholder='123'
+                pattern='number'
               />
             </FormGroup>
 
@@ -491,6 +494,7 @@ const CheckoutPaymentFormCard = ({
                 errors={getFieldErrors('docId')}
                 mask='11111111111'
                 placeholder='9876543210'
+                pattern='number'
               />
             </FormGroup>
 

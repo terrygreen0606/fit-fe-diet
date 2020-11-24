@@ -287,18 +287,18 @@ const AfterSignupPage = ({
                     height='400'
                   />
                 ) : (
-                  <>
-                    {isAfterSignup && (
-                      <DietExpectationsChart
-                        weight={afterSignupWeight}
-                        weightGoal={afterSignupWeightGoal}
-                        predictedDate={afterSignupPredictDate}
-                        measurement={measurement}
-                        localePhrases={localePhrases}
-                      />
-                    )}
-                  </>
-                )}
+                    <>
+                      {isAfterSignup && (
+                        <DietExpectationsChart
+                          weight={afterSignupWeight}
+                          weightGoal={afterSignupWeightGoal}
+                          predictedDate={afterSignupPredictDate}
+                          measurement={measurement}
+                          localePhrases={localePhrases}
+                        />
+                      )}
+                    </>
+                  )}
               </div>
 
             </div>
@@ -466,14 +466,14 @@ const AfterSignupPage = ({
                   )}
                 </>
               ) : (
-                <iframe
-                  className='after-signup-video-frame'
-                  title={t('lp.video.title')}
-                  src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
-                  width='100%'
-                  height='400'
-                />
-              )}
+                  <iframe
+                    className='after-signup-video-frame'
+                    title={t('lp.video.title')}
+                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
+                    width='100%'
+                    height='400'
+                  />
+                )}
 
             </div>
             <div className='col-12 mt-4 mt-xl-5'>
