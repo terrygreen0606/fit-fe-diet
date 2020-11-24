@@ -47,14 +47,14 @@ const LineChart = ({ options = optionsDefault, data, className }: LineChartProps
       options
     });
     // eslint-disable-next-line
-  }, [data]);
+  }, []);
 
   return (
-    <canvas 
-      ref={chartRef} 
+    <canvas
+      ref={chartRef}
       className={classNames({
         [className]: className
-      })} 
+      })}
     />
   );
 };
