@@ -165,6 +165,8 @@ export const appSetting = (
     localStorage.getItem('FITLOPE_USER_SETTINGS'),
   );
 
+  console.log(response)
+
   if (isAuthenticated) {
     if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
       await dispatch(fetchUserSettings());
@@ -232,6 +234,8 @@ export const appSetting = (
       );
       const FITLOPE_CHECKSUM_SETTINGS_HEADER =
         response.headers['fitlope-checksum-settings'];
+
+      console.log(response)
 
       if (FITLOPE_CHECKSUM_SETTINGS_HEADER && FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
         localStorage.setItem(
