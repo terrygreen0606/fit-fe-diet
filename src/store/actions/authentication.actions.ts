@@ -136,6 +136,8 @@ export const loadLocales = (reloadLocales: boolean = false) => async (
       const FITLOPE_CHECKSUM_I18N_HEADER =
         response.headers['fitlope-checksum-i18n'];
 
+      console.log(response)
+
       if (FITLOPE_CHECKSUM_I18N_HEADER && FITLOPE_CHECKSUM_I18N_HEADER !== FITLOPE_CHECKSUM_I18N) {
         localStorage.setItem(
           'FITLOPE_CHECKSUM_I18N',
@@ -164,8 +166,6 @@ export const appSetting = (
   const FITLOPE_USER_SETTINGS: any = JSON.parse(
     localStorage.getItem('FITLOPE_USER_SETTINGS'),
   );
-
-  console.log(response)
 
   if (isAuthenticated) {
     if (SETTINGS_DEV || !FITLOPE_CHECKSUM_SETTINGS || !FITLOPE_USER_SETTINGS) {
