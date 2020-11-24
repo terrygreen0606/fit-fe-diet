@@ -221,7 +221,12 @@ const AfterSignupPage = ({
       <section className='after-signup-header-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-xl-6 order-xl-2 after-signup-header-chart-col'>
+            <div className='col-12'>
+
+              <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
+
+            </div>
+            <div className='col-xl-6 order-xl-2 mt-4 mt-xl-0 after-signup-header-chart-col'>
 
               <div className='after-signup-header-chart-col_content'>
                 {afterSignupNameFirstSection === 'stat' ? (
@@ -251,11 +256,9 @@ const AfterSignupPage = ({
             </div>
             <div className='col-xl-6 order-xl-1 mt-4 mt-xl-0 after-signup-header-content-col'>
 
-              <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
-
               {isAfterSignup && (
                 <h2
-                  className='mt-4 mt-xl-5 fw-bold'
+                  className='fw-bold'
                   dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }}
                 />
               )}
