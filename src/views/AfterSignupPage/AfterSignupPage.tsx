@@ -258,12 +258,12 @@ const AfterSignupPage = ({
 
               {isAfterSignup && (
                 <h2
-                  className='fw-bold'
+                  className='fw-bold mb-4'
                   dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }}
                 />
               )}
 
-              <div className='text-center mt-4'>
+              <div className='text-center'>
                 <ContentLoading
                   isLoading={tariffsLoading}
                   isError={tariffsLoadingError}
