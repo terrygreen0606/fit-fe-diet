@@ -20,11 +20,13 @@
   text-decoration: none
   background-color: #fff
   text-align: center
-  white-space: nowrap
   border-radius: 5px
   cursor: pointer
   text-decoration: none !important
   transition: all 0.2s ease-in-out
+  @media only screen and (max-width : 576px)
+    padding-left: 10px !important
+    padding-right: 10px !important
   &:hover
     box-shadow: 0 5px 15px $slate-grey
     color: #D3D3D3
