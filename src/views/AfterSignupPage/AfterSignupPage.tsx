@@ -233,8 +233,6 @@ const AfterSignupPage = ({
               )}
 
               <div className='text-center mt-4'>
-                <CountDown seconds={900} />
-
                 <ContentLoading
                   isLoading={tariffsLoading}
                   isError={tariffsLoadingError}
@@ -278,7 +276,19 @@ const AfterSignupPage = ({
             <div className='col-xl-6 mt-5 mt-xl-0 after-signup-header-chart-col'>
 
               <div className='after-signup-header-chart-col_content'>
-                {afterSignupNameFirstSection === 'vid' ? (
+                {afterSignupNameFirstSection === 'stat' ? (
+                  <>
+                    {isAfterSignup && (
+                      <DietExpectationsChart
+                        weight={afterSignupWeight}
+                        weightGoal={afterSignupWeightGoal}
+                        predictedDate={afterSignupPredictDate}
+                        measurement={measurement}
+                        localePhrases={localePhrases}
+                      />
+                    )}
+                  </>
+                ) : (
                   <iframe
                     className='after-signup-video-frame'
                     title={t('lp.video.title')}
@@ -286,19 +296,7 @@ const AfterSignupPage = ({
                     width='100%'
                     height='400'
                   />
-                ) : (
-                    <>
-                      {isAfterSignup && (
-                        <DietExpectationsChart
-                          weight={afterSignupWeight}
-                          weightGoal={afterSignupWeightGoal}
-                          predictedDate={afterSignupPredictDate}
-                          measurement={measurement}
-                          localePhrases={localePhrases}
-                        />
-                      )}
-                    </>
-                  )}
+                )}
               </div>
 
             </div>
@@ -453,7 +451,15 @@ const AfterSignupPage = ({
             </div>
             <div className='col-xl-6 mt-5 mt-xl-0'>
 
-              {afterSignupNameFirstSection === 'vid' ? (
+              {afterSignupNameFirstSection === 'stat' ? (
+                <iframe
+                  className='after-signup-video-frame'
+                  title={t('lp.video.title')}
+                  src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
+                  width='100%'
+                  height='400'
+                />
+              ) : (
                 <>
                   {isAfterSignup && (
                     <DietExpectationsChart
@@ -465,15 +471,7 @@ const AfterSignupPage = ({
                     />
                   )}
                 </>
-              ) : (
-                  <iframe
-                    className='after-signup-video-frame'
-                    title={t('lp.video.title')}
-                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
-                    width='100%'
-                    height='400'
-                  />
-                )}
+              )}
 
             </div>
             <div className='col-12 mt-4 mt-xl-5'>
@@ -619,7 +617,7 @@ const AfterSignupPage = ({
                   />
 
                 </div>
-                <div className='col-md-6 pl-xl-5 mt-4 mt-xl-5 mt-md-0'>
+                <div className='col-md-6 pl-xl-5 mt-4 mt-md-0'>
 
                   <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
