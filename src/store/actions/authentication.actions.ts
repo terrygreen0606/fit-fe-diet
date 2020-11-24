@@ -97,7 +97,7 @@ export const fetchUserSettings = () => async (dispatch) => {
 export const loadLocales = (reloadLocales: boolean = false) => async (
   dispatch,
 ) => {
-  const LOCALIZATION_DEV = true;
+  const LOCALIZATION_DEV = false;
   const FITLOPE_CHECKSUM_I18N = localStorage.getItem('FITLOPE_CHECKSUM_I18N');
   const FITLOPE_LOCALE_LANG = localStorage.getItem('FITLOPE_LOCALE_LANG');
   const FITLOPE_LOCALE_PHRASES = JSON.parse(
@@ -147,7 +147,7 @@ export const appSetting = (
   isAuthenticated: boolean,
   localesLoad: boolean = true,
 ) => async (dispatch) => {
-  const SETTINGS_DEV = true;
+  const SETTINGS_DEV = false;
   const FITLOPE_CHECKSUM_SETTINGS = localStorage.getItem(
     'FITLOPE_CHECKSUM_SETTINGS',
   );
@@ -186,7 +186,7 @@ export const appSetting = (
     }
   } else {
     if (
-      !SETTINGS_DEV ||
+      SETTINGS_DEV ||
       !FITLOPE_CHECKSUM_SETTINGS ||
       !FITLOPE_PUBLIC_SETTINGS
     ) {
