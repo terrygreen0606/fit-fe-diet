@@ -479,96 +479,96 @@ const CheckoutPaymentFormCard = ({
           />
         </FormGroup>
 
-        {/* {isShowInstallments() && ( */}
-        <>
-          <FormGroup>
-            <InputField
-              block
-              name='docId'
-              className='checkout-payment-card__form_input'
-              label={`${t('checkout.form_card.cpf')}*:`}
-              isValid={isFieldValid('docId')}
-              value={checkoutForm.docId}
-              data-validate='["required", "number"]'
-              onChange={(e) => validateOnChange('docId', e.target.value, e)}
-              errors={getFieldErrors('docId')}
-              mask='11111111111'
-              placeholder='9876543210'
-              pattern='number'
-            />
-          </FormGroup>
-
-          <FormLabel className='mt-45'>{t('checkout.tariff.installments.options_title')}</FormLabel>
-
-          <div className='checkout-payment-card__form_installments__list mt-45'>
-            <FormGroup className='checkout-payment-card__form_installments__item'>
-              <FormLabel>
-                {t('checkout.tariff.installments.title', { PERIOD: getInstallmentsValue('parts') })}
-              </FormLabel>
-
-              <CustomRadio
-                inline
-                className={classNames('checkout-payment-card__form_installments__radio', {
-                  'radio-checked': checkoutForm.payment_type === 'credit_card',
-                })}
-                checked={checkoutForm.installments === getInstallmentsValue('parts')}
-                value={getInstallmentsValue('parts') || ''}
-                name='checkout_installments'
-                onChange={(e) => validateOnChange('installments', e.target.value, e)}
-                label={(
-                  <span className='checkout-payment-card__form_installments__radio_btn'>
-                    <h6 className='checkout-payment-card__form_installments__radio_title'>
-                      {getInstallmentsValue('price_monthly_text')}
-                        /
-                        {t('common.months_reduction')}
-                      {' '}
-                      {t('checkout.tariff.installments.taxes')}
-                    </h6>
-                    <p className='checkout-payment-card__form_installments__radio_descr'>
-                      {t('checkout.tariff.installments.total_text', {
-                        AMOUNT: getInstallmentsValue('price_text'),
-                        PERIOD: getInstallmentsValue('parts'),
-                      })}
-                    </p>
-                  </span>
-                )}
+        {isShowInstallments() && (
+          <>
+            <FormGroup>
+              <InputField
+                block
+                name='docId'
+                className='checkout-payment-card__form_input'
+                label={`${t('checkout.form_card.cpf')}*:`}
+                isValid={isFieldValid('docId')}
+                value={checkoutForm.docId}
+                data-validate='["required", "number"]'
+                onChange={(e) => validateOnChange('docId', e.target.value, e)}
+                errors={getFieldErrors('docId')}
+                mask='11111111111'
+                placeholder='9876543210'
+                pattern='number'
               />
             </FormGroup>
 
-            <FormGroup className='checkout-payment-card__form_installments__item'>
-              <FormLabel>
-                {t('checkout.tariff.installments.title_total', { COUNT: getInstallmentsValue('fee_pct') })}
-              </FormLabel>
+            <FormLabel className='mt-45'>{t('checkout.tariff.installments.options_title')}</FormLabel>
 
-              <CustomRadio
-                inline
-                className={classNames('checkout-payment-card__form_installments__radio', {
-                  'radio-checked': checkoutForm.payment_type === 'credit_card',
-                })}
-                checked={checkoutForm.installments === '1'}
-                value='1'
-                name='checkout_installments'
-                onChange={(e) => validateOnChange('installments', e.target.value, e)}
-                label={(
-                  <span className='checkout-payment-card__form_installments__radio_btn'>
-                    <h6 className='checkout-payment-card__form_installments__radio_title'>
-                      {getInstallmentsValue('price_monthly_text')}
+            <div className='checkout-payment-card__form_installments__list mt-45'>
+              <FormGroup className='checkout-payment-card__form_installments__item'>
+                <FormLabel>
+                  {t('checkout.tariff.installments.title', { PERIOD: getInstallmentsValue('parts') })}
+                </FormLabel>
+
+                <CustomRadio
+                  inline
+                  className={classNames('checkout-payment-card__form_installments__radio', {
+                    'radio-checked': checkoutForm.payment_type === 'credit_card',
+                  })}
+                  checked={checkoutForm.installments === getInstallmentsValue('parts')}
+                  value={getInstallmentsValue('parts') || ''}
+                  name='checkout_installments'
+                  onChange={(e) => validateOnChange('installments', e.target.value, e)}
+                  label={(
+                    <span className='checkout-payment-card__form_installments__radio_btn'>
+                      <h6 className='checkout-payment-card__form_installments__radio_title'>
+                        {getInstallmentsValue('price_monthly_text')}
                         /
                         {t('common.months_reduction')}
-                    </h6>
-                    <p className='checkout-payment-card__form_installments__radio_descr'>
-                      {t('checkout.tariff.installments.total_text', {
-                        AMOUNT: getTariffDataValue('price_text'),
-                        PERIOD: getTariffDataValue('months'),
-                      })}
-                    </p>
-                  </span>
-                )}
-              />
-            </FormGroup>
-          </div>
-        </>
-        {/* )} */}
+                        {' '}
+                        {t('checkout.tariff.installments.taxes')}
+                      </h6>
+                      <p className='checkout-payment-card__form_installments__radio_descr'>
+                        {t('checkout.tariff.installments.total_text', {
+                          AMOUNT: getInstallmentsValue('price_text'),
+                          PERIOD: getInstallmentsValue('parts'),
+                        })}
+                      </p>
+                    </span>
+                  )}
+                />
+              </FormGroup>
+
+              <FormGroup className='checkout-payment-card__form_installments__item'>
+                <FormLabel>
+                  {t('checkout.tariff.installments.title_total', { COUNT: getInstallmentsValue('fee_pct') })}
+                </FormLabel>
+
+                <CustomRadio
+                  inline
+                  className={classNames('checkout-payment-card__form_installments__radio', {
+                    'radio-checked': checkoutForm.payment_type === 'credit_card',
+                  })}
+                  checked={checkoutForm.installments === '1'}
+                  value='1'
+                  name='checkout_installments'
+                  onChange={(e) => validateOnChange('installments', e.target.value, e)}
+                  label={(
+                    <span className='checkout-payment-card__form_installments__radio_btn'>
+                      <h6 className='checkout-payment-card__form_installments__radio_title'>
+                        {getInstallmentsValue('price_monthly_text')}
+                        /
+                        {t('common.months_reduction')}
+                      </h6>
+                      <p className='checkout-payment-card__form_installments__radio_descr'>
+                        {t('checkout.tariff.installments.total_text', {
+                          AMOUNT: getTariffDataValue('price_text'),
+                          PERIOD: getTariffDataValue('months'),
+                        })}
+                      </p>
+                    </span>
+                  )}
+                />
+              </FormGroup>
+            </div>
+          </>
+        )}
 
         <div className='text-center mt-5'>
           <Button
