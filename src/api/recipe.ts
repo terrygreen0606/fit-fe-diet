@@ -66,7 +66,7 @@ export const getRecipesList = (
 ) => {
   if (cuisinesIds.length === 0) {
     return axios.get(
-      `recipe/?private=${privateRecipes}&liked=${liked}&page=${page}&filter_type=${filterType}&filter=${filter}`,
+      `recipe?private=${privateRecipes}&liked=${liked}&page=${page}&filter_type=${filterType}&filter=${filter}`,
     );
   }
 
@@ -80,7 +80,7 @@ export const getRecipesList = (
   });
 
   return axios.get(
-    `recipe/?${cuisineIdsQuery}&private=${privateRecipes}&liked=${liked}&page=${page}&filter_type=${filterType}&filter=${filter}`,
+    `recipe?${cuisineIdsQuery}&private=${privateRecipes}&liked=${liked}&page=${page}&filter_type=${filterType}&filter=${filter}`,
   );
 };
 
