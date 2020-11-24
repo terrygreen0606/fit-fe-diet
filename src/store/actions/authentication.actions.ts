@@ -35,10 +35,12 @@ export const fetchLocales = () => async (dispatch) => {
 
   await loadPhrases(userLang)
     .then(({ data, headers }) => {
-      localStorage.setItem(
-        'FITLOPE_CHECKSUM_I18N',
-        headers['fitlope-checksum-i18n'],
-      );
+      if (headers['fitlope-checksum-i18n']) {
+        localStorage.setItem(
+          'FITLOPE_CHECKSUM_I18N',
+          headers['fitlope-checksum-i18n'],
+        );
+      }
 
       if (data.success && data.data) {
         dispatch(setLocalePhrases(data.data));
@@ -55,10 +57,12 @@ export const fetchLocales = () => async (dispatch) => {
 export const fetchPublicSettings = () => async (dispatch) => {
   await getAppPublicSettings()
     .then(({ data, headers }) => {
-      localStorage.setItem(
-        'FITLOPE_CHECKSUM_SETTINGS',
-        headers['fitlope-checksum-settings'],
-      );
+      if (headers['fitlope-checksum-settings']) {
+        localStorage.setItem(
+          'FITLOPE_CHECKSUM_SETTINGS',
+          headers['fitlope-checksum-settings'],
+        );
+      }
 
       if (data.success && data.data) {
         dispatch(setAppSetting(data.data));
@@ -74,10 +78,12 @@ export const fetchPublicSettings = () => async (dispatch) => {
 export const fetchUserSettings = () => async (dispatch) => {
   await getAppSettings()
     .then(({ data, headers }) => {
-      localStorage.setItem(
-        'FITLOPE_CHECKSUM_SETTINGS',
-        headers['fitlope-checksum-settings'],
-      );
+      if (headers['fitlope-checksum-settings']) {
+        localStorage.setItem(
+          'FITLOPE_CHECKSUM_SETTINGS',
+          headers['fitlope-checksum-settings'],
+        );
+      }
 
       if (data.success && data.data) {
         dispatch(
@@ -130,7 +136,7 @@ export const loadLocales = (reloadLocales: boolean = false) => async (
       const FITLOPE_CHECKSUM_I18N_HEADER =
         response.headers['fitlope-checksum-i18n'];
 
-      if (FITLOPE_CHECKSUM_I18N_HEADER !== FITLOPE_CHECKSUM_I18N) {
+      if (FITLOPE_CHECKSUM_I18N_HEADER && FITLOPE_CHECKSUM_I18N_HEADER !== FITLOPE_CHECKSUM_I18N) {
         localStorage.setItem(
           'FITLOPE_CHECKSUM_I18N',
           FITLOPE_CHECKSUM_I18N_HEADER,
@@ -227,7 +233,7 @@ export const appSetting = (
       const FITLOPE_CHECKSUM_SETTINGS_HEADER =
         response.headers['fitlope-checksum-settings'];
 
-      if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
+      if (FITLOPE_CHECKSUM_SETTINGS_HEADER && FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
         localStorage.setItem(
           'FITLOPE_CHECKSUM_SETTINGS',
           FITLOPE_CHECKSUM_SETTINGS_HEADER,
@@ -235,14 +241,14 @@ export const appSetting = (
       }
 
       if (FITLOPE_IS_AUTHENTICATED === 'true') {
-        if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
+        if (FITLOPE_CHECKSUM_SETTINGS_HEADER && FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
           dispatch(fetchUserSettings());
         }
       } else if (
         !FITLOPE_IS_AUTHENTICATED ||
         FITLOPE_IS_AUTHENTICATED === 'false'
       ) {
-        if (FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
+        if (FITLOPE_CHECKSUM_SETTINGS_HEADER && FITLOPE_CHECKSUM_SETTINGS_HEADER !== FITLOPE_CHECKSUM_SETTINGS) {
           dispatch(fetchPublicSettings());
         }
       }
