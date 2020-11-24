@@ -39,6 +39,7 @@ export type InputFieldProps = {
   openModalFiledProps?: any,
   height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl',
   border?: 'light',
+  pattern?: 'number',
   [propName: string]: any
 }
 
@@ -131,6 +132,7 @@ const InputField = (props: InputFieldProps) => {
     innerRef,
     height,
     border,
+    pattern,
     ...attributes
   } = props;
 
@@ -172,7 +174,7 @@ const InputField = (props: InputFieldProps) => {
     ref: innerRef,
     // eslint-disable-next-line no-unneeded-ternary
     value: value ? value : '',
-    pattern: attributes.type === 'number' ? '[0-9]*' : null,
+    pattern: (pattern === 'number' || attributes.type === 'number') && '[0-9]*',
   };
 
   if (!finalAttributes.mask) {
