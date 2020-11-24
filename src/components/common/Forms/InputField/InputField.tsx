@@ -174,7 +174,7 @@ const InputField = (props: InputFieldProps) => {
     ref: innerRef,
     // eslint-disable-next-line no-unneeded-ternary
     value: value ? value : '',
-    pattern: (pattern === 'number' || attributes.type === 'number') && '[0-9]*',
+    pattern: (pattern === 'number' || attributes.type === 'number') ? '[0-9]*' : null,
   };
 
   if (!finalAttributes.mask) {
