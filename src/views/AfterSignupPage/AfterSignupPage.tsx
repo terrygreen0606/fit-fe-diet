@@ -221,13 +221,41 @@ const AfterSignupPage = ({
       <section className='after-signup-header-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-xl-6 after-signup-header-content-col'>
+            <div className='col-xl-6 order-xl-2 after-signup-header-chart-col'>
+
+              <div className='after-signup-header-chart-col_content'>
+                {afterSignupNameFirstSection === 'stat' ? (
+                  <>
+                    {isAfterSignup && (
+                      <DietExpectationsChart
+                        weight={afterSignupWeight}
+                        weightGoal={afterSignupWeightGoal}
+                        predictedDate={afterSignupPredictDate}
+                        measurement={measurement}
+                        localePhrases={localePhrases}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <iframe
+                    className='after-signup-video-frame'
+                    title={t('lp.video.title')}
+                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
+                    allow='autoplay'
+                    width='100%'
+                    height='400'
+                  />
+                )}
+              </div>
+
+            </div>
+            <div className='col-xl-6 order-xl-1 mt-4 mt-xl-0 after-signup-header-content-col'>
 
               <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
 
               {isAfterSignup && (
                 <h2
-                  className='mt-5 mt-xl-4 fw-bold'
+                  className='mt-4 mt-xl-5 fw-bold'
                   dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }}
                 />
               )}
@@ -270,33 +298,6 @@ const AfterSignupPage = ({
                   <div className='sale-points__item'>{t('lp.sale.point2')}</div>
                   <div className='sale-points__item'>{t('lp.sale.point3')}</div>
                 </div>
-              </div>
-
-            </div>
-            <div className='col-xl-6 mt-5 mt-xl-0 after-signup-header-chart-col'>
-
-              <div className='after-signup-header-chart-col_content'>
-                {afterSignupNameFirstSection === 'stat' ? (
-                  <>
-                    {isAfterSignup && (
-                      <DietExpectationsChart
-                        weight={afterSignupWeight}
-                        weightGoal={afterSignupWeightGoal}
-                        predictedDate={afterSignupPredictDate}
-                        measurement={measurement}
-                        localePhrases={localePhrases}
-                      />
-                    )}
-                  </>
-                ) : (
-                  <iframe
-                    className='after-signup-video-frame'
-                    title={t('lp.video.title')}
-                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
-                    width='100%'
-                    height='400'
-                  />
-                )}
               </div>
 
             </div>
@@ -455,7 +456,8 @@ const AfterSignupPage = ({
                 <iframe
                   className='after-signup-video-frame'
                   title={t('lp.video.title')}
-                  src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
+                  src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
+                  allow='autoplay'
                   width='100%'
                   height='400'
                 />
