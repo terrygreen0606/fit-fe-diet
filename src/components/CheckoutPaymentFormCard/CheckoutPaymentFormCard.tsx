@@ -11,7 +11,6 @@ import { InputError } from 'types';
 import { payCreditCard, getPaymentMethods } from 'api';
 
 // Components
-import ContentLoading from 'components/hoc/ContentLoading';
 import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
@@ -323,7 +322,7 @@ const CheckoutPaymentFormCard = ({
       })}
     >
       {isCheckoutPaymentError && (
-        <div ref={paymentErrorRef} className='checkout-payment-card__error mt-5'>
+        <div ref={paymentErrorRef} className='checkout-payment-card__error my-5'>
           <h3 className='checkout-payment-card__error__title'>
             <WarningIcon className='checkout-payment-card__error__icon mr-3' />
             {' '}
@@ -340,7 +339,7 @@ const CheckoutPaymentFormCard = ({
         </div>
       )}
 
-      <form className='checkout-payment-card__form mt-5' onSubmit={(e) => checkoutFormSubmit(e)}>
+      <form className='checkout-payment-card__form' onSubmit={(e) => checkoutFormSubmit(e)}>
         <h3 className='checkout-payment-card__title'>
           <div className='checkout-payment-card__title_text'>
             <CreditCardIcon className='mr-2' />
@@ -372,7 +371,15 @@ const CheckoutPaymentFormCard = ({
             value={checkoutForm.cardNumber}
             data-param='18,23'
             data-validate='["required", "max-max-len"]'
-            onChange={(e) => validateOnChange('cardNumber', e.target.value, e)}
+            onChange={(e) => validateOnChange('cardNumber', e.target.value?.trim(), e)}
+            onFocus={(e) => {
+              const el = e.target;
+              const val = (e.target.value || '').trim();
+
+              setTimeout(() => {
+                el.setSelectionRange(val.length, val.length);
+              }, 0);
+            }}
             mask='1111 1111 1111 1111 111'
             invalid={getFieldErrors('cardNumber').length > 0}
             placeholderChar=' '
@@ -562,11 +569,9 @@ const CheckoutPaymentFormCard = ({
         <div className='text-center mt-5'>
           <Button
             type='submit'
-            className='checkout-pay-form__submit'
+            className='checkout-payment-card__form_submit'
             color='primary'
             size='lg'
-            block
-            style={{ maxWidth: '320px' }}
             isLoading={paymentLoading}
             disabled={!tariff || disabled}
           >

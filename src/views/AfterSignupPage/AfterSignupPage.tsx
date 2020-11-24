@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
-import { getTranslate, getImagePath } from 'utils';
+import { getTranslate, getImagePath, scrollToElement } from 'utils';
 import { getAppTariffs, getAppReviews } from 'api';
 
 // Components
@@ -59,7 +59,7 @@ const AfterSignupPage = ({
   const [isActiveWidgetsOnMobile, setIsActiveWidgetsOnMobile] = useState<boolean>(false);
   const [isStartActiveWidgets, setIsStartActiveWidgets] = useState<boolean>(false);
 
-  const selectPlanBlockRef = useRef();
+  const selectPlanBlockRef = useRef(null);
   const isVisibleSelectPlanBlock = useVisible(selectPlanBlockRef);
   useEffect(() => {
     if (debounceWindowWidth < 576) {
@@ -70,7 +70,7 @@ const AfterSignupPage = ({
     isVisibleSelectPlanBlock,
   ]);
 
-  const paymentFormBlockRef = useRef();
+  const paymentFormBlockRef = useRef(null);
   const isVisiblePaymentFormBlock = useVisible(paymentFormBlockRef);
   useEffect(() => {
     if (debounceWindowWidth < 576) {
@@ -81,7 +81,7 @@ const AfterSignupPage = ({
     isVisiblePaymentFormBlock,
   ]);
 
-  const introBlockRef = useRef();
+  const introBlockRef = useRef(null);
   const isVisibleIntroBlock = useVisible(introBlockRef, '-50px');
   useEffect(() => {
     setIsStartActiveWidgets(isVisibleIntroBlock);
@@ -89,7 +89,6 @@ const AfterSignupPage = ({
     debounceWindowWidth,
     isVisibleIntroBlock,
   ]);
-  const afterSignupTariffsRef = useRef<any>(null);
 
   const getUserTariffs = () => {
     setTariffsLoading(true);
@@ -134,9 +133,32 @@ const AfterSignupPage = ({
       });
   };
 
+  const documentScrollHandle = () => {
+    const mainPromoHeader = document.getElementById('mainPromoHeader');
+    const selectTariffPlanBlock = document.getElementById('selectTariffPlanBlock');
+
+    if (!mainPromoHeader || !selectTariffPlanBlock) {
+      return false;
+    }
+
+    if (selectTariffPlanBlock.getBoundingClientRect().top < 80) {
+      if (mainPromoHeader.classList.contains('fixed-top')) {
+        mainPromoHeader.classList.remove('fixed-top');
+      }
+    } else if (!mainPromoHeader.classList.contains('fixed-top')) {
+      mainPromoHeader.classList.add('fixed-top');
+    }
+  };
+
   useEffect(() => {
     getUserTariffs();
     getUserReviews();
+
+    document.addEventListener('scroll', documentScrollHandle);
+
+    return () => {
+      document.removeEventListener('scroll', documentScrollHandle);
+    };
   }, []);
 
   const t = (code: string, placeholders?: any) =>
@@ -181,11 +203,11 @@ const AfterSignupPage = ({
   };
 
   const scrollToTariffsSelectForm = () => {
-    afterSignupTariffsRef?.current?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+    scrollToElement(selectPlanBlockRef?.current, -30);
   };
 
   const scrollToCheckoutForm = () => {
-    document.getElementById('afterSignupPaymentFormRef')?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+    scrollToElement(paymentFormBlockRef?.current, -30);
   };
 
   const isShowPartners = () => language === 'br';
@@ -219,7 +241,7 @@ const AfterSignupPage = ({
                   fetchData={() => getUserTariffs()}
                 >
                   {tariffsDataList.length > 0 && (
-                    <h2
+                    <h4
                       className='fw-regular mt-4'
                       dangerouslySetInnerHTML={{
                         __html: t('lp.selling_text', {
@@ -420,7 +442,7 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-xl-6'>
 
-              <h2 className='mb-5 fw-bold'>{t('lp.advantages_title')}</h2>
+              <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.advantages_title')}</h2>
 
               <div className='app-advantages-list'>
                 <div className='app-advantages-list__item'>{t('lp.advantage_1')}</div>
@@ -454,7 +476,7 @@ const AfterSignupPage = ({
               )}
 
             </div>
-            <div className='col-12 mt-5'>
+            <div className='col-12 mt-4 mt-xl-5'>
 
               <div className='row'>
                 <div className='col-xl-6 text-center'>
@@ -564,9 +586,9 @@ const AfterSignupPage = ({
               </div>
 
               <div className='row'>
-                <div ref={selectPlanBlockRef} className='col-md-6'>
+                <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='col-md-6'>
 
-                  <h2 ref={afterSignupTariffsRef} className='mb-5 fw-bold text-center'>
+                  <h2 className='mb-4 mb-xl-5 fw-bold text-center'>
                     {t('lp.select_plan_title')}
                   </h2>
 
@@ -597,9 +619,9 @@ const AfterSignupPage = ({
                   />
 
                 </div>
-                <div className='col-md-6 pl-xl-5 mt-5 mt-xl-0'>
+                <div className='col-md-6 pl-xl-5 mt-4 mt-xl-5 mt-md-0'>
 
-                  <h2 className='mb-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
+                  <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
                   <div className='advantages-checklist pt-4'>
                     {Array(6).fill(1).map((el) => uuid()).map((id, index) => (
@@ -637,14 +659,14 @@ const AfterSignupPage = ({
           <div className='row'>
             <div className='col-12'>
 
-              <h3 id='afterSignupPaymentFormRef' className='mb-5 fw-bold text-center'>
+              <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
                 {t('lp.select_payment.title')}
               </h3>
 
               <CheckoutPaymentFormCard
                 tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
                 disabled={!getActiveTariffData()}
-                scrollRef={afterSignupTariffsRef}
+                scrollRef={selectPlanBlockRef}
                 history={history}
                 localePhrases={localePhrases}
               />
@@ -664,13 +686,13 @@ const AfterSignupPage = ({
               <div className='row mt-xl-5'>
                 <div className='col-lg-6'>
 
-                  <h5 className='mb-5 fw-bold text-center'>{t('lp.faq.q1')}</h5>
+                  <h5 className='mb-4 fw-bold text-center'>{t('lp.faq.q1')}</h5>
                   <p>{t('lp.faq.a1')}</p>
 
                 </div>
                 <div className='col-lg-6 mt-5 mt-lg-0'>
 
-                  <h5 className='mb-5 fw-bold text-center'>{t('lp.faq.q2')}</h5>
+                  <h5 className='mb-4 fw-bold text-center'>{t('lp.faq.q2')}</h5>
                   <p>{t('lp.faq.a2')}</p>
 
                 </div>

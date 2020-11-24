@@ -1,5 +1,3 @@
-import { s3CdnPath } from 'constants/s3CdnPath';
-
 export const getImagePath = (imagePath: string) => {
   let s3ImgPath = imagePath;
 
@@ -11,5 +9,5 @@ export const getImagePath = (imagePath: string) => {
 
   return process.env.NODE_ENV === 'development' || localImg.search('data:image') > -1
     ? localImg
-    : `${s3CdnPath}static/media/${s3ImgPath}`;
+    : `${process.env.PUBLIC_URL}static/media/${s3ImgPath}`;
 };

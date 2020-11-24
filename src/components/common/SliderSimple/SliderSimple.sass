@@ -240,10 +240,11 @@ $reviews-slider-class: '.app-reviews-slider'
           background-size: contain
           background-repeat: no-repeat
           background-position: top center
-
-          @media only screen and (max-width : 992px)
-            height: 800px
+          @media only screen and (max-width : 576px)
+            height: calc(100vw * 1.5)
             background-position: center center
+          @media only screen and (max-width : 480px)
+            height: calc(100vw * 1.8)
     & ~ .slider-simple-dots
       .slider-simple-dot
         background-color: #fff

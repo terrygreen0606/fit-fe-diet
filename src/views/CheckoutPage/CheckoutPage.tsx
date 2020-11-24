@@ -404,7 +404,7 @@ const CheckoutPage = ({
                     <img src={t('checkout.safe.img2')} className='img-fluid' alt='' />
 
                     <CheckoutPaymentFormCard
-                      className='mt-5'
+                      className='mt-4 mt-xl-5'
                       tariff={tariffData}
                       isPaymentError={paymentStatusError}
                       paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
