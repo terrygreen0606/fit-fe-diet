@@ -5,6 +5,7 @@ import {
   getAppSettings,
   getAppPublicSettings,
 } from 'api';
+import { publicApiList } from 'constants/publicApiList';
 import { setLocaleLang, setLocalePhrases, setAppSetting } from 'store/actions';
 import { initSentry } from 'utils/initSentry';
 import { xhrStatuses } from 'constants/statuses';
@@ -119,6 +120,10 @@ export const loadLocales = (reloadLocales: boolean = false) => async (
 
   axios.interceptors.response.use((response) => {
     if (response.status === xhrStatuses['OK']) {
+      if (response.config.url === '/i18n/load') {
+        return response;
+      }
+
       const FITLOPE_CHECKSUM_I18N = localStorage.getItem(
         'FITLOPE_CHECKSUM_I18N',
       );
@@ -130,10 +135,6 @@ export const loadLocales = (reloadLocales: boolean = false) => async (
           'FITLOPE_CHECKSUM_I18N',
           FITLOPE_CHECKSUM_I18N_HEADER,
         );
-
-        if (response.config.url === '/i18n/load') {
-          return response;
-        }
 
         dispatch(fetchLocales());
       }
@@ -213,6 +214,10 @@ export const appSetting = (
 
   axios.interceptors.response.use((response) => {
     if (response.status === xhrStatuses['OK']) {
+      if (publicApiList.find((publicApi) => publicApi === response.config.url)) {
+        return response;
+      }
+
       const FITLOPE_IS_AUTHENTICATED = sessionStorage.getItem(
         'FITLOPE_IS_AUTHENTICATED',
       );
@@ -227,13 +232,6 @@ export const appSetting = (
           'FITLOPE_CHECKSUM_SETTINGS',
           FITLOPE_CHECKSUM_SETTINGS_HEADER,
         );
-      }
-
-      if (
-        response.config.url === '/app/public-settings' ||
-        response.config.url === '/app/settings'
-      ) {
-        return response;
       }
 
       if (FITLOPE_IS_AUTHENTICATED === 'true') {
