@@ -9,16 +9,18 @@
   color: #fff
   @media only screen and (max-width : 1024px)
     padding-bottom: 20px !important
-  &::before
-    content: ''
-    position: absolute
-    bottom: 0
-    right: 0
-    width: 0
-    height: 0
-    border-style: solid
-    border-width: 0 0 70vw 45vw
-    border-color: transparent transparent #fff transparent
+  
+  @media only screen and (min-width : 1200px)
+    &::before
+      content: ''
+      position: absolute
+      bottom: 0
+      right: 0
+      width: 0
+      height: 0
+      border-style: solid
+      border-width: 0 0 70vw 45vw
+      border-color: transparent transparent #fff transparent
 
   .after-signup-header-chart-col
     position: relative
