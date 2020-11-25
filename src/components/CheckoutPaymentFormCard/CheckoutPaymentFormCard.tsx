@@ -17,10 +17,10 @@ import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 import InputField from 'components/common/Forms/InputField';
 import CreditCardNumberField from 'components/common/Forms/CreditCardNumberField';
 import CreditCardCvvField from 'components/common/Forms/CreditCardCvvField';
-import PhoneInput from 'components/common/Forms/PhoneInput';
 import CustomRadio from 'components/common/Forms/CustomRadio';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
+import PhoneInput from 'components/common/Forms/PhoneInput';
 
 import './CheckoutPaymentFormCard.sass';
 
@@ -33,7 +33,7 @@ import { getCardFieldFormat } from './getCardFieldFormat';
 const checkoutFormDefault = {
   payment_type: 'credit_card',
   payerName: null,
-  phone: null,
+  phone: '',
   cardNumber: null,
   cardCvv: null,
   cardMonthYear: null,
@@ -89,6 +89,10 @@ const CheckoutPaymentFormCard = ({
   });
   const [paymentMethodsLoading, setPaymentMethodsLoading] = useState<boolean>(true);
   const [paymentMethodsLoadingError, setPaymentMethodsLoadingError] = useState<boolean>(false);
+
+  const [countryCode, setCountryCode] = useState<string>(null);
+
+  const updateCountryCode = (code: string) => setCountryCode(code);
 
   useEffect(() => {
     if (isPaymentError !== null) {
@@ -206,7 +210,7 @@ const CheckoutPaymentFormCard = ({
         cvv: cardCvv?.replace(/ /g, ''),
       },
       contacts: {
-        phone,
+        phone: `${countryCode}${phone}`,
         payer_name: payerName,
       },
     };
@@ -457,17 +461,14 @@ const CheckoutPaymentFormCard = ({
 
         <FormGroup>
           <PhoneInput
-            block
             name='phone'
-            country={getTariffDataValue('country')}
-            className='checkout-payment-card__form_input'
+            defaultCountry={getTariffDataValue('country')}
             label={`${t('checkout.form_phone')}*:`}
-            isValid={isFieldValid('phone')}
-            value={checkoutForm.phone}
-            data-validate='["required", "number"]'
+            value={`${checkoutForm.phone}`}
+            data-validate='["required"]'
             onChange={(value, e) => validateOnChange('phone', value, e)}
             checkIsValid={(isValid: boolean) => {
-              if (!isValid && isFieldValid('phone')) {
+              if (!isValid) {
                 setPhoneErrors([{
                   field: 'phone',
                   code: 'required',
@@ -478,6 +479,7 @@ const CheckoutPaymentFormCard = ({
               }
             }}
             errors={getFieldErrors('phone')}
+            countryCode={updateCountryCode}
           />
         </FormGroup>
 
