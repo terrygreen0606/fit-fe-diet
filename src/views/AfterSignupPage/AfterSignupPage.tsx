@@ -9,7 +9,6 @@ import { getAppTariffs, getAppReviews } from 'api';
 import WithTranslate from 'components/hoc/WithTranslate';
 import ContentLoading from 'components/hoc/ContentLoading';
 import Button from 'components/common/Forms/Button';
-import CountDown from 'components/common/CountDown';
 import RawCountDown from 'components/common/RawCountDown';
 import SliderSimple from 'components/common/SliderSimple';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
