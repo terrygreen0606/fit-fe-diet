@@ -21,14 +21,14 @@ const InitApp = ({ history, children }: InitAppProps) => {
     window['beforeinstallprompt'] = e;
     if (
       history.location.pathname.indexOf(routes.register) > -1 ||
-      history.location.pathname.indexOf(routes.afterSignup) > -1
+      history.location.pathname.indexOf(routes.registerWelcome) > -1
     ) {
       e.preventDefault();
     }
   });
 
   history.listen((location) => {
-    if (location.pathname.indexOf(routes.afterCheckout) > -1) {
+    if (location.pathname.indexOf(routes.checkoutThankyou) > -1) {
       if (window['beforeinstallprompt'] && window['beforeinstallprompt'].prompt) {
         window['beforeinstallprompt'].prompt();
       }

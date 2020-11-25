@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import queryString from 'query-string';
 import requestHash from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType, InputError } from 'types';
+import { routes } from 'constants/routes';
 import { userSignup, acceptInviteToFamily } from 'api';
 
 // Components
@@ -136,7 +137,7 @@ const ConfirmInfo = ({
       pathname: history.location.pathname,
       state: {
         ...location.state || {},
-        nextPathname: '/after-signup'
+        nextPathname: routes.registerWelcome,
       },
     });
 
