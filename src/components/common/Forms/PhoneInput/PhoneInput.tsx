@@ -147,6 +147,7 @@ const PhoneInput = (props: PhoneInputProps) => {
           required: null,
         }}
         placeholder={placeholder}
+        countryCodeEditable={false}
       />
 
       {errors && (

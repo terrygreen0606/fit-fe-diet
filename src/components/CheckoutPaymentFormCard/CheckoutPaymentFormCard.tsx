@@ -21,6 +21,7 @@ import PhoneInput from 'components/common/Forms/PhoneInput';
 import CustomRadio from 'components/common/Forms/CustomRadio';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
+import PhoneInputOdin from 'components/common/Forms/PhoneInputOdin';
 
 import './CheckoutPaymentFormCard.sass';
 
@@ -447,6 +448,13 @@ const CheckoutPaymentFormCard = ({
             onChange={(e) => validateOnChange('payerName', e.target.value, e)}
             errors={getFieldErrors('payerName')}
             placeholder={t('checkout.name.placeholder')}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <PhoneInputOdin
+            label={`${t('checkout.form_phone')}*:`}
+            defaultCountry={getTariffDataValue('country')}
           />
         </FormGroup>
 
