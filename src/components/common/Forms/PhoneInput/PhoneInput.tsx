@@ -94,7 +94,7 @@ const PhoneInput = (props: PhoneInputProps) => {
 
             return onChangeInput(valid, val);
           }}
-          inputClassName={classNames({
+          inputClassName={classNames('fg-input', {
             'is-invalid': !isValid,
           })}
         />
