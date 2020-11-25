@@ -23,7 +23,6 @@ import InputField from 'components/common/Forms/InputField';
 import CustomRadio from 'components/common/Forms/CustomRadio';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
-import RawCountDown from 'components/common/RawCountDown';
 import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
@@ -329,9 +328,6 @@ const CheckoutPage = ({
                       <p className='checkout-reserved-top-block__countdown_title'>
                         {t('checkout.reserved_block.countdown.title')}
                       </p>
-                      <span className='checkout-reserved-top-block__countdown'>
-                        <RawCountDown seconds={900} />
-                      </span>
                     </div>
 
                     <div className='text-center mt-5'>
@@ -427,10 +423,6 @@ const CheckoutPage = ({
                 <h4 className='checkout-reserved-block__title'>
                   {t('lp.bottom_countdown_title')}
                   {' '}
-
-                  <span className='checkout-reserved-block__countdown'>
-                    <RawCountDown seconds={900} />
-                  </span>
                 </h4>
 
               </div>

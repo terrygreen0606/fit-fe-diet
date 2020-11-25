@@ -365,7 +365,7 @@ const MealPlanView = (props: any) => {
                       <div className='row'>
                         {mealPlan[dayItemIndex]?.list.map((recipeItem, recipeItemIndex) => (
                           !recipeItem.is_generated && !recipeItem.id ? (
-                            <div key={recipeItem.key_id} className='col-xl-6'>
+                            <div key={recipeItem.key_id} className='col-xl-6 mb-5'>
                               <div className='card-bg nutrition-plan-empty-recipe'>
                                 <ContentLoading
                                   isLoading
@@ -378,7 +378,7 @@ const MealPlanView = (props: any) => {
                           ) : (
                               <React.Fragment key={recipeItem.key_id}>
                                 {recipeItem.id ? (
-                                  <div className='col-xl-6'>
+                                  <div className='col-xl-6 mb-5'>
                                     <NutritionPlanCard
                                       title={recipeItem.name_i18n}
                                       imgSrc={recipeItem.image_url}
@@ -418,7 +418,7 @@ const MealPlanView = (props: any) => {
                                     />
                                   </div>
                                 ) : (
-                                    <div className='col-xl-6'>
+                                    <div className='col-xl-6 mb-5'>
                                       <div className='card-bg nutrition-plan-empty-recipe'>
                                         {t('mp.no_found_recipe')}
                                       </div>
@@ -510,7 +510,10 @@ const MealPlanView = (props: any) => {
                     {tourStep === 3 && (
                       <HintStep
                         hintStep={3}
-                        onClick={() => setTourStep(0)}
+                        onClick={() => {
+                          setTourStep(0);
+                          window.location.reload();
+                        }}
                         text={t('tour.hint.step3')}
                         closeText={t('common.understand')}
                       />

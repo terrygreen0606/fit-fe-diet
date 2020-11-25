@@ -9,7 +9,6 @@ import { getAppTariffs, getAppReviews } from 'api';
 import WithTranslate from 'components/hoc/WithTranslate';
 import ContentLoading from 'components/hoc/ContentLoading';
 import Button from 'components/common/Forms/Button';
-import RawCountDown from 'components/common/RawCountDown';
 import SliderSimple from 'components/common/SliderSimple';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
@@ -241,15 +240,15 @@ const RegisterWelcomePage = ({
                     )}
                   </>
                 ) : (
-                  <iframe
-                    className='after-signup-video-frame'
-                    title={t('lp.video.title')}
-                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
-                    allow='autoplay'
-                    width='100%'
-                    height='400'
-                  />
-                )}
+                    <iframe
+                      className='after-signup-video-frame'
+                      title={t('lp.video.title')}
+                      src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
+                      allow='autoplay'
+                      width='100%'
+                      height='400'
+                    />
+                  )}
               </div>
 
             </div>
@@ -464,18 +463,18 @@ const RegisterWelcomePage = ({
                   height='400'
                 />
               ) : (
-                <>
-                  {isAfterSignup && (
-                    <DietExpectationsChart
-                      weight={afterSignupWeight}
-                      weightGoal={afterSignupWeightGoal}
-                      predictedDate={afterSignupPredictDate}
-                      measurement={measurement}
-                      localePhrases={localePhrases}
-                    />
-                  )}
-                </>
-              )}
+                  <>
+                    {isAfterSignup && (
+                      <DietExpectationsChart
+                        weight={afterSignupWeight}
+                        weightGoal={afterSignupWeightGoal}
+                        predictedDate={afterSignupPredictDate}
+                        measurement={measurement}
+                        localePhrases={localePhrases}
+                      />
+                    )}
+                  </>
+                )}
 
             </div>
             <div className='col-12 mt-4 mt-xl-5'>
@@ -582,9 +581,6 @@ const RegisterWelcomePage = ({
                 <p className='checkout-reserved-top-block__countdown_title'>
                   {t('checkout.reserved_block.countdown.title')}
                 </p>
-                <span className='checkout-reserved-top-block__countdown'>
-                  <RawCountDown seconds={900} />
-                </span>
               </div>
 
               <div className='row'>
@@ -714,10 +710,6 @@ const RegisterWelcomePage = ({
                 <h4 className='checkout-reserved-block__title'>
                   {t('lp.bottom_countdown_title')}
                   {' '}
-
-                  <span className='checkout-reserved-block__countdown'>
-                    <RawCountDown seconds={900} />
-                  </span>
                 </h4>
 
                 <Button
