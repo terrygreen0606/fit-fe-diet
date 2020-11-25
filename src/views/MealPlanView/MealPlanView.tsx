@@ -510,7 +510,10 @@ const MealPlanView = (props: any) => {
                     {tourStep === 3 && (
                       <HintStep
                         hintStep={3}
-                        onClick={() => setTourStep(0)}
+                        onClick={() => {
+                          setTourStep(0);
+                          window.location.reload();
+                        }}
                         text={t('tour.hint.step3')}
                         closeText={t('common.understand')}
                       />

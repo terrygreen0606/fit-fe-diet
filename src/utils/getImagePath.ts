@@ -9,5 +9,5 @@ export const getImagePath = (imagePath: string) => {
 
   return process.env.NODE_ENV === 'development' || localImg.search('data:image') > -1
     ? localImg
-    : `${process.env.PUBLIC_URL}static/media/${s3ImgPath}`;
+    : `${process.env.PUBLIC_URL}/static/media/${s3ImgPath}`;
 };
