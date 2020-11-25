@@ -766,7 +766,7 @@ const RecipeFullView = (props: any) => {
                     visible
                   />
                 </div>
-                {recipeData.wines.length > 0 && (
+                {/* {recipeData.wines.length > 0 && (
                   <div className='recipe__advertising card-bg'>
                     <div className='recipe__advertising-title'>
                       {t('recipe.matching_wines')}
@@ -798,7 +798,7 @@ const RecipeFullView = (props: any) => {
                       </div>
                     ))}
                   </div>
-                )}
+                )} */}
                 {recipeData.similar?.length > 0 && (
                   <div className='recipe__similar-recipes card-bg'>
                     <div className='recipe__similar-recipes-title'>
