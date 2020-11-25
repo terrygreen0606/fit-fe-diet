@@ -219,7 +219,7 @@ const RegisterWelcomePage = ({
       <section className='after-signup-header-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-12 mb-4 text-ceter text-lg-left'>
+            <div className='col-12 mb-4 text-center text-xl-left'>
 
               <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
 
@@ -480,12 +480,12 @@ const RegisterWelcomePage = ({
             <div className='col-12 mt-4 mt-xl-5'>
 
               <div className='row'>
-                <div className='col-xl-6 text-center'>
+                <div className='col-md-6 text-center'>
 
                   <img src={t('checkout.social.img')} className='img-fluid' alt='' />
 
                 </div>
-                <div className='col-xl-6 mt-4 mt-xl-0 text-center'>
+                <div className='col-md-6 mt-4 mt-md-0 text-center'>
 
                   <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
 
