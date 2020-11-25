@@ -89,6 +89,10 @@ const AgeStep = ({
           if (response && response.status >= 400 && response.status < 500) {
             const validateErrors = response.data.message;
 
+            if (typeof validateErrors !== 'object') {
+              return false;
+            }
+
             const registerDataErrorsTemp: InputError[] = [...registerDataErrors];
 
             Object.keys(validateErrors).map((field) => {

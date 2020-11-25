@@ -19,7 +19,7 @@ import useVisible from 'components/hooks/useVisible';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
 
-import './AfterSignupPage.sass';
+import './RegisterWelcomePage.sass';
 
 import metropolisLogoImg from 'assets/img/partners/metropolis.png';
 import igLogoImg from 'assets/img/partners/ig.png';
@@ -28,7 +28,7 @@ import defatoLogoImg from 'assets/img/partners/defato.png';
 
 import { ReactComponent as StarFillIcon } from 'assets/img/icons/star-fill-icon.svg';
 
-const AfterSignupPage = ({
+const RegisterWelcomePage = ({
   isAfterSignup,
   afterSignupName,
   afterSignupGoal,
@@ -220,12 +220,12 @@ const AfterSignupPage = ({
       <section className='after-signup-header-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-12'>
+            <div className='col-12 mb-4 text-ceter text-lg-left'>
 
               <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
 
             </div>
-            <div className='col-xl-6 order-xl-2 mt-4 mt-xl-0 after-signup-header-chart-col'>
+            <div className='col-xl-6 order-xl-2 after-signup-header-chart-col'>
 
               <div className='after-signup-header-chart-col_content'>
                 {afterSignupNameFirstSection === 'stat' ? (
@@ -270,7 +270,7 @@ const AfterSignupPage = ({
                 >
                   {tariffsDataList.length > 0 && (
                     <h4
-                      className='fw-regular mt-4'
+                      className='fw-regular'
                       dangerouslySetInnerHTML={{
                         __html: t('lp.selling_text', {
                           OLD_VALUE: tariffsDataList[0].price_old_weekly_text,
@@ -310,10 +310,10 @@ const AfterSignupPage = ({
       <section ref={introBlockRef} className='after-signup-intro-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-8 order-md-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
+            <div className='col-lg-8 order-md-2 pt-lg-4 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
 
               {isShowPartners() && (
-                <>
+                <div className='mb-4'>
                   <h5 className='fw-bold'>{t('lp.partners_list_title')}</h5>
 
                   <div className='app-partners-list'>
@@ -334,14 +334,14 @@ const AfterSignupPage = ({
                       style={{ backgroundImage: `url(${defatoLogoImg})` }}
                     />
                   </div>
-                </>
+                </div>
               )}
 
               <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
 
-              <div className='mt-4 mt-xl-5' dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
+              <div dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
 
-              <div className='after-signup-intro-content-btn mt-5 pt-3 pb-5 text-center text-xl-left'>
+              <div className='after-signup-intro-content-btn mt-4 pt-3 pb-5 text-center text-xl-left'>
                 <Button
                   pulse
                   color='primary-shadow'
@@ -357,7 +357,7 @@ const AfterSignupPage = ({
               </div>
 
             </div>
-            <div className='col-lg-4 order-md-1 text-center text-lg-left'>
+            <div className='col-lg-4 order-md-1 mb-4 mb-md-4 text-center text-lg-left'>
 
               <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
 
@@ -512,7 +512,7 @@ const AfterSignupPage = ({
               >
                 {tariffsDataList.length > 0 && (
                   <h2
-                    className='fw-regular mt-4'
+                    className='fw-regular mt-4 text-left text-lg-center'
                     dangerouslySetInnerHTML={{
                       __html: t('lp.selling_text', {
                         OLD_VALUE: tariffsDataList[0].price_old_weekly_text,
@@ -756,5 +756,5 @@ export default WithTranslate(
       afterSignupNameFirstSection: state.storage.afterSignupNameFirstSection,
     }),
     null,
-  )(AfterSignupPage),
+  )(RegisterWelcomePage),
 );

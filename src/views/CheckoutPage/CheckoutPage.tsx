@@ -115,7 +115,7 @@ const CheckoutPage = ({
             setPaymentStatusError(true);
           } else {
             history.push({
-              pathname: routes.afterCheckout,
+              pathname: routes.checkoutThankyou,
               orderTransactionId: paymentStatus.order_number,
               orderAmount: paymentStatus.amount_usd,
             });

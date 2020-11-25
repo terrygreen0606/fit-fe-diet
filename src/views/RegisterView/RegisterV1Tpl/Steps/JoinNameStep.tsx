@@ -13,11 +13,11 @@ import requestHash from '@fingerprintjs/fingerprintjs';
 import { UserAuthProfileType } from 'types/auth';
 import {
   setStorageSettings as setStorageSettingsAction,
-  setUserData as setUserDataAction,
   userLogin as userLoginAction,
 } from 'store/actions';
 import { InputError } from 'types';
 import queryString from 'query-string';
+import { routes } from 'constants/routes';
 import {
   userSignup,
   getAppSettings,
@@ -42,7 +42,6 @@ const JoinNameStep = ({
   setRegisterDataErrors,
   setRegisterView,
   setStorageSettingsAction: setStorageSettings,
-  setUserDataAction: setUserData,
   userLoginAction: userLogin,
   history,
   location,
@@ -79,7 +78,7 @@ const JoinNameStep = ({
       token: authToken,
     });
 
-    setUserData({
+    setStorageSettings({
       isAfterSignup: true,
       afterSignupName: registerData.name,
       afterSignupGoal: registerData.goal,
@@ -93,7 +92,7 @@ const JoinNameStep = ({
       pathname: history.location.pathname,
       state: {
         ...location.state || {},
-        nextPathname: '/after-signup'
+        nextPathname: routes.registerWelcome,
       },
     });
 
@@ -237,7 +236,7 @@ const JoinNameStep = ({
               } else if (validateErrors.weight_goal) {
                 setRegisterView('INFO_WEIGHT_GOAL');
               }
-            } catch { }
+            } catch {}
           }
         });
     })();
@@ -309,5 +308,5 @@ const JoinNameStep = ({
 
 export default connect(
   null,
-  { userLoginAction, setStorageSettingsAction, setUserDataAction },
+  { userLoginAction, setStorageSettingsAction },
 )(JoinNameStep);

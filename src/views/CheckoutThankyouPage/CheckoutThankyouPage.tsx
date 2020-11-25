@@ -12,9 +12,9 @@ import Button from 'components/common/Forms/Button';
 import InviteEmail from 'components/common/Forms/InviteEmail';
 import ShareButtons from 'components/ShareButtons';
 
-import './AfterCheckoutPage.sass';
+import './CheckoutThankyouPage.sass';
 
-const AfterCheckoutPage = ({
+const CheckoutThankyouPage = ({
   paid_until,
   localePhrases,
   location,
@@ -197,5 +197,5 @@ export default WithTranslate(
       paid_until: state.settings.paid_until,
     }),
     null,
-  )(AfterCheckoutPage),
+  )(CheckoutThankyouPage),
 );

@@ -253,7 +253,7 @@ const CheckoutPaymentFormCard = ({
                   toast.success(t('checkout.payment_success'));
                   setCheckoutForm({ ...checkoutFormDefault });
                   history.push({
-                    pathname: routes.afterCheckout,
+                    pathname: routes.checkoutThankyou,
                     orderTransactionId: paymentOrder.order_number,
                     orderAmount: paymentOrder.amount_usd,
                   });
@@ -290,6 +290,11 @@ const CheckoutPaymentFormCard = ({
 
           if (response && response.status >= 400 && response.status < 500) {
             const validateErrors = response.data.message;
+
+            if (typeof validateErrors !== 'object') {
+              return false;
+            }
+
             const checkoutFormErrorsTemp: InputError[] = [...checkoutFormErrors];
 
             Object.keys(validateErrors).map((field) => {
@@ -300,7 +305,7 @@ const CheckoutPaymentFormCard = ({
             });
 
             if (checkoutFormErrorsTemp.length > 0) {
-              document.querySelector(`.checkout-payment-card__form input[name=${checkoutFormErrorsTemp[0].field}]`)
+              document?.querySelector(`.checkout-payment-card__form input[name=${checkoutFormErrorsTemp[0].field}]`)
                 ?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
             }
 
