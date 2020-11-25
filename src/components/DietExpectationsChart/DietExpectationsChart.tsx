@@ -40,20 +40,19 @@ const DietExpectationsChart = ({
   const I18N_MEASUREMENT = measurement === 'si' ? 'common.kg' : 'common.lbs';
 
   const getShortDate = (dateStr: string) => {
-    let monthLocale = new Date(dateStr).toLocaleString(getLocaleByLang(language), { month: 'short' });
-    monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
+    let predictedDateFormatted = '';
 
-    let predictedDayShort = null;
-    let predictedDateShortYear = null;
-
-    if (moment(new Date(dateStr)).format('YYYY') === moment().format('YYYY')) {
-      predictedDayShort = moment(new Date(dateStr)).format('DD');
+    if (new Date(dateStr).getFullYear() === new Date().getFullYear()) {
+      predictedDateFormatted = new Date(dateStr).toLocaleDateString(
+        getLocaleByLang(language), { day: 'numeric', month: 'short' }
+      );
     } else {
-      predictedDayShort = moment(new Date(dateStr)).format('DD');
-      predictedDateShortYear = moment(new Date(dateStr)).format('YYYY');
+      predictedDateFormatted = new Date(dateStr).toLocaleDateString(
+        getLocaleByLang(language), { day: 'numeric', month: 'short', year: 'numeric' }
+      );
     }
 
-    return `${predictedDayShort} ${monthLocale} ${predictedDateShortYear}`;
+    return predictedDateFormatted;
   };
 
   const getChartLabels = () => ([
