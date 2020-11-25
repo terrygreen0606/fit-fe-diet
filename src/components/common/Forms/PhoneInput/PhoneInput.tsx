@@ -87,6 +87,11 @@ const PhoneInput = (props: PhoneInputProps) => {
 
             countryCode(country.dialCode);
 
+            // eslint-disable-next-line no-restricted-globals
+            if (isNaN(+val)) {
+              return;
+            }
+
             return onChangeInput(valid, val);
           }}
           inputClassName={classNames({
