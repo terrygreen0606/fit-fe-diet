@@ -36,9 +36,9 @@ const MainView = React.lazy(() => import('./views/MainView'));
 const TestimonialsFormView = React.lazy(() => import('./views/Forms/TestimonialsFormView'));
 const CancellationFormView = React.lazy(() => import('./views/Forms/CancellationFormView'));
 const RecipeFullView = React.lazy(() => import('./views/Recipes/RecipeFullView'));
-const AfterSignupPage = React.lazy(() => import('./views/AfterSignupPage'));
+const RegisterWelcomePage = React.lazy(() => import('./views/RegisterWelcomePage'));
 const CheckoutPage = React.lazy(() => import('./views/CheckoutPage'));
-const AfterCheckoutPage = React.lazy(() => import('./views/AfterCheckoutPage'));
+const CheckoutThankyouPage = React.lazy(() => import('./views/CheckoutThankyouPage'));
 const SettingsPaymentHistoryView = React.lazy(() => import('./views/Settings/SettingsPaymentHistoryView'));
 const SettingsSubscriptionPlan = React.lazy(() => import('./views/Settings/SettingsSubscriptionPlan'));
 const JoinFamilyView = React.lazy(() => import('./views/JoinFamilyView'));
@@ -56,10 +56,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.afterSignup}
+      path={routes.registerWelcome}
       component={(props: any) => (
         <Layout {...props} headerType='promo' footerType='short'>
-          <AfterSignupPage {...props} />
+          <RegisterWelcomePage {...props} />
         </Layout>
       )}
       exact
@@ -76,10 +76,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.afterCheckout}
+      path={routes.checkoutThankyou}
       component={(props: any) => (
         <Layout {...props}>
-          <AfterCheckoutPage {...props} />
+          <CheckoutThankyouPage {...props} />
         </Layout>
       )}
       exact
