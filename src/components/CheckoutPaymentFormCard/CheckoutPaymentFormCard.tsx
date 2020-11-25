@@ -17,11 +17,10 @@ import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 import InputField from 'components/common/Forms/InputField';
 import CreditCardNumberField from 'components/common/Forms/CreditCardNumberField';
 import CreditCardCvvField from 'components/common/Forms/CreditCardCvvField';
-import PhoneInput from 'components/common/Forms/PhoneInput';
 import CustomRadio from 'components/common/Forms/CustomRadio';
 import Button from 'components/common/Forms/Button';
 import FormValidator from 'utils/FormValidator';
-import PhoneInputOdin from 'components/common/Forms/PhoneInputOdin';
+import PhoneInput from 'components/common/Forms/PhoneInput';
 
 import './CheckoutPaymentFormCard.sass';
 
@@ -456,7 +455,7 @@ const CheckoutPaymentFormCard = ({
         </FormGroup>
 
         <FormGroup>
-          <PhoneInputOdin
+          <PhoneInput
             name='phone'
             defaultCountry={getTariffDataValue('country')}
             label={`${t('checkout.form_phone')}*:`}
@@ -476,32 +475,6 @@ const CheckoutPaymentFormCard = ({
             }}
             errors={getFieldErrors('phone')}
             countryCode={updateCountryCode}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <PhoneInput
-            block
-            name='phone'
-            country={getTariffDataValue('country')}
-            className='checkout-payment-card__form_input'
-            label={`${t('checkout.form_phone')}*:`}
-            isValid={isFieldValid('phone')}
-            value={checkoutForm.phone}
-            data-validate='["required", "number"]'
-            onChange={(value, e) => validateOnChange('phone', value, e)}
-            checkIsValid={(isValid: boolean) => {
-              if (!isValid && isFieldValid('phone')) {
-                setPhoneErrors([{
-                  field: 'phone',
-                  code: 'required',
-                  message: t('api.ecode.invalid_value'),
-                }]);
-              } else if (getFieldErrors('phone').length > 0 && isValid) {
-                setPhoneErrors([]);
-              }
-            }}
-            errors={getFieldErrors('phone')}
           />
         </FormGroup>
 

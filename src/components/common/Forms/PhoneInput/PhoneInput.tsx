@@ -1,109 +1,61 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import ReactPhoneInput from 'react-phone-input-2';
+
 import { InputError } from 'types';
-import { phonesRegex } from 'constants/phonesRegex';
 
 // Components
+import IntlTelInput from 'react-intl-tel-input';
+import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 import FormLabel from '../FormLabel';
-import FormInvalidMessage from '../FormInvalidMessage';
 
+import 'react-intl-tel-input/dist/main.css';
 import './PhoneInput.sass';
 
 type PhoneInputProps = {
-  id?: string;
-  className?: string;
-  containerClassName?: string;
-  invalid?: boolean;
-  isValid?: boolean;
-  label?: string;
-  value?: string,
-  name?: string,
+  value: string;
+  defaultCountry?: string;
   onChange?: (val, e?) => void;
-  checkIsValid?: (isValid: boolean) => void;
-  readOnly?: boolean;
-  disabled?: boolean;
-  required?: boolean;
-  block?: boolean;
-  placeholder?: string;
+  label?: string;
   errors?: InputError[];
-  height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  border?: 'light';
-  [propName: string]: any
+  invalid?: boolean;
+  name?: string,
+  checkIsValid?: (isValid: boolean) => void;
+  countryCode?: (code: string) => void;
 };
 
 const PhoneInputDefaultProps = {
-  id: null,
-  className: null,
-  containerClassName: null,
-  invalid: null,
-  isValid: null,
-  label: null,
-  value: null,
-  name: null,
+  defaultCountry: null,
   onChange: null,
-  checkIsValid: null,
-  readOnly: null,
-  disabled: null,
-  required: null,
-  block: null,
-  placeholder: null,
+  label: null,
   errors: null,
-  height: null,
-  border: null,
+  invalid: null,
+  name: null,
+  checkIsValid: null,
+  countryCode: null,
 };
 
 const PhoneInput = (props: PhoneInputProps) => {
   const [dummyErrorSelectInputRef] = useState(React.createRef<HTMLInputElement>());
 
+  const [isValid, setIsValid] = useState<boolean>(true);
+
   const {
-    label,
-    className,
-    containerClassName,
-    invalid,
-    block,
-    id,
-    name,
-    errors,
     value,
-    isValid,
-    disabled,
-    readOnly,
-    placeholder,
     onChange,
+    defaultCountry,
+    label,
+    errors,
+    invalid,
+    name,
     checkIsValid,
-    height,
-    border,
-    ...attributes
+    countryCode,
   } = props;
 
-  const finalAttributes = {
-    ...attributes,
-  };
-
-  if (finalAttributes['data-validate']) {
-    delete finalAttributes['data-validate'];
-  }
-
-  if (finalAttributes['data-param']) {
-    delete finalAttributes['data-validate'];
-  }
-
-  const classNameFinal = classNames(className, 'fg-input', {
-    [`height-${height}`]: height,
-    [`border-${border}`]: border,
-    'input-block': block,
-    'is-invalid': invalid || (errors && errors.length > 0),
-    'is-valid': isValid,
-  });
-
-  const onChangeInput = (val: string) => {
-    if (disabled || readOnly) {
-      return;
-    }
-
+  const onChangeInput = (valid: boolean, val: string) => {
     if (onChange) {
-      if (props.errors) {
+      if (errors) {
         const event = new Event('change');
         dummyErrorSelectInputRef.current.value = val;
         dummyErrorSelectInputRef.current.dispatchEvent(event);
@@ -113,6 +65,7 @@ const PhoneInput = (props: PhoneInputProps) => {
         onChange(val);
       }
     }
+    checkIsValid(valid);
   };
 
   return (
@@ -125,30 +78,22 @@ const PhoneInput = (props: PhoneInputProps) => {
         </FormLabel>
       )}
 
-      <ReactPhoneInput
-        {...finalAttributes}
-        value={value}
-        isValid={(curValue, country) => {
-          if (checkIsValid && country && country['iso2'] && curValue) {
-            checkIsValid(phonesRegex[country['iso2']?.toUpperCase()]?.test(curValue) || false);
-          }
+      <div className='phone-input-wrap'>
+        <IntlTelInput
+          value={value}
+          defaultCountry={defaultCountry}
+          onPhoneNumberChange={(valid, val, country) => {
+            setIsValid(valid);
 
-          return true;
-        }}
-        onChange={(phone) => onChangeInput(phone)}
-        specialLabel={label}
-        containerClass={classNames({
-          [containerClassName]: containerClassName,
-        })}
-        inputClass={classNameFinal}
-        inputProps={{
-          disabled: disabled || readOnly,
-          readOnly,
-          required: null,
-        }}
-        placeholder={placeholder}
-        countryCodeEditable={false}
-      />
+            countryCode(country.dialCode);
+
+            return onChangeInput(valid, val);
+          }}
+          inputClassName={classNames({
+            'is-invalid': !isValid,
+          })}
+        />
+      </div>
 
       {errors && (
         <input
@@ -156,13 +101,14 @@ const PhoneInput = (props: PhoneInputProps) => {
           name={name}
           type='hidden'
           value={value}
-          data-param={props['data-param']}
           data-validate={props['data-validate']}
         />
       )}
 
       {errors && errors.length > 0 ? (
-        <FormInvalidMessage>{errors[0].message}</FormInvalidMessage>
+        <FormInvalidMessage>
+          {errors[0].message}
+        </FormInvalidMessage>
       ) : null}
     </>
   );
