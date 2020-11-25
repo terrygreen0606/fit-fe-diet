@@ -269,6 +269,7 @@ const CheckoutPaymentFormCard = ({
                     ? paymentOrder.errors_i18n.filter((error) => error.length > 0)
                     : []);
                   toast.error(t('checkout.payment_fail'));
+                  paymentErrorRef?.current?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
                   break;
 
                 default:
@@ -284,12 +285,8 @@ const CheckoutPaymentFormCard = ({
           toast.error(t('checkout.payment_fail'));
           setCheckoutPaymentError(true);
 
-          if (response && response.status >= 400 && response.status < 500) {
+          if (response && response.status >= 400 && response.status < 500 && typeof response.data.message !== 'object') {
             const validateErrors = response.data.message;
-
-            if (typeof validateErrors !== 'object') {
-              return false;
-            }
 
             const checkoutFormErrorsTemp: InputError[] = [...checkoutFormErrors];
 
