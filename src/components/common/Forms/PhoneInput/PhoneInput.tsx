@@ -23,6 +23,7 @@ type PhoneInputProps = {
   name?: string,
   checkIsValid?: (isValid: boolean) => void;
   countryCode?: (code: string) => void;
+  className?: string;
 };
 
 const PhoneInputDefaultProps = {
@@ -34,6 +35,7 @@ const PhoneInputDefaultProps = {
   name: null,
   checkIsValid: null,
   countryCode: null,
+  className: null,
 };
 
 const PhoneInput = (props: PhoneInputProps) => {
@@ -51,6 +53,7 @@ const PhoneInput = (props: PhoneInputProps) => {
     name,
     checkIsValid,
     countryCode,
+    className,
   } = props;
 
   const onChangeInput = (valid: boolean, val: string) => {
@@ -94,6 +97,7 @@ const PhoneInput = (props: PhoneInputProps) => {
 
             return onChangeInput(valid, val);
           }}
+          containerClassName={classNames('intl-tel-input', className)}
           inputClassName={classNames('fg-input', {
             'is-invalid': !isValid,
           })}
