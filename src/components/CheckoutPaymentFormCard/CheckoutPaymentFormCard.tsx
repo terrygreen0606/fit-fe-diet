@@ -34,7 +34,7 @@ import { getCardFieldFormat } from './getCardFieldFormat';
 const checkoutFormDefault = {
   payment_type: 'credit_card',
   payerName: null,
-  phone: null,
+  phone: '',
   cardNumber: null,
   cardCvv: null,
   cardMonthYear: null,
@@ -90,6 +90,10 @@ const CheckoutPaymentFormCard = ({
   });
   const [paymentMethodsLoading, setPaymentMethodsLoading] = useState<boolean>(true);
   const [paymentMethodsLoadingError, setPaymentMethodsLoadingError] = useState<boolean>(false);
+
+  const [countryCode, setCountryCode] = useState<string>(null);
+
+  const updateCountryCode = (code: string) => setCountryCode(code);
 
   useEffect(() => {
     if (isPaymentError !== null) {
@@ -207,7 +211,7 @@ const CheckoutPaymentFormCard = ({
         cvv: cardCvv?.replace(/ /g, ''),
       },
       contacts: {
-        phone,
+        phone: `${countryCode}${phone}`,
         payer_name: payerName,
       },
     };
@@ -453,8 +457,25 @@ const CheckoutPaymentFormCard = ({
 
         <FormGroup>
           <PhoneInputOdin
-            label={`${t('checkout.form_phone')}*:`}
+            name='phone'
             defaultCountry={getTariffDataValue('country')}
+            label={`${t('checkout.form_phone')}*:`}
+            value={`${checkoutForm.phone}`}
+            data-validate='["required"]'
+            onChange={(value, e) => validateOnChange('phone', value, e)}
+            checkIsValid={(isValid: boolean) => {
+              if (!isValid) {
+                setPhoneErrors([{
+                  field: 'phone',
+                  code: 'required',
+                  message: t('api.ecode.invalid_value'),
+                }]);
+              } else if (getFieldErrors('phone').length > 0 && isValid) {
+                setPhoneErrors([]);
+              }
+            }}
+            errors={getFieldErrors('phone')}
+            countryCode={updateCountryCode}
           />
         </FormGroup>
 
