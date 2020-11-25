@@ -21,7 +21,7 @@ export const routes = {
   resetPasword: '/reset-password',
   saveNewPasword: '/reset-password/:token',
   recipeFullView: '/recipe/:recipeId',
-  registerWelcome: '/register/welcome',
+  registerWelcome: '/welcome',
   checkout: '/checkout',
   checkoutThankyou: '/checkout/thankyou',
   getRecipeFullView: (recipeId: string) => `/recipe/${recipeId}`,
