@@ -187,7 +187,7 @@ const CheckoutPaymentFormCard = ({
   };
 
   const isShowInstallments = () =>
-    getTariffDataValue('country') === 'br';
+    getTariffDataValue('country') === 'br' || true;
 
   const getPayCredictCardParams = () => {
     const {
@@ -289,7 +289,12 @@ const CheckoutPaymentFormCard = ({
           toast.error(t('checkout.payment_fail'));
           setCheckoutPaymentError(true);
 
-          if (response && response.status >= 400 && response.status < 500 && typeof response.data.message === 'object') {
+          if (
+            response &&
+            response.status >= 400 &&
+            response.status < 500 &&
+            typeof response.data.message === 'object'
+          ) {
             const validateErrors = response.data.message;
 
             const checkoutFormErrorsTemp: InputError[] = [...checkoutFormErrors];
@@ -490,17 +495,18 @@ const CheckoutPaymentFormCard = ({
                 label={`${t('checkout.form_card.cpf')}*:`}
                 isValid={isFieldValid('docId')}
                 value={checkoutForm.docId}
-                data-validate='["required", "number"]'
+                data-param={14}
+                data-validate='["required", "len"]'
                 onChange={(e) => validateOnChange('docId', e.target.value, e)}
                 errors={getFieldErrors('docId')}
-                mask='11111111111'
-                placeholder='9876543210'
+                mask='111.111.111-11'
+                placeholder='973.849.148-76'
               />
             </FormGroup>
 
             <FormLabel className='mt-45'>{t('checkout.tariff.installments.options_title')}</FormLabel>
 
-            <div className='checkout-payment-card__form_installments__list mt-45'>
+            <div className='checkout-payment-card__form_installments__list mt-4 mt-xl-45'>
               <FormGroup className='checkout-payment-card__form_installments__item'>
                 <FormLabel>
                   {t('checkout.tariff.installments.title', { PERIOD: getInstallmentsValue('parts') })}
@@ -518,9 +524,9 @@ const CheckoutPaymentFormCard = ({
                   label={(
                     <span className='checkout-payment-card__form_installments__radio_btn'>
                       <h6 className='checkout-payment-card__form_installments__radio_title'>
-                        {getInstallmentsValue('price_monthly_text')}
+                        {getInstallmentsValue('price_weekly_text')}
                         /
-                        {t('common.months_reduction')}
+                        {t('common.week')}
                         {' '}
                         {t('checkout.tariff.installments.taxes')}
                       </h6>
@@ -552,9 +558,9 @@ const CheckoutPaymentFormCard = ({
                   label={(
                     <span className='checkout-payment-card__form_installments__radio_btn'>
                       <h6 className='checkout-payment-card__form_installments__radio_title'>
-                        {getInstallmentsValue('price_monthly_text')}
+                        {getTariffDataValue('price_weekly_text')}
                         /
-                        {t('common.months_reduction')}
+                        {t('common.week')}
                       </h6>
                       <p className='checkout-payment-card__form_installments__radio_descr'>
                         {t('checkout.tariff.installments.total_text', {
