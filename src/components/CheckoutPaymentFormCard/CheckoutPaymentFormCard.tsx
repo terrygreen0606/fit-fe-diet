@@ -289,7 +289,7 @@ const CheckoutPaymentFormCard = ({
           toast.error(t('checkout.payment_fail'));
           setCheckoutPaymentError(true);
 
-          if (response && response.status >= 400 && response.status < 500 && typeof response.data.message !== 'object') {
+          if (response && response.status >= 400 && response.status < 500 && typeof response.data.message === 'object') {
             const validateErrors = response.data.message;
 
             const checkoutFormErrorsTemp: InputError[] = [...checkoutFormErrors];
