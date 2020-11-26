@@ -11,7 +11,7 @@ if (process.env.REACT_APP_ENV !== 'production') {
   axiosInstanceConfig.withCredentials = true;
   axiosInstanceConfig.headers = {
     common: {
-      'cookie': document.cookie,
+      'set-cookie': document.cookie,
     },
   };
 }
