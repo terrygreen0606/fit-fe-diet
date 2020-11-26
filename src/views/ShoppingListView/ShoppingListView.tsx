@@ -15,6 +15,7 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   getWeigthUnit,
+  debouncePromise,
 } from 'utils';
 import {
   searchIngredients,
@@ -99,10 +100,10 @@ const ShoppingListView = (props: any) => {
     }
   };
 
-  const inputValueIngredient = (inputValue: string) =>
+  const inputValueIngredient = debouncePromise((inputValue: string) =>
     new Promise((resolve) => {
       resolve(filterIngredients(inputValue));
-    });
+    }), 500);
 
   const saveFileShoppingList = () => {
     getPublicShopListUrl(1).then((response) => {
