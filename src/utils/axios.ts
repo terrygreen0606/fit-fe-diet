@@ -7,11 +7,11 @@ const axiosInstanceConfig: any = {
   baseURL,
 };
 
-if (process.env.REACT_APP_ENV !== 'production') {
+if (process.env.REACT_APP_ENV === 'production') {
   axiosInstanceConfig.withCredentials = true;
   axiosInstanceConfig.headers = {
     common: {
-      'set-cookie': document.cookie,
+      cookie: document.cookie,
     },
   };
 }
