@@ -27,3 +27,4 @@ export * from './getApiBaseUrl';
 export * from './deleteCookie';
 export * from './getLocaleByLang';
 export * from './scrollToElement';
+export * from './debouncePromise';
