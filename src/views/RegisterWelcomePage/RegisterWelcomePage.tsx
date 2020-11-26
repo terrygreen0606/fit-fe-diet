@@ -657,17 +657,21 @@ const RegisterWelcomePage = ({
           <div className='row'>
             <div className='col-12'>
 
-              <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
-                {t('lp.select_payment.title')}
-              </h3>
+              {getActiveTariffData() && (
+                <>
+                  <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
+                    {t('lp.select_payment.title')}
+                  </h3>
 
-              <CheckoutPaymentFormCard
-                tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
-                disabled={!getActiveTariffData()}
-                scrollRef={selectPlanBlockRef}
-                history={history}
-                localePhrases={localePhrases}
-              />
+                  <CheckoutPaymentFormCard
+                    tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                    disabled={!getActiveTariffData()}
+                    scrollRef={selectPlanBlockRef}
+                    history={history}
+                    localePhrases={localePhrases}
+                  />
+                </>
+              )}
 
             </div>
           </div>
