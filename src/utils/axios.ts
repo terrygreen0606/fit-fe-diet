@@ -3,17 +3,11 @@ import { getApiBaseUrl } from 'utils';
 
 const baseURL = getApiBaseUrl();
 
-let axiosInstanceConfig: any = {
+const axiosInstanceConfig: any = {
   baseURL,
 };
 
-if (process.env.NODE_ENV !== 'development') {
-  axiosInstanceConfig.headers = {
-    common: {
-      'set-cookie': document.cookie,
-    },
-  };
-
+if (process.env.REACT_APP_ENV !== 'production') {
   axiosInstanceConfig.withCredentials = true;
 }
 
