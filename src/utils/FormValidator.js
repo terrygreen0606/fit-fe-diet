@@ -17,6 +17,9 @@ const getErrorMsg = (code, param) => {
     case 'integer':
       return 'Value should be integer';
 
+    case 'regex':
+      return 'Value doesnt accept pattern';
+
     case 'alphanum':
       return 'Value should be alphanumeric';
 
@@ -103,6 +106,9 @@ const FormValidator = {
             break;
           case 'integer':
             result[m] = value && value.length > 0 ? !validator.isInt(value) : false;
+            break;
+          case 'regex':
+            result[m] = value && value.length > 0 ? !(new RegExp(param).test(value.replaceAll('_'))) : false;
             break;
           case 'alphanum':
             result[m] = value && value.length > 0 ? !validator.isAlphanumeric(value) : false;

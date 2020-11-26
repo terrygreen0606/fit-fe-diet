@@ -61,6 +61,16 @@ const CheckoutPaymentFormCardPropsDefault = {
   scrollRef: null,
 };
 
+const currentShortYear = parseInt(new Date().getFullYear().toString().slice(2, 4), 10);
+const maxExpireYearShort = currentShortYear + 9;
+const validExpireYearsShort = [];
+
+for (let i = currentShortYear; i <= maxExpireYearShort; i++) {
+  validExpireYearsShort.push(i);
+}
+
+const validExpireYearsShortRegex = validExpireYearsShort.join('|');
+
 const CheckoutPaymentFormCard = ({
   className,
   tariff,
@@ -205,7 +215,7 @@ const CheckoutPaymentFormCard = ({
       currency: getTariffDataValue('currency'),
       card: {
         number: cardNumber?.replace(/ /g, ''),
-        year: `20${cardMonthYear.split('/')[1]}`,
+        year: `${new Date().getFullYear().toString().slice(0, 2)}${cardMonthYear.split('/')[1]}`,
         month: cardMonthYear.split('/')[0],
         cvv: cardCvv?.replace(/ /g, ''),
       },
@@ -410,11 +420,11 @@ const CheckoutPaymentFormCard = ({
                 block
                 name='cardMonthYear'
                 className='checkout-payment-card__form_input'
-                data-param={5}
+                data-param={`^(0[1-9]|1[012])/(${validExpireYearsShortRegex})$`}
                 label={`${t('checkout.form_card.expiry_date')}*:`}
                 isValid={isFieldValid('cardMonthYear')}
                 value={checkoutForm.cardMonthYear}
-                data-validate='["required", "len"]'
+                data-validate='["required", "regex"]'
                 mask='11/11'
                 onChange={(e) => validateOnChange('cardMonthYear', e.target.value, e)}
                 errors={getFieldErrors('cardMonthYear')}
