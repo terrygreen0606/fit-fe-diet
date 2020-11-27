@@ -33,60 +33,66 @@ const TariffPlanSelect = ({
 
   const tariffPlanList = useRef(null);
 
-  useEffect(() => {
-    if (tariffPlanList.current && tariffPlanList.current?.children?.length > 0) {
-      const pricesTextWrap = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price') || [];
-      const pricesText = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price-now-count') || [];
+  const syncTariffPriceFontSizes = () => {
+    const pricesContainer = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item') || [];
+    const pricesRadio = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-radio__wrap') || [];
+    const pricesDescr = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-text') || [];
+    const pricesText = tariffPlanList?.current?.querySelectorAll('.tariff-plan__item-price-now-count') || [];
 
-      const checkingElements = [];
+    const checkingElements = [];
 
-      for (let i = 0; i < pricesTextWrap.length; i++) {
-        checkingElements.push({
-          parent: pricesTextWrap[i],
-          child: pricesText[i],
-        });
-      }
-
-      checkingElements.forEach((item, itemIndex) => {
-        if (item?.child?.innerText) {
-          for (let i = 1; item.child.clientWidth < item.parent.clientWidth; i++) {
-            if (debounceWindowWidth >= 1200 && 16 + i > 40) {
-              if (itemIndex === 1 && 16 + i > 46) {
-                item.child.style.fontSize = `${46}px`;
-              } else {
-                item.child.style.fontSize = `${40}px`;
-              }
-
-              break;
-            }
-
-            if (debounceWindowWidth < 1200 && 16 + i > 36) {
-              item.child.style.fontSize = `${36}px`;
-              break;
-            }
-
-            if (debounceWindowWidth < 992 && 16 + i > 28) {
-              item.child.style.fontSize = `${28}px`;
-              break;
-            }
-
-            item.child.style.fontSize = `${16 + i}px`;
-            if (item.child.clientWidth >= item.parent.clientWidth) {
-              item.child.style.fontSize = `${16 + i - 1}px`;
-              break;
-            }
-          }
-        }
+    for (let i = 0; i < pricesContainer.length; i++) {
+      checkingElements.push({
+        container: pricesContainer[i],
+        radio: pricesRadio[i],
+        descr: pricesDescr[i],
+        price: pricesText[i],
       });
     }
-  }, [tariffPlanList.current?.children?.length, debounceWindowWidth]);
+
+    const getItemWidth = (item) =>
+      item?.radio?.clientWidth + item?.descr?.clientWidth + item?.price?.clientWidth;
+
+    const getItemMaxWidth = (item) => {
+      const computedStyle = getComputedStyle(item.container);
+      return item?.container?.clientWidth -
+        parseFloat(computedStyle?.paddingLeft) -
+        parseFloat(computedStyle?.paddingRight);
+    };
+
+    let shouldChangeFontSize: boolean = false;
+
+    checkingElements.forEach((item, itemIndex) => {
+      if (getItemWidth(item) > getItemMaxWidth(item)) {
+        shouldChangeFontSize = true;
+      }
+
+      for (let i = 1; getItemWidth(item) > getItemMaxWidth(item); i++) {
+        item.price.style.fontSize = `${40 - i}px`;
+      }
+    });
+
+    if (shouldChangeFontSize) {
+      const minFonSize = Math.min(...checkingElements.map((item) => parseFloat(getComputedStyle(item.price).fontSize)));
+
+      checkingElements.forEach(({ price }) => {
+        price.style.fontSize = `${minFonSize}px`;
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (tariffPlanList.current && tariffPlanList.current?.children?.length > 0) {
+      syncTariffPriceFontSizes();
+    }
+  }, [tariffPlanList.current?.children?.length, windowWidth]);
 
   const getTariffValue = (tariffId, fieldKey) => {
     let tariffValue = '';
 
     const tariffSelected = tariffs.find(({ tariff }) => tariff === tariffId);
 
-    if (tariffSelected?.country === 'br' || true) {
+    if (tariffSelected?.country === 'br') {
       const fieldKeyInstallments = fieldKey === 'months' ? 'parts' : fieldKey;
       tariffValue = tariffSelected?.installments?.[fieldKeyInstallments] || '';
     } else {
@@ -96,6 +102,29 @@ const TariffPlanSelect = ({
     return tariffValue;
   };
 
+  const isBrazillianTariffs = () =>
+    tariffs?.[0]?.country === 'br';
+
+  const getPaycycleI18nCode = (tariffId) => {
+    let paycycleI18nCode = '';
+
+    if (tariffId === 'm3') {
+      paycycleI18nCode = 'tariff.m3.paycycle';
+    } else if (tariffId === 'm12') {
+      paycycleI18nCode = 'tariff.m12.paycycle';
+    }
+
+    return paycycleI18nCode;
+  };
+
+  const getTariffsList = () => {
+    if (isBrazillianTariffs()) {
+      return tariffs.slice(0, 2);
+    }
+
+    return [...tariffs];
+  };
+
   return (
     <div
       className={classNames('tariff-plan__list', {
@@ -103,7 +132,7 @@ const TariffPlanSelect = ({
       })}
       ref={tariffPlanList}
     >
-      {tariffs.map(({ tariff }, tariffIndex) => (
+      {getTariffsList().map(({ tariff }, tariffIndex) => (
         <label key={tariff} className='tariff-plan__item-label'>
           <input
             type='radio'
@@ -127,26 +156,34 @@ const TariffPlanSelect = ({
               <h3 className='tariff-plan__item-text-title'>
                 {t('checkout.plan_title', { COUNT: getTariffValue(tariff, 'months') })}
               </h3>
-              <div className='tariff-plan__item-text-desc'>
-                {t('checkout.plan_descr', { COUNT: getTariffValue(tariff, 'months') })}
-              </div>
+
+              {!isBrazillianTariffs() && (
+                <div className='tariff-plan__item-text-desc'>
+                  {t('checkout.plan_descr', { COUNT: getTariffValue(tariff, 'months') })}
+                </div>
+              )}
             </div>
 
             <div className='tariff-plan__item-price'>
               <div className='tariff-plan__item-price-old'>
-                {`${getTariffValue(tariff, 'price_old_weekly_text')} / ${t('common.week').toLowerCase()}`}
+                {isBrazillianTariffs()
+                  ? `${getTariffValue(tariff, 'months')} x ${getTariffValue(tariff, 'price_old_weekly_text')}`
+                  : `${getTariffValue(tariff, 'price_old_weekly_text')} / ${t('common.week').toLowerCase()}`}
               </div>
 
               <div className='tariff-plan__item-price-now'>
                 <div className='tariff-plan__item-price-now-count-wrap'>
                   <div className='tariff-plan__item-price-now-count'>
+                    {isBrazillianTariffs() && `${getTariffValue(tariff, 'months')} x `}
                     {getTariffValue(tariff, 'price_weekly_text')}
-                   </div>
+                  </div>
                 </div>
               </div>
 
               <div className='tariff-plan__item-price-together'>
-                {t('common.paycycle_period', { PERIOD: t('common.week').toLowerCase() })}
+                {isBrazillianTariffs()
+                  ? t(getPaycycleI18nCode(tariff))
+                  : t('common.paycycle_period', { PERIOD: t('common.week').toLowerCase() })}
               </div>
             </div>
 

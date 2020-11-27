@@ -177,15 +177,7 @@ const CheckoutPaymentFormCard = ({
   const isFieldValid = (field: string) =>
     getFieldErrors(field).length === 0 && checkoutForm[field] && checkoutForm[field].length > 0;
 
-  const getTariffDataValue = (property: string) => {
-    let dataEl = null;
-
-    if (tariff && tariff[property]) {
-      dataEl = tariff[property];
-    }
-
-    return dataEl;
-  };
+  const getTariffDataValue = (property: string) => tariff?.[property];
 
   const getInstallmentsValue = (property: string) => {
     let dataEl = null;
@@ -633,7 +625,7 @@ const CheckoutPaymentFormCard = ({
         </form>
       </ContentLoading>
 
-      {!disabled && (
+      {/*{!disabled && (
         <p
           className='mt-4 checkout-payment-card__total'
           dangerouslySetInnerHTML={{
@@ -643,7 +635,7 @@ const CheckoutPaymentFormCard = ({
             }),
           }}
         />
-      )}
+      )}*/}
     </div>
   );
 };

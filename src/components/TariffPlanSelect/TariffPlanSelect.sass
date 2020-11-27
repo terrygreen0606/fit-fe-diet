@@ -79,6 +79,7 @@
         margin: 5px 0
         margin-left: auto
         color: #1D1D1B
+        white-space: nowrap
         &-count
           display: inline-block
           font-size: 40px
@@ -140,6 +141,12 @@
         padding-left: 20px
         padding-right: 10px
 
+    @media (max-width: 480px)
+      &-text
+        &-title
+          font-size: 20px
+          line-height: 24px
+
     @media (max-width: 400px)
       padding: 8px
       padding-top: 20px
@@ -153,14 +160,16 @@
           font-size: 14px
       &-text
         padding-left: 10px
+        flex: 40%
         &-title
-          font-size: 22px
+          font-size: 18px
           line-height: 24px
         &-desc
           margin-top: 7px
           font-size: 12px
           line-height: 24px
       &-price
+        flex: calc(60% - 23px)
         &-now
           &-count
             font-size: 28px
