@@ -264,24 +264,12 @@ const CheckoutPage = ({
 
       <SalesWidgets />
 
-      <section className='pt-4 pt-xl-5 pb-0'>
+      <section className='checkout-logo-sect'>
         <div className='container'>
           <div className='row'>
             <div className='col-12 text-center text-xl-left'>
 
               <Logo />
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='checkout-title-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-12'>
-
-              <h4 className='sect-subtitle'>{t('checkout.page_title')}</h4>
 
             </div>
           </div>
