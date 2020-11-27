@@ -12,6 +12,7 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
+  convertTime,
 } from 'utils';
 import {
   getDataStatsForPeriod,
@@ -121,7 +122,10 @@ const WaterTrackerView = (props: any) => {
 
           Object.keys(data.stats).forEach((item) => {
             updatedData.label.push(
-              moment.unix(+item).format('DD:MM'),
+              convertTime(+item, settings.language, {
+                day: 'numeric',
+                month: 'numeric',
+              }),
             );
             updatedData.data.push(data.stats[item]);
           });
@@ -135,7 +139,10 @@ const WaterTrackerView = (props: any) => {
 
           Object.keys(data.stats).forEach((item) => {
             updatedData.label.push(
-              moment.unix(+item).format('D MMM'),
+              convertTime(+item, settings.language, {
+                day: 'numeric',
+                month: 'short',
+              }),
             );
             updatedData.data.push(data.stats[item]);
           });
@@ -149,7 +156,9 @@ const WaterTrackerView = (props: any) => {
 
           Object.keys(data.stats).forEach((item) => {
             updatedData.label.push(
-              moment.unix(+item).format('MMM'),
+              convertTime(+item, settings.language, {
+                month: 'short',
+              }),
             );
             updatedData.data.push(data.stats[item]);
           });
