@@ -274,7 +274,7 @@ const RegisterWelcomePage = ({
                     <h4
                       className='fw-regular'
                       dangerouslySetInnerHTML={{
-                        __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.BR' : 'lp.selling_text', {
+                        __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
                           OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
                           ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
                           : tariffsDataList?.[1].price_old_weekly_text,
@@ -539,7 +539,7 @@ const RegisterWelcomePage = ({
                   <h2
                     className='fw-regular mt-4 text-left text-lg-center'
                     dangerouslySetInnerHTML={{
-                      __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.BR' : 'lp.selling_text', {
+                      __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
                         OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
                           ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
                           : tariffsDataList?.[1].price_old_weekly_text,
