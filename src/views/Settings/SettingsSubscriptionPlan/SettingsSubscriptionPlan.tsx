@@ -199,38 +199,40 @@ const SettingsSubscriptionPlan = (props: any) => {
                 </h2>
               )}
             <div className='subsciption-plan__buttons'>
-              <div className='subsciption-plan__buttons-cancelable'>
-                {/* <button
-                  type='button'
-                  className='subsciption-plan__buttons-cancelable-item'
-                >
-                  {t('subscription.cancel')}
-                </button> */}
-                <div ref={changedBlockRef}>
-                  <button
+              {settings.paid_until ? (
+                <div className='subsciption-plan__buttons-cancelable'>
+                  {/* <button
                     type='button'
-                    onClick={() => setIsBlockActive(!isBlockActive)}
                     className='subsciption-plan__buttons-cancelable-item'
                   >
-                    {t('subscription.pause')}
-                  </button>
-                  <div className={classnames('subsciption-plan__buttons-pause-modal card-bg', {
-                    active: isBlockActive,
-                  })}
-                  >
-                    <h3 className='subsciption-plan__buttons-pause-modal-title'>
-                      {t('subscription.pause_plan.title')}
-                    </h3>
-                    <Button
-                      color='cancel'
-                      onClick={() => userTariffPauseClick()}
-                      className='subsciption-plan__buttons-pause-modal-btn'
+                    {t('subscription.cancel')}
+                  </button> */}
+                  <div ref={changedBlockRef}>
+                    <button
+                      type='button'
+                      onClick={() => setIsBlockActive(!isBlockActive)}
+                      className='subsciption-plan__buttons-cancelable-item'
                     >
-                      {t('subscription.pause_plan.button')}
-                    </Button>
+                      {t('subscription.pause')}
+                    </button>
+                    <div className={classnames('subsciption-plan__buttons-pause-modal card-bg', {
+                      active: isBlockActive,
+                    })}
+                    >
+                      <h3 className='subsciption-plan__buttons-pause-modal-title'>
+                        {t('subscription.pause_plan.title')}
+                      </h3>
+                      <Button
+                        color='cancel'
+                        onClick={() => userTariffPauseClick()}
+                        className='subsciption-plan__buttons-pause-modal-btn'
+                      >
+                        {t('subscription.pause_plan.button')}
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
               <Link to={routes.checkout}>
                 <Button
                   color='secondary'
