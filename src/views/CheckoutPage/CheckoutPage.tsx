@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -391,23 +392,26 @@ const CheckoutPage = ({
                       </ContentLoading>
                     </div>
 
-                    {getActiveTariffData() && (
-                      <div ref={paymentFormBlockRef} className='mt-4 mt-xl-5'>
-                        <h3 className='mb-4 fw-bold text-center'>
-                          {t('lp.select_payment.title')}
-                        </h3>
+                    <div
+                      ref={paymentFormBlockRef}
+                      className={classNames('mt-4 mt-xl-5', {
+                        'd-none': !getActiveTariffData(),
+                      })}
+                    >
+                      <h3 className='mb-4 fw-bold text-center'>
+                        {t('lp.select_payment.title')}
+                      </h3>
 
-                        <CheckoutPaymentFormCard
-                          tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
-                          disabled={!getActiveTariffData()}
-                          scrollRef={selectPlanBlockRef}
-                          isPaymentError={paymentStatusError}
-                          paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
-                          history={history}
-                          localePhrases={localePhrases}
-                        />
-                      </div>
-                    )}
+                      <CheckoutPaymentFormCard
+                        tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                        disabled={!getActiveTariffData()}
+                        scrollRef={selectPlanBlockRef}
+                        isPaymentError={paymentStatusError}
+                        paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
+                        history={history}
+                        localePhrases={localePhrases}
+                      />
+                    </div>
                   </div>
                 </div>
 

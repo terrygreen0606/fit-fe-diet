@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
+import classNames from 'classnames';
 import { getTranslate, getImagePath, scrollToElement } from 'utils';
 import { getAppTariffs, getAppReviews } from 'api';
 
@@ -591,19 +592,7 @@ const RegisterWelcomePage = ({
                   </h2>
 
                   <TariffPlanSelect
-                    tariffs={tariffsDataList.map(({
-                      tariff,
-                      months,
-                      price_weekly_text,
-                      price_old_weekly_text,
-                      price_text,
-                    }) => ({
-                      id: tariff,
-                      price: price_text,
-                      priceWeek: price_weekly_text,
-                      priceOldWeek: price_old_weekly_text,
-                      months,
-                    }))}
+                    tariffs={tariffsDataList}
                     value={activeTariffId}
                     onChange={(id) => {
                       if (activeTariffId === null) {
@@ -624,7 +613,7 @@ const RegisterWelcomePage = ({
                   <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
                   <div className='advantages-checklist pt-4'>
-                    {Array(6).fill(1).map((el) => uuid()).map((id, index) => (
+                    {Array(4).fill(1).map((el) => uuid()).map((id, index) => (
                       <div key={id} className='advantages-checklist-item'>
                         <h6 className='advantages-checklist-item__title'>
                           {t(`lp.plan.advantage${index + 1}.title`)}
@@ -640,7 +629,7 @@ const RegisterWelcomePage = ({
                   <div className='text-center'>
                     <img
                       src={t('checkout.safe.img2')}
-                      className='img-fluid mt-5'
+                      className='img-fluid mt-4'
                       style={{ maxWidth: '70%' }}
                       alt=''
                     />
@@ -659,21 +648,23 @@ const RegisterWelcomePage = ({
           <div className='row'>
             <div className='col-12'>
 
-              {getActiveTariffData() && (
-                <>
-                  <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
-                    {t('lp.select_payment.title')}
-                  </h3>
+              <div
+                className={classNames({
+                'd-none': !getActiveTariffData()
+                })}
+              >
+                <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
+                  {t('lp.select_payment.title')}
+                </h3>
 
-                  <CheckoutPaymentFormCard
-                    tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
-                    disabled={!getActiveTariffData()}
-                    scrollRef={selectPlanBlockRef}
-                    history={history}
-                    localePhrases={localePhrases}
-                  />
-                </>
-              )}
+                <CheckoutPaymentFormCard
+                  tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                  disabled={!getActiveTariffData()}
+                  scrollRef={selectPlanBlockRef}
+                  history={history}
+                  localePhrases={localePhrases}
+                />
+              </div>
 
             </div>
           </div>
