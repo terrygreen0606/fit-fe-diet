@@ -359,7 +359,7 @@ const RecipesView = (props: any) => {
                   {recipesList.map((item, itemIndex) => (
                     <div
                       key={item.id}
-                      className='col-md-4'
+                      className='col-md-4 mb-5'
                     >
                       <NutritionPlanCard
                         title={item.name_i18n}
