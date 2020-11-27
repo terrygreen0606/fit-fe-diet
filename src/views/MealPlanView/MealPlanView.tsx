@@ -90,6 +90,8 @@ const MealPlanView = (props: any) => {
 
     getMealPlan()
       .then(({ data }) => {
+        setIsMealPlanLoading(false);
+
         if (data.success && data.data) {
           const updatedMealPlan = [];
           const list = data.data.list || [];
@@ -116,11 +118,15 @@ const MealPlanView = (props: any) => {
             }
           });
 
-          setIsMealPlanLoading(false);
           setMealPlan(updatedMealPlan);
+        } else {
+          setIsMealPlanLoadingError(true);
         }
       })
-      .catch(() => setIsMealPlanLoadingError(true));
+      .catch(() => {
+        setIsMealPlanLoading(false);
+        setIsMealPlanLoadingError(true);
+      });
   };
 
   useEffect(() => {

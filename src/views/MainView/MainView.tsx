@@ -170,14 +170,17 @@ const MainView = (props: any) => {
 
       getUserDashboard(totalValue)
           .then(({ data }) => {
+            setIsLoadingDashboard(false);
             if (data.data && data.success) {
               setUserDashboardData(setData(data.data));
-              setIsLoadingDashboard(false);
             } else {
-              toast.error(t('common.error'));
+              setIsLoadingDashboardError(true);
             }
           })
-          .catch(() => setIsLoadingDashboardError(true));
+          .catch(() => {
+            setIsLoadingDashboard(false);
+            setIsLoadingDashboardError(true);
+          });
     })();
   };
 

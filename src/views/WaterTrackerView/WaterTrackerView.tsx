@@ -192,14 +192,21 @@ const WaterTrackerView = (props: any) => {
   const getUserDataStatsForToday = () => {
     setIsWaterTrackingLoading(true);
     setIsWaterTrackerLoadingError(false);
+
     getDataStatsForToday().then((response) => {
       const { data } = response.data;
 
+      setIsWaterTrackingLoading(false);
+
       if (response.data.success && response.data.data) {
         updateMainTodayData(data);
-        setIsWaterTrackingLoading(false);
+      } else {
+        setIsWaterTrackerLoadingError(true);
       }
-    }).catch(() => setIsWaterTrackerLoadingError(true));
+    }).catch(() => {
+      setIsWaterTrackingLoading(false);
+      setIsWaterTrackerLoadingError(true);
+    });
   };
 
   useEffect(() => {
