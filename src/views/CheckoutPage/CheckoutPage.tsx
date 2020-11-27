@@ -175,7 +175,7 @@ const CheckoutPage = ({
     }
 
     if (sessionStorage.getItem('redirectedToPayView') === 'true') {
-      toast.error(t('tariff.not_paid'));
+      toast.warning(t('tariff.not_paid'));
       sessionStorage.removeItem('redirectedToPayView');
     }
 

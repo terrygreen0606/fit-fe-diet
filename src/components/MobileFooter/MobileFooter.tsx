@@ -9,7 +9,6 @@ import WithTranslate from 'components/hoc/WithTranslate';
 
 import { ReactComponent as ChefHatIcon } from 'assets/img/icons/chef-hat-icon.svg';
 import { ReactComponent as WaterTrackerIcon } from 'assets/img/icons/water-tracker-icon.svg';
-import { ReactComponent as CupIcon } from 'assets/img/icons/cup-icon.svg';
 import { ReactComponent as PurchaseIcon } from 'assets/img/icons/purchase-icon.svg';
 import { ReactComponent as CutleryIcon } from 'assets/img/icons/cutlery-icon-white.svg';
 
@@ -57,19 +56,6 @@ const MobileFooter = (props: any) => {
             <ChefHatIcon />
             <div className='mobileFooter_list_item-desc'>
               {t('app.title.recipes')}
-            </div>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to={routes.nutritionPlanWeight}
-            className='mobileFooter_list_item'
-            activeClassName='active'
-            exact
-          >
-            <CupIcon />
-            <div className='mobileFooter_list_item-desc'>
-              {t('app.title.goals')}
             </div>
           </NavLink>
         </li>

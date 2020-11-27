@@ -109,6 +109,7 @@ const MainView = (props: any) => {
   });
 
   const [isLoadingDashboard, setIsLoadingDashboard] = useState<boolean>(true);
+  const [isLoadingDashboardError, setIsLoadingDashboardError] = useState<boolean>(false);
 
   const setData = (data) => {
     const updatedPointsData = data.points.map((item) => item.points);
@@ -153,15 +154,7 @@ const MainView = (props: any) => {
     });
   };
 
-  useEffect(() => {
-    if (Object.prototype.hasOwnProperty.call(location, 'joinFamily')) {
-      if (location.joinFamily) {
-        toast.success(t('family.accept.success'));
-      } else {
-        toast.error(t('common.error'));
-      }
-    }
-
+  const getUserDashboardData = () => {
     (async () => {
       // We recommend to call `load` at application startup.
       const requestHashData = await requestHash.load();
@@ -172,17 +165,35 @@ const MainView = (props: any) => {
 
       const totalValue = result.visitorId || null;
 
+      setIsLoadingDashboard(true);
+      setIsLoadingDashboardError(false);
+
       getUserDashboard(totalValue)
-        .then(({ data }) => {
-          if (data.data && data.success) {
-            setUserDashboardData(setData(data.data));
-          } else {
-            toast.error(t('common.error'));
-          }
-        })
-        .catch(() => toast.error(t('common.error')))
-        .finally(() => setIsLoadingDashboard(false));
+          .then(({ data }) => {
+            setIsLoadingDashboard(false);
+            if (data.data && data.success) {
+              setUserDashboardData(setData(data.data));
+            } else {
+              setIsLoadingDashboardError(true);
+            }
+          })
+          .catch(() => {
+            setIsLoadingDashboard(false);
+            setIsLoadingDashboardError(true);
+          });
     })();
+  };
+
+  useEffect(() => {
+    if (Object.prototype.hasOwnProperty.call(location, 'joinFamily')) {
+      if (location.joinFamily) {
+        toast.success(t('family.accept.success'));
+      } else {
+        toast.error(t('common.error'));
+      }
+    }
+
+    getUserDashboardData();
   }, []);
 
   return (
@@ -193,7 +204,8 @@ const MainView = (props: any) => {
       <div className='container'>
         <ContentLoading
           isLoading={isLoadingDashboard}
-          isError={false}
+          isError={isLoadingDashboardError}
+          fetchData={() => getUserDashboardData()}
           spinSize='lg'
         >
           <div className='dashboard'>

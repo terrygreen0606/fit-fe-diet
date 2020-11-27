@@ -12,6 +12,7 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
+  convertTime,
 } from 'utils';
 import {
   getDataStatsForPeriod,
@@ -103,6 +104,7 @@ const WaterTrackerView = (props: any) => {
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
   const [isWaterTrackerLoading, setIsWaterTrackingLoading] = useState<boolean>(true);
+  const [isWaterTrackerLoadingError, setIsWaterTrackerLoadingError] = useState<boolean>(false);
 
   const [deleteDrinkId, setDeleteDrinkId] = useState<string>();
 
@@ -121,7 +123,10 @@ const WaterTrackerView = (props: any) => {
 
           Object.keys(data.stats).forEach((item) => {
             updatedData.label.push(
-              moment.unix(+item).format('DD:MM'),
+              convertTime(+item, settings.language, {
+                day: 'numeric',
+                month: 'numeric',
+              }),
             );
             updatedData.data.push(data.stats[item]);
           });
@@ -135,7 +140,10 @@ const WaterTrackerView = (props: any) => {
 
           Object.keys(data.stats).forEach((item) => {
             updatedData.label.push(
-              moment.unix(+item).format('D MMM'),
+              convertTime(+item, settings.language, {
+                day: 'numeric',
+                month: 'short',
+              }),
             );
             updatedData.data.push(data.stats[item]);
           });
@@ -149,7 +157,9 @@ const WaterTrackerView = (props: any) => {
 
           Object.keys(data.stats).forEach((item) => {
             updatedData.label.push(
-              moment.unix(+item).format('MMM'),
+              convertTime(+item, settings.language, {
+                month: 'short',
+              }),
             );
             updatedData.data.push(data.stats[item]);
           });
@@ -179,20 +189,32 @@ const WaterTrackerView = (props: any) => {
     });
   };
 
+  const getUserDataStatsForToday = () => {
+    setIsWaterTrackingLoading(true);
+    setIsWaterTrackerLoadingError(false);
+
+    getDataStatsForToday().then((response) => {
+      const { data } = response.data;
+
+      setIsWaterTrackingLoading(false);
+
+      if (response.data.success && response.data.data) {
+        updateMainTodayData(data);
+      } else {
+        setIsWaterTrackerLoadingError(true);
+      }
+    }).catch(() => {
+      setIsWaterTrackingLoading(false);
+      setIsWaterTrackerLoadingError(true);
+    });
+  };
+
   useEffect(() => {
     getData();
   }, [trackerPeriod, addDrinkForm.measurement]);
 
   useEffect(() => {
-    getDataStatsForToday().then((response) => {
-      const { data } = response.data;
-
-      if (response.data.success && response.data.data) {
-        updateMainTodayData(data);
-      }
-
-      setIsWaterTrackingLoading(false);
-    }).catch(() => { });
+    getUserDataStatsForToday();
   }, []);
 
   const setDrinkCount = (item, itemIndex) => {
@@ -391,7 +413,8 @@ const WaterTrackerView = (props: any) => {
           />
           <ContentLoading
             isLoading={isWaterTrackerLoading}
-            isError={false}
+            isError={isWaterTrackerLoadingError}
+            fetchData={() => getUserDataStatsForToday()}
             spinSize='lg'
           >
             <h1 className='waterTracker_title sect-subtitle'>

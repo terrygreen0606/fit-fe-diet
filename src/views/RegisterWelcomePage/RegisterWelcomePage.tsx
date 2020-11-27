@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
@@ -359,7 +361,13 @@ const RegisterWelcomePage = ({
             </div>
             <div className='col-lg-4 order-md-1 mb-4 mb-md-4 text-center text-lg-left'>
 
-              <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
+              <button
+                type='button'
+                onClick={() => scrollToTariffsSelectForm()}
+                className='after-signup-image-button'
+              >
+                <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
+              </button>
 
             </div>
           </div>
@@ -425,7 +433,8 @@ const RegisterWelcomePage = ({
                   slides={reviewsList.map(({ id, image }) => (
                     <div key={id} className='app-reviews-slider__item'>
                       <div
-                        className='app-reviews-slider__item_img'
+                        onClick={() => scrollToTariffsSelectForm()}
+                        className='app-reviews-slider__item_img after-signup-image-button'
                         style={{ backgroundImage: `url(${image})` }}
                       />
                     </div>
@@ -483,12 +492,24 @@ const RegisterWelcomePage = ({
               <div className='row'>
                 <div className='col-md-6 text-center'>
 
+                <button
+                  type='button'
+                  onClick={() => scrollToTariffsSelectForm()}
+                  className='after-signup-image-button'
+                >
                   <img src={t('checkout.social.img')} className='img-fluid' alt='' />
+                </button>
 
                 </div>
                 <div className='col-md-6 mt-4 mt-md-0 text-center'>
 
-                  <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
+                  <button
+                    type='button'
+                    onClick={() => scrollToTariffsSelectForm()}
+                    className='after-signup-image-button'
+                  >
+                    <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
+                  </button>
 
                 </div>
               </div>
@@ -499,7 +520,7 @@ const RegisterWelcomePage = ({
       </section>
 
       <section className='after-signup-start-today-sect'>
-        <div className='container pb-5'>
+        <div className='container pb-3'>
           <div className='row'>
             <div className='col-xl-6 offset-xl-3 after-signup-start-today-col text-center'>
 
@@ -539,7 +560,7 @@ const RegisterWelcomePage = ({
                 <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
               </div>
 
-              {isShowPartners() ? (
+              {isShowPartners() && (
                 <div className='app-partners-list__wrap mt-5'>
                   <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
 
@@ -562,9 +583,7 @@ const RegisterWelcomePage = ({
                     />
                   </div>
                 </div>
-              ) : (
-                  <div style={{ height: '70px' }} />
-                )}
+              )}
 
             </div>
           </div>
@@ -575,14 +594,6 @@ const RegisterWelcomePage = ({
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
-
-              <div className='checkout-reserved-top-block'>
-                <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
-                <p className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</p>
-                <p className='checkout-reserved-top-block__countdown_title'>
-                  {t('checkout.reserved_block.countdown.title')}
-                </p>
-              </div>
 
               <div className='row'>
                 <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='col-md-6'>
@@ -612,7 +623,7 @@ const RegisterWelcomePage = ({
 
                   <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
-                  <div className='advantages-checklist pt-4'>
+                  <div className='advantages-checklist'>
                     {Array(4).fill(1).map((el) => uuid()).map((id, index) => (
                       <div key={id} className='advantages-checklist-item'>
                         <h6 className='advantages-checklist-item__title'>

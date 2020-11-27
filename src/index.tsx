@@ -27,7 +27,7 @@ TagManager.initialize(tagManagerArgs);
 ReactDOM.render(
   <Provider store={store}>
     <App />
-    <ToastContainer autoClose={3000} />
+    <ToastContainer autoClose={5000} />
   </Provider>,
   document.getElementById('root'),
 );
