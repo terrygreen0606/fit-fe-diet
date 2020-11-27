@@ -190,7 +190,7 @@ const CheckoutPaymentFormCard = ({
   };
 
   const isShowInstallments = () =>
-    getTariffDataValue('country') === 'br' && false;
+    getTariffDataValue('country') === 'br';
 
   const getPayCredictCardParams = () => {
     const {
@@ -218,13 +218,12 @@ const CheckoutPaymentFormCard = ({
       },
     };
 
-    if (isShowInstallments) {
-      if (installments !== '1') {
-        payCredictCardPayload.card.installments = installments;
-      }
-
+    if (isShowInstallments()) {
+      payCredictCardPayload.card.installments = getInstallmentsValue('parts');
       payCredictCardPayload.card.doc_id = docId;
     }
+
+    console.log(payCredictCardPayload)
 
     return { ...payCredictCardPayload };
   };
@@ -497,24 +496,26 @@ const CheckoutPaymentFormCard = ({
           </FormGroup>
 
           {isShowInstallments() && (
-            <>
-              <FormGroup>
-                <InputField
-                  block
-                  name='docId'
-                  className='checkout-payment-card__form_input'
-                  label={`${t('checkout.form_card.cpf')}*:`}
-                  isValid={isFieldValid('docId')}
-                  value={checkoutForm.docId}
-                  data-param={14}
-                  data-validate='["required", "len"]'
-                  onChange={(e) => validateOnChange('docId', e.target.value, e)}
-                  errors={getFieldErrors('docId')}
-                  mask='111.111.111-11'
-                  placeholder='973.849.148-76'
-                />
-              </FormGroup>
+            <FormGroup>
+              <InputField
+                block
+                name='docId'
+                className='checkout-payment-card__form_input'
+                label={`${t('checkout.form_card.cpf')}*:`}
+                isValid={isFieldValid('docId')}
+                value={checkoutForm.docId}
+                data-param={14}
+                data-validate='["required", "len"]'
+                onChange={(e) => validateOnChange('docId', e.target.value, e)}
+                errors={getFieldErrors('docId')}
+                mask='111.111.111-11'
+                placeholder='973.849.148-76'
+              />
+            </FormGroup>
+          )}
 
+          {isShowInstallments() && false && (
+            <>
               <FormLabel className='mt-45'>{t('checkout.tariff.installments.options_title')}</FormLabel>
 
               <div className='checkout-payment-card__form_installments__list mt-4 mt-xl-45'>

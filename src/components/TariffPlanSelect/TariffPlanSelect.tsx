@@ -93,7 +93,26 @@ const TariffPlanSelect = ({
     const tariffSelected = tariffs.find(({ tariff }) => tariff === tariffId);
 
     if (tariffSelected?.country === 'br') {
-      const fieldKeyInstallments = fieldKey === 'months' ? 'parts' : fieldKey;
+      let fieldKeyInstallments = '';
+
+      switch (fieldKey) {
+        case 'months':
+          fieldKeyInstallments = 'parts';
+          break;
+
+        case 'price_old_weekly_text':
+          fieldKeyInstallments = 'price_old_monthly_text';
+          break;
+
+        case 'price_weekly_text':
+          fieldKeyInstallments = 'price_monthly_text';
+          break;
+
+        default:
+          fieldKeyInstallments = fieldKey;
+          break;
+      }
+
       tariffValue = tariffSelected?.installments?.[fieldKeyInstallments] || '';
     } else {
       tariffValue = tariffSelected?.[fieldKey] || '';
