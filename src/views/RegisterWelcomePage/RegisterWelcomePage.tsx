@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
@@ -358,7 +360,13 @@ const RegisterWelcomePage = ({
             </div>
             <div className='col-lg-4 order-md-1 mb-4 mb-md-4 text-center text-lg-left'>
 
-              <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
+              <button
+                type='button'
+                onClick={() => scrollToTariffsSelectForm()}
+                className='after-signup-image-button'
+              >
+                <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
+              </button>
 
             </div>
           </div>
@@ -424,7 +432,8 @@ const RegisterWelcomePage = ({
                   slides={reviewsList.map(({ id, image }) => (
                     <div key={id} className='app-reviews-slider__item'>
                       <div
-                        className='app-reviews-slider__item_img'
+                        onClick={() => scrollToTariffsSelectForm()}
+                        className='app-reviews-slider__item_img after-signup-image-button'
                         style={{ backgroundImage: `url(${image})` }}
                       />
                     </div>
@@ -482,12 +491,24 @@ const RegisterWelcomePage = ({
               <div className='row'>
                 <div className='col-md-6 text-center'>
 
+                <button
+                  type='button'
+                  onClick={() => scrollToTariffsSelectForm()}
+                  className='after-signup-image-button'
+                >
                   <img src={t('checkout.social.img')} className='img-fluid' alt='' />
+                </button>
 
                 </div>
                 <div className='col-md-6 mt-4 mt-md-0 text-center'>
 
-                  <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
+                  <button
+                    type='button'
+                    onClick={() => scrollToTariffsSelectForm()}
+                    className='after-signup-image-button'
+                  >
+                    <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
+                  </button>
 
                 </div>
               </div>
