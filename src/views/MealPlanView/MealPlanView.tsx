@@ -74,6 +74,7 @@ const MealPlanView = (props: any) => {
   const [daysToEndSubscription, setDaysToEndSubscription] = useState<number>(0);
 
   const [isMealPlanLoading, setIsMealPlanLoading] = useState<boolean>(true);
+  const [isMealPlanLoadingError, setIsMealPlanLoadingError] = useState<boolean>(false);
   const [activeItemIdShopBtn, setActiveItemIdShopBtn] = useState<string>(null);
   const [activeItemIdReloadBtn, setActiveItemIdReloadBtn] = useState<string>(null);
   const [activeItemIdCheckedBtn, setActiveItemIdCheckedBtn] = useState<string>(null);
@@ -82,6 +83,44 @@ const MealPlanView = (props: any) => {
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
+
+  const getUserMealPlan = () => {
+    setIsMealPlanLoadingError(false);
+
+    getMealPlan()
+      .then(({ data }) => {
+        if (data.success && data.data) {
+          const updatedMealPlan = [];
+          const list = data.data.list || [];
+
+          list.forEach((item) => item.key_id = uuid());
+
+          list.forEach((item, itemIndex) => {
+            if (itemIndex === 0) {
+              updatedMealPlan.push({
+                date_ts: item.date_ts,
+                list: [item],
+              });
+            } else if (list[itemIndex].date_ts === list[itemIndex - 1].date_ts) {
+              updatedMealPlan.find((findItem) => {
+                if (findItem.date_ts === item.date_ts) {
+                  findItem.list.push(item);
+                }
+              });
+            } else {
+              updatedMealPlan.push({
+                date_ts: item.date_ts,
+                list: [item],
+              });
+            }
+          });
+
+          setIsMealPlanLoading(false);
+          setMealPlan(updatedMealPlan);
+        }
+      })
+      .catch(() => setIsMealPlanLoadingError(true));
+  };
 
   useEffect(() => {
     if (tourStep === 3) toggleSetting('isActiveMealPlanTutorial');
@@ -122,38 +161,7 @@ const MealPlanView = (props: any) => {
 
       setDays(updatedDays);
 
-      getMealPlan().then(({ data }) => {
-        if (data.success && data.data) {
-          const updatedMealPlan = [];
-          const list = data.data.list || [];
-
-          list.forEach((item) => item.key_id = uuid());
-
-          list.forEach((item, itemIndex) => {
-            if (itemIndex === 0) {
-              updatedMealPlan.push({
-                date_ts: item.date_ts,
-                list: [item],
-              });
-            } else if (list[itemIndex].date_ts === list[itemIndex - 1].date_ts) {
-              updatedMealPlan.find((findItem) => {
-                if (findItem.date_ts === item.date_ts) {
-                  findItem.list.push(item);
-                }
-              });
-            } else {
-              updatedMealPlan.push({
-                date_ts: item.date_ts,
-                list: [item],
-              });
-            }
-          });
-
-          setMealPlan(updatedMealPlan);
-        }
-      }).catch(() => { }).finally(() => {
-        setIsMealPlanLoading(false);
-      });
+      getUserMealPlan();
 
       const paidBeforeDate = new Date(settings.paid_until * 1000).valueOf();
       const currentDate = new Date().valueOf();
@@ -255,7 +263,8 @@ const MealPlanView = (props: any) => {
 
       <ContentLoading
         isLoading={isMealPlanLoading}
-        isError={false}
+        isError={isMealPlanLoadingError}
+        fetchData={() => getUserMealPlan()}
         spinSize='lg'
       >
         <section className='nutrition-plan-card-list-sect'>

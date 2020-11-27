@@ -104,6 +104,7 @@ const WaterTrackerView = (props: any) => {
   const { changedBlockRef, isBlockActive, setIsBlockActive } = useOutsideClick(false);
 
   const [isWaterTrackerLoading, setIsWaterTrackingLoading] = useState<boolean>(true);
+  const [isWaterTrackerLoadingError, setIsWaterTrackerLoadingError] = useState<boolean>(false);
 
   const [deleteDrinkId, setDeleteDrinkId] = useState<string>();
 
@@ -188,20 +189,24 @@ const WaterTrackerView = (props: any) => {
     });
   };
 
-  useEffect(() => {
-    getData();
-  }, [trackerPeriod, addDrinkForm.measurement]);
-
-  useEffect(() => {
+  const getUserDataStatsForToday = () => {
+    setIsWaterTrackerLoadingError(false);
     getDataStatsForToday().then((response) => {
       const { data } = response.data;
 
       if (response.data.success && response.data.data) {
         updateMainTodayData(data);
+        setIsWaterTrackingLoading(false);
       }
+    }).catch(() => setIsWaterTrackerLoadingError(true));
+  };
 
-      setIsWaterTrackingLoading(false);
-    }).catch(() => { });
+  useEffect(() => {
+    getData();
+  }, [trackerPeriod, addDrinkForm.measurement]);
+
+  useEffect(() => {
+    getUserDataStatsForToday();
   }, []);
 
   const setDrinkCount = (item, itemIndex) => {
@@ -400,7 +405,8 @@ const WaterTrackerView = (props: any) => {
           />
           <ContentLoading
             isLoading={isWaterTrackerLoading}
-            isError={false}
+            isError={isWaterTrackerLoadingError}
+            fetchData={() => getUserDataStatsForToday()}
             spinSize='lg'
           >
             <h1 className='waterTracker_title sect-subtitle'>
