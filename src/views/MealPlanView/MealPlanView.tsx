@@ -85,6 +85,7 @@ const MealPlanView = (props: any) => {
     getTranslate(localePhrases, code, placeholders);
 
   const getUserMealPlan = () => {
+    setIsMealPlanLoading(true);
     setIsMealPlanLoadingError(false);
 
     getMealPlan()

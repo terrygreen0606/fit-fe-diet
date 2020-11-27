@@ -165,6 +165,7 @@ const MainView = (props: any) => {
 
       const totalValue = result.visitorId || null;
 
+      setIsLoadingDashboard(true);
       setIsLoadingDashboardError(false);
 
       getUserDashboard(totalValue)

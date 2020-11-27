@@ -190,6 +190,7 @@ const WaterTrackerView = (props: any) => {
   };
 
   const getUserDataStatsForToday = () => {
+    setIsWaterTrackingLoading(true);
     setIsWaterTrackerLoadingError(false);
     getDataStatsForToday().then((response) => {
       const { data } = response.data;
