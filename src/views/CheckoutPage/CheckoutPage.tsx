@@ -362,8 +362,6 @@ const CheckoutPage = ({
 
                     <hr className='checkout-divider' />
 
-                    <img src={t('checkout.safe.img2')} className='img-fluid' alt='' />
-
                     <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
                       <h2 className='mb-4 fw-bold text-center'>
                         {t('lp.select_plan_title')}

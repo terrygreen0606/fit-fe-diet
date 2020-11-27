@@ -88,7 +88,7 @@ const RegisterV1Tpl = ({
   };
 
   useEffect(() => {
-    if (registerView) {
+    if (registerView && registerView !== registerViewsList[0]) {
       history.push(`/register${location.search}#${registerView.toLowerCase()}`);
     }
 

@@ -62,7 +62,7 @@ const RegisterV2Tpl = ({
       setRegisterStep(currentRegisterStep);
     }
 
-    if (registerView) {
+    if (registerView && registerView !== registerViewsList[0]) {
       history.push(`/register${location.search}#${registerView.toLowerCase()}`);
     }
   }, [registerView]);
