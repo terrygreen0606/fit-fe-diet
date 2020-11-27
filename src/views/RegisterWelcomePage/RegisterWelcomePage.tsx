@@ -618,7 +618,9 @@ const RegisterWelcomePage = ({
                     value={activeTariffId}
                     onChange={(id) => {
                       if (activeTariffId === null) {
-                        scrollToCheckoutForm();
+                        setTimeout(() => {
+                          scrollToCheckoutForm();
+                        }, 100);
                       }
 
                       setActiveTariffId(id);

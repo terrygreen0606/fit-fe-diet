@@ -12,6 +12,7 @@ import { pageTitles } from 'constants/pageTitles';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 import ShoppingListCart from 'components/ShoppingListCart';
+import Logo from 'components/Logo';
 
 import './Header.sass';
 
@@ -41,7 +42,8 @@ const Header = (props: any) => {
         <div className='container'>
           <div className='row'>
             <div className='col-2'>
-              <Link to={routes.main} className='mainHeader_logo' />
+              <Logo />
+              
               {location?.pathname === routes.main ? (
                 <Link to={routes.main} className='mainHeader_logo-mobile'>
                   <MobileLogoIcon />

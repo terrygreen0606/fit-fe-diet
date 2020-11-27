@@ -6,16 +6,8 @@ import useDebounce from 'components/hooks/useDebounce';
 
 import './TariffPlanSelect.sass';
 
-type TariffType = {
-  id: string;
-  priceWeek: string;
-  priceOldWeek: string;
-  price: string;
-  months: string;
-};
-
 type TariffPlanSelectProps = {
-  tariffs: TariffType[];
+  tariffs: any[];
   onChange: (any) => void;
   value: string;
   specialOfferIndex?: number;
@@ -89,6 +81,21 @@ const TariffPlanSelect = ({
     }
   }, [tariffPlanList.current?.children?.length, debounceWindowWidth]);
 
+  const getTariffValue = (tariffId, fieldKey) => {
+    let tariffValue = '';
+
+    const tariffSelected = tariffs.find(({ tariff }) => tariff === tariffId);
+
+    if (tariffSelected?.country === 'br' || true) {
+      const fieldKeyInstallments = fieldKey === 'months' ? 'parts' : fieldKey;
+      tariffValue = tariffSelected?.installments?.[fieldKeyInstallments] || '';
+    } else {
+      tariffValue = tariffSelected?.[fieldKey] || '';
+    }
+
+    return tariffValue;
+  };
+
   return (
     <div
       className={classNames('tariff-plan__list', {
@@ -96,19 +103,14 @@ const TariffPlanSelect = ({
       })}
       ref={tariffPlanList}
     >
-      {tariffs.map(({
-        id,
-        months,
-        priceWeek,
-        priceOldWeek,
-      }, tariffIndex) => (
-        <label key={id} className='tariff-plan__item-label'>
+      {tariffs.map(({ tariff }, tariffIndex) => (
+        <label key={tariff} className='tariff-plan__item-label'>
           <input
             type='radio'
             className='tariff-plan__item-label-input'
             name='tariff_plan_radio'
-            value={id}
-            checked={value === id}
+            value={tariff}
+            checked={value === tariff}
             onChange={(e) => onChange(e.target.value)}
           />
 
@@ -122,32 +124,40 @@ const TariffPlanSelect = ({
             </div>
 
             <div className='tariff-plan__item-text'>
-              <h3 className='tariff-plan__item-text-title'>{t('checkout.plan_title', { COUNT: months })}</h3>
-              <div className='tariff-plan__item-text-desc'>{t('checkout.plan_descr', { COUNT: months })}</div>
+              <h3 className='tariff-plan__item-text-title'>
+                {t('checkout.plan_title', { COUNT: getTariffValue(tariff, 'months') })}
+              </h3>
+              <div className='tariff-plan__item-text-desc'>
+                {t('checkout.plan_descr', { COUNT: getTariffValue(tariff, 'months') })}
+              </div>
             </div>
 
-              <div className='tariff-plan__item-price'>
-                <div className='tariff-plan__item-price-old'>
-                  {`${priceOldWeek} / ${t('common.week').toLowerCase()}`}
-                </div>
+            <div className='tariff-plan__item-price'>
+              <div className='tariff-plan__item-price-old'>
+                {`${getTariffValue(tariff, 'price_old_weekly_text')} / ${t('common.week').toLowerCase()}`}
+              </div>
 
-                <div className='tariff-plan__item-price-now'>
-                  <div className='tariff-plan__item-price-now-count-wrap'>
-                    <div className='tariff-plan__item-price-now-count'>{priceWeek}</div>
-                  </div>
-                </div>
-
-                <div className='tariff-plan__item-price-together'>
-                  {t('common.paycycle_period', { PERIOD: t('common.week').toLowerCase() })}
+              <div className='tariff-plan__item-price-now'>
+                <div className='tariff-plan__item-price-now-count-wrap'>
+                  <div className='tariff-plan__item-price-now-count'>
+                    {getTariffValue(tariff, 'price_weekly_text')}
+                   </div>
                 </div>
               </div>
 
-              {specialOfferIndex === tariffIndex && (
-                <div className='tariff-plan__item-sale'>{t('checkout.plan.special_offer.label')}</div>
-              )}
+              <div className='tariff-plan__item-price-together'>
+                {t('common.paycycle_period', { PERIOD: t('common.week').toLowerCase() })}
+              </div>
             </div>
-          </label>
-        ))}
+
+            {specialOfferIndex === tariffIndex && (
+              <div className='tariff-plan__item-sale'>
+                {t('checkout.plan.special_offer.label')}
+              </div>
+            )}
+          </div>
+        </label>
+      ))}
     </div>
   );
 };

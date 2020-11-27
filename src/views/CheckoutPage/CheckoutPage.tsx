@@ -20,7 +20,7 @@ import {
 } from 'api';
 
 // Components
-import InputField from 'components/common/Forms/InputField';
+import Logo from 'components/Logo';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Spinner from 'components/common/Spinner';
@@ -264,12 +264,12 @@ const CheckoutPage = ({
 
       <SalesWidgets />
 
-      <section>
+      <section className='checkout-logo-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-12'>
+            <div className='col-12 text-center text-xl-left'>
 
-              <h4 className='sect-subtitle'>{t('checkout.page_title')}</h4>
+              <Logo />
 
             </div>
           </div>
@@ -374,19 +374,7 @@ const CheckoutPage = ({
                         fetchData={() => getUserTariffs()}
                       >
                         <TariffPlanSelect
-                          tariffs={tariffsDataList.map(({
-                            tariff,
-                            months,
-                            price_weekly_text,
-                            price_old_weekly_text,
-                            price_text,
-                          }) => ({
-                            id: tariff,
-                            price: price_text,
-                            priceWeek: price_weekly_text,
-                            priceOldWeek: price_old_weekly_text,
-                            months,
-                          }))}
+                          tariffs={tariffsDataList}
                           value={activeTariffId}
                           onChange={(id) => {
                             if (activeTariffId === null) {
