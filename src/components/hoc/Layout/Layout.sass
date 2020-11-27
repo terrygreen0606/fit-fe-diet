@@ -1,9 +1,8 @@
 .layoutMainWrapper
-
-  @media (max-width: 768px)
-    padding-bottom: 72px
-
-  &:not(.layout-promo)
+  &:not(.checkout_layout)
+    @media (max-width: 768px)
+      padding-bottom: 72px
+  &:not(.layout-promo):not(.checkout_layout)
     @media (max-width: 767px)
       padding-bottom: 80px
     @media (max-width: 1199px)
@@ -11,4 +10,7 @@
   &.layout-promo
     padding-bottom: 0 !important
     .mobileFooter
+      display: none
+  &.checkout_layout
+    .mainHeader, .mobileFooter
       display: none

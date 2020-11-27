@@ -586,7 +586,7 @@ const CheckoutPaymentFormCard = ({
           </>
         )}
 
-        <div className='text-center mt-5'>
+        <div className='text-center mt-4 mt-xl-5'>
           <Button
             type='submit'
             className='checkout-payment-card__form_submit'
