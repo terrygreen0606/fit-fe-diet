@@ -47,12 +47,12 @@ const AdherenceDietPlan = ({
           <div className='adherence-diet-card-progress-desc-title'>
             {t('mp.week_progress')}
           </div>
-          <Link
+          {/* <Link
             to={routes.nutritionPlanWeight}
             className='adherence-diet-card-progress-desc-link'
           >
             {t('mp.report')}
-          </Link>
+          </Link> */}
         </div>
         <div className='adherence-diet-card-progress-line'>
           <div
