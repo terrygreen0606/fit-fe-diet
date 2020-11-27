@@ -498,7 +498,7 @@ const RegisterWelcomePage = ({
       </section>
 
       <section className='after-signup-start-today-sect'>
-        <div className='container pb-5'>
+        <div className='container pb-3'>
           <div className='row'>
             <div className='col-xl-6 offset-xl-3 after-signup-start-today-col text-center'>
 
@@ -538,7 +538,7 @@ const RegisterWelcomePage = ({
                 <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
               </div>
 
-              {isShowPartners() ? (
+              {isShowPartners() && (
                 <div className='app-partners-list__wrap mt-5'>
                   <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
 
@@ -561,9 +561,7 @@ const RegisterWelcomePage = ({
                     />
                   </div>
                 </div>
-              ) : (
-                  <div style={{ height: '70px' }} />
-                )}
+              )}
 
             </div>
           </div>
@@ -574,14 +572,6 @@ const RegisterWelcomePage = ({
         <div className='container'>
           <div className='row'>
             <div className='col-12'>
-
-              <div className='checkout-reserved-top-block'>
-                <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
-                <p className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</p>
-                <p className='checkout-reserved-top-block__countdown_title'>
-                  {t('checkout.reserved_block.countdown.title')}
-                </p>
-              </div>
 
               <div className='row'>
                 <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='col-md-6'>
@@ -621,7 +611,7 @@ const RegisterWelcomePage = ({
 
                   <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
 
-                  <div className='advantages-checklist pt-4'>
+                  <div className='advantages-checklist'>
                     {Array(6).fill(1).map((el) => uuid()).map((id, index) => (
                       <div key={id} className='advantages-checklist-item'>
                         <h6 className='advantages-checklist-item__title'>
