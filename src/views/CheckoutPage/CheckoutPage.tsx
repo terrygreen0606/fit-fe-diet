@@ -1,26 +1,26 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
+import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
+  scrollToElement,
 } from 'utils';
 import Helmet from 'react-helmet';
 import { InputError } from 'types';
 import { routes } from 'constants/routes';
 import queryString from 'query-string';
 import {
-  getCheckoutTariff, fetchUserProfile,
+  getAppTariffs,
+  fetchUserProfile,
   getPaymentStatus,
 } from 'api';
 
 // Components
 import InputField from 'components/common/Forms/InputField';
-import CustomRadio from 'components/common/Forms/CustomRadio';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Spinner from 'components/common/Spinner';
@@ -28,6 +28,7 @@ import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import FormValidator from 'utils/FormValidator';
 import SalesWidgets from 'components/SalesWidgets';
+import TariffPlanSelect from 'components/TariffPlanSelect';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
 import './CheckoutPage.sass';
@@ -58,9 +59,11 @@ const CheckoutPage = ({
   const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
 
-  const [tariffData, setTariffData] = useState<any>(null);
-  const [tariffLoading, setTariffLoading] = useState<boolean>(true);
-  const [tariffLoadingError, setTariffLoadingError] = useState<boolean>(false);
+  const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
+  const [tariffsLoading, setTariffsLoading] = useState<boolean>(false);
+  const [tariffsLoadingError, setTariffsLoadingError] = useState<boolean>(false);
+
+  const [activeTariffId, setActiveTariffId] = useState<any>(null);
 
   const [paymentStatusData, setPaymentStatusData] = useState<any>(null);
   const [paymentStatusLoading, setPaymentStatusLoading] = useState<boolean>(false);
@@ -74,25 +77,8 @@ const CheckoutPage = ({
 
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
-  const getUserPaymentTariff = () => {
-    setTariffLoading(true);
-    setTariffLoadingError(false);
-
-    getCheckoutTariff()
-      .then(({ data }) => {
-        setTariffLoading(false);
-
-        if (data.success && data.data) {
-          setTariffData(data.data);
-        } else {
-          setTariffLoadingError(true);
-        }
-      })
-      .catch(() => {
-        setTariffLoading(false);
-        setTariffLoadingError(true);
-      });
-  };
+  const selectPlanBlockRef = useRef(null);
+  const paymentFormBlockRef = useRef(null);
 
   const getUserPaymentStatus = () => {
     setPaymentStatusLoading(true);
@@ -157,8 +143,30 @@ const CheckoutPage = ({
       });
   };
 
+  const getUserTariffs = () => {
+    setTariffsLoading(true);
+    setTariffsLoadingError(false);
+
+    getAppTariffs()
+      .then(({ data }) => {
+        if (data.success && data.data) {
+          if (data.data.length) {
+            setTariffsDataList(data.data);
+          }
+        } else {
+          setTariffsLoadingError(true);
+        }
+      })
+      .catch(() => {
+        setTariffsLoadingError(true);
+      })
+      .finally(() => {
+        setTariffsLoading(false);
+      });
+  };
+
   useEffect(() => {
-    getUserPaymentTariff();
+    getUserTariffs();
     getUserProfile();
 
     if (orderId) {
@@ -169,6 +177,12 @@ const CheckoutPage = ({
       toast.error(t('tariff.not_paid'));
       sessionStorage.removeItem('redirectedToPayView');
     }
+
+    document.querySelector('.layoutMainWrapper')?.classList.add('checkout_layout');
+
+    return () => {
+      document.querySelector('.layoutMainWrapper')?.classList.remove('checkout_layout');
+    };
   }, []);
 
   const validateOnChange = (name: string, value: any, event, element?) => {
@@ -191,8 +205,14 @@ const CheckoutPage = ({
         message: t('api.ecode.invalid_value'),
       }));
 
+  const getActiveTariffData = () => {
+    const activeTariff = tariffsDataList.find((tariff) => tariff.tariff === activeTariffId);
+    return activeTariff;
+  };
+
   const getTariffDataValue = (property: string) => {
     let dataEl = null;
+    const tariffData = getActiveTariffData();
 
     if (tariffData && tariffData[property]) {
       dataEl = tariffData[property];
@@ -215,10 +235,14 @@ const CheckoutPage = ({
       ...errors,
     ]);
 
-    if (!hasError) { }
+    if (!hasError) {}
   };
 
   const isShowPartners = () => language === 'br';
+
+  const scrollToCheckoutForm = () => {
+    scrollToElement(paymentFormBlockRef?.current, -30);
+  };
 
   return (
     <>
@@ -263,7 +287,7 @@ const CheckoutPage = ({
             <div className='row'>
               <div className='col-12'>
 
-                <div className='checkout-tpl-container mt-3 mt-sm-5 pt-xl-5'>
+                <div className='checkout-tpl-container'>
                   <div className='checkout-person-plan-block'>
                     <h4 className='checkout-person-plan-title'>
                       {profileLoading ? (
@@ -282,43 +306,30 @@ const CheckoutPage = ({
                       {t('checkout.rewards_title')}
                     </h1>
 
-                    {isShowPartners() ? (
-                      <div className='row mt-5'>
-                        <div className='col-lg-3 mb-3 mb-lg-0 pt-2'>
+                    {isShowPartners() && (
+                      <div className='app-partners-list__wrap mt-45'>
+                        <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
 
-                          <h3>{t('lp.partners_list_title')}</h3>
-
-                        </div>
-                        <div className='col-lg-9'>
-
-                          <div className='app-partners-list__wrap mt-5 pt-5'>
-                            <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
-
-                            <div className='app-partners-list'>
-                              <span
-                                className='app-partners-list__item'
-                                style={{ backgroundImage: `url(${metropolisLogoImg})` }}
-                              />
-                              <span
-                                className='app-partners-list__item'
-                                style={{ backgroundImage: `url(${igLogoImg})` }}
-                              />
-                              <span
-                                className='app-partners-list__item'
-                                style={{ backgroundImage: `url(${terraLogoImg})` }}
-                              />
-                              <span
-                                className='app-partners-list__item'
-                                style={{ backgroundImage: `url(${defatoLogoImg})` }}
-                              />
-                            </div>
-                          </div>
-
+                        <div className='app-partners-list'>
+                          <span
+                            className='app-partners-list__item'
+                            style={{ backgroundImage: `url(${metropolisLogoImg})` }}
+                          />
+                          <span
+                            className='app-partners-list__item'
+                            style={{ backgroundImage: `url(${igLogoImg})` }}
+                          />
+                          <span
+                            className='app-partners-list__item'
+                            style={{ backgroundImage: `url(${terraLogoImg})` }}
+                          />
+                          <span
+                            className='app-partners-list__item'
+                            style={{ backgroundImage: `url(${defatoLogoImg})` }}
+                          />
                         </div>
                       </div>
-                    ) : (
-                        <div style={{ height: '70px' }} />
-                      )}
+                    )}
                   </div>
 
                   <div className='checkout-form-container'>
@@ -342,53 +353,6 @@ const CheckoutPage = ({
                       </div>
                     </div>
 
-                    <div className='mt-5'>
-                      <ContentLoading
-                        isLoading={tariffLoading}
-                        isError={tariffLoadingError}
-                        fetchData={() => getUserPaymentTariff()}
-                      >
-                        <div className='checkout-summary-list'>
-                          <div className='checkout-summary-item'>
-                            <div className='checkout-summary-item__label'>{t('checkout.summary.total_title')}</div>
-                            <div className='checkout-summary-item__value'>
-                              <del>{getTariffDataValue('price_old_text')}</del>
-                              {' '}
-                              <b>{getTariffDataValue('price_text')}</b>
-                            </div>
-                          </div>
-
-                          <div className='checkout-summary-item'>
-                            <div className='checkout-summary-item__label'>
-                              {t('checkout.summary.discount_title')}
-                              :
-                            </div>
-                            <div className='checkout-summary-item__value'>
-                              <form className='checkout-discount-form' onSubmit={(e) => checkoutDiscountFormSubmit(e)}>
-                                <InputField
-                                  className='checkout-discount-form__input'
-                                  name='discount_code'
-                                  invalid={getFieldErrors('discount_code').length > 0}
-                                  value={checkoutForm.discount_code}
-                                  data-validate='["required"]'
-                                  onChange={(e) => validateOnChange('discount_code', e.target.value, e)}
-                                  placeholder='Code'
-                                />
-
-                                <Button
-                                  type='submit'
-                                  className='checkout-discount-form__btn'
-                                  color='mint'
-                                >
-                                  {t('checkout.discount_btn')}
-                                </Button>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                      </ContentLoading>
-                    </div>
-
                     <div className='pl-sm-5'>
                       <div className='product-plants-one-tree-block mt-5'>
                         <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
@@ -399,14 +363,63 @@ const CheckoutPage = ({
 
                     <img src={t('checkout.safe.img2')} className='img-fluid' alt='' />
 
-                    <CheckoutPaymentFormCard
-                      className='mt-4 mt-xl-5'
-                      tariff={tariffData}
-                      isPaymentError={paymentStatusError}
-                      paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
-                      history={history}
-                      localePhrases={localePhrases}
-                    />
+                    <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
+                      <h2 className='mb-4 fw-bold text-center'>
+                        {t('lp.select_plan_title')}
+                      </h2>
+
+                      <ContentLoading
+                        isLoading={tariffsLoading}
+                        isError={tariffsLoadingError}
+                        fetchData={() => getUserTariffs()}
+                      >
+                        <TariffPlanSelect
+                          tariffs={tariffsDataList.map(({
+                            tariff,
+                            months,
+                            price_weekly_text,
+                            price_old_weekly_text,
+                            price_text,
+                          }) => ({
+                            id: tariff,
+                            price: price_text,
+                            priceWeek: price_weekly_text,
+                            priceOldWeek: price_old_weekly_text,
+                            months,
+                          }))}
+                          value={activeTariffId}
+                          onChange={(id) => {
+                            if (activeTariffId === null) {
+                              setTimeout(() => {
+                                scrollToCheckoutForm();
+                              }, 100);
+                            }
+
+                            setActiveTariffId(id);
+                          }}
+                          specialOfferIndex={1}
+                          localePhrases={localePhrases}
+                        />
+                      </ContentLoading>
+                    </div>
+
+                    {getActiveTariffData() && (
+                      <div ref={paymentFormBlockRef} className='mt-4 mt-xl-5'>
+                        <h3 className='mb-4 fw-bold text-center'>
+                          {t('lp.select_payment.title')}
+                        </h3>
+
+                        <CheckoutPaymentFormCard
+                          tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                          disabled={!getActiveTariffData()}
+                          scrollRef={selectPlanBlockRef}
+                          isPaymentError={paymentStatusError}
+                          paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
+                          history={history}
+                          localePhrases={localePhrases}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 
