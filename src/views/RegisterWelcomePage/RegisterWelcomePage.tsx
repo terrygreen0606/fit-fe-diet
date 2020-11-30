@@ -12,7 +12,6 @@ import { getAppTariffs, getAppReviews } from 'api';
 import WithTranslate from 'components/hoc/WithTranslate';
 import ContentLoading from 'components/hoc/ContentLoading';
 import Button from 'components/common/Forms/Button';
-import SliderSimple from 'components/common/SliderSimple';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
@@ -316,7 +315,7 @@ const RegisterWelcomePage = ({
       <section ref={introBlockRef} className='after-signup-intro-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-8 order-md-2 pt-lg-4 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
+            <div className='col-lg-8 order-md-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
 
               {isShowPartners() && (
                 <div className='mb-4'>
@@ -370,7 +369,11 @@ const RegisterWelcomePage = ({
                 onClick={() => scrollToTariffsSelectForm()}
                 className='after-signup-image-button'
               >
-                <img src={t('lp.phone_overview.gif')} alt='' className='after-signup-phone-overview-img img-fluid' />
+                <img
+                  src={getImagePath('fitlope-app-screens.png')}
+                  alt=''
+                  className='after-signup-phone-overview-img img-fluid'
+                />
               </button>
 
             </div>
@@ -422,29 +425,15 @@ const RegisterWelcomePage = ({
               </div>
 
             </div>
-            <div className='col-md-6 mt-5 mt-md-0'>
+            <div className='col-md-6 mt-5 mt-md-0 text-center'>
 
-              <ContentLoading
-                isLoading={reviewsLoading}
-                isError={reviewsLoadingError}
-                fetchData={() => getUserReviews()}
+              <button
+                type='button'
+                onClick={() => scrollToTariffsSelectForm()}
+                className='after-signup-image-button'
               >
-                <SliderSimple
-                  className='app-reviews-slider app-reviews-slider--3'
-                  dots
-                  autoplay
-                  autoplaySpeed={3000}
-                  slides={reviewsList.map(({ id, image }) => (
-                    <div key={id} className='app-reviews-slider__item'>
-                      <div
-                        onClick={() => scrollToTariffsSelectForm()}
-                        className='app-reviews-slider__item_img after-signup-image-button'
-                        style={{ backgroundImage: `url(${image})` }}
-                      />
-                    </div>
-                  ))}
-                />
-              </ContentLoading>
+                <img src={getImagePath('dishes.png')} alt='' />
+              </button>
 
             </div>
           </div>
