@@ -270,7 +270,7 @@ const CheckoutPage = ({
           <div className='row'>
             <div className='col-12 text-center text-xl-left'>
 
-              <Logo />
+              <Logo raw />
 
             </div>
           </div>
