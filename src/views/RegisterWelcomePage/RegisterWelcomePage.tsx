@@ -432,7 +432,7 @@ const RegisterWelcomePage = ({
                 onClick={() => scrollToTariffsSelectForm()}
                 className='after-signup-image-button'
               >
-                <img src={getImagePath('dishes.png')} alt='' />
+                <img className='img-fluid' src={getImagePath('dishes.png')} alt='' />
               </button>
 
             </div>
