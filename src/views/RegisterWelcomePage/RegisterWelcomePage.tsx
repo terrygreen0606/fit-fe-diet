@@ -12,7 +12,6 @@ import { getAppTariffs, getAppReviews } from 'api';
 import WithTranslate from 'components/hoc/WithTranslate';
 import ContentLoading from 'components/hoc/ContentLoading';
 import Button from 'components/common/Forms/Button';
-import SliderSimple from 'components/common/SliderSimple';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
