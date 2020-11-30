@@ -83,6 +83,7 @@ const PhoneInput = (props: PhoneInputProps) => {
 
       <div className='phone-input-wrap'>
         <IntlTelInput
+          key={defaultCountry}
           value={value}
           defaultCountry={defaultCountry}
           onPhoneNumberChange={(valid, val, country) => {
