@@ -39,7 +39,7 @@ const InitApp = ({ history, children }: InitAppProps) => {
     if (error.response) {
       if (error.response.status === xhrStatuses.NOT_PAID) {
         sessionStorage.setItem('redirectedToPayView', 'true');
-        history.push(routes.checkout);
+        history.push(routes.registerWelcome);
       }
     }
 
