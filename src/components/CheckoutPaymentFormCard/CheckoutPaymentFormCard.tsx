@@ -324,7 +324,8 @@ const CheckoutPaymentFormCard = ({
     }
   };
 
-  const scrollToTariffsSelectForm = () => {
+  const scrollToTariffsSelectForm = (e) => {
+    e.preventDefault();
     scrollRef?.current?.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
   };
 
@@ -606,7 +607,7 @@ const CheckoutPaymentFormCard = ({
                 <button
                   type='button'
                   className='checkout-payment-card__form_tariff_error'
-                  onClick={() => scrollToTariffsSelectForm()}
+                  onClick={scrollToTariffsSelectForm}
                 >
                   {t('checkout.tariff.select.error.msg')}
                 </button>
