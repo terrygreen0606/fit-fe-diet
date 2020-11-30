@@ -108,7 +108,7 @@ const FormValidator = {
             result[m] = value && value.length > 0 ? !validator.isInt(value) : false;
             break;
           case 'regex':
-            result[m] = value && value.length > 0 ? !(new RegExp(param).test(value?.replaceAll('_', ''))) || '' : false;
+            result[m] = value && value.length > 0 ? !(new RegExp(param).test(value?.replaceAll('_', '') || '')) : false;
             break;
           case 'alphanum':
             result[m] = value && value.length > 0 ? !validator.isAlphanumeric(value) : false;
