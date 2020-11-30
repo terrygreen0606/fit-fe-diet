@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState, useEffect, useRef } from 'react';
-import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import {
@@ -172,11 +171,6 @@ const CheckoutPage = ({
 
     if (orderId) {
       getUserPaymentStatus();
-    }
-
-    if (sessionStorage.getItem('redirectedToPayView') === 'true') {
-      toast.warning(t('tariff.not_paid'));
-      sessionStorage.removeItem('redirectedToPayView');
     }
 
     document.querySelector('.layoutMainWrapper')?.classList.add('checkout_layout');

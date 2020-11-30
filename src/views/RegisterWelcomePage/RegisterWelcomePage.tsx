@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
@@ -150,7 +151,15 @@ const RegisterWelcomePage = ({
     }
   };
 
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(localePhrases, code, placeholders);
+
   useEffect(() => {
+    if (sessionStorage.getItem('redirectedToPayView') === 'true') {
+      toast.warning(t('tariff.not_paid'));
+      sessionStorage.removeItem('redirectedToPayView');
+    }
+
     getUserTariffs();
     getUserReviews();
 
@@ -160,9 +169,6 @@ const RegisterWelcomePage = ({
       document.removeEventListener('scroll', documentScrollHandle);
     };
   }, []);
-
-  const t = (code: string, placeholders?: any) =>
-    getTranslate(localePhrases, code, placeholders);
 
   const getWelcomeGoalText = () => {
     let welcomeDescrGoalText = '';
