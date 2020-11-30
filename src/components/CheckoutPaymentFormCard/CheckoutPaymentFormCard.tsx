@@ -389,7 +389,7 @@ const CheckoutPaymentFormCard = ({
               })) || []}
               className='checkout-payment-card__form_input'
               value={checkoutForm.cardNumber}
-              data-param='18,23'
+              data-param='16,23'
               data-validate='["required", "max-max-len"]'
               onChange={(e) => validateOnChange('cardNumber', e.target.value?.trim(), e)}
               onFocus={(e) => {
