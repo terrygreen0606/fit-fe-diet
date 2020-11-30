@@ -159,7 +159,10 @@ const TariffPlanSelect = ({
             name='tariff_plan_radio'
             value={tariff}
             checked={value === tariff}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => {
+              e.preventDefault();
+              onChange(e.target.value);
+            }}
           />
 
           <div
