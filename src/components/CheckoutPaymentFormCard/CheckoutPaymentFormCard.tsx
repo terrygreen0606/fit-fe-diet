@@ -223,8 +223,6 @@ const CheckoutPaymentFormCard = ({
       payCredictCardPayload.card.doc_id = docId;
     }
 
-    console.log(payCredictCardPayload)
-
     return { ...payCredictCardPayload };
   };
 
