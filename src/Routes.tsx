@@ -68,7 +68,7 @@ const Routes = () => (
     <PrivateRoute
       path={routes.checkout}
       component={(props: any) => (
-        <Layout {...props}>
+        <Layout {...props} footerType='short'>
           <CheckoutPage {...props} />
         </Layout>
       )}

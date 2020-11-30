@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { routes } from 'constants/routes';
 import { getTranslate, generatePublicUrl } from 'utils';
 
 // Components
@@ -8,24 +11,27 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import './FooterShort.sass';
 
 const FooterShort = (props: any) => {
-
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
+  const { paidUntil } = props;
+
   return (
-    <footer className="mainFooter_short">
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
+    <footer className='mainFooter_short'>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-12'>
 
             <ul className='mainFooter_short_menuList'>
-              <li>
-                <a
-                  href={generatePublicUrl('')}
-                  className='mainFooter_short_menuList_item'
-                >
-                  {t('footer.menu_home')}
-                </a>
-              </li>
+              {paidUntil > 0 && (
+                <li>
+                  <Link
+                    to={routes.main}
+                    className='mainFooter_short_menuList_item'
+                  >
+                    {t('footer.menu_home')}
+                  </Link>
+                </li>
+              )}
 
               <li>
                 <a
@@ -71,4 +77,10 @@ const FooterShort = (props: any) => {
   );
 };
 
-export default WithTranslate(FooterShort);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      paidUntil: state.settings.paid_until,
+    }),
+  )(FooterShort),
+);
