@@ -202,7 +202,8 @@ const RegisterWelcomePage = ({
     return activeTariff;
   };
 
-  const scrollToTariffsSelectForm = () => {
+  const scrollToTariffsSelectForm = (e) => {
+    e.preventDefault();
     scrollToElement(selectPlanBlockRef?.current, -30);
   };
 
@@ -288,7 +289,7 @@ const RegisterWelcomePage = ({
 
                 <div className='after-signup-header-btn-col'>
                   <Button
-                    onClick={() => scrollToTariffsSelectForm()}
+                    onClick={scrollToTariffsSelectForm}
                     pulse
                     color='primary-shadow'
                     className='mt-3'
@@ -352,7 +353,7 @@ const RegisterWelcomePage = ({
                   color='primary-shadow'
                   size='lg'
                   block
-                  onClick={() => scrollToTariffsSelectForm()}
+                  onClick={scrollToTariffsSelectForm}
                   style={{ maxWidth: '380px' }}
                 >
                   {t('button.activate_plan')}
@@ -366,7 +367,7 @@ const RegisterWelcomePage = ({
 
               <button
                 type='button'
-                onClick={() => scrollToTariffsSelectForm()}
+                onClick={scrollToTariffsSelectForm}
                 className='after-signup-image-button'
               >
                 <img
@@ -416,7 +417,7 @@ const RegisterWelcomePage = ({
                   pulse
                   color='primary-shadow'
                   size='lg'
-                  onClick={() => scrollToTariffsSelectForm()}
+                  onClick={scrollToTariffsSelectForm}
                 >
                   {t('button.select_plan')}
                 </Button>
@@ -429,7 +430,7 @@ const RegisterWelcomePage = ({
 
               <button
                 type='button'
-                onClick={() => scrollToTariffsSelectForm()}
+                onClick={scrollToTariffsSelectForm}
                 className='after-signup-image-button'
               >
                 <img className='img-fluid' src={getImagePath('dishes.png')} alt='' />
@@ -487,7 +488,7 @@ const RegisterWelcomePage = ({
 
                 <button
                   type='button'
-                  onClick={() => scrollToTariffsSelectForm()}
+                  onClick={scrollToTariffsSelectForm}
                   className='after-signup-image-button'
                 >
                   <img src={t('checkout.social.img')} className='img-fluid' alt='' />
@@ -498,7 +499,7 @@ const RegisterWelcomePage = ({
 
                   <button
                     type='button'
-                    onClick={() => scrollToTariffsSelectForm()}
+                    onClick={scrollToTariffsSelectForm}
                     className='after-signup-image-button'
                   >
                     <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
@@ -548,7 +549,7 @@ const RegisterWelcomePage = ({
                   className='mt-4'
                   size='lg'
                   block
-                  onClick={() => scrollToTariffsSelectForm()}
+                  onClick={scrollToTariffsSelectForm}
                   style={{ maxWidth: '500px' }}
                 >
                   {t('button.activate_plan')}
@@ -658,7 +659,7 @@ const RegisterWelcomePage = ({
 
               <div
                 className={classNames({
-                'd-none': !getActiveTariffData()
+                'd-none': !getActiveTariffData(),
                 })}
               >
                 <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
@@ -720,7 +721,7 @@ const RegisterWelcomePage = ({
                 <Button
                   pulse
                   color='primary-shadow'
-                  onClick={() => scrollToTariffsSelectForm()}
+                  onClick={scrollToTariffsSelectForm}
                 >
                   {t('button.reveal_plan')}
                 </Button>
