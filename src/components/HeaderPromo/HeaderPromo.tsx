@@ -31,7 +31,11 @@ const HeaderPromo = (props: any) => {
         <div className='row'>
           <div className='col-5 col-xs-4'>
 
-            <Link to='/' className='mainHeader_logo' />
+            <Link
+              to='/'
+              className='mainHeader_logo'
+              onClick={scrollToCheckoutForm}
+            />
 
           </div>
           <div className='col-7 col-xs-8 text-right'>
@@ -39,7 +43,7 @@ const HeaderPromo = (props: any) => {
             <Link
               to='/checkout'
               className='link-raw'
-              onClick={(e) => scrollToCheckoutForm(e)}
+              onClick={scrollToCheckoutForm}
             >
               <Button
                 className='main-promo-header__btn'
