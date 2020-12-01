@@ -6,7 +6,7 @@ import {
   getAppPublicSettings,
 } from 'api';
 import { publicApiList } from 'constants/publicApiList';
-import { setLocaleLang, setLocalePhrases, setAppSetting } from 'store/actions';
+import { setLocalePhrases, setAppSetting } from 'store/actions';
 import { initSentry } from 'utils/initSentry';
 import { xhrStatuses } from 'constants/statuses';
 
@@ -121,7 +121,6 @@ export const loadLocales = () => async (
     FITLOPE_CHECKSUM_I18N &&
     FITLOPE_LOCALE_PHRASES
   ) {
-    await dispatch(setLocaleLang(FITLOPE_LOCALE_LANG));
     await dispatch(setLocalePhrases(JSON.stringify(FITLOPE_LOCALE_PHRASES)));
   } else {
     await dispatch(fetchLocales(FITLOPE_LOCALE_LANG));
