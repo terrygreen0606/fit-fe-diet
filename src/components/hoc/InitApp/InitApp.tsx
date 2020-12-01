@@ -1,8 +1,6 @@
-/* eslint-disable no-underscore-dangle */
 import React, { useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import axios from 'utils/axios';
-import queryString from 'query-string';
 
 import { routes } from 'constants/routes';
 import { xhrStatuses } from 'constants/statuses';
@@ -45,19 +43,6 @@ const InitApp = ({ history, children }: InitAppProps) => {
       }
     }
 
-    throw error;
-  });
-
-  axios.interceptors.request.use((request) => {
-    const queryParametersObj = queryString.parse(window.location.search);
-    if (queryParametersObj?._by_ip) {
-      request.headers['Fitlope-Ip'] = queryParametersObj._by_ip;
-    }
-    if (queryParametersObj?.lang) {
-      request.headers['Accept-Language'] = queryParametersObj.lang;
-    }
-    return request;
-  }, (error) => {
     throw error;
   });
 
