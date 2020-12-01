@@ -136,12 +136,19 @@ const ConfirmInfo = ({
       afterSignupNameFirstSection: queryString.parse(location.search).firstsection,
     });
 
-    history.replace({
-      pathname: history.location.pathname,
-      state: {
-        ...location.state || {},
-        nextPathname: routes.registerWelcome,
-      },
+    const queryParametersObj = queryString.parse(window.location.search);
+
+    let nextPathname = null;
+
+    if (queryParametersObj.lang || queryParametersObj._by_ip) {
+      nextPathname = routes.registerWelcome + window.location.search;
+    } else {
+      nextPathname = routes.registerWelcome;
+    }
+
+    history.push(nextPathname, {
+      ...location.state || {},
+      nextPathname,
     });
 
     userLogin(authToken);
