@@ -329,28 +329,7 @@ const RegisterWelcomePage = ({
             <div className='col-lg-8 order-md-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
 
               {isShowPartners() && (
-                <div className='mb-4'>
-                  <h5 className='fw-bold'>{t('lp.partners_list_title')}</h5>
-
-                  <div className='app-partners-list'>
-                    <span
-                      className='app-partners-list__item'
-                      style={{ backgroundImage: `url(${metropolisLogoImg})` }}
-                    />
-                    <span
-                      className='app-partners-list__item'
-                      style={{ backgroundImage: `url(${igLogoImg})` }}
-                    />
-                    <span
-                      className='app-partners-list__item'
-                      style={{ backgroundImage: `url(${terraLogoImg})` }}
-                    />
-                    <span
-                      className='app-partners-list__item'
-                      style={{ backgroundImage: `url(${defatoLogoImg})` }}
-                    />
-                  </div>
-                </div>
+                <img src={t('lp.partners.img')} alt="" className="mb-4 img-fluid" />
               )}
 
               <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
@@ -569,28 +548,7 @@ const RegisterWelcomePage = ({
               </div>
 
               {isShowPartners() && (
-                <div className='app-partners-list__wrap mt-5'>
-                  <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
-
-                  <div className='app-partners-list'>
-                    <span
-                      className='app-partners-list__item'
-                      style={{ backgroundImage: `url(${metropolisLogoImg})` }}
-                    />
-                    <span
-                      className='app-partners-list__item'
-                      style={{ backgroundImage: `url(${igLogoImg})` }}
-                    />
-                    <span
-                      className='app-partners-list__item'
-                      style={{ backgroundImage: `url(${terraLogoImg})` }}
-                    />
-                    <span
-                      className='app-partners-list__item'
-                      style={{ backgroundImage: `url(${defatoLogoImg})` }}
-                    />
-                  </div>
-                </div>
+                <img src={t('lp.partners.img')} alt="" className="mt-5 img-fluid" />
               )}
 
             </div>
