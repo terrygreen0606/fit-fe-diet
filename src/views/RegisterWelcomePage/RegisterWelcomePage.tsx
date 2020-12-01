@@ -232,9 +232,11 @@ const RegisterWelcomePage = ({
       <section className='after-signup-header-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-12 mb-4 text-center text-xl-left'>
+            <div className='col-12'>
 
-              <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
+              <div className='col-xl-6 mb-4 text-center text-xl-left'>
+                <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
+              </div>
 
             </div>
             <div className='col-xl-6 order-xl-2 after-signup-header-chart-col'>
@@ -274,48 +276,46 @@ const RegisterWelcomePage = ({
                 />
               )}
 
-              <div className='text-center'>
-                <ContentLoading
-                  isLoading={tariffsLoading}
-                  isError={tariffsLoadingError}
-                  fetchData={() => getUserTariffs()}
+              <ContentLoading
+                isLoading={tariffsLoading}
+                isError={tariffsLoadingError}
+                fetchData={() => getUserTariffs()}
+              >
+                {tariffsDataList.length > 0 && (
+                  <h4
+                    className='fw-regular'
+                    dangerouslySetInnerHTML={{
+                      __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
+                        OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
+                        ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
+                        : tariffsDataList?.[1].price_old_weekly_text,
+                        AMOUNT: tariffsDataList?.[1]?.country === 'br'
+                          ? tariffsDataList?.[1]?.installments?.price_monthly_text
+                          : tariffsDataList?.[1].price_weekly_text,
+                      }),
+                    }}
+                  />
+                )}
+              </ContentLoading>
+
+              <div className='after-signup-header-btn-col'>
+                <Button
+                  onClick={scrollToTariffsSelectForm}
+                  pulse
+                  color='primary-shadow'
+                  className='mt-3'
+                  size='lg'
                 >
-                  {tariffsDataList.length > 0 && (
-                    <h4
-                      className='fw-regular'
-                      dangerouslySetInnerHTML={{
-                        __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
-                          OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
-                          ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
-                          : tariffsDataList?.[1].price_old_weekly_text,
-                          AMOUNT: tariffsDataList?.[1]?.country === 'br'
-                            ? tariffsDataList?.[1]?.installments?.price_monthly_text
-                            : tariffsDataList?.[1].price_weekly_text,
-                        }),
-                      }}
-                    />
-                  )}
-                </ContentLoading>
+                  {t('button.select_plan')}
+                </Button>
 
-                <div className='after-signup-header-btn-col'>
-                  <Button
-                    onClick={scrollToTariffsSelectForm}
-                    pulse
-                    color='primary-shadow'
-                    className='mt-3'
-                    size='lg'
-                  >
-                    {t('button.select_plan')}
-                  </Button>
+                <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+              </div>
 
-                  <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
-                </div>
-
-                <div className='sale-points__list mt-45'>
-                  <div className='sale-points__item'>{t('lp.sale.point1')}</div>
-                  <div className='sale-points__item'>{t('lp.sale.point2')}</div>
-                  <div className='sale-points__item'>{t('lp.sale.point3')}</div>
-                </div>
+              <div className='sale-points__list mt-45'>
+                <div className='sale-points__item'>{t('lp.sale.point1')}</div>
+                <div className='sale-points__item'>{t('lp.sale.point2')}</div>
+                <div className='sale-points__item'>{t('lp.sale.point3')}</div>
               </div>
 
             </div>
