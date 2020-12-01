@@ -19,7 +19,7 @@ import CreditCardNumberField from 'components/common/Forms/CreditCardNumberField
 import CreditCardCvvField from 'components/common/Forms/CreditCardCvvField';
 import CustomRadio from 'components/common/Forms/CustomRadio';
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import PhoneInput from 'components/common/Forms/PhoneInput';
 import ContentLoading from 'components/hoc/ContentLoading';
 
@@ -154,6 +154,8 @@ const CheckoutPaymentFormCard = ({
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -163,6 +165,7 @@ const CheckoutPaymentFormCard = ({
       setCheckoutForm,
       checkoutFormErrors,
       setCheckoutFormErrors,
+      localePhrases,
       element,
     );
   };

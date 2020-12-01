@@ -14,7 +14,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 
 import '../RegisterV2Tpl.sass';
@@ -31,6 +31,8 @@ const HeightWeight = ({
 
   const t = (code: string) => getTranslate(localePhrases, code);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -40,16 +42,13 @@ const HeightWeight = ({
       setRegisterData,
       registerDataErrors,
       setRegisterDataErrors,
+      localePhrases,
       element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+    getFieldErrorsUtil(field, registerDataErrors);
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -135,6 +134,7 @@ const HeightWeight = ({
                   autoFocus
                   min={50}
                   max={250}
+                  step='0.1'
                   readOnly={validateLoading}
                   data-param='50,250'
                   data-validate='["required", "min-max"]'
@@ -159,6 +159,7 @@ const HeightWeight = ({
                   value={registerData.weight}
                   min={30}
                   max={400}
+                  step='0.1'
                   readOnly={validateLoading}
                   data-param='30,400'
                   data-validate='["required", "min-max"]'

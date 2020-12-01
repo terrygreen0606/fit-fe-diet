@@ -14,7 +14,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 
 import '../../RegisterModal.sass';
 
@@ -47,6 +47,8 @@ const AgeStep = ({
     };
   }, []);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -56,16 +58,13 @@ const AgeStep = ({
       setRegisterData,
       registerDataErrors,
       setRegisterDataErrors,
+      localePhrases,
       element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+    getFieldErrorsUtil(field, registerDataErrors);
 
   const isFieldValid = (field: string) =>
     getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
@@ -162,7 +161,7 @@ const AgeStep = ({
 
         <div className='register_info_form_submit'>
           <Button
-            style={{ width: '217px' }}
+            style={{ minWidth: '217px' }}
             color='primary'
             type='submit'
             size='lg'

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { getTranslate } from 'utils';
-import { UserAuthProfileType } from 'types/auth';
+import { UserAuthProfileType, InputError } from 'types';
 import queryString from 'query-string';
 import { getSignUpData } from 'api';
 
@@ -12,6 +12,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import RegisterModal from './RegisterModal';
 import RegisterV1Tpl from './RegisterV1Tpl';
 import RegisterV2Tpl from './RegisterV2Tpl';
+import { getFieldErrorMsg } from './getFieldErrorMsg';
 
 import './RegisterView.sass';
 
@@ -56,7 +57,7 @@ const RegisterView = ({
   );
 
   const [registerData, setRegisterData] = useState({ ...registerDataDefault });
-  const [registerDataErrors, setRegisterDataErrors] = useState([]);
+  const [registerDataErrors, setRegisterDataErrors] = useState<InputError[]>([]);
   const [registerSettingsLoading, setRegisterSettingsLoading] = useState<boolean>(true);
   const [registerSettingsLoadingError, setRegisterSettingsLoadingError] = useState<boolean>(false);
 
@@ -121,6 +122,17 @@ const RegisterView = ({
     }
   }, [measurement]);
 
+  const getRegisterDataErrors = React.useCallback(() => {
+    return registerDataErrors.map((error) => ({
+      ...error,
+      message: getFieldErrorMsg(
+        error.field,
+        registerData.measurement,
+        localePhrases,
+      ) || error.message,
+    }));
+  }, [registerDataErrors]);
+
   const getRegisterView = () => {
     const { tpl } = queryString.parse(location.search);
     let registerView = null;
@@ -131,7 +143,7 @@ const RegisterView = ({
           <RegisterV1Tpl
             registerData={registerData}
             setRegisterData={setRegisterData}
-            registerDataErrors={registerDataErrors}
+            registerDataErrors={getRegisterDataErrors()}
             setRegisterDataErrors={setRegisterDataErrors}
             location={location}
             history={history}
@@ -144,7 +156,7 @@ const RegisterView = ({
           <RegisterV2Tpl
             registerData={registerData}
             setRegisterData={setRegisterData}
-            registerDataErrors={registerDataErrors}
+            registerDataErrors={getRegisterDataErrors()}
             setRegisterDataErrors={setRegisterDataErrors}
             location={location}
             history={history}
@@ -158,7 +170,7 @@ const RegisterView = ({
             isOpen
             registerData={registerData}
             setRegisterData={setRegisterData}
-            registerDataErrors={registerDataErrors}
+            registerDataErrors={getRegisterDataErrors()}
             setRegisterDataErrors={setRegisterDataErrors}
             location={location}
             history={history}
@@ -171,7 +183,7 @@ const RegisterView = ({
           <RegisterV1Tpl
             registerData={registerData}
             setRegisterData={setRegisterData}
-            registerDataErrors={registerDataErrors}
+            registerDataErrors={getRegisterDataErrors()}
             setRegisterDataErrors={setRegisterDataErrors}
             location={location}
             history={history}

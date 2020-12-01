@@ -16,7 +16,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
 
 import '../RegisterV1Tpl.sass';
@@ -38,6 +38,8 @@ const InfoStep = ({
   const t = (code: string) =>
     getTranslate(localePhrases, code);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -47,16 +49,13 @@ const InfoStep = ({
       setRegisterData,
       registerDataErrors,
       setRegisterDataErrors,
+      localePhrases,
       element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+    getFieldErrorsUtil(field, registerDataErrors);
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -312,7 +311,7 @@ const InfoStep = ({
 
         <div className='register_v1_submit'>
           <Button
-            style={{ width: '217px' }}
+            style={{ minWidth: '217px' }}
             color='primary'
             type='submit'
             size='lg'
