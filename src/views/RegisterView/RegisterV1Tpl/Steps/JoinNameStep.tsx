@@ -89,17 +89,21 @@ const JoinNameStep = ({
 
     const queryParametersObj = queryString.parse(window.location.search);
 
-    let nextPathname = null;
+    let nextSearch = null;
 
     if (queryParametersObj.lang || queryParametersObj._by_ip) {
-      nextPathname = routes.registerWelcome + window.location.search;
+      nextSearch = window.location.search;
     } else {
-      nextPathname = routes.registerWelcome;
+      nextSearch = '';
     }
 
-    history.push(nextPathname, {
-      ...location.state || {},
-      nextPathname,
+    history.replace({
+      pathname: history.location.pathname,
+      state: {
+        ...location.state || {},
+        nextPathname: routes.registerWelcome,
+        nextSearch,
+      },
     });
 
     userLogin(authToken);
