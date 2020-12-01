@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import Helmet from 'react-helmet';
 
 // Components
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import WithTranslate from 'components/hoc/WithTranslate';
 import SaveForm from './SaveForm';
 import SaveInfo from './SaveInfo';
@@ -43,6 +43,8 @@ const SaveNewPassword = ({
     };
   }, []);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -52,6 +54,7 @@ const SaveNewPassword = ({
       setResetPassForm,
       resetPassErrors,
       setResetPassErrors,
+      localePhrases,
       element,
     );
   };

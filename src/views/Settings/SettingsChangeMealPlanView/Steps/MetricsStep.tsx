@@ -11,7 +11,7 @@ import {
   getTranslate,
 } from 'utils';
 import { InputError } from 'types';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import { userUpdateMealSettings, userValidate } from 'api';
 import { setAppSetting } from 'store/actions';
 
@@ -89,6 +89,8 @@ const MetricsStep = ({
 
   const [updateChangeMealErrors, setUpdateChangeMealErrors] = useState<InputError[]>([]);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -98,6 +100,7 @@ const MetricsStep = ({
       setUpdateMetrics,
       updateChangeMealErrors,
       setUpdateChangeMealErrors,
+      localePhrases,
       element,
     );
   };

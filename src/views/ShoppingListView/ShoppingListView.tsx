@@ -27,7 +27,7 @@ import {
   addIngredientInShoppingList,
   syncShoppingList,
 } from 'api';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import { setAppSetting, toggleSetting } from 'store/actions';
 
 // Components
@@ -275,6 +275,8 @@ const ShoppingListView = (props: any) => {
       }).finally(() => setIsSyncResponseActive(true));
   };
 
+  const FormValidator = FormValidatorUtil(props.localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -284,6 +286,7 @@ const ShoppingListView = (props: any) => {
       setAddIngredientForm,
       addIngredientErrors,
       setAddIngredientErrors,
+      props.localePhrases,
       element,
     );
   };

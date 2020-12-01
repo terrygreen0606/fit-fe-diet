@@ -14,7 +14,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 
 import '../RegisterV2Tpl.sass';
 
@@ -30,6 +30,8 @@ const Age = ({
 
   const [validateLoading, setValidateLoading] = useState(false);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -39,16 +41,13 @@ const Age = ({
       setRegisterData,
       registerDataErrors,
       setRegisterDataErrors,
+      localePhrases,
       element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+    getFieldErrorsUtil(field, registerDataErrors);
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();

@@ -10,7 +10,7 @@ import { userInviteFriendByEmail } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import InputField from 'components/common/Forms/InputField';
 import ContentLoading from 'components/hoc/ContentLoading';
 
@@ -45,6 +45,8 @@ const InviteEmail = ({
 
   const [isRequestSent, setIsRequestSent] = useState<boolean>(false);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event) => {
     validateFieldOnChange(
       name,
@@ -54,6 +56,7 @@ const InviteEmail = ({
       setInviteFriendsForm,
       inviteFriendsErrors,
       setInviteFriendsErrors,
+      localePhrases,
     );
   };
 

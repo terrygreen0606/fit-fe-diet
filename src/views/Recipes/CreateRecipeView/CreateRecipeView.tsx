@@ -22,7 +22,7 @@ import {
   userUpdateMeasurement,
   getRecipeData,
 } from 'api';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 
 // Components
 import Button from 'components/common/Forms/Button';
@@ -279,6 +279,8 @@ const CreateRecipeView = (props: any) => {
 
   const [isActiveDeleteIngrModal, setActiveDeleteIngrModal] = useState<boolean>(false);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -288,6 +290,7 @@ const CreateRecipeView = (props: any) => {
       setCreateRecipeForm,
       createRecipeErrors,
       setCreateRecipeErrors,
+      localePhrases,
       element,
     );
   };

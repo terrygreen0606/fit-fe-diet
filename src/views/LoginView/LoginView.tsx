@@ -25,7 +25,7 @@ import Helmet from 'react-helmet';
 import FormGroup from 'components/common/Forms/FormGroup';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import WithTranslate from 'components/hoc/WithTranslate';
 
 import './LoginView.sass';
@@ -65,6 +65,8 @@ const LoginView = (props: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(props.localePhrases, code, placeholders);
 
+  const FormValidator = FormValidatorUtil(props.localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -74,6 +76,7 @@ const LoginView = (props: any) => {
       setLoginForm,
       loginErrors,
       setLoginErrors,
+      props.localePhrases,
       element,
     );
   };

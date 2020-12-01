@@ -10,7 +10,7 @@ import { userValidate } from 'api';
 
 // Components
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 
 import { InputError } from 'types';
 
@@ -28,6 +28,8 @@ const Gender = ({
 
   const t = (code: string) => getTranslate(localePhrases, code);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -37,16 +39,13 @@ const Gender = ({
       setRegisterData,
       registerDataErrors,
       setRegisterDataErrors,
+      localePhrases,
       element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+    getFieldErrorsUtil(field, registerDataErrors);
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
