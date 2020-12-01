@@ -87,11 +87,22 @@ const JoinNameStep = ({
       afterSignupNameFirstSection: queryString.parse(location.search).firstsection,
     });
 
+    const queryParametersObj = queryString.parse(window.location.search);
+
+    let nextSearch = null;
+
+    if (queryParametersObj.lang || queryParametersObj._by_ip) {
+      nextSearch = window.location.search;
+    } else {
+      nextSearch = '';
+    }
+
     history.replace({
       pathname: history.location.pathname,
       state: {
         ...location.state || {},
         nextPathname: routes.registerWelcome,
+        nextSearch,
       },
     });
 
