@@ -220,7 +220,10 @@ export const appSetting = (
 
   axios.interceptors.response.use((response) => {
     if (response.status === xhrStatuses['OK']) {
-      if (publicApiList.find((publicApi) => publicApi === response.config.url)) {
+      if (
+        publicApiList.find((publicApi) => publicApi === response.config.url) ||
+        response.config.url === '/app/settings'
+      ) {
         return response;
       }
 
