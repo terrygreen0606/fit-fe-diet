@@ -21,7 +21,7 @@ import {
   removeDrink,
   userUpdateMeasurement,
 } from 'api';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import { setAppSetting, toggleSetting } from 'store/actions';
 
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -238,6 +238,8 @@ const WaterTrackerView = (props: any) => {
 
   const [addDrinkErrors, setAddDrinkErrors] = useState<any[]>([]);
 
+  const FormValidator = FormValidatorUtil(props.localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -247,6 +249,7 @@ const WaterTrackerView = (props: any) => {
       setAddDrinkForm,
       addDrinkErrors,
       setAddDrinkErrors,
+      props.localePhrases,
       element,
     );
   };

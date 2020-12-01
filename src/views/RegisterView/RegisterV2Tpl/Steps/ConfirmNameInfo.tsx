@@ -24,7 +24,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import Button from 'components/common/Forms/Button';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 
 import '../RegisterV2Tpl.sass';
 
@@ -45,6 +45,8 @@ const ConfirmInfo = ({
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -54,6 +56,7 @@ const ConfirmInfo = ({
       setRegisterData,
       registerDataErrors,
       setRegisterDataErrors,
+      localePhrases,
       element,
     );
   };

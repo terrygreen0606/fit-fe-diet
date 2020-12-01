@@ -9,7 +9,7 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
 } from 'utils';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import {
   userInviteFamilyByEmail,
   fetchUserProfile,
@@ -96,6 +96,8 @@ const SettingsFamilyView = (props: any) => {
 
   const [inviteEmailErrors, setInviteEmailErrors] = useState([]);
 
+  const FormValidator = FormValidatorUtil(props.localePhrases);
+
   const validateOnChange = (name: string, value: any, event) => {
     validateFieldOnChange(
       name,
@@ -105,6 +107,7 @@ const SettingsFamilyView = (props: any) => {
       setInviteEmailForm,
       inviteEmailErrors,
       setInviteEmailErrors,
+      props.localePhrases,
     );
   };
 

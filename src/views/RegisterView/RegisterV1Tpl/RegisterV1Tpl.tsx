@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { getTranslate } from 'utils';
 import { Link } from 'react-router-dom';
 import { InputError } from 'types';
 
@@ -50,9 +49,8 @@ const RegisterV1Tpl = ({
   fetchRecipeCuisines,
   localePhrases,
 }: RegisterV1TplProps) => {
-  const t = (code: string) => getTranslate(localePhrases, code);
-
   const [registerView, setRegisterView] = useState<RegisterViewType>(registerViewsList[0]);
+  const [registerViewAnimate, setRegisterViewAnimate] = useState<RegisterViewType>(registerViewsList[0]);
 
   const registerStepsRef = useRef(null);
   const [stepsAnimationClean, setStepsAnimationClean] = useState(null);
@@ -65,7 +63,7 @@ const RegisterV1Tpl = ({
     };
   }, []);
 
-  const stepsRunAnimation = () => {
+  const stepsRunAnimation = (viewAnimate: RegisterViewType) => {
     clearTimeout(stepsAnimationClean);
 
     if (registerStepsRef.current) {
@@ -76,6 +74,10 @@ const RegisterV1Tpl = ({
           registerStepsRef.current.classList.add('fadeInOut-25');
         }
       }, 0);
+
+      setTimeout(() => {
+        setRegisterView(viewAnimate);
+      }, 100);
 
       const timeout = setTimeout(() => {
         if (registerStepsRef.current) {
@@ -91,13 +93,17 @@ const RegisterV1Tpl = ({
     if (registerView && registerView !== registerViewsList[0]) {
       history.push(`/register${location.search}#${registerView.toLowerCase()}`);
     }
-
-    const index = registerViewsList.findIndex((view) => view === registerView);
-
-    if (index !== 0) {
-      stepsRunAnimation();
-    }
   }, [registerView]);
+
+  useEffect(() => {
+    const index = registerViewsList.findIndex((view) => view === registerViewAnimate);
+
+    if (registerView !== registerViewAnimate) {
+      stepsRunAnimation(registerViewAnimate);
+    } else {
+      setRegisterView(registerViewAnimate);
+    }
+  }, [registerViewAnimate]);
 
   const getRegisterStepView = (registerViewType: RegisterViewType) => getRegisterStepViewUtil(
     registerViewType,
@@ -109,7 +115,7 @@ const RegisterV1Tpl = ({
     cuisinesLoadingError,
     fetchRecipeCuisines,
     localePhrases,
-    setRegisterView,
+    setRegisterViewAnimate,
     history,
     location,
   );

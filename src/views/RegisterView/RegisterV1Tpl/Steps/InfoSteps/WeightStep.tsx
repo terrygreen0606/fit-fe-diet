@@ -14,7 +14,7 @@ import FormGroup from 'components/common/Forms/FormGroup';
 import FormLabel from 'components/common/Forms/FormLabel';
 import InputField from 'components/common/Forms/InputField';
 import FormInvalidMessage from 'components/common/Forms/FormInvalidMessage';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 
 import '../../RegisterV1Tpl.sass';
 
@@ -33,6 +33,8 @@ const WeightStep = ({
 
   const [validateLoading, setValidateLoading] = useState(false);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -42,16 +44,13 @@ const WeightStep = ({
       setRegisterData,
       registerDataErrors,
       setRegisterDataErrors,
+      localePhrases,
       element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+    getFieldErrorsUtil(field, registerDataErrors);
 
   const isFieldValid = (field: string) =>
     getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
@@ -135,6 +134,7 @@ const WeightStep = ({
             value={registerData.weight}
             readOnly={validateLoading}
             data-param='30,400'
+            step='0.1'
             data-validate={`["required"${
               registerData.measurement === 'si' ? ', "min-max"' : ''
             }]`}
@@ -156,7 +156,7 @@ const WeightStep = ({
 
         <div className='register_v1_submit'>
           <Button
-            style={{ width: '217px' }}
+            style={{ minWidth: '217px' }}
             color='primary'
             type='submit'
             size='lg'

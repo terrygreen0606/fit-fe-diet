@@ -92,6 +92,7 @@ const RecipeFullView = (props: any) => {
       setAddNoteForm,
       addNoteFormErrors,
       setAddNoteFormErrors,
+      props.localePhrases,
       element,
     );
   };

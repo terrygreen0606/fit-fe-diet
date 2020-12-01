@@ -94,7 +94,7 @@ const NotEatingStep = ({
 
       <div className='text-center mt-xl-5 mt-45'>
         <Button
-          style={{ width: '217px' }}
+          style={{ minWidth: '217px' }}
           color='primary'
           type='submit'
           size='lg'

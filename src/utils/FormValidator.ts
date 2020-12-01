@@ -1,70 +1,94 @@
 // https://github.com/chriso/validator.js
 import validator from 'validator';
+import { getTranslate } from 'utils';
 
-const getErrorMsg = (code, param) => {
+const getErrorMsg = (errorCode, param, localePhrases = {}) => {
+  const t = (code: string, placeholders?: any) =>
+    getTranslate(localePhrases, code, placeholders);
+
   let data = '';
+  let errorMsg = '';
 
-  switch (code) {
+  switch (errorCode) {
     case 'required':
-      return 'Field is required';
+      errorMsg = t('validation.error.required.msg');
+      break;
 
     case 'email':
-      return 'Incorrect email';
+      errorMsg = t('validation.error.email.msg');
+      break;
 
     case 'number':
-      return 'Value should be a number';
+      errorMsg = t('validation.error.number.msg');
+      break;
 
     case 'integer':
-      return 'Value should be integer';
+      errorMsg = t('validation.error.integer.msg');
+      break;
 
     case 'regex':
-      return 'Value doesnt accept pattern';
+      errorMsg = t('validation.error.regex.msg');
+      break;
 
     case 'alphanum':
-      return 'Value should be alphanumeric';
+      errorMsg = t('validation.error.alphanum.msg');
+      break;
 
     case 'url':
-      return 'Incorrect url';
+      errorMsg = t('validation.error.url.msg');
+      break;
 
     case 'equalto':
-      return `Value should be equal to ${param}`;
+      errorMsg = t('validation.error.equalto.msg', { VALUE: param });
+      break;
 
     case 'minlen':
-      return `Min length ${param}`;
+      errorMsg = t('validation.error.minlen.msg', { COUNT: param });
+      break;
 
     case 'maxlen':
-      return `Max length ${param}`;
+      errorMsg = t('validation.error.maxlen.msg', { COUNT: param });
+      break;
 
     case 'min-max-len':
       data = param.split(',');
-      return `Min length ${data[0]}, Max length ${data[1]}`;
+      errorMsg = t('validation.error.minmaxlen.msg', { AMOUNT: data[1], COUNT: data[0] });
+      break;
 
     case 'len':
-      return `Length should be ${param}`;
+      errorMsg = t('validation.error.len.msg', { COUNT: param });
+      break;
 
     case 'min':
-      return `Value should be more than ${param}`;
+      errorMsg = t('validation.error.min.msg', { COUNT: param });
+      break;
 
     case 'max':
-      return `Value should be less than ${param}`;
+      errorMsg = t('validation.error.max.msg', { COUNT: param });
+      break;
 
     case 'min-max':
       data = param.split(',');
-      return `Values should be less than ${data[1]} and greater than ${data[0]}`;
+      errorMsg = t('validation.error.min_max.msg', { AMOUNT: data[1], COUNT: data[0] });
+      break;
 
     case 'list':
-      return `Values doesn't contain ${param}`;
+      errorMsg = t('validation.error.list.msg', { VALUE: param });
+      break;
 
     default:
-      return '';
+      errorMsg = t('validation.error.default.msg');
+      break;
   }
+
+  return errorMsg;
 };
 
 /**
  * Helper methods to validate form inputs
  * using controlled components
  */
-const FormValidator = {
+const FormValidator = ({ localePhrases = {} }) => {
   /**
      * Validate input element
      * @param element Dome element of the input
@@ -72,13 +96,13 @@ const FormValidator = {
      *     data-validate: array in json format with validation methods
      *     data-param: used to provide arguments for certain methods.
      */
-  validate(element) {
+  const validate = (element: HTMLInputElement) => {
     if (!element.getAttribute('data-validate')) {
       return [];
     }
 
     const isCheckbox = element.type === 'checkbox';
-    const value = isCheckbox ? element.checked : element.value;
+    const { value } = element;
     const { name } = element;
 
     if (!name) throw new Error('Input name must not be empty.');
@@ -88,7 +112,8 @@ const FormValidator = {
     const validations = JSON.parse(element.getAttribute('data-validate'));
 
     const result = []; // [validate_code]: true (if has validation error)
-    let data = '';
+    let data: any = '';
+    const value2 = document.getElementById(param)?.['value'];
 
     if (validations && validations.length) {
       /*  Result of each validation must be true if the input is invalid
@@ -96,7 +121,7 @@ const FormValidator = {
       validations.forEach((m) => {
         switch (m) {
           case 'required':
-            result[m] = isCheckbox ? value === false : validator.isEmpty(value);
+            result[m] = isCheckbox ? element.checked === false : validator.isEmpty(value);
             break;
           case 'email':
             result[m] = value && value.length > 0 ? !validator.isEmail(value) : false;
@@ -118,7 +143,6 @@ const FormValidator = {
             break;
           case 'equalto':
             // here we expect a valid ID as param
-            const value2 = document.getElementById(param).value;
             result[m] = !validator.equals(value, value2);
             break;
           case 'minlen':
@@ -129,10 +153,14 @@ const FormValidator = {
             break;
           case 'max-max-len':
             data = param.split(',');
-            result[m] = value && value.length > 0 ? !validator.isLength(value?.trim() || '', { min: validator.toInt(data[0]), max: validator.toInt(data[1]) }) : false;
+            result[m] = value && value.length > 0
+              ? !validator.isLength(value?.trim() || '', { min: validator.toInt(data[0]), max: validator.toInt(data[1]) })
+              : false;
             break;
           case 'len':
-            result[m] = value && value.length > 0 ? !validator.isLength(value?.trim()?.replaceAll('_', '') || '', { min: param, max: param }) : false;
+            result[m] = value && value.length > 0
+              ? !validator.isLength(value?.trim()?.replaceAll('_', '') || '', { min: param, max: param })
+              : false;
             break;
           case 'min':
             result[m] = value && value.length > 0 ? !validator.isFloat(value, { min: validator.toInt(param) }) : false;
@@ -146,7 +174,7 @@ const FormValidator = {
             */
             data = param.split(',');
             result[m] = value && value.length > 0 ?
-              !(validator.isFloat(value, { min: validator.toInt(data[0]) }) && validator.isFloat(value, { max: validator.toInt(data[1]) }))
+              !(validator.isFloat(value, { min: data[0] }) && validator.isFloat(value, { max: data[1] }))
               : false;
             break;
           case 'list':
@@ -164,11 +192,11 @@ const FormValidator = {
       .map((errorCode) => ({
         field: name,
         code: errorCode,
-        message: getErrorMsg(errorCode, param),
+        message: getErrorMsg(errorCode, param, localePhrases),
       }));
 
     return newErrors;
-  },
+  };
 
   /**
      * Bulk validation of input elements.
@@ -177,12 +205,12 @@ const FormValidator = {
      * @return {Object}       Contains array of error and a flag to
      *                        indicate if there was a validation error
      */
-  bulkValidate(inputs) {
+  const bulkValidate = (inputs) => {
     let errors = [];
     let hasError = false;
 
     inputs.filter((input) => input.getAttribute('data-validate')).forEach((input) => {
-      const newErrors = this.validate(input);
+      const newErrors = validate(input);
 
       errors = [...errors, ...newErrors];
 
@@ -193,7 +221,12 @@ const FormValidator = {
       errors,
       hasError,
     };
-  },
+  };
+
+  return {
+    validate,
+    bulkValidate,
+  };
 };
 
 export default FormValidator;

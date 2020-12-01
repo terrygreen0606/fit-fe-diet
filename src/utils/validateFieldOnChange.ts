@@ -1,5 +1,5 @@
 import { InputError } from 'types';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 
 export const validateFieldOnChange = (
   name: string,
@@ -9,9 +9,12 @@ export const validateFieldOnChange = (
   setData: (data: any) => void,
   errorList: InputError[],
   setErrorList: (errors: InputError[]) => void,
+  localePhrases: any,
   element?,
 ) => {
   let errors: InputError[] = [];
+
+  const FormValidator = FormValidatorUtil(localePhrases);
 
   if (event) {
     const input = event.target;

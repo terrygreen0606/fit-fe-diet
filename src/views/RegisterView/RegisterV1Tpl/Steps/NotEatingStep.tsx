@@ -81,7 +81,7 @@ const NotEatingStep = ({
 
       <div className='register_v1_submit'>
         <Button
-          style={{ width: '217px' }}
+          style={{ minWidth: '217px' }}
           color='primary'
           type='submit'
           size='lg'

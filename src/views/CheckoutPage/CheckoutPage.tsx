@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState, useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import {
@@ -26,7 +27,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 // import SalesWidgets from 'components/SalesWidgets';
 import TariffPlanSelect from 'components/TariffPlanSelect';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
@@ -180,6 +181,8 @@ const CheckoutPage = ({
     };
   }, []);
 
+  const FormValidator = FormValidatorUtil(localePhrases);
+
   const validateOnChange = (name: string, value: any, event, element?) => {
     validateFieldOnChange(
       name,
@@ -189,16 +192,13 @@ const CheckoutPage = ({
       setCheckoutForm,
       checkoutFormErrors,
       setCheckoutFormErrors,
+      localePhrases,
       element,
     );
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, checkoutFormErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+    getFieldErrorsUtil(field, checkoutFormErrors);
 
   const getActiveTariffData = () => {
     const activeTariff = tariffsDataList.find((tariff) => tariff.tariff === activeTariffId);

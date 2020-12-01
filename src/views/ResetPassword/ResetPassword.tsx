@@ -6,7 +6,7 @@ import { InputError } from 'types';
 import Helmet from 'react-helmet';
 
 // Components
-import FormValidator from 'utils/FormValidator';
+import FormValidatorUtil from 'utils/FormValidator';
 import WithTranslate from 'components/hoc/WithTranslate';
 import ResetForm from './ResetForm';
 import ResetInfo from './ResetInfo';
@@ -30,6 +30,8 @@ const ResetPassword = ({
       document.querySelector('.basePageLayoutWrapper').classList.remove('auth_layout');
     };
   }, []);
+
+  const FormValidator = FormValidatorUtil(localePhrases);
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
