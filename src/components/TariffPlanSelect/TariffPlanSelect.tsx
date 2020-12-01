@@ -158,7 +158,7 @@ const TariffPlanSelect = ({
             className='tariff-plan__item-label-input'
             name='tariff_plan_radio'
             value={tariff}
-            defaultChecked={value === tariff}
+            checked={value === tariff}
             onChange={(e) => onChange(e.target.value)}
           />
 
