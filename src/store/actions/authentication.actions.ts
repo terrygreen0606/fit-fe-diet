@@ -30,9 +30,7 @@ export const userLogin = (token: string) => {
   return { type: USER_LOGIN, token };
 };
 
-export const fetchLocales = () => async (dispatch) => {
-  const userLang = window.navigator.language;
-
+export const fetchLocales = (userLang) => async (dispatch) => {
   await loadPhrases(userLang)
     .then(({ data, headers }) => {
       if (headers['fitlope-checksum-i18n']) {
@@ -44,7 +42,6 @@ export const fetchLocales = () => async (dispatch) => {
 
       if (data.success && data.data) {
         dispatch(setLocalePhrases(data.data));
-        localStorage.setItem('FITLOPE_LOCALE_LANG', userLang);
         localStorage.setItem(
           'FITLOPE_LOCALE_PHRASES',
           JSON.stringify(data.data),
@@ -66,6 +63,10 @@ export const fetchPublicSettings = () => async (dispatch) => {
 
       if (data.success && data.data) {
         dispatch(setAppSetting(data.data));
+        localStorage.setItem(
+          'FITLOPE_LOCALE_LANG',
+          data.data.language,
+        );
         localStorage.setItem(
           'FITLOPE_PUBLIC_SETTINGS',
           JSON.stringify(data.data),
@@ -93,6 +94,10 @@ export const fetchUserSettings = () => async (dispatch) => {
           }),
         );
         localStorage.setItem(
+          'FITLOPE_LOCALE_LANG',
+          data.data.language,
+        );
+        localStorage.setItem(
           'FITLOPE_USER_SETTINGS',
           JSON.stringify(data.data),
         );
@@ -110,18 +115,16 @@ export const loadLocales = (reloadLocales: boolean = false) => async (
   const FITLOPE_LOCALE_PHRASES = JSON.parse(
     localStorage.getItem('FITLOPE_LOCALE_PHRASES'),
   );
-  const userLang = window.navigator.language;
 
   if (
     !LOCALIZATION_DEV &&
     FITLOPE_CHECKSUM_I18N &&
-    FITLOPE_LOCALE_PHRASES &&
-    userLang === FITLOPE_LOCALE_LANG
+    FITLOPE_LOCALE_PHRASES
   ) {
-    await dispatch(setLocaleLang(userLang));
+    await dispatch(setLocaleLang(FITLOPE_LOCALE_LANG));
     await dispatch(setLocalePhrases(JSON.stringify(FITLOPE_LOCALE_PHRASES)));
   } else {
-    await dispatch(fetchLocales());
+    await dispatch(fetchLocales(FITLOPE_LOCALE_LANG));
   }
 
   axios.interceptors.response.use((response) => {
@@ -142,7 +145,7 @@ export const loadLocales = (reloadLocales: boolean = false) => async (
           FITLOPE_CHECKSUM_I18N_HEADER,
         );
 
-        dispatch(fetchLocales());
+        dispatch(fetchLocales(FITLOPE_LOCALE_LANG));
       }
     }
 

@@ -1,4 +1,4 @@
 import axios from 'utils/axios';
 
-export const getAppPublicSettings = () => 
+export const getAppPublicSettings = () =>
   axios.get('/app/public-settings');
