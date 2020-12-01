@@ -198,7 +198,6 @@ const CheckoutPaymentFormCard = ({
       cardCvv,
       phone,
       payerName,
-      installments,
       docId,
     } = checkoutForm;
 

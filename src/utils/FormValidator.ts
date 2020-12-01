@@ -88,7 +88,7 @@ const getErrorMsg = (errorCode, param, localePhrases = {}) => {
  * Helper methods to validate form inputs
  * using controlled components
  */
-const FormValidator = ({ localePhrases = {} }) => {
+const FormValidator = (localePhrases = {}) => {
   /**
      * Validate input element
      * @param element Dome element of the input
