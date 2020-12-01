@@ -16,10 +16,10 @@ import Button from 'components/common/Forms/Button';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
-import SalesWidgets from 'components/SalesWidgets';
-import useVisible from 'components/hooks/useVisible';
-import useWindowSize from 'components/hooks/useWindowSize';
-import useDebounce from 'components/hooks/useDebounce';
+// import SalesWidgets from 'components/SalesWidgets';
+// import useVisible from 'components/hooks/useVisible';
+// import useWindowSize from 'components/hooks/useWindowSize';
+// import useDebounce from 'components/hooks/useDebounce';
 
 import './RegisterWelcomePage.sass';
 
@@ -54,42 +54,42 @@ const RegisterWelcomePage = ({
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
 
-  const { width: windowWidth } = useWindowSize();
-  const debounceWindowWidth = useDebounce(windowWidth, 500);
+  // const { width: windowWidth } = useWindowSize();
+  // const debounceWindowWidth = useDebounce(windowWidth, 500);
 
-  const [isActiveWidgetsOnMobile, setIsActiveWidgetsOnMobile] = useState<boolean>(false);
-  const [isStartActiveWidgets, setIsStartActiveWidgets] = useState<boolean>(false);
+  // const [isActiveWidgetsOnMobile, setIsActiveWidgetsOnMobile] = useState<boolean>(false);
+  // const [isStartActiveWidgets, setIsStartActiveWidgets] = useState<boolean>(false);
 
   const selectPlanBlockRef = useRef(null);
-  const isVisibleSelectPlanBlock = useVisible(selectPlanBlockRef);
-  useEffect(() => {
-    if (debounceWindowWidth < 576) {
-      setIsActiveWidgetsOnMobile(isVisibleSelectPlanBlock);
-    }
-  }, [
-    debounceWindowWidth,
-    isVisibleSelectPlanBlock,
-  ]);
+  // const isVisibleSelectPlanBlock = useVisible(selectPlanBlockRef);
+  // useEffect(() => {
+  //   if (debounceWindowWidth < 576) {
+  //     setIsActiveWidgetsOnMobile(isVisibleSelectPlanBlock);
+  //   }
+  // }, [
+  //   debounceWindowWidth,
+  //   isVisibleSelectPlanBlock,
+  // ]);
 
   const paymentFormBlockRef = useRef(null);
-  const isVisiblePaymentFormBlock = useVisible(paymentFormBlockRef);
-  useEffect(() => {
-    if (debounceWindowWidth < 576) {
-      setIsActiveWidgetsOnMobile(isVisiblePaymentFormBlock);
-    }
-  }, [
-    debounceWindowWidth,
-    isVisiblePaymentFormBlock,
-  ]);
+  // const isVisiblePaymentFormBlock = useVisible(paymentFormBlockRef);
+  // useEffect(() => {
+  //   if (debounceWindowWidth < 576) {
+  //     setIsActiveWidgetsOnMobile(isVisiblePaymentFormBlock);
+  //   }
+  // }, [
+  //   debounceWindowWidth,
+  //   isVisiblePaymentFormBlock,
+  // ]);
 
   const introBlockRef = useRef(null);
-  const isVisibleIntroBlock = useVisible(introBlockRef, '-50px');
-  useEffect(() => {
-    setIsStartActiveWidgets(isVisibleIntroBlock);
-  }, [
-    debounceWindowWidth,
-    isVisibleIntroBlock,
-  ]);
+  // const isVisibleIntroBlock = useVisible(introBlockRef, '-50px');
+  // useEffect(() => {
+  //   setIsStartActiveWidgets(isVisibleIntroBlock);
+  // }, [
+  //   debounceWindowWidth,
+  //   isVisibleIntroBlock,
+  // ]);
 
   const getUserTariffs = () => {
     setTariffsLoading(true);
@@ -738,10 +738,10 @@ const RegisterWelcomePage = ({
         </div>
       </section>
 
-      <SalesWidgets
+      {/* <SalesWidgets
         isShow={!isActiveWidgetsOnMobile}
         isStartShow={isStartActiveWidgets}
-      />
+      /> */}
     </>
   );
 };

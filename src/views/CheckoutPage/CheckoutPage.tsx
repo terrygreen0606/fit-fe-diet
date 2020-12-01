@@ -28,7 +28,7 @@ import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import FormValidatorUtil from 'utils/FormValidator';
-import SalesWidgets from 'components/SalesWidgets';
+// import SalesWidgets from 'components/SalesWidgets';
 import TariffPlanSelect from 'components/TariffPlanSelect';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
@@ -198,11 +198,7 @@ const CheckoutPage = ({
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, checkoutFormErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+    getFieldErrorsUtil(field, checkoutFormErrors);
 
   const getActiveTariffData = () => {
     const activeTariff = tariffsDataList.find((tariff) => tariff.tariff === activeTariffId);
@@ -261,7 +257,7 @@ const CheckoutPage = ({
         </Modal.Main>
       </Modal>
 
-      <SalesWidgets />
+      {/* <SalesWidgets /> */}
 
       <section className='checkout-logo-sect'>
         <div className='container'>

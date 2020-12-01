@@ -171,12 +171,8 @@ const CheckoutPaymentFormCard = ({
   };
 
   const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, checkoutFormErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
-
+    getFieldErrorsUtil(field, checkoutFormErrors);
+    
   const isFieldValid = (field: string) =>
     getFieldErrors(field).length === 0 && checkoutForm[field] && checkoutForm[field].length > 0;
 
