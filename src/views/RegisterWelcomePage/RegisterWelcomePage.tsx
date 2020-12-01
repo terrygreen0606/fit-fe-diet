@@ -383,7 +383,7 @@ const RegisterWelcomePage = ({
                 <img
                   src={getImagePath('fitlope-app-screens.png')}
                   alt=''
-                  className='after-signup-phone-overview-img img-fluid'
+                  className='img-fluid'
                 />
               </button>
 
