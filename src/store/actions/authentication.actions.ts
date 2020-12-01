@@ -106,7 +106,7 @@ export const fetchUserSettings = () => async (dispatch) => {
     .catch(() => {});
 };
 
-export const loadLocales = (reloadLocales: boolean = false) => async (
+export const loadLocales = () => async (
   dispatch,
 ) => {
   const LOCALIZATION_DEV = true;
@@ -178,6 +178,10 @@ export const appSetting = (
           is_private: true,
         }),
       );
+      localStorage.setItem(
+        'FITLOPE_LOCALE_LANG',
+        FITLOPE_USER_SETTINGS?.language,
+      );
     }
 
     const FITLOPE_USER_SETTINGS_UPDATED: any = JSON.parse(
@@ -203,6 +207,10 @@ export const appSetting = (
       await dispatch(fetchPublicSettings());
     } else {
       dispatch(setAppSetting(FITLOPE_PUBLIC_SETTINGS));
+      localStorage.setItem(
+        'FITLOPE_LOCALE_LANG',
+        FITLOPE_PUBLIC_SETTINGS?.language,
+      );
     }
 
     const FITLOPE_PUBLIC_SETTINGS_UPDATED: any = JSON.parse(
