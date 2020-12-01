@@ -165,6 +165,7 @@ const TariffPlanSelect = ({
           <div
             className={classNames('tariff-plan__item', {
               'special-offer': specialOfferIndex === tariffIndex,
+              size_lg: getTariffsList().length <= 2,
             })}
           >
             <div className='tariff-plan__item-radio__wrap'>
