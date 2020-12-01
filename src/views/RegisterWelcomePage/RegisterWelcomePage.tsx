@@ -100,6 +100,10 @@ const RegisterWelcomePage = ({
         if (data.success && data.data) {
           if (data.data.length) {
             setTariffsDataList(data.data);
+
+            if (data.data.length > 2) {
+              setActiveTariffId(data.data[1]?.tariff);
+            }
           }
         } else {
           setTariffsLoadingError(true);
