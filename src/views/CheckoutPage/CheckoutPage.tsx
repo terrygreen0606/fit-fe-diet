@@ -27,7 +27,7 @@ import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
 import FormValidator from 'utils/FormValidator';
-import SalesWidgets from 'components/SalesWidgets';
+// import SalesWidgets from 'components/SalesWidgets';
 import TariffPlanSelect from 'components/TariffPlanSelect';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
@@ -257,7 +257,7 @@ const CheckoutPage = ({
         </Modal.Main>
       </Modal>
 
-      <SalesWidgets />
+      {/* <SalesWidgets /> */}
 
       <section className='checkout-logo-sect'>
         <div className='container'>

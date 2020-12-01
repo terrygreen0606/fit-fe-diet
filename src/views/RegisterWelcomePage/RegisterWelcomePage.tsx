@@ -16,7 +16,7 @@ import Button from 'components/common/Forms/Button';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
-import SalesWidgets from 'components/SalesWidgets';
+// import SalesWidgets from 'components/SalesWidgets';
 import useVisible from 'components/hooks/useVisible';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
@@ -738,10 +738,10 @@ const RegisterWelcomePage = ({
         </div>
       </section>
 
-      <SalesWidgets
+      {/* <SalesWidgets
         isShow={!isActiveWidgetsOnMobile}
         isStartShow={isStartActiveWidgets}
-      />
+      /> */}
     </>
   );
 };
