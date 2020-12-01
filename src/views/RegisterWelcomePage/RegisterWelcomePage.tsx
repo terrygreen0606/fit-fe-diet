@@ -754,7 +754,7 @@ export default WithTranslate(
   connect(
     (state: any) => ({
       measurement: state.settings.measurement,
-      language: state.settings.settings,
+      language: state.settings.language,
       isAfterSignup: state.storage.isAfterSignup,
       afterSignupName: state.storage.afterSignupName,
       afterSignupGoal: state.storage.afterSignupGoal,
