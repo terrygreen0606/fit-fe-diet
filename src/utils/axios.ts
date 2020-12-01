@@ -26,12 +26,10 @@ instance.interceptors.request.use((request) => {
 
   request.params = request.params || {};
 
-  if (queryParametersObj.lang && queryParametersObj._by_ip) {
+  if (queryParametersObj.lang) {
     request.params['lang'] = queryParametersObj.lang;
-    request.params['_by_ip'] = queryParametersObj._by_ip;
-  } else if (queryParametersObj.lang) {
-    request.params['lang'] = queryParametersObj.lang;
-  } else if (queryParametersObj._by_ip) {
+  }
+  if (queryParametersObj._by_ip) {
     request.params['_by_ip'] = queryParametersObj._by_ip;
   }
 
