@@ -9,6 +9,7 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   scrollToElement,
+  convertTime,
 } from 'utils';
 import Helmet from 'react-helmet';
 import { InputError } from 'types';
@@ -47,7 +48,8 @@ const checkoutFormDefault = {
 };
 
 const CheckoutPage = ({
-  language,
+  settings,
+  storage,
   history,
   location,
   localePhrases,
@@ -133,7 +135,8 @@ const CheckoutPage = ({
           const lostWeight = data.data.weight - data.data.weight_goal;
           setProfileData({
             name: data.data.name || t('checkout.title.user_name'),
-            surname: data.data.surname || '',
+            firstname: data.data.name || '',
+            lastname: data.data.surname || '',
             lostWeight: lostWeight || '',
           });
         } else {
@@ -244,7 +247,7 @@ const CheckoutPage = ({
     if (!hasError) {}
   };
 
-  const isShowPartners = () => language === 'br';
+  const isShowPartners = () => settings.language === 'br';
 
   const scrollToCheckoutForm = () => {
     scrollToElement(paymentFormBlockRef?.current, -30);
@@ -341,10 +344,23 @@ const CheckoutPage = ({
                   <div className='checkout-form-container'>
                     <div className='checkout-reserved-top-block'>
                       <h3 className='checkout-reserved-top-block__title'>
-                        {`${profileData.name} ${profileData.surname} `}
+                        <b>
+                          {`${profileData.firstname} ${profileData.lastname} `}
+                        </b>
                         {t('checkout.reserved_block.title')}
                       </h3>
-                      <p className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</p>
+                        {(storage.afterSignupPredictDate && profileData.lostWeight) && (
+                          <p className='checkout-reserved-top-block__descr'>
+                            {t('checkout.reserved_block.descr', {
+                              COUNT: settings.measurement === 'si' ? (
+                                t('common.kg', { COUNT: profileData.lostWeight })
+                              ) : (
+                                t('common.oz', { COUNT: profileData.lostWeight })
+                              ),
+                              PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
+                            })}
+                          </p>
+                        )}
                       <p className='checkout-reserved-top-block__countdown_title'>
                         {t('checkout.reserved_block.countdown.title')}
                       </p>
@@ -448,7 +464,8 @@ const CheckoutPage = ({
 export default WithTranslate(
   connect(
     (state: any) => ({
-      language: state.settings.settings,
+      settings: state.settings,
+      storage: state.storage,
     }),
   )(CheckoutPage),
 );
