@@ -137,19 +137,21 @@ const LoginView = (props: any) => {
                       ...response.data.data,
                       is_private: true,
                     });
+
+                    history.replace({
+                      pathname: history.location.pathname,
+                      state: {
+                        ...location.state || {},
+                        nextPathname: routes.main,
+                      },
+                    });
+                  } else {
+                    toast.error('common.error');
                   }
                 })
                 .catch((error) => {
                   toast.error(t('register.error_msg'));
                   setLoginLoading(false);
-                });
-
-                history.replace({
-                  pathname: history.location.pathname,
-                  state: {
-                    ...location.state || {},
-                    nextPathname: routes.main,
-                  },
                 });
 
               userClientLogin(token);

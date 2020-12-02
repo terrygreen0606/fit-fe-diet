@@ -42,7 +42,7 @@ const CheckoutThankyouPage = React.lazy(() => import('./views/CheckoutThankyouPa
 const SettingsPaymentHistoryView = React.lazy(() => import('./views/Settings/SettingsPaymentHistoryView'));
 const SettingsSubscriptionPlan = React.lazy(() => import('./views/Settings/SettingsSubscriptionPlan'));
 const JoinFamilyView = React.lazy(() => import('./views/JoinFamilyView'));
-const ForceLogoutView = React.lazy(() => import('./views/ForceLogoutView'));
+const LogoutView = React.lazy(() => import('./views/LogoutView'));
 
 const Routes = () => (
   <Switch>
@@ -277,10 +277,10 @@ const Routes = () => (
     />
 
     <PrivateRoute
-      path={routes.forceLogout}
+      path={routes.logout}
       component={(props: any) => (
         <Layout {...props}>
-          <ForceLogoutView {...props} />
+          <LogoutView {...props} />
         </Layout>
       )}
       exact

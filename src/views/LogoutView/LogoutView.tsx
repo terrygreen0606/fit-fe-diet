@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { userLogout } from 'store/actions';
 
-const ForceLogoutView = (props: any) => {
+const LogoutView = (props: any) => {
   const { userLogout } = props;
 
   useEffect(() => {
@@ -13,4 +13,4 @@ const ForceLogoutView = (props: any) => {
   return <></>;
 };
 
-export default connect(null, { userLogout })(ForceLogoutView);
+export default connect(null, { userLogout })(LogoutView);

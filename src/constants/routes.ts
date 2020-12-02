@@ -28,5 +28,5 @@ export const routes = {
   paymentHistorySettings: '/settings/payment-history',
   subscriptionPlanSettings: '/settings/subscription-plan',
   joinFamily: '/join-family/:id',
-  forceLogout: '/forcelogout',
+  logout: '/logout',
 };
