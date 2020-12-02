@@ -131,7 +131,7 @@ const CheckoutPage = ({
         setProfileLoading(false);
 
         if (data.success && data.data) {
-          const lostWeight = data.data?.weight - data.data?.weight_goalasd;
+          const lostWeight = data.data?.weight - data.data?.weight_goal;
           setProfileData({
             name: data.data.name || t('checkout.title.user_name'),
             firstname: data.data.name || '',
