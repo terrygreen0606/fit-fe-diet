@@ -182,7 +182,7 @@ const CheckoutPage = ({
         });
 
       default:
-        break;
+        return null;
     }
   };
 
