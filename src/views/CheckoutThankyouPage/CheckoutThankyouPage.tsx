@@ -3,7 +3,11 @@ import moment from 'moment';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getTranslate, getImagePath } from 'utils';
+import {
+  getTranslate,
+  getImagePath,
+  convertTime,
+} from 'utils';
 import { getUserInviteLink } from 'api';
 
 // Components
@@ -38,7 +42,8 @@ const CheckoutThankyouPage = ({
 
   useEffect(() => {
     orderAmount = location.orderAmount;
-    orderTransactionId = location.orderTransactionId;
+    orderTransactionId = location.orderNumber;
+
     setTimeout(() => {
       window.history.pushState(null, null, '#');
     }, 100);
