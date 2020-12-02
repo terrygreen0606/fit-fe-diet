@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
-import { routes } from 'constants/routes';
-
 const AuthRoute = ({ component, ...rest }: any) => (
   <Route
     {...rest}
@@ -12,7 +10,7 @@ const AuthRoute = ({ component, ...rest }: any) => (
       : (
         <Redirect
           to={{
-            pathname: routes.main,
+            pathname: rest.location.state ? rest.location.state.nextPathname : '/',
             search: rest.location.state ? rest.location.state.nextSearch : '',
           }}
         />
