@@ -9,7 +9,6 @@ import {
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   scrollToElement,
-  convertTime,
 } from 'utils';
 import Helmet from 'react-helmet';
 import { InputError } from 'types';
@@ -48,8 +47,7 @@ const checkoutFormDefault = {
 };
 
 const CheckoutPage = ({
-  settings,
-  storage,
+  language,
   history,
   location,
   localePhrases,
@@ -75,10 +73,6 @@ const CheckoutPage = ({
 
   const [profileData, setProfileData] = useState<any>({
     name: t('checkout.title.user_name'),
-    firstname: null,
-    lastname: null,
-    weightDifference: null,
-    goal: null,
   });
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
 
@@ -132,14 +126,8 @@ const CheckoutPage = ({
         setProfileLoading(false);
 
         if (data.success && data.data) {
-          const weightDifference = Math.abs(data.data?.weight - data.data?.weight_goal);
-
           setProfileData({
             name: data.data.name || t('checkout.title.user_name'),
-            firstname: data.data.name || '',
-            lastname: data.data.surname || '',
-            weightDifference: weightDifference || null,
-            goal: data.data.goal,
           });
         } else {
           setProfileData({
@@ -154,41 +142,6 @@ const CheckoutPage = ({
           name: t('checkout.title.user_name'),
         });
       });
-  };
-
-  const getPhraseInReservedBlock = () => {
-    let translation = null;
-    switch (profileData.goal) {
-      case -1:
-        translation = t('checkout.reserved_block.descr.lose_weight', {
-          COUNT: settings.measurement === 'si' ? (
-            t('common.kg', { COUNT: profileData.weightDifference })
-          ) : (
-            t('common.oz', { COUNT: profileData.weightDifference })
-          ),
-          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
-        });
-        break;
-      case 0:
-        translation = t('checkout.reserved_block.descr.keep_weight', {
-          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
-        });
-        break;
-      case 1:
-        translation = t('checkout.reserved_block.descr.lift_weight', {
-          COUNT: settings.measurement === 'si' ? (
-            t('common.kg', { COUNT: profileData.weightDifference })
-          ) : (
-            t('common.oz', { COUNT: profileData.weightDifference })
-          ),
-          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
-        });
-        break;
-
-      default:
-        break;
-    }
-    return translation;
   };
 
   const getUserTariffs = () => {
@@ -284,7 +237,7 @@ const CheckoutPage = ({
     if (!hasError) {}
   };
 
-  const isShowPartners = () => settings.language === 'br';
+  const isShowPartners = () => language === 'br';
 
   const scrollToCheckoutForm = () => {
     scrollToElement(paymentFormBlockRef?.current, -30);
@@ -380,17 +333,8 @@ const CheckoutPage = ({
 
                   <div className='checkout-form-container'>
                     <div className='checkout-reserved-top-block'>
-                      <h3 className='checkout-reserved-top-block__title'>
-                        <b>
-                          {`${profileData.firstname} ${profileData.lastname} `}
-                        </b>
-                        {t('checkout.reserved_block.title')}
-                      </h3>
-                        {(storage.afterSignupPredictDate) && (
-                          <p className='checkout-reserved-top-block__descr'>
-                            {getPhraseInReservedBlock()}
-                          </p>
-                        )}
+                      <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
+                      <p className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</p>
                       <p className='checkout-reserved-top-block__countdown_title'>
                         {t('checkout.reserved_block.countdown.title')}
                       </p>
@@ -494,8 +438,7 @@ const CheckoutPage = ({
 export default WithTranslate(
   connect(
     (state: any) => ({
-      settings: state.settings,
-      storage: state.storage,
+      language: state.settings.settings,
     }),
   )(CheckoutPage),
 );
