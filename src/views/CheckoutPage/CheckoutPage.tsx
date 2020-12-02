@@ -161,9 +161,9 @@ const CheckoutPage = ({
       case -1:
         return t('checkout.reserved_block.descr.lose_weight', {
           COUNT: settings.measurement === 'si' ? (
-            t('common.kg', { COUNT: profileData.lostWeight })
+            t('common.kg', { COUNT: profileData.weightDifference })
           ) : (
-            t('common.oz', { COUNT: profileData.lostWeight })
+            t('common.oz', { COUNT: profileData.weightDifference })
           ),
           PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
         });
@@ -174,9 +174,9 @@ const CheckoutPage = ({
       case 1:
         return t('checkout.reserved_block.descr.lift_weight', {
           COUNT: settings.measurement === 'si' ? (
-            t('common.kg', { COUNT: profileData.lostWeight })
+            t('common.kg', { COUNT: profileData.weightDifference })
           ) : (
-            t('common.oz', { COUNT: profileData.lostWeight })
+            t('common.oz', { COUNT: profileData.weightDifference })
           ),
           PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
         });
