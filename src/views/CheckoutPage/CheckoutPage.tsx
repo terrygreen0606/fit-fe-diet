@@ -340,7 +340,10 @@ const CheckoutPage = ({
 
                   <div className='checkout-form-container'>
                     <div className='checkout-reserved-top-block'>
-                      <h3 className='checkout-reserved-top-block__title'>{t('checkout.reserved_block.title')}</h3>
+                      <h3 className='checkout-reserved-top-block__title'>
+                        {`${profileData.name} ${profileData.surname} `}
+                        {t('checkout.reserved_block.title')}
+                      </h3>
                       <p className='checkout-reserved-top-block__descr'>{t('checkout.reserved_block.descr')}</p>
                       <p className='checkout-reserved-top-block__countdown_title'>
                         {t('checkout.reserved_block.countdown.title')}
