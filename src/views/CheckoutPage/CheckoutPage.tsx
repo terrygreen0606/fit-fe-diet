@@ -78,6 +78,7 @@ const CheckoutPage = ({
     firstname: null,
     lastname: null,
     lostWeight: null,
+    goal: null,
   });
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
 
@@ -137,6 +138,7 @@ const CheckoutPage = ({
             firstname: data.data.name || '',
             lastname: data.data.surname || '',
             lostWeight: lostWeight || null,
+            goal: data.data.goal,
           });
         } else {
           setProfileData({
@@ -151,6 +153,36 @@ const CheckoutPage = ({
           name: t('checkout.title.user_name'),
         });
       });
+  };
+
+  const getPhraseInReservedBlock = () => {
+    switch (profileData.goal) {
+      case -1:
+        return t('checkout.reserved_block.descr.lose_weight', {
+          COUNT: settings.measurement === 'si' ? (
+            t('common.kg', { COUNT: profileData.lostWeight })
+          ) : (
+            t('common.oz', { COUNT: profileData.lostWeight })
+          ),
+          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
+        });
+      case 0:
+        return t('checkout.reserved_block.descr.keep_weight', {
+          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
+        });
+      case 1:
+        return t('checkout.reserved_block.descr.lift_weight', {
+          COUNT: settings.measurement === 'si' ? (
+            t('common.kg', { COUNT: profileData.lostWeight })
+          ) : (
+            t('common.oz', { COUNT: profileData.lostWeight })
+          ),
+          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
+        });
+
+      default:
+        break;
+    }
   };
 
   const getUserTariffs = () => {
@@ -350,14 +382,7 @@ const CheckoutPage = ({
                       </h3>
                         {(storage.afterSignupPredictDate && profileData.lostWeight) && (
                           <p className='checkout-reserved-top-block__descr'>
-                            {t('checkout.reserved_block.descr', {
-                              COUNT: settings.measurement === 'si' ? (
-                                t('common.kg', { COUNT: profileData.lostWeight })
-                              ) : (
-                                t('common.oz', { COUNT: profileData.lostWeight })
-                              ),
-                              PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
-                            })}
+                            {getPhraseInReservedBlock()}
                           </p>
                         )}
                       <p className='checkout-reserved-top-block__countdown_title'>
