@@ -145,6 +145,8 @@ const LoginView = (props: any) => {
                         nextPathname: routes.main,
                       },
                     });
+
+                    userClientLogin(token);
                   } else {
                     toast.error('common.error');
                   }
@@ -153,8 +155,6 @@ const LoginView = (props: any) => {
                   toast.error(t('register.error_msg'));
                   setLoginLoading(false);
                 });
-
-              userClientLogin(token);
             } else {
               toast.error(t('register.error_msg'));
             }
