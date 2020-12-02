@@ -77,7 +77,7 @@ const CheckoutPage = ({
     name: t('checkout.title.user_name'),
     firstname: null,
     lastname: null,
-    lostWeight: null,
+    weightDifference: null,
     goal: null,
   });
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
@@ -132,12 +132,13 @@ const CheckoutPage = ({
         setProfileLoading(false);
 
         if (data.success && data.data) {
-          const lostWeight = data.data?.weight - data.data?.weight_goal;
+          const weightDifference = Math.abs(data.data?.weight - data.data?.weight_goal);
+
           setProfileData({
             name: data.data.name || t('checkout.title.user_name'),
             firstname: data.data.name || '',
             lastname: data.data.surname || '',
-            lostWeight: lostWeight || null,
+            weightDifference: weightDifference || null,
             goal: data.data.goal,
           });
         } else {
@@ -380,7 +381,7 @@ const CheckoutPage = ({
                         </b>
                         {t('checkout.reserved_block.title')}
                       </h3>
-                        {(storage.afterSignupPredictDate && profileData.lostWeight) && (
+                        {(storage.afterSignupPredictDate) && (
                           <p className='checkout-reserved-top-block__descr'>
                             {getPhraseInReservedBlock()}
                           </p>
