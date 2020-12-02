@@ -73,6 +73,9 @@ const CheckoutPage = ({
 
   const [profileData, setProfileData] = useState<any>({
     name: t('checkout.title.user_name'),
+    surname: null,
+    lostWeight: null,
+    timeToLose: null,
   });
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
 
@@ -126,8 +129,12 @@ const CheckoutPage = ({
         setProfileLoading(false);
 
         if (data.success && data.data) {
+          console.log('qq', data.data);
+          const lostWeight = data.data.weight - data.data.weight_goal;
           setProfileData({
             name: data.data.name || t('checkout.title.user_name'),
+            surname: data.data.surname || '',
+            lostWeight: lostWeight || '',
           });
         } else {
           setProfileData({
