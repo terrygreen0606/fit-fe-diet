@@ -20,6 +20,7 @@ import {
 } from 'api';
 import { userLogin, setAppSetting } from 'store/actions';
 import Helmet from 'react-helmet';
+import { routes } from 'constants/routes';
 
 // Components
 import FormGroup from 'components/common/Forms/FormGroup';
@@ -34,6 +35,8 @@ import { ReactComponent as GoogleIcon } from 'assets/img/icons/google-icon.svg';
 import { ReactComponent as FacebookIcon } from 'assets/img/icons/facebook-letter-icon.svg';
 
 const LoginView = (props: any) => {
+  const { history, location } = props;
+
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
@@ -134,14 +137,24 @@ const LoginView = (props: any) => {
                       ...response.data.data,
                       is_private: true,
                     });
+
+                    history.replace({
+                      pathname: history.location.pathname,
+                      state: {
+                        ...location.state || {},
+                        nextPathname: routes.main,
+                      },
+                    });
+
+                    userClientLogin(token);
+                  } else {
+                    toast.error('common.error');
                   }
                 })
                 .catch((error) => {
                   toast.error(t('register.error_msg'));
                   setLoginLoading(false);
                 });
-
-              userClientLogin(token);
             } else {
               toast.error(t('register.error_msg'));
             }
