@@ -157,9 +157,10 @@ const CheckoutPage = ({
   };
 
   const getPhraseInReservedBlock = () => {
+    let translation = null;
     switch (profileData.goal) {
       case -1:
-        return t('checkout.reserved_block.descr.lose_weight', {
+        translation = t('checkout.reserved_block.descr.lose_weight', {
           COUNT: settings.measurement === 'si' ? (
             t('common.kg', { COUNT: profileData.weightDifference })
           ) : (
@@ -167,12 +168,14 @@ const CheckoutPage = ({
           ),
           PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
         });
+        break;
       case 0:
-        return t('checkout.reserved_block.descr.keep_weight', {
+        translation = t('checkout.reserved_block.descr.keep_weight', {
           PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
         });
+        break;
       case 1:
-        return t('checkout.reserved_block.descr.lift_weight', {
+        translation = t('checkout.reserved_block.descr.lift_weight', {
           COUNT: settings.measurement === 'si' ? (
             t('common.kg', { COUNT: profileData.weightDifference })
           ) : (
@@ -180,10 +183,12 @@ const CheckoutPage = ({
           ),
           PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
         });
+        break;
 
       default:
-        return null;
+        break;
     }
+    return translation;
   };
 
   const getUserTariffs = () => {
