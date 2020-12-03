@@ -18,4 +18,3 @@ export const setStorageSettings = (_settings: any) => {
   const settings = _settings || {};
   return { type: SET_STORAGE_SETTINGS, settings };
 };
-

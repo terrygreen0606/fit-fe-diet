@@ -338,7 +338,7 @@ const CheckoutPage = ({
 
                 <div className='checkout-tpl-container'>
                   <div className='checkout-tpl-title'>
-                    Last Step: Activate your exclusive meal plan below
+                    {t('checkout.last_step')}
                   </div>
                   <div className='checkout-rewards-block'>
 
@@ -387,32 +387,37 @@ const CheckoutPage = ({
                     </div>
 
                     <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
-                      <h2 className='mb-4 fw-bold text-center'>
-                        {t('lp.select_plan.title')}
-                      </h2>
+                      <h1 className='fw-bold text-center'>{t('lp.partners_list.title')}</h1>
+                      {!storage.isSelectedTariffOnWelcomePage && (
+                        <>
+                          <h2 className='mb-4 fw-bold text-center'>
+                            {`1. ${t('lp.select_plan.title')}`}
+                          </h2>
 
-                      <ContentLoading
-                        isLoading={tariffsLoading}
-                        isError={tariffsLoadingError}
-                        fetchData={() => getUserTariffs()}
-                      >
-                        <TariffPlanSelect
-                          tariffs={tariffsDataList}
-                          value={activeTariffId}
-                          onChange={(id) => {
-                            if (activeTariffId === null) {
-                              setTimeout(() => {
-                                scrollToCheckoutForm();
-                              }, 100);
-                            }
+                          <ContentLoading
+                            isLoading={tariffsLoading}
+                            isError={tariffsLoadingError}
+                            fetchData={() => getUserTariffs()}
+                          >
+                            <TariffPlanSelect
+                              tariffs={tariffsDataList}
+                              value={activeTariffId}
+                              onChange={(id) => {
+                                if (activeTariffId === null) {
+                                  setTimeout(() => {
+                                    scrollToCheckoutForm();
+                                  }, 100);
+                                }
 
-                            setActiveTariffId(id);
-                            changeSetting('activeTariffIdToPay', id);
-                          }}
-                          specialOfferIndex={1}
-                          localePhrases={localePhrases}
-                        />
-                      </ContentLoading>
+                                setActiveTariffId(id);
+                                changeSetting('activeTariffIdToPay', id);
+                              }}
+                              specialOfferIndex={1}
+                              localePhrases={localePhrases}
+                            />
+                          </ContentLoading>
+                        </>
+                      )}
                     </div>
 
                     <div
@@ -422,7 +427,11 @@ const CheckoutPage = ({
                       })}
                     >
                       <h3 className='mb-4 fw-bold text-center'>
-                        {t('lp.select_payment.title')}
+                        {!storage.isSelectedTariffOnWelcomePage ? (
+                          `2. ${t('lp.payment_form.title')}`
+                        ) : (
+                          t('lp.payment_form.title')
+                        )}
                       </h3>
 
                       <CheckoutPaymentFormCard

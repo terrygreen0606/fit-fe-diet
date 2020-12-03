@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect, useRef } from 'react';
-import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
@@ -717,6 +716,7 @@ const RegisterWelcomePage = ({
 
                           setActiveTariffId(id);
                           changeSetting('activeTariffIdToPay', id);
+                          changeSetting('isSelectedTariffOnWelcomePage', true);
                         }}
                         specialOfferIndex={1}
                         localePhrases={localePhrases}

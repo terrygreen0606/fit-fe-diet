@@ -625,7 +625,7 @@ const CheckoutPaymentFormCard = ({
         </form>
       </ContentLoading>
 
-      {/*{!disabled && (
+      {!disabled && (
         <p
           className='mt-4 checkout-payment-card__total'
           dangerouslySetInnerHTML={{
@@ -635,7 +635,7 @@ const CheckoutPaymentFormCard = ({
             }),
           }}
         />
-      )}*/}
+      )}
     </div>
   );
 };
