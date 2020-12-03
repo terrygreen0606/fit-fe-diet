@@ -199,16 +199,16 @@ const RegisterWelcomePage = ({
     };
   }, []);
 
-  const getShortDate = (dateStr: string) => {
+  const getShortDate = (timestamp: number) => {
     let predictedDateFormatted = '';
 
-    if (new Date(dateStr).getFullYear() === new Date().getFullYear()) {
-      predictedDateFormatted = new Date(dateStr).toLocaleDateString(
-        getLocaleByLang(language), { day: 'numeric', month: 'short' }
+    if (new Date(timestamp).getFullYear() === new Date().getFullYear()) {
+      predictedDateFormatted = new Date(timestamp * 1000).toLocaleDateString(
+        getLocaleByLang(language), { day: 'numeric', month: 'short' },
       );
     } else {
-      predictedDateFormatted = new Date(dateStr).toLocaleDateString(
-        getLocaleByLang(language), { day: 'numeric', month: 'short', year: 'numeric' }
+      predictedDateFormatted = new Date(timestamp * 1000).toLocaleDateString(
+        getLocaleByLang(language), { day: 'numeric', month: 'short', year: 'numeric' },
       );
     }
 
