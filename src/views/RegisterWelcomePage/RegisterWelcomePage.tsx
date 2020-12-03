@@ -6,7 +6,17 @@ import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
 import classNames from 'classnames';
-import { getTranslate, getImagePath, scrollToElement } from 'utils';
+import { Link } from 'react-router-dom';
+import {
+  getTranslate,
+  getImagePath,
+  scrollToElement,
+  getLocaleByLang,
+} from 'utils';
+import { routes } from 'constants/routes';
+import { changeSetting as changeSettingAction } from 'store/actions';
+import useWindowSize from 'components/hooks/useWindowSize';
+import useDebounce from 'components/hooks/useDebounce';
 import { getAppTariffs, getAppReviews } from 'api';
 
 // Components
@@ -33,16 +43,20 @@ import { ReactComponent as StarFillIcon } from 'assets/img/icons/star-fill-icon.
 const RegisterWelcomePage = ({
   isAfterSignup,
   afterSignupName,
-  afterSignupGoal,
   afterSignupWeight,
   afterSignupWeightGoal,
   afterSignupPredictDate,
   afterSignupNameFirstSection,
+  activeTariffIdToPay,
+  changeSettingAction: changeSetting,
   measurement,
   language,
   history,
   localePhrases,
 }: any) => {
+  const { width: windowWidth } = useWindowSize();
+  const debounceWindowWidth = useDebounce(windowWidth, 500);
+
   const [reviewsLoading, setReviewsLoading] = useState<boolean>(false);
   const [reviewsLoadingError, setReviewsLoadingError] = useState<boolean>(false);
 
@@ -53,6 +67,8 @@ const RegisterWelcomePage = ({
   const [tariffsLoadingError, setTariffsLoadingError] = useState<boolean>(false);
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
+
+  const [welcomeVideoPlayerInstance, setWelcomeVideoPlayerInstance] = useState<any>(null);
 
   // const { width: windowWidth } = useWindowSize();
   // const debounceWindowWidth = useDebounce(windowWidth, 500);
@@ -100,10 +116,6 @@ const RegisterWelcomePage = ({
         if (data.success && data.data) {
           if (data.data.length) {
             setTariffsDataList(data.data);
-
-            if (data.data.length > 2) {
-              setActiveTariffId(data.data[1]?.tariff);
-            }
           }
         } else {
           setTariffsLoadingError(true);
@@ -130,6 +142,10 @@ const RegisterWelcomePage = ({
             ...review,
             id: uuid(),
           })));
+
+          if (activeTariffIdToPay) {
+            setActiveTariffId(activeTariffIdToPay);
+          }
         }
       })
       .catch(() => {
@@ -146,12 +162,26 @@ const RegisterWelcomePage = ({
       return false;
     }
 
+    const welcomeVideo = document.querySelector('.after-signup-video-frame');
+    let welcomeVideoPlayer = welcomeVideoPlayerInstance;
+
+    if (!welcomeVideoPlayer && window['Vimeo']) {
+      welcomeVideoPlayer = new window['Vimeo'].Player(welcomeVideo);
+      setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
+    }
+
     if (selectTariffPlanBlock.getBoundingClientRect().top < 80) {
       if (mainPromoHeader.classList.contains('fixed-top')) {
         mainPromoHeader.classList.remove('fixed-top');
       }
     } else if (!mainPromoHeader.classList.contains('fixed-top')) {
       mainPromoHeader.classList.add('fixed-top');
+    }
+
+    if (welcomeVideo?.getBoundingClientRect().top < -100) {
+      welcomeVideoPlayer?.pause();
+    } else {
+      welcomeVideoPlayer?.play();
     }
   };
 
@@ -169,29 +199,61 @@ const RegisterWelcomePage = ({
     };
   }, []);
 
+  const getShortDate = (timestamp: number) => {
+    let predictedDateFormatted = '';
+
+    if (new Date(timestamp).getFullYear() === new Date().getFullYear()) {
+      predictedDateFormatted = new Date(timestamp * 1000).toLocaleDateString(
+        getLocaleByLang(language), { day: 'numeric', month: 'short' },
+      );
+    } else {
+      predictedDateFormatted = new Date(timestamp * 1000).toLocaleDateString(
+        getLocaleByLang(language), { day: 'numeric', month: 'short', year: 'numeric' },
+      );
+    }
+
+    return predictedDateFormatted;
+  };
+
   const getWelcomeGoalText = () => {
     let welcomeDescrGoalText = '';
 
     const I18N_MEASUREMENT = measurement === 'si' ? 'common.kg' : 'common.lbs';
 
-    switch (afterSignupGoal) {
+    let signupGoal = null;
+
+    if (afterSignupWeight > afterSignupWeightGoal) {
+      signupGoal = -1;
+    } else if (afterSignupWeight < afterSignupWeightGoal) {
+      signupGoal = 1;
+    } else if (afterSignupWeight === afterSignupWeightGoal) {
+      signupGoal = 0;
+    }
+
+    switch (signupGoal) {
       case -1:
-        welcomeDescrGoalText = t('lp.welcome.text_lose', {
+        welcomeDescrGoalText = t('lp.welcome.text.lose', {
           AMOUNT: t(I18N_MEASUREMENT, {
             COUNT: afterSignupWeight - afterSignupWeightGoal,
           }),
+          NAME: afterSignupName,
+          PERIOD: getShortDate(afterSignupPredictDate),
         });
         break;
 
       case 0:
-        welcomeDescrGoalText = t('lp.welcome.text_keep');
+        welcomeDescrGoalText = t('lp.welcome.text.keep', {
+          NAME: afterSignupName,
+        });
         break;
 
       case 1:
-        welcomeDescrGoalText = t('lp.welcome.text_gain', {
+        welcomeDescrGoalText = t('lp.welcome.text.gain', {
           AMOUNT: t(I18N_MEASUREMENT, {
             COUNT: afterSignupWeightGoal - afterSignupWeight,
           }),
+          NAME: afterSignupName,
+          PERIOD: getShortDate(afterSignupPredictDate),
         });
         break;
 
@@ -218,481 +280,569 @@ const RegisterWelcomePage = ({
 
   const isShowPartners = () => language === 'br';
 
+  const getPaymentFlowType = () => {
+    let paymentFlow = null;
+
+    const paymentFlowData = window['dataLayer']?.find((data) => data['payment_flow']);
+
+    if (paymentFlowData) {
+      paymentFlow = paymentFlowData['payment_flow'];
+    }
+
+    return paymentFlow;
+  };
+
   return (
     <>
       <Helmet>
         <title>{t('app.title.after_signup')}</title>
+        <script src='https://player.vimeo.com/api/player.js' />
       </Helmet>
 
-      <section className='after-signup-header-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-12'>
+      <section className='after-signup-tpl'>
+        <section className='after-signup-header-sect'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-12'>
 
-              <div className='col-xl-6 mb-4 text-center text-xl-left'>
-                <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
+                <div className='col-xl-6 mb-4 text-center text-xl-left'>
+                  <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
+                </div>
+
               </div>
+              <div className='col-xl-6 order-xl-2 after-signup-header-chart-col'>
 
-            </div>
-            <div className='col-xl-6 order-xl-2 after-signup-header-chart-col'>
-
-              <div className='after-signup-header-chart-col_content'>
-                {afterSignupNameFirstSection === 'stat' ? (
-                  <>
-                    {isAfterSignup && (
-                      <DietExpectationsChart
-                        weight={afterSignupWeight}
-                        weightGoal={afterSignupWeightGoal}
-                        predictedDate={afterSignupPredictDate}
-                        measurement={measurement}
-                        localePhrases={localePhrases}
+                <div className='after-signup-header-chart-col_content'>
+                  {afterSignupNameFirstSection === 'stat' ? (
+                    <>
+                      {isAfterSignup && (
+                        <DietExpectationsChart
+                          weight={afterSignupWeight}
+                          weightGoal={afterSignupWeightGoal}
+                          predictedDate={afterSignupPredictDate}
+                          measurement={measurement}
+                          localePhrases={localePhrases}
+                        />
+                      )}
+                    </>
+                  ) : (
+                      <iframe
+                        className='after-signup-video-frame'
+                        title={t('lp.video.title')}
+                        src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
+                        allow='autoplay'
+                        width='100%'
+                        height='400'
                       />
                     )}
-                  </>
-                ) : (
-                    <iframe
-                      className='after-signup-video-frame'
-                      title={t('lp.video.title')}
-                      src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
-                      allow='autoplay'
-                      width='100%'
-                      height='400'
-                    />
-                  )}
+                </div>
+
               </div>
+              <div className='col-xl-6 order-xl-1 mt-4 mt-xl-0 after-signup-header-content-col'>
 
-            </div>
-            <div className='col-xl-6 order-xl-1 mt-4 mt-xl-0 after-signup-header-content-col'>
-
-              {isAfterSignup && (
-                <h2
-                  className='fw-bold mb-4'
-                  dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }}
-                />
-              )}
-
-              <ContentLoading
-                isLoading={tariffsLoading}
-                isError={tariffsLoadingError}
-                fetchData={() => getUserTariffs()}
-              >
-                {tariffsDataList.length > 0 && (
-                  <h4
-                    className='fw-regular'
-                    dangerouslySetInnerHTML={{
-                      __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
-                        OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
-                        ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
-                        : tariffsDataList?.[1].price_old_weekly_text,
-                        AMOUNT: tariffsDataList?.[1]?.country === 'br'
-                          ? tariffsDataList?.[1]?.installments?.price_monthly_text
-                          : tariffsDataList?.[1].price_weekly_text,
-                      }),
-                    }}
+                {isAfterSignup && (
+                  <h2
+                    className='fw-bold mb-4'
+                    dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }}
                   />
                 )}
-              </ContentLoading>
 
-              <div className='after-signup-header-btn-col'>
-                <Button
-                  onClick={scrollToTariffsSelectForm}
-                  pulse
-                  color='primary-shadow'
-                  className='mt-3'
-                  size='lg'
+                <ContentLoading
+                  isLoading={tariffsLoading}
+                  isError={tariffsLoadingError}
+                  fetchData={() => getUserTariffs()}
                 >
-                  {t('button.select_plan')}
-                </Button>
+                  {tariffsDataList.length > 0 && (
+                    <h4
+                      className='fw-regular'
+                      dangerouslySetInnerHTML={{
+                        __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
+                          OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
+                          ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
+                          : tariffsDataList?.[1].price_old_weekly_text,
+                          AMOUNT: tariffsDataList?.[1]?.country === 'br'
+                            ? tariffsDataList?.[1]?.installments?.price_monthly_text
+                            : tariffsDataList?.[1].price_weekly_text,
+                        }),
+                      }}
+                    />
+                  )}
+                </ContentLoading>
 
-                <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
-              </div>
+                <div className='after-signup-header-btn-col'>
+                  <Button
+                    onClick={scrollToTariffsSelectForm}
+                    pulse
+                    color='primary-shadow'
+                    className='mt-3'
+                    size='lg'
+                  >
+                    {t('button.select_plan')}
+                  </Button>
 
-              <div className='sale-points__list mt-45'>
-                <div className='sale-points__item'>{t('lp.sale.point1')}</div>
-                <div className='sale-points__item'>{t('lp.sale.point2')}</div>
-                <div className='sale-points__item'>{t('lp.sale.point3')}</div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section ref={introBlockRef} className='after-signup-intro-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-lg-8 order-md-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
-
-              {isShowPartners() && (
-                <img src={t('lp.partners.img')} alt="" className="mb-4 img-fluid" />
-              )}
-
-              <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
-
-              <div dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
-
-              <div className='after-signup-intro-content-btn mt-4 pt-3 pb-5 text-center text-xl-left'>
-                <Button
-                  pulse
-                  color='primary-shadow'
-                  size='lg'
-                  block
-                  onClick={scrollToTariffsSelectForm}
-                  style={{ maxWidth: '380px' }}
-                >
-                  {t('button.activate_plan')}
-                </Button>
-
-                <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
-              </div>
-
-            </div>
-            <div className='col-lg-4 order-md-1 mb-4 mb-md-4 text-center text-lg-left'>
-
-              <button
-                type='button'
-                onClick={scrollToTariffsSelectForm}
-                className='after-signup-image-button'
-              >
-                <img
-                  src={getImagePath('fitlope-app-screens.png')}
-                  alt=''
-                  className='img-fluid'
-                />
-              </button>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='after-signup-reviews-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-md-6 col-xl-5 offset-xl-1'>
-
-              <h2 className='fw-bold'>{t('lp.reviews_sect.title')}</h2>
-              <p className='mt-45' dangerouslySetInnerHTML={{ __html: t('lp.reviews_sect.descr') }} />
-              <h4 className='mt-4 fw-bold'>{t('lp.reviews_sect.subtitle')}</h4>
-
-              {reviewsList.length > 0 && (
-                <div className='app-review-rate-single mt-5'>
-                  <div className='rate-stars_list'>
-                    <StarFillIcon className='rate-stars_item' />
-                    <StarFillIcon className='rate-stars_item' />
-                    <StarFillIcon className='rate-stars_item' />
-                    <StarFillIcon className='rate-stars_item' />
-                    <StarFillIcon className='rate-stars_item' />
-                  </div>
-
-                  <h6 className='app-review-rate-single__author'>
-                    <b>
-                      {'- '}
-                      {reviewsList[0].name}
-                    </b>
-                    {', '}
-                    {t('common.app_user')}
-                  </h6>
+                  <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
-              )}
 
-              <div className='after-signup-reviews-btn-col mt-5 text-center text-xl-left'>
-                <Button
-                  pulse
-                  color='primary-shadow'
-                  size='lg'
-                  onClick={scrollToTariffsSelectForm}
-                >
-                  {t('button.select_plan')}
-                </Button>
+                <div className='sale-points__list mt-45'>
+                  <div className='sale-points__item'>{t('lp.sale.point1')}</div>
+                  <div className='sale-points__item'>{t('lp.sale.point2')}</div>
+                  <div className='sale-points__item'>{t('lp.sale.point3')}</div>
+                </div>
 
-                <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
               </div>
-
-            </div>
-            <div className='col-md-6 mt-5 mt-md-0 text-center'>
-
-              <button
-                type='button'
-                onClick={scrollToTariffsSelectForm}
-                className='after-signup-image-button'
-              >
-                <img className='img-fluid' src={getImagePath('dishes.png')} alt='' />
-              </button>
-
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className='after-signup-expect-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-xl-6'>
+        <section ref={introBlockRef} className='after-signup-intro-sect'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-12 text-center'>
 
-              <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.advantages_title')}</h2>
+                {isShowPartners() && (
+                  <div className='mb-4'>
+                    <h5 className='fw-bold'>{t('lp.partners_list.title')}</h5>
 
-              <div className='app-advantages-list'>
-                <div className='app-advantages-list__item'>{t('lp.advantage_1')}</div>
-                <div className='app-advantages-list__item'>{t('lp.advantage_2')}</div>
-                <div className='app-advantages-list__item'>{t('lp.advantage_3')}</div>
-              </div>
-
-            </div>
-            <div className='col-xl-6 mt-5 mt-xl-0'>
-
-              {afterSignupNameFirstSection === 'stat' ? (
-                <iframe
-                  className='after-signup-video-frame'
-                  title={t('lp.video.title')}
-                  src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
-                  allow='autoplay'
-                  width='100%'
-                  height='400'
-                />
-              ) : (
-                  <>
-                    {isAfterSignup && (
-                      <DietExpectationsChart
-                        weight={afterSignupWeight}
-                        weightGoal={afterSignupWeightGoal}
-                        predictedDate={afterSignupPredictDate}
-                        measurement={measurement}
-                        localePhrases={localePhrases}
+                    <div className='app-partners-list'>
+                      <span
+                        className='app-partners-list__item'
+                        style={{ backgroundImage: `url(${metropolisLogoImg})` }}
                       />
-                    )}
-                  </>
+                      <span
+                        className='app-partners-list__item'
+                        style={{ backgroundImage: `url(${igLogoImg})` }}
+                      />
+                      <span
+                        className='app-partners-list__item'
+                        style={{ backgroundImage: `url(${terraLogoImg})` }}
+                      />
+                      <span
+                        className='app-partners-list__item'
+                        style={{ backgroundImage: `url(${defatoLogoImg})` }}
+                      />
+                    </div>
+                  </div>
                 )}
 
-            </div>
-            <div className='col-12 mt-4 mt-xl-5'>
+              </div>
+              <div className='col-lg-8 offset-lg-4 mb-45 mb-lg-0 pl-xl-5 after-signup-intro-content-col'>
 
-              <div className='row'>
-                <div className='col-md-6 text-center'>
+                <h2>{t('lp.intro.title')}</h2>
+
+              </div>
+              <div className='col-lg-8 order-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
+
+                <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
+
+                <div dangerouslySetInnerHTML={{ __html: t('lp.intro.content') }}></div>
+
+                <div className='after-signup-intro-content-btn mt-4 text-center text-xl-left'>
+                  <Button
+                    color='primary-shadow'
+                    size='lg'
+                    block
+                    onClick={scrollToTariffsSelectForm}
+                    style={{ maxWidth: '380px' }}
+                  >
+                    {t('button.activate_plan')}
+                  </Button>
+
+                  <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+                </div>
+
+              </div>
+              <div className='col-lg-4 order-1 mt-5 mt-md-0 mb-4 text-center text-lg-left'>
 
                 <button
                   type='button'
                   onClick={scrollToTariffsSelectForm}
                   className='after-signup-image-button'
                 >
-                  <img src={t('checkout.social.img')} className='img-fluid' alt='' />
+                  <img
+                    src={getImagePath('fitlope-app-screens.png')}
+                    alt=''
+                    className='img-fluid'
+                  />
                 </button>
 
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className='after-signup-reviews-sect'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-md-6 order-md-2 mb-5 mt-md-0 text-center'>
+
+                <button
+                  type='button'
+                  onClick={scrollToTariffsSelectForm}
+                  className='after-signup-image-button'
+                >
+                  <img className='img-fluid' src={getImagePath('dishes.png')} alt='' />
+                </button>
+
+              </div>
+              <div className='col-md-6 col-xl-5 offset-xl-1'>
+
+                <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
+                <p className='mt-45' dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
+                <h4 className='mt-4 fw-bold'>{t('lp.reviews.subtitle')}</h4>
+
+                <ContentLoading
+                  isLoading={reviewsLoading}
+                  isError={reviewsLoadingError}
+                  fetchData={() => getUserReviews()}
+                >
+                  {reviewsList.length > 0 && (
+                    <div className='app-review-rate-single mt-4 mt-xl-5'>
+                      <div className='rate-stars_list'>
+                        <StarFillIcon className='rate-stars_item' />
+                        <StarFillIcon className='rate-stars_item' />
+                        <StarFillIcon className='rate-stars_item' />
+                        <StarFillIcon className='rate-stars_item' />
+                        <StarFillIcon className='rate-stars_item' />
+                      </div>
+
+                      <h6 className='app-review-rate-single__author'>
+                        <b>
+                          {'- '}
+                          {reviewsList[0].name}
+                        </b>
+                        {', '}
+                        {t('common.app_user')}
+                      </h6>
+                    </div>
+                  )}
+                </ContentLoading>
+
+                <div className='after-signup-reviews-btn-col mt-4 mt-xl-5 text-center text-xl-left'>
+                  <Button
+                    color='primary-shadow'
+                    size='lg'
+                    onClick={scrollToTariffsSelectForm}
+                  >
+                    {t('button.select_plan')}
+                  </Button>
+
+                  <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
-                <div className='col-md-6 mt-4 mt-md-0 text-center'>
+
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className='after-signup-expect-sect'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-xl-6'>
+
+                <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.advantages.title')}</h2>
+
+                <div className='app-advantages-list'>
+                  <div className='app-advantages-list__item'>{t('lp.advantage_1')}</div>
+                  <div className='app-advantages-list__item'>{t('lp.advantage_2')}</div>
+                  <div className='app-advantages-list__item'>{t('lp.advantage_3')}</div>
+                </div>
+
+              </div>
+              <div className='col-xl-6 mt-5 mt-xl-0'>
+
+                {afterSignupNameFirstSection === 'stat' ? (
+                  <iframe
+                    className='after-signup-video-frame'
+                    title={t('lp.video.title')}
+                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
+                    allow='autoplay'
+                    width='100%'
+                    height='400'
+                  />
+                ) : (
+                    <>
+                      {isAfterSignup && (
+                        <DietExpectationsChart
+                          weight={afterSignupWeight}
+                          weightGoal={afterSignupWeightGoal}
+                          predictedDate={afterSignupPredictDate}
+                          measurement={measurement}
+                          localePhrases={localePhrases}
+                        />
+                      )}
+                    </>
+                  )}
+
+              </div>
+              <div className='col-12 mt-4 mt-xl-5'>
+
+                <div className='row'>
+                  <div className='col-md-6 text-center'>
 
                   <button
                     type='button'
                     onClick={scrollToTariffsSelectForm}
                     className='after-signup-image-button'
                   >
-                    <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
+                    <img src={t('checkout.social.img')} className='img-fluid' alt='' />
                   </button>
 
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='after-signup-start-today-sect'>
-        <div className='container pb-3'>
-          <div className='row'>
-            <div className='col-xl-6 offset-xl-3 after-signup-start-today-col text-center'>
-
-              <h2 className='sect-title title-center'>{t('lp.start_today_title')}</h2>
-
-              <ContentLoading
-                isLoading={tariffsLoading}
-                isError={tariffsLoadingError}
-                fetchData={() => getUserTariffs()}
-              >
-                {tariffsDataList.length > 0 && (
-                  <h2
-                    className='fw-regular mt-4 text-left text-lg-center'
-                    dangerouslySetInnerHTML={{
-                      __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
-                        OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
-                          ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
-                          : tariffsDataList?.[1].price_old_weekly_text,
-                        AMOUNT: tariffsDataList?.[1]?.country === 'br'
-                          ? tariffsDataList?.[1]?.installments?.price_monthly_text
-                          : tariffsDataList?.[1].price_weekly_text,
-                      }),
-                    }}
-                  />
-                )}
-              </ContentLoading>
-
-              <div className='after-signup-start-today-btn-col'>
-                <Button
-                  pulse
-                  color='primary-shadow'
-                  className='mt-4'
-                  size='lg'
-                  block
-                  onClick={scrollToTariffsSelectForm}
-                  style={{ maxWidth: '500px' }}
-                >
-                  {t('button.activate_plan')}
-                </Button>
-
-                <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
-              </div>
-
-              {isShowPartners() && (
-                <img src={t('lp.partners.img')} alt="" className="mt-5 img-fluid" />
-              )}
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='after-signup-plan-select-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-12'>
-
-              <div className='row'>
-                <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='col-md-6'>
-
-                  <h2 className='mb-4 mb-xl-5 fw-bold text-center'>
-                    {t('lp.select_plan_title')}
-                  </h2>
-
-                  <TariffPlanSelect
-                    tariffs={tariffsDataList}
-                    value={activeTariffId}
-                    onChange={(id) => {
-                      if (activeTariffId === null) {
-                        setTimeout(() => {
-                          scrollToCheckoutForm();
-                        }, 100);
-                      }
-
-                      setActiveTariffId(id);
-                    }}
-                    specialOfferIndex={1}
-                    localePhrases={localePhrases}
-                  />
-
-                </div>
-                <div className='col-md-6 pl-xl-5 mt-4 mt-md-0'>
-
-                  <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.plan.advantages_title')}</h2>
-
-                  <div className='advantages-checklist'>
-                    {Array(4).fill(1).map((el) => uuid()).map((id, index) => (
-                      <div key={id} className='advantages-checklist-item'>
-                        <h6 className='advantages-checklist-item__title'>
-                          {t(`lp.plan.advantage${index + 1}.title`)}
-                        </h6>
-
-                        <div className='advantages-checklist-item__content'>
-                          {t(`lp.plan.advantage${index + 1}.descr`)}
-                        </div>
-                      </div>
-                    ))}
                   </div>
+                  <div className='col-md-6 mt-4 mt-md-0 text-center'>
 
-                  <div className='text-center'>
-                    <img
-                      src={t('checkout.safe.img2')}
-                      className='img-fluid mt-4'
-                      style={{ maxWidth: '70%' }}
-                      alt=''
+                    <button
+                      type='button'
+                      onClick={scrollToTariffsSelectForm}
+                      className='after-signup-image-button'
+                    >
+                      <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
+                    </button>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className='after-signup-start-today-sect'>
+          <div className='container pb-3'>
+            <div className='row'>
+              <div className='col-xl-6 offset-xl-3 after-signup-start-today-col text-center'>
+
+                <h2 className='sect-title title-center'>{t('lp.start_today.title')}</h2>
+
+                <ContentLoading
+                  isLoading={tariffsLoading}
+                  isError={tariffsLoadingError}
+                  fetchData={() => getUserTariffs()}
+                >
+                  {tariffsDataList.length > 0 && (
+                    <h2
+                      className='fw-regular mt-4 text-left text-lg-center'
+                      dangerouslySetInnerHTML={{
+                        __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
+                          OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
+                            ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
+                            : tariffsDataList?.[1].price_old_weekly_text,
+                          AMOUNT: tariffsDataList?.[1]?.country === 'br'
+                            ? tariffsDataList?.[1]?.installments?.price_monthly_text
+                            : tariffsDataList?.[1].price_weekly_text,
+                        }),
+                      }}
                     />
+                  )}
+                </ContentLoading>
+
+                <div className='after-signup-start-today-btn-col'>
+                  <Button
+                    pulse
+                    color='primary-shadow'
+                    className='mt-4'
+                    size='lg'
+                    block
+                    onClick={scrollToTariffsSelectForm}
+                    style={{ maxWidth: '500px' }}
+                  >
+                    {t('button.activate_plan')}
+                  </Button>
+
+                  <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
+                </div>
+
+                {isShowPartners() && (
+                  <div className='app-partners-list__wrap mt-5'>
+                    <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
+
+                    <div className='app-partners-list'>
+                      <span
+                        className='app-partners-list__item'
+                        style={{ backgroundImage: `url(${metropolisLogoImg})` }}
+                      />
+                      <span
+                        className='app-partners-list__item'
+                        style={{ backgroundImage: `url(${igLogoImg})` }}
+                      />
+                      <span
+                        className='app-partners-list__item'
+                        style={{ backgroundImage: `url(${terraLogoImg})` }}
+                      />
+                      <span
+                        className='app-partners-list__item'
+                        style={{ backgroundImage: `url(${defatoLogoImg})` }}
+                      />
+                    </div>
                   </div>
+                )}
 
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className='after-signup-plan-select-sect'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-12'>
+
+                <div className='row'>
+                  <div
+                    ref={selectPlanBlockRef}
+                    id='selectTariffPlanBlock'
+                    className={classNames({
+                      'col-md-6': getPaymentFlowType() === '2',
+                      'col-md-7': getPaymentFlowType() !== '2',
+                    })}
+                  >
+
+                    <h2 className='mb-4 mb-xl-5 fw-bold text-center'>
+                      {t('lp.select_plan.title')}
+                    </h2>
+
+                    <ContentLoading
+                      isLoading={tariffsLoading}
+                      isError={tariffsLoadingError}
+                      fetchData={() => getUserTariffs()}
+                    >
+                      <TariffPlanSelect
+                        tariffs={tariffsDataList}
+                        value={activeTariffId}
+                        onChange={(id) => {
+                          if (activeTariffId === null) {
+                            setTimeout(() => {
+                              scrollToCheckoutForm();
+                            }, 100);
+                          }
+
+                          setActiveTariffId(id);
+                          changeSetting('activeTariffIdToPay', id);
+                        }}
+                        specialOfferIndex={1}
+                        localePhrases={localePhrases}
+                      />
+
+                      {getPaymentFlowType() !== '2' && (
+                        <div className='text-center'>
+                          <Link to={routes.checkout} className='mt-5 link-raw'>
+                            <Button color='primary' size='lg' disabled={!getActiveTariffData()}>
+                              {t('button.confirm.tariff')}
+                            </Button>
+                          </Link>
+
+                          {!getActiveTariffData() && (
+                            <div>
+                              <button
+                                type='button'
+                                className='checkout_tariff_error'
+                                onClick={scrollToTariffsSelectForm}
+                              >
+                                {t('checkout.tariff.select.error.msg')}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </ContentLoading>
+
+                    {(debounceWindowWidth > 768 && getPaymentFlowType() === '2') && (
+                      <>
+                        <h2 className='mt-5 mb-4 mb-xl-5 fw-bold text-center text-md-left'>
+                          {t('lp.plan.advantages.title')}
+                        </h2>
+
+                        <div className='advantages-checklist'>
+                          {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
+                            <div key={id} className='advantages-checklist-item'>
+                              <h6 className='advantages-checklist-item__title'>
+                                {t(`lp.plan.advantage${index + 1}.title`)}
+                              </h6>
+
+                              <div className='advantages-checklist-item__content'>
+                                {t(`lp.plan.advantage${index + 1}.descr`)}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <Link to={routes.checkout} className='link-raw'>
+                          <div className='text-center'>
+                            <img
+                              src={t('checkout.safe.img2')}
+                              className='img-fluid mt-4'
+                              style={{ maxWidth: '70%' }}
+                              alt=''
+                            />
+                          </div>
+                        </Link>
+                      </>
+                    )}
+
+                  </div>
+                  {getPaymentFlowType() === '2' && (
+                    <div className='col-md-6 pl-xl-5 mt-4 mt-md-0'>
+
+                      {!tariffsLoading && !tariffsLoadingError ? (
+                        <div ref={paymentFormBlockRef}>
+                          <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
+                            {t('lp.select_payment.title')}
+                          </h3>
+
+                          <CheckoutPaymentFormCard
+                            tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                            disabled={!getActiveTariffData()}
+                            scrollRef={selectPlanBlockRef}
+                            history={history}
+                            localePhrases={localePhrases}
+                          />
+                        </div>
+                      ) : null}
+
+                    </div>
+                  )}
+                  {debounceWindowWidth <= 768 || getPaymentFlowType() !== '2' ? (
+                    <div
+                      className={classNames('mt-45 mt-md-0', {
+                        'col-md-6': getPaymentFlowType() === '2',
+                        'col-md-5': getPaymentFlowType() !== '2',
+                      })}
+                    >
+
+                      <h2 className='mb-4 mb-xl-5 fw-bold text-center text-md-left'>{t('lp.plan.advantages.title')}</h2>
+
+                      <div className='advantages-checklist'>
+                        {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
+                          <div key={id} className='advantages-checklist-item'>
+                            <h6 className='advantages-checklist-item__title'>
+                              {t(`lp.plan.advantage${index + 1}.title`)}
+                            </h6>
+
+                            <div className='advantages-checklist-item__content'>
+                              {t(`lp.plan.advantage${index + 1}.descr`)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <Link to={routes.checkout} className='link-raw'>
+                        <div className='text-center'>
+                          <img
+                            src={t('checkout.safe.img2')}
+                            className='img-fluid mt-4'
+                            style={{ maxWidth: '70%' }}
+                            alt=''
+                          />
+                        </div>
+                      </Link>
+
+                    </div>
+                  ) : null}
                 </div>
-              </div>
 
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section ref={paymentFormBlockRef} className='after-signup-payment-form-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-12'>
-
-              <div
-                className={classNames({
-                'd-none': !getActiveTariffData(),
-                })}
-              >
-                <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
-                  {t('lp.select_payment.title')}
-                </h3>
-
-                <CheckoutPaymentFormCard
-                  tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
-                  disabled={!getActiveTariffData()}
-                  scrollRef={selectPlanBlockRef}
-                  history={history}
-                  localePhrases={localePhrases}
-                />
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='after-signup-faq-sect'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-12'>
-
-              <h2 className='sect-title title-center'>{t('lp.faq.title')}</h2>
-
-              <div className='row mt-xl-5'>
-                <div className='col-lg-6'>
-
-                  <h5 className='mb-4 fw-bold text-center'>{t('lp.faq.q1')}</h5>
-                  <p>{t('lp.faq.a1')}</p>
-
-                </div>
-                <div className='col-lg-6 mt-5 mt-lg-0'>
-
-                  <h5 className='mb-4 fw-bold text-center'>{t('lp.faq.q2')}</h5>
-                  <p>{t('lp.faq.a2')}</p>
-
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='checkout-reserved-block mb-4 blue-style'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-12'>
-
-              <div className='checkout-reserved-block__wrap'>
-                <h4 className='checkout-reserved-block__title'>
-                  {t('lp.bottom_countdown_title')}
-                  {' '}
-                </h4>
-
-                <Button
-                  pulse
-                  color='primary-shadow'
-                  onClick={scrollToTariffsSelectForm}
-                >
-                  {t('button.reveal_plan')}
-                </Button>
-              </div>
-
-            </div>
-          </div>
-        </div>
+        </section>
       </section>
 
       {/* <SalesWidgets
@@ -710,12 +860,12 @@ export default WithTranslate(
       language: state.settings.language,
       isAfterSignup: state.storage.isAfterSignup,
       afterSignupName: state.storage.afterSignupName,
-      afterSignupGoal: state.storage.afterSignupGoal,
       afterSignupWeight: state.storage.afterSignupWeight,
       afterSignupWeightGoal: state.storage.afterSignupWeightGoal,
       afterSignupPredictDate: state.storage.afterSignupPredictDate,
       afterSignupNameFirstSection: state.storage.afterSignupNameFirstSection,
+      activeTariffIdToPay: state.storage.activeTariffIdToPay,
     }),
-    null,
+    { changeSettingAction },
   )(RegisterWelcomePage),
 );

@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { getTranslate } from 'utils';
+import { Link } from 'react-router-dom';
+import { routes } from 'constants/routes';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
 
@@ -208,9 +210,11 @@ const TariffPlanSelect = ({
             </div>
 
             {specialOfferIndex === tariffIndex && (
-              <div className='tariff-plan__item-sale'>
-                {t('checkout.plan.special_offer.label')}
-              </div>
+              <Link to={routes.checkout} className='link-raw'>
+                <div className='tariff-plan__item-sale'>
+                  {t('checkout.plan.special_offer.label')}
+                </div>
+              </Link>
             )}
           </div>
         </label>

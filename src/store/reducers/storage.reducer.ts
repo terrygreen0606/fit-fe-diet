@@ -13,6 +13,7 @@ const initialSettings = {
   afterSignupWeightGoal: null,
   afterSignupPredictDate: null,
   afterSignupNameFirstSection: null,
+  activeTariffIdToPay: null,
 };
 
 const storageReducer = (state = initialSettings, action) => {

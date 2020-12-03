@@ -15,6 +15,7 @@ import Helmet from 'react-helmet';
 import { InputError } from 'types';
 import { routes } from 'constants/routes';
 import queryString from 'query-string';
+import { changeSetting as changeSettingAction } from 'store/actions';
 import {
   getAppTariffs,
   fetchUserProfile,
@@ -48,6 +49,8 @@ const checkoutFormDefault = {
 };
 
 const CheckoutPage = ({
+  language,
+  changeSettingAction: changeSetting,
   settings,
   storage,
   history,
@@ -201,8 +204,8 @@ const CheckoutPage = ({
           if (data.data.length) {
             setTariffsDataList(data.data);
 
-            if (data.data.length > 2) {
-              setActiveTariffId(data.data[1]?.tariff);
+            if (storage.activeTariffIdToPay) {
+              setActiveTariffId(storage.activeTariffIdToPay);
             }
           }
         } else {
@@ -341,7 +344,7 @@ const CheckoutPage = ({
 
                     {isShowPartners() && (
                       <div className='app-partners-list__wrap mt-45'>
-                        <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
+                        <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
 
                         <div className='app-partners-list'>
                           <span
@@ -385,7 +388,7 @@ const CheckoutPage = ({
 
                     <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
                       <h2 className='mb-4 fw-bold text-center'>
-                        {t('lp.select_plan_title')}
+                        {t('lp.select_plan.title')}
                       </h2>
 
                       <ContentLoading
@@ -404,6 +407,7 @@ const CheckoutPage = ({
                             }
 
                             setActiveTariffId(id);
+                            changeSetting('activeTariffIdToPay', id);
                           }}
                           specialOfferIndex={1}
                           localePhrases={localePhrases}
@@ -464,5 +468,6 @@ export default WithTranslate(
       settings: state.settings,
       storage: state.storage,
     }),
+    { changeSettingAction },
   )(CheckoutPage),
 );

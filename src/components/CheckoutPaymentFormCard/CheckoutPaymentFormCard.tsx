@@ -604,7 +604,7 @@ const CheckoutPaymentFormCard = ({
               <div>
                 <button
                   type='button'
-                  className='checkout-payment-card__form_tariff_error'
+                  className='checkout_tariff_error'
                   onClick={scrollToTariffsSelectForm}
                 >
                   {t('checkout.tariff.select.error.msg')}
@@ -615,8 +615,10 @@ const CheckoutPaymentFormCard = ({
 
           <img className='mt-5 img-fluid' src={t('checkout.guaranteed.img')} alt='' />
 
-          <div className='money-back-guarantee-block mt-4'>
-            <img src={t('checkout.money_back.img')} alt='' className='money-back-guarantee-block__img' />
+          <div
+            className='money-back-guarantee-block mt-4'
+          >
+            <img src={t('checkout.money_back.img')} className='money-back-guarantee-block__img' alt="" />
             <h5 className='money-back-guarantee-block__title'>{t('lp.money_back_title')}</h5>
             <p className='money-back-guarantee-block__descr'>{t('lp.money_back_descr')}</p>
           </div>
