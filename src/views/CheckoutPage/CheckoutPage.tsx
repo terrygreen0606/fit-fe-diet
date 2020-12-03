@@ -498,10 +498,9 @@ const CheckoutPage = ({
 export default WithTranslate(
   connect(
     (state: any) => ({
-      language: state.settings.settings,
       settings: state.settings,
       storage: state.storage,
     }),
-    { changeSettingAction }
+    { changeSettingAction },
   )(CheckoutPage),
 );
