@@ -451,7 +451,7 @@ const RegisterWelcomePage = ({
                 </div>
 
               </div>
-              <div className='col-lg-4 order-1 mt-5 mt-md-0 mb-4 text-center text-lg-left'>
+              <div className='col-lg-4 order-1 mb-4 text-center text-lg-left'>
 
                 <button
                   type='button'
