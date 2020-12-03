@@ -334,23 +334,10 @@ const CheckoutPage = ({
               <div className='col-12'>
 
                 <div className='checkout-tpl-container'>
-                  <div className='checkout-person-plan-block'>
-                    <h4 className='checkout-person-plan-title'>
-                      {profileLoading ? (
-                        <Spinner />
-                      ) : (
-                          <div
-                            dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
-                          />
-                        )}
-                    </h4>
+                  <div className='checkout-tpl-title'>
+                    Last Step: Activate your exclusive meal plan below
                   </div>
-
                   <div className='checkout-rewards-block'>
-                    <h1 className='checkout-rewards-block__title'>
-                      <RewardIcon className='mr-3' />
-                      {t('checkout.rewards_title')}
-                    </h1>
 
                     {isShowPartners() && (
                       <div className='app-partners-list__wrap mt-45'>
@@ -395,26 +382,6 @@ const CheckoutPage = ({
                         {t('checkout.reserved_block.countdown.title')}
                       </p>
                     </div>
-
-                    <div className='text-center mt-5'>
-                      <h6 className='checkout-advantages__title mb-5'>
-                        {t('checkout.advantages_title')}
-                        :
-                      </h6>
-
-                      <div className='app-advantages-list list-xs text-left'>
-                        <div className='app-advantages-list__item'>{t('checkout.advantage_1')}</div>
-                        <div className='app-advantages-list__item'>{t('checkout.advantage_2')}</div>
-                      </div>
-                    </div>
-
-                    <div className='pl-sm-5'>
-                      <div className='product-plants-one-tree-block mt-5'>
-                        <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
-                      </div>
-                    </div>
-
-                    <hr className='checkout-divider' />
 
                     <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
                       <h2 className='mb-4 fw-bold text-center'>
