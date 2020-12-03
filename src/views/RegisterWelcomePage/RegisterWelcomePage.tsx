@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect, useRef } from 'react';
-import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
@@ -170,7 +169,7 @@ const RegisterWelcomePage = ({
       setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
     }
 
-    if (selectTariffPlanBlock.getBoundingClientRect().top < 80) {
+    if (selectTariffPlanBlock.getBoundingClientRect().top < 400) {
       if (mainPromoHeader.classList.contains('fixed-top')) {
         mainPromoHeader.classList.remove('fixed-top');
       }
@@ -473,7 +472,18 @@ const RegisterWelcomePage = ({
         <section className='after-signup-reviews-sect'>
           <div className='container'>
             <div className='row'>
-              <div className='col-md-6 order-md-2 mb-5 mt-md-0 text-center'>
+              <div className='col-12 mb-45'>
+
+                <div className='row'>
+                  <div className='col-md-6 col-xl-5 offset-xl-1'>
+
+                    <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
+
+                  </div>
+                </div>
+
+              </div>
+              <div className='col-md-6 order-md-3 mb-5 mt-md-0 text-center'>
 
                 <button
                   type='button'
@@ -486,8 +496,7 @@ const RegisterWelcomePage = ({
               </div>
               <div className='col-md-6 col-xl-5 offset-xl-1'>
 
-                <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
-                <p className='mt-45' dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
+                <p dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
                 <h4 className='mt-4 fw-bold'>{t('lp.reviews.subtitle')}</h4>
 
                 <ContentLoading
@@ -725,7 +734,12 @@ const RegisterWelcomePage = ({
                       {getPaymentFlowType() !== '2' && (
                         <div className='text-center'>
                           <Link to={routes.checkout} className='mt-5 link-raw'>
-                            <Button color='primary' size='lg' disabled={!getActiveTariffData()}>
+                            <Button
+                              color='primary'
+                              size='lg'
+                              arrow
+                              disabled={!getActiveTariffData()}
+                            >
                               {t('button.confirm.tariff')}
                             </Button>
                           </Link>
