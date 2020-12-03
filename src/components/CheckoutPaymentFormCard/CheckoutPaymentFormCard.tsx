@@ -244,8 +244,6 @@ const CheckoutPaymentFormCard = ({
         .then((response) => {
           const paymentOrder = response.data;
 
-          console.log(paymentOrder);
-
           if (paymentOrder) {
             if (paymentOrder.status) {
               switch (paymentOrder.status) {

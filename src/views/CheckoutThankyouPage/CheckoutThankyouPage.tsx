@@ -31,7 +31,7 @@ const CheckoutThankyouPage = ({
     getTranslate(localePhrases, code, placeholders);
 
   const [tariffUntilTs, setTariffUntilTs] = useState<string>(null);
-  const [isLoadingTariff, setIsLoadingTariff] = useState<boolean>(false);
+  const [isLoadingTariff, setIsLoadingTariff] = useState<boolean>(true);
   const [isLoadingTariffError, setIsLoadingTariffError] = useState<boolean>(false);
 
   const getTariffDate = (date) => {
