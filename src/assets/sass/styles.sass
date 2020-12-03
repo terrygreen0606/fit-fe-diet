@@ -130,18 +130,18 @@
 
 // Money back block
 .money-back-guarantee-block
-  display: flex
-  align-items: center
-  flex-wrap: wrap
   min-height: 145px
   padding: 20px
-  padding-left: 165px
   border: 1px solid $steel-blue
   border-radius: 20px
   background-color: #fff
   background-position: 45px 25px
   background-size: 75px
   background-repeat: no-repeat
+  &__img
+    float: left
+    margin-right: 20px
+    width: 90px
   &__title
     font-weight: 400
     font-size: 22px
@@ -153,17 +153,14 @@
     font-size: 16px
     line-height: 20px
     color: #000000
-
   @media only screen and (max-width : 768px)
-    padding-left: 84px
     background-size: 59px
     border: none
     background-position: 0 25px
-
-    &_title
+    &__title
       font-size: 14px
       line-height: 18px
-    &_descr
+    &__descr
       font-size: 14px
       line-height: 18px
 
@@ -228,15 +225,15 @@
 .app-partners-list
   display: flex
   flex-wrap: wrap
+  justify-content: center
   &__wrap
     display: flex
     flex-wrap: wrap
     justify-content: center
     .app-partners-list
       &__title
-        flex: 0 0 100px
+        flex: 0 0 100%
         margin-bottom: 25px
-
       @media only screen and (max-width : 768px)
         flex: 0 0 100%
         justify-content: center
@@ -255,19 +252,14 @@
     background-size: contain
     background-repeat: no-repeat
     background-position: center center
-
     @media only screen and (max-width : 480px)
       width: calc(50% - 10px)
       flex: 0 0 calc(50% - 10px)
       margin-right: 0
-
       &:nth-child(2n)
-        margin-left: 20px
-
+        margin-left: 10px
     &:not(:last-child)
-      margin-right: 35px
-      @media only screen and (max-width : 768px)
-        margin-right: 20px
+      margin-right: 10px
       @media only screen and (max-width : 480px)
         margin-right: 0
 
@@ -285,7 +277,6 @@
     position: relative
     margin-bottom: 60px
     text-align: center
-
     &::before
       content: ''
       position: absolute
@@ -294,14 +285,12 @@
       transform: translate(-50%, -50%)
       width: 480px
       border-bottom: 1px dashed $steel-blue
-
     &-text
       position: relative
       padding: 0 32px
       font-size: 26px
       line-height: 1.2
       background-color: #ffffff
-
 
 // Reivew rate single
 .app-review-rate-single
@@ -314,7 +303,6 @@
     font-weight: 400
     font-size: 18px
     line-height: 22px
-
 
 // App single review
 .app-review-single-item
@@ -408,11 +396,12 @@
 .sale-points
   &__list
     text-align: center
-    @media only screen and (max-width : 480px)
-      text-align: left
     .sale-points__item
       margin-right: 27px
       margin-bottom: 13px
+      @media (max-width: 768px)
+        margin-bottom: 7px
+        font-size: 14px
   &__item
     position: relative
     display: inline-block

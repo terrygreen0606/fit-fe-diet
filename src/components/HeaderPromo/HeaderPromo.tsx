@@ -47,7 +47,6 @@ const HeaderPromo = (props: any) => {
             >
               <Button
                 className='main-promo-header__btn'
-                pulse
                 size='sm'
                 color='primary-shadow'
               >
