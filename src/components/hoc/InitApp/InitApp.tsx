@@ -38,7 +38,6 @@ const InitApp = ({ history, children }: InitAppProps) => {
   axios.interceptors.response.use((response) => response, (error) => {
     if (error.response) {
       if (error.response.status === xhrStatuses.NOT_PAID) {
-        sessionStorage.setItem('redirectedToPayView', 'true');
         history.push(routes.registerWelcome);
       }
     }

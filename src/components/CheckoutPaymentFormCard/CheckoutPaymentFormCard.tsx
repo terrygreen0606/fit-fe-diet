@@ -172,7 +172,7 @@ const CheckoutPaymentFormCard = ({
 
   const getFieldErrors = (field: string) =>
     getFieldErrorsUtil(field, checkoutFormErrors);
-    
+
   const isFieldValid = (field: string) =>
     getFieldErrors(field).length === 0 && checkoutForm[field] && checkoutForm[field].length > 0;
 
@@ -252,8 +252,9 @@ const CheckoutPaymentFormCard = ({
                   setCheckoutForm({ ...checkoutFormDefault });
                   history.push({
                     pathname: routes.checkoutThankyou,
-                    orderTransactionId: paymentOrder.order_number,
+                    orderNumber: paymentOrder.order_number,
                     orderAmount: paymentOrder.amount_usd,
+                    orderId: paymentOrder.order_id,
                   });
                   break;
 
