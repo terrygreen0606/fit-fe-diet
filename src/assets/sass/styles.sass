@@ -135,30 +135,32 @@
   flex-wrap: wrap
   min-height: 145px
   padding: 20px
-  padding-left: 165px
   border: 1px solid $steel-blue
   border-radius: 20px
   background-color: #fff
-  background-position: 45px 25px
-  background-size: 75px
-  background-repeat: no-repeat
+
+  &__img
+    width: 75px
+    height: auto
+  
   &__title
+    width: calc(100% - 75px)
+    padding-left: 40px
     font-weight: 400
     font-size: 22px
     line-height: 24px
     text-transform: uppercase
     color: #000000
   &__descr
+    margin-top: 20px
     font-weight: 400
     font-size: 16px
     line-height: 20px
     color: #000000
 
   @media only screen and (max-width : 768px)
-    padding-left: 84px
-    background-size: 59px
     border: none
-    background-position: 0 25px
+    background-color: transparent
 
     &_title
       font-size: 14px
