@@ -421,7 +421,7 @@ const CheckoutPage = ({
 
                     <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
                       <h2 className='mb-4 fw-bold text-center'>
-                        {t('lp.select_plan_title')}
+                        {t('lp.select_plan.title')}
                       </h2>
 
                       <ContentLoading
