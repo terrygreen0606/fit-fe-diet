@@ -49,6 +49,9 @@ const CheckoutThankyouPage = ({
 
   const getPaymentStatusUser = () => {
     if (location.orderId) {
+      setIsLoadingTariff(true);
+      setIsLoadingTariffError(false);
+
       getPaymentStatus(location.orderId)
         .then(({ data }) => {
           setIsLoadingTariff(false);
