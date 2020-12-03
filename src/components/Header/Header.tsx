@@ -43,7 +43,7 @@ const Header = (props: any) => {
           <div className='row'>
             <div className='col-2'>
               <Logo />
-              
+
               {location?.pathname === routes.main ? (
                 <Link to={routes.main} className='mainHeader_logo-mobile'>
                   <MobileLogoIcon />

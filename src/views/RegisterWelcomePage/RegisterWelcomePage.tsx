@@ -189,11 +189,6 @@ const RegisterWelcomePage = ({
     getTranslate(localePhrases, code, placeholders);
 
   useEffect(() => {
-    if (sessionStorage.getItem('redirectedToPayView') === 'true') {
-      toast.warning(t('tariff.not_paid'));
-      sessionStorage.removeItem('redirectedToPayView');
-    }
-
     getUserTariffs();
     getUserReviews();
 

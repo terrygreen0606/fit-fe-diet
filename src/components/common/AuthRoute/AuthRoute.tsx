@@ -5,7 +5,7 @@ import { Route, Redirect } from 'react-router-dom';
 const AuthRoute = ({ component, ...rest }: any) => (
   <Route
     {...rest}
-    render={(props) => (!rest.isAuthenticated 
+    render={(props) => (!rest.isAuthenticated
       ? component(props)
       : (
         <Redirect

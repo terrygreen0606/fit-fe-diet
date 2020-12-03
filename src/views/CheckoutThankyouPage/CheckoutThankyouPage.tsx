@@ -1,47 +1,84 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getTranslate, getImagePath } from 'utils';
-import { getUserInviteLink } from 'api';
+import {
+  getTranslate,
+  getImagePath,
+  convertTime,
+} from 'utils';
+import { getUserInviteLink, getPaymentStatus } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 import InviteEmail from 'components/common/Forms/InviteEmail';
 import ShareButtons from 'components/ShareButtons';
+import ContentLoading from 'components/hoc/ContentLoading';
 
 import './CheckoutThankyouPage.sass';
 
 const CheckoutThankyouPage = ({
-  paid_until,
+  settings,
   localePhrases,
   location,
 }: any) => {
   let orderAmount: number = null;
   let orderTransactionId: string = null;
+
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
-  const getTariffDate = (date) => {
-    let dateStr = '';
+  const [tariffUntilTs, setTariffUntilTs] = useState<string>(null);
+  const [isLoadingTariff, setIsLoadingTariff] = useState<boolean>(true);
+  const [isLoadingTariffError, setIsLoadingTariffError] = useState<boolean>(false);
 
-    if (moment(new Date(date * 1000)).format('YYYY') === moment().format('YYYY')) {
-      dateStr = moment(new Date(date * 1000)).format('DD.MM');
-    } else {
-      dateStr = moment(new Date(date * 1000)).format('DD.MM.YYYY');
+  const getTariffDate = (date) => {
+    const today = moment().unix();
+
+    if (
+      convertTime(today, settings.language, { year: 'numeric' }) ===
+      convertTime(date, settings.language, { year: 'numeric' })
+      ) {
+        return convertTime(date, settings.language, { day: '2-digit', month: '2-digit' });
     }
 
-    return dateStr;
+    return convertTime(date, settings.language);
+  };
+
+  const getPaymentStatusUser = () => {
+    if (location.orderId) {
+      setIsLoadingTariff(true);
+      setIsLoadingTariffError(false);
+
+      getPaymentStatus(location.orderId)
+        .then(({ data }) => {
+          setIsLoadingTariff(false);
+          if (data.success && data.data) {
+            setTariffUntilTs(data.data.tariff_until_ts);
+          } else {
+            setIsLoadingTariffError(true);
+          }
+        })
+        .catch(() => {
+          setIsLoadingTariff(false);
+          setIsLoadingTariffError(true);
+        });
+    }
   };
 
   useEffect(() => {
     orderAmount = location.orderAmount;
-    orderTransactionId = location.orderTransactionId;
+    orderTransactionId = location.orderNumber;
+
     setTimeout(() => {
       window.history.pushState(null, null, '#');
     }, 100);
+
+    if (location.orderId) {
+      getPaymentStatusUser();
+    }
   }, []);
 
   return (
@@ -59,14 +96,21 @@ const CheckoutThankyouPage = ({
               <p>{t('checkout.thankyou.header_descr')}</p>
 
               <div className='mt-4 mt-sm-5 pt-lg-5'>
-                {paid_until > 0 ? (
-                  <h2
-                    dangerouslySetInnerHTML={{
-                      __html: t('checkout.thankyou.trial_info', {
-                        PERIOD: getTariffDate(paid_until),
-                      }),
-                    }}
-                  />
+                {location.orderId ? (
+                  <ContentLoading
+                    isLoading={isLoadingTariff}
+                    isError={isLoadingTariffError}
+                    fetchData={() => getPaymentStatusUser()}
+                    spinSize='lg'
+                  >
+                    <h2
+                      dangerouslySetInnerHTML={{
+                        __html: t('checkout.thankyou.trial_info', {
+                          PERIOD: getTariffDate(tariffUntilTs),
+                        }),
+                      }}
+                    />
+                  </ContentLoading>
                 ) : (
                     <h2>{t('checkout.thankyou.trial_info.waiting')}</h2>
                   )}
@@ -194,7 +238,7 @@ const CheckoutThankyouPage = ({
 export default WithTranslate(
   connect(
     (state: any) => ({
-      paid_until: state.settings.paid_until,
+      settings: state.settings,
     }),
     null,
   )(CheckoutThankyouPage),
