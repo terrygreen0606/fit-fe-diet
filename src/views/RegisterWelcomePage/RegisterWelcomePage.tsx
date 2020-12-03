@@ -427,14 +427,14 @@ const RegisterWelcomePage = ({
               </div>
               <div className='col-lg-8 offset-lg-4 mb-45 mb-lg-0 pl-xl-5 after-signup-intro-content-col'>
 
-                <h2>{t('lp.intro_sect_title')}</h2>
+                <h2>{t('lp.intro.title')}</h2>
 
               </div>
               <div className='col-lg-8 order-2 pl-xl-5 mt-lg-0 after-signup-intro-content-col'>
 
                 <img className='after-signup-intro-arrow' src={getImagePath('point-arrow-black.png')} alt='' />
 
-                <div dangerouslySetInnerHTML={{ __html: t('lp.intro_sect_content') }}></div>
+                <div dangerouslySetInnerHTML={{ __html: t('lp.intro.content') }}></div>
 
                 <div className='after-signup-intro-content-btn mt-4 text-center text-xl-left'>
                   <Button
@@ -486,9 +486,9 @@ const RegisterWelcomePage = ({
               </div>
               <div className='col-md-6 col-xl-5 offset-xl-1'>
 
-                <h2 className='fw-bold'>{t('lp.reviews_sect.title')}</h2>
-                <p className='mt-45' dangerouslySetInnerHTML={{ __html: t('lp.reviews_sect.descr') }} />
-                <h4 className='mt-4 fw-bold'>{t('lp.reviews_sect.subtitle')}</h4>
+                <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
+                <p className='mt-45' dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
+                <h4 className='mt-4 fw-bold'>{t('lp.reviews.subtitle')}</h4>
 
                 <ContentLoading
                   isLoading={reviewsLoading}
