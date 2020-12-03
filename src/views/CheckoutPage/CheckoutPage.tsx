@@ -1,18 +1,14 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState, useEffect, useRef } from 'react';
-import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import {
-  validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   scrollToElement,
   convertTime,
 } from 'utils';
 import Helmet from 'react-helmet';
-import { InputError } from 'types';
 import { routes } from 'constants/routes';
 import queryString from 'query-string';
 import { changeSetting as changeSettingAction } from 'store/actions';
@@ -26,11 +22,8 @@ import {
 import Logo from 'components/Logo';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
-import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
-import FormValidatorUtil from 'utils/FormValidator';
-// import SalesWidgets from 'components/SalesWidgets';
 import TariffPlanSelect from 'components/TariffPlanSelect';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
@@ -41,15 +34,7 @@ import igLogoImg from 'assets/img/partners/ig.png';
 import terraLogoImg from 'assets/img/partners/terra.png';
 import defatoLogoImg from 'assets/img/partners/defato.png';
 
-import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
-
-const checkoutFormDefault = {
-  payment_type: 'credit_card',
-  discount_code: null,
-};
-
 const CheckoutPage = ({
-  language,
   changeSettingAction: changeSetting,
   settings,
   storage,
@@ -61,9 +46,6 @@ const CheckoutPage = ({
     getTranslate(localePhrases, code, placeholders);
 
   const { order: orderId } = queryString.parse(location.search);
-
-  const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
-  const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
 
   const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
   const [tariffsLoading, setTariffsLoading] = useState<boolean>(false);
@@ -235,56 +217,9 @@ const CheckoutPage = ({
     };
   }, []);
 
-  const FormValidator = FormValidatorUtil(localePhrases);
-
-  const validateOnChange = (name: string, value: any, event, element?) => {
-    validateFieldOnChange(
-      name,
-      value,
-      event,
-      checkoutForm,
-      setCheckoutForm,
-      checkoutFormErrors,
-      setCheckoutFormErrors,
-      localePhrases,
-      element,
-    );
-  };
-
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, checkoutFormErrors);
-
   const getActiveTariffData = () => {
     const activeTariff = tariffsDataList.find((tariff) => tariff.tariff === activeTariffId);
     return activeTariff;
-  };
-
-  const getTariffDataValue = (property: string) => {
-    let dataEl = null;
-    const tariffData = getActiveTariffData();
-
-    if (tariffData && tariffData[property]) {
-      dataEl = tariffData[property];
-    }
-
-    return dataEl;
-  };
-
-  const checkoutDiscountFormSubmit = (e) => {
-    e.preventDefault();
-
-    const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
-
-    const { errors, hasError } = FormValidator.bulkValidate(inputs);
-
-    setCheckoutFormErrors([
-      ...checkoutFormErrors,
-      ...errors,
-    ]);
-
-    if (!hasError) {}
   };
 
   const isShowPartners = () => settings.language === 'br';
@@ -310,8 +245,6 @@ const CheckoutPage = ({
           <Button className='checkout-warning-modal__btn' block color='mint'>{t('checkout.warning_modal.btn')}</Button>
         </Modal.Main>
       </Modal>
-
-      {/* <SalesWidgets /> */}
 
       <section className='checkout-logo-sect'>
         <div className='container'>

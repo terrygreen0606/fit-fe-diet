@@ -5,7 +5,6 @@ import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
   getTranslate,
-  getImagePath,
 } from 'utils';
 import { routes } from 'constants/routes';
 import { InputError } from 'types';
