@@ -14,6 +14,7 @@ import Helmet from 'react-helmet';
 import { InputError } from 'types';
 import { routes } from 'constants/routes';
 import queryString from 'query-string';
+import { changeSetting as changeSettingAction } from 'store/actions';
 import {
   getAppTariffs,
   fetchUserProfile,
@@ -48,6 +49,8 @@ const checkoutFormDefault = {
 
 const CheckoutPage = ({
   language,
+  changeSettingAction: changeSetting,
+  activeTariffIdToPay,
   history,
   location,
   localePhrases,
@@ -154,8 +157,8 @@ const CheckoutPage = ({
           if (data.data.length) {
             setTariffsDataList(data.data);
 
-            if (data.data.length > 2) {
-              setActiveTariffId(data.data[1]?.tariff);
+            if (activeTariffIdToPay) {
+              setActiveTariffId(activeTariffIdToPay);
             }
           }
         } else {
@@ -381,6 +384,7 @@ const CheckoutPage = ({
                             }
 
                             setActiveTariffId(id);
+                            changeSetting('activeTariffIdToPay', id);
                           }}
                           specialOfferIndex={1}
                           localePhrases={localePhrases}
@@ -439,6 +443,8 @@ export default WithTranslate(
   connect(
     (state: any) => ({
       language: state.settings.settings,
+      activeTariffIdToPay: state.storage.activeTariffIdToPay,
     }),
+    { changeSettingAction }
   )(CheckoutPage),
 );

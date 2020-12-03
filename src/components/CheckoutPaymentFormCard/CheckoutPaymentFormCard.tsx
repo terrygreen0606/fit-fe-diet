@@ -602,7 +602,7 @@ const CheckoutPaymentFormCard = ({
               <div>
                 <button
                   type='button'
-                  className='checkout-payment-card__form_tariff_error'
+                  className='checkout_tariff_error'
                   onClick={scrollToTariffsSelectForm}
                 >
                   {t('checkout.tariff.select.error.msg')}

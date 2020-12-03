@@ -6,12 +6,17 @@ import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import {
   getTranslate,
   getImagePath,
   scrollToElement,
   getLocaleByLang,
 } from 'utils';
+import { routes } from 'constants/routes';
+import { changeSetting as changeSettingAction } from 'store/actions';
+import useWindowSize from 'components/hooks/useWindowSize';
+import useDebounce from 'components/hooks/useDebounce';
 import { getAppTariffs, getAppReviews } from 'api';
 
 // Components
@@ -42,11 +47,16 @@ const RegisterWelcomePage = ({
   afterSignupWeightGoal,
   afterSignupPredictDate,
   afterSignupNameFirstSection,
+  activeTariffIdToPay,
+  changeSettingAction: changeSetting,
   measurement,
   language,
   history,
   localePhrases,
 }: any) => {
+  const { width: windowWidth } = useWindowSize();
+  const debounceWindowWidth = useDebounce(windowWidth, 500);
+
   const [reviewsLoading, setReviewsLoading] = useState<boolean>(false);
   const [reviewsLoadingError, setReviewsLoadingError] = useState<boolean>(false);
 
@@ -132,6 +142,10 @@ const RegisterWelcomePage = ({
             ...review,
             id: uuid(),
           })));
+
+          if (activeTariffIdToPay) {
+            setActiveTariffId(activeTariffIdToPay);
+          }
         }
       })
       .catch(() => {
@@ -270,6 +284,18 @@ const RegisterWelcomePage = ({
   };
 
   const isShowPartners = () => language === 'br';
+
+  const getPaymentFlowType = () => {
+    let paymentFlow = null;
+
+    const paymentFlowData = window['dataLayer']?.find((data) => data['payment_flow']);
+
+    if (paymentFlowData) {
+      paymentFlow = paymentFlowData['payment_flow'];
+    }
+
+    return paymentFlow;
+  };
 
   return (
     <>
@@ -666,79 +692,156 @@ const RegisterWelcomePage = ({
               <div className='col-12'>
 
                 <div className='row'>
-                  <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='col-md-6'>
+                  <div
+                    ref={selectPlanBlockRef}
+                    id='selectTariffPlanBlock'
+                    className={classNames({
+                      'col-md-6': getPaymentFlowType() === '2',
+                      'col-md-7': getPaymentFlowType() !== '2',
+                    })}
+                  >
 
                     <h2 className='mb-4 mb-xl-5 fw-bold text-center'>
                       {t('lp.select_plan_title')}
                     </h2>
 
-                    <TariffPlanSelect
-                      tariffs={tariffsDataList}
-                      value={activeTariffId}
-                      onChange={(id) => {
-                        if (activeTariffId === null) {
-                          setTimeout(() => {
-                            scrollToCheckoutForm();
-                          }, 100);
-                        }
-
-                        setActiveTariffId(id);
-                      }}
-                      specialOfferIndex={1}
-                      localePhrases={localePhrases}
-                    />
-
-                  </div>
-                  <div className='col-md-6 pl-xl-5 mt-4 mt-md-0'>
-
-                    <div
-                      ref={paymentFormBlockRef}
-                      className={classNames({
-                      'd-none': !getActiveTariffData(),
-                      })}
+                    <ContentLoading
+                      isLoading={tariffsLoading}
+                      isError={tariffsLoadingError}
+                      fetchData={() => getUserTariffs()}
                     >
-                      <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
-                        {t('lp.select_payment.title')}
-                      </h3>
+                      <TariffPlanSelect
+                        tariffs={tariffsDataList}
+                        value={activeTariffId}
+                        onChange={(id) => {
+                          if (activeTariffId === null) {
+                            setTimeout(() => {
+                              scrollToCheckoutForm();
+                            }, 100);
+                          }
 
-                      <CheckoutPaymentFormCard
-                        tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
-                        disabled={!getActiveTariffData()}
-                        scrollRef={selectPlanBlockRef}
-                        history={history}
+                          setActiveTariffId(id);
+                          changeSetting('activeTariffIdToPay', id);
+                        }}
+                        specialOfferIndex={1}
                         localePhrases={localePhrases}
                       />
-                    </div>
 
-                  </div>
-                  <div className='col-md-6'>
+                      {getPaymentFlowType() !== '2' && (
+                        <div className='text-center'>
+                          <Link to={routes.checkout} className='mt-5 link-raw'>
+                            <Button color='primary' size='lg' disabled={!getActiveTariffData()}>
+                              {t('button.confirm.tariff')}
+                            </Button>
+                          </Link>
 
-                    <h2 className='mb-4 mb-xl-5 fw-bold text-center text-md-left'>{t('lp.plan.advantages_title')}</h2>
-
-                    <div className='advantages-checklist'>
-                      {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
-                        <div key={id} className='advantages-checklist-item'>
-                          <h6 className='advantages-checklist-item__title'>
-                            {t(`lp.plan.advantage${index + 1}.title`)}
-                          </h6>
-
-                          <div className='advantages-checklist-item__content'>
-                            {t(`lp.plan.advantage${index + 1}.descr`)}
-                          </div>
+                          {!getActiveTariffData() && (
+                            <div>
+                              <button
+                                type='button'
+                                className='checkout_tariff_error'
+                                onClick={scrollToTariffsSelectForm}
+                              >
+                                {t('checkout.tariff.select.error.msg')}
+                              </button>
+                            </div>
+                          )}
                         </div>
-                      ))}
-                    </div>
+                      )}
+                    </ContentLoading>
 
-                    <div className='text-center'>
-                      <img
-                        src={t('checkout.safe.img2')}
-                        className='img-fluid mt-4'
-                        style={{ maxWidth: '70%' }}
-                        alt=''
-                      />
-                    </div>
+                    {(debounceWindowWidth > 768 && getPaymentFlowType() === '2') && (
+                      <>
+                        <h2 className='mt-5 mb-4 mb-xl-5 fw-bold text-center text-md-left'>
+                          {t('lp.plan.advantages_title')}
+                        </h2>
+
+                        <div className='advantages-checklist'>
+                          {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
+                            <div key={id} className='advantages-checklist-item'>
+                              <h6 className='advantages-checklist-item__title'>
+                                {t(`lp.plan.advantage${index + 1}.title`)}
+                              </h6>
+
+                              <div className='advantages-checklist-item__content'>
+                                {t(`lp.plan.advantage${index + 1}.descr`)}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <Link to={routes.checkout} className="link-raw">
+                          <div className='text-center'>
+                            <img
+                              src={t('checkout.safe.img2')}
+                              className='img-fluid mt-4'
+                              style={{ maxWidth: '70%' }}
+                              alt=''
+                            />
+                          </div>
+                        </Link>
+                      </>
+                    )}
 
                   </div>
+                  {getPaymentFlowType() === '2' && (
+                    <div className='col-md-6 pl-xl-5 mt-4 mt-md-0'>
+
+                      {!tariffsLoading && !tariffsLoadingError ? (
+                        <div ref={paymentFormBlockRef}>
+                          <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
+                            {t('lp.select_payment.title')}
+                          </h3>
+
+                          <CheckoutPaymentFormCard
+                            tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                            disabled={!getActiveTariffData()}
+                            scrollRef={selectPlanBlockRef}
+                            history={history}
+                            localePhrases={localePhrases}
+                          />
+                        </div>
+                      ) : null}
+
+                    </div>
+                  )}
+                  {debounceWindowWidth <= 768 || getPaymentFlowType() !== '2' ? (
+                    <div
+                      className={classNames('mt-45 mt-md-0', {
+                        'col-md-6': getPaymentFlowType() === '2',
+                        'col-md-5': getPaymentFlowType() !== '2',
+                      })}
+                    >
+
+                      <h2 className='mb-4 mb-xl-5 fw-bold text-center text-md-left'>{t('lp.plan.advantages_title')}</h2>
+
+                      <div className='advantages-checklist'>
+                        {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
+                          <div key={id} className='advantages-checklist-item'>
+                            <h6 className='advantages-checklist-item__title'>
+                              {t(`lp.plan.advantage${index + 1}.title`)}
+                            </h6>
+
+                            <div className='advantages-checklist-item__content'>
+                              {t(`lp.plan.advantage${index + 1}.descr`)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <Link to={routes.checkout} className='link-raw'>
+                        <div className='text-center'>
+                          <img
+                            src={t('checkout.safe.img2')}
+                            className='img-fluid mt-4'
+                            style={{ maxWidth: '70%' }}
+                            alt=''
+                          />
+                        </div>
+                      </Link>
+
+                    </div>
+                  ) : null}
                 </div>
 
               </div>
@@ -766,7 +869,8 @@ export default WithTranslate(
       afterSignupWeightGoal: state.storage.afterSignupWeightGoal,
       afterSignupPredictDate: state.storage.afterSignupPredictDate,
       afterSignupNameFirstSection: state.storage.afterSignupNameFirstSection,
+      activeTariffIdToPay: state.storage.activeTariffIdToPay,
     }),
-    null,
+    { changeSettingAction },
   )(RegisterWelcomePage),
 );
