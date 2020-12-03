@@ -401,7 +401,7 @@ const RegisterWelcomePage = ({
 
                 {isShowPartners() && (
                   <div className='mb-4'>
-                    <h5 className='fw-bold'>{t('lp.partners_list_title')}</h5>
+                    <h5 className='fw-bold'>{t('lp.partners_list.title')}</h5>
 
                     <div className='app-partners-list'>
                       <span
@@ -539,7 +539,7 @@ const RegisterWelcomePage = ({
             <div className='row'>
               <div className='col-xl-6'>
 
-                <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.advantages_title')}</h2>
+                <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.advantages.title')}</h2>
 
                 <div className='app-advantages-list'>
                   <div className='app-advantages-list__item'>{t('lp.advantage_1')}</div>
@@ -611,7 +611,7 @@ const RegisterWelcomePage = ({
             <div className='row'>
               <div className='col-xl-6 offset-xl-3 after-signup-start-today-col text-center'>
 
-                <h2 className='sect-title title-center'>{t('lp.start_today_title')}</h2>
+                <h2 className='sect-title title-center'>{t('lp.start_today.title')}</h2>
 
                 <ContentLoading
                   isLoading={tariffsLoading}
@@ -653,7 +653,7 @@ const RegisterWelcomePage = ({
 
                 {isShowPartners() && (
                   <div className='app-partners-list__wrap mt-5'>
-                    <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
+                    <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
 
                     <div className='app-partners-list'>
                       <span
@@ -697,7 +697,7 @@ const RegisterWelcomePage = ({
                   >
 
                     <h2 className='mb-4 mb-xl-5 fw-bold text-center'>
-                      {t('lp.select_plan_title')}
+                      {t('lp.select_plan.title')}
                     </h2>
 
                     <ContentLoading
@@ -765,7 +765,7 @@ const RegisterWelcomePage = ({
                           ))}
                         </div>
 
-                        <Link to={routes.checkout} className="link-raw">
+                        <Link to={routes.checkout} className='link-raw'>
                           <div className='text-center'>
                             <img
                               src={t('checkout.safe.img2')}
@@ -808,7 +808,7 @@ const RegisterWelcomePage = ({
                       })}
                     >
 
-                      <h2 className='mb-4 mb-xl-5 fw-bold text-center text-md-left'>{t('lp.plan.advantages_title')}</h2>
+                      <h2 className='mb-4 mb-xl-5 fw-bold text-center text-md-left'>{t('lp.plan.advantages.title')}</h2>
 
                       <div className='advantages-checklist'>
                         {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
