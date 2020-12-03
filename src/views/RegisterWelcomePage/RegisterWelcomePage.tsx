@@ -232,7 +232,7 @@ const RegisterWelcomePage = ({
 
     switch (signupGoal) {
       case -1:
-        welcomeDescrGoalText = t('lp.welcome.text_lose', {
+        welcomeDescrGoalText = t('lp.welcome.text.lose', {
           AMOUNT: t(I18N_MEASUREMENT, {
             COUNT: afterSignupWeight - afterSignupWeightGoal,
           }),
@@ -242,13 +242,13 @@ const RegisterWelcomePage = ({
         break;
 
       case 0:
-        welcomeDescrGoalText = t('lp.welcome.text_keep', {
+        welcomeDescrGoalText = t('lp.welcome.text.keep', {
           NAME: afterSignupName,
         });
         break;
 
       case 1:
-        welcomeDescrGoalText = t('lp.welcome.text_gain', {
+        welcomeDescrGoalText = t('lp.welcome.text.gain', {
           AMOUNT: t(I18N_MEASUREMENT, {
             COUNT: afterSignupWeightGoal - afterSignupWeight,
           }),
@@ -748,7 +748,7 @@ const RegisterWelcomePage = ({
                     {(debounceWindowWidth > 768 && getPaymentFlowType() === '2') && (
                       <>
                         <h2 className='mt-5 mb-4 mb-xl-5 fw-bold text-center text-md-left'>
-                          {t('lp.plan.advantages_title')}
+                          {t('lp.plan.advantages.title')}
                         </h2>
 
                         <div className='advantages-checklist'>

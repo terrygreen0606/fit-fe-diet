@@ -357,7 +357,7 @@ const CheckoutPage = ({
 
                     {isShowPartners() && (
                       <div className='app-partners-list__wrap mt-45'>
-                        <h5 className='app-partners-list__title'>{t('lp.partners_list_title')}</h5>
+                        <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
 
                         <div className='app-partners-list'>
                           <span
