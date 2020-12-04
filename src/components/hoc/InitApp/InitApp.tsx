@@ -54,7 +54,6 @@ const InitApp = ({ history, children }: InitAppProps) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log('hello');
   }, [window.location.pathname]);
 
   return children;
