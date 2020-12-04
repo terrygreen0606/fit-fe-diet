@@ -204,11 +204,6 @@ const RecipeFullView = (props: any) => {
     return () => cleanComponent = true;
   }, [history.location.pathname]);
 
-  const scrollToTop = () => {
-    const recipeInfoBlock = document.querySelector('.recipe__main-info');
-    recipeInfoBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  };
-
   const prevSlide = () => {
     const updatedImages = [...recipeData.images];
 
@@ -813,7 +808,6 @@ const RecipeFullView = (props: any) => {
                               pathname: routes.getRecipeFullView(similarRecipe.id),
                               fromMealPlan: true,
                             } : routes.getRecipeFullView(similarRecipe.id)}
-                            onClick={() => scrollToTop()}
                             className='recipe__similar-recipes-item-media'
                           >
                             <img src={similarRecipe.image_url} alt='' />
@@ -825,7 +819,6 @@ const RecipeFullView = (props: any) => {
                                 pathname: routes.getRecipeFullView(similarRecipe.id),
                                 fromMealPlan: true,
                               } : routes.getRecipeFullView(similarRecipe.id)}
-                              onClick={() => scrollToTop()}
                               className='recipe__similar-recipes-item-text-name'
                             >
                               {similarRecipe.name_i18n}
