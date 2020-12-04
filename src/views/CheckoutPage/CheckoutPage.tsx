@@ -1,18 +1,14 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState, useEffect, useRef } from 'react';
-import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import {
-  validateFieldOnChange,
-  getFieldErrors as getFieldErrorsUtil,
   getTranslate,
   scrollToElement,
   convertTime,
 } from 'utils';
 import Helmet from 'react-helmet';
-import { InputError } from 'types';
 import { routes } from 'constants/routes';
 import queryString from 'query-string';
 import { changeSetting as changeSettingAction } from 'store/actions';
@@ -26,11 +22,8 @@ import {
 import Logo from 'components/Logo';
 import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
-import Spinner from 'components/common/Spinner';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
-import FormValidatorUtil from 'utils/FormValidator';
-// import SalesWidgets from 'components/SalesWidgets';
 import TariffPlanSelect from 'components/TariffPlanSelect';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
@@ -41,15 +34,7 @@ import igLogoImg from 'assets/img/partners/ig.png';
 import terraLogoImg from 'assets/img/partners/terra.png';
 import defatoLogoImg from 'assets/img/partners/defato.png';
 
-import { ReactComponent as RewardIcon } from 'assets/img/icons/reward-gold-icon.svg';
-
-const checkoutFormDefault = {
-  payment_type: 'credit_card',
-  discount_code: null,
-};
-
 const CheckoutPage = ({
-  language,
   changeSettingAction: changeSetting,
   settings,
   storage,
@@ -61,9 +46,6 @@ const CheckoutPage = ({
     getTranslate(localePhrases, code, placeholders);
 
   const { order: orderId } = queryString.parse(location.search);
-
-  const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
-  const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
 
   const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
   const [isTariffsLoading, setIsTariffsLoading] = useState<boolean>(false);
@@ -239,56 +221,9 @@ const CheckoutPage = ({
     };
   }, []);
 
-  const FormValidator = FormValidatorUtil(localePhrases);
-
-  const validateOnChange = (name: string, value: any, event, element?) => {
-    validateFieldOnChange(
-      name,
-      value,
-      event,
-      checkoutForm,
-      setCheckoutForm,
-      checkoutFormErrors,
-      setCheckoutFormErrors,
-      localePhrases,
-      element,
-    );
-  };
-
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, checkoutFormErrors);
-
   const getActiveTariffData = () => {
     const activeTariff = tariffsDataList.find((tariff) => tariff.tariff === activeTariffId);
     return activeTariff;
-  };
-
-  const getTariffDataValue = (property: string) => {
-    let dataEl = null;
-    const tariffData = getActiveTariffData();
-
-    if (tariffData && tariffData[property]) {
-      dataEl = tariffData[property];
-    }
-
-    return dataEl;
-  };
-
-  const checkoutDiscountFormSubmit = (e) => {
-    e.preventDefault();
-
-    const form = e.target;
-    const inputs = [...form.elements].filter((i) =>
-      ['INPUT', 'SELECT', 'TEXTAREA'].includes(i.nodeName));
-
-    const { errors, hasError } = FormValidator.bulkValidate(inputs);
-
-    setCheckoutFormErrors([
-      ...checkoutFormErrors,
-      ...errors,
-    ]);
-
-    if (!hasError) {}
   };
 
   const isShowPartners = () => settings.language === 'br';
@@ -315,8 +250,6 @@ const CheckoutPage = ({
         </Modal.Main>
       </Modal>
 
-      {/* <SalesWidgets /> */}
-
       <section className='checkout-logo-sect'>
         <div className='container'>
           <div className='row'>
@@ -341,23 +274,8 @@ const CheckoutPage = ({
               <div className='col-12'>
 
                 <div className='checkout-tpl-container'>
-                  <div className='checkout-person-plan-block'>
-                    <h4 className='checkout-person-plan-title'>
-                      {isProfileLoading ? (
-                        <Spinner />
-                      ) : (
-                          <div
-                            dangerouslySetInnerHTML={{ __html: t('checkout.top_title', { NAME: profileData.name }) }}
-                          />
-                        )}
-                    </h4>
-                  </div>
-
+                  <div dangerouslySetInnerHTML={{ __html: t('checkout.last_step') }} className='checkout-tpl-title' />
                   <div className='checkout-rewards-block'>
-                    <h1 className='checkout-rewards-block__title'>
-                      <RewardIcon className='mr-3' />
-                      {t('checkout.rewards_title')}
-                    </h1>
 
                     {isShowPartners() && (
                       <div className='app-partners-list__wrap mt-45'>
@@ -411,53 +329,38 @@ const CheckoutPage = ({
                       </p>
                     </div>
 
-                    <div className='text-center mt-5'>
-                      <h6 className='checkout-advantages__title mb-5'>
-                        {t('checkout.advantages_title')}
-                        :
-                      </h6>
-
-                      <div className='app-advantages-list list-xs text-left'>
-                        <div className='app-advantages-list__item'>{t('checkout.advantage_1')}</div>
-                        <div className='app-advantages-list__item'>{t('checkout.advantage_2')}</div>
-                      </div>
-                    </div>
-
-                    <div className='pl-sm-5'>
-                      <div className='product-plants-one-tree-block mt-5'>
-                        <p dangerouslySetInnerHTML={{ __html: t('lp.plants_one_tree_descr') }}></p>
-                      </div>
-                    </div>
-
-                    <hr className='checkout-divider' />
-
                     <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
-                      <h2 className='mb-4 fw-bold text-center'>
-                        {t('lp.select_plan.title')}
-                      </h2>
+                      <h1 className='fw-bold text-center'>{t('lp.partners_list.title')}</h1>
+                      {!storage.isSelectedTariffOnWelcomePage && (
+                        <>
+                          <h2 className='mb-4 fw-bold text-center'>
+                            {`1. ${t('lp.select_plan.title')}`}
+                          </h2>
 
-                      <ContentLoading
-                        isLoading={isTariffsLoading}
-                        isError={isTariffsLoadingError}
-                        fetchData={() => getUserTariffs()}
-                      >
-                        <TariffPlanSelect
-                          tariffs={tariffsDataList}
-                          value={activeTariffId}
-                          onChange={(id) => {
-                            if (activeTariffId === null) {
-                              setTimeout(() => {
-                                scrollToCheckoutForm();
-                              }, 100);
-                            }
+                          <ContentLoading
+                            isLoading={isTariffsLoading}
+                            isError={isTariffsLoadingError}
+                            fetchData={() => getUserTariffs()}
+                          >
+                            <TariffPlanSelect
+                              tariffs={tariffsDataList}
+                              value={activeTariffId}
+                              onChange={(id) => {
+                                if (activeTariffId === null) {
+                                  setTimeout(() => {
+                                    scrollToCheckoutForm();
+                                  }, 100);
+                                }
 
-                            setActiveTariffId(id);
-                            changeSetting('activeTariffIdToPay', id);
-                          }}
-                          specialOfferIndex={1}
-                          localePhrases={localePhrases}
-                        />
-                      </ContentLoading>
+                                setActiveTariffId(id);
+                                changeSetting('activeTariffIdToPay', id);
+                              }}
+                              specialOfferIndex={1}
+                              localePhrases={localePhrases}
+                            />
+                          </ContentLoading>
+                        </>
+                      )}
                     </div>
 
                     <div
@@ -467,7 +370,11 @@ const CheckoutPage = ({
                       })}
                     >
                       <h3 className='mb-4 fw-bold text-center'>
-                        {t('lp.select_payment.title')}
+                        {!storage.isSelectedTariffOnWelcomePage ? (
+                          `2. ${t('lp.payment_form.title')}`
+                        ) : (
+                          t('lp.payment_form.title')
+                        )}
                       </h3>
 
                       <CheckoutPaymentFormCard
@@ -478,6 +385,7 @@ const CheckoutPage = ({
                         paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
                         history={history}
                         localePhrases={localePhrases}
+                        short
                       />
                     </div>
                   </div>

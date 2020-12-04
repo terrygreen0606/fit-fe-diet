@@ -767,6 +767,7 @@ const RegisterWelcomePage = ({
 
                           setActiveTariffId(id);
                           changeSetting('activeTariffIdToPay', id);
+                          changeSetting('isSelectedTariffOnWelcomePage', true);
                         }}
                         specialOfferIndex={1}
                         localePhrases={localePhrases}
