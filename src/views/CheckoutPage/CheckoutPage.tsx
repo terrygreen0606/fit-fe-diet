@@ -375,6 +375,7 @@ const CheckoutPage = ({
                         paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
                         history={history}
                         localePhrases={localePhrases}
+                        short
                       />
                     </div>
                   </div>

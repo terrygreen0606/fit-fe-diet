@@ -52,6 +52,7 @@ type CheckoutPaymentFormCardProps = {
   scrollRef?: any;
   history: any;
   localePhrases: any;
+  short?: boolean;
 };
 
 const CheckoutPaymentFormCardPropsDefault = {
@@ -60,6 +61,7 @@ const CheckoutPaymentFormCardPropsDefault = {
   paymentErrors: null,
   disabled: null,
   scrollRef: null,
+  short: false,
 };
 
 const currentShortYear = parseInt(new Date().getFullYear().toString().slice(2, 4), 10);
@@ -81,6 +83,7 @@ const CheckoutPaymentFormCard = ({
   scrollRef,
   history,
   localePhrases,
+  short,
 }: CheckoutPaymentFormCardProps) => {
   const [checkoutForm, setCheckoutForm] = useState({ ...checkoutFormDefault });
   const [checkoutFormErrors, setCheckoutFormErrors] = useState<InputError[]>([]);
@@ -330,6 +333,7 @@ const CheckoutPaymentFormCard = ({
     <div
       className={classNames('checkout-payment-card', {
         [className]: className,
+        short,
       })}
     >
       {isCheckoutPaymentError && (
