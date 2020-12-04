@@ -299,7 +299,7 @@ const CheckoutPage = ({
                     </div>
 
                     <div className='app-partners-list__wrap mt-3 text-center'>
-                      <h2 className='app-partners-list__title'>{t('lp.partners_list.title')}</h2>
+                      <h3 className='app-partners-list__title'>{t('lp.partners_list.title')}</h3>
 
                       <div className='app-partners-list'>
                         <span
@@ -324,9 +324,9 @@ const CheckoutPage = ({
                     <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
                       {!storage.isSelectedTariffOnWelcomePage && (
                         <>
-                          <h2 className='mb-4 fw-bold text-center'>
+                          <h3 className='mb-4 fw-bold text-center'>
                             {`1. ${t('lp.select_plan.title')}`}
-                          </h2>
+                          </h3>
 
                           <ContentLoading
                             isLoading={isTariffsLoading}
