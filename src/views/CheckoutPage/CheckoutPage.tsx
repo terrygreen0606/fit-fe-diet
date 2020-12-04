@@ -373,7 +373,7 @@ const CheckoutPage = ({
                         {!storage.isSelectedTariffOnWelcomePage ? (
                           `2. ${t('lp.payment_form.title')}`
                         ) : (
-                          t('lp.payment_form.title')
+                          t('lp.payment_form.title.last_step')
                         )}
                       </h3>
 
