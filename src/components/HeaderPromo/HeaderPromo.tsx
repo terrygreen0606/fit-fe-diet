@@ -36,13 +36,6 @@ const HeaderPromo = ({
     }
   };
 
-  const getButtonText = () => {
-    if (windowWidth > 480) {
-      return t('button.reveal_plan');
-    }
-    return t('button.reveal_plan.short');
-  };
-
   return (
     <header id='mainPromoHeader' className='main-promo-header fixed-top'>
       <div className='container'>
@@ -58,29 +51,24 @@ const HeaderPromo = ({
           </div>
           <div className='col-7 col-xs-8 text-right'>
 
-            {activeTariffIdToPay ? (
-              <Link
-                to={routes.checkout}
-                className='link-raw'
-              >
-                <Button
-                  className='main-promo-header__btn'
-                  size='sm'
-                  color='primary-shadow'
-                >
-                  {getButtonText()}
-                </Button>
-              </Link>
-            ) : (
+            <Link
+              to={routes.checkout}
+              onClick={(e) => {
+                if (!activeTariffIdToPay) {
+                  e.preventDefault();
+                  scrollToCheckoutForm(e);
+                }
+              }}
+              className='link-raw'
+            >
               <Button
                 className='main-promo-header__btn'
                 size='sm'
                 color='primary-shadow'
-                onClick={scrollToCheckoutForm}
               >
-                {getButtonText()}
+                {windowWidth > 480 ? t('button.reveal_plan') : t('button.reveal_plan.short')}
               </Button>
-            )}
+            </Link>
 
           </div>
         </div>

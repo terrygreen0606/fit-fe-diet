@@ -370,31 +370,25 @@ const RegisterWelcomePage = ({
                 </ContentLoading>
 
                 <div className='after-signup-header-btn-col'>
-                  {activeTariffIdToPay ? (
-                    <Link
-                      to={routes.checkout}
-                      className='link-raw'
-                    >
-                      <Button
-                        pulse
-                        color='primary-shadow'
-                        className='mt-3'
-                        size='lg'
-                      >
-                        {t('button.select_plan')}
-                      </Button>
-                    </Link>
-                  ) : (
+                  <Link
+                    to={routes.checkout}
+                    onClick={(e) => {
+                      if (!activeTariffIdToPay) {
+                        e.preventDefault();
+                        scrollToTariffsSelectForm(e);
+                      }
+                    }}
+                    className='link-raw'
+                  >
                     <Button
                       pulse
-                      onClick={scrollToTariffsSelectForm}
                       color='primary-shadow'
                       className='mt-3'
                       size='lg'
                     >
                       {t('button.select_plan')}
                     </Button>
-                  )}
+                  </Link>
 
                   <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
@@ -453,31 +447,25 @@ const RegisterWelcomePage = ({
                 <div dangerouslySetInnerHTML={{ __html: t('lp.intro.content') }}></div>
 
                 <div className='after-signup-intro-content-btn mt-4 text-center text-xl-left'>
-                  {activeTariffIdToPay ? (
-                    <Link
-                      to={routes.checkout}
-                      className='link-raw'
-                    >
-                      <Button
-                        pulse
-                        color='primary-shadow'
-                        className='mt-3'
-                        size='lg'
-                      >
-                        {t('button.activate_plan')}
-                      </Button>
-                    </Link>
-                  ) : (
+                  <Link
+                    to={routes.checkout}
+                    onClick={(e) => {
+                      if (!activeTariffIdToPay) {
+                        e.preventDefault();
+                        scrollToTariffsSelectForm(e);
+                      }
+                    }}
+                    className='link-raw'
+                  >
                     <Button
-                      pulse
-                      onClick={scrollToTariffsSelectForm}
+                      block
                       color='primary-shadow'
-                      className='mt-3'
                       size='lg'
+                      style={{ maxWidth: '380px' }}
                     >
                       {t('button.activate_plan')}
                     </Button>
-                  )}
+                  </Link>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
@@ -550,31 +538,23 @@ const RegisterWelcomePage = ({
                 </ContentLoading>
 
                 <div className='after-signup-reviews-btn-col mt-4 mt-xl-5 text-center text-xl-left'>
-                  {activeTariffIdToPay ? (
-                    <Link
-                      to={routes.checkout}
-                      className='link-raw'
-                    >
-                      <Button
-                        pulse
-                        color='primary-shadow'
-                        className='mt-3'
-                        size='lg'
-                      >
-                        {t('button.select_plan')}
-                      </Button>
-                    </Link>
-                  ) : (
+                  <Link
+                    to={routes.checkout}
+                    onClick={(e) => {
+                      if (!activeTariffIdToPay) {
+                        e.preventDefault();
+                        scrollToTariffsSelectForm(e);
+                      }
+                    }}
+                    className='link-raw'
+                  >
                     <Button
-                      pulse
-                      onClick={scrollToTariffsSelectForm}
                       color='primary-shadow'
-                      className='mt-3'
                       size='lg'
                     >
                       {t('button.select_plan')}
                     </Button>
-                  )}
+                  </Link>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
@@ -687,31 +667,27 @@ const RegisterWelcomePage = ({
 
                 <div className='after-signup-start-today-btn-col'>
 
-                  {activeTariffIdToPay ? (
-                      <Link
-                        to={routes.checkout}
-                        className='link-raw'
-                      >
-                        <Button
-                          pulse
-                          color='primary-shadow'
-                          className='mt-3'
-                          size='lg'
-                        >
-                          {t('button.activate_plan')}
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Button
-                        pulse
-                        onClick={scrollToTariffsSelectForm}
-                        color='primary-shadow'
-                        className='mt-3'
-                        size='lg'
-                      >
-                        {t('button.activate_plan')}
-                      </Button>
-                    )}
+                  <Link
+                    to={routes.checkout}
+                    onClick={(e) => {
+                      if (!activeTariffIdToPay) {
+                        e.preventDefault();
+                        scrollToTariffsSelectForm(e);
+                      }
+                    }}
+                    className='link-raw'
+                  >
+                    <Button
+                      pulse
+                      color='primary-shadow'
+                      className='mt-4'
+                      size='lg'
+                      block
+                      style={{ maxWidth: '500px' }}
+                    >
+                      {t('button.activate_plan')}
+                    </Button>
+                  </Link>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
