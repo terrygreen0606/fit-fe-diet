@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
-import { getTranslate } from 'utils';
+import { getTranslate, scrollToElement } from 'utils';
 import { Link } from 'react-router-dom';
-import { scrollToElement } from 'utils';
+import { connect } from 'react-redux';
 import useWindowSize from 'components/hooks/useWindowSize';
+
+import { routes } from 'constants/routes';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -10,11 +13,19 @@ import Button from 'components/common/Forms/Button';
 
 import './HeaderPromo.sass';
 
-const HeaderPromo = (props: any) => {
+type HeaderPromoProps = {
+  localePhrases: any,
+  activeTariffIdToPay: any,
+};
+
+const HeaderPromo = ({
+  localePhrases,
+  activeTariffIdToPay,
+}: HeaderPromoProps) => {
   const { width: windowWidth } = useWindowSize();
 
   const t = (code: string, placeholders?: any) =>
-    getTranslate(props.localePhrases, code, placeholders);
+    getTranslate(localePhrases, code, placeholders);
 
   const scrollToCheckoutForm = (e) => {
     const afterSignupTariffs = document.getElementById('selectTariffPlanBlock');
@@ -31,9 +42,9 @@ const HeaderPromo = (props: any) => {
         <div className='row'>
           <div className='col-5 col-xs-4'>
 
-            <Link
-              to='/'
-              className='mainHeader_logo'
+            <button
+              type='button'
+              className='mainHeader_logo btn-clear'
               onClick={scrollToCheckoutForm}
             />
 
@@ -41,9 +52,14 @@ const HeaderPromo = (props: any) => {
           <div className='col-7 col-xs-8 text-right'>
 
             <Link
-              to='/checkout'
+              to={routes.checkout}
+              onClick={(e) => {
+                if (!activeTariffIdToPay) {
+                  e.preventDefault();
+                  scrollToCheckoutForm(e);
+                }
+              }}
               className='link-raw'
-              onClick={scrollToCheckoutForm}
             >
               <Button
                 className='main-promo-header__btn'
@@ -61,4 +77,10 @@ const HeaderPromo = (props: any) => {
   );
 };
 
-export default WithTranslate(HeaderPromo);
+export default WithTranslate(
+  connect(
+    (state: any) => ({
+      activeTariffIdToPay: state.storage.activeTariffIdToPay,
+    }),
+  )(HeaderPromo),
+);

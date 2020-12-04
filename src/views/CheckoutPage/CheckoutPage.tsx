@@ -48,15 +48,15 @@ const CheckoutPage = ({
   const { order: orderId } = queryString.parse(location.search);
 
   const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
-  const [tariffsLoading, setTariffsLoading] = useState<boolean>(false);
-  const [tariffsLoadingError, setTariffsLoadingError] = useState<boolean>(false);
+  const [isTariffsLoading, setIsTariffsLoading] = useState<boolean>(false);
+  const [isTariffsLoadingError, setIsTariffsLoadingError] = useState<boolean>(false);
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
 
   const [paymentStatusData, setPaymentStatusData] = useState<any>(null);
-  const [paymentStatusLoading, setPaymentStatusLoading] = useState<boolean>(false);
-  const [paymentStatusLoadingError, setPaymentStatusLoadingError] = useState<boolean>(false);
-  const [paymentStatusError, setPaymentStatusError] = useState<boolean>(false);
+  const [isPaymentStatusLoading, setIsPaymentStatusLoading] = useState<boolean>(false);
+  const [isPaymentStatusLoadingError, setIsPaymentStatusLoadingError] = useState<boolean>(false);
+  const [isPaymentStatusError, setIsPaymentStatusError] = useState<boolean>(false);
 
   const [profileData, setProfileData] = useState<any>({
     name: t('checkout.title.user_name'),
@@ -65,7 +65,8 @@ const CheckoutPage = ({
     weightDifference: null,
     goal: null,
   });
-  const [profileLoading, setProfileLoading] = useState<boolean>(true);
+  const [isProfileLoading, setIsProfileLoading] = useState<boolean>(true);
+  const [isProfileLoadingError, setIsProfileLoadingError] = useState<boolean>(false);
 
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
@@ -73,8 +74,8 @@ const CheckoutPage = ({
   const paymentFormBlockRef = useRef(null);
 
   const getUserPaymentStatus = () => {
-    setPaymentStatusLoading(true);
-    setPaymentStatusLoadingError(false);
+    setIsPaymentStatusLoading(true);
+    setIsPaymentStatusLoadingError(false);
 
     getPaymentStatus(orderId.toString())
       .then(({ data }) => {
@@ -89,7 +90,7 @@ const CheckoutPage = ({
           });
 
           if (paymentStatus.status === 'fail') {
-            setPaymentStatusError(true);
+            setIsPaymentStatusError(true);
           } else {
             history.push({
               pathname: routes.checkoutThankyou,
@@ -98,23 +99,24 @@ const CheckoutPage = ({
             });
           }
         } else {
-          setPaymentStatusError(true);
+          setIsPaymentStatusError(true);
         }
       })
       .catch(() => {
-        setPaymentStatusLoadingError(true);
+        setIsPaymentStatusLoadingError(true);
       })
       .finally(() => {
-        setPaymentStatusLoading(false);
+        setIsPaymentStatusLoading(false);
       });
   };
 
   const getUserProfile = () => {
-    setProfileLoading(true);
+    setIsProfileLoading(true);
+    setIsProfileLoadingError(false);
 
     fetchUserProfile()
       .then(({ data }) => {
-        setProfileLoading(false);
+        setIsProfileLoading(false);
 
         if (data.success && data.data) {
           const weightDifference = Math.abs(data.data?.weight - data.data?.weight_goal);
@@ -130,10 +132,12 @@ const CheckoutPage = ({
           setProfileData({
             name: t('checkout.title.user_name'),
           });
+          setIsProfileLoadingError(true);
         }
       })
       .catch(() => {
-        setProfileLoading(false);
+        setIsProfileLoading(false);
+        setIsProfileLoadingError(true);
 
         setProfileData({
           name: t('checkout.title.user_name'),
@@ -177,8 +181,8 @@ const CheckoutPage = ({
   };
 
   const getUserTariffs = () => {
-    setTariffsLoading(true);
-    setTariffsLoadingError(false);
+    setIsTariffsLoading(true);
+    setIsTariffsLoadingError(false);
 
     getAppTariffs()
       .then(({ data }) => {
@@ -191,14 +195,14 @@ const CheckoutPage = ({
             }
           }
         } else {
-          setTariffsLoadingError(true);
+          setIsTariffsLoadingError(true);
         }
       })
       .catch(() => {
-        setTariffsLoadingError(true);
+        setIsTariffsLoadingError(true);
       })
       .finally(() => {
-        setTariffsLoading(false);
+        setIsTariffsLoading(false);
       });
   };
 
@@ -259,8 +263,8 @@ const CheckoutPage = ({
       </section>
 
       <ContentLoading
-        isLoading={paymentStatusLoading}
-        isError={paymentStatusLoadingError}
+        isLoading={isPaymentStatusLoading}
+        isError={isPaymentStatusLoadingError}
         fetchData={() => getUserPaymentStatus()}
         spinSize='lg'
       >
@@ -302,10 +306,18 @@ const CheckoutPage = ({
                   <div className='checkout-form-container'>
                     <div className='checkout-reserved-top-block'>
                       <h3 className='checkout-reserved-top-block__title'>
+                      <ContentLoading
+                        isLoading={isProfileLoading}
+                        isError={isProfileLoadingError}
+                        fetchData={() => getUserProfile()}
+                        spinSize='lg'
+                        color='#fff'
+                      >
                         <b>
                           {`${profileData.firstname} ${profileData.lastname} `}
                         </b>
                         {t('checkout.reserved_block.title')}
+                      </ContentLoading>
                       </h3>
                         {(storage.afterSignupPredictDate) && (
                           <p className='checkout-reserved-top-block__descr'>
@@ -326,8 +338,8 @@ const CheckoutPage = ({
                           </h2>
 
                           <ContentLoading
-                            isLoading={tariffsLoading}
-                            isError={tariffsLoadingError}
+                            isLoading={isTariffsLoading}
+                            isError={isTariffsLoadingError}
                             fetchData={() => getUserTariffs()}
                           >
                             <TariffPlanSelect
@@ -369,7 +381,7 @@ const CheckoutPage = ({
                         tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
                         disabled={!getActiveTariffData()}
                         scrollRef={selectPlanBlockRef}
-                        isPaymentError={paymentStatusError}
+                        isPaymentError={isPaymentStatusError}
                         paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
                         history={history}
                         localePhrases={localePhrases}

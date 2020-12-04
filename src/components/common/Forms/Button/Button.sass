@@ -76,6 +76,31 @@ button.bttn
   animation-duration: 1s
   animation-fill-mode: both
 
+.bttnArrow
+  &:hover
+    &::before
+      opacity: 1
+      width: 30px
+  &::before
+    opacity: 0
+    content: ''
+    width: 10px
+    height: calc(100% + 2px)
+    margin: -1px
+    background-image: url('../../../../assets/img/icons/angle-left-icon.svg')
+    background-size: 30%
+    background-repeat: no-repeat
+    background-position: 40% center
+    position: absolute
+    top: 0
+    left: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 0 50% 50% 0
+    background-color: hsla(0,0%,100%,.3)
+    transition: all .2s linear 0s
+
 .bttn_default
   &.bttnOutline
     &:hover

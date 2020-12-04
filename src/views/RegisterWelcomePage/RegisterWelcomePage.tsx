@@ -169,7 +169,7 @@ const RegisterWelcomePage = ({
       setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
     }
 
-    if (selectTariffPlanBlock.getBoundingClientRect().top < 80) {
+    if (selectTariffPlanBlock.getBoundingClientRect().top < 400) {
       if (mainPromoHeader.classList.contains('fixed-top')) {
         mainPromoHeader.classList.remove('fixed-top');
       }
@@ -369,15 +369,25 @@ const RegisterWelcomePage = ({
                 </ContentLoading>
 
                 <div className='after-signup-header-btn-col'>
-                  <Button
-                    onClick={scrollToTariffsSelectForm}
-                    pulse
-                    color='primary-shadow'
-                    className='mt-3'
-                    size='lg'
+                  <Link
+                    to={routes.checkout}
+                    onClick={(e) => {
+                      if (!activeTariffIdToPay) {
+                        e.preventDefault();
+                        scrollToTariffsSelectForm(e);
+                      }
+                    }}
+                    className='link-raw'
                   >
-                    {t('button.select_plan')}
-                  </Button>
+                    <Button
+                      pulse
+                      color='primary-shadow'
+                      className='mt-3'
+                      size='lg'
+                    >
+                      {t('button.select_plan')}
+                    </Button>
+                  </Link>
 
                   <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
@@ -436,15 +446,25 @@ const RegisterWelcomePage = ({
                 <div dangerouslySetInnerHTML={{ __html: t('lp.intro.content') }}></div>
 
                 <div className='after-signup-intro-content-btn mt-4 text-center text-xl-left'>
-                  <Button
-                    color='primary-shadow'
-                    size='lg'
-                    block
-                    onClick={scrollToTariffsSelectForm}
-                    style={{ maxWidth: '380px' }}
+                  <Link
+                    to={routes.checkout}
+                    onClick={(e) => {
+                      if (!activeTariffIdToPay) {
+                        e.preventDefault();
+                        scrollToTariffsSelectForm(e);
+                      }
+                    }}
+                    className='link-raw'
                   >
-                    {t('button.activate_plan')}
-                  </Button>
+                    <Button
+                      block
+                      color='primary-shadow'
+                      size='lg'
+                      style={{ maxWidth: '380px' }}
+                    >
+                      {t('button.activate_plan')}
+                    </Button>
+                  </Link>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
@@ -472,7 +492,18 @@ const RegisterWelcomePage = ({
         <section className='after-signup-reviews-sect'>
           <div className='container'>
             <div className='row'>
-              <div className='col-md-6 order-md-2 mb-5 mt-md-0 text-center'>
+              <div className='col-12 mb-45'>
+
+                <div className='row'>
+                  <div className='col-md-6 col-xl-5 offset-xl-1'>
+
+                    <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
+
+                  </div>
+                </div>
+
+              </div>
+              <div className='col-md-6 order-md-3 mb-5 mt-md-0 text-center'>
 
                 <button
                   type='button'
@@ -485,8 +516,7 @@ const RegisterWelcomePage = ({
               </div>
               <div className='col-md-6 col-xl-5 offset-xl-1'>
 
-                <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
-                <p className='mt-45' dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
+                <p dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
                 <h4 className='mt-4 fw-bold'>{t('lp.reviews.subtitle')}</h4>
 
                 <ContentLoading
@@ -517,13 +547,23 @@ const RegisterWelcomePage = ({
                 </ContentLoading>
 
                 <div className='after-signup-reviews-btn-col mt-4 mt-xl-5 text-center text-xl-left'>
-                  <Button
-                    color='primary-shadow'
-                    size='lg'
-                    onClick={scrollToTariffsSelectForm}
+                  <Link
+                    to={routes.checkout}
+                    onClick={(e) => {
+                      if (!activeTariffIdToPay) {
+                        e.preventDefault();
+                        scrollToTariffsSelectForm(e);
+                      }
+                    }}
+                    className='link-raw'
                   >
-                    {t('button.select_plan')}
-                  </Button>
+                    <Button
+                      color='primary-shadow'
+                      size='lg'
+                    >
+                      {t('button.select_plan')}
+                    </Button>
+                  </Link>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
@@ -635,17 +675,28 @@ const RegisterWelcomePage = ({
                 </ContentLoading>
 
                 <div className='after-signup-start-today-btn-col'>
-                  <Button
-                    pulse
-                    color='primary-shadow'
-                    className='mt-4'
-                    size='lg'
-                    block
-                    onClick={scrollToTariffsSelectForm}
-                    style={{ maxWidth: '500px' }}
+
+                  <Link
+                    to={routes.checkout}
+                    onClick={(e) => {
+                      if (!activeTariffIdToPay) {
+                        e.preventDefault();
+                        scrollToTariffsSelectForm(e);
+                      }
+                    }}
+                    className='link-raw'
                   >
-                    {t('button.activate_plan')}
-                  </Button>
+                    <Button
+                      pulse
+                      color='primary-shadow'
+                      className='mt-4'
+                      size='lg'
+                      block
+                      style={{ maxWidth: '500px' }}
+                    >
+                      {t('button.activate_plan')}
+                    </Button>
+                  </Link>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
@@ -725,7 +776,12 @@ const RegisterWelcomePage = ({
                       {getPaymentFlowType() !== '2' && (
                         <div className='text-center'>
                           <Link to={routes.checkout} className='mt-5 link-raw'>
-                            <Button color='primary' size='lg' disabled={!getActiveTariffData()}>
+                            <Button
+                              color='primary'
+                              size='lg'
+                              arrow
+                              disabled={!getActiveTariffData()}
+                            >
                               {t('button.confirm.tariff')}
                             </Button>
                           </Link>
@@ -752,7 +808,7 @@ const RegisterWelcomePage = ({
                         </h2>
 
                         <div className='advantages-checklist'>
-                          {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
+                          {Array(5).fill(1).map(() => uuid()).map((id, index) => (
                             <div key={id} className='advantages-checklist-item'>
                               <h6 className='advantages-checklist-item__title'>
                                 {t(`lp.plan.advantage${index + 1}.title`)}
@@ -811,7 +867,7 @@ const RegisterWelcomePage = ({
                       <h2 className='mb-4 mb-xl-5 fw-bold text-center text-md-left'>{t('lp.plan.advantages.title')}</h2>
 
                       <div className='advantages-checklist'>
-                        {Array(5).fill(1).map((el) => uuid()).map((id, index) => (
+                        {Array(5).fill(1).map(() => uuid()).map((id, index) => (
                           <div key={id} className='advantages-checklist-item'>
                             <h6 className='advantages-checklist-item__title'>
                               {t(`lp.plan.advantage${index + 1}.title`)}
