@@ -270,9 +270,7 @@ const CheckoutPage = ({
               <div className='col-12'>
 
                 <div className='checkout-tpl-container'>
-                  <div className='checkout-tpl-title'>
-                    {t('checkout.last_step')}
-                  </div>
+                  <div dangerouslySetInnerHTML={{ __html: t('checkout.last_step') }} className='checkout-tpl-title' />
                   <div className='checkout-rewards-block'>
 
                     {isShowPartners() && (
