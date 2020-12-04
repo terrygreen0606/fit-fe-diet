@@ -267,12 +267,11 @@ const CheckoutPage = ({
               <div className='col-12'>
 
                 <div className='checkout-tpl-container'>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: t('checkout.last_step') }}
-                    className='checkout-tpl-title mb-4'
-                  />
-
                   <div className='checkout-form-container'>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: t('checkout.last_step') }}
+                      className='checkout-tpl-title mb-4'
+                    />
                     <div className='checkout-reserved-top-block'>
                       <h3 className='checkout-reserved-top-block__title'>
                       <ContentLoading
@@ -298,7 +297,7 @@ const CheckoutPage = ({
                       </p>
                     </div>
 
-                    <div className='app-partners-list__wrap mt-3 text-center'>
+                    <div className='app-partners-list__wrap app-partners-list__wrap_checkout mt-3 text-center'>
                       <h3 className='app-partners-list__title'>{t('lp.partners_list.title')}</h3>
 
                       <div className='app-partners-list'>
@@ -360,7 +359,7 @@ const CheckoutPage = ({
                         'd-none': !getActiveTariffData(),
                       })}
                     >
-                      <h3 className='mb-4 fw-bold text-center'>
+                      <h3 className='mb-4 fw-bold text-center payment-form-title'>
                         {!storage.isSelectedTariffOnWelcomePage ? (
                           `2. ${t('lp.payment_form.title')}`
                         ) : (
