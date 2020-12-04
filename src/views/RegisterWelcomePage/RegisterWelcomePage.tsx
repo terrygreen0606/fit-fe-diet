@@ -32,11 +32,6 @@ import TariffPlanSelect from 'components/TariffPlanSelect';
 
 import './RegisterWelcomePage.sass';
 
-import metropolisLogoImg from 'assets/img/partners/metropolis.png';
-import igLogoImg from 'assets/img/partners/ig.png';
-import terraLogoImg from 'assets/img/partners/terra.png';
-import defatoLogoImg from 'assets/img/partners/defato.png';
-
 import { ReactComponent as StarFillIcon } from 'assets/img/icons/star-fill-icon.svg';
 
 const RegisterWelcomePage = ({
@@ -277,8 +272,6 @@ const RegisterWelcomePage = ({
     scrollToElement(paymentFormBlockRef?.current, -30);
   };
 
-  const isShowPartners = () => language === 'br';
-
   const getPaymentFlowType = () => {
     let paymentFlow = null;
 
@@ -408,30 +401,28 @@ const RegisterWelcomePage = ({
             <div className='row'>
               <div className='col-12 text-center'>
 
-                {isShowPartners() && (
-                  <div className='mb-4'>
-                    <h5 className='fw-bold'>{t('lp.partners_list.title')}</h5>
+                <div className='mb-4'>
+                  <h5 className='fw-bold'>{t('lp.partners_list.title')}</h5>
 
-                    <div className='app-partners-list'>
-                      <span
-                        className='app-partners-list__item'
-                        style={{ backgroundImage: `url(${metropolisLogoImg})` }}
-                      />
-                      <span
-                        className='app-partners-list__item'
-                        style={{ backgroundImage: `url(${igLogoImg})` }}
-                      />
-                      <span
-                        className='app-partners-list__item'
-                        style={{ backgroundImage: `url(${terraLogoImg})` }}
-                      />
-                      <span
-                        className='app-partners-list__item'
-                        style={{ backgroundImage: `url(${defatoLogoImg})` }}
-                      />
-                    </div>
+                  <div className='app-partners-list'>
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${t('lp.partners.img1')})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${t('lp.partners.img2')})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${t('lp.partners.img3')})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${t('lp.partners.img4')})` }}
+                    />
                   </div>
-                )}
+                </div>
 
               </div>
               <div className='col-lg-8 offset-lg-4 mb-45 mb-lg-0 pl-xl-5 after-signup-intro-content-col'>
@@ -701,30 +692,28 @@ const RegisterWelcomePage = ({
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
 
-                {isShowPartners() && (
-                  <div className='app-partners-list__wrap mt-5'>
-                    <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
+                <div className='app-partners-list__wrap mt-5'>
+                  <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
 
-                    <div className='app-partners-list'>
-                      <span
-                        className='app-partners-list__item'
-                        style={{ backgroundImage: `url(${metropolisLogoImg})` }}
-                      />
-                      <span
-                        className='app-partners-list__item'
-                        style={{ backgroundImage: `url(${igLogoImg})` }}
-                      />
-                      <span
-                        className='app-partners-list__item'
-                        style={{ backgroundImage: `url(${terraLogoImg})` }}
-                      />
-                      <span
-                        className='app-partners-list__item'
-                        style={{ backgroundImage: `url(${defatoLogoImg})` }}
-                      />
-                    </div>
+                  <div className='app-partners-list'>
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${t('lp.partners.img1')})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${t('lp.partners.img2')})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${t('lp.partners.img3')})` }}
+                    />
+                    <span
+                      className='app-partners-list__item'
+                      style={{ backgroundImage: `url(${t('lp.partners.img4')})` }}
+                    />
                   </div>
-                )}
+                </div>
 
               </div>
             </div>

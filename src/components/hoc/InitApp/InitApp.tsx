@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import axios from 'utils/axios';
 
@@ -52,11 +52,11 @@ const InitApp = ({ history, children }: InitAppProps) => {
     }
   }, []);
 
-  return (
-    <>
-      {children}
-    </>
-  );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [window.location.pathname]);
+
+  return children;
 };
 
 export default withRouter(InitApp);

@@ -29,11 +29,6 @@ import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
 import './CheckoutPage.sass';
 
-import metropolisLogoImg from 'assets/img/partners/metropolis.png';
-import igLogoImg from 'assets/img/partners/ig.png';
-import terraLogoImg from 'assets/img/partners/terra.png';
-import defatoLogoImg from 'assets/img/partners/defato.png';
-
 const CheckoutPage = ({
   changeSettingAction: changeSetting,
   settings,
@@ -226,8 +221,6 @@ const CheckoutPage = ({
     return activeTariff;
   };
 
-  const isShowPartners = () => settings.language === 'br';
-
   const scrollToCheckoutForm = () => {
     scrollToElement(paymentFormBlockRef?.current, -30);
   };
@@ -253,7 +246,7 @@ const CheckoutPage = ({
       <section className='checkout-logo-sect'>
         <div className='container'>
           <div className='row'>
-            <div className='col-12 text-center text-xl-left'>
+            <div className='col-12 text-center'>
 
               <Logo raw />
 
@@ -274,34 +267,10 @@ const CheckoutPage = ({
               <div className='col-12'>
 
                 <div className='checkout-tpl-container'>
-                  <div dangerouslySetInnerHTML={{ __html: t('checkout.last_step') }} className='checkout-tpl-title' />
-                  <div className='checkout-rewards-block'>
-
-                    {isShowPartners() && (
-                      <div className='app-partners-list__wrap mt-45'>
-                        <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
-
-                        <div className='app-partners-list'>
-                          <span
-                            className='app-partners-list__item'
-                            style={{ backgroundImage: `url(${metropolisLogoImg})` }}
-                          />
-                          <span
-                            className='app-partners-list__item'
-                            style={{ backgroundImage: `url(${igLogoImg})` }}
-                          />
-                          <span
-                            className='app-partners-list__item'
-                            style={{ backgroundImage: `url(${terraLogoImg})` }}
-                          />
-                          <span
-                            className='app-partners-list__item'
-                            style={{ backgroundImage: `url(${defatoLogoImg})` }}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: t('checkout.last_step') }}
+                    className='checkout-tpl-title mb-4'
+                  />
 
                   <div className='checkout-form-container'>
                     <div className='checkout-reserved-top-block'>
@@ -329,8 +298,30 @@ const CheckoutPage = ({
                       </p>
                     </div>
 
+                    <div className='app-partners-list__wrap mt-3 text-center'>
+                      <h2 className='app-partners-list__title'>{t('lp.partners_list.title')}</h2>
+
+                      <div className='app-partners-list'>
+                        <span
+                          className='app-partners-list__item'
+                          style={{ backgroundImage: `url(${t('lp.partners.img1')})` }}
+                        />
+                        <span
+                          className='app-partners-list__item'
+                          style={{ backgroundImage: `url(${t('lp.partners.img2')})` }}
+                        />
+                        <span
+                          className='app-partners-list__item'
+                          style={{ backgroundImage: `url(${t('lp.partners.img3')})` }}
+                        />
+                        <span
+                          className='app-partners-list__item'
+                          style={{ backgroundImage: `url(${t('lp.partners.img4')})` }}
+                        />
+                      </div>
+                    </div>
+
                     <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
-                      <h1 className='fw-bold text-center'>{t('lp.partners_list.title')}</h1>
                       {!storage.isSelectedTariffOnWelcomePage && (
                         <>
                           <h2 className='mb-4 fw-bold text-center'>
