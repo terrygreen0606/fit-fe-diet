@@ -172,11 +172,11 @@ const RegisterWelcomePage = ({
       mainPromoHeader.classList.remove('fixed-top');
     }
 
-    if (selectTariffPlanBlock.getBoundingClientRect().top < 400) {
-      if (mainPromoHeader.classList.contains('fixed-top')) {
-        mainPromoHeader.classList.remove('fixed-top');
-      }
-    }
+    // if (selectTariffPlanBlock.getBoundingClientRect().top < 400) {
+    //   if (mainPromoHeader.classList.contains('fixed-top')) {
+    //     mainPromoHeader.classList.remove('fixed-top');
+    //   }
+    // }
 
     // if (welcomeVideo?.getBoundingClientRect().top < -100) {
     //   welcomeVideoPlayer?.pause();
