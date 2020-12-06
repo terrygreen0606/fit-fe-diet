@@ -6,7 +6,6 @@ export const wait = (
   const interval = setInterval(iteration, timeout);
 
   function iteration() {
-    console.log(condition);
     if (condition) {
       clearInterval(interval);
       callback();

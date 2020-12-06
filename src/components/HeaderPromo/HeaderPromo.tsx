@@ -37,7 +37,7 @@ const HeaderPromo = ({
   };
 
   return (
-    <header id='mainPromoHeader' className='main-promo-header fixed-top'>
+    <header id='mainPromoHeader' className='main-promo-header'>
       <div className='container'>
         <div className='row'>
           <div className='col-5 col-xs-4'>

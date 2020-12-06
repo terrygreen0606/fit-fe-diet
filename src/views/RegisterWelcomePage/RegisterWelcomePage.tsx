@@ -62,7 +62,7 @@ const RegisterWelcomePage = ({
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
 
-  const [welcomeVideoPlayerInstance, setWelcomeVideoPlayerInstance] = useState<any>(null);
+  // const [welcomeVideoPlayerInstance, setWelcomeVideoPlayerInstance] = useState<any>(null);
 
   // const { width: windowWidth } = useWindowSize();
   // const debounceWindowWidth = useDebounce(windowWidth, 500);
@@ -156,27 +156,33 @@ const RegisterWelcomePage = ({
       return false;
     }
 
-    const welcomeVideo = document.querySelector('.after-signup-video-frame');
-    let welcomeVideoPlayer = welcomeVideoPlayerInstance;
+    // const welcomeVideo = document.querySelector('.after-signup-video-frame');
+    // let welcomeVideoPlayer = welcomeVideoPlayerInstance;
 
-    if (!welcomeVideoPlayer && window['Vimeo']) {
-      welcomeVideoPlayer = new window['Vimeo'].Player(welcomeVideo);
-      setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
+    // if (!welcomeVideoPlayer && window['Vimeo']) {
+    //   welcomeVideoPlayer = new window['Vimeo'].Player(welcomeVideo);
+    //   setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
+    // }
+
+    if (introBlockRef?.current?.getBoundingClientRect().top <= 0) {
+      if (!mainPromoHeader.classList.contains('fixed-top')) {
+        mainPromoHeader.classList.add('fixed-top');
+      }
+    } else if (mainPromoHeader.classList.contains('fixed-top')) {
+      mainPromoHeader.classList.remove('fixed-top');
     }
 
     if (selectTariffPlanBlock.getBoundingClientRect().top < 400) {
       if (mainPromoHeader.classList.contains('fixed-top')) {
         mainPromoHeader.classList.remove('fixed-top');
       }
-    } else if (!mainPromoHeader.classList.contains('fixed-top')) {
-      mainPromoHeader.classList.add('fixed-top');
     }
 
-    if (welcomeVideo?.getBoundingClientRect().top < -100) {
-      welcomeVideoPlayer?.pause();
-    } else {
-      welcomeVideoPlayer?.play();
-    }
+    // if (welcomeVideo?.getBoundingClientRect().top < -100) {
+    //   welcomeVideoPlayer?.pause();
+    // } else {
+    //   welcomeVideoPlayer?.play();
+    // }
   };
 
   const t = (code: string, placeholders?: any) =>
@@ -187,6 +193,8 @@ const RegisterWelcomePage = ({
     getUserReviews();
 
     document.addEventListener('scroll', documentScrollHandle);
+
+    documentScrollHandle();
 
     return () => {
       document.removeEventListener('scroll', documentScrollHandle);
@@ -297,7 +305,7 @@ const RegisterWelcomePage = ({
             <div className='row'>
               <div className='col-12'>
 
-                <div className='col-xl-6 mb-4 text-center text-xl-left'>
+                <div className='col-xl-6 mb-4 p-0 text-center text-xl-left'>
                   <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
                 </div>
 
@@ -321,7 +329,7 @@ const RegisterWelcomePage = ({
                       <iframe
                         className='after-signup-video-frame'
                         title={t('lp.video.title')}
-                        src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
+                        src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
                         allow='autoplay'
                         width='100%'
                         height='400'
@@ -361,7 +369,7 @@ const RegisterWelcomePage = ({
                   )}
                 </ContentLoading>
 
-                <div className='after-signup-header-btn-col'>
+                {/* <div className='after-signup-header-btn-col'>
                   <Link
                     to={routes.checkout}
                     onClick={(e) => {
@@ -383,7 +391,7 @@ const RegisterWelcomePage = ({
                   </Link>
 
                   <img className='after-signup-header-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
-                </div>
+                </div> */}
 
                 <div className='sale-points__list mt-45'>
                   <div className='sale-points__item'>{t('lp.sale.point1')}</div>
@@ -436,7 +444,7 @@ const RegisterWelcomePage = ({
 
                 <div dangerouslySetInnerHTML={{ __html: t('lp.intro.content') }}></div>
 
-                <div className='after-signup-intro-content-btn mt-4 text-center text-xl-left'>
+                {/* <div className='after-signup-intro-content-btn mt-4 text-center text-xl-left'>
                   <Link
                     to={routes.checkout}
                     onClick={(e) => {
@@ -458,7 +466,7 @@ const RegisterWelcomePage = ({
                   </Link>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
-                </div>
+                </div> */}
 
               </div>
               <div className='col-lg-4 order-1 mb-4 text-center text-lg-left'>
@@ -486,7 +494,7 @@ const RegisterWelcomePage = ({
               <div className='col-12 mb-45'>
 
                 <div className='row'>
-                  <div className='col-md-6 col-xl-5 offset-xl-1'>
+                  <div className='col-md-6'>
 
                     <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
 
@@ -494,7 +502,7 @@ const RegisterWelcomePage = ({
                 </div>
 
               </div>
-              <div className='col-md-6 order-md-3 mb-5 mt-md-0 text-center'>
+              <div className='col-md-6 order-md-3 mb-5 mt-md-0 after-signup-image-button-col text-center'>
 
                 <button
                   type='button'
@@ -505,7 +513,7 @@ const RegisterWelcomePage = ({
                 </button>
 
               </div>
-              <div className='col-md-6 col-xl-5 offset-xl-1'>
+              <div className='col-md-6'>
 
                 <p dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
                 <h4 className='mt-4 fw-bold'>{t('lp.reviews.subtitle')}</h4>
@@ -537,7 +545,7 @@ const RegisterWelcomePage = ({
                   )}
                 </ContentLoading>
 
-                <div className='after-signup-reviews-btn-col mt-4 mt-xl-5 text-center text-xl-left'>
+                {/* <div className='after-signup-reviews-btn-col mt-4 mt-xl-5 text-center text-xl-left'>
                   <Link
                     to={routes.checkout}
                     onClick={(e) => {
@@ -557,7 +565,7 @@ const RegisterWelcomePage = ({
                   </Link>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
-                </div>
+                </div> */}
 
               </div>
             </div>
@@ -584,7 +592,7 @@ const RegisterWelcomePage = ({
                   <iframe
                     className='after-signup-video-frame'
                     title={t('lp.video.title')}
-                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}?autoplay=1`}
+                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
                     allow='autoplay'
                     width='100%'
                     height='400'
