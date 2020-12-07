@@ -5,8 +5,8 @@ export const googleAuth = (
   onSuccess: (resp: any) => void,
   onError: (err?: any) => void,
 ) => {
-  window['gapi'].load('auth2', () => {
-    window['gapi'].auth2
+  window.gapi.load('auth2', () => {
+    window.gapi.auth2
       .init({
         client_id: GOOGLE_CLIENT_ID,
       })

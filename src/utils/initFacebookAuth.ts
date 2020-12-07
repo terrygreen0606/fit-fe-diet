@@ -1,14 +1,13 @@
 import { facebookAuth } from 'utils';
 
-
 export const initFacebookAuth = (setLoading: (loading: boolean) => void) => {
   setLoading(true);
 
-  window['fbAsyncInit'] = () => {
+  window.fbAsyncInit = () => {
     const interval = setInterval(checkFacebookInitSuccess, 100);
 
     function checkFacebookInitSuccess() {
-      if (window['FB']) {
+      if (window.FB) {
         clearInterval(interval);
         setLoading(false);
       }

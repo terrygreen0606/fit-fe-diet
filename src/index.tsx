@@ -24,6 +24,17 @@ const tagManagerArgs = {
 
 TagManager.initialize(tagManagerArgs);
 
+declare global {
+  interface Window {
+    dataLayer: any;
+    Vimeo: any;
+    beforeinstallprompt: any;
+    FB: any;
+    gapi: any;
+    fbAsyncInit: any;
+  }
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

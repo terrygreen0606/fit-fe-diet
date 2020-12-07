@@ -1,6 +1,5 @@
 @import '../../assets/sass/vars'
 
-
 .checkout-payment-card
   display: block
   margin: 0 auto
@@ -21,14 +20,12 @@
     display: flex
     justify-content: space-between
     align-items: center
-    margin-bottom: 25px
-    @media (max-width: 480px)
-      &_text
-        svg
-          width: 40px
-    @media (max-width: 410px)
-      margin-bottom: 15px
+    margin-bottom: 40px
+    &_text
       font-size: 17px
+      svg
+        width: 30px
+    @media (max-width: 410px)
       &_text
         svg
           width: 20px
@@ -43,14 +40,9 @@
   &__total
     flex: 22
   &__form
-    padding: 20px
+    padding: 10px
     background: #FCFCFC
     border: 1px solid #E8E8E8
-    @media (max-width: 480px)
-      padding: 10px
-      padding-top: 22px
-    @media (max-width: 480px)
-      padding-top: 10px      
     .fgLabel
       font-weight: 400
       color: #000000
@@ -69,7 +61,6 @@
         .fgLabel
           margin-bottom: 11px
 
-        @media only screen and (max-width : 768px)
           flex: 0 0 100%
           max-width: 100%
           &:nth-child(2n)
@@ -116,11 +107,21 @@
           font-size: 14px
           line-height: 14px
     &_submit
+      min-width: 100%
+      padding-left: 5px
+      padding-right: 5px
       white-space: wrap
-      @media only screen and (max-width : 480px)
-        min-width: 100%
-        padding-left: 5px
-        padding-right: 5px
+    .money-back-guarantee-block
+      border: none
+      background-color: transparent
+      &__img
+        width: 50px
+      &__title
+        font-size: 14px
+        line-height: 1.2
+      &__descr
+        font-size: 14px
+        line-height: 1.2
 
 .checkout-payment-card.short
   max-width: 400px
@@ -130,12 +131,9 @@
 
 .payment-types-img
   display: inline-block
-  width: 50px
-  flex: 0 0 50px
+  width: 30px
+  flex: 0 0 30px
   margin-bottom: 3px
-  @media (max-width: 992px)
-    width: 40px
-    flex: 0 0 40px
 
   &:not(:last-child)
     margin-right: 3px
@@ -153,13 +151,12 @@
     justify-content: center
     flex-wrap: wrap
     .checkout-payment-radio
-      @media (max-width: 768px)
-        flex: 0 0 100%
-        margin: 0
-        &:not(:last-child)
-          margin-bottom: 20px !important
-        &__btn
-          width: 100%
+      flex: 0 0 100%
+      margin: 0
+      &:not(:last-child)
+        margin-bottom: 20px !important
+      &__btn
+        width: 100%
   &.radio-checked
     .checkout-payment-radio__btn
       background-color: $steel-blue

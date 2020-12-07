@@ -520,7 +520,7 @@ const CheckoutPaymentFormCard = ({
             <>
               <FormLabel className='mt-45'>{t('checkout.tariff.installments.options_title')}</FormLabel>
 
-              <div className='checkout-payment-card__form_installments__list mt-4 mt-xl-45'>
+              <div className='checkout-payment-card__form_installments__list mt-4'>
                 <FormGroup className='checkout-payment-card__form_installments__item'>
                   <FormLabel>
                     {t('checkout.tariff.installments.title', { PERIOD: getInstallmentsValue('parts') })}
@@ -590,7 +590,7 @@ const CheckoutPaymentFormCard = ({
             </>
           )}
 
-          <div className='text-center mt-4 mt-xl-5'>
+          <div className='text-center mt-4'>
             <Button
               type='submit'
               className='checkout-payment-card__form_submit'
@@ -616,12 +616,12 @@ const CheckoutPaymentFormCard = ({
             )}
           </div>
 
-          <img className='mt-5 img-fluid' src={t('checkout.guaranteed.img')} alt='' />
+          <img className='mt-4 img-fluid' src={t('checkout.guaranteed.img')} alt='' />
 
           <div
             className='money-back-guarantee-block mt-4'
           >
-            <img src={t('checkout.money_back.img')} className='money-back-guarantee-block__img' alt="" />
+            <img src={t('checkout.money_back.img')} className='money-back-guarantee-block__img' alt='' />
             <h5 className='money-back-guarantee-block__title'>{t('lp.money_back_title')}</h5>
             <p className='money-back-guarantee-block__descr'>{t('lp.money_back_descr')}</p>
           </div>

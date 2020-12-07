@@ -281,10 +281,12 @@ const CheckoutPage = ({
                         spinSize='lg'
                         color='#fff'
                       >
-                        <b>
-                          {`${profileData.firstname} ${profileData.lastname} `}
-                        </b>
-                        {t('checkout.reserved_block.title')}
+                        <div dangerouslySetInnerHTML={{
+                          __html: t('checkout.reserved_block.title', {
+                            NAME: `${profileData.firstname} ${profileData.lastname}`,
+                          }),
+                        }}
+                        />
                       </ContentLoading>
                       </h3>
                         {(storage.afterSignupPredictDate) && (
