@@ -413,7 +413,7 @@ const RegisterWelcomePage = ({
                         <div className='text-xl-right text-center'>
                           <button
                             type='button'
-                            onClick={scrollToTariffsSelectForm}
+                            onClick={welcomeButtonScroll}
                             className='after-signup-image-button'
                           >
                             <img
