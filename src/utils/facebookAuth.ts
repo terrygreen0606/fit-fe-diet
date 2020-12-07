@@ -1,7 +1,7 @@
 const FACEBOOK_APP_ID = '838129493383346';
 
 export const facebookAuth = () => {
-  window['FB'].init({
+  window.FB.init({
     appId: FACEBOOK_APP_ID,
     autoLogAppEvents: true,
     xfbml: true,

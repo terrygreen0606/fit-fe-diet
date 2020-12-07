@@ -168,7 +168,7 @@ const LoginView = (props: any) => {
   };
 
   const loginGoogle = () => {
-    const auth2 = window['gapi'].auth2.getAuthInstance();
+    const auth2 = window.gapi.auth2.getAuthInstance();
 
     setLoginGoogleLoading(true);
 
@@ -207,7 +207,7 @@ const LoginView = (props: any) => {
   const facebookLogin = () => {
     setLoginFacebookLoading(true);
 
-    window['FB'].login(
+    window.FB.login(
       (response) => {
         if (
           response &&

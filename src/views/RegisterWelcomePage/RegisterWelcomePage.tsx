@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
@@ -24,11 +22,8 @@ import Button from 'components/common/Forms/Button';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
+import SalesWidgets from 'components/SalesWidgets';
 import RawCountDown from 'components/common/RawCountDown';
-// import SalesWidgets from 'components/SalesWidgets';
-// import useVisible from 'components/hooks/useVisible';
-// import useWindowSize from 'components/hooks/useWindowSize';
-// import useDebounce from 'components/hooks/useDebounce';
 
 import './RegisterWelcomePage.sass';
 
@@ -62,44 +57,13 @@ const RegisterWelcomePage = ({
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
 
-  // const [welcomeVideoPlayerInstance, setWelcomeVideoPlayerInstance] = useState<any>(null);
-
-  // const { width: windowWidth } = useWindowSize();
-  // const debounceWindowWidth = useDebounce(windowWidth, 500);
-
-  // const [isActiveWidgetsOnMobile, setIsActiveWidgetsOnMobile] = useState<boolean>(false);
-  // const [isStartActiveWidgets, setIsStartActiveWidgets] = useState<boolean>(false);
+  const [isShowWidgets, setIsShowWidgets] = useState(true);
+  const [isStartShowWidgets, setIsStartShowWidgets] = useState<boolean>(false);
 
   const selectPlanBlockRef = useRef(null);
-  // const isVisibleSelectPlanBlock = useVisible(selectPlanBlockRef);
-  // useEffect(() => {
-  //   if (debounceWindowWidth < 576) {
-  //     setIsActiveWidgetsOnMobile(isVisibleSelectPlanBlock);
-  //   }
-  // }, [
-  //   debounceWindowWidth,
-  //   isVisibleSelectPlanBlock,
-  // ]);
-
   const paymentFormBlockRef = useRef(null);
-  // const isVisiblePaymentFormBlock = useVisible(paymentFormBlockRef);
-  // useEffect(() => {
-  //   if (debounceWindowWidth < 576) {
-  //     setIsActiveWidgetsOnMobile(isVisiblePaymentFormBlock);
-  //   }
-  // }, [
-  //   debounceWindowWidth,
-  //   isVisiblePaymentFormBlock,
-  // ]);
 
   const introBlockRef = useRef(null);
-  // const isVisibleIntroBlock = useVisible(introBlockRef, '-50px');
-  // useEffect(() => {
-  //   setIsStartActiveWidgets(isVisibleIntroBlock);
-  // }, [
-  //   debounceWindowWidth,
-  //   isVisibleIntroBlock,
-  // ]);
 
   const getUserTariffs = () => {
     setTariffsLoading(true);
@@ -156,14 +120,6 @@ const RegisterWelcomePage = ({
       return false;
     }
 
-    // const welcomeVideo = document.querySelector('.after-signup-video-frame');
-    // let welcomeVideoPlayer = welcomeVideoPlayerInstance;
-
-    // if (!welcomeVideoPlayer && window['Vimeo']) {
-    //   welcomeVideoPlayer = new window['Vimeo'].Player(welcomeVideo);
-    //   setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
-    // }
-
     if (introBlockRef?.current?.getBoundingClientRect().top <= 0) {
       if (!mainPromoHeader.classList.contains('fixed-top')) {
         mainPromoHeader.classList.add('fixed-top');
@@ -172,17 +128,20 @@ const RegisterWelcomePage = ({
       mainPromoHeader.classList.remove('fixed-top');
     }
 
-    // if (selectTariffPlanBlock.getBoundingClientRect().top < 400) {
-    //   if (mainPromoHeader.classList.contains('fixed-top')) {
-    //     mainPromoHeader.classList.remove('fixed-top');
-    //   }
-    // }
+    if (introBlockRef?.current?.getBoundingClientRect().top - window.innerHeight < 0) {
+      setIsStartShowWidgets(true);
+    }
 
-    // if (welcomeVideo?.getBoundingClientRect().top < -100) {
-    //   welcomeVideoPlayer?.pause();
-    // } else {
-    //   welcomeVideoPlayer?.play();
-    // }
+    if (debounceWindowWidth <= 576) {
+      if (
+        selectTariffPlanBlock.getBoundingClientRect().top > window.innerHeight ||
+        selectTariffPlanBlock.getBoundingClientRect().bottom < 0
+      ) {
+        setIsShowWidgets(true);
+      } else {
+        setIsShowWidgets(false);
+      }
+    }
   };
 
   const t = (code: string, placeholders?: any) =>
@@ -191,7 +150,9 @@ const RegisterWelcomePage = ({
   useEffect(() => {
     getUserTariffs();
     getUserReviews();
+  }, []);
 
+  useEffect(() => {
     document.addEventListener('scroll', documentScrollHandle);
 
     documentScrollHandle();
@@ -199,7 +160,7 @@ const RegisterWelcomePage = ({
     return () => {
       document.removeEventListener('scroll', documentScrollHandle);
     };
-  }, []);
+  }, [debounceWindowWidth]);
 
   const getShortDate = (timestamp: number) => {
     let predictedDateFormatted = '';
@@ -284,16 +245,123 @@ const RegisterWelcomePage = ({
     scrollToElement(paymentFormBlockRef?.current, -30);
   };
 
+  const getWelcomeHeadlLineTextVersion1 = () => (
+    t(tariffsDataList?.[1]?.country === 'br' ? 'welcome.desc.br1' : 'welcome.desc1', {
+      OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
+      ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
+      : tariffsDataList?.[1].price_old_weekly_text,
+      AMOUNT: tariffsDataList?.[1]?.country === 'br'
+        ? tariffsDataList?.[1]?.installments?.price_monthly_text
+        : tariffsDataList?.[1].price_weekly_text,
+    })
+  );
+
   const getPaymentFlowType = () => {
     let paymentFlow = null;
 
-    const paymentFlowData = window['dataLayer']?.find((data) => data['payment_flow']);
+    const paymentFlowData = window.dataLayer?.find((data) => data.payment_flow);
 
     if (paymentFlowData) {
-      paymentFlow = paymentFlowData['payment_flow'];
+      paymentFlow = paymentFlowData.payment_flow;
     }
 
     return paymentFlow;
+  };
+
+  const getWelcomeHeadlLineText = () => {
+    let headlineVersion = null;
+
+    const headlineVersionData = window.dataLayer?.find((data) => data.headline_version);
+
+    if (headlineVersionData) {
+      headlineVersion = headlineVersionData.headline_version;
+    }
+
+    switch (headlineVersion?.toString()) {
+      case '2':
+        headlineVersion = t('welcome.title2');
+        break;
+
+      case '3':
+        headlineVersion = t('welcome.title3');
+        break;
+
+      case '4':
+        headlineVersion = t('welcome.title4');
+        break;
+
+      default:
+        headlineVersion = t('welcome.title1');
+        break;
+    }
+
+    return headlineVersion;
+  };
+
+  const getVideoAutoplay = () => {
+    let videoAutoplay = null;
+
+    const videoAutoplayData = window.dataLayer?.find((data) => data.video_autoplay_on);
+
+    if (videoAutoplayData) {
+      videoAutoplay = videoAutoplayData.video_autoplay_on;
+    }
+
+    switch (videoAutoplay?.toString()) {
+      case '1':
+        videoAutoplay = '?autoplay=1';
+        break;
+
+      default:
+        videoAutoplay = '?autoplay=0';
+        break;
+    }
+
+    return videoAutoplay;
+  };
+
+  const getWelcomeDescriptionText = () => {
+    let descriptionVersion = null;
+
+    const descriptionVersionData = window.dataLayer?.find((data) => data.description_version);
+
+    if (descriptionVersionData) {
+      descriptionVersion = descriptionVersionData.description_version;
+    }
+
+    switch (descriptionVersion?.toString()) {
+      case '2':
+        descriptionVersion = t('welcome.desc2');
+        break;
+
+      case '3':
+        descriptionVersion = t('welcome.desc3');
+        break;
+
+      case '4':
+        descriptionVersion = t('welcome.desc4');
+        break;
+
+      default:
+        descriptionVersion = getWelcomeHeadlLineTextVersion1();
+        break;
+    }
+
+    return descriptionVersion;
+  };
+
+  const getVideoLocation = () => {
+    let videoLocation = null;
+
+    const videoLocationData = window.dataLayer?.find((data) => data.video_location);
+
+    if (videoLocationData) {
+      videoLocation = videoLocationData.video_location.toString();
+    } else {
+      videoLocation = '1';
+    }
+
+    return videoLocation;
   };
 
   return (
@@ -310,7 +378,7 @@ const RegisterWelcomePage = ({
               <div className='col-12'>
 
                 <div className='col-xl-6 mb-4 p-0 text-center text-xl-left'>
-                  <h1 className='fw-bold'>{t('lp.welcome.title', { NAME: afterSignupName })}</h1>
+                  <h1 className='fw-bold'>{getWelcomeHeadlLineText()}</h1>
                 </div>
 
               </div>
@@ -330,14 +398,33 @@ const RegisterWelcomePage = ({
                       )}
                     </>
                   ) : (
-                      <iframe
-                        className='after-signup-video-frame'
-                        title={t('lp.video.title')}
-                        src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
-                        allow='autoplay'
-                        width='100%'
-                        height='400'
-                      />
+                    <>
+                      {getVideoLocation() === '1' && (
+                        <iframe
+                          className='after-signup-video-frame'
+                          title={t('lp.video.title')}
+                          src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}${getVideoAutoplay()}`}
+                          allow='autoplay'
+                          width='100%'
+                          height='400'
+                        />
+                      )}
+                      {getVideoLocation() === '2' && (
+                        <div className='text-xl-right text-center'>
+                          <button
+                            type='button'
+                            onClick={scrollToTariffsSelectForm}
+                            className='after-signup-image-button'
+                          >
+                            <img
+                              src={getImagePath('fitlope-app-screens.png')}
+                              alt=''
+                              className='img-fluid'
+                            />
+                          </button>
+                        </div>
+                      )}
+                    </>
                     )}
                 </div>
 
@@ -357,19 +444,7 @@ const RegisterWelcomePage = ({
                   fetchData={() => getUserTariffs()}
                 >
                   {tariffsDataList.length > 0 && (
-                    <h4
-                      className='fw-regular'
-                      dangerouslySetInnerHTML={{
-                        __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
-                          OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
-                          ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
-                          : tariffsDataList?.[1].price_old_weekly_text,
-                          AMOUNT: tariffsDataList?.[1]?.country === 'br'
-                            ? tariffsDataList?.[1]?.installments?.price_monthly_text
-                            : tariffsDataList?.[1].price_weekly_text,
-                        }),
-                      }}
-                    />
+                    <h4 className='fw-regular' dangerouslySetInnerHTML={{ __html: getWelcomeDescriptionText() }} />
                   )}
                 </ContentLoading>
 
@@ -475,17 +550,30 @@ const RegisterWelcomePage = ({
               </div>
               <div className='col-lg-4 order-1 mb-4 text-center text-lg-left'>
 
-                <button
-                  type='button'
-                  onClick={welcomeButtonScroll}
-                  className='after-signup-image-button'
-                >
-                  <img
-                    src={getImagePath('fitlope-app-screens.png')}
-                    alt=''
-                    className='img-fluid'
+                {getVideoLocation() === '1' && (
+                  <button
+                    type='button'
+                    onClick={welcomeButtonScroll}
+                    className='after-signup-image-button'
+                  >
+                    <img
+                      src={getImagePath('fitlope-app-screens.png')}
+                      alt=''
+                      className='img-fluid'
+                    />
+                  </button>
+                )}
+                
+                {getVideoLocation() === '2' && (
+                  <iframe
+                    className='after-signup-video-frame'
+                    title={t('lp.video.title')}
+                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}${getVideoAutoplay()}`}
+                    allow='autoplay'
+                    width='100%'
+                    height='200px'
                   />
-                </button>
+                )}
 
               </div>
             </div>
@@ -649,14 +737,7 @@ const RegisterWelcomePage = ({
                     <h2
                       className='fw-regular mt-4 text-left text-lg-center'
                       dangerouslySetInnerHTML={{
-                        __html: t(tariffsDataList?.[1]?.country === 'br' ? 'lp.selling_text.br' : 'lp.selling_text', {
-                          OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
-                            ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
-                            : tariffsDataList?.[1].price_old_weekly_text,
-                          AMOUNT: tariffsDataList?.[1]?.country === 'br'
-                            ? tariffsDataList?.[1]?.installments?.price_monthly_text
-                            : tariffsDataList?.[1].price_weekly_text,
-                        }),
+                        __html: getWelcomeDescriptionText(),
                       }}
                     />
                   )}
@@ -878,10 +959,10 @@ const RegisterWelcomePage = ({
         </section>
       </section>
 
-      {/* <SalesWidgets
-        isShow={!isActiveWidgetsOnMobile}
-        isStartShow={isStartActiveWidgets}
-      /> */}
+      <SalesWidgets
+        isShow={isShowWidgets}
+        isStartShow={isStartShowWidgets}
+      />
     </>
   );
 };
