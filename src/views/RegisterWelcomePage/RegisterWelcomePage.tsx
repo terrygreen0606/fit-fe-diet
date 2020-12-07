@@ -23,10 +23,7 @@ import Button from 'components/common/Forms/Button';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
-// import SalesWidgets from 'components/SalesWidgets';
-// import useVisible from 'components/hooks/useVisible';
-// import useWindowSize from 'components/hooks/useWindowSize';
-// import useDebounce from 'components/hooks/useDebounce';
+import SalesWidgets from 'components/SalesWidgets';
 
 import './RegisterWelcomePage.sass';
 
@@ -60,44 +57,13 @@ const RegisterWelcomePage = ({
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
 
-  // const [welcomeVideoPlayerInstance, setWelcomeVideoPlayerInstance] = useState<any>(null);
-
-  // const { width: windowWidth } = useWindowSize();
-  // const debounceWindowWidth = useDebounce(windowWidth, 500);
-
-  // const [isActiveWidgetsOnMobile, setIsActiveWidgetsOnMobile] = useState<boolean>(false);
-  // const [isStartActiveWidgets, setIsStartActiveWidgets] = useState<boolean>(false);
+  const [isShowWidgets, setIsShowWidgets] = useState(true);
+  const [isStartShowWidgets, setIsStartShowWidgets] = useState<boolean>(false);
 
   const selectPlanBlockRef = useRef(null);
-  // const isVisibleSelectPlanBlock = useVisible(selectPlanBlockRef);
-  // useEffect(() => {
-  //   if (debounceWindowWidth < 576) {
-  //     setIsActiveWidgetsOnMobile(isVisibleSelectPlanBlock);
-  //   }
-  // }, [
-  //   debounceWindowWidth,
-  //   isVisibleSelectPlanBlock,
-  // ]);
-
   const paymentFormBlockRef = useRef(null);
-  // const isVisiblePaymentFormBlock = useVisible(paymentFormBlockRef);
-  // useEffect(() => {
-  //   if (debounceWindowWidth < 576) {
-  //     setIsActiveWidgetsOnMobile(isVisiblePaymentFormBlock);
-  //   }
-  // }, [
-  //   debounceWindowWidth,
-  //   isVisiblePaymentFormBlock,
-  // ]);
 
   const introBlockRef = useRef(null);
-  // const isVisibleIntroBlock = useVisible(introBlockRef, '-50px');
-  // useEffect(() => {
-  //   setIsStartActiveWidgets(isVisibleIntroBlock);
-  // }, [
-  //   debounceWindowWidth,
-  //   isVisibleIntroBlock,
-  // ]);
 
   const getUserTariffs = () => {
     setTariffsLoading(true);
@@ -154,14 +120,6 @@ const RegisterWelcomePage = ({
       return false;
     }
 
-    // const welcomeVideo = document.querySelector('.after-signup-video-frame');
-    // let welcomeVideoPlayer = welcomeVideoPlayerInstance;
-
-    // if (!welcomeVideoPlayer && window['Vimeo']) {
-    //   welcomeVideoPlayer = new window['Vimeo'].Player(welcomeVideo);
-    //   setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
-    // }
-
     if (introBlockRef?.current?.getBoundingClientRect().top <= 0) {
       if (!mainPromoHeader.classList.contains('fixed-top')) {
         mainPromoHeader.classList.add('fixed-top');
@@ -170,17 +128,20 @@ const RegisterWelcomePage = ({
       mainPromoHeader.classList.remove('fixed-top');
     }
 
-    // if (selectTariffPlanBlock.getBoundingClientRect().top < 400) {
-    //   if (mainPromoHeader.classList.contains('fixed-top')) {
-    //     mainPromoHeader.classList.remove('fixed-top');
-    //   }
-    // }
+    if (introBlockRef?.current?.getBoundingClientRect().top - window.innerHeight < 0) {
+      setIsStartShowWidgets(true);
+    }
 
-    // if (welcomeVideo?.getBoundingClientRect().top < -100) {
-    //   welcomeVideoPlayer?.pause();
-    // } else {
-    //   welcomeVideoPlayer?.play();
-    // }
+    if (debounceWindowWidth <= 576) {
+      if (
+        selectTariffPlanBlock.getBoundingClientRect().top > window.innerHeight ||
+        selectTariffPlanBlock.getBoundingClientRect().bottom < 0
+      ) {
+        setIsShowWidgets(true);
+      } else {
+        setIsShowWidgets(false);
+      }
+    }
   };
 
   const t = (code: string, placeholders?: any) =>
@@ -189,7 +150,9 @@ const RegisterWelcomePage = ({
   useEffect(() => {
     getUserTariffs();
     getUserReviews();
+  }, []);
 
+  useEffect(() => {
     document.addEventListener('scroll', documentScrollHandle);
 
     documentScrollHandle();
@@ -197,7 +160,7 @@ const RegisterWelcomePage = ({
     return () => {
       document.removeEventListener('scroll', documentScrollHandle);
     };
-  }, []);
+  }, [debounceWindowWidth]);
 
   const getShortDate = (timestamp: number) => {
     let predictedDateFormatted = '';
@@ -1015,10 +978,10 @@ const RegisterWelcomePage = ({
         </section>
       </section>
 
-      {/* <SalesWidgets
-        isShow={!isActiveWidgetsOnMobile}
-        isStartShow={isStartActiveWidgets}
-      /> */}
+      <SalesWidgets
+        isShow={isShowWidgets}
+        isStartShow={isStartShowWidgets}
+      />
     </>
   );
 };
