@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import uuid from 'react-uuid';
 import Helmet from 'react-helmet';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import {
   getTranslate,
@@ -24,6 +23,7 @@ import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import TariffPlanSelect from 'components/TariffPlanSelect';
 import SalesWidgets from 'components/SalesWidgets';
+import RawCountDown from 'components/common/RawCountDown';
 
 import './RegisterWelcomePage.sass';
 
@@ -232,9 +232,13 @@ const RegisterWelcomePage = ({
     return activeTariff;
   };
 
-  const scrollToTariffsSelectForm = (e) => {
+  const welcomeButtonScroll = (e) => {
     e.preventDefault();
-    scrollToElement(selectPlanBlockRef?.current, -30);
+    const scrollBlock = document.getElementById('welcomePartnersBlock');
+
+    if (scrollBlock) {
+      scrollToElement(scrollBlock, -82);
+    }
   };
 
   const scrollToCheckoutForm = () => {
@@ -450,7 +454,7 @@ const RegisterWelcomePage = ({
                     onClick={(e) => {
                       if (!activeTariffIdToPay) {
                         e.preventDefault();
-                        scrollToTariffsSelectForm(e);
+                        welcomeButtonScroll(e);
                       }
                     }}
                     className='link-raw'
@@ -485,7 +489,7 @@ const RegisterWelcomePage = ({
               <div className='col-12 text-center'>
 
                 <div className='mb-4'>
-                  <h5 className='fw-bold'>{t('lp.partners_list.title')}</h5>
+                  <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
 
                   <div className='app-partners-list'>
                     <span
@@ -525,7 +529,7 @@ const RegisterWelcomePage = ({
                     onClick={(e) => {
                       if (!activeTariffIdToPay) {
                         e.preventDefault();
-                        scrollToTariffsSelectForm(e);
+                        welcomeButtonScroll(e);
                       }
                     }}
                     className='link-raw'
@@ -547,28 +551,29 @@ const RegisterWelcomePage = ({
               <div className='col-lg-4 order-1 mb-4 text-center text-lg-left'>
 
                 {getVideoLocation() === '1' && (
-                    <button
-                      type='button'
-                      onClick={scrollToTariffsSelectForm}
-                      className='after-signup-image-button'
-                    >
-                      <img
-                        src={getImagePath('fitlope-app-screens.png')}
-                        alt=''
-                        className='img-fluid'
-                      />
-                    </button>
-                  )}
-                  {getVideoLocation() === '2' && (
-                    <iframe
-                      className='after-signup-video-frame'
-                      title={t('lp.video.title')}
-                      src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}${getVideoAutoplay()}`}
-                      allow='autoplay'
-                      width='100%'
-                      height='200px'
+                  <button
+                    type='button'
+                    onClick={welcomeButtonScroll}
+                    className='after-signup-image-button'
+                  >
+                    <img
+                      src={getImagePath('fitlope-app-screens.png')}
+                      alt=''
+                      className='img-fluid'
                     />
-                  )}
+                  </button>
+                )}
+                
+                {getVideoLocation() === '2' && (
+                  <iframe
+                    className='after-signup-video-frame'
+                    title={t('lp.video.title')}
+                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}${getVideoAutoplay()}`}
+                    allow='autoplay'
+                    width='100%'
+                    height='200px'
+                  />
+                )}
 
               </div>
             </div>
@@ -589,14 +594,14 @@ const RegisterWelcomePage = ({
                 </div>
 
               </div>
-              <div className='col-md-6 order-md-3 mb-5 mt-md-0 after-signup-image-button-col text-center'>
+              <div className='col-md-6 order-md-3 mb-5 mb-md-0 after-signup-image-button-col text-center'>
 
                 <button
                   type='button'
-                  onClick={scrollToTariffsSelectForm}
+                  onClick={welcomeButtonScroll}
                   className='after-signup-image-button'
                 >
-                  <img className='img-fluid' src={getImagePath('dishes.png')} alt='' />
+                  <img className='img-fluid' src={getImagePath('review-info-img.png')} alt='' />
                 </button>
 
               </div>
@@ -638,7 +643,7 @@ const RegisterWelcomePage = ({
                     onClick={(e) => {
                       if (!activeTariffIdToPay) {
                         e.preventDefault();
-                        scrollToTariffsSelectForm(e);
+                        welcomeButtonScroll(e);
                       }
                     }}
                     className='link-raw'
@@ -662,41 +667,26 @@ const RegisterWelcomePage = ({
         <section className='after-signup-expect-sect'>
           <div className='container'>
             <div className='row'>
-              <div className='col-xl-6'>
+              <div className='col-xl-4'>
 
-                <h2 className='mb-4 mb-xl-5 fw-bold'>{t('lp.advantages.title')}</h2>
-
-                <div className='app-advantages-list'>
-                  <div className='app-advantages-list__item'>{t('lp.advantage_1')}</div>
-                  <div className='app-advantages-list__item'>{t('lp.advantage_2')}</div>
-                  <div className='app-advantages-list__item'>{t('lp.advantage_3')}</div>
-                </div>
+                <button
+                  type='button'
+                  onClick={welcomeButtonScroll}
+                  className='after-signup-image-button'
+                >
+                  <img className='img-fluid' src={getImagePath('dishes.png')} alt='' />
+                </button>
 
               </div>
-              <div className='col-xl-6 mt-5 mt-xl-0'>
+              <div className='col-xl-8 mt-5 mt-xl-0'>
 
-                {afterSignupNameFirstSection === 'stat' ? (
-                  <iframe
-                    className='after-signup-video-frame'
-                    title={t('lp.video.title')}
-                    src={`https://player.vimeo.com/video/${t('lp.video.vimeo.id')}`}
-                    allow='autoplay'
-                    width='100%'
-                    height='400'
-                  />
-                ) : (
-                    <>
-                      {isAfterSignup && (
-                        <DietExpectationsChart
-                          weight={afterSignupWeight}
-                          weightGoal={afterSignupWeightGoal}
-                          predictedDate={afterSignupPredictDate}
-                          measurement={measurement}
-                          localePhrases={localePhrases}
-                        />
-                      )}
-                    </>
-                  )}
+                <h2 className='mb-4 fw-bold'>{t('lp.advantages.title')}</h2>
+
+                <div className='app-advantages-list'>
+                  {Array(5).fill(1).map(() => uuid()).map((id, index) => (
+                    <div className='app-advantages-list__item'>{t(`lp.advantage_${index + 1}`)}</div>  
+                  ))}
+                </div>
 
               </div>
               <div className='col-12 mt-4 mt-xl-5'>
@@ -706,7 +696,7 @@ const RegisterWelcomePage = ({
 
                   <button
                     type='button'
-                    onClick={scrollToTariffsSelectForm}
+                    onClick={welcomeButtonScroll}
                     className='after-signup-image-button'
                   >
                     <img src={t('checkout.social.img')} className='img-fluid' alt='' />
@@ -717,7 +707,7 @@ const RegisterWelcomePage = ({
 
                     <button
                       type='button'
-                      onClick={scrollToTariffsSelectForm}
+                      onClick={welcomeButtonScroll}
                       className='after-signup-image-button'
                     >
                       <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
@@ -734,7 +724,7 @@ const RegisterWelcomePage = ({
         <section className='after-signup-start-today-sect'>
           <div className='container pb-3'>
             <div className='row'>
-              <div className='col-xl-6 offset-xl-3 after-signup-start-today-col text-center'>
+              <div className='col-xl-8 offset-xl-2 after-signup-start-today-col text-center'>
 
                 <h2 className='sect-title title-center'>{t('lp.start_today.title')}</h2>
 
@@ -754,33 +744,22 @@ const RegisterWelcomePage = ({
                 </ContentLoading>
 
                 <div className='after-signup-start-today-btn-col'>
-
-                  <Link
-                    to={routes.checkout}
-                    onClick={(e) => {
-                      if (!activeTariffIdToPay) {
-                        e.preventDefault();
-                        scrollToTariffsSelectForm(e);
-                      }
-                    }}
-                    className='link-raw'
+                  <Button
+                    pulse
+                    color='primary-shadow'
+                    className='mt-4'
+                    size='lg'
+                    block
+                    onClick={welcomeButtonScroll}
+                    style={{ maxWidth: '500px' }}
                   >
-                    <Button
-                      pulse
-                      color='primary-shadow'
-                      className='mt-4'
-                      size='lg'
-                      block
-                      style={{ maxWidth: '500px' }}
-                    >
-                      {t('button.activate_plan')}
-                    </Button>
-                  </Link>
+                    {t('button.activate_plan')}
+                  </Button>
 
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
 
-                <div className='app-partners-list__wrap mt-5'>
+                <div id='welcomePartnersBlock' className='app-partners-list__wrap mt-2'>
                   <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
 
                   <div className='app-partners-list'>
@@ -813,166 +792,168 @@ const RegisterWelcomePage = ({
             <div className='row'>
               <div className='col-12'>
 
-                <div className='row'>
-                  <div
-                    ref={selectPlanBlockRef}
-                    id='selectTariffPlanBlock'
-                    className={classNames({
-                      'col-md-6': getPaymentFlowType() === '2',
-                      'col-md-7': getPaymentFlowType() !== '2',
-                    })}
-                  >
-
-                    <h2 className='mb-4 mb-xl-5 fw-bold text-center'>
-                      {t('lp.select_plan.title')}
-                    </h2>
-
-                    <ContentLoading
-                      isLoading={tariffsLoading}
-                      isError={tariffsLoadingError}
-                      fetchData={() => getUserTariffs()}
-                    >
-                      <TariffPlanSelect
-                        tariffs={tariffsDataList}
-                        value={activeTariffId}
-                        onChange={(id) => {
-                          if (activeTariffId === null) {
-                            setTimeout(() => {
-                              scrollToCheckoutForm();
-                            }, 100);
-                          }
-
-                          setActiveTariffId(id);
-                          changeSetting('activeTariffIdToPay', id);
-                          changeSetting('isSelectedTariffOnWelcomePage', true);
-                        }}
-                        specialOfferIndex={1}
-                        localePhrases={localePhrases}
-                      />
-
-                      {getPaymentFlowType() !== '2' && (
-                        <div className='text-center'>
-                          <Link to={routes.checkout} className='mt-5 link-raw'>
-                            <Button
-                              color='primary'
-                              size='lg'
-                              arrow
-                              disabled={!getActiveTariffData()}
-                            >
-                              {t('button.confirm.tariff')}
-                            </Button>
-                          </Link>
-
-                          {!getActiveTariffData() && (
-                            <div>
-                              <button
-                                type='button'
-                                className='checkout_tariff_error'
-                                onClick={scrollToTariffsSelectForm}
-                              >
-                                {t('checkout.tariff.select.error.msg')}
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </ContentLoading>
-
-                    {(debounceWindowWidth > 768 && getPaymentFlowType() === '2') && (
-                      <>
-                        <h2 className='mt-5 mb-4 mb-xl-5 fw-bold text-center text-md-left'>
-                          {t('lp.plan.advantages.title')}
-                        </h2>
-
-                        <div className='advantages-checklist'>
-                          {Array(5).fill(1).map(() => uuid()).map((id, index) => (
-                            <div key={id} className='advantages-checklist-item'>
-                              <h6 className='advantages-checklist-item__title'>
-                                {t(`lp.plan.advantage${index + 1}.title`)}
-                              </h6>
-
-                              <div className='advantages-checklist-item__content'>
-                                {t(`lp.plan.advantage${index + 1}.descr`)}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-
-                        <Link to={routes.checkout} className='link-raw'>
-                          <div className='text-center'>
-                            <img
-                              src={t('checkout.safe.img2')}
-                              className='img-fluid mt-4'
-                              style={{ maxWidth: '70%' }}
-                              alt=''
-                            />
-                          </div>
-                        </Link>
-                      </>
-                    )}
-
-                  </div>
-                  {getPaymentFlowType() === '2' && (
-                    <div className='col-md-6 pl-xl-5 mt-4 mt-md-0'>
-
-                      {!tariffsLoading && !tariffsLoadingError ? (
-                        <div ref={paymentFormBlockRef}>
-                          <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
-                            {t('lp.select_payment.title')}
-                          </h3>
-
-                          <CheckoutPaymentFormCard
-                            tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
-                            disabled={!getActiveTariffData()}
-                            scrollRef={selectPlanBlockRef}
-                            history={history}
-                            localePhrases={localePhrases}
-                          />
-                        </div>
-                      ) : null}
-
-                    </div>
-                  )}
-                  {debounceWindowWidth <= 768 || getPaymentFlowType() !== '2' ? (
-                    <div
-                      className={classNames('mt-45 mt-md-0', {
-                        'col-md-6': getPaymentFlowType() === '2',
-                        'col-md-5': getPaymentFlowType() !== '2',
-                      })}
-                    >
-
-                      <h2 className='mb-4 mb-xl-5 fw-bold text-center text-md-left'>{t('lp.plan.advantages.title')}</h2>
-
-                      <div className='advantages-checklist'>
-                        {Array(5).fill(1).map(() => uuid()).map((id, index) => (
-                          <div key={id} className='advantages-checklist-item'>
-                            <h6 className='advantages-checklist-item__title'>
-                              {t(`lp.plan.advantage${index + 1}.title`)}
-                            </h6>
-
-                            <div className='advantages-checklist-item__content'>
-                              {t(`lp.plan.advantage${index + 1}.descr`)}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <Link to={routes.checkout} className='link-raw'>
-                        <div className='text-center'>
-                          <img
-                            src={t('checkout.safe.img2')}
-                            className='img-fluid mt-4'
-                            style={{ maxWidth: '70%' }}
-                            alt=''
-                          />
-                        </div>
-                      </Link>
-
-                    </div>
-                  ) : null}
+                <div className='checkout-reserved-top-block'>
+                  <h3 className='checkout-reserved-top-block__title'>
+                    {t('welcome.reserved_block.title')}
+                  </h3>
+                  <p className='checkout-reserved-top-block__descr'>
+                    {t('welcome.reserved_block.descr')}
+                  </p>
+                  <p className='checkout-reserved-top-block__countdown_title'>
+                    {t('welcome.reserved_block.countdown.title')}
+                  </p>
+                  <span className='checkout-reserved-top-block__countdown'>
+                    <RawCountDown seconds={900} />
+                  </span>
                 </div>
 
               </div>
+              <div
+                ref={selectPlanBlockRef}
+                id='selectTariffPlanBlock'
+                className='col-md-6'
+              >
+                <h2 className='mb-4 mb-xl-5 fw-bold text-center'>
+                  {t('lp.select_plan.title')}
+                </h2>
+
+                <ContentLoading
+                  isLoading={tariffsLoading}
+                  isError={tariffsLoadingError}
+                  fetchData={() => getUserTariffs()}
+                >
+                  <TariffPlanSelect
+                    tariffs={tariffsDataList}
+                    value={activeTariffId}
+                    onChange={(id) => {
+                      if (activeTariffId === null) {
+                        setTimeout(() => {
+                          scrollToCheckoutForm();
+                        }, 100);
+                      }
+
+                      setActiveTariffId(id);
+                      changeSetting('activeTariffIdToPay', id);
+                      changeSetting('isSelectedTariffOnWelcomePage', true);
+                    }}
+                    specialOfferIndex={1}
+                    localePhrases={localePhrases}
+                  />
+
+                  {getPaymentFlowType() !== '2' && (
+                    <div className='text-center'>
+                      <Link
+                        to={routes.checkout}
+                        className='mt-5 link-raw'
+                      >
+                        <Button
+                          color='primary'
+                          size='lg'
+                          arrow
+                          disabled={!getActiveTariffData()}
+                        >
+                          {t('button.confirm.tariff')}
+                        </Button>
+                      </Link>
+
+                      {!getActiveTariffData() && (
+                        <div>
+                          <button
+                            type='button'
+                            className='checkout_tariff_error'
+                            onClick={welcomeButtonScroll}
+                          >
+                            {t('checkout.tariff.select.error.msg')}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </ContentLoading>
+
+                {(debounceWindowWidth > 768 && getPaymentFlowType() === '2') && (
+                  <>
+                    <h2 className='mt-5 mb-4 mb-xl-5 fw-bold text-center text-md-left'>
+                      {t('lp.plan.advantages.title')}
+                    </h2>
+
+                    <div className='advantages-checklist'>
+                      {Array(5).fill(1).map(() => uuid()).map((id, index) => (
+                        <div key={id} className='advantages-checklist-item'>
+                          <h6 className='advantages-checklist-item__title'>
+                            {t(`lp.plan.advantage${index + 1}.title`)}
+                          </h6>
+
+                          <div className='advantages-checklist-item__content'>
+                            {t(`lp.plan.advantage${index + 1}.descr`)}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className='text-center'>
+                      <img
+                        src={t('checkout.safe.img2')}
+                        className='img-fluid mt-4'
+                        style={{ maxWidth: '70%' }}
+                        alt=''
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {getPaymentFlowType() === '2' && (
+                <div className='col-md-6 pl-xl-5 mt-4 mt-md-0'>
+                  {!tariffsLoading && !tariffsLoadingError ? (
+                    <div ref={paymentFormBlockRef}>
+                      <h3 className='mb-4 mb-xl-5 fw-bold text-center'>
+                        {t('lp.select_payment.title')}
+                      </h3>
+
+                      <CheckoutPaymentFormCard
+                        tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                        disabled={!getActiveTariffData()}
+                        scrollRef={selectPlanBlockRef}
+                        history={history}
+                        localePhrases={localePhrases}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              )}
+
+              {debounceWindowWidth <= 768 || getPaymentFlowType() !== '2' ? (
+                <div className='col-md-6 mt-45 mt-md-0 pl-xl-5'>
+                  <h2 className='mb-4 mb-xl-5 fw-bold text-center text-md-left'>{t('lp.plan.advantages.title')}</h2>
+
+                  <div className='advantages-checklist'>
+                    {Array(5).fill(1).map(() => uuid()).map((id, index) => (
+                      <div key={id} className='advantages-checklist-item'>
+                        <h6 className='advantages-checklist-item__title'>
+                          {t(`lp.plan.advantage${index + 1}.title`)}
+                        </h6>
+
+                        <div className='advantages-checklist-item__content'>
+                          {t(`lp.plan.advantage${index + 1}.descr`)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Link to={routes.checkout} className='link-raw'>
+                    <div className='text-center'>
+                      <img
+                        src={t('checkout.safe.img2')}
+                        className='img-fluid mt-4'
+                        style={{ maxWidth: '70%' }}
+                        alt=''
+                      />
+                    </div>
+                  </Link>
+
+                </div>
+              ) : null}
             </div>
           </div>
         </section>

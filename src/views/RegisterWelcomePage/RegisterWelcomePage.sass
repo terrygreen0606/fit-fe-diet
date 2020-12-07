@@ -6,8 +6,7 @@
 
 .after-signup-header-sect
   position: relative
-  padding-top: 50px !important
-  padding-bottom: 70px !important
+  padding: 68px 0 83px !important
   background-color: $steel-blue
   color: #fff
   @media only screen and (max-width : 1024px)
@@ -23,10 +22,15 @@
       border-style: solid
       border-width: 0 0 70vw 45vw
       border-color: transparent transparent #fff transparent
-
+    .after-signup-video-frame
+      position: absolute
+      width: 50%
+      top: 50%
+      right: 0
+      transform: translateY(-50%)
+      border-radius: 20px
   .row
     position: relative
-
   .after-signup-header-chart-col
     position: static
     display: flex
@@ -39,15 +43,19 @@
         bottom: 4px
     .app-review-single-item
       position: relative
-
   .after-signup-video-frame
-    position: absolute
-    width: 50%
-    top: 50%
-    right: 0
-    transform: translateY(-50%)
-    @media only screen and (max-width : 1200px)
-      width: 100%
+    border-radius: 20px
+    height: calc((100vw - 30px) * 0.57)
+    @media (min-width: 576px)
+      height: calc((540px - 30px) * 0.57)
+    @media (min-width: 768px)
+      height: calc((750px - 30px) * 0.57)
+    @media (min-width: 992px)
+      height: calc((970px - 30px) * 0.57)
+    @media (min-width: 1200px)
+      height: calc((1170px - 30px) / 2 * 0.57)
+    @media (min-width: 1300px)
+      height: calc((1200px - 30px) / 2 * 0.57)
 
 .after-signup-header-btn-col
   position: relative
@@ -64,7 +72,6 @@
       right: -40px
     @media only screen and (max-width : 768px)
       display: none
-      
 
 .after-signup-header-chart-col_content
   display: block
@@ -72,18 +79,21 @@
 
 .after-signup-header-content-col
   position: relative
-
+  text-align: center
 
 .after-signup-intro-sect
-  padding: 80px 0 40px
+  padding: 38px 0
   @media only screen and (max-width : 1200px)
     padding: 60px 0
   @media only screen and (max-width : 992px)
     padding: 40px 0
   .after-signup-image-button
+    img
+      width: unset
     @media only screen and (min-width : 992px)
       margin-top: -50px
-
+      img
+        width: 100%
 
 .after-signup-intro-content-btn
   position: relative
@@ -98,7 +108,6 @@
     @media only screen and (max-width : 768px)
       display: none
 
-
 .after-signup-intro-content-col
   position: relative
   @media only screen and (min-width : 992px)
@@ -112,8 +121,8 @@
 
 .after-signup-reviews-sect
   position: relative
-  min-height: 770px
-  padding: 70px 0
+  min-height: 710px
+  padding: 102px 0 93px
   background-image: url('../../assets/img/dream-body-bg.png')
   background-repeat: no-repeat
   background-position: top center
@@ -151,8 +160,6 @@
       align-items: flex-start
       max-width: calc(50% - 80px)
       height: 600px
-      img
-        width: 100%
       &-col
         position: static
 
@@ -165,7 +172,7 @@
       display: none
 
 .after-signup-expect-sect
-  padding: 70px 0
+  padding: 81px 0 50px
   @media only screen and (max-width : 1200px)
     padding-bottom: 45px
 
@@ -182,10 +189,13 @@
 
 .after-signup-start-today-sect
   position: relative
+  padding: 50px 0 270px
   background-image: url('../../assets/img/plan-today-bg.png')
   background-size: cover
   background-repeat: no-repeat
   background-position: center center
+  @media (max-width: 768px)
+    padding-bottom: 300px
   .checkout-reserved-block
     position: absolute
     width: 100%
@@ -193,8 +203,9 @@
     left: 0
 
 .after-signup-plan-select-sect
+  padding-bottom: 0
   .checkout-reserved-top-block
-    margin: -200px auto 50px
+    margin: -340px auto 50px
   
 .after-signup-start-today-arrow
   position: absolute
@@ -204,7 +215,6 @@
   .after-signup-start-today-arrow
     right: -35%
     top: -70px
-
     @media only screen and (max-width : 992px)
       display: none
 
@@ -215,3 +225,5 @@
   border: none
   background-color: transparent
   cursor: pointer
+  img
+    width: 100%
