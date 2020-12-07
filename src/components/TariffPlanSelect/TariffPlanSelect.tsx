@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import { getTranslate } from 'utils';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { routes } from 'constants/routes';
+import { changeSetting as changeSettingAction } from 'store/actions';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
 
@@ -13,6 +15,7 @@ type TariffPlanSelectProps = {
   onChange: (any) => void;
   value: string;
   specialOfferIndex?: number;
+  changeSettingAction: (string, any) => void,
   localePhrases: any;
 };
 
@@ -26,6 +29,7 @@ const TariffPlanSelect = ({
   value,
   specialOfferIndex,
   localePhrases,
+  changeSettingAction: changeSetting,
 }: TariffPlanSelectProps) => {
   const { width: windowWidth } = useWindowSize();
   const debounceWindowWidth = useDebounce(windowWidth, 500);
@@ -210,7 +214,14 @@ const TariffPlanSelect = ({
             </div>
 
             {specialOfferIndex === tariffIndex && (
-              <Link to={routes.checkout} className='link-raw'>
+              <Link
+                to={routes.checkout}
+                className='link-raw'
+                onClick={() => {
+                  changeSetting('activeTariffIdToPay', tariff);
+                  changeSetting('isSelectedTariffOnWelcomePage', true);
+                }}
+              >
                 <div className='tariff-plan__item-sale'>
                   {t('checkout.plan.special_offer.label')}
                 </div>
@@ -225,4 +236,7 @@ const TariffPlanSelect = ({
 
 TariffPlanSelect.defaultProps = TariffPlanSelectDefaultProps;
 
-export default TariffPlanSelect;
+export default connect(
+  null,
+  { changeSettingAction },
+)(TariffPlanSelect);

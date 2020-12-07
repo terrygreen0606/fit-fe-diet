@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import useWindowSize from 'components/hooks/useWindowSize';
 
-import { routes } from 'constants/routes';
-
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
@@ -27,12 +25,12 @@ const HeaderPromo = ({
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
-  const scrollToCheckoutForm = (e) => {
-    const afterSignupTariffs = document.getElementById('selectTariffPlanBlock');
+  const scrollHeaderButton = (e) => {
+    const scrollBlock = document.getElementById('welcomePartnersBlock');
 
-    if (afterSignupTariffs) {
+    if (scrollBlock) {
       e.preventDefault();
-      scrollToElement(document.getElementById('selectTariffPlanBlock'), -30);
+      scrollToElement(scrollBlock, -82);
     }
   };
 
@@ -45,30 +43,20 @@ const HeaderPromo = ({
             <button
               type='button'
               className='mainHeader_logo btn-clear'
-              onClick={scrollToCheckoutForm}
+              onClick={scrollHeaderButton}
             />
 
           </div>
           <div className='col-7 col-xs-8 text-right'>
 
-            <Link
-              to={routes.checkout}
-              onClick={(e) => {
-                if (!activeTariffIdToPay) {
-                  e.preventDefault();
-                  scrollToCheckoutForm(e);
-                }
-              }}
-              className='link-raw'
+            <Button
+              className='main-promo-header__btn'
+              size='sm'
+              color='primary-shadow'
+              onClick={scrollHeaderButton}
             >
-              <Button
-                className='main-promo-header__btn'
-                size='sm'
-                color='primary-shadow'
-              >
-                {windowWidth > 480 ? t('button.reveal_plan') : t('button.reveal_plan.short')}
-              </Button>
-            </Link>
+              {windowWidth > 480 ? t('button.reveal_plan') : t('button.reveal_plan.short')}
+            </Button>
 
           </div>
         </div>
