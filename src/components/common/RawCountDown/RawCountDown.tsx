@@ -4,9 +4,14 @@ import useInterval from 'components/hooks/useInterval';
 
 type RawCountDownProps = {
   seconds: number;
+  onEnd?: () => void;
 };
 
-const RawCountDown = ({ seconds }: RawCountDownProps) => {
+const RawCountDownDefaultProps = {
+  onEnd: null,
+};
+
+const RawCountDown = ({ seconds, onEnd }: RawCountDownProps) => {
   const [minutesCount, setMinutesCount] = useState(Math.floor(seconds / 60));
   const [secondsCount, setSecondsCount] = useState(seconds - Math.floor(seconds / 60) * 60);
 
@@ -23,6 +28,10 @@ const RawCountDown = ({ seconds }: RawCountDownProps) => {
         }
       }
     }
+
+    if (minutesCount === 0 && secondsCount === 0 && onEnd) {
+      onEnd();
+    }
   }, 1000);
 
   return (
@@ -33,5 +42,7 @@ const RawCountDown = ({ seconds }: RawCountDownProps) => {
     </>
   );
 };
+
+RawCountDown.defaultProps = RawCountDownDefaultProps;
 
 export default RawCountDown;

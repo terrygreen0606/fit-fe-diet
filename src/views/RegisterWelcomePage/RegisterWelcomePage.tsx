@@ -13,7 +13,8 @@ import { routes } from 'constants/routes';
 import { changeSetting as changeSettingAction } from 'store/actions';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
-import { getAppTariffs, getAppReviews } from 'api';
+// import { getAppTariffs, getAppReviews } from 'api';
+import { getAppTariffs } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -26,8 +27,6 @@ import SalesWidgets from 'components/SalesWidgets';
 import RawCountDown from 'components/common/RawCountDown';
 
 import './RegisterWelcomePage.sass';
-
-import { ReactComponent as StarFillIcon } from 'assets/img/icons/star-fill-icon.svg';
 
 const RegisterWelcomePage = ({
   isAfterSignup,
@@ -46,10 +45,10 @@ const RegisterWelcomePage = ({
   const { width: windowWidth } = useWindowSize();
   const debounceWindowWidth = useDebounce(windowWidth, 500);
 
-  const [reviewsLoading, setReviewsLoading] = useState<boolean>(false);
-  const [reviewsLoadingError, setReviewsLoadingError] = useState<boolean>(false);
+  // const [reviewsLoading, setReviewsLoading] = useState<boolean>(false);
+  // const [reviewsLoadingError, setReviewsLoadingError] = useState<boolean>(false);
 
-  const [reviewsList, setReviewsList] = useState<any[]>([]);
+  // const [reviewsList, setReviewsList] = useState<any[]>([]);
 
   const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
   const [tariffsLoading, setTariffsLoading] = useState<boolean>(false);
@@ -59,6 +58,10 @@ const RegisterWelcomePage = ({
 
   const [isShowWidgets, setIsShowWidgets] = useState(true);
   const [isStartShowWidgets, setIsStartShowWidgets] = useState<boolean>(false);
+
+  const [welcomeVideoPlayerInstance, setWelcomeVideoPlayerInstance] = useState<any>(null);
+
+  const [isPaymentDisabled, setPaymentDisabled] = useState<boolean>(false);
 
   const selectPlanBlockRef = useRef(null);
   const paymentFormBlockRef = useRef(null);
@@ -74,6 +77,10 @@ const RegisterWelcomePage = ({
         if (data.success && data.data) {
           if (data.data.length) {
             setTariffsDataList(data.data);
+
+            if (activeTariffIdToPay) {
+              setActiveTariffId(activeTariffIdToPay);
+            }
           }
         } else {
           setTariffsLoadingError(true);
@@ -87,40 +94,49 @@ const RegisterWelcomePage = ({
       });
   };
 
-  const getUserReviews = () => {
-    setReviewsLoading(true);
-    setReviewsLoadingError(false);
+  // const getUserReviews = () => {
+  //   setReviewsLoading(true);
+  //   setReviewsLoadingError(false);
 
-    getAppReviews()
-      .then(({ data }) => {
-        setReviewsLoading(false);
+  //   getAppReviews()
+  //     .then(({ data }) => {
+  //       setReviewsLoading(false);
 
-        if (data.data && data.data.length) {
-          setReviewsList(data.data.map((review) => ({
-            ...review,
-            id: uuid(),
-          })));
-
-          if (activeTariffIdToPay) {
-            setActiveTariffId(activeTariffIdToPay);
-          }
-        }
-      })
-      .catch(() => {
-        setReviewsLoading(false);
-        setReviewsLoadingError(true);
-      });
-  };
+  //       if (data.data && data.data.length) {
+  //         setReviewsList(data.data.map((review) => ({
+  //           ...review,
+  //           id: uuid(),
+  //         })));
+  //       }
+  //     })
+  //     .catch(() => {
+  //       setReviewsLoading(false);
+  //       setReviewsLoadingError(true);
+  //     });
+  // };
 
   const documentScrollHandle = () => {
     const mainPromoHeader = document.getElementById('mainPromoHeader');
     const selectTariffPlanBlock = document.getElementById('selectTariffPlanBlock');
+    const welcomePartnersBlock = document.getElementById('welcomePartnersBlock');
 
-    if (!mainPromoHeader || !selectTariffPlanBlock) {
+    if (!mainPromoHeader || !selectTariffPlanBlock || !welcomePartnersBlock) {
       return false;
     }
 
-    if (introBlockRef?.current?.getBoundingClientRect().top <= 0) {
+    const welcomeVideo = document.querySelector('.after-signup-video-frame');
+    let welcomeVideoPlayer = welcomeVideoPlayerInstance;
+
+    if (!welcomeVideoPlayer && window['Vimeo']) {
+      welcomeVideoPlayer = new window['Vimeo'].Player(welcomeVideo);
+      setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
+    }
+
+    if (welcomeVideo?.getBoundingClientRect().top < -100) {
+      welcomeVideoPlayer?.pause();
+    }
+
+    if (introBlockRef?.current?.getBoundingClientRect().top <= 0 && welcomePartnersBlock.getBoundingClientRect().top > 82) {
       if (!mainPromoHeader.classList.contains('fixed-top')) {
         mainPromoHeader.classList.add('fixed-top');
       }
@@ -149,7 +165,7 @@ const RegisterWelcomePage = ({
 
   useEffect(() => {
     getUserTariffs();
-    getUserReviews();
+    // getUserReviews();
   }, []);
 
   useEffect(() => {
@@ -548,7 +564,7 @@ const RegisterWelcomePage = ({
                 </div> */}
 
               </div>
-              <div className='col-lg-4 order-1 mb-4 text-center text-lg-left'>
+              <div className='col-lg-4 order-1 mb-4 mb-lg-0 text-center text-lg-left'>
 
                 {getVideoLocation() === '1' && (
                   <button
@@ -563,7 +579,7 @@ const RegisterWelcomePage = ({
                     />
                   </button>
                 )}
-                
+
                 {getVideoLocation() === '2' && (
                   <iframe
                     className='after-signup-video-frame'
@@ -586,7 +602,7 @@ const RegisterWelcomePage = ({
               <div className='col-12 mb-45'>
 
                 <div className='row'>
-                  <div className='col-md-6'>
+                  <div className='col-lg-6'>
 
                     <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
 
@@ -594,7 +610,7 @@ const RegisterWelcomePage = ({
                 </div>
 
               </div>
-              <div className='col-md-6 order-md-3 mb-5 mb-md-0 after-signup-image-button-col text-center'>
+              <div className='col-lg-6 order-lg-3 mb-5 mb-lg-0 after-signup-image-button-col text-center'>
 
                 <button
                   type='button'
@@ -605,12 +621,12 @@ const RegisterWelcomePage = ({
                 </button>
 
               </div>
-              <div className='col-md-6'>
+              <div className='col-lg-6'>
 
                 <p dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
                 <h4 className='mt-4 fw-bold'>{t('lp.reviews.subtitle')}</h4>
 
-                <ContentLoading
+                {/* <ContentLoading
                   isLoading={reviewsLoading}
                   isError={reviewsLoadingError}
                   fetchData={() => getUserReviews()}
@@ -635,7 +651,7 @@ const RegisterWelcomePage = ({
                       </h6>
                     </div>
                   )}
-                </ContentLoading>
+                </ContentLoading> */}
 
                 {/* <div className='after-signup-reviews-btn-col mt-4 mt-xl-5 text-center text-xl-left'>
                   <Link
@@ -667,7 +683,12 @@ const RegisterWelcomePage = ({
         <section className='after-signup-expect-sect'>
           <div className='container'>
             <div className='row'>
-              <div className='col-xl-4'>
+              <div className='col-xl-9 offset-xl-4'>
+
+                <h2 className='mb-4 fw-bold text-center text-xl-left'>{t('lp.advantages.title')}</h2>
+
+              </div>
+              <div className='col-xl-3 order-xl-1 after-signup-expect-image-col'>
 
                 <button
                   type='button'
@@ -678,18 +699,16 @@ const RegisterWelcomePage = ({
                 </button>
 
               </div>
-              <div className='col-xl-8 mt-5 mt-xl-0'>
-
-                <h2 className='mb-4 fw-bold'>{t('lp.advantages.title')}</h2>
+              <div className='col-xl-9 order-xl-2 mt-5 mt-xl-0'>
 
                 <div className='app-advantages-list'>
                   {Array(5).fill(1).map(() => uuid()).map((id, index) => (
-                    <div className='app-advantages-list__item'>{t(`lp.advantage_${index + 1}`)}</div>  
+                    <div className='app-advantages-list__item'>{t(`lp.advantage_${index + 1}`)}</div>
                   ))}
                 </div>
 
               </div>
-              <div className='col-12 mt-4 mt-xl-5'>
+              <div className='col-12 order-xl-4 mt-4 mt-xl-0'>
 
                 <div className='row'>
                   <div className='col-md-6 text-center'>
@@ -728,20 +747,12 @@ const RegisterWelcomePage = ({
 
                 <h2 className='sect-title title-center'>{t('lp.start_today.title')}</h2>
 
-                <ContentLoading
-                  isLoading={tariffsLoading}
-                  isError={tariffsLoadingError}
-                  fetchData={() => getUserTariffs()}
-                >
-                  {tariffsDataList.length > 0 && (
-                    <h2
-                      className='fw-regular mt-4 text-left text-lg-center'
-                      dangerouslySetInnerHTML={{
-                        __html: getWelcomeDescriptionText(),
-                      }}
-                    />
-                  )}
-                </ContentLoading>
+                <h2
+                  className='fw-regular mt-4 text-left text-lg-center'
+                  dangerouslySetInnerHTML={{
+                    __html: t('welcome.start_today.descr'),
+                  }}
+                />
 
                 <div className='after-signup-start-today-btn-col'>
                   <Button
@@ -759,7 +770,7 @@ const RegisterWelcomePage = ({
                   <img className='after-signup-start-today-arrow' src={getImagePath('point-arrow-yellow.png')} alt='' />
                 </div>
 
-                <div id='welcomePartnersBlock' className='app-partners-list__wrap mt-2'>
+                <div id='welcomePartnersBlock' className='app-partners-list__wrap'>
                   <h5 className='app-partners-list__title'>{t('lp.partners_list.title')}</h5>
 
                   <div className='app-partners-list'>
@@ -803,7 +814,10 @@ const RegisterWelcomePage = ({
                     {t('welcome.reserved_block.countdown.title')}
                   </p>
                   <span className='checkout-reserved-top-block__countdown'>
-                    <RawCountDown seconds={900} />
+                    <RawCountDown
+                      seconds={900}
+                      onEnd={() => setPaymentDisabled(true)}
+                    />
                   </span>
                 </div>
 
@@ -823,7 +837,10 @@ const RegisterWelcomePage = ({
                   fetchData={() => getUserTariffs()}
                 >
                   <TariffPlanSelect
-                    tariffs={tariffsDataList}
+                    tariffs={tariffsDataList.map((tariff) => ({
+                      ...tariff,
+                      disabled: isPaymentDisabled,
+                    }))}
                     value={activeTariffId}
                     onChange={(id) => {
                       if (activeTariffId === null) {
@@ -850,7 +867,7 @@ const RegisterWelcomePage = ({
                           color='primary'
                           size='lg'
                           arrow
-                          disabled={!getActiveTariffData()}
+                          disabled={!getActiveTariffData() || isPaymentDisabled}
                         >
                           {t('button.confirm.tariff')}
                         </Button>

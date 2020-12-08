@@ -34,6 +34,10 @@
           .tariff-plan__item-radio
             background-color: $bright-green
             background-image: url('../../assets/img/icons/check-icon.svg')
+        &:disabled ~ .tariff-plan__item
+          opacity: 0.7
+          cursor: default
+          pointer-events: none
         
     &-radio
       display: inline-block

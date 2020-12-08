@@ -53,16 +53,6 @@ const CheckoutPage = ({
   const [isPaymentStatusLoadingError, setIsPaymentStatusLoadingError] = useState<boolean>(false);
   const [isPaymentStatusError, setIsPaymentStatusError] = useState<boolean>(false);
 
-  const [profileData, setProfileData] = useState<any>({
-    name: t('checkout.title.user_name'),
-    firstname: null,
-    lastname: null,
-    weightDifference: null,
-    goal: null,
-  });
-  const [isProfileLoading, setIsProfileLoading] = useState<boolean>(true);
-  const [isProfileLoadingError, setIsProfileLoadingError] = useState<boolean>(false);
-
   const [isWarningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
   const selectPlanBlockRef = useRef(null);
@@ -104,77 +94,6 @@ const CheckoutPage = ({
         setIsPaymentStatusLoading(false);
       });
   };
-
-  const getUserProfile = () => {
-    setIsProfileLoading(true);
-    setIsProfileLoadingError(false);
-
-    fetchUserProfile()
-      .then(({ data }) => {
-        setIsProfileLoading(false);
-
-        if (data.success && data.data) {
-          const weightDifference = Math.abs(data.data?.weight - data.data?.weight_goal);
-
-          setProfileData({
-            name: data.data.name || t('checkout.title.user_name'),
-            firstname: data.data.name || '',
-            lastname: data.data.surname || '',
-            weightDifference: weightDifference || null,
-            goal: data.data.goal,
-          });
-        } else {
-          setProfileData({
-            name: t('checkout.title.user_name'),
-          });
-          setIsProfileLoadingError(true);
-        }
-      })
-      .catch(() => {
-        setIsProfileLoading(false);
-        setIsProfileLoadingError(true);
-
-        setProfileData({
-          name: t('checkout.title.user_name'),
-        });
-      });
-  };
-
-  const getPhraseInReservedBlock = () => {
-    let translation = null;
-    switch (profileData.goal) {
-      case -1:
-        translation = t('checkout.reserved_block.descr.lose_weight', {
-          COUNT: settings.measurement === 'si' ? (
-            t('common.kg', { COUNT: profileData.weightDifference })
-          ) : (
-            t('common.oz', { COUNT: profileData.weightDifference })
-          ),
-          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
-        });
-        break;
-      case 0:
-        translation = t('checkout.reserved_block.descr.keep_weight', {
-          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
-        });
-        break;
-      case 1:
-        translation = t('checkout.reserved_block.descr.lift_weight', {
-          COUNT: settings.measurement === 'si' ? (
-            t('common.kg', { COUNT: profileData.weightDifference })
-          ) : (
-            t('common.oz', { COUNT: profileData.weightDifference })
-          ),
-          PERIOD: convertTime(storage.afterSignupPredictDate, settings.language),
-        });
-        break;
-
-      default:
-        break;
-    }
-    return translation;
-  };
-
   const getUserTariffs = () => {
     setIsTariffsLoading(true);
     setIsTariffsLoadingError(false);
@@ -203,7 +122,6 @@ const CheckoutPage = ({
 
   useEffect(() => {
     getUserTariffs();
-    getUserProfile();
 
     if (orderId) {
       getUserPaymentStatus();
@@ -268,92 +186,6 @@ const CheckoutPage = ({
 
                 <div className='checkout-tpl-container'>
                   <div className='checkout-form-container'>
-                    <div
-                      dangerouslySetInnerHTML={{ __html: t('checkout.last_step') }}
-                      className='checkout-tpl-title mb-4'
-                    />
-                    <div className='checkout-reserved-top-block'>
-                      <h3 className='checkout-reserved-top-block__title'>
-                      <ContentLoading
-                        isLoading={isProfileLoading}
-                        isError={isProfileLoadingError}
-                        fetchData={() => getUserProfile()}
-                        spinSize='lg'
-                        color='#fff'
-                      >
-                        <div dangerouslySetInnerHTML={{
-                          __html: t('checkout.reserved_block.title', {
-                            NAME: `${profileData.firstname} ${profileData.lastname}`,
-                          }),
-                        }}
-                        />
-                      </ContentLoading>
-                      </h3>
-                        {(storage.afterSignupPredictDate) && (
-                          <p className='checkout-reserved-top-block__descr'>
-                            {getPhraseInReservedBlock()}
-                          </p>
-                        )}
-                      <p className='checkout-reserved-top-block__countdown_title'>
-                        {t('checkout.reserved_block.countdown.title')}
-                      </p>
-                    </div>
-
-                    <div className='app-partners-list__wrap app-partners-list__wrap_checkout mt-3 text-center'>
-                      <h3 className='app-partners-list__title'>{t('lp.partners_list.title')}</h3>
-
-                      <div className='app-partners-list'>
-                        <span
-                          className='app-partners-list__item'
-                          style={{ backgroundImage: `url(${t('lp.partners.img1')})` }}
-                        />
-                        <span
-                          className='app-partners-list__item'
-                          style={{ backgroundImage: `url(${t('lp.partners.img2')})` }}
-                        />
-                        <span
-                          className='app-partners-list__item'
-                          style={{ backgroundImage: `url(${t('lp.partners.img3')})` }}
-                        />
-                        <span
-                          className='app-partners-list__item'
-                          style={{ backgroundImage: `url(${t('lp.partners.img4')})` }}
-                        />
-                      </div>
-                    </div>
-
-                    <div ref={selectPlanBlockRef} id='selectTariffPlanBlock' className='mt-4 mt-xl-5'>
-                      {!storage.isSelectedTariffOnWelcomePage && (
-                        <>
-                          <h3 className='mb-4 fw-bold text-center'>
-                            {`1. ${t('lp.select_plan.title')}`}
-                          </h3>
-
-                          <ContentLoading
-                            isLoading={isTariffsLoading}
-                            isError={isTariffsLoadingError}
-                            fetchData={() => getUserTariffs()}
-                          >
-                            <TariffPlanSelect
-                              tariffs={tariffsDataList}
-                              value={activeTariffId}
-                              onChange={(id) => {
-                                if (activeTariffId === null) {
-                                  setTimeout(() => {
-                                    scrollToCheckoutForm();
-                                  }, 100);
-                                }
-
-                                setActiveTariffId(id);
-                                changeSetting('activeTariffIdToPay', id);
-                              }}
-                              specialOfferIndex={1}
-                              localePhrases={localePhrases}
-                            />
-                          </ContentLoading>
-                        </>
-                      )}
-                    </div>
 
                     <div
                       ref={paymentFormBlockRef}
@@ -369,16 +201,22 @@ const CheckoutPage = ({
                         )}
                       </h3>
 
-                      <CheckoutPaymentFormCard
-                        tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
-                        disabled={!getActiveTariffData()}
-                        scrollRef={selectPlanBlockRef}
-                        isPaymentError={isPaymentStatusError}
-                        paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
-                        history={history}
-                        localePhrases={localePhrases}
-                        short
-                      />
+                      <ContentLoading
+                        isLoading={false}
+                        isError={isTariffsLoadingError}
+                        fetchData={() => getUserTariffs()}
+                      >
+                        <CheckoutPaymentFormCard
+                          tariff={getActiveTariffData() || (tariffsDataList.length > 0 ? tariffsDataList[0] : null)}
+                          disabled={!getActiveTariffData() || isTariffsLoading}
+                          scrollRef={selectPlanBlockRef}
+                          isPaymentError={isPaymentStatusError}
+                          paymentErrors={paymentStatusData ? paymentStatusData.errors_i18n : []}
+                          history={history}
+                          localePhrases={localePhrases}
+                          short
+                        />
+                      </ContentLoading>
                     </div>
                   </div>
                 </div>
