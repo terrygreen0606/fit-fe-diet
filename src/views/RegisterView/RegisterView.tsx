@@ -21,6 +21,8 @@ interface RegisterDataType extends UserAuthProfileType {
   password: string;
   predicted_date: string;
   token: string;
+  feet?: number;
+  inches?: number;
 }
 
 const registerDataDefault: RegisterDataType = {
@@ -32,7 +34,7 @@ const registerDataDefault: RegisterDataType = {
   token: null,
   age: null,
   gender: null,
-  measurement: 'si',
+  measurement: null,
   height: null,
   weight: null,
   weight_goal: null,
@@ -42,6 +44,8 @@ const registerDataDefault: RegisterDataType = {
   diseases: [],
   act_levels: [],
   meal_counts: [],
+  feet: null,
+  inches: null,
 };
 
 const RegisterView = ({
@@ -56,7 +60,10 @@ const RegisterView = ({
     placeholders,
   );
 
-  const [registerData, setRegisterData] = useState({ ...registerDataDefault });
+  const [registerData, setRegisterData] = useState({
+    ...registerDataDefault,
+    measurement: measurement || 'si',
+  });
   const [registerDataErrors, setRegisterDataErrors] = useState<InputError[]>([]);
   const [registerSettingsLoading, setRegisterSettingsLoading] = useState<boolean>(true);
   const [registerSettingsLoadingError, setRegisterSettingsLoadingError] = useState<boolean>(false);

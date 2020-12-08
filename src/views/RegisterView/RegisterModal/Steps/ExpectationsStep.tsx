@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getTranslate, getLocaleByLang } from 'utils';
+import { getTranslate, convertTime } from 'utils';
 import moment from 'moment';
 
 // Components
@@ -35,7 +35,7 @@ const ExpectationsStep = ({
   }, []);
 
   const getPredictedDate = () => {
-    let monthLocale = new Date(predicted_date * 1000).toLocaleString(getLocaleByLang(language), { month: 'long' });
+    let monthLocale = convertTime(predicted_date, language, { month: 'long' });
     monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
 
     let predictedDate = null;

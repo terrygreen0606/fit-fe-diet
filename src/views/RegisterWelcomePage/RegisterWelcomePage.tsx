@@ -7,7 +7,7 @@ import {
   getTranslate,
   getImagePath,
   scrollToElement,
-  getLocaleByLang,
+  convertTime,
 } from 'utils';
 import { routes } from 'constants/routes';
 import { changeSetting as changeSettingAction } from 'store/actions';
@@ -182,13 +182,9 @@ const RegisterWelcomePage = ({
     let predictedDateFormatted = '';
 
     if (new Date(timestamp).getFullYear() === new Date().getFullYear()) {
-      predictedDateFormatted = new Date(timestamp * 1000).toLocaleDateString(
-        getLocaleByLang(language), { day: 'numeric', month: 'short' },
-      );
+      predictedDateFormatted = convertTime(timestamp, language, { day: 'numeric', month: 'short' });
     } else {
-      predictedDateFormatted = new Date(timestamp * 1000).toLocaleDateString(
-        getLocaleByLang(language), { day: 'numeric', month: 'short', year: 'numeric' },
-      );
+      predictedDateFormatted = convertTime(timestamp, language, { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
     return predictedDateFormatted;

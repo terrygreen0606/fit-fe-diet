@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   validateFieldOnChange,
   getFieldErrors as getFieldErrorsUtil,
@@ -55,6 +55,14 @@ const HeightStep = ({
 
   const isFieldValid = (field: string) =>
     getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
+
+  useEffect(() => {
+    const imperialHeight = `${registerData.feet}'${registerData.inches || 0}`;
+    setRegisterData({
+      ...registerData,
+      height: imperialHeight,
+    });
+  }, [registerData.feet, registerData.inches]);
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -113,6 +121,11 @@ const HeightStep = ({
     }
   };
 
+  const deleteError = (field: string) => {
+    const updatedRegisterDataErrors = registerDataErrors.filter((item) => item.field !== field);
+    setRegisterDataErrors([...updatedRegisterDataErrors]);
+  };
+
   return (
     <div className='register_v1_steps_content'>
       <AngleLeftIcon
@@ -128,41 +141,102 @@ const HeightStep = ({
         label1={t('common.us_metric')}
         label2={t('common.metric')}
         checked={registerData.measurement === 'si'}
-        onChange={(e) => setRegisterData({
-          ...registerData,
-          measurement: e.target.checked ? 'si' : 'us',
-        })}
+        onChange={(e) => {
+          deleteError('height');
+          setRegisterData({
+            ...registerData,
+            measurement: e.target.checked ? 'si' : 'us',
+          });
+        }}
       />
 
       <form className='register_v1_form mt-4 pt-md-5' onSubmit={(e) => registerInfoSubmit(e)}>
-        <FormGroup className='register_info_fg mb-0' inline>
-          <InputField
-            block
-            height='md'
-            type={registerData.measurement === 'us' ? 'text' : 'number'}
-            min={0}
-            step='0.1'
-            autoFocus
-            value={registerData.height}
-            readOnly={validateLoading}
-            name='height'
-            data-param='50,250'
-            data-validate={`["required"${
-              registerData.measurement === 'si' ? ', "min-max"' : ''
-            }]`}
-            invalid={getFieldErrors('height').length > 0}
-            isValid={isFieldValid('height')}
-            onChange={(e) => validateOnChange('height', e.target.value, e)}
-            placeholder={t('register.height.placeholder')}
-          />
-          <FormLabel>
-            {registerData.measurement === 'us' && t('common.ft_label')}
-            {registerData.measurement === 'si' && t('common.cm_label')}
-          </FormLabel>
-        </FormGroup>
+        {registerData.measurement === 'si' ? (
+          <FormGroup className='register_info_fg mb-0' inline>
+            <InputField
+              block
+              height='md'
+              type='number'
+              min={0}
+              step='0.1'
+              autoFocus
+              value={registerData.height}
+              readOnly={validateLoading}
+              name='height'
+              data-param='50,250'
+              data-validate='["required", "min-max"]'
+              invalid={getFieldErrors('height').length > 0}
+              isValid={isFieldValid('height')}
+              onChange={(e) => validateOnChange('height', e.target.value, e)}
+              placeholder={t('register.height.placeholder')}
+            />
+            <FormLabel>
+              {t('common.cm_label')}
+            </FormLabel>
+          </FormGroup>
+        ) : (
+          <div className='d-flex justify-content-between align-items-start'>
+            <FormGroup className='register_info_fg register_info_fg_column mb-0'>
+              <FormLabel>
+                {t('common.feet')}
+              </FormLabel>
+              <InputField
+                block
+                height='md'
+                type='number'
+                min={1}
+                step='1'
+                autoFocus
+                value={registerData.feet}
+                readOnly={validateLoading}
+                name='feet'
+                data-param='1,8'
+                data-validate='["required", "min-max"]'
+                invalid={getFieldErrors('feet').length > 0 || getFieldErrors('height').length > 0}
+                isValid={isFieldValid('feet')}
+                onChange={(e) => validateOnChange('feet', e.target.value, e)}
+              />
+              {getFieldErrors('feet').slice(0, 1).map((error, i) => (
+                <FormInvalidMessage key={i}>
+                  {error.message}
+                </FormInvalidMessage>
+              ))}
+            </FormGroup>
+            <FormGroup className='register_info_fg register_info_fg_column mb-0'>
+              <FormLabel>
+                {t('common.inches')}
+              </FormLabel>
+              <InputField
+                block
+                height='md'
+                type='number'
+                min={0}
+                step='1'
+                value={registerData.inches}
+                readOnly={validateLoading}
+                name='inches'
+                data-param='0, 11'
+                data-validate='["min-max"]'
+                invalid={getFieldErrors('inches').length > 0 || getFieldErrors('height').length > 0}
+                isValid={isFieldValid('inches')}
+                onChange={(e) => validateOnChange('inches', e.target.value, e)}
+              />
+              {getFieldErrors('inches').slice(0, 1).map((error, i) => (
+                <FormInvalidMessage key={i}>
+                  {error.message}
+                </FormInvalidMessage>
+              ))}
+            </FormGroup>
+          </div>
+        )}
 
         {getFieldErrors('height').slice(0, 1).map((error, i) => (
-          <FormInvalidMessage key={i}>{error.message}</FormInvalidMessage>
+          <FormInvalidMessage
+            key={i}
+            className={registerData.measurement === 'us' ? 'text-center' : ''}
+          >
+            {error.message}
+          </FormInvalidMessage>
         ))}
 
         <div className='register_v1_submit'>

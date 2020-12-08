@@ -138,6 +138,9 @@ const JoinNameStep = ({
       act_level,
     };
 
+    delete profilePayload.feet;
+    delete profilePayload.inches;
+
     const ref_code = getCookie('ref_code');
 
     if (ref_code) {
