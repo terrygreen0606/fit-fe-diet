@@ -157,7 +157,7 @@ const TariffPlanSelect = ({
       })}
       ref={tariffPlanList}
     >
-      {getTariffsList().map(({ tariff }, tariffIndex) => (
+      {getTariffsList().map(({ tariff, disabled }, tariffIndex) => (
         <label key={tariff} className='tariff-plan__item-label'>
           <input
             type='radio'
@@ -165,6 +165,7 @@ const TariffPlanSelect = ({
             name='tariff_plan_radio'
             value={tariff}
             checked={value === tariff}
+            disabled={disabled}
             onChange={(e) => onChange(e.target.value)}
           />
 
