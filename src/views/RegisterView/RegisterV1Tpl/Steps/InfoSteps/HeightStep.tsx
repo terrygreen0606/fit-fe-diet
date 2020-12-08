@@ -126,6 +126,12 @@ const HeightStep = ({
     setRegisterDataErrors([...updatedRegisterDataErrors]);
   };
 
+  useEffect(() => {
+    if (isFieldValid('feet')) {
+      deleteError('height');
+    }
+  }, [registerData.feet]);
+
   return (
     <div className='register_v1_steps_content'>
       <AngleLeftIcon
