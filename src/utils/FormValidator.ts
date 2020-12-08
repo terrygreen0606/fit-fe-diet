@@ -52,7 +52,7 @@ const getErrorMsg = (errorCode, param, localePhrases = {}) => {
 
     case 'min-max-len':
       data = param.split(',');
-      errorMsg = t('validation.error.minmaxlen.msg', { AMOUNT: data[1], COUNT: data[0] });
+      errorMsg = t('validation.error.minmaxlen.msg', { AMOUNT: data[0], COUNT: data[1] });
       break;
 
     case 'len':
@@ -69,7 +69,7 @@ const getErrorMsg = (errorCode, param, localePhrases = {}) => {
 
     case 'min-max':
       data = param.split(',');
-      errorMsg = t('validation.error.min_max.msg', { AMOUNT: data[1], COUNT: data[0] });
+      errorMsg = t('validation.error.min_max.msg', { AMOUNT: data[0], COUNT: data[1] });
       break;
 
     case 'list':
