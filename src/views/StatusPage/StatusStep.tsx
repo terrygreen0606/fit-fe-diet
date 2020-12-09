@@ -24,6 +24,7 @@ const StatusStep = ({
   measurement,
   localePhrases,
   language,
+  history,
 }: any) => {
   // States
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -49,6 +50,8 @@ const StatusStep = ({
 
     return `${monthLocale} ${predictedDate}`;
   };
+
+  const navigateToWelcome = () => history.push(routes.registerWelcome);
 
   useEffect(() => {
     fetchUserStatus().then((response) => {
@@ -127,6 +130,7 @@ const StatusStep = ({
           <Button
             color='primary-shadow'
             className='get-access-btn'
+            onClick={() => navigateToWelcome()}
           >
             {t('status.access.button')}
           </Button>
@@ -197,6 +201,7 @@ const StatusStep = ({
           <Button
             color='primary-shadow'
             className='get-access-btn'
+            onClick={() => navigateToWelcome()}
           >
             {t('status.access.button')}
           </Button>
