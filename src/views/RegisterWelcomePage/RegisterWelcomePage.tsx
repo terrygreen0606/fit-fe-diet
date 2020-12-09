@@ -629,7 +629,6 @@ const RegisterWelcomePage = ({
               <div className='col-lg-6'>
 
                 <p dangerouslySetInnerHTML={{ __html: t('lp.reviews.descr') }} />
-                <h4 className='mt-4 fw-bold'>{t('lp.reviews.subtitle')}</h4>
 
                 {/* <ContentLoading
                   isLoading={reviewsLoading}
