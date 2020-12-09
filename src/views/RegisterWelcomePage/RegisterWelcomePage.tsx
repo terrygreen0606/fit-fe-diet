@@ -882,7 +882,6 @@ const RegisterWelcomePage = ({
                           <button
                             type='button'
                             className='checkout_tariff_error'
-                            onClick={welcomeButtonHandle}
                           >
                             {t('checkout.tariff.select.error.msg')}
                           </button>
@@ -990,6 +989,33 @@ const RegisterWelcomePage = ({
                       </div>
                     </Link>
                   )}
+
+                  <div className='d-md-none mt-4 text-center'>
+                    <Link
+                      to={routes.checkout}
+                      className='mt-5 link-raw'
+                    >
+                      <Button
+                        color='primary'
+                        size='lg'
+                        arrow
+                        disabled={!getActiveTariffData() || isPaymentDisabled}
+                      >
+                        {t('button.confirm.tariff')}
+                      </Button>
+                    </Link>
+
+                    {!getActiveTariffData() && (
+                      <div>
+                        <button
+                          type='button'
+                          className='checkout_tariff_error'
+                        >
+                          {t('checkout.tariff.select.error.msg')}
+                        </button>
+                      </div>
+                    )}
+                  </div>
 
                 </div>
               ) : null}
