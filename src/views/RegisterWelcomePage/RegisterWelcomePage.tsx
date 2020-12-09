@@ -752,7 +752,7 @@ const RegisterWelcomePage = ({
                 <h2 className='sect-title title-center'>{t('lp.start_today.title')}</h2>
 
                 <h2
-                  className='fw-regular mt-4 text-left text-lg-center'
+                  className='fw-regular mt-4 text-center'
                   dangerouslySetInnerHTML={{
                     __html: t('welcome.start_today.descr'),
                   }}
