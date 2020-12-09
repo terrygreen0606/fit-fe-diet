@@ -42,7 +42,7 @@ const CheckoutPage = ({
   const { order: orderId } = queryString.parse(location.search);
 
   const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
-  const [isTariffsLoading, setIsTariffsLoading] = useState<boolean>(false);
+  const [isTariffsLoading, setIsTariffsLoading] = useState<boolean>(true);
   const [isTariffsLoadingError, setIsTariffsLoadingError] = useState<boolean>(false);
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
@@ -111,6 +111,8 @@ const CheckoutPage = ({
 
             if (activeTariffIdToPay) {
               setActiveTariffId(activeTariffIdToPay);
+            } else if (responseData.length > 1) {
+              setActiveTariffId(responseData[1].tariff);
             }
           } else if (paymentFlowType === '3') {
             setTariffsDataList([responseData]);

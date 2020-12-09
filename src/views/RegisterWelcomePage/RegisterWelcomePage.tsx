@@ -52,7 +52,7 @@ const RegisterWelcomePage = ({
   // const [reviewsList, setReviewsList] = useState<any[]>([]);
 
   const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
-  const [tariffsLoading, setTariffsLoading] = useState<boolean>(false);
+  const [tariffsLoading, setTariffsLoading] = useState<boolean>(true);
   const [tariffsLoadingError, setTariffsLoadingError] = useState<boolean>(false);
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
