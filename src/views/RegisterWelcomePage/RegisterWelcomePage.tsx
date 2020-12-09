@@ -687,12 +687,12 @@ const RegisterWelcomePage = ({
         <section className='after-signup-expect-sect'>
           <div className='container'>
             <div className='row'>
-              <div className='col-xl-9 offset-xl-3'>
+              <div className='col-lg-9 offset-lg-3'>
 
-                <h2 className='mb-4 fw-bold text-center text-xl-left'>{t('lp.advantages.title')}</h2>
+                <h2 className='mb-4 fw-bold text-center text-lg-left'>{t('lp.advantages.title')}</h2>
 
               </div>
-              <div className='col-xl-3 order-xl-1 after-signup-expect-image-col'>
+              <div className='col-lg-3 order-lg-1 after-signup-expect-image-col'>
 
                 <button
                   type='button'
@@ -703,7 +703,7 @@ const RegisterWelcomePage = ({
                 </button>
 
               </div>
-              <div className='col-xl-9 order-xl-2 mt-4 mt-xl-0'>
+              <div className='col-lg-9 order-lg-2 mt-4 mt-lg-0'>
 
                 <div className='app-advantages-list'>
                   {Array(5).fill(1).map(() => uuid()).map((id, index) => (
@@ -712,7 +712,7 @@ const RegisterWelcomePage = ({
                 </div>
 
               </div>
-              <div className='col-12 order-xl-4 mt-4 mt-xl-0'>
+              <div className='col-12 order-lg-4 mt-4 mt-lg-0'>
 
                 <div className='row'>
                   <div className='col-md-6 text-center'>
