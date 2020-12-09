@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { routes } from 'constants/routes';
 import { changeSetting as changeSettingAction } from 'store/actions';
+import { PaymentFlowType } from 'types';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
 
@@ -14,7 +15,7 @@ type TariffPlanSelectProps = {
   tariffs: any[];
   onChange: (any) => void;
   value: string;
-  type?: '1' | '2' | '3';
+  type?: PaymentFlowType;
   specialOfferIndex?: number;
   changeSettingAction: (string, any) => void,
   localePhrases: any;

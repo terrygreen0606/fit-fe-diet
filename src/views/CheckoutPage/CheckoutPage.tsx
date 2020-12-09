@@ -204,12 +204,7 @@ const CheckoutPage = ({
                 <div className='checkout-tpl-container'>
                   <div className='checkout-form-container'>
 
-                    <div
-                      ref={paymentFormBlockRef}
-                      className={classNames({
-                        'd-none': !getActiveTariffData(),
-                      })}
-                    >
+                    <div ref={paymentFormBlockRef}>
                       <h3 className='mb-4 fw-bold text-center payment-form-title'>
                         {!isSelectedTariffOnWelcomePage ? (
                           `2. ${t('lp.payment_form.title')}`

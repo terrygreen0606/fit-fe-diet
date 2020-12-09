@@ -21,3 +21,5 @@ export type creditCardPayParams = {
   contacts: payContactsType;
   browser_info?: string;
 };
+
+export type PaymentFlowType = '1' | '2' | '3';

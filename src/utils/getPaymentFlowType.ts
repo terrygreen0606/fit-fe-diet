@@ -1,5 +1,7 @@
-export const getPaymentFlowType = () => {
-  let paymentFlow: '1' | '2' | '3' = '1';
+import { PaymentFlowType } from 'types';
+
+export const getPaymentFlowType = (): PaymentFlowType => {
+  let paymentFlow: PaymentFlowType = '1';
 
   const paymentFlowData = window?.dataLayer?.find((data) => data.payment_flow);
 

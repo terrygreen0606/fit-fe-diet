@@ -23,6 +23,7 @@ interface RegisterDataType extends UserAuthProfileType {
   token: string;
   feet?: number;
   inches?: number;
+  tpl_signup: number;
 }
 
 const registerDataDefault: RegisterDataType = {
@@ -81,7 +82,6 @@ const RegisterView = ({
 
           setRegisterData({
             ...registerData,
-            // tpl_signup: data.tpl || null,
             tpl_signup: queryString.parse(location.search).tpl === '2' ? 2 : 1,
             act_levels: response.act_levels && response.act_levels.length ?
               response.act_levels.map((activity) => ({
