@@ -1,7 +1,11 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
-import { getTranslate, scrollToElement } from 'utils';
-import { Link } from 'react-router-dom';
+import {
+  getTranslate,
+  scrollToElement,
+  getPaymentFlowType,
+} from 'utils';
+import { routes } from 'constants/routes';
 import { connect } from 'react-redux';
 import useWindowSize from 'components/hooks/useWindowSize';
 
@@ -12,13 +16,13 @@ import Button from 'components/common/Forms/Button';
 import './HeaderPromo.sass';
 
 type HeaderPromoProps = {
+  history: any;
   localePhrases: any,
-  activeTariffIdToPay: any,
 };
 
 const HeaderPromo = ({
+  history,
   localePhrases,
-  activeTariffIdToPay,
 }: HeaderPromoProps) => {
   const { width: windowWidth } = useWindowSize();
 
@@ -26,11 +30,14 @@ const HeaderPromo = ({
     getTranslate(localePhrases, code, placeholders);
 
   const scrollHeaderButton = (e) => {
-    const scrollBlock = document.getElementById('welcomePartnersBlock');
-
-    if (scrollBlock) {
-      e.preventDefault();
-      scrollToElement(scrollBlock, -82);
+    if (getPaymentFlowType() === '1') {
+      history.push(routes.checkout);
+    } else {
+      const scrollBlock = document.getElementById('welcomePartnersBlock');
+      if (scrollBlock) {
+        e.preventDefault();
+        scrollToElement(scrollBlock, -82);
+      }
     }
   };
 
@@ -65,10 +72,4 @@ const HeaderPromo = ({
   );
 };
 
-export default WithTranslate(
-  connect(
-    (state: any) => ({
-      activeTariffIdToPay: state.storage.activeTariffIdToPay,
-    }),
-  )(HeaderPromo),
-);
+export default WithTranslate(HeaderPromo);

@@ -8,13 +8,14 @@ import {
   getImagePath,
   scrollToElement,
   convertTime,
+  getPaymentFlowType,
 } from 'utils';
 import { routes } from 'constants/routes';
 import { changeSetting as changeSettingAction } from 'store/actions';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
 // import { getAppTariffs, getAppReviews } from 'api';
-import { getAppTariffs } from 'api';
+import { getAppTariffs, getAppSingleTariff } from 'api';
 
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
@@ -65,22 +66,31 @@ const RegisterWelcomePage = ({
 
   const selectPlanBlockRef = useRef(null);
   const paymentFormBlockRef = useRef(null);
-
   const introBlockRef = useRef(null);
 
   const getUserTariffs = () => {
     setTariffsLoading(true);
     setTariffsLoadingError(false);
 
-    getAppTariffs()
+    const paymentFlowType = getPaymentFlowType();
+    const getTariffsApi = paymentFlowType === '1' ? getAppSingleTariff() : getAppTariffs();
+
+    getTariffsApi
       .then(({ data }) => {
-        if (data.success && data.data) {
-          if (data.data.length) {
-            setTariffsDataList(data.data);
+        const responseData = data?.data;
+
+        if (data.success && responseData) {
+          if (responseData.length) {
+            setTariffsDataList(responseData);
 
             if (activeTariffIdToPay) {
               setActiveTariffId(activeTariffIdToPay);
             }
+          } else if (paymentFlowType === '1') {
+            setTariffsDataList([responseData]);
+            setActiveTariffId(responseData.tariff);
+            changeSetting('isSelectedTariffOnWelcomePage', responseData.tariff);
+            changeSetting('activeTariffIdToPay', responseData.tariff);
           }
         } else {
           setTariffsLoadingError(true);
@@ -127,8 +137,8 @@ const RegisterWelcomePage = ({
     const welcomeVideo = document.querySelector('.after-signup-video-frame');
     let welcomeVideoPlayer = welcomeVideoPlayerInstance;
 
-    if (!welcomeVideoPlayer && window['Vimeo']) {
-      welcomeVideoPlayer = new window['Vimeo'].Player(welcomeVideo);
+    if (!welcomeVideoPlayer && window.Vimeo) {
+      welcomeVideoPlayer = new window.Vimeo.Player(welcomeVideo);
       setWelcomeVideoPlayerInstance(welcomeVideoPlayer);
     }
 
@@ -136,7 +146,10 @@ const RegisterWelcomePage = ({
       welcomeVideoPlayer?.pause();
     }
 
-    if (introBlockRef?.current?.getBoundingClientRect().top <= 0 && welcomePartnersBlock.getBoundingClientRect().top > 82) {
+    if (
+      introBlockRef?.current?.getBoundingClientRect().top <= 0 &&
+      welcomePartnersBlock.getBoundingClientRect().top > 82
+    ) {
       if (!mainPromoHeader.classList.contains('fixed-top')) {
         mainPromoHeader.classList.add('fixed-top');
       }
@@ -244,12 +257,16 @@ const RegisterWelcomePage = ({
     return activeTariff;
   };
 
-  const welcomeButtonScroll = (e) => {
+  const welcomeButtonHandle = (e) => {
     e.preventDefault();
-    const scrollBlock = document.getElementById('welcomePartnersBlock');
 
-    if (scrollBlock) {
-      scrollToElement(scrollBlock, -82);
+    if (getPaymentFlowType() === '1') {
+      history.push(routes.checkout);
+    } else {
+      const scrollBlock = document.getElementById('welcomePartnersBlock');
+      if (scrollBlock) {
+        scrollToElement(scrollBlock, -82);
+      }
     }
   };
 
@@ -257,27 +274,19 @@ const RegisterWelcomePage = ({
     scrollToElement(paymentFormBlockRef?.current, -30);
   };
 
-  const getWelcomeHeadlLineTextVersion1 = () => (
-    t(tariffsDataList?.[1]?.country === 'br' ? 'welcome.desc.br1' : 'welcome.desc1', {
-      OLD_VALUE: tariffsDataList?.[1]?.country === 'br'
-      ? tariffsDataList?.[1]?.installments?.price_old_monthly_text
-      : tariffsDataList?.[1].price_old_weekly_text,
-      AMOUNT: tariffsDataList?.[1]?.country === 'br'
-        ? tariffsDataList?.[1]?.installments?.price_monthly_text
-        : tariffsDataList?.[1].price_weekly_text,
-    })
-  );
+  const getWelcomeHeadlLineTextVersion1 = () => {
+    const tariffData = getPaymentFlowType() === '1' ? tariffsDataList?.[0] : tariffsDataList?.[1];
 
-  const getPaymentFlowType = () => {
-    let paymentFlow = null;
-
-    const paymentFlowData = window.dataLayer?.find((data) => data.payment_flow);
-
-    if (paymentFlowData) {
-      paymentFlow = paymentFlowData.payment_flow;
-    }
-
-    return paymentFlow;
+    return (
+      t(tariffData?.country === 'br' ? 'welcome.desc.br1' : 'welcome.desc1', {
+        OLD_VALUE: tariffData?.country === 'br'
+        ? tariffData?.installments?.price_old_monthly_text
+        : tariffData.price_old_weekly_text,
+        AMOUNT: tariffData?.country === 'br'
+          ? tariffData?.installments?.price_monthly_text
+          : tariffData.price_weekly_text,
+      })
+    );
   };
 
   const getWelcomeHeadlLineText = () => {
@@ -425,7 +434,7 @@ const RegisterWelcomePage = ({
                         <div className='text-xl-right text-center'>
                           <button
                             type='button'
-                            onClick={welcomeButtonScroll}
+                            onClick={welcomeButtonHandle}
                             className='after-signup-image-button'
                           >
                             <img
@@ -466,7 +475,7 @@ const RegisterWelcomePage = ({
                     onClick={(e) => {
                       if (!activeTariffIdToPay) {
                         e.preventDefault();
-                        welcomeButtonScroll(e);
+                        welcomeButtonHandle(e);
                       }
                     }}
                     className='link-raw'
@@ -541,7 +550,7 @@ const RegisterWelcomePage = ({
                     onClick={(e) => {
                       if (!activeTariffIdToPay) {
                         e.preventDefault();
-                        welcomeButtonScroll(e);
+                        welcomeButtonHandle(e);
                       }
                     }}
                     className='link-raw'
@@ -565,7 +574,7 @@ const RegisterWelcomePage = ({
                 {getVideoLocation() === '1' && (
                   <button
                     type='button'
-                    onClick={welcomeButtonScroll}
+                    onClick={welcomeButtonHandle}
                     className='after-signup-image-button'
                   >
                     <img
@@ -610,7 +619,7 @@ const RegisterWelcomePage = ({
 
                 <button
                   type='button'
-                  onClick={welcomeButtonScroll}
+                  onClick={welcomeButtonHandle}
                   className='after-signup-image-button'
                 >
                   <img className='img-fluid' src={getImagePath('review-info-img.png')} alt='' />
@@ -655,7 +664,7 @@ const RegisterWelcomePage = ({
                     onClick={(e) => {
                       if (!activeTariffIdToPay) {
                         e.preventDefault();
-                        welcomeButtonScroll(e);
+                        welcomeButtonHandle(e);
                       }
                     }}
                     className='link-raw'
@@ -688,7 +697,7 @@ const RegisterWelcomePage = ({
 
                 <button
                   type='button'
-                  onClick={welcomeButtonScroll}
+                  onClick={welcomeButtonHandle}
                   className='after-signup-image-button'
                 >
                   <img className='img-fluid' src={getImagePath('dishes.png')} alt='' />
@@ -711,7 +720,7 @@ const RegisterWelcomePage = ({
 
                   <button
                     type='button'
-                    onClick={welcomeButtonScroll}
+                    onClick={welcomeButtonHandle}
                     className='after-signup-image-button'
                   >
                     <img src={t('checkout.social.img')} className='img-fluid' alt='' />
@@ -722,7 +731,7 @@ const RegisterWelcomePage = ({
 
                     <button
                       type='button'
-                      onClick={welcomeButtonScroll}
+                      onClick={welcomeButtonHandle}
                       className='after-signup-image-button'
                     >
                       <img src={t('checkout.safe.img')} className='img-fluid' alt='' />
@@ -757,7 +766,7 @@ const RegisterWelcomePage = ({
                     className='mt-4'
                     size='lg'
                     block
-                    onClick={welcomeButtonScroll}
+                    onClick={welcomeButtonHandle}
                     style={{ maxWidth: '500px' }}
                   >
                     {t('button.activate_plan')}
@@ -849,7 +858,8 @@ const RegisterWelcomePage = ({
                       changeSetting('activeTariffIdToPay', id);
                       changeSetting('isSelectedTariffOnWelcomePage', true);
                     }}
-                    specialOfferIndex={1}
+                    type={getPaymentFlowType()}
+                    specialOfferIndex={getPaymentFlowType() === '1' ? 0 : 1}
                     localePhrases={localePhrases}
                   />
 
@@ -874,13 +884,29 @@ const RegisterWelcomePage = ({
                           <button
                             type='button'
                             className='checkout_tariff_error'
-                            onClick={welcomeButtonScroll}
+                            onClick={welcomeButtonHandle}
                           >
                             {t('checkout.tariff.select.error.msg')}
                           </button>
                         </div>
                       )}
                     </div>
+                  )}
+
+                  {getPaymentFlowType() === '1' && (
+                    <>
+                      <div className='text-center mt-5'>
+                        <img
+                          src={t('checkout.safe.img2')}
+                          className='img-fluid'
+                          alt=''
+                        />
+                      </div>
+
+                      <div className='checkout_tariff_confirm_descr mt-4'>
+                        {t('checkout.tariff.confirm.descr')}
+                      </div>
+                    </>
                   )}
                 </ContentLoading>
 
@@ -954,16 +980,18 @@ const RegisterWelcomePage = ({
                     ))}
                   </div>
 
-                  <Link to={routes.checkout} className='link-raw'>
-                    <div className='text-center'>
-                      <img
-                        src={t('checkout.safe.img2')}
-                        className='img-fluid mt-4'
-                        style={{ maxWidth: '70%' }}
-                        alt=''
-                      />
-                    </div>
-                  </Link>
+                  {getPaymentFlowType() !== '1' && (
+                    <Link to={routes.checkout} className='link-raw'>
+                      <div className='text-center'>
+                        <img
+                          src={t('checkout.safe.img2')}
+                          className='img-fluid mt-4'
+                          style={{ maxWidth: '70%' }}
+                          alt=''
+                        />
+                      </div>
+                    </Link>
+                  )}
 
                 </div>
               ) : null}
