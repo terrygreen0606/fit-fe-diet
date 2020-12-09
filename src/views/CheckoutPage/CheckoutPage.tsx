@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import {
   getTranslate,
   scrollToElement,
-  convertTime,
+  getPaymentFlowType,
 } from 'utils';
 import Helmet from 'react-helmet';
 import { routes } from 'constants/routes';
@@ -14,7 +14,7 @@ import queryString from 'query-string';
 import { changeSetting as changeSettingAction } from 'store/actions';
 import {
   getAppTariffs,
-  fetchUserProfile,
+  getAppSingleTariff,
   getPaymentStatus,
 } from 'api';
 
@@ -24,15 +24,14 @@ import Button from 'components/common/Forms/Button';
 import WithTranslate from 'components/hoc/WithTranslate';
 import Modal from 'components/common/Modal';
 import ContentLoading from 'components/hoc/ContentLoading';
-import TariffPlanSelect from 'components/TariffPlanSelect';
 import CheckoutPaymentFormCard from 'components/CheckoutPaymentFormCard';
 
 import './CheckoutPage.sass';
 
 const CheckoutPage = ({
   changeSettingAction: changeSetting,
-  settings,
-  storage,
+  activeTariffIdToPay,
+  isSelectedTariffOnWelcomePage,
   history,
   location,
   localePhrases,
@@ -43,7 +42,7 @@ const CheckoutPage = ({
   const { order: orderId } = queryString.parse(location.search);
 
   const [tariffsDataList, setTariffsDataList] = useState<any[]>([]);
-  const [isTariffsLoading, setIsTariffsLoading] = useState<boolean>(false);
+  const [isTariffsLoading, setIsTariffsLoading] = useState<boolean>(true);
   const [isTariffsLoadingError, setIsTariffsLoadingError] = useState<boolean>(false);
 
   const [activeTariffId, setActiveTariffId] = useState<any>(null);
@@ -94,19 +93,31 @@ const CheckoutPage = ({
         setIsPaymentStatusLoading(false);
       });
   };
+
   const getUserTariffs = () => {
     setIsTariffsLoading(true);
     setIsTariffsLoadingError(false);
 
-    getAppTariffs()
-      .then(({ data }) => {
-        if (data.success && data.data) {
-          if (data.data.length) {
-            setTariffsDataList(data.data);
+    const paymentFlowType = getPaymentFlowType();
+    const getTariffsApi = paymentFlowType === '1' ? getAppSingleTariff() : getAppTariffs();
 
-            if (storage.activeTariffIdToPay) {
-              setActiveTariffId(storage.activeTariffIdToPay);
+    getTariffsApi
+      .then(({ data }) => {
+        const responseData = data?.data;
+
+        if (data.success && responseData) {
+          if (responseData.length) {
+            setTariffsDataList(responseData);
+
+            if (activeTariffIdToPay) {
+              setActiveTariffId(activeTariffIdToPay);
+            } else if (responseData.length > 1) {
+              setActiveTariffId(responseData[1].tariff);
             }
+          } else if (paymentFlowType === '3') {
+            setTariffsDataList([responseData]);
+            setActiveTariffId(responseData.tariff);
+            changeSetting('activeTariffIdToPay', responseData.tariff);
           }
         } else {
           setIsTariffsLoadingError(true);
@@ -157,7 +168,13 @@ const CheckoutPage = ({
         <Modal.Main>
           <h5 className='checkout-warning-modal__title'>{t('checkout.warning_modal.title')}</h5>
           <p className='checkout-warning-modal__descr'>{t('checkout.warning_modal.descr')}</p>
-          <Button className='checkout-warning-modal__btn' block color='mint'>{t('checkout.warning_modal.btn')}</Button>
+          <Button
+            className='checkout-warning-modal__btn'
+            block
+            color='mint'
+          >
+            {t('checkout.warning_modal.btn')}
+          </Button>
         </Modal.Main>
       </Modal>
 
@@ -194,7 +211,7 @@ const CheckoutPage = ({
                       })}
                     >
                       <h3 className='mb-4 fw-bold text-center payment-form-title'>
-                        {!storage.isSelectedTariffOnWelcomePage ? (
+                        {!isSelectedTariffOnWelcomePage ? (
                           `2. ${t('lp.payment_form.title')}`
                         ) : (
                           t('lp.payment_form.title.last_step')
@@ -248,8 +265,8 @@ const CheckoutPage = ({
 export default WithTranslate(
   connect(
     (state: any) => ({
-      settings: state.settings,
-      storage: state.storage,
+      isSelectedTariffOnWelcomePage: state.storage.isSelectedTariffOnWelcomePage,
+      activeTariffIdToPay: state.storage.activeTariffIdToPay,
     }),
     { changeSettingAction },
   )(CheckoutPage),

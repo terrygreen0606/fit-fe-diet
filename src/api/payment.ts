@@ -19,5 +19,8 @@ export const getAppTariff = (id: string) =>
 export const getAppTariffs = () =>
   axios.get('/app/get-tariffs');
 
+export const getAppSingleTariff = () =>
+  axios.get('/payment/single-tariff');
+
 export const getPaymentStatus = (id: string) =>
   axios.get(`/payment/status/${id}`);

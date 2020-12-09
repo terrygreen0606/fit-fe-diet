@@ -32,7 +32,7 @@ const Layout = ({
 }: LayoutProps) => {
   const getHeader = () => {
     if (headerType === 'promo') {
-      return <HeaderPromo />;
+      return <HeaderPromo history={history} />;
     }
     return (
       <Header
