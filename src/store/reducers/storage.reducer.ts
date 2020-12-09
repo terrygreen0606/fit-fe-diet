@@ -7,7 +7,6 @@ const initialSettings = {
   isActiveShoppingListBanner: true,
   isActiveWaterTrackerBanner: true,
   isAfterSignup: false,
-  isSelectedTariffOnWelcomePage: false,
   afterSignupName: null,
   afterSignupGoal: null,
   afterSignupWeight: null,

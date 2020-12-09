@@ -3,11 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import {
-  getTranslate,
-  scrollToElement,
-  getPaymentFlowType,
-} from 'utils';
+import { getTranslate, getPaymentFlowType } from 'utils';
 import Helmet from 'react-helmet';
 import { routes } from 'constants/routes';
 import queryString from 'query-string';
@@ -31,7 +27,6 @@ import './CheckoutPage.sass';
 const CheckoutPage = ({
   changeSettingAction: changeSetting,
   activeTariffIdToPay,
-  isSelectedTariffOnWelcomePage,
   history,
   location,
   localePhrases,
@@ -150,10 +145,6 @@ const CheckoutPage = ({
     return activeTariff;
   };
 
-  const scrollToCheckoutForm = () => {
-    scrollToElement(paymentFormBlockRef?.current, -30);
-  };
-
   return (
     <>
       <Helmet>
@@ -206,11 +197,7 @@ const CheckoutPage = ({
 
                     <div ref={paymentFormBlockRef}>
                       <h3 className='mb-4 fw-bold text-center payment-form-title'>
-                        {!isSelectedTariffOnWelcomePage ? (
-                          `2. ${t('lp.payment_form.title')}`
-                        ) : (
-                          t('lp.payment_form.title.last_step')
-                        )}
+                        {t('lp.payment_form.title.last_step')}
                       </h3>
 
                       <ContentLoading
@@ -260,7 +247,6 @@ const CheckoutPage = ({
 export default WithTranslate(
   connect(
     (state: any) => ({
-      isSelectedTariffOnWelcomePage: state.storage.isSelectedTariffOnWelcomePage,
       activeTariffIdToPay: state.storage.activeTariffIdToPay,
     }),
     { changeSettingAction },
