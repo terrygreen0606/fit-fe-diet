@@ -1,13 +1,17 @@
 export const getPaymentFlowType = () => {
-  let paymentFlow = null;
+  let paymentFlow: '1' | '2' | '3' = '1';
 
-  const paymentFlowData = window.dataLayer?.find((data) => data.payment_flow);
+  const paymentFlowData = window?.dataLayer?.find((data) => data.payment_flow);
 
   if (paymentFlowData) {
-    paymentFlow = paymentFlowData.payment_flow?.toString();
+    const paymentFlowNew = paymentFlowData.payment_flow?.toString();
 
-    if (paymentFlow !== '1' || paymentFlow !== '3') {
-      paymentFlow = null;
+    switch (paymentFlowNew) {
+      case '1':
+      case '2':
+      case '3':
+      default:
+        paymentFlow = '1';
     }
   }
 

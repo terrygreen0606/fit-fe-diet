@@ -14,7 +14,7 @@ type TariffPlanSelectProps = {
   tariffs: any[];
   onChange: (any) => void;
   value: string;
-  type?: '1' | '3';
+  type?: '1' | '2' | '3';
   specialOfferIndex?: number;
   changeSettingAction: (string, any) => void,
   localePhrases: any;
