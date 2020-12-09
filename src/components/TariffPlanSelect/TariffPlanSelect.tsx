@@ -235,7 +235,6 @@ const TariffPlanSelect = ({
                 className='link-raw'
                 onClick={() => {
                   changeSetting('activeTariffIdToPay', tariff);
-                  changeSetting('isSelectedTariffOnWelcomePage', true);
                 }}
               >
                 <div className='tariff-plan__item-sale'>

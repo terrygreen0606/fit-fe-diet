@@ -89,7 +89,6 @@ const RegisterWelcomePage = ({
           } else if (paymentFlowType === '1') {
             setTariffsDataList([responseData]);
             setActiveTariffId(responseData.tariff);
-            changeSetting('isSelectedTariffOnWelcomePage', responseData.tariff);
             changeSetting('activeTariffIdToPay', responseData.tariff);
           }
         } else {
@@ -855,7 +854,6 @@ const RegisterWelcomePage = ({
 
                       setActiveTariffId(id);
                       changeSetting('activeTariffIdToPay', id);
-                      changeSetting('isSelectedTariffOnWelcomePage', true);
                     }}
                     type={getPaymentFlowType()}
                     specialOfferIndex={getPaymentFlowType() === '1' ? 0 : 1}
