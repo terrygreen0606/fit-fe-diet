@@ -206,7 +206,7 @@ const CheckoutPage = ({
 
                     <div
                       ref={paymentFormBlockRef}
-                      className={classNames('mt-4 mt-xl-5', {
+                      className={classNames({
                         'd-none': !getActiveTariffData(),
                       })}
                     >
