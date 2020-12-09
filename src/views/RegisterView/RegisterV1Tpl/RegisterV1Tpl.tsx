@@ -1,10 +1,14 @@
+/* eslint-disable no-multi-spaces */
 import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { InputError } from 'types';
 
+import { routes } from 'constants/routes';
+
 // Components
 import WithTranslate from 'components/hoc/WithTranslate';
 import ProgressLine from 'components/common/ProgressLine';
+import HeaderRegistration from 'components/HeaderRegistration';
 import getRegisterStepViewUtil from './getRegisterStepView';
 
 import { RegisterViewType } from './types';
@@ -135,18 +139,23 @@ const RegisterV1Tpl = ({
   };
 
   return (
-    <div className='register_v1'>
-      <Link to='/' className='mainHeader_logo register_v1_logo' />
+    <>
+      {registerView === 'INFO_GENDER' && (
+        <HeaderRegistration />
+      )}
+      <div className='register_v1'>
+        <Link to={routes.main} className='mainHeader_logo register_v1_logo' />
 
-      <ProgressLine
-        className='register_v1_progress'
-        width={getProgressWidth()}
-      />
+        <ProgressLine
+          className='register_v1_progress'
+          width={getProgressWidth()}
+        />
 
-      <div className='register_v1_steps' ref={registerStepsRef}>
-        {getRegisterStepView(registerView)}
+        <div className='register_v1_steps' ref={registerStepsRef}>
+          {getRegisterStepView(registerView)}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

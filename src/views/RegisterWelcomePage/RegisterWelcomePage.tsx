@@ -679,7 +679,7 @@ const RegisterWelcomePage = ({
         <section className='after-signup-expect-sect'>
           <div className='container'>
             <div className='row'>
-              <div className='col-xl-9 offset-xl-4'>
+              <div className='col-xl-9 offset-xl-3'>
 
                 <h2 className='mb-4 fw-bold text-center text-xl-left'>{t('lp.advantages.title')}</h2>
 
