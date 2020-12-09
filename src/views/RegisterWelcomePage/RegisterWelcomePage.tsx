@@ -400,6 +400,12 @@ const RegisterWelcomePage = ({
 
                 <div className='col-xl-6 mb-4 p-0 text-center text-xl-left'>
                   <h1 className='fw-bold'>{getWelcomeHeadlLineText()}</h1>
+                  {isAfterSignup && (
+                    <h2
+                      className='fw-bold mb-4'
+                      dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }}
+                    />
+                  )}
                 </div>
 
               </div>
@@ -451,13 +457,6 @@ const RegisterWelcomePage = ({
 
               </div>
               <div className='col-xl-6 order-xl-1 mt-4 mt-xl-0 after-signup-header-content-col'>
-
-                {isAfterSignup && (
-                  <h2
-                    className='fw-bold mb-4'
-                    dangerouslySetInnerHTML={{ __html: getWelcomeGoalText() }}
-                  />
-                )}
 
                 <ContentLoading
                   isLoading={tariffsLoading}
@@ -609,13 +608,13 @@ const RegisterWelcomePage = ({
                 <div className='row'>
                   <div className='col-lg-6'>
 
-                    <h2 className='fw-bold'>{t('lp.reviews.title')}</h2>
+                    <h2 className='fw-bold text-center text-lg-left'>{t('lp.reviews.title')}</h2>
 
                   </div>
                 </div>
 
               </div>
-              <div className='col-lg-6 order-lg-3 mb-5 mb-lg-0 after-signup-image-button-col text-center'>
+              <div className='col-lg-6 order-lg-3 mb-4 mb-lg-0 after-signup-image-button-col text-center'>
 
                 <button
                   type='button'
@@ -704,7 +703,7 @@ const RegisterWelcomePage = ({
                 </button>
 
               </div>
-              <div className='col-xl-9 order-xl-2 mt-5 mt-xl-0'>
+              <div className='col-xl-9 order-xl-2 mt-4 mt-xl-0'>
 
                 <div className='app-advantages-list'>
                   {Array(5).fill(1).map(() => uuid()).map((id, index) => (
