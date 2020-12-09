@@ -15,9 +15,15 @@ const WeightCard = ({ localePhrases, bmiValue }: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
-  const overweightClasses = classnames({ 'abnormal-weight-active': bmiStatus(bmiValue) === OVERWEIGHT });
+  const overweightClasses = classnames({
+    'abnormal-weight-active': bmiStatus(bmiValue) === OVERWEIGHT,
+    'over-weight-active': bmiStatus(bmiValue) === OVERWEIGHT,
+  });
   const normalWeightClasses = classnames({ 'normal-weight-active': bmiStatus(bmiValue) === NORMAL });
-  const underweightClasses = classnames({ 'abnormal-weight-active': bmiStatus(bmiValue) === UNDERWEIGHT });
+  const underweightClasses = classnames({
+    'abnormal-weight-active': bmiStatus(bmiValue) === UNDERWEIGHT,
+    'under-weight-active': bmiStatus(bmiValue) === OVERWEIGHT,
+  });
 
   const bmi = (
     <h1 className='m-0 text-left'>
@@ -27,7 +33,7 @@ const WeightCard = ({ localePhrases, bmiValue }: any) => {
   );
 
   return (
-    <div className='weight-summary'>
+    <div className='status-card weight-summary mt-1 mr-2 mb-3'>
       <div className={`weight-section ${overweightClasses}`}>
         {bmiStatus(bmiValue) === OVERWEIGHT && bmi}
         <span>{t('status.overweight.subtitle')}</span>

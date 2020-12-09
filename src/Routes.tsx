@@ -280,9 +280,9 @@ const Routes = () => (
     <PrivateRoute
       path={routes.statusPage}
       component={(props: any) => (
-        <Layout {...props}>
+        <BasePage {...props} hideHeader>
           <StatusPage {...props} />
-        </Layout>
+        </BasePage>
       )}
       exact
     />

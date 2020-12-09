@@ -12,11 +12,13 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import ContentLoading from 'components/hoc/ContentLoading';
+import Logo from 'components/Logo';
 import WeightCard from './WeightCard';
 
 import './StatusStep.sass';
 
 const StatusStep = ({
+  isAfterSignup,
   afterSignupName,
   afterSignupWeight,
   afterSignupWeightGoal,
@@ -54,16 +56,20 @@ const StatusStep = ({
   const navigateToWelcome = () => history.push(routes.registerWelcome);
 
   useEffect(() => {
-    fetchUserStatus().then((response) => {
-      if (response.data.success && response.data.data) {
-        setBmiValue(response.data.data.bmi.value);
-        setMinCalorie(response.data.data.calorie.min);
-        setMaxCalorie(response.data.data.calorie.max);
-      }
-    }).catch(() => {
-      setIsError(true);
-      toast.error(t('common.error'));
-    }).finally(() => setIsLoading(false));
+    if (isAfterSignup) {
+      fetchUserStatus().then((response) => {
+        if (response.data.success && response.data.data) {
+          setBmiValue(response.data.data.bmi.value);
+          setMinCalorie(response.data.data.calorie.min);
+          setMaxCalorie(response.data.data.calorie.max);
+        }
+      }).catch(() => {
+        setIsError(true);
+        toast.error(t('common.error'));
+      }).finally(() => setIsLoading(false));
+    } else {
+      history.push(routes.login);
+    }
   }, []);
 
   return (
@@ -73,6 +79,9 @@ const StatusStep = ({
       spinSize='lg'
     >
       <div className='status-step text-left'>
+        <div className='logo-in-status text-center'>
+          <Logo />
+        </div>
         <h3 className='status-title mb-3'>
           {t('status.currently.title')}
           <p>{t('status.current.title', { VALUE: bmiStatus(bmiValue) })}</p>
@@ -107,26 +116,30 @@ const StatusStep = ({
         />
 
         <div className='row my-5 no-gutters'>
-          <div className='col-md-6 status-card d-flex flex-column text-center align-items-center justify-content-center'>
-            <h1>
-              <span className='average-value'>87</span>
-              <span className='average-unit'>%</span>
-            </h1>
-            <h3 className='average-title px-4' dangerouslySetInnerHTML={{ __html: t('status.lost.desc') }}></h3>
+          <div className='col-md-6'>
+            <div className='status-card d-flex flex-column text-center align-items-center justify-content-center mt-1 mb-1 mr-2'>
+              <h1>
+                <span className='average-value'>87</span>
+                <span className='average-unit'>%</span>
+              </h1>
+              <h3 className='average-title px-4' dangerouslySetInnerHTML={{ __html: t('status.lost.desc') }}></h3>
+            </div>
           </div>
-          <div className='col-md-6 status-card d-flex flex-column text-center align-items-center justify-content-center'>
-            <h1>
-              <span className='average-value'>
-                { parseFloat(afterSignupWeight) > parseFloat(afterSignupWeightGoal) ? '-' : '' }
-                3
-              </span>
-              <span className='average-unit'>kg</span>
-            </h1>
-            <p className='after-week'>{t('status.after.desc')}</p>
+          <div className='col-md-6'>
+            <div className='status-card d-flex flex-column text-center align-items-center justify-content-center mt-1 mb-1 ml-2'>
+              <h1>
+                <span className='average-value'>
+                  { parseFloat(afterSignupWeight) > parseFloat(afterSignupWeightGoal) ? '-' : '' }
+                  3
+                </span>
+                <span className='average-unit'>kg</span>
+              </h1>
+              <p className='after-week'>{t('status.after.desc')}</p>
+            </div>
           </div>
         </div>
 
-        <div className='text-center mt-5'>
+        <div className='text-center mt-4'>
           <Button
             color='primary-shadow'
             className='get-access-btn'
@@ -141,51 +154,51 @@ const StatusStep = ({
         </div>
 
         <div className='row my-5 no-gutters'>
-          <div className='col-md-6 status-card p-0 text-right'>
+          <div className='col-md-6'>
             <WeightCard bmiValue={bmiValue} />
           </div>
-          <div className='col-md-6 status-card p-0 text-center d-flex flex-column justify-content-between align-items-center'>
-            <div className='mt-4'>
-              <div className='calorie-sub'>{t('status.calorie.subtitle')}</div>
-              <h3 className='calorie-value'>
-                {minCalorie}
-                -
-                {maxCalorie}
-              </h3>
-              <h3 className='calorie-unit'>{t('status.calorie.unit')}</h3>
+          <div className='col-md-6'>
+            <div className='status-card text-center d-flex flex-column justify-content-between align-items-center mt-2 ml-2 mb-3'>
+              <div className='mt-4'>
+                <div className='calorie-sub'>{t('status.calorie.subtitle')}</div>
+                <h3 className='calorie-value'>
+                  {minCalorie}
+                  -
+                  {maxCalorie}
+                </h3>
+                <h3 className='calorie-unit'>{t('status.calorie.unit')}</h3>
+              </div>
+              <img className='calorie-img' src={getImagePath('calorie.png')} alt='' />
             </div>
-            <img className='calorie-img' src={getImagePath('calorie.png')} alt='' />
           </div>
-          <div className='col-md-6 status-card p-0 d-flex justify-content-between flex-column align-items-center'>
-            <div className='body-exchange-txt mt-4'>{t('status.body.subtitle')}</div>
-            <img className='body-exchange-img' src={getImagePath('bodyexchange.png')} alt='' />
+          <div className='col-md-6'>
+            <div className='status-card d-flex justify-content-between flex-column align-items-center mt-3 mr-2'>
+              <div className='body-exchange-txt mt-4'>{t('status.body.subtitle')}</div>
+              <img className='body-exchange-img' src={getImagePath('bodyexchange.png')} alt='' />
+            </div>
           </div>
-          <div className='col-md-6 status-card p-0 d-flex flex-column justify-content-center align-items-center'>
-            <h1 className='unique-food-title'>1000+</h1>
-            <img className='unique-food-img' src={getImagePath('uniquefood.png')} alt='' />
-            <p className='unique-food-text'>{t('status.food.subtitle')}</p>
+          <div className='col-md-6'>
+            <div className='status-card d-flex flex-column justify-content-center align-items-center mt-3 ml-2'>
+              <h1 className='unique-food-title'>1000+</h1>
+              <img className='unique-food-img' src={getImagePath('uniquefood.png')} alt='' />
+              <p className='unique-food-text'>{t('status.food.subtitle')}</p>
+            </div>
           </div>
         </div>
 
-        <div className='supporters row justify-content-center align-items-center'>
-          <h3 className='col-12 text-center my-5'>{t('status.diet.title')}</h3>
-          <div className='col-4'>
-            <img className='supporter-img' src={t('lp.supporters.img1')} alt='' />
+        <div className='supporters row justify-content-center align-items-center py-5'>
+          <h3 className='col-12 text-center mb-5'>{t('status.diet.title')}</h3>
+          <div className='col-md-3 col-sm-6'>
+            <img className='supporter-img' src={t('lp.partners.img1')} alt='' />
           </div>
-          <div className='col-4'>
-            <img className='supporter-img' src={t('lp.supporters.img2')} alt='' />
+          <div className='col-md-3 col-sm-6'>
+            <img className='supporter-img' src={t('lp.partners.img2')} alt='' />
           </div>
-          <div className='col-4'>
-            <img className='supporter-img' src={t('lp.supporters.img3')} alt='' />
+          <div className='col-md-3 col-sm-6'>
+            <img className='supporter-img' src={t('lp.partners.img3')} alt='' />
           </div>
-          <div className='col-4'>
-            <img className='supporter-img' src={t('lp.supporters.img4')} alt='' />
-          </div>
-          <div className='col-4'>
-            <img className='supporter-img' src={t('lp.supporters.img5')} alt='' />
-          </div>
-          <div className='col-4'>
-            <img className='supporter-img' src={t('lp.supporters.img6')} alt='' />
+          <div className='col-md-3 col-sm-6'>
+            <img className='supporter-img' src={t('lp.partners.img4')} alt='' />
           </div>
         </div>
 

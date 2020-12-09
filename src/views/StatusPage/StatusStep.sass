@@ -11,6 +11,8 @@
     font-size: 65px
     font-weight: 700
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+    @media screen and (max-width : 768px)
+      font-size: 50px
     p
       color: $orange-red
       text-decoration: underline
@@ -60,6 +62,8 @@
     min-height: 310px
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08)
     border-radius: 10px
+    @media screen and (max-width : 768px)
+      margin: 10px 0 !important
   .status-summary
     font-size: 50px
     font-size: 400
@@ -77,16 +81,14 @@
     width: 100%
     object-fit: scale-down
   .weight-summary
-    height: 100%
+    height: 90%
     margin: auto 0
-    border-radius: inherit
-    overflow: hidden
   .weight-section
     height: 33%
     display: flex
     justify-content: flex-end
     align-items: center
-    padding: 0 35px
+    padding: 0 20px
     font-size: 24px
     font-weight: 400
     .value
@@ -102,6 +104,12 @@
     span
       font-weight: 700
       font-size: 24px
+  .over-weight-active
+    border-top-left-radius: inherit
+    border-top-right-radius: inherit
+  .under-weight-active
+    border-bottom-left-radius: inherit
+    border-bottom-right-radius: inherit
   .normal-weight-active
     justify-content: space-between
     span
@@ -114,7 +122,7 @@
   .summary-value
     border: 1px solid black
   .unique-food-img
-    max-width: 70%
+    max-width: 60%
   .unique-food-title
     font-size: 70px
     font-weight: 400
@@ -123,7 +131,7 @@
     @media screen and (max-width : 768px)
       font-weight: 900
   .unique-food-text
-    width: 40%
+    width: 60%
     text-align: center
     font-size: 24px
     font-weight: 400
