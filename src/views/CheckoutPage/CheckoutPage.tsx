@@ -114,7 +114,7 @@ const CheckoutPage = ({
             } else if (responseData.length > 1) {
               setActiveTariffId(responseData[1].tariff);
             }
-          } else if (paymentFlowType === '3') {
+          } else if (paymentFlowType === '1') {
             setTariffsDataList([responseData]);
             setActiveTariffId(responseData.tariff);
             changeSetting('activeTariffIdToPay', responseData.tariff);
