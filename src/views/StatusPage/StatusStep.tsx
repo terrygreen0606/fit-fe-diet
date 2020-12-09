@@ -12,6 +12,7 @@ import WithTranslate from 'components/hoc/WithTranslate';
 import Button from 'components/common/Forms/Button';
 import DietExpectationsChart from 'components/DietExpectationsChart';
 import ContentLoading from 'components/hoc/ContentLoading';
+import ProgressLine from 'components/common/ProgressLine';
 import Logo from 'components/Logo';
 import WeightCard from './WeightCard';
 
@@ -82,7 +83,11 @@ const StatusStep = ({
         <div className='logo-in-status text-center'>
           <Logo />
         </div>
-        <h3 className='status-title mb-3'>
+        <ProgressLine
+          className='register_v1_progress'
+          width={98}
+        />
+        <h3 className='status-title mb-3 mt-4'>
           {t('status.currently.title')}
           <p>{t('status.current.title', { VALUE: bmiStatus(bmiValue) })}</p>
         </h3>
@@ -90,7 +95,7 @@ const StatusStep = ({
         <p className='healthy-bmi m-0'>{t('status.bmi.desc')}</p>
         <p className='healthy-bmi m-0 mb-5'>{t('status.help.desc')}</p>
 
-        <div className='text-center mb-5'>
+        <div className='diet-chart-wrapper text-center mb-5 pt-4'>
           <h2 className='prediction-text'>{t('status.will.desc')}</h2>
           <div className='row no-gutters calendar-card justify-content-around align-items-center'>
             <span>{ parseFloat(afterSignupWeightGoal) - 2 }</span>
@@ -105,28 +110,36 @@ const StatusStep = ({
             &nbsp;
             {getPredictedDate()}
           </h3>
+          <DietExpectationsChart
+            weight={afterSignupWeight}
+            weightGoal={afterSignupWeightGoal}
+            predictedDate={afterSignupPredictDate}
+            measurement={measurement}
+            localePhrases={localePhrases}
+          />
         </div>
 
-        <DietExpectationsChart
-          weight={afterSignupWeight}
-          weightGoal={afterSignupWeightGoal}
-          predictedDate={afterSignupPredictDate}
-          measurement={measurement}
-          localePhrases={localePhrases}
-        />
-
         <div className='row my-5 no-gutters'>
-          <div className='col-md-6'>
-            <div className='status-card d-flex flex-column text-center align-items-center justify-content-center mt-1 mb-1 mr-2'>
-              <h1>
+          <div className='col-6'>
+            <div className='status-card d-flex flex-column text-center align-items-center justify-content-around mt-1 mb-1 mr-2'>
+              <h1 className='m-0'>
                 <span className='average-value'>87</span>
                 <span className='average-unit'>%</span>
               </h1>
-              <h3 className='average-title px-4' dangerouslySetInnerHTML={{ __html: t('status.lost.desc') }}></h3>
+              <h3 className='average-title px-4 mt-0' dangerouslySetInnerHTML={{ __html: t('status.lost.desc') }}></h3>
             </div>
           </div>
-          <div className='col-md-6'>
+          <div className='col-6'>
             <div className='status-card d-flex flex-column text-center align-items-center justify-content-center mt-1 mb-1 ml-2'>
+              <div className='week-calendar d-flex justify-content-between align-items-center'>
+                <span>{t('status.monday.subtitle')}</span>
+                <span>{t('status.tuesday.subtitle')}</span>
+                <span>{t('status.wednesday.subtitle')}</span>
+                <span>{t('status.thursday.subtitle')}</span>
+                <span>{t('status.friday.subtitle')}</span>
+                <span>{t('status.saturday.subtitle')}</span>
+                <span className='active-weekday'>{t('status.sunday.subtitle')}</span>
+              </div>
               <h1>
                 <span className='average-value'>
                   { parseFloat(afterSignupWeight) > parseFloat(afterSignupWeightGoal) ? '-' : '' }
@@ -148,7 +161,7 @@ const StatusStep = ({
             {t('status.access.button')}
           </Button>
 
-          <h3 className='status-summary my-5'>
+          <h3 className='status-summary mt-5'>
             {t('status.summary.title')}
           </h3>
         </div>
@@ -158,7 +171,7 @@ const StatusStep = ({
             <WeightCard bmiValue={bmiValue} />
           </div>
           <div className='col-md-6'>
-            <div className='status-card text-center d-flex flex-column justify-content-between align-items-center mt-2 ml-2 mb-3'>
+            <div className='status-card text-center d-flex flex-column justify-content-between align-items-center mt-1 ml-2 mb-3'>
               <div className='mt-4'>
                 <div className='calorie-sub'>{t('status.calorie.subtitle')}</div>
                 <h3 className='calorie-value'>
@@ -171,10 +184,19 @@ const StatusStep = ({
               <img className='calorie-img' src={getImagePath('calorie.png')} alt='' />
             </div>
           </div>
-          <div className='col-md-6'>
+          <div className='col-md-6 body-exchange-wrapper'>
             <div className='status-card d-flex justify-content-between flex-column align-items-center mt-3 mr-2'>
               <div className='body-exchange-txt mt-4'>{t('status.body.subtitle')}</div>
               <img className='body-exchange-img' src={getImagePath('bodyexchange.png')} alt='' />
+              <div className='border-line first-line'></div>
+              <div className='border-line second-line'></div>
+              <div className='border-line third-line'></div>
+              <div className='d-block body-exchange-value'>
+                <p>-11%</p>
+                <p>-8%</p>
+                <p>-20%</p>
+                <p>-16%</p>
+              </div>
             </div>
           </div>
           <div className='col-md-6'>
@@ -186,25 +208,32 @@ const StatusStep = ({
           </div>
         </div>
 
-        <div className='supporters row justify-content-center align-items-center py-5'>
-          <h3 className='col-12 text-center mb-5'>{t('status.diet.title')}</h3>
-          <div className='col-md-3 col-sm-6'>
-            <img className='supporter-img' src={t('lp.partners.img1')} alt='' />
-          </div>
-          <div className='col-md-3 col-sm-6'>
-            <img className='supporter-img' src={t('lp.partners.img2')} alt='' />
-          </div>
-          <div className='col-md-3 col-sm-6'>
-            <img className='supporter-img' src={t('lp.partners.img3')} alt='' />
-          </div>
-          <div className='col-md-3 col-sm-6'>
-            <img className='supporter-img' src={t('lp.partners.img4')} alt='' />
+        <div id='welcomePartnersBlock' className='supporters app-partners-list__wrap py-5'>
+          <h5 className='app-partners-list__title text-center'>{t('status.diet.title')}</h5>
+
+          <div className='app-partners-list'>
+            <span
+              className='app-partners-list__item'
+              style={{ backgroundImage: `url(${t('lp.partners.img1')})` }}
+            />
+            <span
+              className='app-partners-list__item'
+              style={{ backgroundImage: `url(${t('lp.partners.img2')})` }}
+            />
+            <span
+              className='app-partners-list__item'
+              style={{ backgroundImage: `url(${t('lp.partners.img3')})` }}
+            />
+            <span
+              className='app-partners-list__item'
+              style={{ backgroundImage: `url(${t('lp.partners.img4')})` }}
+            />
           </div>
         </div>
 
         <h3 className='promise-title my-5'>{t('status.promise.title')}</h3>
         <p className='promise-title mt-0 mb-3'>{t('status.promise.desc')}</p>
-        <h4 className='promise-name m-0'>
+        <h4 className='promise-head m-0'>
           {t('status.head.title')}
           ,
         </h4>

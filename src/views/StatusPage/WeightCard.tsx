@@ -38,7 +38,7 @@ const WeightCard = ({ localePhrases, bmiValue }: any) => {
         {bmiStatus(bmiValue) === OVERWEIGHT && bmi}
         <span>{t('status.overweight.subtitle')}</span>
       </div>
-      <div className={`weight-section normal-weight-bg ${normalWeightClasses}`}>
+      <div className={`weight-section normal-weight-section ${normalWeightClasses}`}>
         {bmiStatus(bmiValue) === NORMAL && bmi}
         <span>{t('status.normal.subtitle')}</span>
       </div>
