@@ -72,3 +72,6 @@ export const getUserTodayActivity = () =>
 
 export const userTariffPause = () =>
   axios.post('/user/pause');
+
+export const fetchUserStatus = () =>
+  axios.get('/user/signup-status');

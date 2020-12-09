@@ -43,6 +43,7 @@ const SettingsPaymentHistoryView = React.lazy(() => import('./views/Settings/Set
 const SettingsSubscriptionPlan = React.lazy(() => import('./views/Settings/SettingsSubscriptionPlan'));
 const JoinFamilyView = React.lazy(() => import('./views/JoinFamilyView'));
 const LogoutView = React.lazy(() => import('./views/LogoutView'));
+const StatusPage = React.lazy(() => import('./views/StatusPage'));
 
 const Routes = () => (
   <Switch>
@@ -271,6 +272,16 @@ const Routes = () => (
       component={(props: any) => (
         <Layout {...props}>
           <SettingsSubscriptionPlan {...props} />
+        </Layout>
+      )}
+      exact
+    />
+
+    <PrivateRoute
+      path={routes.statusPage}
+      component={(props: any) => (
+        <Layout {...props}>
+          <StatusPage {...props} />
         </Layout>
       )}
       exact
