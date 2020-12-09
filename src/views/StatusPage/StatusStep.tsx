@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import queryString from 'query-string';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
-import { getTranslate, getImagePath, getLocaleByLang } from 'utils';
+import { getTranslate, getImagePath, convertTime } from 'utils';
 import { fetchUserStatus } from 'api';
 import { routes } from 'constants/routes';
 import { bmiStatus } from 'constants/bmiStatus';
@@ -24,6 +23,7 @@ const StatusStep = ({
   afterSignupPredictDate,
   measurement,
   localePhrases,
+  language,
 }: any) => {
   // States
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,6 +34,21 @@ const StatusStep = ({
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
+
+  const getPredictedDate = () => {
+    let monthLocale = convertTime(afterSignupPredictDate, language, { month: 'long' });
+    monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
+
+    let predictedDate = null;
+
+    if (moment(new Date(afterSignupPredictDate * 1000)).format('YYYY') === moment().format('YYYY')) {
+      predictedDate = moment(new Date(afterSignupPredictDate * 1000)).format('DD');
+    } else {
+      predictedDate = moment(new Date(afterSignupPredictDate * 1000)).format('DD YYYY');
+    }
+
+    return `${monthLocale} ${predictedDate}`;
+  };
 
   useEffect(() => {
     fetchUserStatus().then((response) => {
@@ -61,7 +76,24 @@ const StatusStep = ({
         </h3>
         <h4 className='current-bmi'>{t('status.bmi.subtitle', { NAME: afterSignupName, VALUE: bmiValue })}</h4>
         <p className='healthy-bmi m-0'>{t('status.bmi.desc')}</p>
-        <p className='healthy-bmi m-0'>{t('status.help.desc')}</p>
+        <p className='healthy-bmi m-0 mb-5'>{t('status.help.desc')}</p>
+
+        <div className='text-center mb-5'>
+          <h2 className='prediction-text'>{t('status.will.desc')}</h2>
+          <div className='row no-gutters calendar-card justify-content-around align-items-center'>
+            <span>{ parseFloat(afterSignupWeightGoal) - 2 }</span>
+            <span>{ parseFloat(afterSignupWeightGoal) - 1 }</span>
+            <span className='target-weight'>{ parseFloat(afterSignupWeightGoal)}</span>
+            <span>{ parseFloat(afterSignupWeightGoal) + 1 }</span>
+            <span>{ parseFloat(afterSignupWeightGoal) + 2 }</span>
+          </div>
+          <h3 className='measurement'>kg</h3>
+          <h3 className='prediction-date'>
+            {t('status.by.desc')}
+            &nbsp;
+            {getPredictedDate()}
+          </h3>
+        </div>
 
         <DietExpectationsChart
           weight={afterSignupWeight}
@@ -70,24 +102,6 @@ const StatusStep = ({
           measurement={measurement}
           localePhrases={localePhrases}
         />
-
-        {/* <h3 className='mb-3 fw-regular'>{t('register.expect_title')}</h3> */}
-
-        {/* <h2 className='mb-xl-5 mb-3 fw-bold text-steel-blue'>
-          {t(I18N_MEASUREMENT, { COUNT: weight_goal })}
-          {' '}
-          {t('register.expect_date_by')}
-          {' '}
-          {getPredictedDate()}
-        </h2>
-
-        <DietExpectationsChart
-          weight={weight}
-          weightGoal={weight_goal}
-          predictedDate={predicted_date}
-          measurement={registerData.measurement}
-          localePhrases={localePhrases}
-        /> */}
 
         <div className='row my-5 no-gutters'>
           <div className='col-md-6 status-card d-flex flex-column text-center align-items-center justify-content-center'>
@@ -201,6 +215,7 @@ export default WithTranslate(
       afterSignupWeightGoal: state.storage.afterSignupWeightGoal,
       afterSignupPredictDate: state.storage.afterSignupPredictDate,
       measurement: state.storage.measurement,
+      language: state.settings.language,
     }),
     null,
   )(StatusStep),
