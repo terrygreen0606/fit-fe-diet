@@ -11,7 +11,7 @@
   .register_v1
     padding: 36px 34px
   .status-title
-    font-size: 65px
+    font-size: 50px
     font-weight: 400
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
     @media screen and (max-width : 768px)
@@ -21,7 +21,7 @@
       text-decoration: underline
       font-weight: 700
   .current-bmi
-    font-size: 28px
+    font-size: 24px
     font-weight: 700
     margin-top: 49px
     margin-bottom: 0
@@ -71,8 +71,9 @@
       font-weight: 700
       font-size: 16px
   .healthy-bmi
-    font-size: 28px
+    font-size: 24px
     line-height: 1.2
+    font-weight: 400
   .prediction-text
     font-size: 22px
     font-weight: 400
@@ -111,13 +112,16 @@
     @media screen and (max-width : 768px)
       font-size: 34px
   .promise-title
-    font-weight: 400
-    font-size: 24px
-  .promise-head
     font-weight: 700
+    font-size: 26px
+  .promise-content
+    font-size: 20px
+    font-weight: 400
+  .promise-head
+    font-weight: 800
   .supporters
     background-color: $bright-yellowish
-    margin: 10px -36px
+    margin: 0 -36px
   .supporter-img
     width: 100%
     object-fit: scale-down
@@ -142,7 +146,7 @@
       font-weight: 400
   .abnormal-weight-active
     background: $orange-red
-    color: #FFF
+    color: $white
     justify-content: space-between
     span
       font-weight: 700
@@ -170,6 +174,7 @@
     font-weight: 400
     margin-top: 10px
     color: $steel-blue
+    margin-top: 0
     @media screen and (max-width : 768px)
       font-weight: 900
   .unique-food-text
@@ -197,6 +202,8 @@
     border: 1px solid $bright-grey
     width: 97%
     position: absolute
+    @media screen and (max-width : 768px)
+      width: 100%
   .first-line
     top: 52%
   .second-line
@@ -206,7 +213,9 @@
   .body-exchange-value
     position: absolute
     right: 25px
-    top: 37%
+    top: 41%
+    @media screen and (max-width : 768px)
+      top: 37%
     p
       color: $steel-blue
       font-weight: 700
@@ -227,3 +236,11 @@
   .get-access-btn
     @media screen and (max-width : 768px)
       width: 100%
+.top-right-img
+  position: absolute
+  top: 0
+  right: 0
+.bottom-right-img
+  position: absolute
+  bottom: 0
+  right: 0

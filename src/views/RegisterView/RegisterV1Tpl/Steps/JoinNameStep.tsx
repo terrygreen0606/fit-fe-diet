@@ -101,7 +101,6 @@ const JoinNameStep = ({
       pathname: history.location.pathname,
       state: {
         ...location.state || {},
-        // nextPathname: routes.registerWelcome,
         nextPathname: routes.statusPage,
         nextSearch,
       },

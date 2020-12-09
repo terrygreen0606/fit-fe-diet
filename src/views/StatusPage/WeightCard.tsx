@@ -11,18 +11,18 @@ import {
 
 import WithTranslate from 'components/hoc/WithTranslate';
 
-const WeightCard = ({ localePhrases, bmiValue }: any) => {
+const WeightCard = ({ localePhrases, bmiType, bmiValue }: any) => {
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
   const overweightClasses = classnames({
-    'abnormal-weight-active': bmiStatus(bmiValue) === OVERWEIGHT,
-    'over-weight-active': bmiStatus(bmiValue) === OVERWEIGHT,
+    'abnormal-weight-active': bmiStatus(bmiType) === OVERWEIGHT.str,
+    'over-weight-active': bmiStatus(bmiType) === OVERWEIGHT.str,
   });
-  const normalWeightClasses = classnames({ 'normal-weight-active': bmiStatus(bmiValue) === NORMAL });
+  const normalWeightClasses = classnames({ 'normal-weight-active': bmiStatus(bmiType) === NORMAL.str });
   const underweightClasses = classnames({
-    'abnormal-weight-active': bmiStatus(bmiValue) === UNDERWEIGHT,
-    'under-weight-active': bmiStatus(bmiValue) === OVERWEIGHT,
+    'abnormal-weight-active': bmiStatus(bmiType) === UNDERWEIGHT.str,
+    'under-weight-active': bmiStatus(bmiType) === UNDERWEIGHT.str,
   });
 
   const bmi = (
@@ -35,15 +35,15 @@ const WeightCard = ({ localePhrases, bmiValue }: any) => {
   return (
     <div className='status-card weight-summary mt-1 mr-2 mb-3'>
       <div className={`weight-section ${overweightClasses}`}>
-        {bmiStatus(bmiValue) === OVERWEIGHT && bmi}
+        {bmiStatus(bmiType) === OVERWEIGHT.str && bmi}
         <span>{t('status.overweight.subtitle')}</span>
       </div>
       <div className={`weight-section normal-weight-section ${normalWeightClasses}`}>
-        {bmiStatus(bmiValue) === NORMAL && bmi}
+        {bmiStatus(bmiType) === NORMAL.str && bmi}
         <span>{t('status.normal.subtitle')}</span>
       </div>
       <div className={`weight-section ${underweightClasses}`}>
-        {bmiStatus(bmiValue) === UNDERWEIGHT && bmi}
+        {bmiStatus(bmiType) === UNDERWEIGHT.str && bmi}
         <span>{t('status.underweight.subtitle')}</span>
       </div>
     </div>

@@ -19,36 +19,30 @@ import WeightCard from './WeightCard';
 import './StatusStep.sass';
 
 const StatusStep = ({
-  isAfterSignup,
-  afterSignupName,
-  afterSignupWeight,
-  afterSignupWeightGoal,
-  afterSignupPredictDate,
-  measurement,
   localePhrases,
+  afterSignupName,
+  measurement,
   language,
   history,
 }: any) => {
   // States
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-  const [bmiValue, setBmiValue] = useState<number>(0);
-  const [minCalorie, setMinCalorie] = useState<number>(0);
-  const [maxCalorie, setMaxCalorie] = useState<number>(0);
+  const [userData, setUserData] = useState<any>(null);
 
   const t = (code: string, placeholders?: any) =>
     getTranslate(localePhrases, code, placeholders);
 
   const getPredictedDate = () => {
-    let monthLocale = convertTime(afterSignupPredictDate, language, { month: 'long' });
+    let monthLocale = convertTime(userData.predicted_date, language, { month: 'long' });
     monthLocale = monthLocale.charAt(0).toUpperCase() + monthLocale.slice(1);
 
     let predictedDate = null;
 
-    if (moment(new Date(afterSignupPredictDate * 1000)).format('YYYY') === moment().format('YYYY')) {
-      predictedDate = moment(new Date(afterSignupPredictDate * 1000)).format('DD');
+    if (moment(new Date(userData.predicted_date * 1000)).format('YYYY') === moment().format('YYYY')) {
+      predictedDate = moment(new Date(userData.predicted_date * 1000)).format('DD');
     } else {
-      predictedDate = moment(new Date(afterSignupPredictDate * 1000)).format('DD YYYY');
+      predictedDate = moment(new Date(userData.predicted_date * 1000)).format('DD YYYY');
     }
 
     return `${monthLocale} ${predictedDate}`;
@@ -57,20 +51,14 @@ const StatusStep = ({
   const navigateToWelcome = () => history.push(routes.registerWelcome);
 
   useEffect(() => {
-    if (isAfterSignup) {
-      fetchUserStatus().then((response) => {
-        if (response.data.success && response.data.data) {
-          setBmiValue(response.data.data.bmi.value);
-          setMinCalorie(response.data.data.calorie.min);
-          setMaxCalorie(response.data.data.calorie.max);
-        }
-      }).catch(() => {
-        setIsError(true);
-        toast.error(t('common.error'));
-      }).finally(() => setIsLoading(false));
-    } else {
-      history.push(routes.login);
-    }
+    fetchUserStatus().then((response) => {
+      if (response.data.success && response.data.data) {
+        setUserData(response.data.data);
+      }
+    }).catch(() => {
+      setIsError(true);
+      toast.error(t('common.error'));
+    }).finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -79,176 +67,188 @@ const StatusStep = ({
       isError={isError}
       spinSize='lg'
     >
-      <div className='status-step text-left'>
-        <div className='logo-in-status text-center'>
-          <Logo />
-        </div>
-        <ProgressLine
-          className='register_v1_progress'
-          width={98}
-        />
-        <h3 className='status-title mb-3 mt-4'>
-          {t('status.currently.title')}
-          <p>{t('status.current.title', { VALUE: bmiStatus(bmiValue) })}</p>
-        </h3>
-        <h4 className='current-bmi'>{t('status.bmi.subtitle', { NAME: afterSignupName, VALUE: bmiValue })}</h4>
-        <p className='healthy-bmi m-0'>{t('status.bmi.desc')}</p>
-        <p className='healthy-bmi m-0 mb-5'>{t('status.help.desc')}</p>
-
-        <div className='diet-chart-wrapper text-center mb-5 pt-4'>
-          <h2 className='prediction-text'>{t('status.will.desc')}</h2>
-          <div className='row no-gutters calendar-card justify-content-around align-items-center'>
-            <span>{ parseFloat(afterSignupWeightGoal) - 2 }</span>
-            <span>{ parseFloat(afterSignupWeightGoal) - 1 }</span>
-            <span className='target-weight'>{ parseFloat(afterSignupWeightGoal)}</span>
-            <span>{ parseFloat(afterSignupWeightGoal) + 1 }</span>
-            <span>{ parseFloat(afterSignupWeightGoal) + 2 }</span>
-          </div>
-          <h3 className='measurement'>kg</h3>
-          <h3 className='prediction-date'>
-            {t('status.by.desc')}
-            &nbsp;
-            {getPredictedDate()}
-          </h3>
-          <DietExpectationsChart
-            weight={afterSignupWeight}
-            weightGoal={afterSignupWeightGoal}
-            predictedDate={afterSignupPredictDate}
-            measurement={measurement}
-            localePhrases={localePhrases}
-          />
-        </div>
-
-        <div className='row my-5 no-gutters'>
-          <div className='col-6'>
-            <div className='status-card d-flex flex-column text-center align-items-center justify-content-around mt-1 mb-1 mr-2'>
-              <h1 className='m-0'>
-                <span className='average-value'>87</span>
-                <span className='average-unit'>%</span>
-              </h1>
-              <h3 className='average-title px-4 mt-0' dangerouslySetInnerHTML={{ __html: t('status.lost.desc') }}></h3>
+      {
+        userData && (
+          <div className='status-step text-left'>
+            <div className='logo-in-status text-center mb-5 mt-4'>
+              <Logo />
             </div>
-          </div>
-          <div className='col-6'>
-            <div className='status-card d-flex flex-column text-center align-items-center justify-content-center mt-1 mb-1 ml-2'>
-              <div className='week-calendar d-flex justify-content-between align-items-center'>
-                <span>{t('status.monday.subtitle')}</span>
-                <span>{t('status.tuesday.subtitle')}</span>
-                <span>{t('status.wednesday.subtitle')}</span>
-                <span>{t('status.thursday.subtitle')}</span>
-                <span>{t('status.friday.subtitle')}</span>
-                <span>{t('status.saturday.subtitle')}</span>
-                <span className='active-weekday'>{t('status.sunday.subtitle')}</span>
+            <ProgressLine
+              className='register_v1_progress'
+              width={98}
+            />
+            <h3 className='status-title mb-3 mt-5'>
+              {t('status.currently.title')}
+              <p>{t('status.current.title', { VALUE: bmiStatus(userData.bmi.type) })}</p>
+            </h3>
+            <h4 className='current-bmi'>
+              {t('status.bmi.subtitle', { NAME: afterSignupName || '', VALUE: userData.bmi.value })}
+              &nbsp;
+              <span className='healthy-bmi m-0'>{t('status.bmi.desc')}</span>
+            </h4>
+            <p className='healthy-bmi m-0 mt-3 mb-5'>{t('status.help.desc')}</p>
+
+            {
+            userData.weight_goal && userData.weight &&
+              (
+                <div className='diet-chart-wrapper text-center mb-5 pt-4'>
+                  <h2 className='prediction-text'>{t('status.will.desc')}</h2>
+                  <div className='row no-gutters calendar-card justify-content-around align-items-center'>
+                    <span>{ parseFloat(userData.weight_goal) - 2 }</span>
+                    <span>{ parseFloat(userData.weight_goal) - 1 }</span>
+                    <span className='target-weight'>{ parseFloat(userData.weight_goal)}</span>
+                    <span>{ parseFloat(userData.weight_goal) + 1 }</span>
+                    <span>{ parseFloat(userData.weight_goal) + 2 }</span>
+                  </div>
+                  <h3 className='measurement'>kg</h3>
+                  <h3 className='prediction-date'>
+                    {t('status.by.desc')}
+                    &nbsp;
+                    {getPredictedDate()}
+                  </h3>
+                  <DietExpectationsChart
+                    weight={userData.weight}
+                    weightGoal={userData.weight_goal}
+                    predictedDate={userData.predicted_date}
+                    measurement={measurement}
+                    localePhrases={localePhrases}
+                  />
+                </div>
+              )
+            }
+
+            <div className='row my-5 no-gutters'>
+              <div className='col-6'>
+                <div className='status-card d-flex flex-column text-center align-items-center justify-content-center mt-1 mb-1 mr-2'>
+                  <h1 className='m-0'>
+                    <span className='average-value'>87</span>
+                    <span className='average-unit'>%</span>
+                  </h1>
+                  <h3 className='average-title px-4 mt-0' dangerouslySetInnerHTML={{ __html: t('status.lost.desc') }}></h3>
+                </div>
               </div>
-              <h1>
-                <span className='average-value'>
-                  { parseFloat(afterSignupWeight) > parseFloat(afterSignupWeightGoal) ? '-' : '' }
-                  3
-                </span>
-                <span className='average-unit'>kg</span>
-              </h1>
-              <p className='after-week'>{t('status.after.desc')}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className='text-center mt-4'>
-          <Button
-            color='primary-shadow'
-            className='get-access-btn'
-            onClick={() => navigateToWelcome()}
-          >
-            {t('status.access.button')}
-          </Button>
-
-          <h3 className='status-summary mt-5'>
-            {t('status.summary.title')}
-          </h3>
-        </div>
-
-        <div className='row my-5 no-gutters'>
-          <div className='col-md-6'>
-            <WeightCard bmiValue={bmiValue} />
-          </div>
-          <div className='col-md-6'>
-            <div className='status-card text-center d-flex flex-column justify-content-between align-items-center mt-1 ml-2 mb-3'>
-              <div className='mt-4'>
-                <div className='calorie-sub'>{t('status.calorie.subtitle')}</div>
-                <h3 className='calorie-value'>
-                  {minCalorie}
-                  -
-                  {maxCalorie}
-                </h3>
-                <h3 className='calorie-unit'>{t('status.calorie.unit')}</h3>
-              </div>
-              <img className='calorie-img' src={getImagePath('calorie.png')} alt='' />
-            </div>
-          </div>
-          <div className='col-md-6 body-exchange-wrapper'>
-            <div className='status-card d-flex justify-content-between flex-column align-items-center mt-3 mr-2'>
-              <div className='body-exchange-txt mt-4'>{t('status.body.subtitle')}</div>
-              <img className='body-exchange-img' src={getImagePath('bodyexchange.png')} alt='' />
-              <div className='border-line first-line'></div>
-              <div className='border-line second-line'></div>
-              <div className='border-line third-line'></div>
-              <div className='d-block body-exchange-value'>
-                <p>-11%</p>
-                <p>-8%</p>
-                <p>-20%</p>
-                <p>-16%</p>
+              <div className='col-6'>
+                <div className='status-card d-flex flex-column text-center align-items-center justify-content-center mt-1 mb-1 ml-2'>
+                  <div className='week-calendar d-flex justify-content-between align-items-center'>
+                    <span>{t('status.monday.subtitle')}</span>
+                    <span>{t('status.tuesday.subtitle')}</span>
+                    <span>{t('status.wednesday.subtitle')}</span>
+                    <span>{t('status.thursday.subtitle')}</span>
+                    <span>{t('status.friday.subtitle')}</span>
+                    <span>{t('status.saturday.subtitle')}</span>
+                    <span className='active-weekday'>{t('status.sunday.subtitle')}</span>
+                  </div>
+                  <h1 className='m-0'>
+                    <span className='average-value'>
+                      { userData.bmi.type > 0 ? '-' : '+' }
+                      3
+                    </span>
+                    <span className='average-unit'>kg</span>
+                  </h1>
+                  <p className='after-week'>{t('status.after.desc')}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className='col-md-6'>
-            <div className='status-card d-flex flex-column justify-content-center align-items-center mt-3 ml-2'>
-              <h1 className='unique-food-title'>1000+</h1>
-              <img className='unique-food-img' src={getImagePath('uniquefood.png')} alt='' />
-              <p className='unique-food-text'>{t('status.food.subtitle')}</p>
+
+            <div className='text-center mt-4'>
+              <Button
+                color='primary-shadow'
+                className='get-access-btn'
+                onClick={() => navigateToWelcome()}
+              >
+                {t('status.access.button')}
+              </Button>
+
+              <h3 className='status-summary mt-5'>
+                {t('status.summary.title')}
+              </h3>
+            </div>
+
+            <div className='row my-5 no-gutters'>
+              <div className='col-md-6'>
+                <WeightCard bmiValue={userData.bmi.value} bmiType={userData.bmi.type} />
+              </div>
+              <div className='col-md-6'>
+                <div className='status-card text-center d-flex flex-column justify-content-between align-items-center mt-1 ml-2 mb-3'>
+                  <div className='mt-4'>
+                    <div className='calorie-sub'>{t('status.calorie.subtitle')}</div>
+                    <h3 className='calorie-value'>
+                      {userData.calorie.min}
+                      -
+                      {userData.calorie.max}
+                    </h3>
+                    <h3 className='calorie-unit'>{t('status.calorie.unit')}</h3>
+                  </div>
+                  <img className='calorie-img' src={getImagePath('calorie.png')} alt='' />
+                </div>
+              </div>
+              <div className='col-md-6 body-exchange-wrapper'>
+                <div className='status-card d-flex justify-content-between flex-column align-items-center mt-3 mr-2 pt-4'>
+                  <div className='body-exchange-txt'>{t('status.body.subtitle')}</div>
+                  <img className='body-exchange-img' src={getImagePath('bodyexchange.png')} alt='' />
+                  <div className='border-line first-line'></div>
+                  <div className='border-line second-line'></div>
+                  <div className='border-line third-line'></div>
+                  <div className='d-block body-exchange-value'>
+                    <p>-11%</p>
+                    <p>-8%</p>
+                    <p>-20%</p>
+                    <p>-16%</p>
+                  </div>
+                </div>
+              </div>
+              <div className='col-md-6'>
+                <div className='status-card d-flex flex-column justify-content-center align-items-center mt-3 ml-2'>
+                  <h1 className='unique-food-title'>1000+</h1>
+                  <img className='unique-food-img' src={getImagePath('uniquefood.png')} alt='' />
+                  <p className='unique-food-text'>{t('status.food.subtitle')}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className='supporters app-partners-list__wrap py-3'>
+              <h5 className='app-partners-list__title text-center'>{t('status.diet.title')}</h5>
+
+              <div className='app-partners-list'>
+                <span
+                  className='app-partners-list__item'
+                  style={{ backgroundImage: `url(${t('lp.partners.img1')})` }}
+                />
+                <span
+                  className='app-partners-list__item'
+                  style={{ backgroundImage: `url(${t('lp.partners.img2')})` }}
+                />
+                <span
+                  className='app-partners-list__item'
+                  style={{ backgroundImage: `url(${t('lp.partners.img3')})` }}
+                />
+                <span
+                  className='app-partners-list__item'
+                  style={{ backgroundImage: `url(${t('lp.partners.img4')})` }}
+                />
+              </div>
+            </div>
+
+            <h3 className='promise-title my-5'>{t('status.promise.title')}</h3>
+            <p className='promise-content mt-0 mb-5'>{t('status.promise.desc')}</p>
+            <h4 className='promise-head m-0'>
+              {t('status.head.title')}
+              ,
+            </h4>
+            <h4 className='promise-name m-0'>{t('status.headname.title')}</h4>
+
+            <div className='text-center mt-5'>
+              <Button
+                color='primary-shadow'
+                className='get-access-btn'
+                onClick={() => navigateToWelcome()}
+              >
+                {t('status.access.button')}
+              </Button>
             </div>
           </div>
-        </div>
-
-        <div id='welcomePartnersBlock' className='supporters app-partners-list__wrap py-5'>
-          <h5 className='app-partners-list__title text-center'>{t('status.diet.title')}</h5>
-
-          <div className='app-partners-list'>
-            <span
-              className='app-partners-list__item'
-              style={{ backgroundImage: `url(${t('lp.partners.img1')})` }}
-            />
-            <span
-              className='app-partners-list__item'
-              style={{ backgroundImage: `url(${t('lp.partners.img2')})` }}
-            />
-            <span
-              className='app-partners-list__item'
-              style={{ backgroundImage: `url(${t('lp.partners.img3')})` }}
-            />
-            <span
-              className='app-partners-list__item'
-              style={{ backgroundImage: `url(${t('lp.partners.img4')})` }}
-            />
-          </div>
-        </div>
-
-        <h3 className='promise-title my-5'>{t('status.promise.title')}</h3>
-        <p className='promise-title mt-0 mb-3'>{t('status.promise.desc')}</p>
-        <h4 className='promise-head m-0'>
-          {t('status.head.title')}
-          ,
-        </h4>
-        <h4 className='promise-name m-0'>{t('status.headname.title')}</h4>
-
-        <div className='text-center mt-5'>
-          <Button
-            color='primary-shadow'
-            className='get-access-btn'
-            onClick={() => navigateToWelcome()}
-          >
-            {t('status.access.button')}
-          </Button>
-        </div>
-      </div>
+        )
+      }
     </ContentLoading>
   );
 };
@@ -256,13 +256,9 @@ const StatusStep = ({
 export default WithTranslate(
   connect(
     (state: any) => ({
-      isAfterSignup: state.storage.isAfterSignup,
       afterSignupName: state.storage.afterSignupName,
-      afterSignupWeight: state.storage.afterSignupWeight,
-      afterSignupWeightGoal: state.storage.afterSignupWeightGoal,
-      afterSignupPredictDate: state.storage.afterSignupPredictDate,
-      measurement: state.storage.measurement,
       language: state.settings.language,
+      measurement: state.settings.measurement,
     }),
     null,
   )(StatusStep),

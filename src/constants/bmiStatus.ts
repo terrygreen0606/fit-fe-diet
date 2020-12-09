@@ -1,12 +1,25 @@
-export const OVERWEIGHT = 'Overweight';
-export const NORMAL = 'Normal';
-export const UNDERWEIGHT = 'Underweight';
+export const OVERWEIGHT = {
+  type: 1,
+  str: 'Overweight',
+};
+export const NORMAL = {
+  type: 0,
+  str: 'Normal',
+};
+export const UNDERWEIGHT = {
+  type: -1,
+  str: 'Underweight',
+};
 
-export const bmiStatus = (bmi) => {
+export const bmiStatus = (bmiType) => {
   let weight = '';
-  if (bmi > 25) weight = OVERWEIGHT;
-  else if (bmi >= 18.6 && bmi < 25) weight = NORMAL;
-  else weight = UNDERWEIGHT;
+  if (bmiType === OVERWEIGHT.type) {
+    weight = OVERWEIGHT.str;
+  } else if (bmiType === NORMAL.type) {
+    weight = NORMAL.str;
+  } else {
+    weight = UNDERWEIGHT.str;
+  }
 
   return weight;
 };
