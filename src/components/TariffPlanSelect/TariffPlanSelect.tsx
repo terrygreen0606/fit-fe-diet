@@ -208,10 +208,6 @@ const TariffPlanSelect = ({
     return text;
   };
 
-  useEffect(() => {
-    window.dataLayer.push({ payment_flow: 2 });
-  }, []);
-
   return (
     <div
       className={classNames('tariff-plan__list', {
