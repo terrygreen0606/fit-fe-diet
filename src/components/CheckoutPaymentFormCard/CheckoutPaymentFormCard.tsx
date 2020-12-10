@@ -40,7 +40,7 @@ const checkoutFormDefault = {
   cardMonthYear: null,
   discount_code: null,
   docId: null,
-  installments: '1',
+  installments: null,
 };
 
 type CheckoutPaymentFormCardProps = {
@@ -185,7 +185,7 @@ const CheckoutPaymentFormCard = ({
     let dataEl = null;
 
     if (tariff && tariff.installments && tariff.installments[property]) {
-      dataEl = tariff.installments[property].toString();
+      dataEl = tariff.installments[property];
     }
 
     return dataEl;
@@ -222,6 +222,8 @@ const CheckoutPaymentFormCard = ({
     if (isShowInstallments()) {
       payCredictCardPayload.card.installments = getInstallmentsValue('parts');
       payCredictCardPayload.card.doc_id = docId;
+    } else {
+      payCredictCardPayload.contacts.phone = null;
     }
 
     return { ...payCredictCardPayload };
@@ -462,44 +464,48 @@ const CheckoutPaymentFormCard = ({
             </div>
           </div>
 
-          <FormGroup>
-            <InputField
-              className='checkout-payment-card__form_input'
-              block
-              name='payerName'
-              label={`${t('checkout.form_card.name')}*:`}
-              isValid={isFieldValid('payerName')}
-              value={checkoutForm.payerName}
-              data-validate='["required"]'
-              onChange={(e) => validateOnChange('payerName', e.target.value, e)}
-              errors={getFieldErrors('payerName')}
-              placeholder={t('checkout.name.placeholder')}
-            />
-          </FormGroup>
+          {isShowInstallments() && (
+            <>
+              <FormGroup>
+                <InputField
+                  className='checkout-payment-card__form_input'
+                  block
+                  name='payerName'
+                  label={`${t('checkout.form_card.name')}*:`}
+                  isValid={isFieldValid('payerName')}
+                  value={checkoutForm.payerName}
+                  data-validate='["required"]'
+                  onChange={(e) => validateOnChange('payerName', e.target.value, e)}
+                  errors={getFieldErrors('payerName')}
+                  placeholder={t('checkout.name.placeholder')}
+                />
+              </FormGroup>
 
-          <FormGroup>
-            <PhoneInput
-              name='phone'
-              defaultCountry={getTariffDataValue('country')}
-              label={`${t('checkout.form_phone')}*:`}
-              value={`${checkoutForm.phone}`}
-              data-validate='["required"]'
-              onChange={(value, e) => validateOnChange('phone', value, e)}
-              checkIsValid={(isValid: boolean) => {
-                if (!isValid) {
-                  setPhoneErrors([{
-                    field: 'phone',
-                    code: 'required',
-                    message: t('api.ecode.invalid_value'),
-                  }]);
-                } else if (getFieldErrors('phone').length > 0 && isValid) {
-                  setPhoneErrors([]);
-                }
-              }}
-              errors={getFieldErrors('phone')}
-              countryCode={updateCountryCode}
-            />
-          </FormGroup>
+              <FormGroup>
+                <PhoneInput
+                  name='phone'
+                  defaultCountry={getTariffDataValue('country')}
+                  label={`${t('checkout.form_phone')}*:`}
+                  value={`${checkoutForm.phone}`}
+                  data-validate='["required"]'
+                  onChange={(value, e) => validateOnChange('phone', value, e)}
+                  checkIsValid={(isValid: boolean) => {
+                    if (!isValid) {
+                      setPhoneErrors([{
+                        field: 'phone',
+                        code: 'required',
+                        message: t('api.ecode.invalid_value'),
+                      }]);
+                    } else if (getFieldErrors('phone').length > 0 && isValid) {
+                      setPhoneErrors([]);
+                    }
+                  }}
+                  errors={getFieldErrors('phone')}
+                  countryCode={updateCountryCode}
+                />
+              </FormGroup>
+            </>
+          )}
 
           {isShowInstallments() && (
             <FormGroup>
