@@ -840,38 +840,50 @@ const RegisterWelcomePage = ({
                   isError={tariffsLoadingError}
                   fetchData={() => getUserTariffs()}
                 >
-                  <TariffPlanSelect
-                    tariffs={tariffsDataList.map((tariff) => ({
-                      ...tariff,
-                      disabled: isPaymentDisabled,
-                    }))}
-                    value={activeTariffId}
-                    onChange={(id) => {
-                      if (activeTariffId === null) {
-                        setTimeout(() => {
-                          scrollToCheckoutForm();
-                        }, 100);
+                  <button
+                    className='raw-btn'
+                    type='button'
+                    onClick={() => {
+                      if (getPaymentFlowType() === '1') {
+                        history.push(routes.checkout);
                       }
-
-                      setActiveTariffId(id);
-                      changeSetting('activeTariffIdToPay', id);
                     }}
-                    type={getPaymentFlowType()}
-                    specialOfferIndex={getPaymentFlowType() === '1' ? 0 : 1}
-                    localePhrases={localePhrases}
-                  />
+                  >
+                    <TariffPlanSelect
+                      tariffs={tariffsDataList.map((tariff) => ({
+                        ...tariff,
+                        disabled: isPaymentDisabled,
+                      }))}
+                      value={activeTariffId}
+                      onChange={(id) => {
+                        if (activeTariffId === null) {
+                          setTimeout(() => {
+                            scrollToCheckoutForm();
+                          }, 100);
+                        }
+
+                        setActiveTariffId(id);
+                        changeSetting('activeTariffIdToPay', id);
+                      }}
+                      type={getPaymentFlowType()}
+                      specialOfferIndex={getPaymentFlowType() === '1' ? 0 : 1}
+                      localePhrases={localePhrases}
+                    />
+                  </button>
 
                   {getPaymentFlowType() !== '2' && (
                     <div className='text-center'>
                       <Link
                         to={routes.checkout}
-                        className='mt-5 link-raw'
+                        className='mt-4 d-block link-raw'
                       >
                         <Button
                           color='primary'
                           size='lg'
                           arrow
                           disabled={!getActiveTariffData() || isPaymentDisabled}
+                          block
+                          style={{ maxWidth: '90%' }}
                         >
                           {t('button.confirm.tariff')}
                         </Button>
@@ -892,13 +904,14 @@ const RegisterWelcomePage = ({
 
                   {getPaymentFlowType() === '1' && (
                     <>
-                      <div className='text-center mt-5'>
+                      <Link to={routes.checkout} className='d-block text-center mt-5'>
                         <img
                           src={t('checkout.safe.img2')}
                           className='img-fluid'
+                          style={{ maxWidth: '90%' }}
                           alt=''
                         />
-                      </div>
+                      </Link>
 
                       <div className='checkout_tariff_confirm_descr mt-4'>
                         {t('checkout.tariff.confirm.descr')}
@@ -978,7 +991,7 @@ const RegisterWelcomePage = ({
                   </div>
 
                   {getPaymentFlowType() !== '1' && (
-                    <Link to={routes.checkout} className='link-raw'>
+                    <Link to={routes.checkout} className='d-block link-raw'>
                       <div className='text-center'>
                         <img
                           src={t('checkout.safe.img2')}
@@ -993,13 +1006,15 @@ const RegisterWelcomePage = ({
                   <div className='d-md-none mt-4 text-center'>
                     <Link
                       to={routes.checkout}
-                      className='mt-5 link-raw'
+                      className='mt-5 d-block link-raw'
                     >
                       <Button
                         color='primary'
                         size='lg'
                         arrow
                         disabled={!getActiveTariffData() || isPaymentDisabled}
+                        block
+                        style={{ maxWidth: '90%' }}
                       >
                         {t('button.confirm.tariff')}
                       </Button>

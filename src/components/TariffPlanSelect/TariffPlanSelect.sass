@@ -94,6 +94,8 @@
             &-together
               font-size: 16px
               line-height: 18px
+      @media (max-width: 576px)
+        padding-top: 45px !important
     &-label
       display: block
       cursor: pointer
@@ -130,6 +132,7 @@
         font-size: 24px
         line-height: 32px
         font-weight: bold
+        text-align: left
       &-desc
         margin-top: 17px
         padding-left: 0
@@ -223,9 +226,9 @@
           line-height: 24px
 
     @media (max-width: 400px)
-      padding: 8px !important
-      padding-top: 20px !important
       margin-bottom: 21px
+      padding-top: 20px !important
+      padding: 8px !important
       &.special-offer
         padding-bottom: 20px !important
         .tariff-plan__item-sale
