@@ -9,7 +9,7 @@ import SideMenu from 'components/SideMenu';
 import './BasePage.sass';
 
 const BasePage = ({
-  children, hideHeader, hideFooter, color,
+  children, hideHeader, hideFooter, color = 'default',
 }: any) => (
   <div
     className={classNames('basePageLayoutWrapper', {
