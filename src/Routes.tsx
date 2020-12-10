@@ -59,7 +59,7 @@ const Routes = () => (
     <PrivateRoute
       path={routes.registerWelcome}
       component={(props: any) => (
-        <Layout {...props} headerType='promo' footerType='short'>
+        <Layout {...props} headerType='promo' footerType='short' grayFooter>
           <RegisterWelcomePage {...props} />
         </Layout>
       )}
@@ -309,7 +309,7 @@ const Routes = () => (
     <AuthRoute
       path={routes.register}
       component={(props: any) => (
-        <BasePage {...props} hideHeader>
+        <BasePage {...props} hideHeader grayFooter>
           <RegisterView {...props} />
         </BasePage>
       )}
