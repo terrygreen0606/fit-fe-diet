@@ -108,7 +108,7 @@ const TariffPlanSelect = ({
 
     const tariffSelected = tariffs.find(({ tariff }) => tariff === tariffId);
 
-    if (tariffSelected?.country === 'br') {
+    if (tariffSelected?.country === 'br' && tariffSelected?.installments) {
       let fieldKeyInstallments = '';
 
       switch (fieldKey) {
