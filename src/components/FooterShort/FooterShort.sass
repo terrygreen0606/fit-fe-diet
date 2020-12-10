@@ -3,7 +3,7 @@
 
 .mainFooter_short
   padding: 16px 0
-  color: #fff
+  color: $white
   background-color: $steel-blue
   margin: 0 -20px
   text-align: center
@@ -22,19 +22,31 @@
         &::after
           content: ''
           position: absolute
-          top: 9px
+          top: 50%
           right: -18px
+          transform: translateY(-50%)
           width: 5px
           height: 5px
           border-radius: 100%
-          background-color: #fff
+          background-color: $white
     &_item
       display: inline-block
-      color: #fff
+      color: $white
       text-decoration: none
       &:hover
         text-decoration: underline
 
+.mainFooter_short_gray
+  color: $black-midnight
+  background-color: $grey-rhion
+  .mainFooter_short
+    &_menuList
+      li
+        &:not(:last-child)
+          &::after
+            background-color: $black-midnight
+      &_item
+        color: $black-midnight
 
 @media only screen and (max-width : 576px)
   .mainFooter_short
