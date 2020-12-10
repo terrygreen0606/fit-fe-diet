@@ -445,7 +445,7 @@ const RegisterWelcomePage = ({
                             className='after-signup-image-button'
                           >
                             <img
-                              src={getImagePath('fitlope-app-screens.png')}
+                              src={getImagePath('fitlope-screens.png')}
                               alt=''
                               className='img-fluid'
                             />
@@ -578,7 +578,7 @@ const RegisterWelcomePage = ({
                     className='after-signup-image-button'
                   >
                     <img
-                      src={getImagePath('fitlope-app-screens.png')}
+                      src={getImagePath('fitlope-screens.png')}
                       alt=''
                       className='img-fluid'
                     />
