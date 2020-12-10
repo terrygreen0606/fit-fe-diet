@@ -24,7 +24,7 @@ type LayoutProps = {
 };
 
 const LayoutDefaultProps = {
-  color: null,
+  color: 'default',
 };
 
 // fixme: remove default

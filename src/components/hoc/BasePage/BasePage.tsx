@@ -8,9 +8,25 @@ import SideMenu from 'components/SideMenu';
 
 import './BasePage.sass';
 
+type BasePageProps = {
+  children: Node;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
+  color?: string;
+};
+
+const BasePageDefaultProps = {
+  hideHeader: false,
+  hideFooter: false,
+  color: 'default',
+};
+
 const BasePage = ({
-  children, hideHeader, hideFooter, color = 'default',
-}: any) => (
+  children,
+  hideHeader,
+  hideFooter,
+  color,
+}: BasePageProps) => (
   <div
     className={classNames('basePageLayoutWrapper', {
       hide_header: hideHeader,
@@ -31,5 +47,7 @@ const BasePage = ({
     {!hideFooter && <FooterShort color={color} />}
   </div>
 );
+
+BasePage.defaultProps = BasePageDefaultProps;
 
 export default BasePage;

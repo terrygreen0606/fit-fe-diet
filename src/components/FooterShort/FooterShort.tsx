@@ -11,10 +11,22 @@ import WithTranslate from 'components/hoc/WithTranslate';
 
 import './FooterShort.sass';
 
-const FooterShort = (props: any) => {
-  const t = (code: string) => getTranslate(props.localePhrases, code);
+type FooterShortProps = {
+  paidUntil: number;
+  localePhrases: any;
+  color?: string;
+};
 
-  const { paidUntil, color } = props;
+const FooterShortDefaultProps = {
+  color: 'default',
+};
+
+const FooterShort = ({
+  paidUntil,
+  localePhrases,
+  color,
+}: FooterShortProps) => {
+  const t = (code: string) => getTranslate(localePhrases, code);
 
   return (
     <footer className={classNames('mainFooter_short', `mainFooter_short_${color}`)}>
@@ -77,6 +89,8 @@ const FooterShort = (props: any) => {
     </footer>
   );
 };
+
+FooterShort.defaultProps = FooterShortDefaultProps;
 
 export default WithTranslate(
   connect(
