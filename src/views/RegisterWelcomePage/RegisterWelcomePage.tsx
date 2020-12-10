@@ -875,7 +875,7 @@ const RegisterWelcomePage = ({
                     <div className='text-center'>
                       <Link
                         to={routes.checkout}
-                        className='mt-4 d-block link-raw'
+                        className='d-block link-raw'
                       >
                         <Button
                           color='primary'
