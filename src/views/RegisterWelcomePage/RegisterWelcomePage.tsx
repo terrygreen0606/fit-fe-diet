@@ -280,10 +280,10 @@ const RegisterWelcomePage = ({
 
     return (
       t(tariffData?.country === 'br' ? 'welcome.desc.br1' : 'welcome.desc1', {
-        OLD_VALUE: tariffData?.country === 'br'
+        OLD_VALUE: (tariffData?.country === 'br' && tariffData?.installments)
         ? tariffData?.installments?.price_old_monthly_text
         : tariffData.price_old_weekly_text,
-        AMOUNT: tariffData?.country === 'br'
+        AMOUNT: (tariffData?.country === 'br' && tariffData?.installments)
           ? tariffData?.installments?.price_monthly_text
           : tariffData.price_weekly_text,
       })
