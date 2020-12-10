@@ -600,7 +600,7 @@ const CheckoutPaymentFormCard = ({
             </>
           )}
 
-          <div className='text-center mt-4'>
+          <div className='text-center mt-2'>
             <Button
               type='submit'
               className='checkout-payment-card__form_submit'
@@ -629,7 +629,7 @@ const CheckoutPaymentFormCard = ({
           <img className='mt-4 img-fluid' src={t('checkout.guaranteed.img')} alt='' />
 
           <div
-            className='money-back-guarantee-block mt-4'
+            className='money-back-guarantee-block mt-2'
           >
             <img src={t('checkout.money_back.img')} className='money-back-guarantee-block__img' alt='' />
             <h5 className='money-back-guarantee-block__title'>{t('lp.money_back_title')}</h5>
