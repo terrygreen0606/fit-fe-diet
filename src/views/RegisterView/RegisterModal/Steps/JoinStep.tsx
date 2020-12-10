@@ -268,7 +268,7 @@ const JoinStep = (props: any) => {
             block
             name='name'
             autoFocus
-            isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
+            isValid={isFieldValid('name')}
             value={registerData.name}
             data-validate='["required"]'
             onChange={(e) => validateOnChange('name', e.target.value, e)}
@@ -287,7 +287,7 @@ const JoinStep = (props: any) => {
             name='email'
             value={registerData.email}
             autoComplete='email'
-            isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
+            isValid={isFieldValid('email')}
             data-validate='["email", "required"]'
             onChange={(e) => validateOnChange('email', e.target.value, e)}
             errors={getFieldErrors('email')}

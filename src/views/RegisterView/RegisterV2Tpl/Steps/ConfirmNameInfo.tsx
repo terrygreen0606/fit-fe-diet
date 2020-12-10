@@ -62,8 +62,14 @@ const ConfirmInfo = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const getRegisterProfilePayload = (): UserAuthProfileType => {
     const {
@@ -275,7 +281,7 @@ const ConfirmInfo = ({
                 data-validate='["required"]'
                 onChange={(e) => validateOnChange('name', e.target.value, e)}
                 errors={getFieldErrors('name')}
-                isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
+                isValid={isFieldValid('name')}
                 placeholder={t('register.name.placeholder')}
               />
             </FormGroup>

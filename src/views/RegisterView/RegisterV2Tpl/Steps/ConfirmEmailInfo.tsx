@@ -47,8 +47,14 @@ const ConfirmInfo = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerJoinSubmit = (e) => {
     e.preventDefault();
@@ -131,7 +137,7 @@ const ConfirmInfo = ({
                 readOnly={validateLoading}
                 onChange={(e) => validateOnChange('email', e.target.value, e)}
                 errors={getFieldErrors('email')}
-                isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
+                isValid={isFieldValid('email')}
                 placeholder={t('register.email.placeholder')}
               />
             </FormGroup>
