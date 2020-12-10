@@ -160,6 +160,58 @@ const TariffPlanSelect = ({
     return [...tariffs];
   };
 
+  const getPriceOldText = (tariff: any) => {
+    let text = null;
+
+    if (isBrazillianTariffs()) {
+      if (getTariffValue(tariff, 'installments')) {
+        text = `${getTariffValue(tariff, 'months')} x ${getTariffValue(tariff, 'price_old_monthly_text')}`;
+      } else {
+        text = `${getTariffValue(tariff, 'price_old_monthly_text')} / ${t('common.months')}`;
+      }
+    } else {
+      text = `${getTariffValue(tariff, 'price_old_weekly_text')} / ${t('common.week')?.toLowerCase()}`;
+    }
+
+    return text;
+  };
+
+  const getPriceNowText = (tariff: any) => {
+    let text = null;
+
+    if (isBrazillianTariffs()) {
+      if (getTariffValue(tariff, 'installments')) {
+        text = `${getTariffValue(tariff, 'months')} x ${getTariffValue(tariff, 'price_monthly_text')}`;
+      } else {
+        text = `${getTariffValue(tariff, 'price_monthly_text')}`;
+      }
+    } else {
+      text = `${getTariffValue(tariff, 'price_weekly_text')}`;
+    }
+
+    return text;
+  };
+
+  const getPriceLabel = (tariff: any) => {
+    let text = null;
+
+    if (isBrazillianTariffs()) {
+      if (getTariffValue(tariff, 'installments')) {
+        text = t(getPaycycleI18nCode(tariff));
+      } else {
+        text = t('common.months');
+      }
+    } else {
+      text = t('common.paycycle_period', { PERIOD: t('common.week')?.toLowerCase() });
+    }
+
+    return text;
+  };
+
+  useEffect(() => {
+    window.dataLayer.push({ payment_flow: 2 });
+  }, []);
+
   return (
     <div
       className={classNames('tariff-plan__list', {
@@ -209,24 +261,19 @@ const TariffPlanSelect = ({
 
             <div className='tariff-plan__item-price'>
               <div className='tariff-plan__item-price-old'>
-                {isBrazillianTariffs()
-                  ? `${getTariffValue(tariff, 'months')} x ${getTariffValue(tariff, 'price_old_weekly_text')}`
-                  : `${getTariffValue(tariff, 'price_old_weekly_text')} / ${t('common.week')?.toLowerCase()}`}
+                {getPriceOldText(tariff)}
               </div>
 
               <div className='tariff-plan__item-price-now'>
                 <div className='tariff-plan__item-price-now-count-wrap'>
                   <div className='tariff-plan__item-price-now-count'>
-                    {isBrazillianTariffs() && `${getTariffValue(tariff, 'months')} x `}
-                    {getTariffValue(tariff, 'price_weekly_text')}
+                    {getPriceNowText(tariff)}
                   </div>
                 </div>
               </div>
 
               <div className='tariff-plan__item-price-together'>
-                {isBrazillianTariffs()
-                  ? t(getPaycycleI18nCode(tariff))
-                  : t('common.paycycle_period', { PERIOD: t('common.week')?.toLowerCase() })}
+                {getPriceLabel(tariff)}
               </div>
             </div>
 
