@@ -33,6 +33,7 @@ const HeightStep = ({
     getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const FormValidator = FormValidatorUtil(localePhrases);
 
@@ -50,11 +51,14 @@ const HeightStep = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
 
   const isFieldValid = (field: string) =>
-    getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   useEffect(() => {
     const imperialHeight = `${registerData.feet}'${registerData.inches || 0}`;
@@ -73,6 +77,10 @@ const HeightStep = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -163,7 +171,6 @@ const HeightStep = ({
               block
               height='md'
               type='number'
-              min={0}
               step='0.1'
               autoFocus
               value={registerData.height}
@@ -190,7 +197,6 @@ const HeightStep = ({
                 block
                 height='md'
                 type='number'
-                min={1}
                 step='1'
                 autoFocus
                 value={registerData.feet}
@@ -216,7 +222,6 @@ const HeightStep = ({
                 block
                 height='md'
                 type='number'
-                min={0}
                 step='1'
                 value={registerData.inches}
                 readOnly={validateLoading}

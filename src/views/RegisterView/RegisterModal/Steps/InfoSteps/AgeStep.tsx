@@ -33,6 +33,7 @@ const AgeStep = ({
   const t = (code: string) => getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   useEffect(() => {
     const currStepTitles = [...stepTitlesDefault];
@@ -63,11 +64,14 @@ const AgeStep = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
 
   const isFieldValid = (field: string) =>
-    getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -78,6 +82,10 @@ const AgeStep = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -141,8 +149,6 @@ const AgeStep = ({
             height='md'
             type='number'
             autoFocus
-            min={16}
-            max={100}
             data-param='16,100'
             name='age'
             value={registerData.age}
