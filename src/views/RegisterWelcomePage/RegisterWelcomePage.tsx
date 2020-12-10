@@ -707,7 +707,10 @@ const RegisterWelcomePage = ({
 
                 <div className='app-advantages-list'>
                   {Array(5).fill(1).map(() => uuid()).map((id, index) => (
-                    <div className='app-advantages-list__item'>{t(`lp.advantage_${index + 1}`)}</div>
+                    <div
+                      className='app-advantages-list__item'
+                      dangerouslySetInnerHTML={{ __html: t(`lp.advantage_${index + 1}`) }}
+                    />
                   ))}
                 </div>
 

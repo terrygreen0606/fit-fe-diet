@@ -30,14 +30,10 @@ const HeaderPromo = ({
     getTranslate(localePhrases, code, placeholders);
 
   const scrollHeaderButton = (e) => {
-    if (getPaymentFlowType() === '1') {
-      history.push(routes.checkout);
-    } else {
-      const scrollBlock = document.getElementById('welcomePartnersBlock');
-      if (scrollBlock) {
-        e.preventDefault();
-        scrollToElement(scrollBlock, -82);
-      }
+    const scrollBlock = document.getElementById('welcomePartnersBlock');
+    if (scrollBlock) {
+      e.preventDefault();
+      scrollToElement(scrollBlock, -82);
     }
   };
 
