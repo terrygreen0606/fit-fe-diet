@@ -20,11 +20,11 @@ type LayoutProps = {
   children: Node,
   location: any,
   history: any,
-  footerShortGray?: boolean,
+  color?: string,
 };
 
 const LayoutDefaultProps = {
-  footerShortGray: false,
+  color: null,
 };
 
 // fixme: remove default
@@ -34,7 +34,7 @@ const Layout = ({
   children,
   location,
   history,
-  footerShortGray,
+  color,
 }: LayoutProps) => {
   const getHeader = () => {
     if (headerType === 'promo') {
@@ -50,7 +50,7 @@ const Layout = ({
 
   const getFooter = () => {
     if (footerType === 'short') {
-      return <FooterShort footerShortGray={footerShortGray} />;
+      return <FooterShort color={color} />;
     }
     return <Footer />;
   };

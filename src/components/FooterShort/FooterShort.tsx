@@ -14,13 +14,10 @@ import './FooterShort.sass';
 const FooterShort = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const { paidUntil, footerShortGray } = props;
+  const { paidUntil, color } = props;
 
   return (
-    <footer className={classNames('mainFooter_short', {
-      mainFooter_short_gray: footerShortGray,
-    })}
-    >
+    <footer className={classNames('mainFooter_short', `mainFooter_short_${color}`)}>
       <div className='container'>
         <div className='row'>
           <div className='col-12'>
