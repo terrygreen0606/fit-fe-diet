@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { routes } from 'constants/routes';
 import { getTranslate, generatePublicUrl } from 'utils';
@@ -13,10 +14,10 @@ import './FooterShort.sass';
 const FooterShort = (props: any) => {
   const t = (code: string) => getTranslate(props.localePhrases, code);
 
-  const { paidUntil } = props;
+  const { paidUntil, color } = props;
 
   return (
-    <footer className='mainFooter_short'>
+    <footer className={classNames('mainFooter_short', `mainFooter_short_${color}`)}>
       <div className='container'>
         <div className='row'>
           <div className='col-12'>
