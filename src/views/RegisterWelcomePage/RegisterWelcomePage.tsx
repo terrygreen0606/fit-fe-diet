@@ -258,6 +258,43 @@ const RegisterWelcomePage = ({
     return activeTariff;
   };
 
+  const getTariffValue = (fieldKey) => {
+    let tariffValue = '';
+
+    const tariffSelected = getActiveTariffData();
+
+    if (tariffSelected?.country === 'br' && tariffSelected?.installments) {
+      let fieldKeyInstallments = '';
+
+      switch (fieldKey) {
+        case 'months':
+          fieldKeyInstallments = 'parts';
+          break;
+
+        case 'price_old_weekly_text':
+          fieldKeyInstallments = 'price_old_monthly_text';
+          break;
+
+        case 'price_weekly_text':
+          fieldKeyInstallments = 'price_monthly_text';
+          break;
+
+        default:
+          fieldKeyInstallments = fieldKey;
+          break;
+      }
+
+      tariffValue = tariffSelected?.installments?.[fieldKeyInstallments] || '';
+    } else {
+      tariffValue = tariffSelected?.[fieldKey] || '';
+    }
+
+    return tariffValue;
+  };
+
+  const isShowInstallments = () =>
+    getTariffValue('country') === 'br';
+
   const welcomeButtonHandle = (e) => {
     e.preventDefault();
 
@@ -282,10 +319,10 @@ const RegisterWelcomePage = ({
       t(tariffData?.country === 'br' ? 'welcome.desc.br1' : 'welcome.desc1', {
         OLD_VALUE: (tariffData?.country === 'br' && tariffData?.installments)
         ? tariffData?.installments?.price_old_monthly_text
-        : tariffData.price_old_weekly_text,
+        : tariffData?.price_old_weekly_text,
         AMOUNT: (tariffData?.country === 'br' && tariffData?.installments)
           ? tariffData?.installments?.price_monthly_text
-          : tariffData.price_weekly_text,
+          : tariffData?.price_weekly_text,
       })
     );
   };
@@ -757,7 +794,15 @@ const RegisterWelcomePage = ({
                 <h2
                   className='fw-regular mt-4 text-center'
                   dangerouslySetInnerHTML={{
-                    __html: t('welcome.start_today.descr'),
+                    __html: t('welcome.start_today.descr',
+                    isShowInstallments() ?
+                      {
+                        AMOUNT: getTariffValue('price_monthly_text'),
+                        PERIOD: t('common.months'),
+                      } : {
+                        AMOUNT: getTariffValue('price_weekly_text'),
+                        PERIOD: t('common.week').toLowerCase(),
+                      }),
                   }}
                 />
 
