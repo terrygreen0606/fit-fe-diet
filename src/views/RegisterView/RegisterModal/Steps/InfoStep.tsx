@@ -219,8 +219,6 @@ const InfoStep = ({
                 block
                 height='md'
                 type='number'
-                12}
-                100}
                 data-param='12,100'
                 name='age'
                 value={registerData.age}

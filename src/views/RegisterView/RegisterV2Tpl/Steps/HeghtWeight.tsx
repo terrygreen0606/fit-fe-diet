@@ -143,8 +143,6 @@ const HeightWeight = ({
                   value={registerData.height}
                   name='height'
                   autoFocus
-                  50}
-                  250}
                   step='0.1'
                   readOnly={validateLoading}
                   data-param='50,250'
@@ -168,8 +166,6 @@ const HeightWeight = ({
                   height='md'
                   type='number'
                   value={registerData.weight}
-                  
-                  
                   step='0.1'
                   readOnly={validateLoading}
                   data-param='30,400'
