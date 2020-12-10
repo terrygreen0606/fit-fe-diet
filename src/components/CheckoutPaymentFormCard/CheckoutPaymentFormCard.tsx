@@ -302,10 +302,14 @@ const CheckoutPaymentFormCard = ({
             const checkoutFormErrorsTemp: InputError[] = [...checkoutFormErrors];
 
             Object.keys(validateErrors).map((field) => {
-              checkoutFormErrorsTemp.push({
-                field: getCardFieldFormat(field),
-                message: validateErrors[field],
-              });
+              const formattedField = getCardFieldFormat(field);
+
+              if (formattedField) {
+                checkoutFormErrorsTemp.push({
+                  field: formattedField,
+                  message: validateErrors[field],
+                });
+              }
             });
 
             if (checkoutFormErrorsTemp.length > 0) {

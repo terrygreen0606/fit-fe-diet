@@ -1,5 +1,5 @@
 export const getCardFieldFormat = (errorFieldKey: string) => {
-  let fieldKey = errorFieldKey;
+  let fieldKey = null;
 
   switch (errorFieldKey) {
     case 'card.year':
@@ -31,7 +31,7 @@ export const getCardFieldFormat = (errorFieldKey: string) => {
       break;
 
     default:
-      fieldKey = errorFieldKey;
+      fieldKey = null;
   }
 
   return fieldKey;
