@@ -36,6 +36,7 @@ const InfoStep = ({
   localePhrases,
 }: any) => {
   const [weightPredictionLoading, setWeightPredictionLoading] = useState(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const t = (code: string) => getTranslate(localePhrases, code);
 
@@ -66,8 +67,14 @@ const InfoStep = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -78,6 +85,10 @@ const InfoStep = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setWeightPredictionLoading(true);
@@ -208,8 +219,8 @@ const InfoStep = ({
                 block
                 height='md'
                 type='number'
-                min={12}
-                max={100}
+                12}
+                100}
                 data-param='12,100'
                 name='age'
                 value={registerData.age}

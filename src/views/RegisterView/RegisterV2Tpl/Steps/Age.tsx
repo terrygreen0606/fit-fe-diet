@@ -29,6 +29,7 @@ const Age = ({
   const t = (code: string) => getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const FormValidator = FormValidatorUtil(localePhrases);
 
@@ -58,6 +59,10 @@ const Age = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -119,8 +124,6 @@ const Age = ({
                   height='md'
                   type='number'
                   autoFocus
-                  min={16}
-                  max={100}
                   data-param='16,100'
                   name='age'
                   readOnly={validateLoading}

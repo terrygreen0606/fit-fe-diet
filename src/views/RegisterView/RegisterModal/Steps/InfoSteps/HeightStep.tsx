@@ -34,6 +34,7 @@ const HeightStep = ({
   const t = (code: string) => getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   useEffect(() => {
     const currStepTitles = [...stepTitlesDefault];
@@ -64,11 +65,14 @@ const HeightStep = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
 
   const isFieldValid = (field: string) =>
-    getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -79,6 +83,10 @@ const HeightStep = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -153,8 +161,6 @@ const HeightStep = ({
             block
             height='md'
             type={registerData.measurement === 'us' ? 'text' : 'number'}
-            min={50}
-            max={250}
             step='0.1'
             autoFocus
             value={registerData.height}

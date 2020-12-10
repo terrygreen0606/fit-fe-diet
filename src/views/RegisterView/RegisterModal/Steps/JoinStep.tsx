@@ -40,6 +40,7 @@ const JoinStep = (props: any) => {
   const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   useEffect(() => {
     const currStepTitles = [...props.stepTitlesDefault];
@@ -70,12 +71,14 @@ const JoinStep = (props: any) => {
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, props.registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, props.registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, props.registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const finalWelcomeStep = (authToken: string) => {
     props.setRegisterData({
@@ -241,6 +244,10 @@ const JoinStep = (props: any) => {
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     props.setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       registerEmail();

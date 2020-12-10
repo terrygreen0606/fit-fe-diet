@@ -28,6 +28,7 @@ const HeightWeight = ({
   localePhrases,
 }: any) => {
   const [validateLoading, setValidateLoading] = useState<boolean>(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const t = (code: string) => getTranslate(localePhrases, code);
 
@@ -47,8 +48,14 @@ const HeightWeight = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -59,6 +66,10 @@ const HeightWeight = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -132,8 +143,8 @@ const HeightWeight = ({
                   value={registerData.height}
                   name='height'
                   autoFocus
-                  min={50}
-                  max={250}
+                  50}
+                  250}
                   step='0.1'
                   readOnly={validateLoading}
                   data-param='50,250'
@@ -157,8 +168,8 @@ const HeightWeight = ({
                   height='md'
                   type='number'
                   value={registerData.weight}
-                  min={30}
-                  max={400}
+                  
+                  
                   step='0.1'
                   readOnly={validateLoading}
                   data-param='30,400'
