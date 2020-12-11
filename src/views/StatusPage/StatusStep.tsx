@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
-import { getTranslate, getImagePath, convertTime } from 'utils';
+import { getTranslate, getImagePath, convertTime, getLocaleByLang } from 'utils';
 import { fetchUserStatus } from 'api';
 import { routes } from 'constants/routes';
 import { bmiStatus } from 'constants/bmiStatus';
@@ -48,9 +48,21 @@ const StatusStep = ({
     return `${monthLocale} ${predictedDate}`;
   };
 
+  const getWeekdays = () => {
+    const weekdays = [];
+    for (let i = 0; i < 7; i++) {
+      const today = new Date();
+      today.setDate(today.getDate() + i);
+      weekdays.push(today.toLocaleDateString(getLocaleByLang(language), { weekday: 'long' }));
+    }
+    return weekdays;
+  };
+
   const navigateToWelcome = () => history.push(routes.registerWelcome);
 
   useEffect(() => {
+    const footer = document.querySelector('.mainFooter_short');
+    footer.classList.add('status-footer');
     fetchUserStatus().then((response) => {
       if (response.data.success && response.data.data) {
         setUserData(response.data.data);
@@ -59,6 +71,10 @@ const StatusStep = ({
       setIsError(true);
       toast.error(t('common.error'));
     }).finally(() => setIsLoading(false));
+
+    return () => {
+      footer.classList.remove('status-footer');
+    };
   }, []);
 
   return (
@@ -100,12 +116,14 @@ const StatusStep = ({
                     <span>{ parseFloat(userData.weight_goal) + 1 }</span>
                     <span>{ parseFloat(userData.weight_goal) + 2 }</span>
                   </div>
-                  <h3 className='measurement'>kg</h3>
-                  <h3 className='prediction-date'>
-                    {t('status.by.desc')}
-                    &nbsp;
-                    {getPredictedDate()}
-                  </h3>
+                  <div className='measurement-date'>
+                    <h3 className='measurement'>kg</h3>
+                    <h3 className='prediction-date'>
+                      {/* {t('status.by.desc')}
+                      &nbsp; */}
+                      {getPredictedDate()}
+                    </h3>
+                  </div>
                   <DietExpectationsChart
                     weight={userData.weight}
                     weightGoal={userData.weight_goal}
@@ -164,11 +182,11 @@ const StatusStep = ({
               </h3>
             </div>
 
-            <div className='row my-5 no-gutters'>
-              <div className='col-md-6'>
+            <div className='row mb-5 mt-3 no-gutters'>
+              <div className='col-6'>
                 <WeightCard bmiValue={userData.bmi.value} bmiType={userData.bmi.type} />
               </div>
-              <div className='col-md-6'>
+              <div className='col-6'>
                 <div className='status-card text-center d-flex flex-column justify-content-between align-items-center mt-1 ml-2 mb-3'>
                   <div className='mt-4'>
                     <div className='calorie-sub'>{t('status.calorie.subtitle')}</div>
@@ -182,7 +200,7 @@ const StatusStep = ({
                   <img className='calorie-img' src={getImagePath('calorie.png')} alt='' />
                 </div>
               </div>
-              <div className='col-md-6 body-exchange-wrapper'>
+              <div className='col-6 body-exchange-wrapper'>
                 <div className='status-card d-flex justify-content-between flex-column align-items-center mt-3 mr-2 pt-4'>
                   <div className='body-exchange-txt'>{t('status.body.subtitle')}</div>
                   <img className='body-exchange-img' src={getImagePath('bodyexchange.png')} alt='' />
@@ -197,7 +215,7 @@ const StatusStep = ({
                   </div>
                 </div>
               </div>
-              <div className='col-md-6'>
+              <div className='col-6'>
                 <div className='status-card d-flex flex-column justify-content-center align-items-center mt-3 ml-2'>
                   <h1 className='unique-food-title'>1000+</h1>
                   <img className='unique-food-img' src={getImagePath('uniquefood.png')} alt='' />

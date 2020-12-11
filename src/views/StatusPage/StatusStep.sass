@@ -79,12 +79,17 @@
     font-weight: 400
   .prediction-date
     font-size: 24px
-    font-weight: 400
+    font-weight: 700
+    margin: 0
     @media screen and (max-width : 768px)
       font-size: 14px
+  .measurement-date
+    transform: translate(0, -30px)
   .measurement
     font-size: 20px
     font-weight: 700
+    margin-top: -10px
+    margin: 0
     @media screen and (max-width : 768px)
       font-size: 14px
   .calendar-card
@@ -104,7 +109,6 @@
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08)
     border-radius: 10px
     @media screen and (max-width : 768px)
-      margin: 10px 0 !important
       min-height: 200px
   .status-summary
     font-size: 50px
@@ -138,19 +142,28 @@
     padding: 0 20px
     font-size: 24px
     font-weight: 400
+    @media screen and (max-width : 768px)
+      min-height: 65px
+    span
+      font-size: 24px
+      @media screen and (max-width : 768px)
+        font-size: 14px
     .value
       font-size: 50px
       font-weight: 700
+      @media screen and (max-width : 768px)
+        font-size: 24px
     .bmi-name
       font-size: 24px
       font-weight: 400
+      @media screen and (max-width : 768px)
+        font-size: 16px
   .abnormal-weight-active
     background: $orange-red
     color: $white
     justify-content: space-between
     span
       font-weight: 700
-      font-size: 24px
   .over-weight-active
     border-top-left-radius: inherit
     border-top-right-radius: inherit
@@ -177,25 +190,34 @@
     margin-top: 0
     @media screen and (max-width : 768px)
       font-weight: 900
+      font-size: 40px
   .unique-food-text
     width: 60%
     text-align: center
     font-size: 24px
     font-weight: 400
     margin: 0
+    @media screen and (max-width : 768px)
+      font-size: 16px
   .calorie-sub
     font-size: 24px
     font-weight: 400
+    @media screen and (max-width : 768px)
+      font-size: 16px
   .calorie-value
     color: $steel-blue
     font-size: 45px
     font-weight: 400
     margin: 0
+    @media screen and (max-width : 768px)
+      font-size: 26px
   .calorie-img
-    width: 80%
+    width: 90%
   .body-exchange-img
     max-width: 100%
     z-index: 2
+    @media screen and (max-width : 768px)
+      width: 33%
   .body-exchange-wrapper
     position: relative
   .border-line
@@ -221,15 +243,22 @@
       font-weight: 700
       font-size: 20px
       margin-bottom: 15px
+      @media screen and (max-width : 768px)
+        font-size: 16px
+        margin-bottom: 10px
   .calorie-unit
     font-size: 24px
     font-weight: 700
     margin: 0
+    @media screen and (max-width : 768px)
+      font-size: 18px
   .body-exchange-txt
     font-size: 26px
     font-weight: 400
     width: 70%
     text-align: center
+    @media screen and (max-width : 768px)
+      font-size: 18px
   .diet-covered
     font-size: 26px
     font-weight: 700
