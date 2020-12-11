@@ -10,6 +10,7 @@
         &.special-offer
           border-color: $bright-green
   &__item
+    position: relative
     display: flex
     align-items: center
     margin-bottom: 30px
@@ -24,6 +25,77 @@
     &.size_lg
       padding: 35px 25px
 
+    &.type_1
+      overflow: hidden
+      padding-top: 35px
+      padding-bottom: 23px
+      border-radius: 10px
+      border: 1px solid $steel-blue !important
+      box-shadow: 0px 0px 20px 10px rgba(16, 56, 107, 0.1)
+      .ribbon
+        width: 140px
+        height: 140px
+        span
+          right: 15%
+          top: 22%
+          width: 140px
+          padding: 0
+          background-color: #ffb636
+          color: #fff
+          font-size: 15px
+          line-height: 30px
+          text-transform: uppercase
+        &::before, &::after
+          border-color: darken(#ffb636, 10%)
+      .tariff-plan__item
+        &-radio
+          width: 36px
+          height: 36px
+          border-width: 5px
+        &-sale
+          display: none
+        &-text
+          &-title
+            font-size: 36px
+            line-height: 39px
+            font-weight: 400
+            color: #000
+          &-desc
+            display: none
+        &-price
+          &-old
+            margin-bottom: 5px
+            font-size: 22px
+            font-weight: 400
+            line-height: 22px
+            color: #979797
+          &-now
+            margin: 0
+            &-count
+              font-size: 25px
+              line-height: 40px
+              font-weight: 700
+              color: $steel-blue
+          &-together
+            font-size: 18px
+            line-height: 24px
+            font-weight: 400
+            color: #979797
+        @media (max-width: 1200px)
+          &-text
+            &-title
+              font-size: 22px
+              line-height: 27px
+          &-price
+            &-old
+              margin-bottom: 5px
+              font-size: 16px
+              line-height: 18px
+            &-together
+              font-size: 16px
+              line-height: 18px
+      @media (max-width: 576px)
+        padding-top: 45px !important
     &-label
       display: block
       cursor: pointer
@@ -60,6 +132,7 @@
         font-size: 24px
         line-height: 32px
         font-weight: bold
+        text-align: left
       &-desc
         margin-top: 17px
         padding-left: 0
@@ -101,10 +174,11 @@
 
     &.special-offer
       position: relative
-      .tariff-plan__item-price-now
-        color: $bright-green
-        &-count
-          font-size: 46px
+      &.type_3
+        .tariff-plan__item-price-now
+          color: $bright-green
+          &-count
+            font-size: 46px
       .tariff-plan__item-sale
         position: absolute
         bottom: 0
@@ -152,9 +226,9 @@
           line-height: 24px
 
     @media (max-width: 400px)
-      padding: 8px !important
-      padding-top: 20px !important
       margin-bottom: 21px
+      padding-top: 20px !important
+      padding: 8px !important
       &.special-offer
         padding-bottom: 20px !important
         .tariff-plan__item-sale

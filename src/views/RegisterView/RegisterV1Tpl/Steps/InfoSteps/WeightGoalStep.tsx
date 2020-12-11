@@ -32,6 +32,7 @@ const WeightGoalStep = ({
     getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const FormValidator = FormValidatorUtil(localePhrases);
 
@@ -49,11 +50,14 @@ const WeightGoalStep = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
 
   const isFieldValid = (field: string) =>
-    getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -64,6 +68,10 @@ const WeightGoalStep = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -130,7 +138,6 @@ const WeightGoalStep = ({
             height='md'
             type={registerData.measurement === 'us' ? 'text' : 'number'}
             autoFocus
-            min={0}
             step='0.1'
             value={registerData.weight_goal}
             readOnly={validateLoading}

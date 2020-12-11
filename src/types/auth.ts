@@ -6,7 +6,6 @@ export type UserAuthProfileType = {
   age?: number,
   gender: 'm' | 'f',
   measurement: 'si' | 'us',
-  tpl_signup: number,
   height?: number, // centimeters/feet,inch
   weight?: number, // kilograms/pounds 30..400
   weight_goal?: number, // kilograms/pounds 30..400

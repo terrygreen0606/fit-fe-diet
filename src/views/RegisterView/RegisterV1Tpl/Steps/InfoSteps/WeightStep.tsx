@@ -32,6 +32,7 @@ const WeightStep = ({
     getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const FormValidator = FormValidatorUtil(localePhrases);
 
@@ -49,11 +50,14 @@ const WeightStep = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
 
   const isFieldValid = (field: string) =>
-    getFieldErrors(field).length === 0 && registerData[field] && registerData[field].length > 0;
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -64,6 +68,10 @@ const WeightStep = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -129,7 +137,6 @@ const WeightStep = ({
             block
             height='md'
             type={registerData.measurement === 'us' ? 'text' : 'number'}
-            min={0}
             autoFocus
             value={registerData.weight}
             readOnly={validateLoading}

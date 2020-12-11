@@ -51,6 +51,7 @@ const JoinNameStep = ({
     getTranslate(localePhrases, code);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const FormValidator = FormValidatorUtil(localePhrases);
 
@@ -68,8 +69,14 @@ const JoinNameStep = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const finalWelcomeStep = (authToken: string) => {
     setRegisterData({
@@ -265,6 +272,10 @@ const JoinNameStep = ({
 
     setRegisterDataErrors([...errors]);
 
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
+
     if (!hasError) {
       registerEmail();
     }
@@ -291,7 +302,7 @@ const JoinNameStep = ({
             block
             name='name'
             autoFocus
-            isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
+            isValid={isFieldValid('name')}
             value={registerData.name}
             readOnly={registerJoinLoading}
             data-validate='["required"]'

@@ -31,6 +31,11 @@
   color: $light-grey
   opacity: 1
 
+html
+  margin: 0
+  padding: 0
+  overflow-x: hidden
+
 body
   position: relative
   min-width: 320px
@@ -45,7 +50,6 @@ body
   line-height: 1.5
   font-weight: 400
   overflow-x: hidden
-  overflow-y: scroll
 
 h1, h2, h3, h4, h5, h6
   margin: 14px 0
@@ -684,6 +688,14 @@ a.bttn
 
 button
   outline: none !important
+  &.raw-btn
+    display: block
+    width: 100%
+    margin: 0
+    padding: 0
+    background: none
+    cursor: pointer
+    border: none
 
 a
   cursor: pointer

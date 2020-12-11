@@ -40,6 +40,7 @@ const JoinStep = (props: any) => {
   const [registerFacebookLoading, setRegisterFacebookLoading] = useState<boolean>(false);
 
   const [registerJoinLoading, setRegisterJoinLoading] = useState<boolean>(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   useEffect(() => {
     const currStepTitles = [...props.stepTitlesDefault];
@@ -70,12 +71,14 @@ const JoinStep = (props: any) => {
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, props.registerDataErrors)
-      .map((msg) => ({
-        ...msg,
-        message: t('api.ecode.invalid_value'),
-      }));
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, props.registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, props.registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const finalWelcomeStep = (authToken: string) => {
     props.setRegisterData({
@@ -242,6 +245,10 @@ const JoinStep = (props: any) => {
 
     props.setRegisterDataErrors([...errors]);
 
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
+
     if (!hasError) {
       registerEmail();
     }
@@ -261,7 +268,7 @@ const JoinStep = (props: any) => {
             block
             name='name'
             autoFocus
-            isValid={getFieldErrors('name').length === 0 && registerData.name.length > 0}
+            isValid={isFieldValid('name')}
             value={registerData.name}
             data-validate='["required"]'
             onChange={(e) => validateOnChange('name', e.target.value, e)}
@@ -280,7 +287,7 @@ const JoinStep = (props: any) => {
             name='email'
             value={registerData.email}
             autoComplete='email'
-            isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
+            isValid={isFieldValid('email')}
             data-validate='["email", "required"]'
             onChange={(e) => validateOnChange('email', e.target.value, e)}
             errors={getFieldErrors('email')}

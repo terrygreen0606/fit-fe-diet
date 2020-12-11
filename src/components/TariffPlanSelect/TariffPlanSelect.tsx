@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { routes } from 'constants/routes';
 import { changeSetting as changeSettingAction } from 'store/actions';
+import { PaymentFlowType } from 'types';
 import useWindowSize from 'components/hooks/useWindowSize';
 import useDebounce from 'components/hooks/useDebounce';
 
@@ -14,12 +15,14 @@ type TariffPlanSelectProps = {
   tariffs: any[];
   onChange: (any) => void;
   value: string;
+  type?: PaymentFlowType;
   specialOfferIndex?: number;
   changeSettingAction: (string, any) => void,
   localePhrases: any;
 };
 
-const TariffPlanSelectDefaultProps = {
+const TariffPlanSelectDefaultProps: Partial<TariffPlanSelectProps> = {
+  type: '1',
   specialOfferIndex: null,
 };
 
@@ -27,6 +30,7 @@ const TariffPlanSelect = ({
   tariffs,
   onChange,
   value,
+  type,
   specialOfferIndex,
   localePhrases,
   changeSettingAction: changeSetting,
@@ -68,13 +72,19 @@ const TariffPlanSelect = ({
 
     let shouldChangeFontSize: boolean = false;
 
-    checkingElements.forEach((item, itemIndex) => {
+    checkingElements.forEach((item) => {
       if (getItemWidth(item) > getItemMaxWidth(item)) {
         shouldChangeFontSize = true;
       }
 
+      let initialPriceSize = 25;
+
+      if (type === '3') {
+        initialPriceSize = 40;
+      }
+
       for (let i = 1; getItemWidth(item) > getItemMaxWidth(item); i++) {
-        item.price.style.fontSize = `${40 - i}px`;
+        item.price.style.fontSize = `${initialPriceSize - i}px`;
       }
     });
 
@@ -98,7 +108,7 @@ const TariffPlanSelect = ({
 
     const tariffSelected = tariffs.find(({ tariff }) => tariff === tariffId);
 
-    if (tariffSelected?.country === 'br') {
+    if (tariffSelected?.country === 'br' && tariffSelected?.installments) {
       let fieldKeyInstallments = '';
 
       switch (fieldKey) {
@@ -150,6 +160,54 @@ const TariffPlanSelect = ({
     return [...tariffs];
   };
 
+  const getPriceOldText = (tariff: any) => {
+    let text = null;
+
+    if (isBrazillianTariffs()) {
+      if (getTariffValue(tariff, 'installments')) {
+        text = `${getTariffValue(tariff, 'months')} x ${getTariffValue(tariff, 'price_old_monthly_text')}`;
+      } else {
+        text = `${getTariffValue(tariff, 'price_old_monthly_text')} / ${t('common.months')}`;
+      }
+    } else {
+      text = `${getTariffValue(tariff, 'price_old_weekly_text')} / ${t('common.week')?.toLowerCase()}`;
+    }
+
+    return text;
+  };
+
+  const getPriceNowText = (tariff: any) => {
+    let text = null;
+
+    if (isBrazillianTariffs()) {
+      if (getTariffValue(tariff, 'installments')) {
+        text = `${getTariffValue(tariff, 'months')} x ${getTariffValue(tariff, 'price_monthly_text')}`;
+      } else {
+        text = `${getTariffValue(tariff, 'price_monthly_text')}`;
+      }
+    } else {
+      text = `${getTariffValue(tariff, 'price_weekly_text')}`;
+    }
+
+    return text;
+  };
+
+  const getPriceLabel = (tariff: any) => {
+    let text = null;
+
+    if (isBrazillianTariffs()) {
+      if (getTariffValue(tariff, 'installments')) {
+        text = t(getPaycycleI18nCode(tariff));
+      } else {
+        text = t('common.months');
+      }
+    } else {
+      text = t('common.paycycle_period', { PERIOD: t('common.week')?.toLowerCase() });
+    }
+
+    return text;
+  };
+
   return (
     <div
       className={classNames('tariff-plan__list', {
@@ -170,11 +228,17 @@ const TariffPlanSelect = ({
           />
 
           <div
-            className={classNames('tariff-plan__item', {
+            className={classNames('tariff-plan__item', `type_${type}`, {
               'special-offer': specialOfferIndex === tariffIndex,
               size_lg: getTariffsList().length <= 2,
             })}
           >
+            {specialOfferIndex === tariffIndex && type === '1' ? (
+              <div className='ribbon ribbon-top-left'>
+                <span>{t('checkout.plan.special_offer.label.type3')}</span>
+              </div>
+            ) : null}
+
             <div className='tariff-plan__item-radio__wrap'>
               <div className='tariff-plan__item-radio' />
             </div>
@@ -193,24 +257,19 @@ const TariffPlanSelect = ({
 
             <div className='tariff-plan__item-price'>
               <div className='tariff-plan__item-price-old'>
-                {isBrazillianTariffs()
-                  ? `${getTariffValue(tariff, 'months')} x ${getTariffValue(tariff, 'price_old_weekly_text')}`
-                  : `${getTariffValue(tariff, 'price_old_weekly_text')} / ${t('common.week').toLowerCase()}`}
+                {getPriceOldText(tariff)}
               </div>
 
               <div className='tariff-plan__item-price-now'>
                 <div className='tariff-plan__item-price-now-count-wrap'>
                   <div className='tariff-plan__item-price-now-count'>
-                    {isBrazillianTariffs() && `${getTariffValue(tariff, 'months')} x `}
-                    {getTariffValue(tariff, 'price_weekly_text')}
+                    {getPriceNowText(tariff)}
                   </div>
                 </div>
               </div>
 
               <div className='tariff-plan__item-price-together'>
-                {isBrazillianTariffs()
-                  ? t(getPaycycleI18nCode(tariff))
-                  : t('common.paycycle_period', { PERIOD: t('common.week').toLowerCase() })}
+                {getPriceLabel(tariff)}
               </div>
             </div>
 
@@ -220,7 +279,6 @@ const TariffPlanSelect = ({
                 className='link-raw'
                 onClick={() => {
                   changeSetting('activeTariffIdToPay', tariff);
-                  changeSetting('isSelectedTariffOnWelcomePage', true);
                 }}
               >
                 <div className='tariff-plan__item-sale'>

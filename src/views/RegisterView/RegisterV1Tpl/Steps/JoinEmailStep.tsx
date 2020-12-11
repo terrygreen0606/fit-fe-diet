@@ -36,6 +36,7 @@ const JoinEmailStep = ({
     getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const FormValidator = FormValidatorUtil(localePhrases);
 
@@ -53,8 +54,14 @@ const JoinEmailStep = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors);
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerJoinSubmit = (e) => {
     e.preventDefault();
@@ -65,6 +72,10 @@ const JoinEmailStep = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -134,7 +145,7 @@ const JoinEmailStep = ({
             value={registerData.email}
             autoComplete='email'
             readOnly={validateLoading}
-            isValid={getFieldErrors('email').length === 0 && registerData.email.length > 0}
+            isValid={isFieldValid('email')}
             data-validate='["email", "required"]'
             onChange={(e) => validateOnChange('email', e.target.value, e)}
             errors={getFieldErrors('email')}

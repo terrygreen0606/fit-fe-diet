@@ -20,6 +20,11 @@ type LayoutProps = {
   children: Node,
   location: any,
   history: any,
+  color?: string,
+};
+
+const LayoutDefaultProps = {
+  color: 'default',
 };
 
 // fixme: remove default
@@ -29,10 +34,11 @@ const Layout = ({
   children,
   location,
   history,
+  color,
 }: LayoutProps) => {
   const getHeader = () => {
     if (headerType === 'promo') {
-      return <HeaderPromo />;
+      return <HeaderPromo history={history} />;
     }
     return (
       <Header
@@ -44,7 +50,7 @@ const Layout = ({
 
   const getFooter = () => {
     if (footerType === 'short') {
-      return <FooterShort />;
+      return <FooterShort color={color} />;
     }
     return <Footer />;
   };
@@ -63,6 +69,8 @@ const Layout = ({
     </div>
   );
 };
+
+Layout.defaultProps = LayoutDefaultProps;
 
 export default WithTranslate(connect(
   (state: any) => ({

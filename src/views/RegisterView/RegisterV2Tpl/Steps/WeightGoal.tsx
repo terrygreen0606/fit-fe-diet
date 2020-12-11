@@ -31,6 +31,7 @@ const WeightGoal = ({
   const t = (code: string) => getTranslate(localePhrases, code);
 
   const [validateLoading, setValidateLoading] = useState<boolean>(false);
+  const [isShowValidateErrors, setShowValidateErrors] = useState<boolean>(false);
 
   const FormValidator = FormValidatorUtil(localePhrases);
 
@@ -48,12 +49,14 @@ const WeightGoal = ({
     );
   };
 
-  const getFieldErrors = (field: string) =>
-    getFieldErrorsUtil(field, registerDataErrors)
-      .map(msg => ({
-        ...msg,
-        message: t('api.ecode.invalid_value')
-      }));
+  const getFieldErrors = (field: string) => (isShowValidateErrors
+    ? getFieldErrorsUtil(field, registerDataErrors)
+    : []);
+
+  const isFieldValid = (field: string) =>
+    getFieldErrorsUtil(field, registerDataErrors).length === 0 &&
+      registerData[field] &&
+      registerData[field].length > 0;
 
   const registerInfoSubmit = (e) => {
     e.preventDefault();
@@ -64,6 +67,10 @@ const WeightGoal = ({
     const { errors, hasError } = FormValidator.bulkValidate(inputs);
 
     setRegisterDataErrors([...errors]);
+
+    if (!isShowValidateErrors) {
+      setShowValidateErrors(true);
+    }
 
     if (!hasError) {
       setValidateLoading(true);
@@ -122,9 +129,7 @@ const WeightGoal = ({
                   block
                   height='md'
                   type='number'
-                  value={registerData.weight_goal}
-                  min={30}
-                  max={400}
+                  value={registerData.weight_goal}                  
                   step='0.1'
                   data-param='30,400'
                   data-validate='["required", "min-max"]'
